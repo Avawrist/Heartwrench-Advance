@@ -1,0 +1,49 @@
+#ifndef PHYSICS_H
+#define PHYSICS_H
+
+// Butano
+#include "bn_vector.h"
+#include "bn_optional.h"
+#include "bn_fixed.h"
+#include "bn_fixed_point.h"
+
+#include "bn_log.h"
+
+// My Libs
+#include "utility.h"
+#include "math.h"
+#include "game_object.h"
+
+//////////////////
+// Struct Force //
+//////////////////
+
+struct Force {
+	bn::fixed_point force;
+	bn::fixed_point decayed_force;
+	bn::fixed timer;
+	bn::fixed decay_rate;
+
+	Force();
+	Force(bn::fixed_point _force, bn::fixed _decay_rate);
+	void update();
+	const bn::fixed x();
+	const bn::fixed y();
+        bool isDecayed();
+};
+
+//////////////////////
+// Struct Rigidbody //
+//////////////////////
+
+#define MAX_FORCES 10
+
+struct RigidBody {
+	bn::vector<Force*, MAX_FORCES> forces;
+	
+	RigidBody();
+	bn::fixed_point update(GameObject& object);
+        uint8 addForce(Force* force_p);
+};
+
+#endif
