@@ -110,6 +110,6 @@ int main()
 
 	// Update Core
 	bn::core::update();
-	//BN_LOG(bn::core::last_missed_frames());
+	BN_LOG(bn::core::last_missed_frames());
     }
 }
