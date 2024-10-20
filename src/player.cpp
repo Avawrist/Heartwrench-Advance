@@ -134,55 +134,55 @@ void Player::update(GameObject** game_objects_p, uint8 game_objects_size)
 	    Collider* other_collider_p = game_objects_p[i]->collider_p;
 	    if(other_collider_p != NULL)
 	    {
-		if(collider_p->isCollision(*(other_collider_p)))
-		{
-		    // Get a normalized direction vector, to be used for collision correction if
-		    // there is a collision.
-		    bn::fixed normalized_dir_x = 0;
-		    bn::fixed normalized_dir_y = 0;
-		    if(final_dir.x() != 0) {normalized_dir_x = final_dir.x() / abs(final_dir.x());}
-		    if(final_dir.y() != 0) {normalized_dir_y = final_dir.y() / abs(final_dir.y());}
-		    bn::fixed_point normalized_dir = bn::fixed_point(normalized_dir_x, normalized_dir_y);
-
-		    // Create one temporary collider for each axis. If a collider finds a collision
-		    // in its axis, move the temp collider AND the Player back along the dir vector
-		    // in units of 1 until the collision is resolved on that axis.
-		    Collider* temp_collider_x_p = new Collider(collider_p->x(),
-							       collider_p->y() - final_dir.y(),
-							       collider_p->size);
-		    Collider* temp_collider_y_p = new Collider(collider_p->x() - final_dir.x(),
-							       collider_p->y(),
-							       collider_p->size);
-
-		    // Handle Corner Case //
-		    if(!temp_collider_x_p->isCollision(*(other_collider_p)) &&
-		       !temp_collider_y_p->isCollision(*(other_collider_p)))
-		    {
-			while(collider_p->isCollision(*(other_collider_p)))
+			if(collider_p->isCollision(*(other_collider_p)))
 			{
-			    // We always resolve diagonal corner collisions with a horizontal shift. 
-			    setX(x() - normalized_dir.x());
-			}
-		    }
-		
-		    // Handle Remaining Collision Cases //
-		    else
-		    {
-			while(temp_collider_x_p->isCollision(*(other_collider_p)))
-			{
-			    temp_collider_x_p->setX(temp_collider_x_p->x() - normalized_dir.x());
-			    setX(x() - normalized_dir.x());
-			}
+				// Get a normalized direction vector, to be used for collision correction if
+				// there is a collision.
+				bn::fixed normalized_dir_x = 0;
+				bn::fixed normalized_dir_y = 0;
+				if(final_dir.x() != 0) {normalized_dir_x = final_dir.x() / abs(final_dir.x());}
+				if(final_dir.y() != 0) {normalized_dir_y = final_dir.y() / abs(final_dir.y());}
+				bn::fixed_point normalized_dir = bn::fixed_point(normalized_dir_x, normalized_dir_y);
 
-			while(temp_collider_y_p->isCollision(*(other_collider_p)))
-			{
-			    temp_collider_y_p->setY(temp_collider_y_p->y() - normalized_dir.y());
-			    setY(y() - normalized_dir.y());
+				// Create one temporary collider for each axis. If a collider finds a collision
+				// in its axis, move the temp collider AND the Player back along the dir vector
+				// in units of 1 until the collision is resolved on that axis.
+				Collider* temp_collider_x_p = new Collider(collider_p->x(),
+									collider_p->y() - final_dir.y(),
+									collider_p->size);
+				Collider* temp_collider_y_p = new Collider(collider_p->x() - final_dir.x(),
+									collider_p->y(),
+									collider_p->size);
+
+				// Handle Corner Case //
+				if(!temp_collider_x_p->isCollision(*(other_collider_p)) &&
+				!temp_collider_y_p->isCollision(*(other_collider_p)))
+				{
+					while(collider_p->isCollision(*(other_collider_p)))
+					{
+						// We always resolve diagonal corner collisions with a horizontal shift. 
+						setX(x() - normalized_dir.x());
+					}
+				}
+			
+				// Handle Remaining Collision Cases //
+				else
+				{
+					while(temp_collider_x_p->isCollision(*(other_collider_p)))
+					{
+						temp_collider_x_p->setX(temp_collider_x_p->x() - normalized_dir.x());
+						setX(x() - normalized_dir.x());
+					}
+
+					while(temp_collider_y_p->isCollision(*(other_collider_p)))
+					{
+						temp_collider_y_p->setY(temp_collider_y_p->y() - normalized_dir.y());
+						setY(y() - normalized_dir.y());
+					}
+				}
+				delete temp_collider_x_p;
+				delete temp_collider_y_p;
 			}
-		    }
-		    delete temp_collider_x_p;
-		    delete temp_collider_y_p;
-		}
 	    }
 	}
     }
@@ -193,51 +193,51 @@ void Player::update(GameObject** game_objects_p, uint8 game_objects_size)
     BN_LOG("", x());
     for(uint8 i = 0; i < game_objects_size; i++)
     {
-	if(game_objects_p[i] != this)
-	{
-	    Collider* other_collider_p = game_objects_p[i]->collider_p;
-	    if(other_collider_p != NULL)
-	    {
-		// Test for, and log grounded collision if any //
-		const uint8 ground_ray_length = 1;
-		Collider*   test_collider_p = new Collider(collider_p->x(),
-							   collider_p->y() + ground_ray_length,
-							   collider_p->size);
-		if(test_collider_p->isCollision(*(other_collider_p)))
+		if(game_objects_p[i] != this)
 		{
-		    if(state == STATE_AIR_NEUTRAL) {sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
-		    grounded_detected = true;
-		}
-		delete test_collider_p;
+			Collider* other_collider_p = game_objects_p[i]->collider_p;
+			if(other_collider_p != NULL)
+			{
+			// Test for, and log grounded collision if any //
+			const uint8 ground_ray_length = 1;
+			Collider*   test_collider_p = new Collider(collider_p->x(),
+								collider_p->y() + ground_ray_length,
+								collider_p->size);
+			if(test_collider_p->isCollision(*(other_collider_p)))
+			{
+				if(state == STATE_AIR_NEUTRAL) {sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
+				grounded_detected = true;
+			}
+			delete test_collider_p;
 
-		// Test for, and log wall collision if any //
-		const uint8 wall_ray_length = 1;
-	        Collider* test_collider_right_p = new Collider(collider_p->x() + wall_ray_length,
-							       collider_p->y(),
-							       collider_p->size);
-		Collider* test_collider_left_p = new Collider(collider_p->x() - wall_ray_length,
-							       collider_p->y(),
-							       collider_p->size);
+			// Test for, and log wall collision if any //
+			const uint8 wall_ray_length = 1;
+				Collider* test_collider_right_p = new Collider(collider_p->x() + wall_ray_length,
+									collider_p->y(),
+									collider_p->size);
+			Collider* test_collider_left_p = new Collider(collider_p->x() - wall_ray_length,
+									collider_p->y(),
+									collider_p->size);
 
-		// Test for wall riding on right side
-		if(test_collider_right_p->isCollision(*other_collider_p) &&
-		   final_dir.y() >= 0 &&
-		   bn::keypad::right_held())
-		{
-		    wall_right_detected = true;
-		}
+			// Test for wall riding on right side
+			if(test_collider_right_p->isCollision(*other_collider_p) &&
+			final_dir.y() >= 0 &&
+			bn::keypad::right_held())
+			{
+				wall_right_detected = true;
+			}
 
-		// Test for wall riding on left side
-		if(test_collider_left_p->isCollision(*other_collider_p) &&
-		   final_dir.y() >= 0 &&
-		   bn::keypad::left_held())
-		{
-		    wall_left_detected = true;
+			// Test for wall riding on left side
+			if(test_collider_left_p->isCollision(*other_collider_p) &&
+			final_dir.y() >= 0 &&
+			bn::keypad::left_held())
+			{
+				wall_left_detected = true;
+			}
+			delete test_collider_right_p;
+			delete test_collider_left_p;
+			}
 		}
-		delete test_collider_right_p;
-		delete test_collider_left_p;
-	    }
-	}
     }
     
     // Apply Decay to Forces

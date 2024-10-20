@@ -36,8 +36,8 @@ struct Collider {
 
 	Collider();
 	Collider(bn::fixed origin_x,
-		 bn::fixed origin_y,
-		 ColliderSize _size);
+		 	bn::fixed origin_y,
+		 	ColliderSize _size);
 	bn::fixed x() const;
 	bn::fixed y() const;
 	bn::fixed_point pos() const;

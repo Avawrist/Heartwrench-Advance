@@ -64,16 +64,16 @@ bn::fixed_point RigidBody::applyForces(GameObject& object)
     bn::ivector<Force*>::iterator last    = forces.end();
     while(current != last)
     {
-	// Update object position with new force
-	object.setX(object.x() + (*current)->x());
-	object.setY(object.y() + (*current)->y());
+        // Update object position with new force
+        object.setX(object.x() + (*current)->x());
+        object.setY(object.y() + (*current)->y());
 
-	// Update final dir vector with new force
-	final_dir.set_x(final_dir.x() + (*current)->x());
-	final_dir.set_y(final_dir.y() + (*current)->y());
+        // Update final dir vector with new force
+        final_dir.set_x(final_dir.x() + (*current)->x());
+        final_dir.set_y(final_dir.y() + (*current)->y());
 
-	// Update iterator
-	current++;
+        // Update iterator
+        current++;
     }
 
     return final_dir;
@@ -86,17 +86,17 @@ void RigidBody::applyDecay()
     bn::ivector<Force*>::iterator last    = forces.end();
     while(current != last)
     {
-	// Update the force (apply decay to it). 
-	(*current)->update();
+        // Update the force (apply decay to it). 
+        (*current)->update();
 
-	// If the force is decayed, remove it from RigidBody.
-	if((*current)->isDecayed())
-	{
-	    delete *current;
-	    current = forces.erase(current);
-	    last    = forces.end();
-	}
-	else{current++;}
+        // If the force is decayed, remove it from RigidBody.
+        if((*current)->isDecayed())
+        {
+            delete *current;
+            current = forces.erase(current);
+            last    = forces.end();
+        }
+        else{current++;}
     }
 }
 
@@ -104,8 +104,8 @@ uint8 RigidBody::addForce(Force* force_p)
 {
     if(!forces.full())
     {
-	forces.push_back(force_p);
-	return 1;
+	    forces.push_back(force_p);
+	    return 1;
     }
     return 0;
 }

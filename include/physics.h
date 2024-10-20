@@ -29,7 +29,7 @@ struct Force {
 	void update();
 	const bn::fixed x();
 	const bn::fixed y();
-        bool isDecayed();
+    bool isDecayed();
 };
 
 //////////////////////
@@ -44,7 +44,7 @@ struct RigidBody {
 	RigidBody();
 	bn::fixed_point applyForces(GameObject& object);
 	void applyDecay();
-        uint8 addForce(Force* force_p);
+    uint8 addForce(Force* force_p);
 };
 
 #endif

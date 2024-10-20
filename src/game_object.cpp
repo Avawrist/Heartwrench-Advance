@@ -50,8 +50,8 @@ void GameObject::setPos(bn::fixed new_x, bn::fixed new_y)
     sprite_ptr->set_y(new_y.floor_integer());
     if(collider_p)
     {
-	collider_p->setX(new_x.floor_integer());
-	collider_p->setY(new_y.floor_integer());
+        collider_p->setX(new_x.floor_integer());
+        collider_p->setY(new_y.floor_integer());
     }
 }
 
@@ -61,7 +61,7 @@ void GameObject::setPos(bn::fixed_point new_pos)
     sprite_ptr->set_y(new_pos.y().floor_integer());
     if(collider_p)
     {
-	collider_p->setX(new_pos.x().floor_integer());
-	collider_p->setY(new_pos.y().floor_integer());
+        collider_p->setX(new_pos.x().floor_integer());
+        collider_p->setY(new_pos.y().floor_integer());
     }
 }

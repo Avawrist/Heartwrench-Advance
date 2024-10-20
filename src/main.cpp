@@ -98,18 +98,18 @@ int main()
     // Game Loop
     while(true)
     {
-        // Update Game Objects
-	for(uint8 i = 0; i < MAX_OBJECTS; i++)
-	{
-	    game_objects[i]->update(game_objects, MAX_OBJECTS);
-	    game_objects[i]->draw();
-	}
+            // Update Game Objects
+        for(uint8 i = 0; i < MAX_OBJECTS; i++)
+        {
+            game_objects[i]->update(game_objects, MAX_OBJECTS);
+            game_objects[i]->draw();
+        }
 
-	// Update Camera
-	camera.set_position(game_objects[0]->pos());
+        // Update Camera
+        camera.set_position(game_objects[0]->pos());
 
-	// Update Core
-	bn::core::update();
-	BN_LOG(bn::core::last_missed_frames());
+        // Update Core
+        bn::core::update();
+        BN_LOG(bn::core::last_missed_frames());
     }
 }
