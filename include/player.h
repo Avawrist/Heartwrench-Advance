@@ -26,6 +26,14 @@
 #define PLAYER_MAX_STRETCH_V 1.75
 #define PLAYER_MAX_STRETCH_H 1.5
 
+#define PLAYER_WALK_LEFT_FORCE  	 new Force(bn::fixed_point_t<12>(-walk_speed, 0), 1)
+#define PLAYER_WALK_RIGHT_FORCE 	 new Force(bn::fixed_point_t<12>(walk_speed, 0), 1)
+#define PLAYER_JUMP_FORCE            new Force(bn::fixed_point_t<12>(0, jump_force), 0.1)
+#define PLAYER_WALL_JUMP_RIGHT_FORCE new Force(bn::fixed_point_t<12>(wall_jump_force.x(), wall_jump_force.y()), 0.1)
+#define PLAYER_WALL_JUMP_LEFT_FORCE  new Force(bn::fixed_point_t<12>(-wall_jump_force.x(), wall_jump_force.y()), 0.1)
+#define PLAYER_GRAVITY_FORCE         new Force(bn::fixed_point_t<12>(0, gravity), 1)
+#define PLAYER_WALL_GRAVITY_FORCE    new Force(bn::fixed_point_t<12>(0, wall_ride_gravity), 1)
+
 enum PlayerState {
 	STATE_GROUNDED_NEUTRAL,
 	STATE_AIR_NEUTRAL,
@@ -45,16 +53,7 @@ struct Player : GameObject {
 	Player();
 	~Player() override;
 	void update(GameObject** game_objects_p,
-		    	uint8 game_objects_size) override;
-	Force* getForceWalkLeft();
-	Force* getForceWalkRight();
-	Force* getForceWalkUp();
-	Force* getForceWalkDown();
-	Force* getForceJump();
-	Force* getForceWallJumpRight();
-	Force* getForceWallJumpLeft();
-	Force* getForceGravity();
-	Force* getForceWallGravity();
+		    	uint32 game_objects_size) override;
 };
 
 #endif

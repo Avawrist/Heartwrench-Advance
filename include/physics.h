@@ -44,7 +44,7 @@ struct RigidBody {
 	RigidBody();
 	bn::fixed_point applyForces(GameObject& object);
 	void applyDecay();
-    uint8 addForce(Force* force_p);
+    uint32 addForce(Force* force_p);
 };
 
 #endif

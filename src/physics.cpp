@@ -100,7 +100,7 @@ void RigidBody::applyDecay()
     }
 }
 
-uint8 RigidBody::addForce(Force* force_p)
+uint32 RigidBody::addForce(Force* force_p)
 {
     if(!forces.full())
     {

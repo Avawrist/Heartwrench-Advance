@@ -24,7 +24,7 @@ struct GameObject {
 	bn::optional<bn::sprite_animate_action<MAX_ANIM_FRAMES>> animate_action_ptr;
 	Collider* collider_p = NULL;
 	
-	virtual void update(GameObject** game_objects_p, uint8 game_objects_size) = 0;
+	virtual void update(GameObject** game_objects_p, uint32 game_objects_size) = 0;
 	virtual void draw();
 	virtual void setCamera(const bn::camera_ptr& camera);
 	bn::fixed x() const;

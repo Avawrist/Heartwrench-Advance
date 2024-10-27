@@ -29,7 +29,7 @@ Player::~Player()
     delete collider_p;
 }
 
-void Player::update(GameObject** game_objects_p, uint8 game_objects_size)
+void Player::update(GameObject** game_objects_p, uint32 game_objects_size)
 {
     //////////////////////////
     // Player State Machine //
@@ -44,11 +44,11 @@ void Player::update(GameObject** game_objects_p, uint8 game_objects_size)
 		///////////////////////////////////
 
 		// Get Input //
-		if(bn::keypad::left_held())  {rigidbody_p->addForce(getForceWalkLeft());}
-		if(bn::keypad::right_held()) {rigidbody_p->addForce(getForceWalkRight());}
+		if(bn::keypad::left_held())  {rigidbody_p->addForce(PLAYER_WALK_LEFT_FORCE);}
+		if(bn::keypad::right_held()) {rigidbody_p->addForce(PLAYER_WALK_RIGHT_FORCE);}
 		if(bn::keypad::a_pressed())
 		{
-			rigidbody_p->addForce(getForceJump());
+			rigidbody_p->addForce(PLAYER_JUMP_FORCE);
 			sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 		}
 
@@ -61,11 +61,11 @@ void Player::update(GameObject** game_objects_p, uint8 game_objects_size)
 		//////////////////////////////
 
 		// Get Input //
-		if(bn::keypad::left_held())  {rigidbody_p->addForce(getForceWalkLeft());}
-		if(bn::keypad::right_held()) {rigidbody_p->addForce(getForceWalkRight());}
+		if(bn::keypad::left_held())  {rigidbody_p->addForce(PLAYER_WALK_LEFT_FORCE);}
+		if(bn::keypad::right_held()) {rigidbody_p->addForce(PLAYER_WALK_RIGHT_FORCE);}
 		
 		// Add Gravity //
-		rigidbody_p->addForce(getForceGravity());
+		rigidbody_p->addForce(PLAYER_GRAVITY_FORCE);
 			
 		break;
 		
@@ -76,32 +76,32 @@ void Player::update(GameObject** game_objects_p, uint8 game_objects_size)
 		///////////////////////////////////
 
 		// Get Input //
-		if(bn::keypad::left_held())  {rigidbody_p->addForce(getForceWalkLeft());}
-		if(bn::keypad::right_held()) {rigidbody_p->addForce(getForceWalkRight());}
+		if(bn::keypad::left_held())  {rigidbody_p->addForce(PLAYER_WALK_LEFT_FORCE);}
+		if(bn::keypad::right_held()) {rigidbody_p->addForce(PLAYER_WALK_RIGHT_FORCE);}
 		if(bn::keypad::a_pressed())
 		{
-			rigidbody_p->addForce(getForceWallJumpLeft());
+			rigidbody_p->addForce(PLAYER_WALL_JUMP_LEFT_FORCE);
 			sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 		}
 		
 		// Add Gravity //
-		rigidbody_p->addForce(getForceWallGravity());
+		rigidbody_p->addForce(PLAYER_WALL_GRAVITY_FORCE);
 		
 		break;
 		
 		case STATE_WALL_SLIDE_LEFT:
 
 		// Get Input //
-		if(bn::keypad::left_held())  {rigidbody_p->addForce(getForceWalkLeft());}
-		if(bn::keypad::right_held()) {rigidbody_p->addForce(getForceWalkRight());}
+		if(bn::keypad::left_held())  {rigidbody_p->addForce(PLAYER_WALK_LEFT_FORCE);}
+		if(bn::keypad::right_held()) {rigidbody_p->addForce(PLAYER_WALK_RIGHT_FORCE);}
 		if(bn::keypad::a_pressed())
 		{
-			rigidbody_p->addForce(getForceWallJumpRight());
+			rigidbody_p->addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);
 			sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 		}
 		
 		// Add Gravity //
-		rigidbody_p->addForce(getForceWallGravity());
+		rigidbody_p->addForce(PLAYER_WALL_GRAVITY_FORCE);
 		
 		//////////////////////////////////
 		// Player Wall Slide Left State //
@@ -205,7 +205,7 @@ void Player::update(GameObject** game_objects_p, uint8 game_objects_size)
 													  collider_p->y(),
 													  collider_p->size);										   
 
-    for(uint8 i = 0; i < game_objects_size; i++)
+    for(uint32 i = 0; i < game_objects_size; i++)
     {
 		if(game_objects_p[i] != this)
 		{
@@ -273,49 +273,4 @@ void Player::update(GameObject** game_objects_p, uint8 game_objects_size)
     if(v_scale > 1) {sprite_ptr->set_vertical_scale(v_scale - increment);}
     else if (v_scale < 1) {sprite_ptr->set_vertical_scale(v_scale + increment);}
     if(abs(1 - sprite_ptr->vertical_scale()) < increment) {sprite_ptr->set_vertical_scale(1);}
-}
-
-Force* Player::getForceWalkLeft()
-{
-    return new Force(bn::fixed_point_t<12>(-walk_speed, 0), 1);
-}
-
-Force* Player::getForceWalkRight()
-{
-    return new Force(bn::fixed_point_t<12>(walk_speed, 0), 1);
-}
-
-Force* Player::getForceWalkUp()
-{
-    return new Force(bn::fixed_point_t<12>(0, -walk_speed), 1);
-}
-
-Force* Player::getForceWalkDown()
-{
-    return new Force(bn::fixed_point_t<12>(0, walk_speed), 1);
-}
-
-Force* Player::getForceJump()
-{
-    return new Force(bn::fixed_point_t<12>(0, jump_force), 0.1);
-}
-
-Force* Player::getForceWallJumpRight()
-{
-    return new Force(bn::fixed_point_t<12>(wall_jump_force.x(), wall_jump_force.y()), 0.1);
-}
-
-Force* Player::getForceWallJumpLeft()
-{
-    return new Force(bn::fixed_point_t<12>(-wall_jump_force.x(), wall_jump_force.y()), 0.1);
-}
-
-Force* Player::getForceGravity()
-{
-    return new Force(bn::fixed_point_t<12>(0, gravity), 1);
-}
-
-Force* Player::getForceWallGravity()
-{
-    return new Force(bn::fixed_point_t<12>(0, wall_ride_gravity), 1);
 }

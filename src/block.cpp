@@ -21,7 +21,7 @@ Block::~Block()
     delete collider_p;
 }
 
-void Block::update(GameObject** game_objects_p, uint8 game_objects_size)
+void Block::update(GameObject** game_objects_p, uint32 game_objects_size)
 {
 
 }

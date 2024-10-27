@@ -111,7 +111,7 @@ int main()
             game_objects[i]->draw();
         }
         BN_PROFILER_STOP();
-        bn::profiler::show();
+        //bn::profiler::show();
 
         // Update Camera
         camera.set_position(game_objects[0]->pos());
