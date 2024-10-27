@@ -38,6 +38,9 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_log.h \
  G:/butano-master/butano/include/bn_fixed_point_fwd.h \
  G:/butano-master/butano/include/bn_fixed.h \
  G:/butano-master/butano/include/bn_fixed_point.h \
+ G:/butano-master/butano/include/bn_memory.h \
+ G:/butano-master/butano/include/bn_unique_ptr.h \
+ G:/butano-master/butano/include/bn_unique_ptr_fwd.h \
  G:/game/include/common_info.h G:/butano-master/butano/include/bn_span.h \
  G:/butano-master/butano/include/bn_vector.h \
  G:/butano-master/butano/include/bn_vector_fwd.h \
@@ -117,6 +120,9 @@ G:/butano-master/butano/include/bn_point.h:
 G:/butano-master/butano/include/bn_fixed_point_fwd.h:
 G:/butano-master/butano/include/bn_fixed.h:
 G:/butano-master/butano/include/bn_fixed_point.h:
+G:/butano-master/butano/include/bn_memory.h:
+G:/butano-master/butano/include/bn_unique_ptr.h:
+G:/butano-master/butano/include/bn_unique_ptr_fwd.h:
 G:/game/include/common_info.h:
 G:/butano-master/butano/include/bn_span.h:
 G:/butano-master/butano/include/bn_vector.h:

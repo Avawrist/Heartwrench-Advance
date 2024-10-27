@@ -6,6 +6,7 @@
 #include "bn_camera_ptr.h"
 #include "bn_fixed.h"
 #include "bn_fixed_point.h"
+#include "bn_memory.h"
 
 // Common
 #include "common_info.h"
@@ -26,7 +27,9 @@ int main()
     
     // Game Objects test
     #define MAX_OBJECTS 17
-    GameObject *game_objects[MAX_OBJECTS];
+    GameObject* game_objects[MAX_OBJECTS];
+ 
+    // Allocating Objects in EWRAM:
     game_objects[0] = new Player();
     game_objects[0]->setCamera(camera);
 
@@ -93,21 +96,26 @@ int main()
     game_objects[16] = new Block();
     game_objects[16]->setPos(-96, -32);
     game_objects[16]->setCamera(camera);
-    
+
+    BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
+    BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
     
     // Game Loop
     while(true)
     {
-            // Update Game Objects
-        for(uint8 i = 0; i < MAX_OBJECTS; i++)
+        // Update Game Objects
+        BN_PROFILER_START("");
+        for(uint32 i = 0; i < MAX_OBJECTS; i++)
         {
             game_objects[i]->update(game_objects, MAX_OBJECTS);
             game_objects[i]->draw();
         }
+        BN_PROFILER_STOP();
+        bn::profiler::show();
 
         // Update Camera
         camera.set_position(game_objects[0]->pos());
-
+        
         // Update Core
         bn::core::update();
         BN_LOG(bn::core::last_missed_frames());

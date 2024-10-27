@@ -45,7 +45,7 @@ struct Player : GameObject {
 	Player();
 	~Player() override;
 	void update(GameObject** game_objects_p,
-		    uint8 game_objects_size) override;
+		    	uint8 game_objects_size) override;
 	Force* getForceWalkLeft();
 	Force* getForceWalkRight();
 	Force* getForceWalkUp();

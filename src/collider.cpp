@@ -19,18 +19,18 @@ Collider::Collider(bn::fixed origin_x,
     switch(size)
     {
     case COLLIDER_8:
-	sprite_ptr = bn::sprite_items::collider_8.create_sprite(origin_x, origin_y);
-	break;
+        sprite_ptr = bn::sprite_items::collider_8.create_sprite(origin_x, origin_y);
+        break;
     case COLLIDER_16:
-	sprite_ptr = bn::sprite_items::collider_16.create_sprite(origin_x, origin_y);
-	break;
+        sprite_ptr = bn::sprite_items::collider_16.create_sprite(origin_x, origin_y);
+        break;
     case COLLIDER_32:
-	sprite_ptr = bn::sprite_items::collider_32.create_sprite(origin_x, origin_y);
-	break;
+        sprite_ptr = bn::sprite_items::collider_32.create_sprite(origin_x, origin_y);
+        break;
     default:
-	BN_LOG("ERROR: Collider sprite not found - Invalid collider type.");
-	return;
-	break;
+	    BN_LOG("ERROR: Collider sprite not found - Invalid collider type.");
+	    return;
+	    break;
     }
     if(!DEBUG_BUILD) {sprite_ptr->set_visible(false);}
 
@@ -111,7 +111,7 @@ bool Collider::isCollision(bn::fixed_point target)
     if(target.x() >= p1.x() && target.x() <= p4.x() &&
        target.y() >= p1.y() && target.y() <= p4.y())
     {
-	return true;
+	    return true;
     }
     return false;
 }
@@ -123,7 +123,7 @@ bool Collider::isCollision(Collider& target)
        target.isCollision(p1) || target.isCollision(p2) ||
        target.isCollision(p3) || target.isCollision(p4))
     {
-	return true;
+	    return true;
     }
     return false;
 }
