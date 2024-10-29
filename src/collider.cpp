@@ -50,7 +50,7 @@ bn::fixed Collider::y() const
 bn::fixed_point Collider::pos() const
 {
     bn::fixed_point point(sprite_ptr->position().x().floor_integer(),
-			  sprite_ptr->position().y().floor_integer());
+			              sprite_ptr->position().y().floor_integer());
     return point;
 }
 
@@ -85,12 +85,6 @@ void Collider::update()
     bn::fixed half_size = (size / 2) - 0.5;
     p1.set_x((x() - (half_size)));
     p1.set_y((y() - (half_size)));
-    
-    p2.set_x((x() + (half_size)));
-    p2.set_y((y() - (half_size)));
-    
-    p3.set_x((x() - (half_size)));
-    p3.set_y((y() + (half_size)));
     
     p4.set_x((x() + (half_size)));
     p4.set_y((y() + (half_size)));

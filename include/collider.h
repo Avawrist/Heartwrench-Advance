@@ -30,8 +30,6 @@ struct Collider {
 	bn::optional<bn::sprite_animate_action<MAX_ANIM_FRAMES>> animate_action_ptr;
 	ColliderSize size;
 	bn::fixed_point p1;
-	bn::fixed_point p2;
-	bn::fixed_point p3;
 	bn::fixed_point p4;
 
 	Collider();

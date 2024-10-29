@@ -39,6 +39,7 @@ bn_core.o: G:/butano-master/butano/src/bn_core.cpp \
  G:/butano-master/butano/include/bn_version.h \
  G:/butano-master/butano/include/bn_profiler.h \
  G:/butano-master/butano/include/bn_config_profiler.h \
+ G:/butano-master/butano/include/bn_unordered_map_fwd.h \
  G:/butano-master/butano/include/bn_system_font.h \
  G:/butano-master/butano/src/bn_bgs_manager.h \
  G:/butano-master/butano/include/bn_fixed_fwd.h \
@@ -147,6 +148,7 @@ G:/butano-master/butano/include/bn_config_timer.h:
 G:/butano-master/butano/include/bn_version.h:
 G:/butano-master/butano/include/bn_profiler.h:
 G:/butano-master/butano/include/bn_config_profiler.h:
+G:/butano-master/butano/include/bn_unordered_map_fwd.h:
 G:/butano-master/butano/include/bn_system_font.h:
 G:/butano-master/butano/src/bn_bgs_manager.h:
 G:/butano-master/butano/include/bn_fixed_fwd.h:

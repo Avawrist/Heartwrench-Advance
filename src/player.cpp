@@ -117,7 +117,11 @@ void Player::update(GameObject** game_objects_p, uint32 game_objects_size)
     // Apply Physics //
     ///////////////////
     
+	// Apply Decay to Forces
+    rigidbody_p->applyDecay();
+
     bn::fixed_point final_dir = rigidbody_p->applyForces(*this);
+	BN_LOG("final_dir.x: ", final_dir.x());
 
     ///////////////////////
     // Resolve Collision //
@@ -244,9 +248,6 @@ void Player::update(GameObject** game_objects_p, uint32 game_objects_size)
 	delete test_collider_p;
 	delete test_collider_right_p;
 	delete test_collider_left_p;
-    
-	// Apply Decay to Forces
-    rigidbody_p->applyDecay();
     
     ///////////////////
     // Update States //

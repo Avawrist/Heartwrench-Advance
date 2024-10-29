@@ -86,7 +86,20 @@ bn_hw_show.o: G:/butano-master/butano/hw/src/bn_hw_show.cpp \
  G:/butano-master/butano/hw/3rd_party/agbabi/include/aeabi.h \
  G:/butano-master/butano/hw/3rd_party/agbabi/include/agbabi.h \
  G:/butano-master/butano/include/bn_config_log.h \
- G:/butano-master/butano/include/bn_log_backend.h
+ G:/butano-master/butano/include/bn_log_backend.h \
+ G:/butano-master/butano/include/bn_core.h \
+ G:/butano-master/butano/include/bn_vblank_callback_type.h \
+ G:/butano-master/butano/include/bn_vector.h \
+ G:/butano-master/butano/include/bn_vector_fwd.h \
+ G:/butano-master/butano/include/bn_keypad.h \
+ G:/butano-master/butano/include/bn_profiler.h \
+ G:/butano-master/butano/include/bn_config_profiler.h \
+ G:/butano-master/butano/include/bn_unordered_map_fwd.h \
+ G:/butano-master/butano/include/bn_unordered_map.h \
+ G:/butano-master/butano/include/bn_memory.h \
+ G:/butano-master/butano/include/bn_unique_ptr.h \
+ G:/butano-master/butano/include/bn_unique_ptr_fwd.h \
+ G:/butano-master/butano/include/bn_power_of_two.h
 G:/butano-master/butano/hw/include/bn_hw_show.h:
 G:/butano-master/butano/include/bn_config_assert.h:
 G:/butano-master/butano/include/bn_common.h:
@@ -175,3 +188,16 @@ G:/butano-master/butano/hw/3rd_party/agbabi/include/aeabi.h:
 G:/butano-master/butano/hw/3rd_party/agbabi/include/agbabi.h:
 G:/butano-master/butano/include/bn_config_log.h:
 G:/butano-master/butano/include/bn_log_backend.h:
+G:/butano-master/butano/include/bn_core.h:
+G:/butano-master/butano/include/bn_vblank_callback_type.h:
+G:/butano-master/butano/include/bn_vector.h:
+G:/butano-master/butano/include/bn_vector_fwd.h:
+G:/butano-master/butano/include/bn_keypad.h:
+G:/butano-master/butano/include/bn_profiler.h:
+G:/butano-master/butano/include/bn_config_profiler.h:
+G:/butano-master/butano/include/bn_unordered_map_fwd.h:
+G:/butano-master/butano/include/bn_unordered_map.h:
+G:/butano-master/butano/include/bn_memory.h:
+G:/butano-master/butano/include/bn_unique_ptr.h:
+G:/butano-master/butano/include/bn_unique_ptr_fwd.h:
+G:/butano-master/butano/include/bn_power_of_two.h:
