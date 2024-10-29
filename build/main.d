@@ -14,7 +14,6 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_log.h \
  G:/butano-master/butano/include/bn_type_traits.h \
  G:/butano-master/butano/include/bn_profiler.h \
  G:/butano-master/butano/include/bn_config_profiler.h \
- G:/butano-master/butano/include/bn_unordered_map_fwd.h \
  G:/butano-master/butano/include/bn_core.h \
  G:/butano-master/butano/include/bn_span.h \
  G:/butano-master/butano/include/bn_array.h \
@@ -22,11 +21,11 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_log.h \
  G:/butano-master/butano/include/bn_config_assert.h \
  G:/butano-master/butano/include/bn_assert_callback_type.h \
  G:/butano-master/butano/include/bn_utility.h \
- G:/butano-master/butano/include/bn_compare.h \
  G:/butano-master/butano/include/bn_iterator.h \
  G:/butano-master/butano/include/bn_array_fwd.h \
  G:/butano-master/butano/include/bn_span_fwd.h \
  G:/butano-master/butano/include/bn_fixed.h \
+ G:/butano-master/butano/include/bn_compare.h \
  G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_memory_alias.h \
  G:/butano-master/butano/include/bn_string_view.h \
@@ -96,7 +95,6 @@ G:/butano-master/butano/include/bn_alignment.h:
 G:/butano-master/butano/include/bn_type_traits.h:
 G:/butano-master/butano/include/bn_profiler.h:
 G:/butano-master/butano/include/bn_config_profiler.h:
-G:/butano-master/butano/include/bn_unordered_map_fwd.h:
 G:/butano-master/butano/include/bn_core.h:
 G:/butano-master/butano/include/bn_span.h:
 G:/butano-master/butano/include/bn_array.h:
@@ -104,11 +102,11 @@ G:/butano-master/butano/include/bn_assert.h:
 G:/butano-master/butano/include/bn_config_assert.h:
 G:/butano-master/butano/include/bn_assert_callback_type.h:
 G:/butano-master/butano/include/bn_utility.h:
-G:/butano-master/butano/include/bn_compare.h:
 G:/butano-master/butano/include/bn_iterator.h:
 G:/butano-master/butano/include/bn_array_fwd.h:
 G:/butano-master/butano/include/bn_span_fwd.h:
 G:/butano-master/butano/include/bn_fixed.h:
+G:/butano-master/butano/include/bn_compare.h:
 G:/butano-master/butano/include/bn_optional.h:
 G:/butano-master/butano/include/bn_memory_alias.h:
 G:/butano-master/butano/include/bn_string_view.h:

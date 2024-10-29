@@ -12,8 +12,6 @@ bn_cameras_manager.o: G:/butano-master/butano/src/bn_cameras_manager.cpp \
  G:/butano-master/butano/include/bn_intrusive_list_fwd.h \
  G:/butano-master/butano/src/bn_display_manager.h \
  G:/butano-master/butano/include/bn_utility.h \
- G:/butano-master/butano/include/bn_compare.h \
- G:/butano-master/butano/include/bn_type_traits.h \
  G:/butano-master/butano/src/bn_cameras.cpp.h \
  G:/butano-master/butano/include/bn_cameras.h \
  G:/butano-master/butano/src/bn_camera_ptr.cpp.h \
@@ -29,11 +27,13 @@ bn_cameras_manager.o: G:/butano-master/butano/src/bn_cameras_manager.cpp \
  G:/butano-master/butano/include/bn_algorithm.h \
  G:/butano-master/butano/include/bn_functional.h \
  G:/butano-master/butano/include/bn_alignment.h \
+ G:/butano-master/butano/include/bn_type_traits.h \
  G:/butano-master/butano/include/bn_assert_callback_type.h \
  G:/butano-master/butano/include/bn_utility.h \
  G:/butano-master/butano/include/bn_memory_alias.h \
  G:/butano-master/butano/include/bn_fixed_point.h \
  G:/butano-master/butano/include/bn_fixed.h \
+ G:/butano-master/butano/include/bn_compare.h \
  G:/butano-master/butano/include/bn_point.h \
  G:/butano-master/butano/include/bn_fixed_point_fwd.h
 G:/butano-master/butano/src/bn_cameras_manager.h:
@@ -49,8 +49,6 @@ G:/butano-master/butano/src/bn_sprites_manager.h:
 G:/butano-master/butano/include/bn_intrusive_list_fwd.h:
 G:/butano-master/butano/src/bn_display_manager.h:
 G:/butano-master/butano/include/bn_utility.h:
-G:/butano-master/butano/include/bn_compare.h:
-G:/butano-master/butano/include/bn_type_traits.h:
 G:/butano-master/butano/src/bn_cameras.cpp.h:
 G:/butano-master/butano/include/bn_cameras.h:
 G:/butano-master/butano/src/bn_camera_ptr.cpp.h:
@@ -66,10 +64,12 @@ G:/butano-master/butano/include/bn_istring_base.h:
 G:/butano-master/butano/include/bn_algorithm.h:
 G:/butano-master/butano/include/bn_functional.h:
 G:/butano-master/butano/include/bn_alignment.h:
+G:/butano-master/butano/include/bn_type_traits.h:
 G:/butano-master/butano/include/bn_assert_callback_type.h:
 G:/butano-master/butano/include/bn_utility.h:
 G:/butano-master/butano/include/bn_memory_alias.h:
 G:/butano-master/butano/include/bn_fixed_point.h:
 G:/butano-master/butano/include/bn_fixed.h:
+G:/butano-master/butano/include/bn_compare.h:
 G:/butano-master/butano/include/bn_point.h:
 G:/butano-master/butano/include/bn_fixed_point_fwd.h:

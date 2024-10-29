@@ -1,6 +1,7 @@
-bn_hw_common.bn_noflto.o: \
- G:/butano-master/butano/hw/src/bn_hw_common.bn_noflto.cpp \
- G:/butano-master/butano/hw/include/bn_hw_common.h \
+bn_hw_gpio.bn_noflto.o: \
+ G:/butano-master/butano/hw/src/bn_hw_gpio.bn_noflto.cpp \
+ G:/butano-master/butano/hw/include/bn_hw_gpio.h \
+ G:/butano-master/butano/include/bn_date.h \
  G:/butano-master/butano/include/bn_assert.h \
  G:/butano-master/butano/include/bn_config_assert.h \
  G:/butano-master/butano/include/bn_common.h \
@@ -14,8 +15,15 @@ bn_hw_common.bn_noflto.o: \
  G:/butano-master/butano/include/bn_functional.h \
  G:/butano-master/butano/include/bn_alignment.h \
  G:/butano-master/butano/include/bn_type_traits.h \
- G:/butano-master/butano/include/bn_assert_callback_type.h
-G:/butano-master/butano/hw/include/bn_hw_common.h:
+ G:/butano-master/butano/include/bn_assert_callback_type.h \
+ G:/butano-master/butano/include/bn_optional_fwd.h \
+ G:/butano-master/butano/include/bn_time.h \
+ G:/butano-master/butano/include/bn_optional.h \
+ G:/butano-master/butano/include/bn_utility.h \
+ G:/butano-master/butano/include/bn_memory_alias.h \
+ G:/butano-master/butano/hw/3rd_party/agbabi/include/agbabi.h
+G:/butano-master/butano/hw/include/bn_hw_gpio.h:
+G:/butano-master/butano/include/bn_date.h:
 G:/butano-master/butano/include/bn_assert.h:
 G:/butano-master/butano/include/bn_config_assert.h:
 G:/butano-master/butano/include/bn_common.h:
@@ -30,3 +38,9 @@ G:/butano-master/butano/include/bn_functional.h:
 G:/butano-master/butano/include/bn_alignment.h:
 G:/butano-master/butano/include/bn_type_traits.h:
 G:/butano-master/butano/include/bn_assert_callback_type.h:
+G:/butano-master/butano/include/bn_optional_fwd.h:
+G:/butano-master/butano/include/bn_time.h:
+G:/butano-master/butano/include/bn_optional.h:
+G:/butano-master/butano/include/bn_utility.h:
+G:/butano-master/butano/include/bn_memory_alias.h:
+G:/butano-master/butano/hw/3rd_party/agbabi/include/agbabi.h:

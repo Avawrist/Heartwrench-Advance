@@ -5,9 +5,8 @@ bn_hblank_effects_manager.o: \
  G:/butano-master/butano/hw/include/bn_hw_common.h \
  G:/butano-master/butano/include/bn_vector.h \
  G:/butano-master/butano/include/bn_assert.h \
- G:/butano-master/butano/include/bn_type_traits.h \
- G:/butano-master/butano/include/bn_common.h \
  G:/butano-master/butano/include/bn_config_assert.h \
+ G:/butano-master/butano/include/bn_common.h \
  G:/butano-master/butano/include/bn_config_doxygen.h \
  G:/butano-master/butano/include/bn_sstream.h \
  G:/butano-master/butano/include/bn_fixed_fwd.h \
@@ -16,14 +15,15 @@ bn_hblank_effects_manager.o: \
  G:/butano-master/butano/include/bn_algorithm.h \
  G:/butano-master/butano/include/bn_functional.h \
  G:/butano-master/butano/include/bn_alignment.h \
+ G:/butano-master/butano/include/bn_type_traits.h \
  G:/butano-master/butano/include/bn_assert_callback_type.h \
  G:/butano-master/butano/include/bn_utility.h \
- G:/butano-master/butano/include/bn_compare.h \
  G:/butano-master/butano/include/bn_iterator.h \
  G:/butano-master/butano/include/bn_vector_fwd.h \
  G:/butano-master/butano/hw/include/bn_hw_hblank_effects.h \
  G:/butano-master/butano/include/bn_config_hbes.h \
  G:/butano-master/butano/hw/include/bn_hw_irq.h \
+ G:/butano-master/butano/hw/3rd_party/libugba/include/ugba/interrupts.h \
  G:/butano-master/butano/src/bn_bg_palette_color_hbe_handler.h \
  G:/butano-master/butano/src/bn_palettes_bank.h \
  G:/butano-master/butano/include/bn_span.h \
@@ -31,6 +31,7 @@ bn_hblank_effects_manager.o: \
  G:/butano-master/butano/include/bn_array_fwd.h \
  G:/butano-master/butano/include/bn_span_fwd.h \
  G:/butano-master/butano/include/bn_fixed.h \
+ G:/butano-master/butano/include/bn_compare.h \
  G:/butano-master/butano/include/bn_color.h \
  G:/butano-master/butano/include/bn_limits.h \
  G:/butano-master/butano/include/bn_optional.h \
@@ -41,7 +42,6 @@ bn_hblank_effects_manager.o: \
  G:/butano-master/butano/include/bn_memory.h \
  G:/butano-master/butano/include/bn_unique_ptr.h \
  G:/butano-master/butano/include/bn_unique_ptr_fwd.h \
- G:/butano-master/butano/include/bn_config_log.h \
  G:/butano-master/butano/include/bn_power_of_two.h \
  G:/butano-master/butano/include/bn_unordered_map_fwd.h \
  G:/butano-master/butano/src/bn_identity_hasher.h \
@@ -185,6 +185,8 @@ bn_hblank_effects_manager.o: \
  G:/butano-master/butano/include/bn_hbe_ptr.h \
  G:/butano-master/butano/src/bn_bg_palettes_transparent_color_hbe_ptr.cpp.h \
  G:/butano-master/butano/include/bn_bg_palettes_transparent_color_hbe_ptr.h \
+ G:/butano-master/butano/src/bn_backdrop_color_hbe_ptr.cpp.h \
+ G:/butano-master/butano/include/bn_backdrop_color_hbe_ptr.h \
  G:/butano-master/butano/src/bn_blending_fade_alpha_hbe_ptr.cpp.h \
  G:/butano-master/butano/include/bn_blending_fade_alpha_hbe_ptr.h \
  G:/butano-master/butano/src/bn_blending_transparency_attributes_hbe_ptr.cpp.h \
@@ -266,9 +268,8 @@ G:/butano-master/butano/include/bn_common.h:
 G:/butano-master/butano/hw/include/bn_hw_common.h:
 G:/butano-master/butano/include/bn_vector.h:
 G:/butano-master/butano/include/bn_assert.h:
-G:/butano-master/butano/include/bn_type_traits.h:
-G:/butano-master/butano/include/bn_common.h:
 G:/butano-master/butano/include/bn_config_assert.h:
+G:/butano-master/butano/include/bn_common.h:
 G:/butano-master/butano/include/bn_config_doxygen.h:
 G:/butano-master/butano/include/bn_sstream.h:
 G:/butano-master/butano/include/bn_fixed_fwd.h:
@@ -277,14 +278,15 @@ G:/butano-master/butano/include/bn_istring_base.h:
 G:/butano-master/butano/include/bn_algorithm.h:
 G:/butano-master/butano/include/bn_functional.h:
 G:/butano-master/butano/include/bn_alignment.h:
+G:/butano-master/butano/include/bn_type_traits.h:
 G:/butano-master/butano/include/bn_assert_callback_type.h:
 G:/butano-master/butano/include/bn_utility.h:
-G:/butano-master/butano/include/bn_compare.h:
 G:/butano-master/butano/include/bn_iterator.h:
 G:/butano-master/butano/include/bn_vector_fwd.h:
 G:/butano-master/butano/hw/include/bn_hw_hblank_effects.h:
 G:/butano-master/butano/include/bn_config_hbes.h:
 G:/butano-master/butano/hw/include/bn_hw_irq.h:
+G:/butano-master/butano/hw/3rd_party/libugba/include/ugba/interrupts.h:
 G:/butano-master/butano/src/bn_bg_palette_color_hbe_handler.h:
 G:/butano-master/butano/src/bn_palettes_bank.h:
 G:/butano-master/butano/include/bn_span.h:
@@ -292,6 +294,7 @@ G:/butano-master/butano/include/bn_array.h:
 G:/butano-master/butano/include/bn_array_fwd.h:
 G:/butano-master/butano/include/bn_span_fwd.h:
 G:/butano-master/butano/include/bn_fixed.h:
+G:/butano-master/butano/include/bn_compare.h:
 G:/butano-master/butano/include/bn_color.h:
 G:/butano-master/butano/include/bn_limits.h:
 G:/butano-master/butano/include/bn_optional.h:
@@ -302,7 +305,6 @@ G:/butano-master/butano/include/bn_unordered_map.h:
 G:/butano-master/butano/include/bn_memory.h:
 G:/butano-master/butano/include/bn_unique_ptr.h:
 G:/butano-master/butano/include/bn_unique_ptr_fwd.h:
-G:/butano-master/butano/include/bn_config_log.h:
 G:/butano-master/butano/include/bn_power_of_two.h:
 G:/butano-master/butano/include/bn_unordered_map_fwd.h:
 G:/butano-master/butano/src/bn_identity_hasher.h:
@@ -446,6 +448,8 @@ G:/butano-master/butano/include/bn_bg_palette_ptr.h:
 G:/butano-master/butano/include/bn_hbe_ptr.h:
 G:/butano-master/butano/src/bn_bg_palettes_transparent_color_hbe_ptr.cpp.h:
 G:/butano-master/butano/include/bn_bg_palettes_transparent_color_hbe_ptr.h:
+G:/butano-master/butano/src/bn_backdrop_color_hbe_ptr.cpp.h:
+G:/butano-master/butano/include/bn_backdrop_color_hbe_ptr.h:
 G:/butano-master/butano/src/bn_blending_fade_alpha_hbe_ptr.cpp.h:
 G:/butano-master/butano/include/bn_blending_fade_alpha_hbe_ptr.h:
 G:/butano-master/butano/src/bn_blending_transparency_attributes_hbe_ptr.cpp.h:

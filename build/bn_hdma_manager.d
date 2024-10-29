@@ -5,9 +5,8 @@ bn_hdma_manager.o: G:/butano-master/butano/src/bn_hdma_manager.cpp \
  G:/butano-master/butano/include/bn_display.h \
  G:/butano-master/butano/include/bn_size.h \
  G:/butano-master/butano/include/bn_assert.h \
- G:/butano-master/butano/include/bn_type_traits.h \
- G:/butano-master/butano/include/bn_common.h \
  G:/butano-master/butano/include/bn_config_assert.h \
+ G:/butano-master/butano/include/bn_common.h \
  G:/butano-master/butano/include/bn_config_doxygen.h \
  G:/butano-master/butano/include/bn_sstream.h \
  G:/butano-master/butano/include/bn_fixed_fwd.h \
@@ -16,6 +15,7 @@ bn_hdma_manager.o: G:/butano-master/butano/src/bn_hdma_manager.cpp \
  G:/butano-master/butano/include/bn_algorithm.h \
  G:/butano-master/butano/include/bn_functional.h \
  G:/butano-master/butano/include/bn_alignment.h \
+ G:/butano-master/butano/include/bn_type_traits.h \
  G:/butano-master/butano/include/bn_assert_callback_type.h \
  G:/butano-master/butano/hw/include/bn_hw_display_constants.h \
  G:/butano-master/butano/hw/include/bn_hw_dma.h \
@@ -39,6 +39,12 @@ bn_hdma_manager.o: G:/butano-master/butano/src/bn_hdma_manager.cpp \
  G:/butano-master/butano/hw/3rd_party/agbabi/include/agbabi.h \
  G:/butano-master/butano/src/bn_hdma.cpp.h \
  G:/butano-master/butano/include/bn_hdma.h \
+ G:/butano-master/butano/include/bn_span_fwd.h \
+ G:/butano-master/butano/include/bn_span.h \
+ G:/butano-master/butano/include/bn_array.h \
+ G:/butano-master/butano/include/bn_utility.h \
+ G:/butano-master/butano/include/bn_iterator.h \
+ G:/butano-master/butano/include/bn_array_fwd.h \
  G:/butano-master/butano/include/bn_assert.h
 G:/butano-master/butano/src/bn_hdma_manager.h:
 G:/butano-master/butano/include/bn_common.h:
@@ -46,9 +52,8 @@ G:/butano-master/butano/hw/include/bn_hw_common.h:
 G:/butano-master/butano/include/bn_display.h:
 G:/butano-master/butano/include/bn_size.h:
 G:/butano-master/butano/include/bn_assert.h:
-G:/butano-master/butano/include/bn_type_traits.h:
-G:/butano-master/butano/include/bn_common.h:
 G:/butano-master/butano/include/bn_config_assert.h:
+G:/butano-master/butano/include/bn_common.h:
 G:/butano-master/butano/include/bn_config_doxygen.h:
 G:/butano-master/butano/include/bn_sstream.h:
 G:/butano-master/butano/include/bn_fixed_fwd.h:
@@ -57,6 +62,7 @@ G:/butano-master/butano/include/bn_istring_base.h:
 G:/butano-master/butano/include/bn_algorithm.h:
 G:/butano-master/butano/include/bn_functional.h:
 G:/butano-master/butano/include/bn_alignment.h:
+G:/butano-master/butano/include/bn_type_traits.h:
 G:/butano-master/butano/include/bn_assert_callback_type.h:
 G:/butano-master/butano/hw/include/bn_hw_display_constants.h:
 G:/butano-master/butano/hw/include/bn_hw_dma.h:
@@ -80,4 +86,10 @@ G:/butano-master/butano/hw/3rd_party/agbabi/include/aeabi.h:
 G:/butano-master/butano/hw/3rd_party/agbabi/include/agbabi.h:
 G:/butano-master/butano/src/bn_hdma.cpp.h:
 G:/butano-master/butano/include/bn_hdma.h:
+G:/butano-master/butano/include/bn_span_fwd.h:
+G:/butano-master/butano/include/bn_span.h:
+G:/butano-master/butano/include/bn_array.h:
+G:/butano-master/butano/include/bn_utility.h:
+G:/butano-master/butano/include/bn_iterator.h:
+G:/butano-master/butano/include/bn_array_fwd.h:
 G:/butano-master/butano/include/bn_assert.h:

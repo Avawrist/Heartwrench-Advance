@@ -3,7 +3,6 @@ bn_hw_cstdlib.o: G:/butano-master/butano/hw/src/bn_hw_cstdlib.cpp \
  G:/butano-master/butano/include/bn_common.h \
  G:/butano-master/butano/hw/include/bn_hw_common.h \
  G:/butano-master/butano/include/bn_assert.h \
- G:/butano-master/butano/include/bn_type_traits.h \
  G:/butano-master/butano/include/bn_config_assert.h \
  G:/butano-master/butano/include/bn_config_doxygen.h \
  G:/butano-master/butano/include/bn_sstream.h \
@@ -13,12 +12,12 @@ bn_hw_cstdlib.o: G:/butano-master/butano/hw/src/bn_hw_cstdlib.cpp \
  G:/butano-master/butano/include/bn_algorithm.h \
  G:/butano-master/butano/include/bn_functional.h \
  G:/butano-master/butano/include/bn_alignment.h \
+ G:/butano-master/butano/include/bn_type_traits.h \
  G:/butano-master/butano/include/bn_assert_callback_type.h
 G:/butano-master/butano/include/bn_cstdlib.h:
 G:/butano-master/butano/include/bn_common.h:
 G:/butano-master/butano/hw/include/bn_hw_common.h:
 G:/butano-master/butano/include/bn_assert.h:
-G:/butano-master/butano/include/bn_type_traits.h:
 G:/butano-master/butano/include/bn_config_assert.h:
 G:/butano-master/butano/include/bn_config_doxygen.h:
 G:/butano-master/butano/include/bn_sstream.h:
@@ -28,4 +27,5 @@ G:/butano-master/butano/include/bn_istring_base.h:
 G:/butano-master/butano/include/bn_algorithm.h:
 G:/butano-master/butano/include/bn_functional.h:
 G:/butano-master/butano/include/bn_alignment.h:
+G:/butano-master/butano/include/bn_type_traits.h:
 G:/butano-master/butano/include/bn_assert_callback_type.h:

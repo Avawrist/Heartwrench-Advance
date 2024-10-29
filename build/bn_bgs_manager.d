@@ -8,7 +8,6 @@ bn_bgs_manager.o: G:/butano-master/butano/src/bn_bgs_manager.cpp \
  G:/butano-master/butano/include/bn_math.h \
  G:/butano-master/butano/include/bn_array.h \
  G:/butano-master/butano/include/bn_assert.h \
- G:/butano-master/butano/include/bn_type_traits.h \
  G:/butano-master/butano/include/bn_config_assert.h \
  G:/butano-master/butano/include/bn_config_doxygen.h \
  G:/butano-master/butano/include/bn_sstream.h \
@@ -18,12 +17,13 @@ bn_bgs_manager.o: G:/butano-master/butano/src/bn_bgs_manager.cpp \
  G:/butano-master/butano/include/bn_algorithm.h \
  G:/butano-master/butano/include/bn_functional.h \
  G:/butano-master/butano/include/bn_alignment.h \
+ G:/butano-master/butano/include/bn_type_traits.h \
  G:/butano-master/butano/include/bn_assert_callback_type.h \
  G:/butano-master/butano/include/bn_utility.h \
- G:/butano-master/butano/include/bn_compare.h \
  G:/butano-master/butano/include/bn_iterator.h \
  G:/butano-master/butano/include/bn_array_fwd.h \
  G:/butano-master/butano/include/bn_fixed.h \
+ G:/butano-master/butano/include/bn_compare.h \
  G:/butano-master/butano/include/bn_sin_lut.h \
  G:/butano-master/butano/include/bn_reciprocal_lut.h \
  G:/butano-master/butano/include/bn_rule_of_three_approximation.h \
@@ -111,9 +111,10 @@ bn_bgs_manager.o: G:/butano-master/butano/src/bn_bgs_manager.cpp \
  G:/butano-master/butano/hw/include/bn_hw_bgs_constants.h \
  G:/butano-master/butano/src/bn_affine_bg_ptr.cpp.h \
  G:/butano-master/butano/include/bn_affine_bg_ptr.h \
- G:/butano-master/butano/include/bn_size.h \
  G:/butano-master/butano/include/bn_window.h \
  G:/butano-master/butano/include/bn_bg_palette_ptr.h \
+ G:/butano-master/butano/src/bn_top_left_utils.h \
+ G:/butano-master/butano/include/bn_fixed_point.h \
  G:/butano-master/butano/include/bn_affine_bg_tiles_ptr.h \
  G:/butano-master/butano/include/bn_affine_bg_attributes.h \
  G:/butano-master/butano/src/bn_affine_bg_item.cpp.h \
@@ -140,7 +141,6 @@ G:/butano-master/butano/include/bn_fixed_point_fwd.h:
 G:/butano-master/butano/include/bn_math.h:
 G:/butano-master/butano/include/bn_array.h:
 G:/butano-master/butano/include/bn_assert.h:
-G:/butano-master/butano/include/bn_type_traits.h:
 G:/butano-master/butano/include/bn_config_assert.h:
 G:/butano-master/butano/include/bn_config_doxygen.h:
 G:/butano-master/butano/include/bn_sstream.h:
@@ -150,12 +150,13 @@ G:/butano-master/butano/include/bn_istring_base.h:
 G:/butano-master/butano/include/bn_algorithm.h:
 G:/butano-master/butano/include/bn_functional.h:
 G:/butano-master/butano/include/bn_alignment.h:
+G:/butano-master/butano/include/bn_type_traits.h:
 G:/butano-master/butano/include/bn_assert_callback_type.h:
 G:/butano-master/butano/include/bn_utility.h:
-G:/butano-master/butano/include/bn_compare.h:
 G:/butano-master/butano/include/bn_iterator.h:
 G:/butano-master/butano/include/bn_array_fwd.h:
 G:/butano-master/butano/include/bn_fixed.h:
+G:/butano-master/butano/include/bn_compare.h:
 G:/butano-master/butano/include/bn_sin_lut.h:
 G:/butano-master/butano/include/bn_reciprocal_lut.h:
 G:/butano-master/butano/include/bn_rule_of_three_approximation.h:
@@ -243,9 +244,10 @@ G:/butano-master/butano/include/bn_bgs.h:
 G:/butano-master/butano/hw/include/bn_hw_bgs_constants.h:
 G:/butano-master/butano/src/bn_affine_bg_ptr.cpp.h:
 G:/butano-master/butano/include/bn_affine_bg_ptr.h:
-G:/butano-master/butano/include/bn_size.h:
 G:/butano-master/butano/include/bn_window.h:
 G:/butano-master/butano/include/bn_bg_palette_ptr.h:
+G:/butano-master/butano/src/bn_top_left_utils.h:
+G:/butano-master/butano/include/bn_fixed_point.h:
 G:/butano-master/butano/include/bn_affine_bg_tiles_ptr.h:
 G:/butano-master/butano/include/bn_affine_bg_attributes.h:
 G:/butano-master/butano/src/bn_affine_bg_item.cpp.h:

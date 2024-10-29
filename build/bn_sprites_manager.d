@@ -8,7 +8,6 @@ bn_sprites_manager.o: G:/butano-master/butano/src/bn_sprites_manager.cpp \
  G:/butano-master/butano/include/bn_intrusive_list_fwd.h \
  G:/butano-master/butano/include/bn_vector.h \
  G:/butano-master/butano/include/bn_assert.h \
- G:/butano-master/butano/include/bn_type_traits.h \
  G:/butano-master/butano/include/bn_config_assert.h \
  G:/butano-master/butano/include/bn_config_doxygen.h \
  G:/butano-master/butano/include/bn_sstream.h \
@@ -18,13 +17,14 @@ bn_sprites_manager.o: G:/butano-master/butano/src/bn_sprites_manager.cpp \
  G:/butano-master/butano/include/bn_algorithm.h \
  G:/butano-master/butano/include/bn_functional.h \
  G:/butano-master/butano/include/bn_alignment.h \
+ G:/butano-master/butano/include/bn_type_traits.h \
  G:/butano-master/butano/include/bn_assert_callback_type.h \
  G:/butano-master/butano/include/bn_utility.h \
- G:/butano-master/butano/include/bn_compare.h \
  G:/butano-master/butano/include/bn_iterator.h \
  G:/butano-master/butano/include/bn_vector_fwd.h \
  G:/butano-master/butano/include/bn_sprite_first_attributes.h \
  G:/butano-master/butano/include/bn_fixed.h \
+ G:/butano-master/butano/include/bn_compare.h \
  G:/butano-master/butano/include/bn_sprite_regular_second_attributes.h \
  G:/butano-master/butano/src/bn_sorted_sprites.h \
  G:/butano-master/butano/include/bn_pool.h \
@@ -99,7 +99,8 @@ bn_sprites_manager.o: G:/butano-master/butano/src/bn_sprites_manager.cpp \
  G:/butano-master/butano/hw/include/bn_hw_sprites_constants.h \
  G:/butano-master/butano/src/bn_sprite_ptr.cpp.h \
  G:/butano-master/butano/include/bn_sprite_ptr.h \
- G:/butano-master/butano/include/bn_size.h \
+ G:/butano-master/butano/src/bn_top_left_utils.h \
+ G:/butano-master/butano/include/bn_fixed_point.h \
  G:/butano-master/butano/include/bn_affine_mat_attributes.h \
  G:/butano-master/butano/include/bn_math.h \
  G:/butano-master/butano/include/bn_sin_lut.h \
@@ -122,7 +123,6 @@ G:/butano-master/butano/include/bn_fixed_point_fwd.h:
 G:/butano-master/butano/include/bn_intrusive_list_fwd.h:
 G:/butano-master/butano/include/bn_vector.h:
 G:/butano-master/butano/include/bn_assert.h:
-G:/butano-master/butano/include/bn_type_traits.h:
 G:/butano-master/butano/include/bn_config_assert.h:
 G:/butano-master/butano/include/bn_config_doxygen.h:
 G:/butano-master/butano/include/bn_sstream.h:
@@ -132,13 +132,14 @@ G:/butano-master/butano/include/bn_istring_base.h:
 G:/butano-master/butano/include/bn_algorithm.h:
 G:/butano-master/butano/include/bn_functional.h:
 G:/butano-master/butano/include/bn_alignment.h:
+G:/butano-master/butano/include/bn_type_traits.h:
 G:/butano-master/butano/include/bn_assert_callback_type.h:
 G:/butano-master/butano/include/bn_utility.h:
-G:/butano-master/butano/include/bn_compare.h:
 G:/butano-master/butano/include/bn_iterator.h:
 G:/butano-master/butano/include/bn_vector_fwd.h:
 G:/butano-master/butano/include/bn_sprite_first_attributes.h:
 G:/butano-master/butano/include/bn_fixed.h:
+G:/butano-master/butano/include/bn_compare.h:
 G:/butano-master/butano/include/bn_sprite_regular_second_attributes.h:
 G:/butano-master/butano/src/bn_sorted_sprites.h:
 G:/butano-master/butano/include/bn_pool.h:
@@ -213,7 +214,8 @@ G:/butano-master/butano/include/bn_sprites.h:
 G:/butano-master/butano/hw/include/bn_hw_sprites_constants.h:
 G:/butano-master/butano/src/bn_sprite_ptr.cpp.h:
 G:/butano-master/butano/include/bn_sprite_ptr.h:
-G:/butano-master/butano/include/bn_size.h:
+G:/butano-master/butano/src/bn_top_left_utils.h:
+G:/butano-master/butano/include/bn_fixed_point.h:
 G:/butano-master/butano/include/bn_affine_mat_attributes.h:
 G:/butano-master/butano/include/bn_math.h:
 G:/butano-master/butano/include/bn_sin_lut.h:

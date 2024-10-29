@@ -1,10 +1,8 @@
 bn_display_manager.o: G:/butano-master/butano/src/bn_display_manager.cpp \
  G:/butano-master/butano/src/bn_display_manager.h \
  G:/butano-master/butano/include/bn_utility.h \
- G:/butano-master/butano/include/bn_compare.h \
  G:/butano-master/butano/include/bn_common.h \
  G:/butano-master/butano/hw/include/bn_hw_common.h \
- G:/butano-master/butano/include/bn_type_traits.h \
  G:/butano-master/butano/include/bn_fixed_fwd.h \
  G:/butano-master/butano/include/bn_optional_fwd.h \
  G:/butano-master/butano/include/bn_fixed_point_fwd.h \
@@ -20,11 +18,13 @@ bn_display_manager.o: G:/butano-master/butano/src/bn_display_manager.cpp \
  G:/butano-master/butano/include/bn_algorithm.h \
  G:/butano-master/butano/include/bn_functional.h \
  G:/butano-master/butano/include/bn_alignment.h \
+ G:/butano-master/butano/include/bn_type_traits.h \
  G:/butano-master/butano/include/bn_assert_callback_type.h \
  G:/butano-master/butano/hw/include/bn_hw_display_constants.h \
  G:/butano-master/butano/include/bn_common.h \
  G:/butano-master/butano/include/bn_mosaic_attributes.h \
  G:/butano-master/butano/include/bn_fixed.h \
+ G:/butano-master/butano/include/bn_compare.h \
  G:/butano-master/butano/src/bn_bgs_manager.h \
  G:/butano-master/butano/src/bn_sprites_manager.h \
  G:/butano-master/butano/include/bn_intrusive_list_fwd.h \
@@ -118,10 +118,8 @@ bn_display_manager.o: G:/butano-master/butano/src/bn_display_manager.cpp \
  G:/butano-master/butano/include/bn_sprites_mosaic.h
 G:/butano-master/butano/src/bn_display_manager.h:
 G:/butano-master/butano/include/bn_utility.h:
-G:/butano-master/butano/include/bn_compare.h:
 G:/butano-master/butano/include/bn_common.h:
 G:/butano-master/butano/hw/include/bn_hw_common.h:
-G:/butano-master/butano/include/bn_type_traits.h:
 G:/butano-master/butano/include/bn_fixed_fwd.h:
 G:/butano-master/butano/include/bn_optional_fwd.h:
 G:/butano-master/butano/include/bn_fixed_point_fwd.h:
@@ -137,11 +135,13 @@ G:/butano-master/butano/include/bn_istring_base.h:
 G:/butano-master/butano/include/bn_algorithm.h:
 G:/butano-master/butano/include/bn_functional.h:
 G:/butano-master/butano/include/bn_alignment.h:
+G:/butano-master/butano/include/bn_type_traits.h:
 G:/butano-master/butano/include/bn_assert_callback_type.h:
 G:/butano-master/butano/hw/include/bn_hw_display_constants.h:
 G:/butano-master/butano/include/bn_common.h:
 G:/butano-master/butano/include/bn_mosaic_attributes.h:
 G:/butano-master/butano/include/bn_fixed.h:
+G:/butano-master/butano/include/bn_compare.h:
 G:/butano-master/butano/src/bn_bgs_manager.h:
 G:/butano-master/butano/src/bn_sprites_manager.h:
 G:/butano-master/butano/include/bn_intrusive_list_fwd.h:
