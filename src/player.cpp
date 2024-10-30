@@ -16,7 +16,7 @@ Player::Player()
     rigidbody_p       = new RigidBody();
     collider_p        = new Collider(x(), y(), COLLIDER_16);
     state             = STATE_AIR_NEUTRAL;
-    walk_speed        = 1;
+    walk_speed        = 0.5;
     jump_force        = -10;
     wall_jump_force   = bn::fixed_point(5, -8);
     gravity           = 2;
