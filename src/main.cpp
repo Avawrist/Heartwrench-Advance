@@ -86,15 +86,15 @@ int main()
     game_objects[13]->setCamera(camera);
 
     game_objects[14] = new Block();
-    game_objects[14]->setPos(-96, 32);
+    game_objects[14]->setPos(-128, 64);
     game_objects[14]->setCamera(camera);
 
     game_objects[15] = new Block();
-    game_objects[15]->setPos(-96, 0);
+    game_objects[15]->setPos(-160, 64);
     game_objects[15]->setCamera(camera);
 
     game_objects[16] = new Block();
-    game_objects[16]->setPos(-96, -32);
+    game_objects[16]->setPos(-192, 64);
     game_objects[16]->setCamera(camera);
 
     BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
@@ -118,6 +118,6 @@ int main()
         
         // Update Core
         bn::core::update();
-        //BN_LOG(bn::core::last_missed_frames());
+        BN_LOG(bn::core::last_missed_frames());
     }
 }

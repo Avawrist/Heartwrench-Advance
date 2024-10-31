@@ -112,10 +112,10 @@ bool Collider::isCollision(bn::fixed_point target)
 
 bool Collider::isCollision(Collider& target)
 {
-    if(p1.x() < target.p4.x() &&
-       p4.x() > target.p1.x() &&
-       p1.y() < target.p4.y() &&
-       p4.y() > target.p1.y())
+    if(p1.x() <= target.p4.x() &&
+       p4.x() >= target.p1.x() &&
+       p1.y() <= target.p4.y() &&
+       p4.y() >= target.p1.y())
     {
         return true;
     }

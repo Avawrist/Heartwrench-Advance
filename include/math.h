@@ -13,4 +13,11 @@ inline bn::fixed lerp(bn::fixed a, bn::fixed b, bn::fixed t)
 	return a + (t * (b - a));
 }
 
+inline bn::fixed clamp(bn::fixed min, bn::fixed max, bn::fixed target)
+{
+	if(target < min) {return min;}
+	if(target > max) {return max;}
+	return target;
+}
+
 #endif
