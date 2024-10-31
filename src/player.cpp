@@ -16,7 +16,7 @@ Player::Player()
     rigidbody_p       = new RigidBody();
     collider_p        = new Collider(x(), y(), COLLIDER_16);
     state             = STATE_AIR_NEUTRAL;
-    walk_speed        = 0.5;
+    walk_speed        = 1;
     jump_force        = -10;
     wall_jump_force   = bn::fixed_point(5, -8);
     gravity           = 2;
@@ -121,7 +121,6 @@ void Player::update(GameObject** game_objects_p, uint32 game_objects_size)
     rigidbody_p->applyDecay();
 
     bn::fixed_point final_dir = rigidbody_p->applyForces(*this);
-	BN_LOG("final_dir.x: ", final_dir.x());
 
     ///////////////////////
     // Resolve Collision //

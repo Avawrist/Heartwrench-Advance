@@ -22,8 +22,8 @@ Force::Force(bn::fixed_point_t<12> _force, bn::fixed _decay_rate)
 void Force::update()
 {
     // Interpolate the base force to update decayed force
-    decayed_force.set_x(lerp(force.x(), 0, timer).floor_integer());
-    decayed_force.set_y(lerp(force.y(), 0, timer).floor_integer());
+    decayed_force.set_x(lerp(force.x(), 0, timer).integer());
+    decayed_force.set_y(lerp(force.y(), 0, timer).integer());
 
     // Update timer
     if(timer < 1) {timer += decay_rate;}
@@ -32,12 +32,12 @@ void Force::update()
 
 const bn::fixed Force::x()
 {
-    return decayed_force.x().floor_integer();
+    return decayed_force.x().integer();
 }
 
 const bn::fixed Force::y()
 {
-    return decayed_force.y().floor_integer();
+    return decayed_force.y().integer();
 }
 
 bool Force::isDecayed()

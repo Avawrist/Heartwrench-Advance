@@ -39,44 +39,44 @@ Collider::Collider(bn::fixed origin_x,
 
 bn::fixed Collider::x() const
 {
-    return sprite_ptr->x().floor_integer();
+    return sprite_ptr->x().integer();
 }
 
 bn::fixed Collider::y() const
 {
-    return sprite_ptr->y().floor_integer();
+    return sprite_ptr->y().integer();
 }
 
 bn::fixed_point Collider::pos() const
 {
-    bn::fixed_point point(sprite_ptr->position().x().floor_integer(),
-			              sprite_ptr->position().y().floor_integer());
+    bn::fixed_point point(sprite_ptr->position().x().integer(),
+			              sprite_ptr->position().y().integer());
     return point;
 }
 
 void Collider::setX(bn::fixed new_x)
 {
-    sprite_ptr->set_x(new_x.floor_integer());
+    sprite_ptr->set_x(new_x.integer());
     update();
 }
 
 void Collider::setY(bn::fixed new_y)
 {
-    sprite_ptr->set_y(new_y.floor_integer());
+    sprite_ptr->set_y(new_y.integer());
     update();
 }
 
 void Collider::setPos(bn::fixed new_x, bn::fixed new_y)
 {
-    sprite_ptr->set_x(new_x.floor_integer());
-    sprite_ptr->set_y(new_y.floor_integer());
+    sprite_ptr->set_x(new_x.integer());
+    sprite_ptr->set_y(new_y.integer());
     update();
 }
 
 void Collider::setPos(bn::fixed_point new_pos)
 {
-    sprite_ptr->set_x(new_pos.x().floor_integer());
-    sprite_ptr->set_y(new_pos.y().floor_integer());
+    sprite_ptr->set_x(new_pos.x().integer());
+    sprite_ptr->set_y(new_pos.y().integer());
     update();
 }
 
