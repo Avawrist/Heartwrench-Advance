@@ -26,24 +26,42 @@
 #define PLAYER_MAX_STRETCH_V 1.75
 #define PLAYER_MAX_STRETCH_H 1.5
 
-#define MIN_X_SPEED 0
-#define MAX_X_SPEED 2
-
-#define X_SPEED_ACC_RATE 0.2
+#define PLAYER_MIN_X_SPEED 0
+#define PLAYER_MAX_X_SPEED 2
+#define PLAYER_X_DECAY     1
+#define X_SPEED_ACC_RATE   0.2
 #define X_SPEED_DECAY_RATE 0.1
-#define PLAYER_X_LEFT_FORCE  	      new Force(bn::fixed_point_t<12>(-x_speed, 0), 1)
-#define PLAYER_X_RIGHT_FORCE 	      new Force(bn::fixed_point_t<12>(x_speed, 0),  1)
+
+#define PLAYER_BASE_JUMP_FORCE       -9
+#define PLAYER_SECOND_JUMP_FORCE     -3
+#define PLAYER_WALL_JUMP_X_FORCE      6
+#define PLAYER_WALL_JUMP_Y_FORCE     -10
+#define PLAYER_JUMP_DECAY             0.1
+#define PLAYER_SECONDARY_JUMP_DECAY   0.4
+#define PLAYER_X_DRIFT_LOCKOUT_FRAMES 4
+#define PLAYER_MAX_JUMP_INPUT_FRAMES  12
+#define PLAYER_WALL_JUMP_DECAY        0.1
+
+#define PLAYER_GRAVITY       	 3
+#define PLAYER_WALL_RIDE_GRAVITY 1
+#define PLAYER_GRAVITY_DECAY 	 1
+
+#define PLAYER_DASH_FORCE      10
+#define PLAYER_DASH_DECAY_RATE 0.05
+
+#define PLAYER_X_LEFT_FORCE  	      new Force(bn::fixed_point_t<12>(-x_speed, 0), PLAYER_X_DECAY)
+#define PLAYER_X_RIGHT_FORCE 	      new Force(bn::fixed_point_t<12>( x_speed, 0), PLAYER_X_DECAY)
 #define PLAYER_X_LEFT_DECAY_FORCE     new Force(bn::fixed_point_t<12>(-x_speed, 0), X_SPEED_DECAY_RATE)
-#define PLAYER_X_RIGHT_DECAY_FORCE    new Force(bn::fixed_point_t<12>(x_speed, 0),  X_SPEED_DECAY_RATE)
+#define PLAYER_X_RIGHT_DECAY_FORCE    new Force(bn::fixed_point_t<12> (x_speed, 0), X_SPEED_DECAY_RATE)
 
-#define PLAYER_JUMP_FORCE             new Force(bn::fixed_point_t<12>(0, jump_force), 0.1)
-#define PLAYER_WALL_JUMP_RIGHT_FORCE  new Force(bn::fixed_point_t<12>(wall_jump_force.x(), wall_jump_force.y()), 0.1)
-#define PLAYER_WALL_JUMP_LEFT_FORCE   new Force(bn::fixed_point_t<12>(-wall_jump_force.x(), wall_jump_force.y()), 0.1)
+#define PLAYER_JUMP_FORCE             new Force(bn::fixed_point_t<12>(0, jump_force), PLAYER_JUMP_DECAY)
+#define PLAYER_SECONDARY_JUMP_FORCE   new Force(bn::fixed_point_t<12>(0, secondary_jump_force), PLAYER_SECONDARY_JUMP_DECAY)
+#define PLAYER_WALL_JUMP_RIGHT_FORCE  new Force(bn::fixed_point_t<12>( wall_jump_force.x(), wall_jump_force.y()), PLAYER_WALL_JUMP_DECAY)
+#define PLAYER_WALL_JUMP_LEFT_FORCE   new Force(bn::fixed_point_t<12>(-wall_jump_force.x(), wall_jump_force.y()), PLAYER_WALL_JUMP_DECAY)
 
-#define PLAYER_GRAVITY_FORCE          new Force(bn::fixed_point_t<12>(0, gravity), 1)
-#define PLAYER_WALL_GRAVITY_FORCE     new Force(bn::fixed_point_t<12>(0, wall_ride_gravity), 1)
+#define PLAYER_GRAVITY_FORCE          new Force(bn::fixed_point_t<12>(0, gravity), 			 PLAYER_GRAVITY_DECAY)
+#define PLAYER_WALL_GRAVITY_FORCE     new Force(bn::fixed_point_t<12>(0, wall_ride_gravity), PLAYER_GRAVITY_DECAY)
 
-#define PLAYER_DASH_DECAY_RATE        0.05
 #define PLAYER_DASH_UP_FORCE          new Force(bn::fixed_point_t<12>(0, -dash_force), PLAYER_DASH_DECAY_RATE)
 #define PLAYER_DASH_DOWN_FORCE		  new Force(bn::fixed_point_t<12>(0,  dash_force), PLAYER_DASH_DECAY_RATE)
 #define PLAYER_DASH_LEFT_FORCE		  new Force(bn::fixed_point_t<12>(-dash_force, 0), PLAYER_DASH_DECAY_RATE)
@@ -61,10 +79,13 @@ struct Player : GameObject {
 	PlayerState 	state;
 	bn::fixed       x_speed;
 	bn::fixed       jump_force;
+	bn::fixed       secondary_jump_force;
 	bn::fixed 		dash_force;
 	bn::fixed_point wall_jump_force;
 	bn::fixed       gravity;
 	bn::fixed       wall_ride_gravity;
+	int32           remaining_jump_input_frames;
+	int32           remaining_x_drift_lockout_frames;
 	
 	Player();
 	~Player() override;

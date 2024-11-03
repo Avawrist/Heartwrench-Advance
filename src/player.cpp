@@ -13,15 +13,22 @@ Player::Player()
 								  0,
 								  0);
 
-    rigidbody_p       = new RigidBody();
-    collider_p        = new Collider(x(), y(), COLLIDER_16);
-    state             = STATE_AIR_NEUTRAL;
-    x_speed        	  = MIN_X_SPEED;
-    jump_force        = -10;
-	dash_force        = 15;
-    wall_jump_force   = bn::fixed_point(8, -8);
-    gravity           = 2;
-    wall_ride_gravity = 1;
+	// Initialize all Player variables
+    rigidbody_p = new RigidBody();
+	collider_p  = new Collider(x(), y(), COLLIDER_16);
+    
+	state             	 = STATE_AIR_NEUTRAL;
+    x_speed        	  	 = PLAYER_MIN_X_SPEED;
+    jump_force           = PLAYER_BASE_JUMP_FORCE;
+	secondary_jump_force = PLAYER_SECOND_JUMP_FORCE;
+	dash_force        	 = PLAYER_DASH_FORCE;
+    wall_jump_force   	 = bn::fixed_point(PLAYER_WALL_JUMP_X_FORCE, 
+										   PLAYER_WALL_JUMP_Y_FORCE);
+    gravity           	 = PLAYER_GRAVITY;
+	wall_ride_gravity 	 = PLAYER_WALL_RIDE_GRAVITY;
+	
+	remaining_jump_input_frames      = 0;
+	remaining_x_drift_lockout_frames = 0;
 }
 
 Player::~Player()
@@ -36,6 +43,9 @@ void Player::update(GameObject** game_objects_p, uint32 game_objects_size)
     // Player State Machine //
     //////////////////////////
 
+	bool gripping_wall_right = false;
+	bool gripping_wall_left  = false;
+
     switch(state)
     {
 		case STATE_GROUNDED_NEUTRAL:
@@ -48,19 +58,19 @@ void Player::update(GameObject** game_objects_p, uint32 game_objects_size)
 			if(bn::keypad::left_released())        
 			{
 				rigidbody_p->addForce(PLAYER_X_LEFT_DECAY_FORCE);
-				x_speed = MIN_X_SPEED;
+				x_speed = PLAYER_MIN_X_SPEED;
 			}
 			else if (bn::keypad::right_released()) 
 			{
 				rigidbody_p->addForce(PLAYER_X_RIGHT_DECAY_FORCE);
-				x_speed = MIN_X_SPEED;
+				x_speed = PLAYER_MIN_X_SPEED;
 			}
 
 			// Simulate friction/momentum
 			if(bn::keypad::left_held() || bn::keypad::right_held())  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(MIN_X_SPEED, MAX_X_SPEED, x_speed);
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
 			}
 
 			// Get Input //
@@ -87,31 +97,49 @@ void Player::update(GameObject** game_objects_p, uint32 game_objects_size)
 			// Update drift speed //
 
 			// Simulate friction/momentum
-			if(bn::keypad::left_held() || bn::keypad::right_held())  
+			if((bn::keypad::left_held() || bn::keypad::right_held()) && !remaining_x_drift_lockout_frames)  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(MIN_X_SPEED, MAX_X_SPEED, x_speed);
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
 			}
 
 			// Simulate momentum
 			if(bn::keypad::left_released())        
 			{
 				rigidbody_p->addForce(PLAYER_X_LEFT_DECAY_FORCE);
-				x_speed = MIN_X_SPEED;
+				x_speed = PLAYER_MIN_X_SPEED;
 			}
 			else if (bn::keypad::right_released()) 
 			{
 				rigidbody_p->addForce(PLAYER_X_RIGHT_DECAY_FORCE);
-				x_speed = MIN_X_SPEED;
+				x_speed = PLAYER_MIN_X_SPEED;
 			}
 
 			// Get Input //
-			if(bn::keypad::left_held())       {rigidbody_p->addForce(PLAYER_X_LEFT_FORCE);}
-			else if(bn::keypad::right_held()) {rigidbody_p->addForce(PLAYER_X_RIGHT_FORCE);}
+			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames)       {rigidbody_p->addForce(PLAYER_X_LEFT_FORCE);}
+			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames) {rigidbody_p->addForce(PLAYER_X_RIGHT_FORCE);}
+			
+			if(bn::keypad::a_held() && remaining_jump_input_frames > 0)
+			{
+				rigidbody_p->addForce(PLAYER_SECONDARY_JUMP_FORCE);
+			}
+			else if(bn::keypad::a_released()) {remaining_jump_input_frames = 0;}
 			
 			// Add Gravity //
 			rigidbody_p->addForce(PLAYER_GRAVITY_FORCE);
-				
+
+			// Update Remaining Jump Input Frames //
+			remaining_jump_input_frames--;
+			remaining_jump_input_frames = clamp(0, 
+												PLAYER_MAX_JUMP_INPUT_FRAMES, 
+												remaining_jump_input_frames);
+
+			// Update X Drift Lockout Frames //
+			remaining_x_drift_lockout_frames--;
+			remaining_x_drift_lockout_frames = clamp(0, 
+													PLAYER_X_DRIFT_LOCKOUT_FRAMES, 
+													remaining_x_drift_lockout_frames);
+
 			break;
 		
 		case STATE_WALL_SLIDE_RIGHT:
@@ -121,43 +149,47 @@ void Player::update(GameObject** game_objects_p, uint32 game_objects_size)
 			///////////////////////////////////
 
 			// Get Input //
-			if(bn::keypad::left_held())  	  {rigidbody_p->addForce(PLAYER_X_LEFT_FORCE);}
-			else if(bn::keypad::right_held()) {rigidbody_p->addForce(PLAYER_X_RIGHT_FORCE);}
 			if(bn::keypad::a_pressed())
 			{
 				rigidbody_p->addForce(PLAYER_WALL_JUMP_LEFT_FORCE);
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
+				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
 			}
+			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames) {rigidbody_p->addForce(PLAYER_X_LEFT_FORCE);}
+			else if(bn::keypad::right_held()) 								 {gripping_wall_right = true;}
 			
 			// Add Gravity //
-			rigidbody_p->addForce(PLAYER_WALL_GRAVITY_FORCE);
+			if(gripping_wall_right) {rigidbody_p->addForce(PLAYER_WALL_GRAVITY_FORCE);}
+			else {rigidbody_p->addForce(PLAYER_GRAVITY_FORCE);}
 			
-			break;
+		break;
 		
 		case STATE_WALL_SLIDE_LEFT:
 
+			//////////////////////////////////
+			// Player Wall Slide Left State //
+			//////////////////////////////////
+
 			// Get Input //
-			if(bn::keypad::left_held())  	  {rigidbody_p->addForce(PLAYER_X_LEFT_FORCE);}
-			else if(bn::keypad::right_held()) {rigidbody_p->addForce(PLAYER_X_RIGHT_FORCE);}
 			if(bn::keypad::a_pressed())
 			{
 				rigidbody_p->addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
+				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
 			}
+			if(bn::keypad::left_held())  	  									   {gripping_wall_left = true;}
+			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames) {rigidbody_p->addForce(PLAYER_X_RIGHT_FORCE);}
 			
 			// Add Gravity //
-			rigidbody_p->addForce(PLAYER_WALL_GRAVITY_FORCE);
-			
-			//////////////////////////////////
-			// Player Wall Slide Left State //
-			//////////////////////////////////
+			if(gripping_wall_left) {rigidbody_p->addForce(PLAYER_WALL_GRAVITY_FORCE);}
+			else {rigidbody_p->addForce(PLAYER_GRAVITY_FORCE);}
 		
 		break;
 		
 		default:
 		break;
     }
-    
+
     ///////////////////
     // Apply Physics //
     ///////////////////
@@ -268,18 +300,16 @@ void Player::update(GameObject** game_objects_p, uint32 game_objects_size)
 				}
 
 				// Test for wall riding on right side
-				if(test_collider_right_p->isCollision(*other_collider_p) &&
-				   final_dir.y() >= 0 &&
-				   bn::keypad::right_held())
+				if(test_collider_right_p->isCollision(*other_collider_p) && final_dir.y() >= 0)
 				{
+					//if(bn::keypad::right_held()) {wall_right_detected = true;}
 					wall_right_detected = true;
 				}
 
 				// Test for wall riding on left side
-				if(test_collider_left_p->isCollision(*other_collider_p) &&
-				   final_dir.y() >= 0 &&
-				   bn::keypad::left_held())
+				if(test_collider_left_p->isCollision(*other_collider_p) && final_dir.y() >= 0)
 				{
+					//if(bn::keypad::left_held()) {wall_left_detected = true;}
 					wall_left_detected = true;
 				}
 			}
@@ -296,7 +326,11 @@ void Player::update(GameObject** game_objects_p, uint32 game_objects_size)
     ///////////////////
     // Update States //
     ///////////////////
-    if(grounded_detected)        {state = STATE_GROUNDED_NEUTRAL;}
+    if(grounded_detected)        
+	{
+		state = STATE_GROUNDED_NEUTRAL;
+		remaining_jump_input_frames    = PLAYER_MAX_JUMP_INPUT_FRAMES;
+	}
     else if(wall_right_detected) {state = STATE_WALL_SLIDE_RIGHT;}
     else if(wall_left_detected)  {state = STATE_WALL_SLIDE_LEFT;}
     else                         {state = STATE_AIR_NEUTRAL;}

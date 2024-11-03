@@ -82,7 +82,7 @@ int main()
     game_objects[12]->setCamera(camera);
 
     game_objects[13] = new Block();
-    game_objects[13]->setPos(64, -16);
+    game_objects[13]->setPos(32, -16);
     game_objects[13]->setCamera(camera);
 
     game_objects[14] = new Block();
