@@ -94,10 +94,12 @@ struct Player : GameObject {
 	
 	Player();
 	~Player() override;
+
 	void update(GameObject** game_objects_ptr,
 		    	uint32 game_objects_size) override;
 	void draw() override;
 	void setCamera(const bn::camera_ptr& camera) override;
+	
 	bn::fixed x() const override;
 	bn::fixed y() const override;
 	bn::fixed_point pos() const override;

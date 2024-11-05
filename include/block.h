@@ -22,8 +22,10 @@
 //////////////////
 
 struct Block : GameObject {
+
     Block();
 	~Block() override;
+
 	void update(GameObject** game_objects_p,
 		    	uint32 game_objects_size) override;
 	void draw() override;
@@ -35,6 +37,7 @@ struct Block : GameObject {
 	void setY(bn::fixed new_y) override;
 	void setPos(bn::fixed new_x, bn::fixed new_y) override;
 	void setPos(bn::fixed_point new_pos) override;
+	
 };
 
 #endif

@@ -26,6 +26,7 @@ enum ColliderSize{
 };
 
 struct Collider {
+	
 	ColliderSize size;
 	bn::fixed_point position;
 	bn::fixed_point p1;
