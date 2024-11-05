@@ -37,7 +37,7 @@ int main()
     // Game Objects test
     #define ROOM_W 64
     #define ROOM_H 64
-    #define MAX_OBJECTS 800
+    #define MAX_OBJECTS 1200
     bn::vector<GameObject*, MAX_OBJECTS> game_objects;
  
     // Create Player: MUST BE UPDATED FIRST IN GAMEOBJECT ARRAY
