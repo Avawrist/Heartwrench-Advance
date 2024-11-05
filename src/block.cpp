@@ -6,23 +6,65 @@
 
 Block::Block()
 {
-    sprite_ptr = bn::sprite_items::block.create_sprite(0, 0);
-    animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								  2,
-								  bn::sprite_items::block.tiles_item(),
-								  0,
-								  0);
-
-    collider_p  = new Collider(x(), y(), COLLIDER_32);
+    collider_ptr = new Collider(x(), y(), COLLIDER_8);
 }
 
 Block::~Block()
 {
-    delete collider_p;
+    delete collider_ptr;
 }
 
 void Block::update(GameObject** game_objects_p, uint32 game_objects_size)
 {
 
+}
+
+void Block::draw()
+{
+
+}
+
+void Block::setCamera(const bn::camera_ptr& camera)
+{
+    collider_ptr->setCamera(camera);
+}
+
+bn::fixed Block::x() const
+{
+    return collider_ptr->x().integer();
+}
+
+bn::fixed Block::y() const
+{
+    return collider_ptr->y().integer();
+}
+
+bn::fixed_point Block::pos() const
+{
+    bn::fixed_point point(collider_ptr->x().integer(),
+			              collider_ptr->y().integer());
+    return point;
+}
+
+void Block::setX(bn::fixed new_x)
+{
+    collider_ptr->setX(new_x.integer());
+}
+
+void Block::setY(bn::fixed new_y)
+{
+    collider_ptr->setY(new_y.integer());
+}
+
+void Block::setPos(bn::fixed new_x, bn::fixed new_y) 
+{
+    collider_ptr->setX(new_x.integer());
+    collider_ptr->setY(new_y.integer());
+}
+
+void Block::setPos(bn::fixed_point new_pos)
+{
+    collider_ptr->setX(new_pos.x().integer());
+    collider_ptr->setY(new_pos.y().integer());
 }
 

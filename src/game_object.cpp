@@ -3,7 +3,7 @@
 ///////////////////////
 // Struct GameObject //
 ///////////////////////
-
+/*
 void GameObject::draw()
 {
     animate_action_ptr->update();
@@ -65,3 +65,4 @@ void GameObject::setPos(bn::fixed_point new_pos)
         collider_p->setY(new_pos.y().integer());
     }
 }
+*/

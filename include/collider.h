@@ -26,9 +26,8 @@ enum ColliderSize{
 };
 
 struct Collider {
-	bn::optional<bn::sprite_ptr> sprite_ptr;
-	bn::optional<bn::sprite_animate_action<MAX_ANIM_FRAMES>> animate_action_ptr;
 	ColliderSize size;
+	bn::fixed_point position;
 	bn::fixed_point p1;
 	bn::fixed_point p4;
 
@@ -36,6 +35,11 @@ struct Collider {
 	Collider(bn::fixed origin_x,
 		 	 bn::fixed origin_y,
 		 	 ColliderSize _size);
+	
+	void update();
+    void draw();
+	void setCamera(const bn::camera_ptr& camera);
+	
 	bn::fixed x() const;
 	bn::fixed y() const;
 	bn::fixed_point pos() const;
@@ -43,9 +47,7 @@ struct Collider {
 	void setY(bn::fixed new_y);
 	void setPos(bn::fixed new_x, bn::fixed new_y);
 	void setPos(bn::fixed_point new_pos);
-	void update();
-    void draw();
-	void setCamera(const bn::camera_ptr& camera);
+	
 	bool isCollision(bn::fixed_point target_point);
 	bool isCollision(Collider& target);
 };

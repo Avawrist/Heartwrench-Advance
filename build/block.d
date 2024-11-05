@@ -41,6 +41,7 @@ block.o: G:/game/src/block.cpp G:/game/include/block.h \
  G:/butano-master/butano/include/bn_camera_ptr.h \
  G:/butano-master/butano/include/bn_fixed.h \
  G:/butano-master/butano/include/bn_fixed_point.h \
+ G:/butano-master/butano/include/bn_regular_bg_tiles_ptr.h \
  G:/game/include/utility.h G:/butano-master/butano/include/bn_log.h \
  G:/butano-master/butano/include/bn_config_log.h \
  G:/butano-master/butano/include/bn_log_backend.h \
@@ -96,6 +97,7 @@ G:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h:
 G:/butano-master/butano/include/bn_camera_ptr.h:
 G:/butano-master/butano/include/bn_fixed.h:
 G:/butano-master/butano/include/bn_fixed_point.h:
+G:/butano-master/butano/include/bn_regular_bg_tiles_ptr.h:
 G:/game/include/utility.h:
 G:/butano-master/butano/include/bn_log.h:
 G:/butano-master/butano/include/bn_config_log.h:

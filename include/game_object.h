@@ -20,21 +20,19 @@
 ///////////////////////
 
 struct GameObject {
-	bn::optional<bn::sprite_ptr> sprite_ptr;
-	bn::optional<bn::sprite_animate_action<MAX_ANIM_FRAMES>> animate_action_ptr;
-	Collider* collider_p = NULL;
-	
 	virtual void update(GameObject** game_objects_p, uint32 game_objects_size) = 0;
-	virtual void draw();
-	virtual void setCamera(const bn::camera_ptr& camera);
-	bn::fixed x() const;
-	bn::fixed y() const;
-	bn::fixed_point pos() const;
-	virtual void setX(bn::fixed new_x);
-	virtual void setY(bn::fixed new_y);
-	virtual void setPos(bn::fixed new_x, bn::fixed new_y);
-	virtual void setPos(bn::fixed_point new_pos);
+	virtual void draw() = 0;
+	virtual void setCamera(const bn::camera_ptr& camera) = 0;
+	virtual bn::fixed x() const = 0;
+	virtual bn::fixed y() const = 0;
+	virtual bn::fixed_point pos() const = 0;
+	virtual void setX(bn::fixed new_x) = 0;
+	virtual void setY(bn::fixed new_y) = 0;
+	virtual void setPos(bn::fixed new_x, bn::fixed new_y) = 0;
+	virtual void setPos(bn::fixed_point new_pos) = 0;
 	virtual ~GameObject() = default;
+
+	Collider* collider_ptr = NULL;
 };
 
 # endif
