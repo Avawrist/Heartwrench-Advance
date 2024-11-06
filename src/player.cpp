@@ -82,6 +82,7 @@ void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
 			// Jump
 			if(bn::keypad::a_pressed())
 			{
+				remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
 				rigidbody_ptr->addForce(PLAYER_JUMP_FORCE);
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 			}
@@ -148,6 +149,13 @@ void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
 			// Player Wall Slide Right State //
 			///////////////////////////////////
 
+			// Simulate friction/momentum
+			if(bn::keypad::left_held())  
+			{
+				x_speed += X_SPEED_ACC_RATE;
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
+			}
+
 			// Get Input //
 			if(bn::keypad::a_pressed())
 			{
@@ -169,6 +177,13 @@ void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
 			//////////////////////////////////
 			// Player Wall Slide Left State //
 			//////////////////////////////////
+
+			// Simulate friction/momentum
+			if(bn::keypad::right_held())  
+			{
+				x_speed += X_SPEED_ACC_RATE;
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
+			}
 
 			// Get Input //
 			if(bn::keypad::a_pressed())
@@ -300,14 +315,14 @@ void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
 				}
 
 				// Test for wall riding on right side
-				if(test_collider_right_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
+				if(test_collider_right_ptr->isCollision(*other_collider_ptr) && final_dir.y() > 0)
 				{
 					//if(bn::keypad::right_held()) {wall_right_detected = true;}
 					wall_right_detected = true;
 				}
 
 				// Test for wall riding on left side
-				if(test_collider_left_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
+				if(test_collider_left_ptr->isCollision(*other_collider_ptr) && final_dir.y() > 0)
 				{
 					//if(bn::keypad::left_held()) {wall_left_detected = true;}
 					wall_left_detected = true;
@@ -329,7 +344,6 @@ void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
     if(grounded_detected)        
 	{
 		state = STATE_GROUNDED_NEUTRAL;
-		remaining_jump_input_frames    = PLAYER_MAX_JUMP_INPUT_FRAMES;
 	}
     else if(wall_right_detected) {state = STATE_WALL_SLIDE_RIGHT;}
     else if(wall_left_detected)  {state = STATE_WALL_SLIDE_LEFT;}
@@ -352,6 +366,7 @@ void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
     if(v_scale > 1) {sprite_ptr->set_vertical_scale(v_scale - increment);}
     else if (v_scale < 1) {sprite_ptr->set_vertical_scale(v_scale + increment);}
     if(abs(1 - sprite_ptr->vertical_scale()) < increment) {sprite_ptr->set_vertical_scale(1);}
+
 }
 
 void Player::draw()
