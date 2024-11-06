@@ -4,9 +4,9 @@
 // Struct Block //
 //////////////////
 
-Block::Block()
+Block::Block(uint32 width, uint32 height)
 {
-    collider_ptr = new Collider(x(), y(), COLLIDER_8);
+    collider_ptr = new Collider(x(), y(), width, height);
 }
 
 Block::~Block()

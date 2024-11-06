@@ -15,7 +15,7 @@ Player::Player()
 								  0);
 
     rigidbody_ptr = new RigidBody();
-	collider_ptr  = new Collider(x(), y(), COLLIDER_16);
+	collider_ptr  = new Collider(x(), y(), COLLIDER_WIDTH, COLLIDER_HEIGHT);
     
 	state             	 = STATE_AIR_NEUTRAL;
     x_speed        	  	 = PLAYER_MIN_X_SPEED;
@@ -231,10 +231,12 @@ void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
 	// in units of 1 until the collision is resolved on that axis.
 	Collider* temp_collider_x_ptr = new Collider(collider_ptr->x(),
 											     collider_ptr->y() - final_dir.y(),
-											     collider_ptr->size);
+											     collider_ptr->width,
+												 collider_ptr->height);
 	Collider* temp_collider_y_ptr = new Collider(collider_ptr->x() - final_dir.x(),
 											     collider_ptr->y(),
-											     collider_ptr->size);
+											     collider_ptr->width,
+												 collider_ptr->height);
 
 	// Initialize state variables, to be updated on collision.
     bool wall_right_detected = false;
@@ -289,16 +291,19 @@ void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
 	const uint32 ground_ray_length = 1;
 	Collider*    test_collider_ptr = new Collider(collider_ptr->x(),
 											      collider_ptr->y() + ground_ray_length,
-												  collider_ptr->size);
+												  collider_ptr->width,
+												  collider_ptr->height);
 
 	// Create test colliders for wall collision checks
 	const uint32 wall_ray_length         = 1;
 	Collider*    test_collider_right_ptr = new Collider(collider_ptr->x() + wall_ray_length,
 													    collider_ptr->y(),
-													    collider_ptr->size);
+													    collider_ptr->width,
+												 		collider_ptr->height);
 	Collider*    test_collider_left_ptr  = new Collider(collider_ptr->x() - wall_ray_length,
 													    collider_ptr->y(),
-													    collider_ptr->size);										   
+													    collider_ptr->width,
+												 		collider_ptr->height);								   
 
     for(uint32 i = 0; i < game_objects_size; i++)
     {

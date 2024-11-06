@@ -52,20 +52,47 @@ int main()
     #define BLOCK_INDEX 1
     #define BLOCK_WIDTH 8
 
-    for(uint32 x = 0; x < ROOM_W; x++)
+    for(uint32 y = 0; y < ROOM_H; y++)
     {
-        for(uint32 y = 0; y < ROOM_H; y++)
+        for(uint32 x = 0; x < ROOM_W; x++)
         {
             bn::regular_bg_map_cell       cell_index = cells[bn::regular_bg_items::test_room.map_item().cell_index(x, y)];
             bn::regular_bg_map_cell_info  cell_info(cell_index);
-            if(cell_info.tile_index() == BLOCK_INDEX)
+
+            uint32 final_block_width  = 0;
+            uint32 final_block_height = 8;
+
+            uint32 i = x;
+
+            while(cell_info.tile_index() == BLOCK_INDEX && i < ROOM_W)
             {
-                int32 converted_x = ((x - (ROOM_W / 2)) * BLOCK_WIDTH) + (BLOCK_WIDTH / 2);
-                int32 converted_y = ((y - (ROOM_H / 2)) * BLOCK_WIDTH) + (BLOCK_WIDTH / 2);
-                game_objects.push_back(new Block());
-                game_objects.back()->setCamera(camera);
-                game_objects.back()->setPos(converted_x, converted_y); 
+                // Add block width
+                final_block_width += BLOCK_WIDTH;
+
+                // Increment i
+                i++;
+
+                if(i < ROOM_W)
+                {
+                    // Update cell index and cell info for next pass
+                    cell_index = cells[bn::regular_bg_items::test_room.map_item().cell_index(i, y)];
+                    cell_info  = bn::regular_bg_map_cell_info(cell_index);
+                }
             }
+
+            if(final_block_width > 0)
+            {
+                // Create block with the width determined above.
+                int32 converted_x = ((x - (ROOM_W / 2)) * BLOCK_WIDTH) + (final_block_width / 2);
+                int32 converted_y = ((y - (ROOM_H / 2)) * BLOCK_WIDTH) + (final_block_height / 2);
+
+                game_objects.push_back(new Block(final_block_width, final_block_height));
+                game_objects.back()->setCamera(camera);
+                game_objects.back()->setPos(converted_x, converted_y);
+            }
+
+            // Make sure next check starts after the offset (if any).
+            x = i;
         }
     }
   
@@ -84,7 +111,7 @@ int main()
             (game_objects.data())[i]->draw();
         }
         BN_PROFILER_STOP();
-        //bn::profiler::show();
+        bn::profiler::show();
 
         // Update Camera
         camera.set_position(game_objects[0]->pos());

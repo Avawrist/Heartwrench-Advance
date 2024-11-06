@@ -23,7 +23,7 @@
 
 struct Block : GameObject {
 
-    Block();
+    Block(uint32 width, uint32 height);
 	~Block() override;
 
 	void update(GameObject** game_objects_p,

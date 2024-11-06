@@ -19,15 +19,19 @@
 
 #define MAX_ANIM_FRAMES 16
 
+/*
 enum ColliderSize{
 	COLLIDER_8  = 8,
 	COLLIDER_16 = 16,
 	COLLIDER_32 = 32
 };
+*/
 
 struct Collider {
 	
-	ColliderSize size;
+	//ColliderSize size;
+	uint32 width;
+	uint32 height;
 	bn::fixed_point position;
 	bn::fixed_point p1;
 	bn::fixed_point p4;
@@ -35,7 +39,8 @@ struct Collider {
 	Collider();
 	Collider(bn::fixed origin_x,
 		 	 bn::fixed origin_y,
-		 	 ColliderSize _size);
+		 	 uint32 _width,
+			 uint32 _height);
 	
 	void update();
     void draw();

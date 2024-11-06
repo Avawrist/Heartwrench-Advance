@@ -3,17 +3,22 @@
 Collider::Collider()
 {
     position  = bn::fixed_point(0, 0);
-    size      = COLLIDER_8;
+    width     = 8;
+    height    = 8;
+    //size      = COLLIDER_8;
 
     update();
 }
 
 Collider::Collider(bn::fixed origin_x,
 		           bn::fixed origin_y,
-		           ColliderSize _size)
+		           uint32 _width,
+                   uint32 _height)
 {
     position  = bn::fixed_point(origin_x, origin_y);
-    size      = _size;
+    width  = _width;
+    height = _height;
+    //size      = _size;
     
     update();
 }
@@ -59,12 +64,14 @@ void Collider::setPos(bn::fixed_point new_pos)
 
 void Collider::update()
 {
-    bn::fixed half_size = (size / 2) - 0.5;
-    p1.set_x((x() - (half_size)));
-    p1.set_y((y() - (half_size)));
+    //bn::fixed half_size = (size / 2) - 0.5;
+    bn::fixed half_w = (width / 2) - 0.5;
+    bn::fixed half_h = (height / 2) - 0.5;
+    p1.set_x((x() - (half_w)));
+    p1.set_y((y() - (half_h)));
     
-    p4.set_x((x() + (half_size)));
-    p4.set_y((y() + (half_size)));
+    p4.set_x((x() + (half_w)));
+    p4.set_y((y() + (half_h)));
 }
 
 void Collider::draw()
