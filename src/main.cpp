@@ -10,6 +10,7 @@
 #include "bn_vector.h"
 
 #include "bn_regular_bg_ptr.h"
+#include "bn_regular_bg_items_test_bg.h"
 #include "bn_regular_bg_items_test_room.h"
 
 #include "bn_span.h"
@@ -43,6 +44,9 @@ int main()
     // Create Player: MUST BE UPDATED FIRST IN GAMEOBJECT ARRAY
     game_objects.push_back(new Player());
     game_objects.back()->setCamera(camera);
+
+    // Create Backdrop
+    bn::optional<bn::regular_bg_ptr> bg2_ptr = bn::regular_bg_items::test_bg.create_bg(0, 0);
 
     // Create Test Room
     bn::optional<bn::regular_bg_ptr> bg_ptr = bn::regular_bg_items::test_room.create_bg(0, 0);
@@ -111,13 +115,13 @@ int main()
             (game_objects.data())[i]->draw();
         }
         BN_PROFILER_STOP();
-        bn::profiler::show();
+        //bn::profiler::show();
 
         // Update Camera
         camera.set_position(game_objects[0]->pos());
         
         // Update Core
         bn::core::update();
-        //BN_LOG(bn::core::last_missed_frames());
+        BN_LOG(bn::core::last_missed_frames());
     }
 }

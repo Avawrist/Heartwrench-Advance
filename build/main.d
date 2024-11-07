@@ -44,7 +44,7 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_log.h \
  G:/butano-master/butano/include/bn_vector.h \
  G:/butano-master/butano/include/bn_vector_fwd.h \
  G:/butano-master/butano/include/bn_regular_bg_ptr.h \
- G:/game/build/bn_regular_bg_items_test_room.h \
+ G:/game/build/bn_regular_bg_items_test_bg.h \
  G:/butano-master/butano/include/bn_regular_bg_item.h \
  G:/butano-master/butano/include/bn_bg_palette_item.h \
  G:/butano-master/butano/include/bn_color.h \
@@ -55,6 +55,7 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_log.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell.h \
  G:/butano-master/butano/include/bn_regular_bg_tiles_item.h \
  G:/butano-master/butano/include/bn_tile.h \
+ G:/game/build/bn_regular_bg_items_test_room.h \
  G:/butano-master/butano/include/bn_span.h \
  G:/butano-master/butano/include/bn_regular_bg_map_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell.h \
@@ -140,7 +141,7 @@ G:/butano-master/butano/include/bn_unique_ptr_fwd.h:
 G:/butano-master/butano/include/bn_vector.h:
 G:/butano-master/butano/include/bn_vector_fwd.h:
 G:/butano-master/butano/include/bn_regular_bg_ptr.h:
-G:/game/build/bn_regular_bg_items_test_room.h:
+G:/game/build/bn_regular_bg_items_test_bg.h:
 G:/butano-master/butano/include/bn_regular_bg_item.h:
 G:/butano-master/butano/include/bn_bg_palette_item.h:
 G:/butano-master/butano/include/bn_color.h:
@@ -151,6 +152,7 @@ G:/butano-master/butano/include/bn_size.h:
 G:/butano-master/butano/include/bn_regular_bg_map_cell.h:
 G:/butano-master/butano/include/bn_regular_bg_tiles_item.h:
 G:/butano-master/butano/include/bn_tile.h:
+G:/game/build/bn_regular_bg_items_test_room.h:
 G:/butano-master/butano/include/bn_span.h:
 G:/butano-master/butano/include/bn_regular_bg_map_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_map_cell.h:
