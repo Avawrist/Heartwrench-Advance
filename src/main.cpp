@@ -9,15 +9,6 @@
 #include "bn_memory.h"
 #include "bn_vector.h"
 
-#include "bn_regular_bg_ptr.h"
-#include "bn_regular_bg_items_test_bg.h"
-#include "bn_regular_bg_items_test_room.h"
-
-#include "bn_span.h"
-#include "bn_regular_bg_map_ptr.h"
-#include "bn_regular_bg_map_cell.h"
-#include "bn_regular_bg_map_cell_info.h"
-
 // Common
 #include "common_info.h"
 #include "common_variable_8x16_sprite_font.h"
@@ -27,6 +18,7 @@
 #include "game_object.h"
 #include "player.h"
 #include "block.h"
+#include "room.h"
 
 int main()
 {   
@@ -36,8 +28,6 @@ int main()
     bn::camera_ptr camera = bn::camera_ptr::create(0, 0);
 
     // Game Objects test
-    #define ROOM_W 64
-    #define ROOM_H 64
     #define MAX_OBJECTS 1200
     bn::vector<GameObject*, MAX_OBJECTS> game_objects;
  
@@ -45,61 +35,9 @@ int main()
     game_objects.push_back(new Player());
     game_objects.back()->setCamera(camera);
 
-    // Create Backdrop
-    bn::optional<bn::regular_bg_ptr> bg2_ptr = bn::regular_bg_items::test_bg.create_bg(0, 0);
-
     // Create Test Room
-    bn::optional<bn::regular_bg_ptr> bg_ptr = bn::regular_bg_items::test_room.create_bg(0, 0);
-    bn::span<const bn::regular_bg_map_cell> cells = bg_ptr->map().cells_ref().value();
-    bg_ptr->set_camera(camera);
+    Room room(ROOM_TEST, camera, game_objects);
 
-    #define BLOCK_INDEX 1
-    #define BLOCK_WIDTH 8
-
-    for(uint32 y = 0; y < ROOM_H; y++)
-    {
-        for(uint32 x = 0; x < ROOM_W; x++)
-        {
-            bn::regular_bg_map_cell       cell_index = cells[bn::regular_bg_items::test_room.map_item().cell_index(x, y)];
-            bn::regular_bg_map_cell_info  cell_info(cell_index);
-
-            uint32 final_block_width  = 0;
-            uint32 final_block_height = 8;
-
-            uint32 i = x;
-
-            while(cell_info.tile_index() == BLOCK_INDEX && i < ROOM_W)
-            {
-                // Add block width
-                final_block_width += BLOCK_WIDTH;
-
-                // Increment i
-                i++;
-
-                if(i < ROOM_W)
-                {
-                    // Update cell index and cell info for next pass
-                    cell_index = cells[bn::regular_bg_items::test_room.map_item().cell_index(i, y)];
-                    cell_info  = bn::regular_bg_map_cell_info(cell_index);
-                }
-            }
-
-            if(final_block_width > 0)
-            {
-                // Create block with the width determined above.
-                int32 converted_x = ((x - (ROOM_W / 2)) * BLOCK_WIDTH) + (final_block_width / 2);
-                int32 converted_y = ((y - (ROOM_H / 2)) * BLOCK_WIDTH) + (final_block_height / 2);
-
-                game_objects.push_back(new Block(final_block_width, final_block_height));
-                game_objects.back()->setCamera(camera);
-                game_objects.back()->setPos(converted_x, converted_y);
-            }
-
-            // Make sure next check starts after the offset (if any).
-            x = i;
-        }
-    }
-  
     BN_LOG("Game Objects count: ", game_objects.size());
     BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
     BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());

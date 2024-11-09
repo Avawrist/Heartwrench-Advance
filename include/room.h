@@ -5,6 +5,8 @@
 #include "bn_log.h"
 #include "bn_core.h"
 
+#include "bn_vector.h"
+#include "bn_camera_ptr.h"
 #include "bn_regular_bg_ptr.h"
 #include "bn_span.h"
 #include "bn_regular_bg_map_ptr.h"
@@ -33,11 +35,11 @@ struct Room
 {
     bn::optional<bn::regular_bg_ptr> bg_ptr;
     bn::optional<bn::regular_bg_ptr> backdrop_ptr;
-    uint32 width;
-    uint32 height;
+    uint32 tile_width;
+    uint32 tile_height;
 
-    Room(RoomName room_name, const camera_ptr& camera_ptr, bn::vector<GameObject*>& game_objects);
-
+    Room(RoomName room_name, const bn::camera_ptr& camera_ptr, bn::vector<GameObject*, 1200>& game_objects);
+    ~Room();
 };
 
 #endif
