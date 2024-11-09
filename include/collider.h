@@ -19,14 +19,6 @@
 
 #define MAX_ANIM_FRAMES 16
 
-/*
-enum ColliderSize{
-	COLLIDER_8  = 8,
-	COLLIDER_16 = 16,
-	COLLIDER_32 = 32
-};
-*/
-
 struct Collider {
 	
 	//ColliderSize size;
