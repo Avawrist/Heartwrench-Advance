@@ -38,7 +38,9 @@ struct Room
     uint32 tile_width;
     uint32 tile_height;
 
-    Room(RoomName room_name, const bn::camera_ptr& camera_ptr, bn::vector<GameObject*, 1200>& game_objects);
+    Room(RoomName room_name, 
+         const bn::camera_ptr& camera_ptr, 
+         bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects);
     ~Room();
 };
 

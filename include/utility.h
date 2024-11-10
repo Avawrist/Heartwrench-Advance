@@ -3,6 +3,9 @@
 
 #include "bn_log.h"
 
+// Global Macros
+#define MAX_GAME_OBJECTS 1200
+
 // Types
 typedef unsigned char  uint8;
 typedef unsigned short uint16;

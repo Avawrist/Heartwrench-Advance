@@ -1,6 +1,6 @@
 #include "room.h"
 
-Room::Room(RoomName room_name, const bn::camera_ptr& camera_ptr, bn::vector<GameObject*, 1200>& game_objects)
+Room::Room(RoomName room_name, const bn::camera_ptr& camera_ptr, bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
 {
 
     // Initialize Variables
@@ -13,7 +13,8 @@ Room::Room(RoomName room_name, const bn::camera_ptr& camera_ptr, bn::vector<Game
     
         break;
         default:
-        BN_LOG("Room creation failed - Room Name not found.");
+            BN_LOG("Room creation failed - Room Name not found.");
+            return;
         break;
     }
 
@@ -73,6 +74,6 @@ Room::Room(RoomName room_name, const bn::camera_ptr& camera_ptr, bn::vector<Game
 
 Room::~Room()
 {
-
-
+    bg_ptr.reset();
+    backdrop_ptr.reset();
 }

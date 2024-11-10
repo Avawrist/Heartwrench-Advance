@@ -87,7 +87,7 @@ void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 			}
 
-			break;
+		break;
 	
 		case STATE_AIR_NEUTRAL:
 
@@ -141,7 +141,7 @@ void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
 													PLAYER_X_DRIFT_LOCKOUT_FRAMES, 
 													remaining_x_drift_lockout_frames);
 
-			break;
+		break;
 		
 		case STATE_WALL_SLIDE_RIGHT:
 
@@ -204,6 +204,8 @@ void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
 		default:
 		break;
     }
+
+	BN_LOG("", state);
 
     ///////////////////
     // Apply Physics //
@@ -320,14 +322,14 @@ void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
 				}
 
 				// Test for wall riding on right side
-				if(test_collider_right_ptr->isCollision(*other_collider_ptr) && final_dir.y() > 0)
+				if(test_collider_right_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
 				{
 					//if(bn::keypad::right_held()) {wall_right_detected = true;}
 					wall_right_detected = true;
 				}
-
+				
 				// Test for wall riding on left side
-				if(test_collider_left_ptr->isCollision(*other_collider_ptr) && final_dir.y() > 0)
+				if(test_collider_left_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
 				{
 					//if(bn::keypad::left_held()) {wall_left_detected = true;}
 					wall_left_detected = true;
@@ -343,6 +345,8 @@ void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
 	delete test_collider_right_ptr;
 	delete test_collider_left_ptr;
     
+	BN_LOG("Wall right detected: ", wall_right_detected);
+
     ///////////////////
     // Update States //
     ///////////////////

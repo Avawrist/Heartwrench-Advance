@@ -28,8 +28,7 @@ int main()
     bn::camera_ptr camera = bn::camera_ptr::create(0, 0);
 
     // Game Objects test
-    #define MAX_OBJECTS 1200
-    bn::vector<GameObject*, MAX_OBJECTS> game_objects;
+    bn::vector<GameObject*, MAX_GAME_OBJECTS> game_objects;
  
     // Create Player: MUST BE UPDATED FIRST IN GAMEOBJECT ARRAY
     game_objects.push_back(new Player());
@@ -60,6 +59,6 @@ int main()
         
         // Update Core
         bn::core::update();
-        BN_LOG(bn::core::last_missed_frames());
+        //BN_LOG(bn::core::last_missed_frames());
     }
 }
