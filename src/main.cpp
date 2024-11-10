@@ -33,6 +33,7 @@ int main()
     // Create Player: MUST BE UPDATED FIRST IN GAMEOBJECT ARRAY
     game_objects.push_back(new Player());
     game_objects.back()->setCamera(camera);
+    game_objects.back()->setPos(0, -128);
 
     // Create Test Room
     Room room(ROOM_TEST, camera, game_objects);
