@@ -18,8 +18,8 @@ Room::Room(RoomName room_name, const bn::camera_ptr& camera_ptr, bn::vector<Game
         break;
     }
 
-    tile_width  = bg_ptr->dimensions().width()  / BLOCK_WIDTH;
-    tile_height = bg_ptr->dimensions().height() / BLOCK_WIDTH;
+    tile_width  = bg_ptr->dimensions().width()  / SINGLE_TILE_WIDTH;
+    tile_height = bg_ptr->dimensions().height() / SINGLE_TILE_WIDTH;
 
     // Set Camera
     backdrop_ptr->set_camera(camera_ptr);
@@ -46,7 +46,7 @@ Room::Room(RoomName room_name, const bn::camera_ptr& camera_ptr, bn::vector<Game
                     while(cell_info.tile_index() == BLOCK_INDEX && i < tile_width)
                     {
                         // Add block width
-                        final_block_width += BLOCK_WIDTH;
+                        final_block_width += SINGLE_TILE_WIDTH;
 
                         // Increment i
                         i++;
@@ -62,8 +62,8 @@ Room::Room(RoomName room_name, const bn::camera_ptr& camera_ptr, bn::vector<Game
                     if(final_block_width > 0)
                     {
                         // Create block with the width determined above.
-                        int32 converted_x = ((x - (tile_width / 2)) * BLOCK_WIDTH) + (final_block_width / 2);
-                        int32 converted_y = ((y - (tile_height / 2)) * BLOCK_WIDTH) + (final_block_height / 2);
+                        int32 converted_x = ((x - (tile_width / 2)) * SINGLE_TILE_WIDTH) + (final_block_width / 2);
+                        int32 converted_y = ((y - (tile_height / 2)) * SINGLE_TILE_WIDTH) + (final_block_height / 2);
 
                         game_objects.push_back(new Block(final_block_width));
                         game_objects.back()->setCamera(camera_ptr);
@@ -71,7 +71,7 @@ Room::Room(RoomName room_name, const bn::camera_ptr& camera_ptr, bn::vector<Game
                     }
 
                     // Make sure next check starts after the offset (if any).
-                    x = i;
+                    x = i - 1;
 
                 break;
 
@@ -80,7 +80,7 @@ Room::Room(RoomName room_name, const bn::camera_ptr& camera_ptr, bn::vector<Game
                     while(cell_info.tile_index() == ONEWAYBLOCK_INDEX && i < tile_width)
                     {
                         // Add block width
-                        final_block_width += BLOCK_WIDTH;
+                        final_block_width += SINGLE_TILE_WIDTH;
 
                         // Increment i
                         i++;
@@ -96,8 +96,8 @@ Room::Room(RoomName room_name, const bn::camera_ptr& camera_ptr, bn::vector<Game
                     if(final_block_width > 0)
                     {
                         // Create block with the width determined above.
-                        int32 converted_x = ((x - (tile_width / 2)) * BLOCK_WIDTH) + (final_block_width / 2);
-                        int32 converted_y = ((y - (tile_height / 2)) * BLOCK_WIDTH) + (final_block_height / 2);
+                        int32 converted_x = ((x - (tile_width / 2)) * SINGLE_TILE_WIDTH) + (final_block_width / 2);
+                        int32 converted_y = ((y - (tile_height / 2)) * SINGLE_TILE_WIDTH) + (final_block_height / 2);
 
                         game_objects.push_back(new OneWayBlock(final_block_width));
                         game_objects.back()->setCamera(camera_ptr);
@@ -105,14 +105,13 @@ Room::Room(RoomName room_name, const bn::camera_ptr& camera_ptr, bn::vector<Game
                     }
                     
                     // Make sure next check starts after the offset (if any).
-                    x = i;
+                    x = i - 1;
                     
                 break;
 
                 default:
                 break;
             }
-            
         }
     }
 }

@@ -23,8 +23,7 @@ struct OneWayBlock : GameObject {
     OneWayBlock(uint32 width);
 	~OneWayBlock() override;
 
-	void update(GameObject** game_objects_p,
-		    	uint32 game_objects_size) override;
+	void update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects) override;
 	void draw() override;
 	void setCamera(const bn::camera_ptr& camera) override;
 	bn::fixed x() const override;

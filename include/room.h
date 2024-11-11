@@ -26,7 +26,8 @@
 
 #define BLOCK_INDEX       1
 #define ONEWAYBLOCK_INDEX 2
-#define BLOCK_WIDTH 8
+
+#define SINGLE_TILE_WIDTH 8
 
 enum RoomName 
 {

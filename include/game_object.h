@@ -28,7 +28,7 @@ enum ObjectType
 
 struct GameObject {
 
-	virtual void update(GameObject** game_objects_p, uint32 game_objects_size) = 0;
+	virtual void update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects) = 0;
 	virtual void draw() = 0;
 	virtual void setCamera(const bn::camera_ptr& camera) = 0;
 	virtual bn::fixed x() const = 0;

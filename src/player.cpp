@@ -41,7 +41,7 @@ Player::~Player()
     delete collider_ptr;
 }
 
-void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
+void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
 {
     //////////////////////////
     // Player State Machine //
@@ -216,6 +216,7 @@ void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
 	// Apply Decay to Forces
     rigidbody_ptr->applyDecay();
 
+	// Apply forces to player
     bn::fixed_point final_dir = rigidbody_ptr->applyForces(*this);
 
     ///////////////////////
@@ -247,55 +248,76 @@ void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
     bool wall_left_detected  = false;
     bool grounded_detected   = false;
 
-    for(uint32 i = 0; i < game_objects_size; i++)
+    for(int32 i = 0; i < game_objects.size(); i++)
     {
-		if(game_objects_ptr[i] != this)
+		if(game_objects.at(i) != this)
 		{
-			Collider* other_collider_ptr = game_objects_ptr[i]->collider_ptr;
-			if(other_collider_ptr != NULL)
+			Collider* other_collider_ptr = game_objects.at(i)->collider_ptr;
+			if(other_collider_ptr != NULL && collider_ptr->isCollision(*(other_collider_ptr)))
 			{
-				if(collider_ptr->isCollision(*(other_collider_ptr)))
+				switch(game_objects.at(i)->object_type)
 				{
-					switch(game_objects_ptr[i]->object_type)
-					{
-						case BLOCK:
+					case BLOCK:
 
+						// Handle Corner Case //
+						if(!temp_collider_x_ptr->isCollision(*(other_collider_ptr)) &&
+						!temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
+						{
+							while(collider_ptr->isCollision(*(other_collider_ptr)))
+							{
+								// We always resolve diagonal corner collisions with a horizontal shift. 
+								setX(x() - normalized_dir.x());
+							}
+						}
+					
+						// Handle Remaining Collision Cases //
+						else
+						{
+							while(temp_collider_x_ptr->isCollision(*(other_collider_ptr)))
+							{
+								temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
+								setX(x() - normalized_dir.x());
+							}
+
+							while(temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
+							{
+								temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
+								setY(y() - normalized_dir.y());
+							}
+						}
+
+					break;
+
+					case ONE_WAY_BLOCK:
+
+						if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
+						{
 							// Handle Corner Case //
 							if(!temp_collider_x_ptr->isCollision(*(other_collider_ptr)) &&
-							!temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
+								!temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
 							{
 								while(collider_ptr->isCollision(*(other_collider_ptr)))
 								{
-									// We always resolve diagonal corner collisions with a horizontal shift. 
-									setX(x() - normalized_dir.x());
+									setY(y() - 1);
 								}
 							}
 						
 							// Handle Remaining Collision Cases //
 							else
 							{
-								while(temp_collider_x_ptr->isCollision(*(other_collider_ptr)))
-								{
-									temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
-									setX(x() - normalized_dir.x());
-								}
-
 								while(temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
 								{
-									temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
-									setY(y() - normalized_dir.y());
+									temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - 1);
+									setY(y() - 1);
 								}
 							}
+						}
 
-						break;
+					break;
 
-						case ONE_WAY_BLOCK:
-						break;
-
-						default:
-						break;
-					}					
-				}
+					default:
+					break;
+				}					
 			}
 		}
     }
@@ -322,46 +344,52 @@ void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
 													    collider_ptr->width,
 												 		collider_ptr->height);								   
 
-    for(uint32 i = 0; i < game_objects_size; i++)
+    for(int32 i = 0; i < game_objects.size(); i++)
     {
-		if(game_objects_ptr[i] != this)
+		if(game_objects.at(i) != this)
 		{
-			Collider* other_collider_ptr = game_objects_ptr[i]->collider_ptr;
-			if(other_collider_ptr != NULL)
+			Collider* other_collider_ptr = game_objects.at(i)->collider_ptr;
+			switch(game_objects.at(i)->object_type)
 			{
-				switch(game_objects_ptr[i]->object_type)
-				{
-					case BLOCK:
+				case BLOCK:
 
+					// Test for, and log grounded collision
+					if(test_collider_ptr->isCollision(*(other_collider_ptr)) && normalized_dir.y() >= 0)
+					{
+						if(state == STATE_AIR_NEUTRAL) {sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
+						grounded_detected = true;
+					}
+
+					// Test for wall riding on right side
+					if(test_collider_right_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
+					{
+						wall_right_detected = true;
+					}
+					
+					// Test for wall riding on left side
+					if(test_collider_left_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
+					{
+						wall_left_detected = true;
+					}
+
+				break;
+
+				case ONE_WAY_BLOCK:
+
+					if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
+					{
 						// Test for, and log grounded collision
-						if(test_collider_ptr->isCollision(*(other_collider_ptr)))
+						if(test_collider_ptr->isCollision(*(other_collider_ptr)) && normalized_dir.y() >= 0)
 						{
 							if(state == STATE_AIR_NEUTRAL) {sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
 							grounded_detected = true;
 						}
+					}
 
-						// Test for wall riding on right side
-						if(test_collider_right_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
-						{
-							//if(bn::keypad::right_held()) {wall_right_detected = true;}
-							wall_right_detected = true;
-						}
-						
-						// Test for wall riding on left side
-						if(test_collider_left_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
-						{
-							//if(bn::keypad::left_held()) {wall_left_detected = true;}
-							wall_left_detected = true;
-						}
+				break;
 
-					break;
-
-					case ONE_WAY_BLOCK:
-					break;
-
-					default:
-					break;
-				}
+				default:
+				break;
 			}
 		}
     }

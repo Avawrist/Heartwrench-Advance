@@ -20,7 +20,7 @@ OneWayBlock::~OneWayBlock()
     delete collider_ptr;
 }
 
-void OneWayBlock::update(GameObject** game_objects_p, uint32 game_objects_size)
+void OneWayBlock::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
 {
 
 }

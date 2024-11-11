@@ -48,7 +48,7 @@ int main()
         BN_PROFILER_START("");
         for(int32 i = 0; i < game_objects.size(); i++)
         {
-            (game_objects.data())[i]->update(game_objects.data(), game_objects.size());
+            (game_objects.data())[i]->update(game_objects);
             (game_objects.data())[i]->draw();
         }
         BN_PROFILER_STOP();
