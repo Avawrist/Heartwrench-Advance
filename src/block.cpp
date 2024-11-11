@@ -4,9 +4,12 @@
 // Struct Block //
 //////////////////
 
-Block::Block(uint32 width, uint32 height)
+Block::Block(uint32 width)
 {
-    collider_ptr = new Collider(x(), y(), width, height);
+    object_type       = BLOCK; 
+    collider_ptr      = new Collider(x(), y(), width, BLOCK_COLLIDER_HEIGHT);
+    collider_offset_x = 0;
+    collider_offset_y = 0;
 }
 
 Block::~Block()
@@ -48,23 +51,23 @@ bn::fixed_point Block::pos() const
 
 void Block::setX(bn::fixed new_x)
 {
-    collider_ptr->setX(new_x.integer());
+    collider_ptr->setX(new_x.integer() + collider_offset_x);
 }
 
 void Block::setY(bn::fixed new_y)
 {
-    collider_ptr->setY(new_y.integer());
+    collider_ptr->setY(new_y.integer() + collider_offset_y);
 }
 
 void Block::setPos(bn::fixed new_x, bn::fixed new_y) 
 {
-    collider_ptr->setX(new_x.integer());
-    collider_ptr->setY(new_y.integer());
+    collider_ptr->setX(new_x.integer() + collider_offset_x);
+    collider_ptr->setY(new_y.integer() + collider_offset_y);
 }
 
 void Block::setPos(bn::fixed_point new_pos)
 {
-    collider_ptr->setX(new_pos.x().integer());
-    collider_ptr->setY(new_pos.y().integer());
+    collider_ptr->setX(new_pos.x().integer() + collider_offset_x);
+    collider_ptr->setY(new_pos.y().integer() + collider_offset_y);
 }
 

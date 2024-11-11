@@ -9,7 +9,7 @@ Room::Room(RoomName room_name, const bn::camera_ptr& camera_ptr, bn::vector<Game
         case ROOM_TEST:
 
             backdrop_ptr = bn::regular_bg_items::test_bg.create_bg(0, 0);
-            bg_ptr = bn::regular_bg_items::test_room.create_bg(0, 0);
+            bg_ptr       = bn::regular_bg_items::test_room.create_bg(0, 0);
     
         break;
         default:
@@ -39,35 +39,80 @@ Room::Room(RoomName room_name, const bn::camera_ptr& camera_ptr, bn::vector<Game
 
             uint32 i = x;
 
-            while(cell_info.tile_index() == BLOCK_INDEX && i < tile_width)
+            switch(cell_info.tile_index())
             {
-                // Add block width
-                final_block_width += BLOCK_WIDTH;
+                case BLOCK_INDEX:
 
-                // Increment i
-                i++;
+                    while(cell_info.tile_index() == BLOCK_INDEX && i < tile_width)
+                    {
+                        // Add block width
+                        final_block_width += BLOCK_WIDTH;
 
-                if(i < tile_width)
-                {
-                    // Update cell index and cell info for next pass
-                    cell_index = cells[bn::regular_bg_items::test_room.map_item().cell_index(i, y)];
-                    cell_info  = bn::regular_bg_map_cell_info(cell_index);
-                }
+                        // Increment i
+                        i++;
+
+                        if(i < tile_width)
+                        {
+                            // Update cell index and cell info for next pass
+                            cell_index = cells[bn::regular_bg_items::test_room.map_item().cell_index(i, y)];
+                            cell_info  = bn::regular_bg_map_cell_info(cell_index);
+                        }
+                    }
+
+                    if(final_block_width > 0)
+                    {
+                        // Create block with the width determined above.
+                        int32 converted_x = ((x - (tile_width / 2)) * BLOCK_WIDTH) + (final_block_width / 2);
+                        int32 converted_y = ((y - (tile_height / 2)) * BLOCK_WIDTH) + (final_block_height / 2);
+
+                        game_objects.push_back(new Block(final_block_width));
+                        game_objects.back()->setCamera(camera_ptr);
+                        game_objects.back()->setPos(converted_x, converted_y);
+                    }
+
+                    // Make sure next check starts after the offset (if any).
+                    x = i;
+
+                break;
+
+                case ONEWAYBLOCK_INDEX:
+                    
+                    while(cell_info.tile_index() == ONEWAYBLOCK_INDEX && i < tile_width)
+                    {
+                        // Add block width
+                        final_block_width += BLOCK_WIDTH;
+
+                        // Increment i
+                        i++;
+
+                        if(i < tile_width)
+                        {
+                            // Update cell index and cell info for next pass
+                            cell_index = cells[bn::regular_bg_items::test_room.map_item().cell_index(i, y)];
+                            cell_info  = bn::regular_bg_map_cell_info(cell_index);
+                        }
+                    }
+
+                    if(final_block_width > 0)
+                    {
+                        // Create block with the width determined above.
+                        int32 converted_x = ((x - (tile_width / 2)) * BLOCK_WIDTH) + (final_block_width / 2);
+                        int32 converted_y = ((y - (tile_height / 2)) * BLOCK_WIDTH) + (final_block_height / 2);
+
+                        game_objects.push_back(new OneWayBlock(final_block_width));
+                        game_objects.back()->setCamera(camera_ptr);
+                        game_objects.back()->setPos(converted_x, converted_y);
+                    }
+                    
+                    // Make sure next check starts after the offset (if any).
+                    x = i;
+                    
+                break;
+
+                default:
+                break;
             }
-
-            if(final_block_width > 0)
-            {
-                // Create block with the width determined above.
-                int32 converted_x = ((x - (tile_width / 2)) * BLOCK_WIDTH) + (final_block_width / 2);
-                int32 converted_y = ((y - (tile_height / 2)) * BLOCK_WIDTH) + (final_block_height / 2);
-
-                game_objects.push_back(new Block(final_block_width, final_block_height));
-                game_objects.back()->setCamera(camera_ptr);
-                game_objects.back()->setPos(converted_x, converted_y);
-            }
-
-            // Make sure next check starts after the offset (if any).
-            x = i;
+            
         }
     }
 }

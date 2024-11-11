@@ -7,6 +7,7 @@
 Player::Player()
 {
 	// Initialize all Player variables
+	object_type = PLAYER;
     sprite_ptr  = bn::sprite_items::player.create_sprite(0, 0);
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  2,
@@ -15,7 +16,10 @@ Player::Player()
 								  0);
 
     rigidbody_ptr = new RigidBody();
-	collider_ptr  = new Collider(x(), y(), COLLIDER_WIDTH, COLLIDER_HEIGHT);
+	collider_ptr  = new Collider(x(), y(), PLAYER_COLLIDER_WIDTH, PLAYER_COLLIDER_HEIGHT);
+
+	collider_offset_x = 0;
+	collider_offset_y = 0;
     
 	state             	 = STATE_AIR_NEUTRAL;
     x_speed        	  	 = PLAYER_MIN_X_SPEED;
@@ -205,8 +209,6 @@ void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
 		break;
     }
 
-	BN_LOG("", state);
-
     ///////////////////
     // Apply Physics //
     ///////////////////
@@ -254,32 +256,45 @@ void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
 			{
 				if(collider_ptr->isCollision(*(other_collider_ptr)))
 				{
-					// Handle Corner Case //
-					if(!temp_collider_x_ptr->isCollision(*(other_collider_ptr)) &&
-					   !temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
+					switch(game_objects_ptr[i]->object_type)
 					{
-						while(collider_ptr->isCollision(*(other_collider_ptr)))
-						{
-							// We always resolve diagonal corner collisions with a horizontal shift. 
-							setX(x() - normalized_dir.x());
-						}
-					}
-				
-					// Handle Remaining Collision Cases //
-					else
-					{
-						while(temp_collider_x_ptr->isCollision(*(other_collider_ptr)))
-						{
-							temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
-							setX(x() - normalized_dir.x());
-						}
+						case BLOCK:
 
-						while(temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
-						{
-							temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
-							setY(y() - normalized_dir.y());
-						}
-					}
+							// Handle Corner Case //
+							if(!temp_collider_x_ptr->isCollision(*(other_collider_ptr)) &&
+							!temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
+							{
+								while(collider_ptr->isCollision(*(other_collider_ptr)))
+								{
+									// We always resolve diagonal corner collisions with a horizontal shift. 
+									setX(x() - normalized_dir.x());
+								}
+							}
+						
+							// Handle Remaining Collision Cases //
+							else
+							{
+								while(temp_collider_x_ptr->isCollision(*(other_collider_ptr)))
+								{
+									temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
+									setX(x() - normalized_dir.x());
+								}
+
+								while(temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
+								{
+									temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
+									setY(y() - normalized_dir.y());
+								}
+							}
+
+						break;
+
+						case ONE_WAY_BLOCK:
+						break;
+
+						default:
+						break;
+					}					
 				}
 			}
 		}
@@ -314,25 +329,38 @@ void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
 			Collider* other_collider_ptr = game_objects_ptr[i]->collider_ptr;
 			if(other_collider_ptr != NULL)
 			{
-				// Test for, and log grounded collision
-				if(test_collider_ptr->isCollision(*(other_collider_ptr)))
+				switch(game_objects_ptr[i]->object_type)
 				{
-					if(state == STATE_AIR_NEUTRAL) {sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
-					grounded_detected = true;
-				}
+					case BLOCK:
 
-				// Test for wall riding on right side
-				if(test_collider_right_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
-				{
-					//if(bn::keypad::right_held()) {wall_right_detected = true;}
-					wall_right_detected = true;
-				}
-				
-				// Test for wall riding on left side
-				if(test_collider_left_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
-				{
-					//if(bn::keypad::left_held()) {wall_left_detected = true;}
-					wall_left_detected = true;
+						// Test for, and log grounded collision
+						if(test_collider_ptr->isCollision(*(other_collider_ptr)))
+						{
+							if(state == STATE_AIR_NEUTRAL) {sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
+							grounded_detected = true;
+						}
+
+						// Test for wall riding on right side
+						if(test_collider_right_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
+						{
+							//if(bn::keypad::right_held()) {wall_right_detected = true;}
+							wall_right_detected = true;
+						}
+						
+						// Test for wall riding on left side
+						if(test_collider_left_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
+						{
+							//if(bn::keypad::left_held()) {wall_left_detected = true;}
+							wall_left_detected = true;
+						}
+
+					break;
+
+					case ONE_WAY_BLOCK:
+					break;
+
+					default:
+					break;
 				}
 			}
 		}
@@ -344,8 +372,6 @@ void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
 	delete test_collider_ptr;
 	delete test_collider_right_ptr;
 	delete test_collider_left_ptr;
-    
-	BN_LOG("Wall right detected: ", wall_right_detected);
 
     ///////////////////
     // Update States //
@@ -370,7 +396,6 @@ void Player::update(GameObject** game_objects_ptr, uint32 game_objects_size)
     else if (h_scale < 1) {sprite_ptr->set_horizontal_scale(h_scale + increment);}
     if(abs(1 - sprite_ptr->horizontal_scale()) < increment) {sprite_ptr->set_horizontal_scale(1);}
     
-
     // Correct V Scale
     if(v_scale > 1) {sprite_ptr->set_vertical_scale(v_scale - increment);}
     else if (v_scale < 1) {sprite_ptr->set_vertical_scale(v_scale + increment);}
@@ -409,27 +434,27 @@ bn::fixed_point Player::pos() const
 void Player::setX(bn::fixed new_x)
 {
     sprite_ptr->set_x(new_x.integer());
-    collider_ptr->setX(new_x.integer());
+    collider_ptr->setX(new_x.integer() + collider_offset_x);
 }
 
 void Player::setY(bn::fixed new_y)
 {
     sprite_ptr->set_y(new_y.integer());
-    collider_ptr->setY(new_y.integer());
+    collider_ptr->setY(new_y.integer() + collider_offset_y);
 }
 
 void Player::setPos(bn::fixed new_x, bn::fixed new_y)
 {
     sprite_ptr->set_x(new_x.integer());
     sprite_ptr->set_y(new_y.integer());
-	collider_ptr->setX(new_x.integer());
-	collider_ptr->setY(new_y.integer());
+	collider_ptr->setX(new_x.integer() + collider_offset_x);
+	collider_ptr->setY(new_y.integer() + collider_offset_y);
 }
 
 void Player::setPos(bn::fixed_point new_pos)
 {
     sprite_ptr->set_x(new_pos.x().integer());
     sprite_ptr->set_y(new_pos.y().integer());
-	collider_ptr->setX(new_pos.x().integer());
-	collider_ptr->setY(new_pos.y().integer());
+	collider_ptr->setX(new_pos.x().integer() + collider_offset_x);
+	collider_ptr->setY(new_pos.y().integer() + collider_offset_y);
 }

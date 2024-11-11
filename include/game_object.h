@@ -19,7 +19,15 @@
 // Struct GameObject //
 ///////////////////////
 
+enum ObjectType 
+{
+	PLAYER = 0,
+	BLOCK,
+	ONE_WAY_BLOCK,
+};
+
 struct GameObject {
+
 	virtual void update(GameObject** game_objects_p, uint32 game_objects_size) = 0;
 	virtual void draw() = 0;
 	virtual void setCamera(const bn::camera_ptr& camera) = 0;
@@ -32,7 +40,11 @@ struct GameObject {
 	virtual void setPos(bn::fixed_point new_pos) = 0;
 	virtual ~GameObject() = default;
 
-	Collider* collider_ptr = NULL;
+	ObjectType object_type;
+	Collider*  collider_ptr = NULL;
+	int32 	   collider_offset_x;
+	int32      collider_offset_y;
+	
 };
 
 # endif

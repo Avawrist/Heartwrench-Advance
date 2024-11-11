@@ -23,8 +23,8 @@
 // Struct Player //
 ///////////////////
 
-#define COLLIDER_WIDTH 16
-#define COLLIDER_HEIGHT 16
+#define PLAYER_COLLIDER_WIDTH 16
+#define PLAYER_COLLIDER_HEIGHT 16
 
 #define PLAYER_MAX_STRETCH_V 1.75
 #define PLAYER_MAX_STRETCH_H 1.5

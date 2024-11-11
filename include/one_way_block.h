@@ -1,5 +1,5 @@
-#ifndef BLOCK_H
-#define BLOCK_H
+#ifndef ONE_WAY_BLOCK_H
+#define ONE_WAY_BLOCK_H
 
 // Butano
 #include "bn_optional.h"
@@ -15,12 +15,13 @@
 // Struct Block //
 //////////////////
 
-#define BLOCK_COLLIDER_HEIGHT 8
+#define ONEWAYBLOCK_COLLIDER_WIDTH  8
+#define ONEWAYBLOCK_COLLIDER_HEIGHT 1
 
-struct Block : GameObject {
+struct OneWayBlock : GameObject {
 
-    Block(uint32 width);
-	~Block() override;
+    OneWayBlock(uint32 width);
+	~OneWayBlock() override;
 
 	void update(GameObject** game_objects_p,
 		    	uint32 game_objects_size) override;

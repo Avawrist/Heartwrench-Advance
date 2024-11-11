@@ -17,7 +17,6 @@
 #include "utility.h"
 #include "game_object.h"
 #include "player.h"
-#include "block.h"
 #include "room.h"
 
 int main()

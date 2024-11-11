@@ -1,4 +1,5 @@
-block.o: G:/game/src/block.cpp G:/game/include/block.h \
+one_way_block.o: G:/game/src/one_way_block.cpp \
+ G:/game/include/one_way_block.h \
  G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_assert.h \
  G:/butano-master/butano/include/bn_config_assert.h \
@@ -52,7 +53,7 @@ block.o: G:/game/src/block.cpp G:/game/include/block.h \
  G:/butano-master/butano/include/bn_color.h \
  G:/game/build/bn_sprite_items_collider_16.h \
  G:/game/build/bn_sprite_items_collider_32.h
-G:/game/include/block.h:
+G:/game/include/one_way_block.h:
 G:/butano-master/butano/include/bn_optional.h:
 G:/butano-master/butano/include/bn_assert.h:
 G:/butano-master/butano/include/bn_config_assert.h:

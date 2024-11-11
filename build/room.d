@@ -68,16 +68,15 @@ room.o: G:/game/src/room.cpp G:/game/include/room.h \
  G:/butano-master/butano/include/bn_sprite_shape_size.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/game/build/bn_sprite_items_collider_16.h \
- G:/game/build/bn_sprite_items_collider_32.h G:/game/include/player.h \
+ G:/game/build/bn_sprite_items_collider_32.h G:/game/include/block.h \
+ G:/game/include/one_way_block.h G:/game/include/player.h \
  G:/butano-master/butano/include/bn_keypad.h \
  G:/butano-master/butano/include/bn_math.h \
  G:/butano-master/butano/include/bn_sin_lut.h \
  G:/butano-master/butano/include/bn_reciprocal_lut.h \
  G:/butano-master/butano/include/bn_rule_of_three_approximation.h \
  G:/game/include/physics.h G:/game/include/math.h \
- G:/game/build/bn_sprite_items_player.h G:/game/include/block.h \
- G:/butano-master/butano/include/bn_regular_bg_tiles_ptr.h \
- G:/game/build/bn_sprite_items_block.h
+ G:/game/build/bn_sprite_items_player.h
 G:/game/include/room.h:
 G:/butano-master/butano/include/bn_log.h:
 G:/butano-master/butano/include/bn_config_log.h:
@@ -151,6 +150,8 @@ G:/butano-master/butano/include/bn_sprite_shape_size.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/game/build/bn_sprite_items_collider_16.h:
 G:/game/build/bn_sprite_items_collider_32.h:
+G:/game/include/block.h:
+G:/game/include/one_way_block.h:
 G:/game/include/player.h:
 G:/butano-master/butano/include/bn_keypad.h:
 G:/butano-master/butano/include/bn_math.h:
@@ -160,6 +161,3 @@ G:/butano-master/butano/include/bn_rule_of_three_approximation.h:
 G:/game/include/physics.h:
 G:/game/include/math.h:
 G:/game/build/bn_sprite_items_player.h:
-G:/game/include/block.h:
-G:/butano-master/butano/include/bn_regular_bg_tiles_ptr.h:
-G:/game/build/bn_sprite_items_block.h:

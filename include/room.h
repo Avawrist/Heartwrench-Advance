@@ -20,10 +20,12 @@
 // My Libs
 #include "utility.h"
 #include "game_object.h"
-#include "player.h"
 #include "block.h"
+#include "one_way_block.h"
+#include "player.h"
 
-#define BLOCK_INDEX 1
+#define BLOCK_INDEX       1
+#define ONEWAYBLOCK_INDEX 2
 #define BLOCK_WIDTH 8
 
 enum RoomName 
