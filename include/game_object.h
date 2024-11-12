@@ -24,6 +24,7 @@ enum ObjectType
 	PLAYER = 0,
 	BLOCK,
 	ONE_WAY_BLOCK,
+	MOVING_PLATFORM,
 };
 
 struct GameObject {

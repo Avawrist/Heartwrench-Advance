@@ -258,6 +258,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
 				switch(game_objects.at(i)->object_type)
 				{
 					case BLOCK:
+					case MOVING_PLATFORM:
 
 						// Handle Corner Case //
 						if(!temp_collider_x_ptr->isCollision(*(other_collider_ptr)) &&
@@ -352,9 +353,10 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
 			switch(game_objects.at(i)->object_type)
 			{
 				case BLOCK:
+				case MOVING_PLATFORM:
 
 					// Test for, and log grounded collision
-					if(test_collider_ptr->isCollision(*(other_collider_ptr)) && normalized_dir.y() >= 0)
+					if(test_collider_ptr->isCollision(*other_collider_ptr) && normalized_dir.y() >= 0)
 					{
 						if(state == STATE_AIR_NEUTRAL) {sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
 						grounded_detected = true;

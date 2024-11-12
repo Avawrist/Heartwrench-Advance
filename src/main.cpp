@@ -17,6 +17,7 @@
 #include "utility.h"
 #include "game_object.h"
 #include "player.h"
+#include "moving_platform.h"
 #include "room.h"
 
 int main()
@@ -28,7 +29,11 @@ int main()
 
     // Game Objects test
     bn::vector<GameObject*, MAX_GAME_OBJECTS> game_objects;
- 
+
+    // Create test Moving Platform
+    game_objects.push_back(new MovingPlatform(bn::point(-96, -112), bn::point(96, -112)));
+    game_objects.back()->setCamera(camera);
+
     // Create Player: MUST BE UPDATED FIRST IN GAMEOBJECT ARRAY
     game_objects.push_back(new Player());
     game_objects.back()->setCamera(camera);
@@ -55,7 +60,7 @@ int main()
         //bn::profiler::show();
 
         // Update Camera
-        camera.set_position(game_objects[0]->pos());
+        camera.set_position(game_objects[1]->pos());
         
         // Update Core
         bn::core::update();

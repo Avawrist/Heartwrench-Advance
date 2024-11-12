@@ -79,6 +79,8 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_log.h \
  G:/butano-master/butano/include/bn_rule_of_three_approximation.h \
  G:/game/include/physics.h G:/game/include/math.h \
  G:/game/include/game_object.h G:/game/build/bn_sprite_items_player.h \
+ G:/game/include/moving_platform.h \
+ G:/game/build/bn_sprite_items_moving_platform.h G:/game/include/player.h \
  G:/game/include/room.h \
  G:/butano-master/butano/include/bn_regular_bg_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_map_ptr.h \
@@ -92,7 +94,7 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_log.h \
  G:/butano-master/butano/include/bn_size.h \
  G:/butano-master/butano/include/bn_regular_bg_tiles_item.h \
  G:/game/build/bn_regular_bg_items_test_room.h G:/game/include/block.h \
- G:/game/include/one_way_block.h G:/game/include/player.h
+ G:/game/include/one_way_block.h
 G:/butano-master/butano/include/bn_log.h:
 G:/butano-master/butano/include/bn_config_log.h:
 G:/butano-master/butano/include/bn_log_backend.h:
@@ -180,6 +182,9 @@ G:/game/include/physics.h:
 G:/game/include/math.h:
 G:/game/include/game_object.h:
 G:/game/build/bn_sprite_items_player.h:
+G:/game/include/moving_platform.h:
+G:/game/build/bn_sprite_items_moving_platform.h:
+G:/game/include/player.h:
 G:/game/include/room.h:
 G:/butano-master/butano/include/bn_regular_bg_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_map_ptr.h:
@@ -195,4 +200,3 @@ G:/butano-master/butano/include/bn_regular_bg_tiles_item.h:
 G:/game/build/bn_regular_bg_items_test_room.h:
 G:/game/include/block.h:
 G:/game/include/one_way_block.h:
-G:/game/include/player.h:

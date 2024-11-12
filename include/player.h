@@ -3,6 +3,8 @@
 
 // Butano
 #include "bn_optional.h"
+#include "bn_sprite_ptr.h"
+#include "bn_sprite_animate_actions.h"
 #include "bn_keypad.h"
 #include "bn_fixed.h"
 #include "bn_fixed_point.h"
