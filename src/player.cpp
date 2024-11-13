@@ -33,6 +33,7 @@ Player::Player()
 	
 	remaining_jump_input_frames      = 0;
 	remaining_x_drift_lockout_frames = 0;
+	air_frames_elapsed               = 0;
 }
 
 Player::~Player()
@@ -49,6 +50,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
 
 	bool gripping_wall_right = false;
 	bool gripping_wall_left  = false;
+	bool kill_player         = false;
 
     switch(state)
     {
@@ -145,6 +147,12 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
 													PLAYER_X_DRIFT_LOCKOUT_FRAMES, 
 													remaining_x_drift_lockout_frames);
 
+			// Update Squish frames for squish eligibility // 
+			air_frames_elapsed++;
+			air_frames_elapsed = clamp(0, 
+									   PLAYER_SQUISH_FRAMES_REQUIRED, 
+									   air_frames_elapsed);
+
 		break;
 		
 		case STATE_WALL_SLIDE_RIGHT:
@@ -204,6 +212,14 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
 			else {rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);}
 		
 		break;
+
+		case STATE_DEAD:
+
+			// Flesh out the death state later
+			setPos(-64, 0);
+			state = STATE_AIR_NEUTRAL;
+
+		break;
 		
 		default:
 		break;
@@ -260,33 +276,29 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
 					case BLOCK:
 					case MOVING_PLATFORM:
 
-						// Handle Corner Case //
-						if(!temp_collider_x_ptr->isCollision(*(other_collider_ptr)) &&
-						!temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
+						// Handle Default Collision Cases //
+						while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
 						{
-							while(collider_ptr->isCollision(*(other_collider_ptr)))
-							{
-								// We always resolve diagonal corner collisions with a horizontal shift. 
-								setX(x() - normalized_dir.x());
-							}
-						}
-					
-						// Handle Remaining Collision Cases //
-						else
-						{
-							while(temp_collider_x_ptr->isCollision(*(other_collider_ptr)))
-							{
-								temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
-								setX(x() - normalized_dir.x());
-							}
-
-							while(temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
-							{
-								temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
-								setY(y() - normalized_dir.y());
-							}
+							if(normalized_dir.x() == 0) {kill_player = true; break;}
+							temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
+							setX(x() - normalized_dir.x());
 						}
 
+						while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
+						{
+							if(normalized_dir.y() == 0) {kill_player = true; break;}
+							temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
+							setY(y() - normalized_dir.y());
+						}
+
+						// If there is still collision somehow, must be corner case //
+						while(collider_ptr->isCollision(*(other_collider_ptr)))
+						{
+							if(normalized_dir.x() == 0) {kill_player = true; break;}
+							// We always resolve diagonal corner collisions with a horizontal shift. 
+							setX(x() - normalized_dir.x());
+						}
+						
 					break;
 
 					case ONE_WAY_BLOCK:
@@ -358,7 +370,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
 					// Test for, and log grounded collision
 					if(test_collider_ptr->isCollision(*other_collider_ptr) && normalized_dir.y() >= 0)
 					{
-						if(state == STATE_AIR_NEUTRAL) {sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
+						if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) {sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
 						grounded_detected = true;
 					}
 
@@ -383,7 +395,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
 						// Test for, and log grounded collision
 						if(test_collider_ptr->isCollision(*(other_collider_ptr)) && normalized_dir.y() >= 0)
 						{
-							if(state == STATE_AIR_NEUTRAL) {sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
+							if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) {sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
 							grounded_detected = true;
 						}
 					}
@@ -409,10 +421,21 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
     if(grounded_detected)        
 	{
 		state = STATE_GROUNDED_NEUTRAL;
+		air_frames_elapsed = 0;
 	}
-    else if(wall_right_detected) {state = STATE_WALL_SLIDE_RIGHT;}
-    else if(wall_left_detected)  {state = STATE_WALL_SLIDE_LEFT;}
-    else                         {state = STATE_AIR_NEUTRAL;}
+    else if(wall_right_detected) 
+	{
+		state = STATE_WALL_SLIDE_RIGHT;
+		air_frames_elapsed = 0;
+	}
+    else if(wall_left_detected)  
+	{
+		state = STATE_WALL_SLIDE_LEFT;
+		air_frames_elapsed = 0;
+	}
+    else {state = STATE_AIR_NEUTRAL;}
+
+	if(kill_player) {state = STATE_DEAD;}
     
     ////////////////////////////
     // Correct Sprite Offsets //

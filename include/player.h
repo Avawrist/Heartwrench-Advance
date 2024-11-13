@@ -39,11 +39,11 @@
 
 #define PLAYER_BASE_JUMP_FORCE       -7
 #define PLAYER_SECOND_JUMP_FORCE     -3
-#define PLAYER_WALL_JUMP_X_FORCE      6
-#define PLAYER_WALL_JUMP_Y_FORCE     -10
+#define PLAYER_WALL_JUMP_X_FORCE      12
+#define PLAYER_WALL_JUMP_Y_FORCE     -12
 #define PLAYER_JUMP_DECAY             0.1
 #define PLAYER_SECONDARY_JUMP_DECAY   0.4
-#define PLAYER_X_DRIFT_LOCKOUT_FRAMES 6
+#define PLAYER_X_DRIFT_LOCKOUT_FRAMES 8
 #define PLAYER_MAX_JUMP_INPUT_FRAMES  15
 #define PLAYER_WALL_JUMP_DECAY        0.1
 
@@ -53,6 +53,8 @@
 
 #define PLAYER_DASH_FORCE      10
 #define PLAYER_DASH_DECAY_RATE 0.05
+
+#define PLAYER_SQUISH_FRAMES_REQUIRED 3
 
 #define PLAYER_X_LEFT_FORCE  	      new Force(bn::fixed_point_t<12>(-x_speed, 0), PLAYER_X_DECAY)
 #define PLAYER_X_RIGHT_FORCE 	      new Force(bn::fixed_point_t<12>( x_speed, 0), PLAYER_X_DECAY)
@@ -76,7 +78,8 @@ enum PlayerState {
 	STATE_GROUNDED_NEUTRAL,
 	STATE_AIR_NEUTRAL,
 	STATE_WALL_SLIDE_RIGHT,
-	STATE_WALL_SLIDE_LEFT
+	STATE_WALL_SLIDE_LEFT,
+	STATE_DEAD,
 };
 
 struct Player : GameObject {
@@ -96,6 +99,7 @@ struct Player : GameObject {
 	bn::fixed       wall_ride_gravity;
 	int32           remaining_jump_input_frames;
 	int32           remaining_x_drift_lockout_frames;
+	int32           air_frames_elapsed;
 	
 	Player();
 	~Player() override;

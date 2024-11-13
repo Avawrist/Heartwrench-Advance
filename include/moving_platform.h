@@ -23,6 +23,18 @@
 // Struct MovingPlatform //
 ///////////////////////////
 
+// The moving platform can push, raise, lower and carry the player. 
+
+// -The moving platform must never push, raise, lower or otherwise "pinch" the player 
+//  into another collidable surface, including another platform. 
+//  This will always result in a player death.
+
+// -Carrying the player into a collidable surface is OK :) 
+
+// -Platform movement is 8 directional.
+
+// -This object is updated every OTHER frame (30 fps)
+
 #define MOVING_PLATFORM_COLLIDER_WIDTH  32
 #define MOVING_PLATFORM_COLLIDER_HEIGHT 8
 
@@ -38,6 +50,7 @@ struct MovingPlatform : GameObject {
     bn::fixed  speed;
     bn::point  target;
     bn::point  next_target;
+	int32 	   update_counter;
 
     MovingPlatform(bn::point p1, bn::point p2);
     ~MovingPlatform();
