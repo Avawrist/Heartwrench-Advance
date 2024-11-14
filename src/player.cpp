@@ -42,7 +42,8 @@ Player::~Player()
     delete collider_ptr;
 }
 
-void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
+void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
+					const Room& room)
 {
     //////////////////////////
     // Player State Machine //
@@ -258,12 +259,91 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
 											     collider_ptr->y(),
 											     collider_ptr->width,
 												 collider_ptr->height);
+	Collider* other_collider_ptr = NULL;
 
 	// Initialize state variables, to be updated on collision.
     bool wall_right_detected = false;
     bool wall_left_detected  = false;
     bool grounded_detected   = false;
 
+	// Get current cell index that player resides in:
+	int32 half_room_width_pixels  = room.bg_ptr->dimensions().width() / 2;
+	int32 half_room_height_pixels = room.bg_ptr->dimensions().height() / 2;
+	bn::fixed index_x = (x() + half_room_width_pixels)  / TILE_WIDTH;
+	bn::fixed index_y = (y() + half_room_height_pixels) / TILE_HEIGHT;
+	bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
+
+	for(int32 y = -1; y < 2; y++)
+	{
+		for(int32 x = -1; x < 2; x++)
+		{
+			// 1. Get tile type at index //
+			uint32 check_index_x = cell_index.x() + x;
+			uint32 check_index_y = cell_index.y() + y;
+
+			// Determine world coords in case we need to make a collider.
+			int32 world_x = ((check_index_x * TILE_WIDTH)  - half_room_width_pixels)  + (TILE_WIDTH / 2);
+			int32 world_y = ((check_index_y * TILE_HEIGHT) - half_room_height_pixels) + (TILE_HEIGHT / 2);
+
+			uint32 tile_index = room.getTileAtIndex(check_index_x, check_index_y);
+
+			// 2. If the tile is collidable make a temporary collider //
+			switch(tile_index)
+			{
+				case BLOCK_INDEX:
+
+					other_collider_ptr = new Collider(world_x, 
+													  world_y, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT);
+
+					// Handle Default Collision Cases //
+					while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
+					{
+						if(normalized_dir.x() == 0) {kill_player = true; break;}
+						temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
+						setX(this->x() - normalized_dir.x());
+					}
+
+					while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
+					{
+						if(normalized_dir.y() == 0) {kill_player = true; break;}
+						temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
+						setY(this->y() - normalized_dir.y());
+					}
+
+					// If there is still collision somehow, must be corner case //
+					while(collider_ptr->isCollision(*(other_collider_ptr)))
+					{
+						if(normalized_dir.x() == 0) {kill_player = true; break;}
+						// We always resolve diagonal corner collisions with a horizontal shift. 
+						setX(this->x() - normalized_dir.x());
+					}
+
+					delete other_collider_ptr;
+
+				break;
+
+				case ONEWAYBLOCK_INDEX:
+
+					other_collider_ptr = new Collider(world_x, 
+													  world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
+													  TILE_WIDTH, 
+													  ONEWAYBLOCK_COLLIDER_HEIGHT);
+
+					// Resolve the collision, if any:
+
+					delete other_collider_ptr;
+
+				break;
+
+				default:
+				break;
+			}
+		}
+	}
+
+	/*
     for(int32 i = 0; i < game_objects.size(); i++)
     {
 		if(game_objects.at(i) != this)
@@ -334,6 +414,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
 			}
 		}
     }
+	*/
 
     ////////////////////
     // Get State Info //
@@ -357,6 +438,79 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
 													    collider_ptr->width,
 												 		collider_ptr->height);								   
 
+	for(int32 y = -1; y < 2; y++)
+	{
+		for(int32 x = -1; x < 2; x++)
+		{
+			// 1. Get tile type at index //
+			uint32 check_index_x = cell_index.x() + x;
+			uint32 check_index_y = cell_index.y() + y;
+
+			// Determine world coords in case we need to make a collider.
+			int32 world_x = ((check_index_x * TILE_WIDTH)  - half_room_width_pixels)  + (TILE_WIDTH / 2);
+			int32 world_y = ((check_index_y * TILE_HEIGHT) - half_room_height_pixels) + (TILE_HEIGHT / 2);
+
+			uint32 tile_index = room.getTileAtIndex(check_index_x, check_index_y);
+
+			switch(tile_index)
+			{
+				case BLOCK_INDEX:
+
+					other_collider_ptr = new Collider(world_x, 
+													  world_y, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT);
+
+					// Test for, and log grounded collision
+					if(test_collider_ptr->isCollision(*other_collider_ptr) && normalized_dir.y() >= 0)
+					{
+						if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) {sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
+						grounded_detected = true;
+					}
+
+					// Test for wall riding on right side
+					if(test_collider_right_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
+					{
+						wall_right_detected = true;
+					}
+					
+					// Test for wall riding on left side
+					if(test_collider_left_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
+					{
+						wall_left_detected = true;
+					}
+
+					delete other_collider_ptr;
+
+				break;
+
+				case ONEWAYBLOCK_INDEX:
+
+					other_collider_ptr = new Collider(world_x, 
+													  world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
+													  TILE_WIDTH, 
+													  ONEWAYBLOCK_COLLIDER_HEIGHT);
+
+					if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
+					{
+						// Test for, and log grounded collision
+						if(test_collider_ptr->isCollision(*(other_collider_ptr)) && normalized_dir.y() >= 0)
+						{
+							if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) {sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
+							grounded_detected = true;
+						}
+					}
+
+					delete other_collider_ptr;
+
+				break;
+
+				default:
+				break;
+			}
+		}
+	}
+	/*
     for(int32 i = 0; i < game_objects.size(); i++)
     {
 		if(game_objects.at(i) != this)
@@ -407,6 +561,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
 			}
 		}
     }
+	*/
 
 	// Clean up temp colliders
 	delete temp_collider_x_ptr;

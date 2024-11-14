@@ -12,6 +12,7 @@
 // My Libs
 #include "utility.h"
 #include "collider.h"
+#include "room.h"
 
 #define MAX_ANIM_FRAMES 16
 
@@ -22,14 +23,15 @@
 enum ObjectType 
 {
 	PLAYER = 0,
+	MOVING_PLATFORM,
 	BLOCK,
 	ONE_WAY_BLOCK,
-	MOVING_PLATFORM,
 };
 
 struct GameObject {
 
-	virtual void update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects) = 0;
+	virtual void update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
+						const Room& room) = 0;
 	virtual void draw() = 0;
 	virtual void setCamera(const bn::camera_ptr& camera) = 0;
 	virtual bn::fixed x() const = 0;

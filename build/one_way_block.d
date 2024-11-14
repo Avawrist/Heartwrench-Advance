@@ -52,7 +52,25 @@ one_way_block.o: G:/game/src/one_way_block.cpp \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/butano-master/butano/include/bn_color.h \
  G:/game/build/bn_sprite_items_collider_16.h \
- G:/game/build/bn_sprite_items_collider_32.h
+ G:/game/build/bn_sprite_items_collider_32.h G:/game/include/room.h \
+ G:/butano-master/butano/include/bn_core.h \
+ G:/butano-master/butano/include/bn_string_view.h \
+ G:/butano-master/butano/include/bn_vblank_callback_type.h \
+ G:/butano-master/butano/include/bn_vector.h \
+ G:/butano-master/butano/include/bn_span.h \
+ G:/butano-master/butano/include/bn_regular_bg_ptr.h \
+ G:/butano-master/butano/include/bn_regular_bg_item.h \
+ G:/butano-master/butano/include/bn_bg_palette_item.h \
+ G:/butano-master/butano/include/bn_regular_bg_map_item.h \
+ G:/butano-master/butano/include/bn_size.h \
+ G:/butano-master/butano/include/bn_regular_bg_map_cell.h \
+ G:/butano-master/butano/include/bn_regular_bg_tiles_item.h \
+ G:/butano-master/butano/include/bn_regular_bg_map_ptr.h \
+ G:/butano-master/butano/include/bn_regular_bg_map_cell.h \
+ G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h \
+ G:/game/build/bn_regular_bg_items_test_bg.h \
+ G:/game/build/bn_regular_bg_items_test_room.h \
+ G:/game/build/bn_regular_bg_items_test_room_2.h
 G:/game/include/one_way_block.h:
 G:/butano-master/butano/include/bn_optional.h:
 G:/butano-master/butano/include/bn_assert.h:
@@ -109,3 +127,22 @@ G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/butano-master/butano/include/bn_color.h:
 G:/game/build/bn_sprite_items_collider_16.h:
 G:/game/build/bn_sprite_items_collider_32.h:
+G:/game/include/room.h:
+G:/butano-master/butano/include/bn_core.h:
+G:/butano-master/butano/include/bn_string_view.h:
+G:/butano-master/butano/include/bn_vblank_callback_type.h:
+G:/butano-master/butano/include/bn_vector.h:
+G:/butano-master/butano/include/bn_span.h:
+G:/butano-master/butano/include/bn_regular_bg_ptr.h:
+G:/butano-master/butano/include/bn_regular_bg_item.h:
+G:/butano-master/butano/include/bn_bg_palette_item.h:
+G:/butano-master/butano/include/bn_regular_bg_map_item.h:
+G:/butano-master/butano/include/bn_size.h:
+G:/butano-master/butano/include/bn_regular_bg_map_cell.h:
+G:/butano-master/butano/include/bn_regular_bg_tiles_item.h:
+G:/butano-master/butano/include/bn_regular_bg_map_ptr.h:
+G:/butano-master/butano/include/bn_regular_bg_map_cell.h:
+G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h:
+G:/game/build/bn_regular_bg_items_test_bg.h:
+G:/game/build/bn_regular_bg_items_test_room.h:
+G:/game/build/bn_regular_bg_items_test_room_2.h:

@@ -31,6 +31,7 @@ int main()
     bn::vector<GameObject*, MAX_GAME_OBJECTS> game_objects;
 
     // Create test Moving Platforms
+    /*
     game_objects.push_back(new MovingPlatform(bn::point(32, -128), bn::point(32, -192)));
     game_objects.back()->setCamera(camera);
 
@@ -39,14 +40,15 @@ int main()
 
     game_objects.push_back(new MovingPlatform(bn::point(96, 48), bn::point(228, 48)));
     game_objects.back()->setCamera(camera);
+    */
 
     // Create Player: MUST BE UPDATED FIRST IN GAMEOBJECT ARRAY
     game_objects.push_back(new Player());
     game_objects.back()->setCamera(camera);
-    game_objects.back()->setPos(-64, 0);
+    game_objects.back()->setPos(0, -64);
 
     // Create Test Room
-    Room room(ROOM_TEST, camera, game_objects);
+    Room room(ROOM_TEST_2, camera);
 
     BN_LOG("Game Objects count: ", game_objects.size());
     BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
@@ -59,14 +61,14 @@ int main()
         BN_PROFILER_START("");
         for(int32 i = 0; i < game_objects.size(); i++)
         {
-            (game_objects.data())[i]->update(game_objects);
+            (game_objects.data())[i]->update(game_objects, room);
             (game_objects.data())[i]->draw();
         }
         BN_PROFILER_STOP();
         //bn::profiler::show();
 
         // Update Camera
-        camera.set_position(game_objects[3]->pos());
+        camera.set_position(game_objects[0]->pos());
         
         // Update Core
         bn::core::update();

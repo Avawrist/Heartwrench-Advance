@@ -17,7 +17,8 @@ Block::~Block()
     delete collider_ptr;
 }
 
-void Block::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
+void Block::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
+                   const Room& room)
 {
 
 }

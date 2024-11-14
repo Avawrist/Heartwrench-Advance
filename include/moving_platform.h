@@ -11,6 +11,7 @@
 #include "utility.h"
 #include "physics.h"
 #include "collider.h"
+#include "room.h"
 
 // Assets
 #include "bn_sprite_items_moving_platform.h"
@@ -55,7 +56,8 @@ struct MovingPlatform : GameObject {
     MovingPlatform(bn::point p1, bn::point p2);
     ~MovingPlatform();
 
-    void update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects) override;
+    void update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
+				const Room& room) override;
 	void draw() override;
 	void setCamera(const bn::camera_ptr& camera) override;
 	
