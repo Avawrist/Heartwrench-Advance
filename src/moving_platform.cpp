@@ -32,7 +32,8 @@ MovingPlatform::~MovingPlatform()
     delete collider_ptr;
 }
 
-void MovingPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
+void MovingPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
+                            const Room& room)
 {
     if(update_counter % 2 == 0) // Perform update on even frames.
     {

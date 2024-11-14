@@ -6,6 +6,7 @@
 
 OneWayBlock::OneWayBlock(uint32 width)
 {
+    /*
     object_type       = ONE_WAY_BLOCK; 
     collider_ptr      = new Collider(x(), 
                                      y(), 
@@ -13,6 +14,7 @@ OneWayBlock::OneWayBlock(uint32 width)
                                      ONEWAYBLOCK_COLLIDER_HEIGHT);
     collider_offset_x =  0;
     collider_offset_y = -4;
+    */
 }
 
 OneWayBlock::~OneWayBlock()
@@ -20,7 +22,8 @@ OneWayBlock::~OneWayBlock()
     delete collider_ptr;
 }
 
-void OneWayBlock::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
+void OneWayBlock::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
+                         const Room& room)
 {
 
 }

@@ -10,20 +10,22 @@
 // My Libs
 #include "utility.h"
 #include "game_object.h"
+#include "room.h"
 
 //////////////////
 // Struct Block //
 //////////////////
 
-#define ONEWAYBLOCK_COLLIDER_WIDTH  8
-#define ONEWAYBLOCK_COLLIDER_HEIGHT 1
+//#define ONEWAYBLOCK_COLLIDER_WIDTH  8
+//#define ONEWAYBLOCK_COLLIDER_HEIGHT 1
 
 struct OneWayBlock : GameObject {
 
     OneWayBlock(uint32 width);
 	~OneWayBlock() override;
 
-	void update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects) override;
+	void update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
+				const Room& room) override;
 	void draw() override;
 	void setCamera(const bn::camera_ptr& camera) override;
 	bn::fixed x() const override;
