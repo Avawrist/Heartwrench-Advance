@@ -236,9 +236,9 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	// Apply forces to player
     bn::fixed_point final_dir = rigidbody_ptr->applyForces(*this);
 
-    ///////////////////////
-    // Resolve Collision //
-    ///////////////////////
+    ////////////////////////////
+    // Resolve Tile Collision //
+    ////////////////////////////
     
 	// Get a normalized direction vector, to be used for collision correction if
 	// there is a collision.
@@ -261,11 +261,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 												 collider_ptr->height);
 	Collider* other_collider_ptr = NULL;
 
-	// Initialize state variables, to be updated on collision.
-    bool wall_right_detected = false;
-    bool wall_left_detected  = false;
-    bool grounded_detected   = false;
-
 	// Get current cell index that player resides in:
 	int32 half_room_width_pixels  = room.bg_ptr->dimensions().width() / 2;
 	int32 half_room_height_pixels = room.bg_ptr->dimensions().height() / 2;
@@ -278,8 +273,15 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 		for(int32 x = -1; x < 2; x++)
 		{
 			// 1. Get tile type at index //
-			uint32 check_index_x = cell_index.x() + x;
-			uint32 check_index_y = cell_index.y() + y;
+			int32 check_index_x = cell_index.x() + x;
+			int32 check_index_y = cell_index.y() + y;
+
+			// Clamp index values so we don't crash by going out of bounds.
+			while(check_index_x < 0) {check_index_x++;}
+			while(check_index_x > (room.bg_ptr->dimensions().width() / 8) - 1) {check_index_x--;}
+
+			while(check_index_y < 0) {check_index_y++;}
+			while(check_index_y > (room.bg_ptr->dimensions().height() / 8) - 1) {check_index_y--;}
 
 			// Determine world coords in case we need to make a collider.
 			int32 world_x = ((check_index_x * TILE_WIDTH)  - half_room_width_pixels)  + (TILE_WIDTH / 2);
@@ -297,6 +299,91 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 													  TILE_WIDTH, 
 													  TILE_HEIGHT);
 
+					if(collider_ptr->isCollision(*(other_collider_ptr)))
+					{
+
+						// Handle Default Collision Cases //
+						while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
+						{
+							if(normalized_dir.x() == 0) {kill_player = true; break;}
+							temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
+							setX(this->x() - normalized_dir.x());
+						}
+
+						while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
+						{
+							if(normalized_dir.y() == 0) {kill_player = true; break;}
+							temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
+							setY(this->y() - normalized_dir.y());
+						}
+
+						// If there is still collision somehow, must be corner case //
+						while(collider_ptr->isCollision(*(other_collider_ptr)))
+						{
+							if(normalized_dir.x() == 0) {kill_player = true; break;}
+							// We always resolve diagonal corner collisions with a horizontal shift. 
+							setX(this->x() - normalized_dir.x());
+						}
+					}
+
+					delete other_collider_ptr;
+
+				break;
+
+				case ONEWAYBLOCK_INDEX:
+
+					other_collider_ptr = new Collider(world_x, 
+													  world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
+													  TILE_WIDTH, 
+													  ONEWAYBLOCK_COLLIDER_HEIGHT);
+
+					if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
+					{
+						// Handle Corner Case //
+						if(!temp_collider_x_ptr->isCollision(*(other_collider_ptr)) &&
+						   !temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
+						{
+							while(collider_ptr->isCollision(*(other_collider_ptr)))
+							{
+								setY(this->y() - 1);
+							}
+						}
+					
+						// Handle Remaining Collision Cases //
+						else
+						{
+							while(temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
+							{
+								temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - 1);
+								setY(this->y() - 1);
+							}
+						}
+					}
+
+					delete other_collider_ptr;
+
+				break;
+
+				default:
+				break;
+			}
+		}
+	}
+
+	//////////////////////////////////
+	// Resolve GameObject Collision //
+	//////////////////////////////////
+
+	for(int32 i = 0; i < game_objects.size(); i++)
+    {
+		other_collider_ptr = game_objects.at(i)->collider_ptr;
+
+		switch(game_objects.at(i)->object_type)
+		{
+			case MOVING_PLATFORM:
+
+				if(collider_ptr->isCollision(*other_collider_ptr))
+				{
 					// Handle Default Collision Cases //
 					while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
 					{
@@ -318,107 +405,26 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 						if(normalized_dir.x() == 0) {kill_player = true; break;}
 						// We always resolve diagonal corner collisions with a horizontal shift. 
 						setX(this->x() - normalized_dir.x());
-					}
+					}	
+				}
 
-					delete other_collider_ptr;
+			break;
 
-				break;
-
-				case ONEWAYBLOCK_INDEX:
-
-					other_collider_ptr = new Collider(world_x, 
-													  world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
-													  TILE_WIDTH, 
-													  ONEWAYBLOCK_COLLIDER_HEIGHT);
-
-					// Resolve the collision, if any:
-
-					delete other_collider_ptr;
-
-				break;
-
-				default:
-				break;
-			}
+			default:
+			break;
 		}
+
+		other_collider_ptr = NULL;
 	}
 
-	/*
-    for(int32 i = 0; i < game_objects.size(); i++)
-    {
-		if(game_objects.at(i) != this)
-		{
-			Collider* other_collider_ptr = game_objects.at(i)->collider_ptr;
-			if(other_collider_ptr != NULL && collider_ptr->isCollision(*(other_collider_ptr)))
-			{
-				switch(game_objects.at(i)->object_type)
-				{
-					case BLOCK:
-					case MOVING_PLATFORM:
+    ///////////////////////////////
+    // Get State Info from Tiles //
+    ///////////////////////////////
 
-						// Handle Default Collision Cases //
-						while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
-						{
-							if(normalized_dir.x() == 0) {kill_player = true; break;}
-							temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
-							setX(x() - normalized_dir.x());
-						}
-
-						while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
-						{
-							if(normalized_dir.y() == 0) {kill_player = true; break;}
-							temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
-							setY(y() - normalized_dir.y());
-						}
-
-						// If there is still collision somehow, must be corner case //
-						while(collider_ptr->isCollision(*(other_collider_ptr)))
-						{
-							if(normalized_dir.x() == 0) {kill_player = true; break;}
-							// We always resolve diagonal corner collisions with a horizontal shift. 
-							setX(x() - normalized_dir.x());
-						}
-						
-					break;
-
-					case ONE_WAY_BLOCK:
-
-						if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
-						{
-							// Handle Corner Case //
-							if(!temp_collider_x_ptr->isCollision(*(other_collider_ptr)) &&
-								!temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
-							{
-								while(collider_ptr->isCollision(*(other_collider_ptr)))
-								{
-									setY(y() - 1);
-								}
-							}
-						
-							// Handle Remaining Collision Cases //
-							else
-							{
-								while(temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
-								{
-									temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - 1);
-									setY(y() - 1);
-								}
-							}
-						}
-
-					break;
-
-					default:
-					break;
-				}					
-			}
-		}
-    }
-	*/
-
-    ////////////////////
-    // Get State Info //
-    ////////////////////
+	// Initialize state variables, to be updated on collision.
+    bool wall_right_detected = false;
+    bool wall_left_detected  = false;
+    bool grounded_detected   = false;
 
 	// Create test collider for grounded collision checks
 	const uint32 ground_ray_length = 1;
@@ -440,11 +446,18 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 	for(int32 y = -1; y < 2; y++)
 	{
-		for(int32 x = -1; x < 2; x++)
+		for(int32 x = -2; x < 3; x++)
 		{
 			// 1. Get tile type at index //
-			uint32 check_index_x = cell_index.x() + x;
-			uint32 check_index_y = cell_index.y() + y;
+			int32 check_index_x = cell_index.x() + x;
+			int32 check_index_y = cell_index.y() + y;
+
+			// Clamp index values so we don't crash by going out of bounds.
+			while(check_index_x < 0) {check_index_x++;}
+			while(check_index_x > (room.bg_ptr->dimensions().width() / 8) - 1)  {check_index_x--;}
+
+			while(check_index_y < 0) {check_index_y++;}
+			while(check_index_y > (room.bg_ptr->dimensions().height() / 8) - 1) {check_index_y--;}
 
 			// Determine world coords in case we need to make a collider.
 			int32 world_x = ((check_index_x * TILE_WIDTH)  - half_room_width_pixels)  + (TILE_WIDTH / 2);
@@ -510,58 +523,47 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			}
 		}
 	}
-	/*
-    for(int32 i = 0; i < game_objects.size(); i++)
-    {
-		if(game_objects.at(i) != this)
+
+	/////////////////////////////////////
+	// Get State Info from GameObjects //
+	/////////////////////////////////////
+
+	for(int32 i = 0; i < game_objects.size(); i++)
+	{
+		other_collider_ptr = game_objects.at(i)->collider_ptr;
+
+		switch(game_objects.at(i)->object_type)
 		{
-			Collider* other_collider_ptr = game_objects.at(i)->collider_ptr;
-			switch(game_objects.at(i)->object_type)
-			{
-				case BLOCK:
-				case MOVING_PLATFORM:
+			case MOVING_PLATFORM:
 
-					// Test for, and log grounded collision
-					if(test_collider_ptr->isCollision(*other_collider_ptr) && normalized_dir.y() >= 0)
-					{
-						if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) {sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
-						grounded_detected = true;
-					}
+				// Test for, and log grounded collision
+				if(test_collider_ptr->isCollision(*other_collider_ptr) && normalized_dir.y() >= 0)
+				{
+					if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) 
+					{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
+					grounded_detected = true;
+				}
 
-					// Test for wall riding on right side
-					if(test_collider_right_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
-					{
-						wall_right_detected = true;
-					}
-					
-					// Test for wall riding on left side
-					if(test_collider_left_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
-					{
-						wall_left_detected = true;
-					}
+				// Test for wall riding on right side
+				if(test_collider_right_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
+				{
+					wall_right_detected = true;
+				}
+				
+				// Test for wall riding on left side
+				if(test_collider_left_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
+				{
+					wall_left_detected = true;
+				}
 
-				break;
+			break;
 
-				case ONE_WAY_BLOCK:
-
-					if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
-					{
-						// Test for, and log grounded collision
-						if(test_collider_ptr->isCollision(*(other_collider_ptr)) && normalized_dir.y() >= 0)
-						{
-							if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) {sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
-							grounded_detected = true;
-						}
-					}
-
-				break;
-
-				default:
-				break;
-			}
+			default:
+			break;
 		}
-    }
-	*/
+
+		other_collider_ptr = NULL;
+	}
 
 	// Clean up temp colliders
 	delete temp_collider_x_ptr;
@@ -569,10 +571,11 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	delete test_collider_ptr;
 	delete test_collider_right_ptr;
 	delete test_collider_left_ptr;
-
+	
     ///////////////////
     // Update States //
     ///////////////////
+
     if(grounded_detected)        
 	{
 		state = STATE_GROUNDED_NEUTRAL;
@@ -595,6 +598,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
     ////////////////////////////
     // Correct Sprite Offsets //
     ////////////////////////////
+	
     bn::fixed h_scale   = sprite_ptr->horizontal_scale();
     bn::fixed v_scale   = sprite_ptr->vertical_scale();
     bn::fixed increment = 0.1;

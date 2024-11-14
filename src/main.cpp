@@ -30,8 +30,7 @@ int main()
     // Game Objects test
     bn::vector<GameObject*, MAX_GAME_OBJECTS> game_objects;
 
-    // Create test Moving Platforms
-    /*
+    // Create test Moving Platforms MUST BE UPDATED FIRST
     game_objects.push_back(new MovingPlatform(bn::point(32, -128), bn::point(32, -192)));
     game_objects.back()->setCamera(camera);
 
@@ -40,9 +39,8 @@ int main()
 
     game_objects.push_back(new MovingPlatform(bn::point(96, 48), bn::point(228, 48)));
     game_objects.back()->setCamera(camera);
-    */
 
-    // Create Player: MUST BE UPDATED FIRST IN GAMEOBJECT ARRAY
+    // Create Player
     game_objects.push_back(new Player());
     game_objects.back()->setCamera(camera);
     game_objects.back()->setPos(0, -64);
@@ -68,7 +66,7 @@ int main()
         //bn::profiler::show();
 
         // Update Camera
-        camera.set_position(game_objects[0]->pos());
+        camera.set_position(game_objects[3]->pos());
         
         // Update Core
         bn::core::update();
