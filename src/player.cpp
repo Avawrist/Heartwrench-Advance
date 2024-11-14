@@ -456,7 +456,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			{
 				case BLOCK_INDEX:
 
-					other_collider_ptr = new Collider(world_x, 
+					other_collider_ptr = new Collider(world_x,
 													  world_y, 
 													  TILE_WIDTH, 
 													  TILE_HEIGHT);
