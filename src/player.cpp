@@ -276,27 +276,36 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			int32 check_index_x = cell_index.x() + x;
 			int32 check_index_y = cell_index.y() + y;
 
-			// Clamp index values so we don't crash by going out of bounds.
-			while(check_index_x < 0) {check_index_x++;}
-			while(check_index_x > (room.bg_ptr->dimensions().width() / 8) - 1) {check_index_x--;}
-
-			while(check_index_y < 0) {check_index_y++;}
-			while(check_index_y > (room.bg_ptr->dimensions().height() / 8) - 1) {check_index_y--;}
-
 			// Determine world coords in case we need to make a collider.
 			int32 world_x = ((check_index_x * TILE_WIDTH)  - half_room_width_pixels)  + (TILE_WIDTH / 2);
 			int32 world_y = ((check_index_y * TILE_HEIGHT) - half_room_height_pixels) + (TILE_HEIGHT / 2);
 
 			uint32 tile_index = room.getTileAtIndex(check_index_x, check_index_y);
 
+			// Prepare offsets in case they are needed for Block collision.
+			int32 block_w_offset = 0;
+			int32 block_x_offset = 0;
+
 			// 2. If the tile is collidable make a temporary collider //
 			switch(tile_index)
 			{
 				case BLOCK_INDEX:
 
-					other_collider_ptr = new Collider(world_x, 
+					// If the neighbor to the right is also a BLOCK, smooth over the corner.
+					// This is a hack to resolve collision since checks are always made from
+					// left to right. 
+					
+					if(room.getTileAtIndex(check_index_x + 1, 
+										   check_index_y) == BLOCK_INDEX)
+					{
+						block_w_offset = TILE_WIDTH;
+						block_x_offset = TILE_WIDTH / 2;
+						x++; // Skip checking the next cell, since we already accounted for it here.
+					}
+
+					other_collider_ptr = new Collider(world_x + block_x_offset, 
 													  world_y, 
-													  TILE_WIDTH, 
+													  TILE_WIDTH + block_w_offset, 
 													  TILE_HEIGHT);
 
 					if(collider_ptr->isCollision(*(other_collider_ptr)))

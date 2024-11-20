@@ -46,7 +46,7 @@ int main()
     game_objects.back()->setPos(0, -64);
 
     // Create Test Room
-    Room room(ROOM_TEST_2, camera);
+    Room room(ROOM_TEST, camera);
 
     BN_LOG("Game Objects count: ", game_objects.size());
     BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());

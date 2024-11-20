@@ -50,7 +50,7 @@ struct Room
     Room(RoomName room_name, 
          const bn::camera_ptr& camera_ptr);
     ~Room();
-    uint32 getTileAtIndex(uint32 x, uint32 y) const;
+    int32 getTileAtIndex(uint32 x, uint32 y) const;
 };
 
 #endif
