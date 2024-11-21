@@ -1,1 +1,0 @@
-moving_platform_bn_gfx.o: moving_platform_bn_gfx.s

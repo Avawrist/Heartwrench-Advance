@@ -389,7 +389,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 		switch(game_objects.at(i)->object_type)
 		{
-			case MOVING_PLATFORM:
+			case DEVIL_PLATFORM:
 
 				if(collider_ptr->isCollision(*other_collider_ptr))
 				{
@@ -416,6 +416,33 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 						setX(this->x() - normalized_dir.x());
 					}	
 				}
+
+			break;
+
+			case ANGEL_PLATFORM:
+
+				if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
+					{
+						// Handle Corner Case //
+						if(!temp_collider_x_ptr->isCollision(*(other_collider_ptr)) &&
+						   !temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
+						{
+							while(collider_ptr->isCollision(*(other_collider_ptr)))
+							{
+								setY(this->y() - 1);
+							}
+						}
+					
+						// Handle Remaining Collision Cases //
+						else
+						{
+							while(temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
+							{
+								temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - 1);
+								setY(this->y() - 1);
+							}
+						}
+					}
 
 			break;
 
@@ -543,7 +570,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 		switch(game_objects.at(i)->object_type)
 		{
-			case MOVING_PLATFORM:
+			case DEVIL_PLATFORM:
 
 				// Test for, and log grounded collision
 				if(test_collider_ptr->isCollision(*other_collider_ptr) && normalized_dir.y() >= 0)
@@ -564,6 +591,20 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				{
 					wall_left_detected = true;
 				}
+
+			break;
+
+			case ANGEL_PLATFORM:
+
+				if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
+					{
+						// Test for, and log grounded collision
+						if(test_collider_ptr->isCollision(*(other_collider_ptr)) && normalized_dir.y() >= 0)
+						{
+							if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) {sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
+							grounded_detected = true;
+						}
+					}
 
 			break;
 

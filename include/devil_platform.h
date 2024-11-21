@@ -1,5 +1,5 @@
-#ifndef MOVING_PLATFORM_H
-#define MOVING_PLATFORM_H
+#ifndef DEVIL_PLATFORM_H
+#define DEVIL_PLATFORM_H
 
 // Butano
 #include "bn_optional.h"
@@ -14,17 +14,17 @@
 #include "room.h"
 
 // Assets
-#include "bn_sprite_items_moving_platform.h"
+#include "bn_sprite_items_devil_platform.h"
 
 // Base Class
 #include "game_object.h"
 #include "player.h"
 
-///////////////////////////
-// Struct MovingPlatform //
-///////////////////////////
+//////////////////////////
+// Struct DevilPlatform //
+//////////////////////////
 
-// The moving platform can push, raise, lower and carry the player. 
+// The devil platform can push, raise, lower and carry the player. 
 
 // -The moving platform must never push, raise, lower or otherwise "pinch" the player 
 //  into another collidable surface, including another platform. 
@@ -36,13 +36,13 @@
 
 // -This object is updated every OTHER frame (30 fps)
 
-#define MOVING_PLATFORM_COLLIDER_WIDTH  32
-#define MOVING_PLATFORM_COLLIDER_HEIGHT 8
+#define DEVIL_PLATFORM_COLLIDER_WIDTH  32
+#define DEVIL_PLATFORM_COLLIDER_HEIGHT 8
 
-#define MOVING_PLATFORM_SPEED 1
-#define MOVING_PLATFORM_DECAY 1
+#define DEVIL_PLATFORM_SPEED 1
+#define DEVIL_PLATFORM_DECAY 1
 
-struct MovingPlatform : GameObject {
+struct DevilPlatform : GameObject {
 
     bn::optional<bn::sprite_ptr> sprite_ptr;
 	bn::optional<bn::sprite_animate_action<MAX_ANIM_FRAMES>> animate_action_ptr;
@@ -53,8 +53,8 @@ struct MovingPlatform : GameObject {
     bn::point  next_target;
 	int32 	   update_counter;
 
-    MovingPlatform(bn::point p1, bn::point p2);
-    ~MovingPlatform();
+    DevilPlatform(bn::point p1, bn::point p2);
+    ~DevilPlatform();
 
     void update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				const Room& room) override;

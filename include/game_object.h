@@ -23,7 +23,8 @@
 enum ObjectType 
 {
 	PLAYER = 0,
-	MOVING_PLATFORM,
+	DEVIL_PLATFORM,
+	ANGEL_PLATFORM,
 };
 
 struct GameObject {

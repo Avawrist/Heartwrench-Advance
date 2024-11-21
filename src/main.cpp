@@ -17,7 +17,8 @@
 #include "utility.h"
 #include "game_object.h"
 #include "player.h"
-#include "moving_platform.h"
+#include "devil_platform.h"
+#include "angel_platform.h"
 #include "room.h"
 
 int main()
@@ -31,13 +32,13 @@ int main()
     bn::vector<GameObject*, MAX_GAME_OBJECTS> game_objects;
 
     // Create test Moving Platforms MUST BE UPDATED FIRST
-    game_objects.push_back(new MovingPlatform(bn::point(32, -128), bn::point(32, -192)));
+    game_objects.push_back(new AngelPlatform(bn::point(32, -128), bn::point(32, -192)));
     game_objects.back()->setCamera(camera);
 
-    game_objects.push_back(new MovingPlatform(bn::point(-32, -128), bn::point(-96, -192)));
+    game_objects.push_back(new AngelPlatform(bn::point(-32, -128), bn::point(-96, -192)));
     game_objects.back()->setCamera(camera);
 
-    game_objects.push_back(new MovingPlatform(bn::point(96, 48), bn::point(228, 48)));
+    game_objects.push_back(new AngelPlatform(bn::point(96, 48), bn::point(228, 48)));
     game_objects.back()->setCamera(camera);
 
     // Create Player
