@@ -288,6 +288,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 																					 y() + SCYTHE_Y_OFFSET));
 				
 				// Sloppy, clean this shit up at some point.
+				delete game_objects.front();
 				game_objects.front() = scythe_ptr;
 				scythe_ptr->setCamera(camera);
 			}
