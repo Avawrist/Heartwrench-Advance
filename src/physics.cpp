@@ -55,30 +55,6 @@ RigidBody::RigidBody()
 
 }
 
-bn::fixed_point RigidBody::applyForces(GameObject& object)
-{
-    // Apply all of the forces in the RigidBody to the object
-    bn::fixed_point final_dir(0, 0);
-    
-    bn::ivector<Force*>::iterator current = forces.begin();
-    bn::ivector<Force*>::iterator last    = forces.end();
-    while(current != last)
-    {
-        // Update object position with new force
-        object.setX(object.x() + (*current)->x());
-        object.setY(object.y() + (*current)->y());
-
-        // Update final dir vector with new force
-        final_dir.set_x(final_dir.x() + (*current)->x());
-        final_dir.set_y(final_dir.y() + (*current)->y());
-
-        // Update iterator
-        current++;
-    }
-
-    return final_dir;
-}
-
 void RigidBody::applyDecay()
 {
         // Update all of the forces in the RigidBody

@@ -43,14 +43,7 @@ collider.o: G:/game/src/collider.cpp G:/game/include/collider.h \
  G:/butano-master/butano/include/bn_fixed_point.h \
  G:/game/include/utility.h G:/butano-master/butano/include/bn_log.h \
  G:/butano-master/butano/include/bn_config_log.h \
- G:/butano-master/butano/include/bn_log_backend.h \
- G:/game/build/bn_sprite_items_collider_8.h \
- G:/butano-master/butano/include/bn_sprite_item.h \
- G:/butano-master/butano/include/bn_sprite_shape_size.h \
- G:/butano-master/butano/include/bn_sprite_palette_item.h \
- G:/butano-master/butano/include/bn_color.h \
- G:/game/build/bn_sprite_items_collider_16.h \
- G:/game/build/bn_sprite_items_collider_32.h
+ G:/butano-master/butano/include/bn_log_backend.h
 G:/game/include/collider.h:
 G:/butano-master/butano/include/bn_optional.h:
 G:/butano-master/butano/include/bn_assert.h:
@@ -98,10 +91,3 @@ G:/game/include/utility.h:
 G:/butano-master/butano/include/bn_log.h:
 G:/butano-master/butano/include/bn_config_log.h:
 G:/butano-master/butano/include/bn_log_backend.h:
-G:/game/build/bn_sprite_items_collider_8.h:
-G:/butano-master/butano/include/bn_sprite_item.h:
-G:/butano-master/butano/include/bn_sprite_shape_size.h:
-G:/butano-master/butano/include/bn_sprite_palette_item.h:
-G:/butano-master/butano/include/bn_color.h:
-G:/game/build/bn_sprite_items_collider_16.h:
-G:/game/build/bn_sprite_items_collider_32.h:

@@ -6,14 +6,21 @@
 
 Player::Player()
 {
-	// Initialize all Player variables
+    // Reset Variables //
+    sprite_ptr.reset();
+    animate_action_ptr.reset();
+    delete rigidbody_ptr;
+    delete collider_ptr;
+
+    // Init Variables //
 	object_type = PLAYER;
+	dir         = RIGHT;
     sprite_ptr  = bn::sprite_items::player.create_sprite(0, 0);
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								  2,
-								  bn::sprite_items::player.tiles_item(),
-								  0,
-								  0);
+								  								  2,
+								  								  bn::sprite_items::player.tiles_item(),
+								  								  0,
+								  								  0);
 
     rigidbody_ptr = new RigidBody();
 	collider_ptr  = new Collider(x(), y(), PLAYER_COLLIDER_WIDTH, PLAYER_COLLIDER_HEIGHT);
@@ -38,12 +45,12 @@ Player::Player()
 
 Player::~Player()
 {
-    delete rigidbody_ptr;
-    delete collider_ptr;
+	
 }
 
 void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
-					const Room& room)
+					const Room& room,
+					const bn::camera_ptr& camera)
 {
     //////////////////////////
     // Player State Machine //
@@ -83,8 +90,11 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			// Get Input //
 			
 			// Walk
-			if(bn::keypad::left_held())       {rigidbody_ptr->addForce(PLAYER_X_LEFT_FORCE);}
-			else if(bn::keypad::right_held()) {rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE);}
+			if(bn::keypad::left_held())       
+			{rigidbody_ptr->addForce(PLAYER_X_LEFT_FORCE); dir = LEFT;}
+
+			else if(bn::keypad::right_held()) 
+			{rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE); dir = RIGHT;}
 
 			// Jump
 			if(bn::keypad::a_pressed())
@@ -92,6 +102,22 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
 				rigidbody_ptr->addForce(PLAYER_JUMP_FORCE);
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
+			}
+
+			// Scythe Throw
+			if(bn::keypad::b_pressed())
+			{
+				#define SCYTHE_X_OFFSET 8 
+				#define SCYTHE_Y_OFFSET 0
+
+				BN_LOG("Scythe made");
+
+				ScythePlatform* scythe_ptr = new ScythePlatform(dir, bn::fixed_point(x() + (dir * SCYTHE_X_OFFSET), 
+																					 y() + SCYTHE_Y_OFFSET));
+				
+				// Sloppy, clean this shit up at some point.
+				game_objects.front() = scythe_ptr;
+				scythe_ptr->setCamera(camera);
 			}
 
 		break;
@@ -124,14 +150,33 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			}
 
 			// Get Input //
-			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames)       {rigidbody_ptr->addForce(PLAYER_X_LEFT_FORCE);}
-			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames) {rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE);}
+			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames)       
+			{rigidbody_ptr->addForce(PLAYER_X_LEFT_FORCE); dir = LEFT;}
+
+			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames) 
+			{rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE); dir = RIGHT;}
 			
 			if(bn::keypad::a_held() && remaining_jump_input_frames > 0)
 			{
 				rigidbody_ptr->addForce(PLAYER_SECONDARY_JUMP_FORCE);
 			}
 			else if(bn::keypad::a_released()) {remaining_jump_input_frames = 0;}
+
+			// Scythe Throw
+			if(bn::keypad::b_pressed())
+			{
+				#define SCYTHE_X_OFFSET 8 
+				#define SCYTHE_Y_OFFSET 0
+
+				BN_LOG("Scythe made");
+
+				ScythePlatform* scythe_ptr = new ScythePlatform(dir, bn::fixed_point(x() + (dir * SCYTHE_X_OFFSET), 
+																					 y() + SCYTHE_Y_OFFSET));
+				
+				// Sloppy, clean this shit up at some point.
+				game_objects.front() = scythe_ptr;
+				scythe_ptr->setCamera(camera);
+			}
 			
 			// Add Gravity //
 			rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);
@@ -175,9 +220,29 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				rigidbody_ptr->addForce(PLAYER_WALL_JUMP_LEFT_FORCE);
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
+				dir = LEFT;
 			}
-			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames) {rigidbody_ptr->addForce(PLAYER_X_LEFT_FORCE);}
-			else if(bn::keypad::right_held()) 								 {gripping_wall_right = true;}
+			
+			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames) 
+			{rigidbody_ptr->addForce(PLAYER_X_LEFT_FORCE);}
+			else if(bn::keypad::right_held()) 								 
+			{gripping_wall_right = true; dir = LEFT;}
+
+			// Scythe Throw
+			if(bn::keypad::b_pressed())
+			{
+				#define SCYTHE_X_OFFSET 8 
+				#define SCYTHE_Y_OFFSET 0
+
+				BN_LOG("Scythe made");
+
+				ScythePlatform* scythe_ptr = new ScythePlatform(dir, bn::fixed_point(x() + (dir * SCYTHE_X_OFFSET), 
+																					 y() + SCYTHE_Y_OFFSET));
+				
+				// Sloppy, clean this shit up at some point.
+				game_objects.front() = scythe_ptr;
+				scythe_ptr->setCamera(camera);
+			}
 			
 			// Add Gravity //
 			if(gripping_wall_right) {rigidbody_ptr->addForce(PLAYER_WALL_GRAVITY_FORCE);}
@@ -204,9 +269,28 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				rigidbody_ptr->addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
+				dir = RIGHT;
 			}
-			if(bn::keypad::left_held())  	  									   {gripping_wall_left = true;}
-			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames) {rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE);}
+			
+			if(bn::keypad::left_held()) {gripping_wall_left = true; dir = RIGHT;}
+			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames) 
+			{rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE);}
+
+			// Scythe Throw
+			if(bn::keypad::b_pressed())
+			{
+				#define SCYTHE_X_OFFSET 8 
+				#define SCYTHE_Y_OFFSET 0
+
+				BN_LOG("Scythe made");
+
+				ScythePlatform* scythe_ptr = new ScythePlatform(dir, bn::fixed_point(x() + (dir * SCYTHE_X_OFFSET), 
+																					 y() + SCYTHE_Y_OFFSET));
+				
+				// Sloppy, clean this shit up at some point.
+				game_objects.front() = scythe_ptr;
+				scythe_ptr->setCamera(camera);
+			}
 			
 			// Add Gravity //
 			if(gripping_wall_left) {rigidbody_ptr->addForce(PLAYER_WALL_GRAVITY_FORCE);}
@@ -234,7 +318,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
     rigidbody_ptr->applyDecay();
 
 	// Apply forces to player
-    bn::fixed_point final_dir = rigidbody_ptr->applyForces(*this);
+    bn::fixed_point final_dir = applyForces();
 
     ////////////////////////////
     // Resolve Tile Collision //
@@ -420,6 +504,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			break;
 
 			case ANGEL_PLATFORM:
+			case SCYTHE_PLATFORM:
 
 				if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
 					{
@@ -595,6 +680,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			break;
 
 			case ANGEL_PLATFORM:
+			case SCYTHE_PLATFORM:
 
 				if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
 					{
@@ -644,6 +730,13 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
     else {state = STATE_AIR_NEUTRAL;}
 
 	if(kill_player) {state = STATE_DEAD;}
+
+	//////////////////////
+	// Update Direction //
+	//////////////////////
+	
+	if(dir == LEFT)        {sprite_ptr->set_horizontal_flip(true);}
+	else if (dir == RIGHT) {sprite_ptr->set_horizontal_flip(false);}
     
     ////////////////////////////
     // Correct Sprite Offsets //
@@ -663,60 +756,4 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
     else if (v_scale < 1) {sprite_ptr->set_vertical_scale(v_scale + increment);}
     if(abs(1 - sprite_ptr->vertical_scale()) < increment) {sprite_ptr->set_vertical_scale(1);}
 
-}
-
-void Player::draw()
-{
-	animate_action_ptr->update();
-}
-
-void Player::setCamera(const bn::camera_ptr& camera)
-{
-	sprite_ptr->set_camera(camera);
-    collider_ptr->setCamera(camera);
-}
-
-bn::fixed Player::x() const
-{
-    return sprite_ptr->x().integer();
-}
-
-bn::fixed Player::y() const
-{
-    return sprite_ptr->y().integer();
-}
-
-bn::fixed_point Player::pos() const
-{
-    bn::fixed_point point(sprite_ptr->position().x().integer(),
-			  			  sprite_ptr->position().y().integer());
-    return point; 
-}
-
-void Player::setX(bn::fixed new_x)
-{
-    sprite_ptr->set_x(new_x.integer());
-    collider_ptr->setX(new_x.integer() + collider_offset_x);
-}
-
-void Player::setY(bn::fixed new_y)
-{
-    sprite_ptr->set_y(new_y.integer());
-    collider_ptr->setY(new_y.integer() + collider_offset_y);
-}
-
-void Player::setPos(bn::fixed new_x, bn::fixed new_y)
-{
-    sprite_ptr->set_x(new_x.integer());
-    sprite_ptr->set_y(new_y.integer());
-	collider_ptr->setX(new_x.integer() + collider_offset_x);
-	collider_ptr->setY(new_y.integer() + collider_offset_y);
-}
-
-void Player::setPos(bn::fixed_point new_pos)
-{
-    sprite_ptr->set_x(new_pos.x().integer());
-    sprite_ptr->set_y(new_pos.y().integer());
-	collider_ptr->setX(new_pos.x().integer() + collider_offset_x);
-	collider_ptr->setY(new_pos.y().integer() + collider_offset_y);
 }

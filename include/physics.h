@@ -12,7 +12,6 @@
 // My Libs
 #include "utility.h"
 #include "math.h"
-#include "game_object.h"
 
 //////////////////
 // Struct Force //
@@ -33,7 +32,7 @@ struct Force {
 };
 
 //////////////////////
-// Struct Rigidbody //
+// Struct RigidBody //
 //////////////////////
 
 #define MAX_FORCES 10
@@ -42,7 +41,6 @@ struct RigidBody {
 	bn::vector<Force*, MAX_FORCES> forces;
 	
 	RigidBody();
-	bn::fixed_point applyForces(GameObject& object);
 	void applyDecay();
     uint32 addForce(Force* force_p);
 };

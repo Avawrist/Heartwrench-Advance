@@ -1,0 +1,1 @@
+scythe_platform_bn_gfx.o: scythe_platform_bn_gfx.s

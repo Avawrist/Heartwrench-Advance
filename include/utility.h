@@ -4,7 +4,7 @@
 #include "bn_log.h"
 
 // Global Macros
-#define MAX_GAME_OBJECTS 1200
+#define MAX_GAME_OBJECTS 50
 
 // Types
 typedef unsigned char  uint8;
@@ -16,5 +16,15 @@ typedef int   int32;
 
 // Debug Mode
 #define DEBUG_BUILD false
+
+// Enums
+
+enum Direction
+{
+    LEFT  = -1,
+    RIGHT = 1,
+    UP    = -1,
+    DOWN  = 1
+};
 
 #endif

@@ -5,7 +5,6 @@ Collider::Collider()
     position  = bn::fixed_point(0, 0);
     width     = 8;
     height    = 8;
-    //size      = COLLIDER_8;
 
     update();
 }
@@ -18,7 +17,6 @@ Collider::Collider(bn::fixed origin_x,
     position  = bn::fixed_point(origin_x, origin_y);
     width  = _width;
     height = _height;
-    //size      = _size;
     
     update();
 }

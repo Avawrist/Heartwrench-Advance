@@ -18,11 +18,10 @@
 
 // Base Class
 #include "game_object.h"
-#include "player.h"
 
-///////////////////////////
+//////////////////////////
 // Struct AngelPlatform //
-///////////////////////////
+//////////////////////////
 
 // The angel platform can carry the player. 
 
@@ -44,10 +43,6 @@
 
 struct AngelPlatform : GameObject {
 
-    bn::optional<bn::sprite_ptr> sprite_ptr;
-	bn::optional<bn::sprite_animate_action<MAX_ANIM_FRAMES>> animate_action_ptr;
-
-    RigidBody* rigidbody_ptr = NULL;
     bn::fixed  speed;
     bn::point  target;
     bn::point  next_target;
@@ -57,17 +52,8 @@ struct AngelPlatform : GameObject {
     ~AngelPlatform();
 
     void update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
-				const Room& room) override;
-	void draw() override;
-	void setCamera(const bn::camera_ptr& camera) override;
-	
-	bn::fixed x() const override;
-	bn::fixed y() const override;
-	bn::fixed_point pos() const override;
-	void setX(bn::fixed new_x) override;
-	void setY(bn::fixed new_y) override;
-	void setPos(bn::fixed new_x, bn::fixed new_y) override;
-	void setPos(bn::fixed_point new_pos) override;
+				const Room& room,
+                const bn::camera_ptr& camera) override;
 
 };
 

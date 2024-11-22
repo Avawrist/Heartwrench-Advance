@@ -2,6 +2,13 @@
 
 AngelPlatform::AngelPlatform(bn::point _p1, bn::point _p2)
 {
+    // Reset Variables //
+    sprite_ptr.reset();
+    animate_action_ptr.reset();
+    delete rigidbody_ptr;
+    delete collider_ptr;
+
+    // Init Variables //
     object_type = ANGEL_PLATFORM;
     sprite_ptr  = bn::sprite_items::angel_platform.create_sprite(0, 0);
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
@@ -10,14 +17,14 @@ AngelPlatform::AngelPlatform(bn::point _p1, bn::point _p2)
 								                                  0,
 								                                  0);
 
+    collider_offset_x = 0;
+	collider_offset_y = -16;
+
     rigidbody_ptr = new RigidBody();
 	collider_ptr  = new Collider(x() + collider_offset_x, 
                                  y() + collider_offset_y, 
                                  ANGEL_PLATFORM_COLLIDER_WIDTH, 
                                  ANGEL_PLATFORM_COLLIDER_HEIGHT);
-
-    collider_offset_x = 0;
-	collider_offset_y = -16;
 
     speed = ANGEL_PLATFORM_SPEED;
 
@@ -31,12 +38,12 @@ AngelPlatform::AngelPlatform(bn::point _p1, bn::point _p2)
 
 AngelPlatform::~AngelPlatform()
 {
-    delete rigidbody_ptr;
-    delete collider_ptr;
+    
 }
 
 void AngelPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
-                           const Room& room)
+                           const Room& room,
+                           const bn::camera_ptr& camera)
 {
     if(update_counter % 2 == 0) // Perform update on even frames.
     {
@@ -77,7 +84,7 @@ void AngelPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
         rigidbody_ptr->applyDecay();
 
         // Apply forces to angel platform
-        bn::fixed_point final_dir = rigidbody_ptr->applyForces(*this);
+        bn::fixed_point final_dir = applyForces();
 
         ///////////////////////
         // Resolve Collision //
@@ -100,21 +107,22 @@ void AngelPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
                 Collider*   player_collider_ptr = player_ptr->collider_ptr;
 
                 // If player is riding the platform:
-                if(test_collider_roof_ptr->isCollision(*player_collider_ptr))
+                if(test_collider_roof_ptr->isCollision(*player_collider_ptr) && 
+                   player_collider_ptr->p4.y() < collider_ptr->p1.y() + ANGEL_PLATFORM_SPEED)
                 {
                     if(final_dir.y() <= 0)
                     {
                         // If descending, applying force to the x axis is all that's needed.
                         // The player gravity will take care of the rest. 
-                        ((Player*)player_ptr)->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 0),
-                                                                                 ANGEL_PLATFORM_DECAY));
+                        player_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 0),
+                                                                      ANGEL_PLATFORM_DECAY));
                     }
                     else
                     {
                         // If ascending, apply force to BOTH axes and offset y by 1 
                         // so the player hugs the platform tight.
-                        ((Player*)player_ptr)->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), final_dir.y() + 1),
-                                                                                ANGEL_PLATFORM_DECAY));
+                        player_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), final_dir.y() + 1),
+                                                                      ANGEL_PLATFORM_DECAY));
                     }
                 }
             }					
@@ -125,60 +133,4 @@ void AngelPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
 
     update_counter++;
     if(update_counter >= 60) {update_counter = 0;}
-}
-
-void AngelPlatform::draw()
-{
-    animate_action_ptr->update();
-}
-
-void AngelPlatform::setCamera(const bn::camera_ptr& camera)
-{
-    sprite_ptr->set_camera(camera);
-    collider_ptr->setCamera(camera); 
-}
-
-bn::fixed AngelPlatform::x() const
-{
-    return sprite_ptr->x().integer();
-}
-
-bn::fixed AngelPlatform::y() const
-{
-    return sprite_ptr->y().integer();
-} 
-
-bn::fixed_point AngelPlatform::pos() const
-{
-    bn::fixed_point point(sprite_ptr->position().x().integer(),
-			  			  sprite_ptr->position().y().integer());
-    return point; 
-}
-
-void AngelPlatform::setX(bn::fixed new_x)
-{
-    sprite_ptr->set_x(new_x.integer());
-    collider_ptr->setX(new_x.integer() + collider_offset_x);
-}
-
-void AngelPlatform::setY(bn::fixed new_y)
-{
-    sprite_ptr->set_y(new_y.integer());
-    collider_ptr->setY(new_y.integer() + collider_offset_y);
-}
-
-void AngelPlatform::setPos(bn::fixed new_x, bn::fixed new_y) 
-{
-    sprite_ptr->set_x(new_x.integer());
-    sprite_ptr->set_y(new_y.integer());
-	collider_ptr->setX(new_x.integer() + collider_offset_x);
-	collider_ptr->setY(new_y.integer() + collider_offset_y);
-}
-
-void AngelPlatform::setPos(bn::fixed_point new_pos)
-{
-    sprite_ptr->set_x(new_pos.x().integer());
-    sprite_ptr->set_y(new_pos.y().integer());
-	collider_ptr->setX(new_pos.x().integer() + collider_offset_x);
-	collider_ptr->setY(new_pos.y().integer() + collider_offset_y);
 }

@@ -12,11 +12,6 @@
 // My Libs
 #include "utility.h"
 
-// Assets
-#include "bn_sprite_items_collider_8.h"
-#include "bn_sprite_items_collider_16.h"
-#include "bn_sprite_items_collider_32.h"
-
 #define MAX_ANIM_FRAMES 16
 
 struct Collider {

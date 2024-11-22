@@ -32,9 +32,6 @@ int main()
     bn::vector<GameObject*, MAX_GAME_OBJECTS> game_objects;
 
     // Create test Moving Platforms MUST BE UPDATED FIRST
-    game_objects.push_back(new AngelPlatform(bn::point(32, -128), bn::point(32, -192)));
-    game_objects.back()->setCamera(camera);
-
     game_objects.push_back(new AngelPlatform(bn::point(-32, -128), bn::point(-96, -192)));
     game_objects.back()->setCamera(camera);
 
@@ -42,7 +39,8 @@ int main()
     game_objects.back()->setCamera(camera);
 
     // Create Player
-    game_objects.push_back(new Player());
+    Player* player_ptr = new Player();
+    game_objects.push_back(player_ptr);
     game_objects.back()->setCamera(camera);
     game_objects.back()->setPos(0, -64);
 
@@ -60,14 +58,14 @@ int main()
         BN_PROFILER_START("");
         for(int32 i = 0; i < game_objects.size(); i++)
         {
-            (game_objects.data())[i]->update(game_objects, room);
+            (game_objects.data())[i]->update(game_objects, room, camera);
             (game_objects.data())[i]->draw();
         }
         BN_PROFILER_STOP();
         //bn::profiler::show();
 
         // Update Camera
-        camera.set_position(game_objects[3]->pos());
+        camera.set_position(player_ptr->pos());
         
         // Update Core
         bn::core::update();

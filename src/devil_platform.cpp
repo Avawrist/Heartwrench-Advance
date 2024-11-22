@@ -2,6 +2,13 @@
 
 DevilPlatform::DevilPlatform(bn::point _p1, bn::point _p2)
 {
+    // Reset Variables //
+    sprite_ptr.reset();
+    animate_action_ptr.reset();
+    delete rigidbody_ptr;
+    delete collider_ptr;
+
+    // Init Variables //
     object_type = DEVIL_PLATFORM;
     sprite_ptr  = bn::sprite_items::devil_platform.create_sprite(0, 0);
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
@@ -10,14 +17,14 @@ DevilPlatform::DevilPlatform(bn::point _p1, bn::point _p2)
 								                                  0,
 								                                  0);
 
+    collider_offset_x = 0;
+	collider_offset_y = -12;
+
     rigidbody_ptr = new RigidBody();
 	collider_ptr  = new Collider(x() + collider_offset_x, 
                                  y() + collider_offset_y, 
                                  DEVIL_PLATFORM_COLLIDER_WIDTH, 
                                  DEVIL_PLATFORM_COLLIDER_HEIGHT);
-
-    collider_offset_x = 0;
-	collider_offset_y = -12;
 
     speed = DEVIL_PLATFORM_SPEED;
 
@@ -31,12 +38,12 @@ DevilPlatform::DevilPlatform(bn::point _p1, bn::point _p2)
 
 DevilPlatform::~DevilPlatform()
 {
-    delete rigidbody_ptr;
-    delete collider_ptr;
+    
 }
 
 void DevilPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
-                            const Room& room)
+                            const Room& room,
+                            const bn::camera_ptr& camera)
 {
     if(update_counter % 2 == 0) // Perform update on even frames.
     {
@@ -77,7 +84,7 @@ void DevilPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
         rigidbody_ptr->applyDecay();
 
         // Apply forces to devil platform
-        bn::fixed_point final_dir = rigidbody_ptr->applyForces(*this);
+        bn::fixed_point final_dir = applyForces();
 
         ///////////////////////
         // Resolve Collision //
@@ -132,7 +139,7 @@ void DevilPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
                     }
 
                     // If there is still a collision, it must be a corner case:
-                    while(collider_ptr->isCollision(*(player_collider_ptr)))
+                    while(collider_ptr->isCollision(*player_collider_ptr))
                     {
                         // We resolve a diagonal corner collision with a horizontal shift. 
                         player_ptr->setX(player_ptr->x() + normalized_dir.x());
@@ -143,9 +150,8 @@ void DevilPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
                 if(test_collider_slide_ptr->isCollision(*player_collider_ptr) && 
                 ((Player*)player_ptr)->state != STATE_GROUNDED_NEUTRAL)
                 {
-                    ((Player*)player_ptr)->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(0, 
-                                                                                                final_dir.y()),
-                                                                                                DEVIL_PLATFORM_DECAY));
+                    player_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(0, final_dir.y()),
+                                                                  DEVIL_PLATFORM_DECAY));
                 }
 
                 // Finally, if player is riding the platform:
@@ -155,15 +161,15 @@ void DevilPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
                     {
                         // If descending, applying force to the x axis is all that's needed.
                         // The player gravity will take care of the rest. 
-                        ((Player*)player_ptr)->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 0),
-                                                                                DEVIL_PLATFORM_DECAY));
+                        player_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 0),
+                                                                      DEVIL_PLATFORM_DECAY));
                     }
                     else
                     {
                         // If ascending, apply force to BOTH axes and offset y by 1 
                         // so the player hugs the platform tight.
-                        ((Player*)player_ptr)->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), final_dir.y() + 1),
-                                                                                DEVIL_PLATFORM_DECAY));
+                        player_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), final_dir.y() + 1),
+                                                                      DEVIL_PLATFORM_DECAY));
                     }
                 }
             }					
@@ -177,60 +183,4 @@ void DevilPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
 
     update_counter++;
     if(update_counter >= 60) {update_counter = 0;}
-}
-
-void DevilPlatform::draw()
-{
-    animate_action_ptr->update();
-}
-
-void DevilPlatform::setCamera(const bn::camera_ptr& camera)
-{
-    sprite_ptr->set_camera(camera);
-    collider_ptr->setCamera(camera); 
-}
-
-bn::fixed DevilPlatform::x() const
-{
-    return sprite_ptr->x().integer();
-}
-
-bn::fixed DevilPlatform::y() const
-{
-    return sprite_ptr->y().integer();
-} 
-
-bn::fixed_point DevilPlatform::pos() const
-{
-    bn::fixed_point point(sprite_ptr->position().x().integer(),
-			  			  sprite_ptr->position().y().integer());
-    return point; 
-}
-
-void DevilPlatform::setX(bn::fixed new_x)
-{
-    sprite_ptr->set_x(new_x.integer());
-    collider_ptr->setX(new_x.integer() + collider_offset_x);
-}
-
-void DevilPlatform::setY(bn::fixed new_y)
-{
-    sprite_ptr->set_y(new_y.integer());
-    collider_ptr->setY(new_y.integer() + collider_offset_y);
-}
-
-void DevilPlatform::setPos(bn::fixed new_x, bn::fixed new_y) 
-{
-    sprite_ptr->set_x(new_x.integer());
-    sprite_ptr->set_y(new_y.integer());
-	collider_ptr->setX(new_x.integer() + collider_offset_x);
-	collider_ptr->setY(new_y.integer() + collider_offset_y);
-}
-
-void DevilPlatform::setPos(bn::fixed_point new_pos)
-{
-    sprite_ptr->set_x(new_pos.x().integer());
-    sprite_ptr->set_y(new_pos.y().integer());
-	collider_ptr->setX(new_pos.x().integer() + collider_offset_x);
-	collider_ptr->setY(new_pos.y().integer() + collider_offset_y);
 }
