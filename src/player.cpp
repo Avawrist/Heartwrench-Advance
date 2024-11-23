@@ -38,10 +38,11 @@ Player::Player()
     gravity           	 = PLAYER_GRAVITY;
 	wall_ride_gravity 	 = PLAYER_WALL_RIDE_GRAVITY;
 	
-	remaining_jump_input_frames      = 0;
-	remaining_x_drift_lockout_frames = 0;
-	current_scythe_throw_frames      = 0;
-	air_frames_elapsed               = 0;
+	remaining_jump_input_frames         = 0;
+	remaining_x_drift_lockout_frames    = 0;
+	current_scythe_throw_frames         = 0;
+	air_frames_elapsed                  = 0;
+
 }
 
 Player::~Player()
@@ -308,9 +309,9 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	// Apply forces to player
     bn::fixed_point final_dir = applyForces();
 
-    ////////////////////////////
-    // Resolve Tile Collision //
-    ////////////////////////////
+	//////////////////////////////
+	// Init Collision Variables //
+	//////////////////////////////
     
 	// Get a normalized direction vector, to be used for collision correction if
 	// there is a collision.
@@ -339,6 +340,85 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	bn::fixed index_x = (x() + half_room_width_pixels)  / TILE_WIDTH;
 	bn::fixed index_y = (y() + half_room_height_pixels) / TILE_HEIGHT;
 	bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
+
+	//////////////////////////////////
+	// Resolve GameObject Collision //
+	//////////////////////////////////
+
+	for(int32 i = 0; i < game_objects.size(); i++)
+    {
+		other_collider_ptr = game_objects.at(i)->collider_ptr;
+
+		switch(game_objects.at(i)->object_type)
+		{
+			case DEVIL_PLATFORM:
+
+				if(collider_ptr->isCollision(*other_collider_ptr))
+				{
+					// Handle Default Collision Cases //
+					while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
+					{
+						if(normalized_dir.x() == 0) {kill_player = true; break;}
+						temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
+						setX(this->x() - normalized_dir.x());
+					}
+
+					while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
+					{
+						if(normalized_dir.y() == 0) {kill_player = true; break;}
+						temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
+						setY(this->y() - normalized_dir.y());
+					}
+
+					// If there is still collision somehow, must be corner case //
+					while(collider_ptr->isCollision(*(other_collider_ptr)))
+					{
+						if(normalized_dir.x() == 0) {kill_player = true; break;}
+						// We always resolve diagonal corner collisions with a horizontal shift. 
+						setX(this->x() - normalized_dir.x());
+					}	
+				}
+
+			break;
+
+			case ANGEL_PLATFORM:
+			case SCYTHE_PLATFORM:
+				
+				if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
+				{
+					// Handle Corner Case //
+					if(!temp_collider_x_ptr->isCollision(*(other_collider_ptr)) &&
+					   !temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
+					{
+						while(collider_ptr->isCollision(*(other_collider_ptr)))
+						{
+							setY(this->y() - 1);
+						}
+					}
+				
+					// Handle Remaining Collision Cases //
+					else
+					{
+						while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
+						{
+							temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - 1);
+							setY(this->y() - 1);
+						}
+					}
+				}
+				
+			break;
+
+			default:
+			break;
+		}
+
+		other_collider_ptr = NULL;
+	}
+
+	////////////////////////////
+    // Resolve Tile Collision //
+    ////////////////////////////
 
 	for(int32 y = -1; y < 2; y++)
 	{
@@ -451,84 +531,9 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 		}
 	}
 
-	//////////////////////////////////
-	// Resolve GameObject Collision //
-	//////////////////////////////////
-
-	for(int32 i = 0; i < game_objects.size(); i++)
-    {
-		other_collider_ptr = game_objects.at(i)->collider_ptr;
-
-		switch(game_objects.at(i)->object_type)
-		{
-			case DEVIL_PLATFORM:
-
-				if(collider_ptr->isCollision(*other_collider_ptr))
-				{
-					// Handle Default Collision Cases //
-					while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
-					{
-						if(normalized_dir.x() == 0) {kill_player = true; break;}
-						temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
-						setX(this->x() - normalized_dir.x());
-					}
-
-					while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
-					{
-						if(normalized_dir.y() == 0) {kill_player = true; break;}
-						temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
-						setY(this->y() - normalized_dir.y());
-					}
-
-					// If there is still collision somehow, must be corner case //
-					while(collider_ptr->isCollision(*(other_collider_ptr)))
-					{
-						if(normalized_dir.x() == 0) {kill_player = true; break;}
-						// We always resolve diagonal corner collisions with a horizontal shift. 
-						setX(this->x() - normalized_dir.x());
-					}	
-				}
-
-			break;
-
-			case ANGEL_PLATFORM:
-			case SCYTHE_PLATFORM:
-
-				if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
-					{
-						// Handle Corner Case //
-						if(!temp_collider_x_ptr->isCollision(*(other_collider_ptr)) &&
-						   !temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
-						{
-							while(collider_ptr->isCollision(*(other_collider_ptr)))
-							{
-								setY(this->y() - 1);
-							}
-						}
-					
-						// Handle Remaining Collision Cases //
-						else
-						{
-							while(temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
-							{
-								temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - 1);
-								setY(this->y() - 1);
-							}
-						}
-					}
-
-			break;
-
-			default:
-			break;
-		}
-
-		other_collider_ptr = NULL;
-	}
-
-    ///////////////////////////////
-    // Get State Info from Tiles //
-    ///////////////////////////////
+	////////////////////////////////////////
+	// Initialize State Testing Variables //
+	////////////////////////////////////////
 
 	// Initialize state variables, to be updated on collision.
     bool wall_right_detected = false;
@@ -551,7 +556,68 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	Collider*    test_collider_left_ptr  = new Collider(collider_ptr->x() - wall_ray_length,
 													    collider_ptr->y(),
 													    collider_ptr->width,
-												 		collider_ptr->height);								   
+												 		collider_ptr->height);	
+
+	/////////////////////////////////////
+	// Get State Info from GameObjects //
+	/////////////////////////////////////
+
+	for(int32 i = 0; i < game_objects.size(); i++)
+	{
+		other_collider_ptr = game_objects.at(i)->collider_ptr;
+
+		switch(game_objects.at(i)->object_type)
+		{
+			case DEVIL_PLATFORM:
+
+				// Test for, and log grounded collision
+				if(test_collider_ptr->isCollision(*other_collider_ptr) && normalized_dir.y() >= 0)
+				{
+					if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) 
+					{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
+					grounded_detected = true;
+				}
+
+				// Test for wall riding on right side
+				if(test_collider_right_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
+				{
+					wall_right_detected = true;
+				}
+				
+				// Test for wall riding on left side
+				if(test_collider_left_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
+				{
+					wall_left_detected = true;
+				}
+
+			break;
+
+			case ANGEL_PLATFORM:
+			case SCYTHE_PLATFORM:
+				
+				if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
+					{
+						// Test for, and log grounded collision
+						if(test_collider_ptr->isCollision(*(other_collider_ptr)) && normalized_dir.y() >= 0)
+						{
+							if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) 
+							{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
+							grounded_detected = true;
+						}
+					}
+				
+			break;
+
+			default:
+			break;
+		}
+
+		other_collider_ptr = NULL;
+	}
+
+	///////////////////////////////
+    // Get State Info from Tiles //
+    ///////////////////////////////							   
 
 	for(int32 y = -1; y < 2; y++)
 	{
@@ -633,62 +699,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 		}
 	}
 
-	/////////////////////////////////////
-	// Get State Info from GameObjects //
-	/////////////////////////////////////
-
-	for(int32 i = 0; i < game_objects.size(); i++)
-	{
-		other_collider_ptr = game_objects.at(i)->collider_ptr;
-
-		switch(game_objects.at(i)->object_type)
-		{
-			case DEVIL_PLATFORM:
-
-				// Test for, and log grounded collision
-				if(test_collider_ptr->isCollision(*other_collider_ptr) && normalized_dir.y() >= 0)
-				{
-					if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) 
-					{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
-					grounded_detected = true;
-				}
-
-				// Test for wall riding on right side
-				if(test_collider_right_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
-				{
-					wall_right_detected = true;
-				}
-				
-				// Test for wall riding on left side
-				if(test_collider_left_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
-				{
-					wall_left_detected = true;
-				}
-
-			break;
-
-			case ANGEL_PLATFORM:
-			case SCYTHE_PLATFORM:
-
-				if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
-					{
-						// Test for, and log grounded collision
-						if(test_collider_ptr->isCollision(*(other_collider_ptr)) && normalized_dir.y() >= 0)
-						{
-							if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) {sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
-							grounded_detected = true;
-						}
-					}
-
-			break;
-
-			default:
-			break;
-		}
-
-		other_collider_ptr = NULL;
-	}
-
 	// Clean up temp colliders
 	delete temp_collider_x_ptr;
 	delete temp_collider_y_ptr;
@@ -723,9 +733,9 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 	if(kill_player) {state = STATE_DEAD;}
 
-	//////////////////////
-	// Update Direction //
-	//////////////////////
+	/////////////////////////////
+	// Update Sprite Direction //
+	/////////////////////////////
 	
 	if(dir == LEFT)        {sprite_ptr->set_horizontal_flip(true);}
 	else if (dir == RIGHT) {sprite_ptr->set_horizontal_flip(false);}

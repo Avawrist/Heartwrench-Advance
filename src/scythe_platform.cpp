@@ -18,7 +18,7 @@ ScythePlatform::ScythePlatform(Direction _dir, bn::fixed_point _p)
 								                                  0);
 
     collider_offset_x = 0;
-    collider_offset_y = -1;
+    collider_offset_y = 0;
 
     rigidbody_ptr = new RigidBody();
 	collider_ptr  = new Collider(x() + collider_offset_x, 
@@ -131,14 +131,13 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 					// If the neighbor to the right is also a BLOCK, smooth over the corner.
 					// This is a hack to resolve collision since checks are always made from
 					// left to right. 
-					
 					if(room.getTileAtIndex(check_index_x + 1,
 										   check_index_y) == BLOCK_INDEX)
 					{
 						block_w_offset = TILE_WIDTH;
 						block_x_offset = TILE_WIDTH / 2;
 						x++; // Skip checking the next cell, since we already accounted for it here.
-					}
+					} 
 
 					other_collider_ptr = new Collider(world_x + block_x_offset,
 													  world_y, 
@@ -147,6 +146,7 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 
 					if(collider_ptr->isCollision(*(other_collider_ptr)))
 					{
+						BN_LOG("scythe col detected");
                         // Update state (deferred)
                         is_stuck = true;    
 
@@ -206,7 +206,7 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 		switch(object_ptr->object_type)
 		{
 			case PLAYER:
-
+				
 				// If player is riding the platform:
 				if(test_collider_roof_ptr->isCollision(*other_collider_ptr) && 
 				   other_collider_ptr->p4.y() < collider_ptr->p1.y())
@@ -216,7 +216,7 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 						// If descending, applying force to the x axis is all that's needed.
 						// The player gravity will take care of the rest. 
 						object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 0),
-																	  SCYTHE_PLATFORM_DECAY));
+																	SCYTHE_PLATFORM_DECAY));
 					}
 					else
 					{

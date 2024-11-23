@@ -38,19 +38,18 @@ int main()
     game_objects.back()->setPos(0, -64);
 
     // Create test Moving Platforms next. They must always be updated first.
-    game_objects.push_back(new DevilPlatform(bn::point(-32, -128), bn::point(-96, -192)));
+    game_objects.push_back(new DevilPlatform(bn::point(-32, -32), bn::point(-32, -192)));
     game_objects.back()->setCamera(camera);
     
-    game_objects.push_back(new AngelPlatform(bn::point(96, 44), bn::point(228, 44)));
+    game_objects.push_back(new DevilPlatform(bn::point(96, 44), bn::point(228, 44)));
     game_objects.back()->setCamera(camera);
 
     // Create Test Room
-    Room room(ROOM_TEST_2, camera);
+    Room room(ROOM_TEST, camera);
 
     BN_LOG("Game Objects count: ", game_objects.size());
     BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
     BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
-    BN_LOG("Front object: ", game_objects.front()->object_type);
     
     // Game Loop
     while(true)
