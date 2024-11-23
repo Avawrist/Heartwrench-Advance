@@ -44,9 +44,8 @@ int main()
     game_objects.push_back(new AngelPlatform(bn::point(96, 44), bn::point(228, 44)));
     game_objects.back()->setCamera(camera);
 
-
     // Create Test Room
-    Room room(ROOM_TEST, camera);
+    Room room(ROOM_TEST_2, camera);
 
     BN_LOG("Game Objects count: ", game_objects.size());
     BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
