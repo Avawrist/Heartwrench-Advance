@@ -40,6 +40,7 @@ Player::Player()
 	
 	remaining_jump_input_frames      = 0;
 	remaining_x_drift_lockout_frames = 0;
+	current_scythe_throw_frames      = 0;
 	air_frames_elapsed               = 0;
 }
 
@@ -52,13 +53,18 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 					const Room& room,
 					const bn::camera_ptr& camera)
 {
+
     //////////////////////////
     // Player State Machine //
     //////////////////////////
 
 	bool gripping_wall_right = false;
 	bool gripping_wall_left  = false;
+	bool throw_scythe        = false;
 	bool kill_player         = false;
+
+	#define SCYTHE_X_OFFSET 20 
+	#define SCYTHE_Y_OFFSET 0
 
     switch(state)
     {
@@ -105,20 +111,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			}
 
 			// Scythe Throw
-			if(bn::keypad::b_pressed())
-			{
-				#define SCYTHE_X_OFFSET 8 
-				#define SCYTHE_Y_OFFSET 0
-
-				BN_LOG("Scythe made");
-
-				ScythePlatform* scythe_ptr = new ScythePlatform(dir, bn::fixed_point(x() + (dir * SCYTHE_X_OFFSET), 
-																					 y() + SCYTHE_Y_OFFSET));
-				
-				// Sloppy, clean this shit up at some point.
-				game_objects.front() = scythe_ptr;
-				scythe_ptr->setCamera(camera);
-			}
+			if(bn::keypad::b_pressed()) {current_scythe_throw_frames = 0; throw_scythe = true;}
 
 		break;
 	
@@ -163,20 +156,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			else if(bn::keypad::a_released()) {remaining_jump_input_frames = 0;}
 
 			// Scythe Throw
-			if(bn::keypad::b_pressed())
-			{
-				#define SCYTHE_X_OFFSET 8 
-				#define SCYTHE_Y_OFFSET 0
-
-				BN_LOG("Scythe made");
-
-				ScythePlatform* scythe_ptr = new ScythePlatform(dir, bn::fixed_point(x() + (dir * SCYTHE_X_OFFSET), 
-																					 y() + SCYTHE_Y_OFFSET));
-				
-				// Sloppy, clean this shit up at some point.
-				game_objects.front() = scythe_ptr;
-				scythe_ptr->setCamera(camera);
-			}
+			if(bn::keypad::b_pressed()) {current_scythe_throw_frames = 0; throw_scythe = true;}
 			
 			// Add Gravity //
 			rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);
@@ -229,20 +209,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			{gripping_wall_right = true; dir = LEFT;}
 
 			// Scythe Throw
-			if(bn::keypad::b_pressed())
-			{
-				#define SCYTHE_X_OFFSET 8 
-				#define SCYTHE_Y_OFFSET 0
-
-				BN_LOG("Scythe made");
-
-				ScythePlatform* scythe_ptr = new ScythePlatform(dir, bn::fixed_point(x() + (dir * SCYTHE_X_OFFSET), 
-																					 y() + SCYTHE_Y_OFFSET));
-				
-				// Sloppy, clean this shit up at some point.
-				game_objects.front() = scythe_ptr;
-				scythe_ptr->setCamera(camera);
-			}
+			if(bn::keypad::b_pressed()) {current_scythe_throw_frames = 0; throw_scythe = true;}
 			
 			// Add Gravity //
 			if(gripping_wall_right) {rigidbody_ptr->addForce(PLAYER_WALL_GRAVITY_FORCE);}
@@ -277,26 +244,46 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			{rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE);}
 
 			// Scythe Throw
-			if(bn::keypad::b_pressed())
-			{
-				#define SCYTHE_X_OFFSET 8 
-				#define SCYTHE_Y_OFFSET 0
-
-				BN_LOG("Scythe made");
-
-				ScythePlatform* scythe_ptr = new ScythePlatform(dir, bn::fixed_point(x() + (dir * SCYTHE_X_OFFSET), 
-																					 y() + SCYTHE_Y_OFFSET));
-				
-				// Sloppy, clean this shit up at some point.
-				delete game_objects.front();
-				game_objects.front() = scythe_ptr;
-				scythe_ptr->setCamera(camera);
-			}
+			if(bn::keypad::b_pressed()) {current_scythe_throw_frames = 0; throw_scythe = true;}
 			
 			// Add Gravity //
 			if(gripping_wall_left) {rigidbody_ptr->addForce(PLAYER_WALL_GRAVITY_FORCE);}
 			else {rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);}
 		
+		break;
+
+		case STATE_THROWING:
+
+			// Create Scythe //
+			if(current_scythe_throw_frames == PLAYER_THROW_SCYTHE_FRAME)
+			{
+				ScythePlatform* scythe_ptr = new ScythePlatform(dir, bn::fixed_point(x() + (dir * SCYTHE_X_OFFSET), 
+																					 y() + SCYTHE_Y_OFFSET));
+				scythe_ptr->setCamera(camera);
+				
+				// If a scythe already exists at the assigned index, delete it and create a new scythe.
+				if(game_objects.at(SCYTHE_OBJECT_LIST_INDEX)->object_type == SCYTHE_PLATFORM)
+				{
+					delete game_objects.at(SCYTHE_OBJECT_LIST_INDEX);
+					game_objects.at(SCYTHE_OBJECT_LIST_INDEX) = scythe_ptr;
+				}
+				// Otherwise, insert a new scythe for the first time, to the right of the Player index (0)
+				else
+				{
+					bn::ivector<GameObject*>::iterator first = game_objects.begin();
+					first++;
+					game_objects.insert(first, scythe_ptr);
+				}
+			}
+
+			// Update frame counter
+			current_scythe_throw_frames++;
+			current_scythe_throw_frames = clamp(0, 
+												  PLAYER_SCYTHE_THROW_FRAMES, 
+												  current_scythe_throw_frames);
+
+			if(current_scythe_throw_frames != PLAYER_SCYTHE_THROW_FRAMES) {throw_scythe = true;}
+
 		break;
 
 		case STATE_DEAD:
@@ -713,7 +700,11 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
     // Update States //
     ///////////////////
 
-    if(grounded_detected)        
+	if(throw_scythe)
+	{
+		state = STATE_THROWING;
+	}
+    else if(grounded_detected)        
 	{
 		state = STATE_GROUNDED_NEUTRAL;
 		air_frames_elapsed = 0;

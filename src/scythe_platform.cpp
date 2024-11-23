@@ -35,7 +35,7 @@ ScythePlatform::ScythePlatform(Direction _dir, bn::fixed_point _p)
 
 ScythePlatform::~ScythePlatform()
 {
-    
+
 }
 
 void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
@@ -52,13 +52,11 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
     switch(state)
     {
         case STATE_THROWN:
-            BN_LOG("Added force");
             rigidbody_ptr->addForce(SCYTHE_PLATFORM_X_FORCE);
 
         break;
 
         case STATE_STUCK:
-            BN_LOG("STUCK");
         break;
 
         default:
@@ -129,7 +127,6 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 			switch(tile_index)
 			{
 				case BLOCK_INDEX:
-                case ONEWAYBLOCK_INDEX:
 
 					// If the neighbor to the right is also a BLOCK, smooth over the corner.
 					// This is a hack to resolve collision since checks are always made from
@@ -202,31 +199,76 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 
     for(int32 i = 0; i < game_objects.size(); i++)
     {
-        if(game_objects.at(i)->object_type == PLAYER)
-        {
-            GameObject* player_ptr          = game_objects.at(i);
-            Collider*   player_collider_ptr = player_ptr->collider_ptr;
 
-            // If player is riding the platform:
-            if(test_collider_roof_ptr->isCollision(*player_collider_ptr) && 
-               player_collider_ptr->p4.y() < collider_ptr->p1.y())
-            {
-                if(final_dir.y() <= 0)
-                {
-                    // If descending, applying force to the x axis is all that's needed.
-                    // The player gravity will take care of the rest. 
-                    player_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 0),
-                                                                  SCYTHE_PLATFORM_DECAY));
-                }
-                else
-                {
-                    // If ascending, apply force to BOTH axes and offset y by 1 
-                    // so the player hugs the platform tight.
-                    player_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), final_dir.y() + 1),
-                                                                  SCYTHE_PLATFORM_DECAY));
-                }
-            }
-        }					
+		GameObject* object_ptr = game_objects.at(i);
+		other_collider_ptr     = object_ptr->collider_ptr;
+
+		switch(object_ptr->object_type)
+		{
+			case PLAYER:
+
+				// If player is riding the platform:
+				if(test_collider_roof_ptr->isCollision(*other_collider_ptr) && 
+				   other_collider_ptr->p4.y() < collider_ptr->p1.y())
+				{
+					if(final_dir.y() <= 0)
+					{
+						// If descending, applying force to the x axis is all that's needed.
+						// The player gravity will take care of the rest. 
+						object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 0),
+																	  SCYTHE_PLATFORM_DECAY));
+					}
+					else
+					{
+						// If ascending, apply force to BOTH axes and offset y by 1 
+						// so the player hugs the platform tight.
+						object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), final_dir.y() + 1),
+																	SCYTHE_PLATFORM_DECAY));
+					}
+				}
+
+			break;
+
+			case DEVIL_PLATFORM:
+
+				if(collider_ptr->isCollision(*other_collider_ptr))
+				{
+					// Update state (deferred)
+					is_stuck = true;
+
+					// Handle Default Collision Cases //
+					while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
+					{
+						if(normalized_dir.x() == 0) {break;}
+						temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
+						setX(this->x() - normalized_dir.x());
+					}
+
+					while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
+					{
+						if(normalized_dir.y() == 0) {break;}
+						temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
+						setY(this->y() - normalized_dir.y());
+					}
+
+					// If there is still collision somehow, must be corner case //
+					while(collider_ptr->isCollision(*(other_collider_ptr)))
+					{
+						if(normalized_dir.x() == 0) {break;}
+						// We always resolve diagonal corner collisions with a horizontal shift. 
+						setX(this->x() - normalized_dir.x());
+					}	
+				}
+
+			break;
+
+			default:
+			break;
+		}
+
+		object_ptr         = NULL;
+		other_collider_ptr = NULL;
+
     }
 
     // Clean up temp colliders

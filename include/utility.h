@@ -6,6 +6,9 @@
 // Global Macros
 #define MAX_GAME_OBJECTS 50
 
+#define PLAYER_OBJECT_LIST_INDEX 0
+#define SCYTHE_OBJECT_LIST_INDEX 1
+
 // Types
 typedef unsigned char  uint8;
 typedef unsigned short uint16;

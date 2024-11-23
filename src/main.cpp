@@ -31,18 +31,19 @@ int main()
     // Game Objects test
     bn::vector<GameObject*, MAX_GAME_OBJECTS> game_objects;
 
-    // Create test Moving Platforms MUST BE UPDATED FIRST
-    game_objects.push_back(new AngelPlatform(bn::point(-32, -128), bn::point(-96, -192)));
-    game_objects.back()->setCamera(camera);
-
-    game_objects.push_back(new AngelPlatform(bn::point(96, 48), bn::point(228, 48)));
-    game_objects.back()->setCamera(camera);
-
-    // Create Player
+    // Create Player FIRST. They will always be updated last.
     Player* player_ptr = new Player();
     game_objects.push_back(player_ptr);
     game_objects.back()->setCamera(camera);
     game_objects.back()->setPos(0, -64);
+
+    // Create test Moving Platforms next. They must always be updated first.
+    game_objects.push_back(new DevilPlatform(bn::point(-32, -128), bn::point(-96, -192)));
+    game_objects.back()->setCamera(camera);
+    
+    game_objects.push_back(new AngelPlatform(bn::point(96, 44), bn::point(228, 44)));
+    game_objects.back()->setCamera(camera);
+
 
     // Create Test Room
     Room room(ROOM_TEST, camera);
@@ -50,13 +51,14 @@ int main()
     BN_LOG("Game Objects count: ", game_objects.size());
     BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
     BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
+    BN_LOG("Front object: ", game_objects.front()->object_type);
     
     // Game Loop
     while(true)
     {
-        // Update Game Objects
+        // Update Game Objects from Back of the list to the front
         BN_PROFILER_START("");
-        for(int32 i = 0; i < game_objects.size(); i++)
+        for(int32 i = game_objects.size() - 1; i >= 0; i--)
         {
             (game_objects.data())[i]->update(game_objects, room, camera);
             (game_objects.data())[i]->draw();

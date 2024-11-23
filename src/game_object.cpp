@@ -24,6 +24,7 @@ GameObject::~GameObject()
 {
     sprite_ptr.reset();
     animate_action_ptr.reset();
+    
     delete collider_ptr;
     delete rigidbody_ptr;
 }

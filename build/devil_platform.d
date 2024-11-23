@@ -76,9 +76,7 @@ devil_platform.o: G:/game/src/devil_platform.cpp \
  G:/game/build/bn_sprite_items_game_object.h G:/game/include/player.h \
  G:/butano-master/butano/include/bn_keypad.h \
  G:/game/build/bn_sprite_items_player.h G:/game/include/scythe_platform.h \
- G:/game/build/bn_sprite_items_scythe_platform.h \
- G:/game/include/angel_platform.h \
- G:/game/build/bn_sprite_items_angel_platform.h
+ G:/game/build/bn_sprite_items_scythe_platform.h
 G:/game/include/devil_platform.h:
 G:/butano-master/butano/include/bn_math.h:
 G:/butano-master/butano/include/bn_array.h:
@@ -164,5 +162,3 @@ G:/butano-master/butano/include/bn_keypad.h:
 G:/game/build/bn_sprite_items_player.h:
 G:/game/include/scythe_platform.h:
 G:/game/build/bn_sprite_items_scythe_platform.h:
-G:/game/include/angel_platform.h:
-G:/game/build/bn_sprite_items_angel_platform.h:

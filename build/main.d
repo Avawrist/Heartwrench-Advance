@@ -92,11 +92,10 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_log.h \
  G:/game/build/bn_sprite_items_player.h G:/game/include/game_object.h \
  G:/game/include/scythe_platform.h \
  G:/game/build/bn_sprite_items_scythe_platform.h \
- G:/game/include/angel_platform.h \
- G:/game/build/bn_sprite_items_angel_platform.h \
  G:/game/include/devil_platform.h \
  G:/game/build/bn_sprite_items_devil_platform.h G:/game/include/player.h \
- G:/game/include/angel_platform.h G:/game/include/room.h
+ G:/game/include/angel_platform.h \
+ G:/game/build/bn_sprite_items_angel_platform.h G:/game/include/room.h
 G:/butano-master/butano/include/bn_log.h:
 G:/butano-master/butano/include/bn_config_log.h:
 G:/butano-master/butano/include/bn_log_backend.h:
@@ -198,10 +197,9 @@ G:/game/build/bn_sprite_items_player.h:
 G:/game/include/game_object.h:
 G:/game/include/scythe_platform.h:
 G:/game/build/bn_sprite_items_scythe_platform.h:
-G:/game/include/angel_platform.h:
-G:/game/build/bn_sprite_items_angel_platform.h:
 G:/game/include/devil_platform.h:
 G:/game/build/bn_sprite_items_devil_platform.h:
 G:/game/include/player.h:
 G:/game/include/angel_platform.h:
+G:/game/build/bn_sprite_items_angel_platform.h:
 G:/game/include/room.h:

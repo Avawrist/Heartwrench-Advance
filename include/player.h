@@ -13,7 +13,6 @@
 
 // My Libs
 #include "scythe_platform.h"
-#include "angel_platform.h"
 
 ///////////////////
 // Struct Player //
@@ -50,6 +49,9 @@
 
 #define PLAYER_SQUISH_FRAMES_REQUIRED 3
 
+#define PLAYER_SCYTHE_THROW_FRAMES 3
+#define PLAYER_THROW_SCYTHE_FRAME  0
+
 #define PLAYER_X_LEFT_FORCE  	      new Force(bn::fixed_point_t<12>(-x_speed, 0), PLAYER_X_DECAY)
 #define PLAYER_X_RIGHT_FORCE 	      new Force(bn::fixed_point_t<12>( x_speed, 0), PLAYER_X_DECAY)
 #define PLAYER_X_LEFT_DECAY_FORCE     new Force(bn::fixed_point_t<12>(-x_speed, 0), X_SPEED_DECAY_RATE)
@@ -73,6 +75,7 @@ enum PlayerState {
 	STATE_AIR_NEUTRAL,
 	STATE_WALL_SLIDE_RIGHT,
 	STATE_WALL_SLIDE_LEFT,
+	STATE_THROWING,
 	STATE_DEAD,
 };
 
@@ -89,6 +92,7 @@ struct Player : GameObject {
 	bn::fixed       wall_ride_gravity;
 	int32           remaining_jump_input_frames;
 	int32           remaining_x_drift_lockout_frames;
+	int32           current_scythe_throw_frames;
 	int32           air_frames_elapsed;
 	
 	Player();
