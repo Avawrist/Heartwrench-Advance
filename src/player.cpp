@@ -41,6 +41,7 @@ Player::Player()
 	remaining_jump_input_frames         = 0;
 	remaining_x_drift_lockout_frames    = 0;
 	current_scythe_throw_frames         = 0;
+	move_owp_frames						= 0;
 	air_frames_elapsed                  = 0;
 
 }
@@ -275,6 +276,8 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 					first++;
 					game_objects.insert(first, scythe_ptr);
 				}
+				// Hide the scythe until it's had its first update
+				scythe_ptr->sprite_ptr->set_visible(false);
 			}
 
 			// Update frame counter
@@ -298,6 +301,10 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 		default:
 		break;
     }
+
+	// Update Move OWP Frames //
+	move_owp_frames--;
+	move_owp_frames = clamp(0, PLAYER_MOVE_OWP_FRAMES, move_owp_frames);
 
     ///////////////////
     // Apply Physics //
@@ -401,8 +408,15 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 					{
 						while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
 						{
-							temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - 1);
-							setY(this->y() - 1);
+							if(move_owp_frames)
+							{
+								game_objects.at(i)->setY(game_objects.at(i)->y() + 1);
+							}
+							else
+							{
+								temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - 1);
+								setY(this->y() - 1);
+							}
 						}
 					}
 				}
@@ -462,6 +476,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 					if(collider_ptr->isCollision(*(other_collider_ptr)))
 					{
+						if(normalized_dir.y() == -1) {move_owp_frames = PLAYER_MOVE_OWP_FRAMES;}
 
 						// Handle Default Collision Cases //
 						while(temp_collider_x_ptr->isCollision(*other_collider_ptr))

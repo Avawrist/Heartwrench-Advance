@@ -42,8 +42,10 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
                             const Room& room,
                             const bn::camera_ptr& camera)
 {
-
     bool is_stuck = false;
+
+	// Player made the scythe hidden on creation, undo now:
+	sprite_ptr->set_visible(true);
 
     ///////////////////
     // State Machine //
@@ -146,16 +148,14 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 
 					if(collider_ptr->isCollision(*(other_collider_ptr)))
 					{
-						BN_LOG("scythe col detected");
                         // Update state (deferred)
                         is_stuck = true;    
 
 						// Handle Default Collision Cases //
 						while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
 						{
-							if(normalized_dir.x() == 0) {break;}
-							temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
-							setX(this->x() - normalized_dir.x());
+							temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - dir);
+							setX(this->x() - dir);
 						}
 
 						while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
@@ -168,9 +168,8 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 						// If there is still collision somehow, must be corner case //
 						while(collider_ptr->isCollision(*(other_collider_ptr)))
 						{
-							if(normalized_dir.x() == 0) {break;}
 							// We always resolve diagonal corner collisions with a horizontal shift. 
-							setX(this->x() - normalized_dir.x());
+							setX(this->x() - dir);
 						}
 					}
 
