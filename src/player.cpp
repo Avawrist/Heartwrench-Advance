@@ -38,11 +38,11 @@ Player::Player()
     gravity           	 = PLAYER_GRAVITY;
 	wall_ride_gravity 	 = PLAYER_WALL_RIDE_GRAVITY;
 	
-	remaining_jump_input_frames         = 0;
-	remaining_x_drift_lockout_frames    = 0;
-	current_scythe_throw_frames         = 0;
-	move_owp_frames						= 0;
-	air_frames_elapsed                  = 0;
+	remaining_jump_input_frames      = 0;
+	remaining_x_drift_lockout_frames = 0;
+	current_scythe_throw_frames      = 0;
+	owp_grace_frames                 = 0;
+	air_frames_elapsed               = 0;
 
 }
 
@@ -283,8 +283,8 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			// Update frame counter
 			current_scythe_throw_frames++;
 			current_scythe_throw_frames = clamp(0, 
-												  PLAYER_SCYTHE_THROW_FRAMES, 
-												  current_scythe_throw_frames);
+												PLAYER_SCYTHE_THROW_FRAMES, 
+												current_scythe_throw_frames);
 
 			if(current_scythe_throw_frames != PLAYER_SCYTHE_THROW_FRAMES) {throw_scythe = true;}
 
@@ -301,10 +301,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 		default:
 		break;
     }
-
-	// Update Move OWP Frames //
-	move_owp_frames--;
-	move_owp_frames = clamp(0, PLAYER_MOVE_OWP_FRAMES, move_owp_frames);
 
     ///////////////////
     // Apply Physics //
@@ -389,10 +385,10 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			break;
 
 			case ANGEL_PLATFORM:
-			case SCYTHE_PLATFORM:
-				
+
 				if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
 				{
+
 					// Handle Corner Case //
 					if(!temp_collider_x_ptr->isCollision(*(other_collider_ptr)) &&
 					   !temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
@@ -406,17 +402,42 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 					// Handle Remaining Collision Cases //
 					else
 					{
+
 						while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
 						{
-							if(move_owp_frames)
-							{
-								game_objects.at(i)->setY(game_objects.at(i)->y() + 1);
-							}
-							else
-							{
-								temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - 1);
-								setY(this->y() - 1);
-							}
+							temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - 1);
+							setY(this->y() - 1);
+						}
+					}
+				}
+				
+			break;
+
+			case SCYTHE_PLATFORM:
+				
+				if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
+				{
+
+					// Handle Corner Case //
+					if(!temp_collider_x_ptr->isCollision(*(other_collider_ptr)) &&
+					   !temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
+					{
+						while(collider_ptr->isCollision(*(other_collider_ptr)))
+						{
+							owp_grace_frames = PLAYER_OWP_SNAP_FRAMES;
+							setY(this->y() - 1);
+						}
+					}
+				
+					// Handle Remaining Collision Cases //
+					else
+					{
+
+						while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
+						{
+							owp_grace_frames = PLAYER_OWP_SNAP_FRAMES;
+							temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - 1);
+							setY(this->y() - 1);
 						}
 					}
 				}
@@ -476,29 +497,68 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 					if(collider_ptr->isCollision(*(other_collider_ptr)))
 					{
-						if(normalized_dir.y() == -1) {move_owp_frames = PLAYER_MOVE_OWP_FRAMES;}
-
-						// Handle Default Collision Cases //
-						while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
+						
+						// If Player snapped through a OWP this frame, handle differently
+						// because player may have no move speed 
+						if(owp_grace_frames)
 						{
-							if(normalized_dir.x() == 0) {kill_player = true; break;}
-							temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
-							setX(this->x() - normalized_dir.x());
+							// Ignore x axis, only resolve y axis
+							while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
+							{
+								if(normalized_dir.y() == 0)
+								{
+									temp_collider_y_ptr->setY(temp_collider_y_ptr->y() + 1);
+									setY(this->y() + 1);
+
+									// Cheeky fix, move scythe platform down one pixel. 
+									if(game_objects.at(SCYTHE_OBJECT_LIST_INDEX) != NULL)
+									{
+										GameObject* temp = game_objects.at(SCYTHE_OBJECT_LIST_INDEX);
+										temp->setY(temp->y() + 1);
+										temp = NULL;
+									}
+								}
+								else
+								{
+									temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
+									setY(this->y() - normalized_dir.y());
+								}
+							}
+
+							// If there is still collision somehow, must be corner case //
+							while(collider_ptr->isCollision(*(other_collider_ptr)))
+							{
+								if(normalized_dir.x() == 0) {break;}
+								// We always resolve diagonal corner collisions with a horizontal shift. 
+								setX(this->x() - normalized_dir.x());
+							}
 						}
 
-						while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
+						// If didn't snap to OWP this frame, handle the default way.
+						else
 						{
-							if(normalized_dir.y() == 0) {kill_player = true; break;}
-							temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
-							setY(this->y() - normalized_dir.y());
-						}
+							// Handle Default Collision Cases //
+							while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
+							{
+								if(normalized_dir.x() == 0) {kill_player = true; break;}
+								temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
+								setX(this->x() - normalized_dir.x());
+							}
 
-						// If there is still collision somehow, must be corner case //
-						while(collider_ptr->isCollision(*(other_collider_ptr)))
-						{
-							if(normalized_dir.x() == 0) {kill_player = true; break;}
-							// We always resolve diagonal corner collisions with a horizontal shift. 
-							setX(this->x() - normalized_dir.x());
+							while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
+							{
+								if(normalized_dir.y() == 0) {kill_player = true; break;}
+								temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
+								setY(this->y() - normalized_dir.y());
+							}
+
+							// If there is still collision somehow, must be corner case //
+							while(collider_ptr->isCollision(*(other_collider_ptr)))
+							{
+								if(normalized_dir.x() == 0) {kill_player = true; break;}
+								// We always resolve diagonal corner collisions with a horizontal shift. 
+								setX(this->x() - normalized_dir.x());
+							}
 						}
 					}
 
@@ -595,15 +655,11 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 				// Test for wall riding on right side
 				if(test_collider_right_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
-				{
-					wall_right_detected = true;
-				}
+				{wall_right_detected = true;}
 				
 				// Test for wall riding on left side
 				if(test_collider_left_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
-				{
-					wall_left_detected = true;
-				}
+				{wall_left_detected = true;}
 
 			break;
 
@@ -611,15 +667,15 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			case SCYTHE_PLATFORM:
 				
 				if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
+				{
+					// Test for, and log grounded collision
+					if(test_collider_ptr->isCollision(*(other_collider_ptr)) && normalized_dir.y() >= 0)
 					{
-						// Test for, and log grounded collision
-						if(test_collider_ptr->isCollision(*(other_collider_ptr)) && normalized_dir.y() >= 0)
-						{
-							if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) 
-							{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
-							grounded_detected = true;
-						}
+						if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) 
+						{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
+						grounded_detected = true;
 					}
+				}
 				
 			break;
 
@@ -747,6 +803,12 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
     else {state = STATE_AIR_NEUTRAL;}
 
 	if(kill_player) {state = STATE_DEAD;}
+
+	///////////////////
+	// Update Timers //
+	///////////////////
+	owp_grace_frames--;
+	owp_grace_frames = clamp(0, PLAYER_OWP_SNAP_FRAMES, owp_grace_frames);
 
 	/////////////////////////////
 	// Update Sprite Direction //
