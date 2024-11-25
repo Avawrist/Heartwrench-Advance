@@ -107,71 +107,98 @@ void DevilPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
         Collider* test_collider_x_ptr = NULL;
         Collider* test_collider_y_ptr = NULL;
 
+        Collider temp_object_collider_ptr(0, 0, 0, 0);
+
         for(int32 i = 0; i < game_objects.size(); i++)
         {
-            if(game_objects.at(i)->object_type == PLAYER)
+
+            GameObject* object_ptr          = game_objects.at(i);
+            Collider*   object_collider_ptr = object_ptr->collider_ptr;
+
+            switch(game_objects.at(i)->object_type)
             {
-                GameObject* player_ptr          = game_objects.at(i);
-                Collider*   player_collider_ptr = player_ptr->collider_ptr;
+                case PLAYER:
 
-                // If the player has any collision with the platform,
-                // resolve it immediately by shifting the player until
-                // there is no collision.
-                if(collider_ptr->isCollision(*player_collider_ptr))
-                {
-                    test_collider_x_ptr = new Collider(collider_ptr->x(),
-                                                    collider_ptr->y() - final_dir.y(),
-                                                    collider_ptr->width,
-                                                    collider_ptr->height);
-                    test_collider_y_ptr = new Collider(collider_ptr->x() - final_dir.x(),
-                                                    collider_ptr->y(),
-                                                    collider_ptr->width,
-                                                    collider_ptr->height);
+                    // If the player has any collision with the platform,
+                    // resolve it immediately by shifting the player until
+                    // there is no collision.
+                    if(collider_ptr->isCollision(*object_collider_ptr))
+                    {
+                        test_collider_x_ptr = new Collider(collider_ptr->x(),
+                                                        collider_ptr->y() - final_dir.y(),
+                                                        collider_ptr->width,
+                                                        collider_ptr->height);
+                        test_collider_y_ptr = new Collider(collider_ptr->x() - final_dir.x(),
+                                                        collider_ptr->y(),
+                                                        collider_ptr->width,
+                                                        collider_ptr->height);
+                        
+                        while(test_collider_x_ptr->isCollision(*object_collider_ptr))
+                        {
+                            object_ptr->setX(object_ptr->x() + normalized_dir.x());
+                        }
+                        
+                        while(test_collider_y_ptr->isCollision(*object_collider_ptr))
+                        {
+                            object_ptr->setY(object_ptr->y() + normalized_dir.y());
+                        }
 
-                    while(test_collider_x_ptr->isCollision(*player_collider_ptr))
-                    {
-                        player_ptr->setX(player_ptr->x() + normalized_dir.x());
-                    }
-                    
-                    while(test_collider_y_ptr->isCollision(*player_collider_ptr))
-                    {
-                        player_ptr->setY(player_ptr->y() + normalized_dir.y());
+                        // If there is still a collision, it must be a corner case:
+                        while(collider_ptr->isCollision(*object_collider_ptr))
+                        {
+                            // We resolve a diagonal corner collision with a horizontal shift. 
+                            object_ptr->setX(object_ptr->x() + normalized_dir.x());
+                        } 
                     }
 
-                    // If there is still a collision, it must be a corner case:
-                    while(collider_ptr->isCollision(*player_collider_ptr))
+                    // Check for a wall slide to improve feel of wall sliding physics.
+                    if(test_collider_slide_ptr->isCollision(*object_collider_ptr) && 
+                    ((Player*)object_ptr)->state != STATE_GROUNDED_NEUTRAL)
                     {
-                        // We resolve a diagonal corner collision with a horizontal shift. 
-                        player_ptr->setX(player_ptr->x() + normalized_dir.x());
+                        object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(0, final_dir.y()),
+                                                                    DEVIL_PLATFORM_DECAY));
                     }
-                }
 
-                // Check for a wall slide to improve feel of wall sliding physics.
-                if(test_collider_slide_ptr->isCollision(*player_collider_ptr) && 
-                ((Player*)player_ptr)->state != STATE_GROUNDED_NEUTRAL)
-                {
-                    player_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(0, final_dir.y()),
-                                                                  DEVIL_PLATFORM_DECAY));
-                }
+                    // Finally, if player is riding the platform:
+                    if(test_collider_roof_ptr->isCollision(*object_collider_ptr))
+                    {
+                        if(final_dir.y() <= 0)
+                        {
+                            // If descending, applying force to the x axis is all that's needed.
+                            // The player gravity will take care of the rest. 
+                            object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 0),
+                                                                        DEVIL_PLATFORM_DECAY));
+                        }
+                        else
+                        {
+                            // If ascending, apply force to BOTH axes and offset y by 1 
+                            // so the player hugs the platform tight.
+                            object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), final_dir.y() + 1),
+                                                                        DEVIL_PLATFORM_DECAY));
+                        }
+                    }
 
-                // Finally, if player is riding the platform:
-                if(test_collider_roof_ptr->isCollision(*player_collider_ptr))
-                {
-                    if(final_dir.y() <= 0)
+                break;
+
+                case SCYTHE_PLATFORM:
+
+                    temp_object_collider_ptr = Collider(object_collider_ptr->x(),
+                                                        object_collider_ptr->y(),
+                                                        object_collider_ptr->width + 2,
+                                                        object_collider_ptr->height);
+
+                    if(collider_ptr->isCollision(temp_object_collider_ptr))
                     {
-                        // If descending, applying force to the x axis is all that's needed.
-                        // The player gravity will take care of the rest. 
-                        player_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 0),
-                                                                      DEVIL_PLATFORM_DECAY));
+                        object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 
+                                                                                            final_dir.y()),
+                                                                                            DEVIL_PLATFORM_DECAY));
                     }
-                    else
-                    {
-                        // If ascending, apply force to BOTH axes and offset y by 1 
-                        // so the player hugs the platform tight.
-                        player_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), final_dir.y() + 1),
-                                                                      DEVIL_PLATFORM_DECAY));
-                    }
-                }
+
+                break;
+
+                default:
+                break;
+
             }					
         }
 

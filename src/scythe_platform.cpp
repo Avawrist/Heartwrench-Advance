@@ -243,12 +243,13 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 						setX(this->x() - normalized_dir.x());
 					}
 
+					/*
 					while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
 					{
 						if(normalized_dir.y() == 0) {break;}
 						temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
 						setY(this->y() - normalized_dir.y());
-					}
+					} */
 
 					// If there is still collision somehow, must be corner case //
 					while(collider_ptr->isCollision(*(other_collider_ptr)))

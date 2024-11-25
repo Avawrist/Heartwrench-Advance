@@ -32,7 +32,6 @@ Player::Player()
     x_speed        	  	 = PLAYER_MIN_X_SPEED;
     jump_force           = PLAYER_BASE_JUMP_FORCE;
 	secondary_jump_force = PLAYER_SECOND_JUMP_FORCE;
-	dash_force        	 = PLAYER_DASH_FORCE;
     wall_jump_force   	 = bn::fixed_point(PLAYER_WALL_JUMP_X_FORCE, 
 										   PLAYER_WALL_JUMP_Y_FORCE);
     gravity           	 = PLAYER_GRAVITY;
@@ -110,6 +109,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
 				rigidbody_ptr->addForce(PLAYER_JUMP_FORCE);
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
+				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
 			}
 
 			// Scythe Throw
@@ -152,9 +152,8 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			{rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE); dir = RIGHT;}
 			
 			if(bn::keypad::a_held() && remaining_jump_input_frames > 0)
-			{
-				rigidbody_ptr->addForce(PLAYER_SECONDARY_JUMP_FORCE);
-			}
+			{rigidbody_ptr->addForce(PLAYER_SECONDARY_JUMP_FORCE);}
+
 			else if(bn::keypad::a_released()) {remaining_jump_input_frames = 0;}
 
 			// Scythe Throw
@@ -201,6 +200,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			{
 				rigidbody_ptr->addForce(PLAYER_WALL_JUMP_LEFT_FORCE);
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
+				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
 				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
 				dir = LEFT;
 			}
@@ -237,6 +237,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			{
 				rigidbody_ptr->addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
+				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
 				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
 				dir = RIGHT;
 			}
@@ -256,9 +257,16 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 		case STATE_THROWING:
 
-			// Create Scythe //
 			if(current_scythe_throw_frames == PLAYER_THROW_SCYTHE_FRAME)
 			{
+				// Add force :) //
+				rigidbody_ptr->addForce(PLAYER_THROW_FORCE);
+
+				// Add stretch for fun
+				sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
+				sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+
+				// Create Scythe //
 				ScythePlatform* scythe_ptr = new ScythePlatform(dir, bn::fixed_point(x() + (dir * SCYTHE_X_OFFSET), 
 																					 y() + SCYTHE_Y_OFFSET));
 				scythe_ptr->setCamera(camera);
@@ -355,7 +363,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 		switch(game_objects.at(i)->object_type)
 		{
 			case DEVIL_PLATFORM:
-
+				
 				if(collider_ptr->isCollision(*other_collider_ptr))
 				{
 					// Handle Default Collision Cases //
@@ -394,9 +402,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 					   !temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
 					{
 						while(collider_ptr->isCollision(*(other_collider_ptr)))
-						{
-							setY(this->y() - 1);
-						}
+						{setY(this->y() - 1);}
 					}
 				
 					// Handle Remaining Collision Cases //
@@ -404,10 +410,8 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 					{
 
 						while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
-						{
-							temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - 1);
-							setY(this->y() - 1);
-						}
+						{temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - 1);
+							setY(this->y() - 1);}
 					}
 				}
 				
@@ -649,7 +653,8 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				if(test_collider_ptr->isCollision(*other_collider_ptr) && normalized_dir.y() >= 0)
 				{
 					if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) 
-					{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
+					{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
+					 sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
 					grounded_detected = true;
 				}
 
@@ -672,7 +677,8 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 					if(test_collider_ptr->isCollision(*(other_collider_ptr)) && normalized_dir.y() >= 0)
 					{
 						if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) 
-						{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
+						{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
+						 sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
 						grounded_detected = true;
 					}
 				}
@@ -723,7 +729,9 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 					// Test for, and log grounded collision
 					if(test_collider_ptr->isCollision(*other_collider_ptr) && normalized_dir.y() >= 0)
 					{
-						if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) {sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
+						if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) 
+						{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
+						 sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
 						grounded_detected = true;
 					}
 
@@ -755,7 +763,9 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 						// Test for, and log grounded collision
 						if(test_collider_ptr->isCollision(*(other_collider_ptr)) && normalized_dir.y() >= 0)
 						{
-							if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) {sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);}
+							if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) 
+							{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
+						     sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
 							grounded_detected = true;
 						}
 					}

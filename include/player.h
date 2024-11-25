@@ -21,7 +21,9 @@
 #define PLAYER_COLLIDER_WIDTH 16
 #define PLAYER_COLLIDER_HEIGHT 16
 
+#define PLAYER_MIN_STRETCH_V 0.75
 #define PLAYER_MAX_STRETCH_V 1.75
+#define PLAYER_MIN_STRETCH_H 0.75
 #define PLAYER_MAX_STRETCH_H 1.5
 
 #define PLAYER_MIN_X_SPEED 0
@@ -44,13 +46,13 @@
 #define PLAYER_WALL_RIDE_GRAVITY 1
 #define PLAYER_GRAVITY_DECAY 	 1
 
-#define PLAYER_DASH_FORCE      10
-#define PLAYER_DASH_DECAY_RATE 0.05
+#define PLAYER_THROW_X_FORCE 6
+#define PLAYER_THROW_FORCE_DECAY 0.05 
 
 #define PLAYER_SQUISH_FRAMES_REQUIRED 3
 
-#define PLAYER_SCYTHE_THROW_FRAMES 5
-#define PLAYER_THROW_SCYTHE_FRAME  0
+#define PLAYER_SCYTHE_THROW_FRAMES 8
+#define PLAYER_THROW_SCYTHE_FRAME  4
 
 #define PLAYER_OWP_SNAP_FRAMES 2
 
@@ -67,10 +69,7 @@
 #define PLAYER_GRAVITY_FORCE          new Force(bn::fixed_point_t<12>(0, gravity), 			 PLAYER_GRAVITY_DECAY)
 #define PLAYER_WALL_GRAVITY_FORCE     new Force(bn::fixed_point_t<12>(0, wall_ride_gravity), PLAYER_GRAVITY_DECAY)
 
-#define PLAYER_DASH_UP_FORCE          new Force(bn::fixed_point_t<12>(0, -dash_force), PLAYER_DASH_DECAY_RATE)
-#define PLAYER_DASH_DOWN_FORCE		  new Force(bn::fixed_point_t<12>(0,  dash_force), PLAYER_DASH_DECAY_RATE)
-#define PLAYER_DASH_LEFT_FORCE		  new Force(bn::fixed_point_t<12>(-dash_force, 0), PLAYER_DASH_DECAY_RATE)
-#define PLAYER_DASH_RIGHT_FORCE		  new Force(bn::fixed_point_t<12>(dash_force,  0), PLAYER_DASH_DECAY_RATE)
+#define PLAYER_THROW_FORCE            new Force(bn::fixed_point_t<12>(PLAYER_THROW_X_FORCE * dir * -1, 0), PLAYER_THROW_FORCE_DECAY)
 
 enum PlayerState {
 	STATE_GROUNDED_NEUTRAL,
@@ -88,7 +87,7 @@ struct Player : GameObject {
 	bn::fixed       x_speed;
 	bn::fixed       jump_force;
 	bn::fixed       secondary_jump_force;
-	bn::fixed 		dash_force;
+	//bn::fixed 		dash_force;
 	bn::fixed_point wall_jump_force;
 	bn::fixed       gravity;
 	bn::fixed       wall_ride_gravity;
