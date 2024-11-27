@@ -38,7 +38,7 @@ int main()
     game_objects.back()->setPos(0, -64);
 
     // Create test Moving Platforms next. They must always be updated first.
-    game_objects.push_back(new DevilPlatform(bn::point(-32, -32), bn::point(-32, -192)));
+    game_objects.push_back(new DevilPlatform(bn::point(-32, -32), bn::point(-192, -192)));
     game_objects.back()->setCamera(camera);
     
     game_objects.push_back(new DevilPlatform(bn::point(96, 44), bn::point(228, 44)));

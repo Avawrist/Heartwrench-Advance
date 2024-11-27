@@ -42,7 +42,8 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
                             const Room& room,
                             const bn::camera_ptr& camera)
 {
-    bool is_stuck = false;
+    bool is_stuck_in_object = false;
+	bool is_stuck_in_map    = false;
 
 	// Player made the scythe hidden on creation, undo now:
 	sprite_ptr->set_visible(true);
@@ -58,8 +59,11 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 
         break;
 
-        case STATE_STUCK:
+        case STATE_STUCK_IN_MAP:
         break;
+
+		case STATE_STUCK_IN_OBJECT:
+		break;
 
         default:
         break;
@@ -75,7 +79,7 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
     // Apply forces to scythe platform
     bn::fixed_point final_dir = applyForces();
 
-    ////////////////////////////
+	////////////////////////////
     // Resolve Tile Collision //
     ////////////////////////////
 
@@ -107,88 +111,92 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 	bn::fixed index_y = (y() + half_room_height_pixels) / TILE_HEIGHT;
 	bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
 
-	for(int32 y = -2; y < 3; y++)
+	if(state != STATE_STUCK_IN_OBJECT)
 	{
-		for(int32 x = -2; x < 3; x++)
+		for(int32 y = -2; y < 3; y++)
 		{
-			// 1. Get tile type at index //
-			int32 check_index_x = cell_index.x() + x;
-			int32 check_index_y = cell_index.y() + y;
-
-			// Determine world coords in case we need to make a collider.
-			int32 world_x = ((check_index_x * TILE_WIDTH)  - half_room_width_pixels)  + (TILE_WIDTH / 2);
-			int32 world_y = ((check_index_y * TILE_HEIGHT) - half_room_height_pixels) + (TILE_HEIGHT / 2);
-
-			uint32 tile_index = room.getTileAtIndex(check_index_x, check_index_y);
-
-			// Prepare offsets in case they are needed for Block collision.
-			int32 block_w_offset = 0;
-			int32 block_x_offset = 0;
-
-			// 2. If the tile is collidable make a temporary collider //
-			switch(tile_index)
+			for(int32 x = -2; x < 3; x++)
 			{
-				case BLOCK_INDEX:
+				// 1. Get tile type at index //
+				int32 check_index_x = cell_index.x() + x;
+				int32 check_index_y = cell_index.y() + y;
 
-					// If the neighbor to the right is also a BLOCK, smooth over the corner.
-					// This is a hack to resolve collision since checks are always made from
-					// left to right. 
-					if(room.getTileAtIndex(check_index_x + 1,
-										   check_index_y) == BLOCK_INDEX)
-					{
-						block_w_offset = TILE_WIDTH;
-						block_x_offset = TILE_WIDTH / 2;
-						x++; // Skip checking the next cell, since we already accounted for it here.
-					} 
+				// Determine world coords in case we need to make a collider.
+				int32 world_x = ((check_index_x * TILE_WIDTH)  - half_room_width_pixels)  + (TILE_WIDTH / 2);
+				int32 world_y = ((check_index_y * TILE_HEIGHT) - half_room_height_pixels) + (TILE_HEIGHT / 2);
 
-					other_collider_ptr = new Collider(world_x + block_x_offset,
-													  world_y, 
-													  TILE_WIDTH + block_w_offset, 
-													  TILE_HEIGHT);
+				uint32 tile_index = room.getTileAtIndex(check_index_x, check_index_y);
 
-					if(collider_ptr->isCollision(*(other_collider_ptr)))
-					{
-                        // Update state (deferred)
-                        is_stuck = true;    
+				// Prepare offsets in case they are needed for Block collision.
+				int32 block_w_offset = 0;
+				int32 block_x_offset = 0;
 
-						// Handle Default Collision Cases //
-						while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
+				// 2. If the tile is collidable make a temporary collider //
+				switch(tile_index)
+				{
+					case BLOCK_INDEX:
+
+						// If the neighbor to the right is also a BLOCK, smooth over the corner.
+						// This is a hack to resolve collision since checks are always made from
+						// left to right. 
+						if(room.getTileAtIndex(check_index_x + 1,
+											check_index_y) == BLOCK_INDEX)
 						{
-							temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - dir);
-							setX(this->x() - dir);
+							block_w_offset = TILE_WIDTH;
+							block_x_offset = TILE_WIDTH / 2;
+							x++; // Skip checking the next cell, since we already accounted for it here.
+						} 
+
+						other_collider_ptr = new Collider(world_x + block_x_offset,
+														world_y, 
+														TILE_WIDTH + block_w_offset, 
+														TILE_HEIGHT);
+
+						if(collider_ptr->isCollision(*(other_collider_ptr)))
+						{
+							// Update state (deferred)
+							is_stuck_in_map = true;    
+
+							// Handle Default Collision Cases //
+							while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
+							{
+								temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - dir);
+								setX(this->x() - dir);
+							}
+
+							while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
+							{
+								if(normalized_dir.y() == 0) {break;}
+								temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
+								setY(this->y() - normalized_dir.y());
+							}
+
+							// If there is still collision somehow, must be corner case //
+							while(collider_ptr->isCollision(*(other_collider_ptr)))
+							{
+								// We always resolve diagonal corner collisions with a horizontal shift. 
+								setX(this->x() - dir);
+							}
 						}
 
-						while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
-						{
-							if(normalized_dir.y() == 0) {break;}
-							temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
-							setY(this->y() - normalized_dir.y());
-						}
+						delete other_collider_ptr;
 
-						// If there is still collision somehow, must be corner case //
-						while(collider_ptr->isCollision(*(other_collider_ptr)))
-						{
-							// We always resolve diagonal corner collisions with a horizontal shift. 
-							setX(this->x() - dir);
-						}
-					}
+					break;
 
-					delete other_collider_ptr;
-
-				break;
-
-				default:
-				break;
+					default:
+					break;
+				}
 			}
 		}
 	}
+	
 
     ///////////////////////////////////
     // Resolve Game Object Collision //
     ///////////////////////////////////
 
     // Create test collider for roof collision checks
-    #define SCYTHE_PLATFORM_ROOF_OFFSET           -6
+    #define SCYTHE_PLATFORM_ROOF_OFFSET           -3
     #define SCYTHE_PLATFORM_ROOF_COLLIDER_HEIGHT   1
 
     Collider* test_collider_roof_ptr = new Collider(collider_ptr->x(),
@@ -196,80 +204,84 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
                                                     collider_ptr->width,
                                                     SCYTHE_PLATFORM_ROOF_COLLIDER_HEIGHT);
 
-    for(int32 i = 0; i < game_objects.size(); i++)
-    {
-
-		GameObject* object_ptr = game_objects.at(i);
-		other_collider_ptr     = object_ptr->collider_ptr;
-
-		switch(object_ptr->object_type)
+	if(state != STATE_STUCK_IN_MAP)
+	{
+		for(int32 i = 0; i < game_objects.size(); i++)
 		{
-			case PLAYER:
-				
-				// If player is riding the platform:
-				if(test_collider_roof_ptr->isCollision(*other_collider_ptr) &&
-					other_collider_ptr->p4.y() < collider_ptr->p1.y())
-				{
-					if(final_dir.y() <= 0)
+
+			GameObject* object_ptr = game_objects.at(i);
+			other_collider_ptr     = object_ptr->collider_ptr;
+
+			switch(object_ptr->object_type)
+			{
+				case PLAYER:
+					
+					// If player is riding the platform:
+					if(!object_ptr->received_platform_force && 
+					   test_collider_roof_ptr->isCollision(*other_collider_ptr) &&
+					   other_collider_ptr->p4.y() < collider_ptr->p1.y())
 					{
-						// If descending, applying force to the x axis is all that's needed.
-						// The player gravity will take care of the rest. 
-						object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 0),
-																	SCYTHE_PLATFORM_DECAY));
-					}
-					else
-					{
-						// If ascending, apply force to BOTH axes and offset y by 1 
-						// so the player hugs the platform tight.
-						object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), final_dir.y() + 1),
-																	SCYTHE_PLATFORM_DECAY));
-					}
-				}
-
-			break;
-
-			case DEVIL_PLATFORM:
-
-				if(collider_ptr->isCollision(*other_collider_ptr))
-				{
-					// Update state (deferred)
-					is_stuck = true;
-
-					// Handle Default Collision Cases //
-					while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
-					{
-						if(normalized_dir.x() == 0) {break;}
-						temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
-						setX(this->x() - normalized_dir.x());
+						if(final_dir.y() <= 0)
+						{
+							// If descending, applying force to the x axis is all that's needed.
+							// The player gravity will take care of the rest. 
+							object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 0),
+																		SCYTHE_PLATFORM_DECAY));
+						}
+						else
+						{
+							// If ascending, apply force to BOTH axes and offset y by 1 
+							// so the player hugs the platform tight.
+							object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), final_dir.y() + 1),
+																		SCYTHE_PLATFORM_DECAY));
+						}
 					}
 
-					/*
-					while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
+				break;
+
+				case DEVIL_PLATFORM:
+
+					if(collider_ptr->isCollision(*other_collider_ptr))
 					{
-						if(normalized_dir.y() == 0) {break;}
-						temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
-						setY(this->y() - normalized_dir.y());
-					} */
+						// Update state (deferred)
+						is_stuck_in_object = true;
 
-					// If there is still collision somehow, must be corner case //
-					while(collider_ptr->isCollision(*(other_collider_ptr)))
-					{
-						if(normalized_dir.x() == 0) {break;}
-						// We always resolve diagonal corner collisions with a horizontal shift. 
-						setX(this->x() - normalized_dir.x());
-					}	
-				}
+						// Handle Default Collision Cases //
+						while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
+						{
+							if(normalized_dir.x() == 0) {break;}
+							temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
+							setX(this->x() - normalized_dir.x());
+						}
 
-			break;
+						/*
+						while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
+						{
+							if(normalized_dir.y() == 0) {break;}
+							temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
+							setY(this->y() - normalized_dir.y());
+						} */
 
-			default:
-			break;
+						// If there is still collision somehow, must be corner case //
+						while(collider_ptr->isCollision(*(other_collider_ptr)))
+						{
+							if(normalized_dir.x() == 0) {break;}
+							// We always resolve diagonal corner collisions with a horizontal shift. 
+							setX(this->x() - normalized_dir.x());
+						}	
+					}
+
+				break;
+
+				default:
+				break;
+			}
+
+			object_ptr         = NULL;
+			other_collider_ptr = NULL;
+
 		}
-
-		object_ptr         = NULL;
-		other_collider_ptr = NULL;
-
-    }
+	}
 
     // Clean up temp colliders
     delete test_collider_roof_ptr;
@@ -280,7 +292,8 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
     // Update States //
     ///////////////////
 
-    if(is_stuck) {state = STATE_STUCK;}
+	if(is_stuck_in_map) 		{state = STATE_STUCK_IN_MAP;}
+	else if(is_stuck_in_object) {state = STATE_STUCK_IN_OBJECT;}
 
     //////////////////////
 	// Update Direction //

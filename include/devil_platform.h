@@ -10,6 +10,7 @@
 // Base Class
 #include "game_object.h"
 #include "player.h"
+#include "scythe_platform.h"
 
 //////////////////////////
 // Struct DevilPlatform //

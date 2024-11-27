@@ -162,6 +162,8 @@ void DevilPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
                     // Finally, if player is riding the platform:
                     if(test_collider_roof_ptr->isCollision(*object_collider_ptr))
                     {
+                        object_ptr->received_platform_force = true;
+
                         if(final_dir.y() <= 0)
                         {
                             // If descending, applying force to the x axis is all that's needed.
@@ -182,13 +184,22 @@ void DevilPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
 
                 case SCYTHE_PLATFORM:
 
+                    #define SCYTHE_TEST_COLLIDER_WIDTH_OFFSET 4
+                    #define SCYTHE_DEVIL_PLAT_HEIGHT_OFFSET  15
+
                     temp_object_collider_ptr = Collider(object_collider_ptr->x(),
                                                         object_collider_ptr->y(),
-                                                        object_collider_ptr->width + 2,
+                                                        object_collider_ptr->width + SCYTHE_TEST_COLLIDER_WIDTH_OFFSET,
                                                         object_collider_ptr->height);
 
-                    if(collider_ptr->isCollision(temp_object_collider_ptr))
+                    if(((ScythePlatform*)object_ptr)->state != STATE_STUCK_IN_MAP && 
+                       collider_ptr->isCollision(temp_object_collider_ptr))
                     {
+                        // Snap the scythe height to the platform on scythe's update :)
+                        bn::fixed height_diff = y() - object_ptr->y() - final_dir.y() - SCYTHE_DEVIL_PLAT_HEIGHT_OFFSET;
+                        object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(0, height_diff), 1));
+
+                        // Add force from the platform to our scythe
                         object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 
                                                                                             final_dir.y()),
                                                                                             DEVIL_PLATFORM_DECAY));

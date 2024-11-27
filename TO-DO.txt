@@ -1,1 +1,12 @@
+** Refactoring **
 - Move Game Object vector into Room?
+
+** Gameplay **
+-Add window of momentum transfer if jumping from a moving platform
+
+>>Scythe verbs:
+-Ride the scythe
+-Activate switches with the scythe
+-Die to the scythe
+-Double jump or jump after the scythe is thrown?
+-No knockback on grounded scythe?

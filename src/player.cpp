@@ -820,6 +820,8 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	owp_grace_frames--;
 	owp_grace_frames = clamp(0, PLAYER_OWP_SNAP_FRAMES, owp_grace_frames);
 
+	received_platform_force = false;
+
 	/////////////////////////////
 	// Update Sprite Direction //
 	/////////////////////////////

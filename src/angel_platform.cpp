@@ -110,6 +110,8 @@ void AngelPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
                 if(test_collider_roof_ptr->isCollision(*player_collider_ptr) && 
                    player_collider_ptr->p4.y() < collider_ptr->p1.y() + ANGEL_PLATFORM_SPEED)
                 {
+                    player_ptr->received_platform_force = true;
+
                     if(final_dir.y() <= 0)
                     {
                         // If descending, applying force to the x axis is all that's needed.
