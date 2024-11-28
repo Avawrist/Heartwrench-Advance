@@ -258,43 +258,27 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 							// If descending, applying force to the x axis is all that's needed.
 							// The player gravity will take care of the rest. 
 							object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 0),
-																		SCYTHE_PLATFORM_DECAY));
+																		  SCYTHE_PLATFORM_DECAY));
 						}
 						else
 						{
 							// If ascending, apply force to BOTH axes and offset y by 1 
 							// so the player hugs the platform tight.
 							object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), final_dir.y() + 1),
-																		SCYTHE_PLATFORM_DECAY));
+																		  SCYTHE_PLATFORM_DECAY));
 						}
 					}
 
 				break;
 
 				case DEVIL_PLATFORM:
-
+					
 					if(collider_ptr->isCollision(*other_collider_ptr))
 					{
 						// Update state (deferred)
 						is_stuck_in_object = true;
-
-						// Handle Default Collision Cases //
-						while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
-						{
-							if(normalized_dir.x() == 0) {break;}
-							temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - dir); //normalized_dir.x()
-							setX(this->x() - dir); //normalized_dir.x()
-						}
-
-						// If there is still collision somehow, must be corner case //
-						while(collider_ptr->isCollision(*(other_collider_ptr)))
-						{
-							if(normalized_dir.x() == 0) {break;}
-							// We always resolve diagonal corner collisions with a horizontal shift. 
-							setX(this->x() - dir);
-						}	
 					}
-
+					
 				break;
 
 				default:

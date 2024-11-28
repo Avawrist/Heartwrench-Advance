@@ -109,6 +109,8 @@ void DevilPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
 
         Collider temp_object_collider_ptr(0, 0, 0, 0);
 
+        Direction scythe_dir;
+
         for(int32 i = 0; i < game_objects.size(); i++)
         {
 
@@ -184,20 +186,25 @@ void DevilPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
 
                 case SCYTHE_PLATFORM:
 
-                    #define SCYTHE_TEST_COLLIDER_WIDTH_OFFSET 4
-                    #define SCYTHE_DEVIL_PLAT_HEIGHT_OFFSET  15
+                    #define SCYTHE_TEST_COLLIDER_X_OFFSET 4
+                    #define SCYTHE_DEVIL_PLAT_Y_OFFSET 15
+                    #define SCYTHE_DEVIL_PLAT_X_OFFSET 28
 
-                    temp_object_collider_ptr = Collider(object_collider_ptr->x(),
+                    scythe_dir = ((ScythePlatform*)(object_ptr))->dir;
+
+                    temp_object_collider_ptr = Collider(object_collider_ptr->x() + (scythe_dir * SCYTHE_TEST_COLLIDER_X_OFFSET),
                                                         object_collider_ptr->y(),
-                                                        object_collider_ptr->width + SCYTHE_TEST_COLLIDER_WIDTH_OFFSET,
+                                                        object_collider_ptr->width,
                                                         object_collider_ptr->height);
 
-                    if(((ScythePlatform*)object_ptr)->state != STATE_STUCK_IN_MAP && 
+                    if(((ScythePlatform*)object_ptr)->state != STATE_STUCK_IN_MAP &&
                        collider_ptr->isCollision(temp_object_collider_ptr))
                     {
-                        // Snap the scythe height to the platform on scythe's update :)
-                        bn::fixed height_diff = y() - object_ptr->y() - final_dir.y() - SCYTHE_DEVIL_PLAT_HEIGHT_OFFSET;
-                        object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(0, height_diff), 1));
+
+                        // Snap the scythe's X & Y to the platform on scythe's update :)
+                        bn::fixed scythe_x_diff = x() - object_ptr->x() - final_dir.x() - (SCYTHE_DEVIL_PLAT_X_OFFSET * scythe_dir);
+                        bn::fixed scythe_y_diff = y() - object_ptr->y() - final_dir.y() - SCYTHE_DEVIL_PLAT_Y_OFFSET;
+                        object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(scythe_x_diff, scythe_y_diff), 1));
 
                         // Add force from the platform to our scythe
                         object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 
