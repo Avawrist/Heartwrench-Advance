@@ -42,8 +42,6 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
                             const Room& room,
                             const bn::camera_ptr& camera)
 {
-    bool is_stuck_in_object = false;
-	bool is_stuck_in_map    = false;
 
 	// Player made the scythe hidden on creation, undo now:
 	sprite_ptr->set_visible(true);
@@ -78,6 +76,14 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 
     // Apply forces to scythe platform
     bn::fixed_point final_dir = applyForces();
+
+	//////////////////////////////////////
+	// Reset some variables every frame //
+	//////////////////////////////////////
+    bool is_stuck_in_object = false;
+	bool is_stuck_in_map    = false;
+
+	speed = SCYTHE_PLATFORM_SPEED;
 
 	////////////////////////////
     // Resolve Tile Collision //
@@ -183,6 +189,32 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 
 					break;
 
+					case SLOW_BLOCK_INDEX:
+
+						// If the neighbor to the right is also a SLOW BLOCK, add it to the collision check.
+						if(room.getTileAtIndex(check_index_x + 1,
+											   check_index_y) == SLOW_BLOCK_INDEX)
+						{
+							block_w_offset = TILE_WIDTH;
+							block_x_offset = TILE_WIDTH / 2;
+							x++; // Skip checking the next cell, since we already accounted for it here.
+						} 
+
+						other_collider_ptr = new Collider(world_x + block_x_offset,
+														  world_y, 
+														  TILE_WIDTH + block_w_offset,
+														  TILE_HEIGHT);
+
+						// Check for an actual collision. If so, slow down the Scythe.
+						if(collider_ptr->isCollision(*(other_collider_ptr)))
+						{
+							speed = 1;
+						}
+
+						delete other_collider_ptr;
+
+					break;
+
 					default:
 					break;
 				}
@@ -216,12 +248,10 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 			{
 				case PLAYER:
 					
-					#define SCYTHE_ROOF_Y_OFFSET 1 
-
 					// If player is riding the platform:
 					if(!object_ptr->received_platform_force && 
 					   test_collider_roof_ptr->isCollision(*other_collider_ptr) &&
-					   other_collider_ptr->p4.y() < collider_ptr->p1.y() + SCYTHE_ROOF_Y_OFFSET)
+					   other_collider_ptr->p4.y() < collider_ptr->p1.y() - final_dir.y())
 					{
 						if(final_dir.y() <= 0)
 						{
@@ -252,24 +282,16 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 						while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
 						{
 							if(normalized_dir.x() == 0) {break;}
-							temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
-							setX(this->x() - normalized_dir.x());
+							temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - dir); //normalized_dir.x()
+							setX(this->x() - dir); //normalized_dir.x()
 						}
-
-						/*
-						while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
-						{
-							if(normalized_dir.y() == 0) {break;}
-							temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
-							setY(this->y() - normalized_dir.y());
-						} */
 
 						// If there is still collision somehow, must be corner case //
 						while(collider_ptr->isCollision(*(other_collider_ptr)))
 						{
 							if(normalized_dir.x() == 0) {break;}
 							// We always resolve diagonal corner collisions with a horizontal shift. 
-							setX(this->x() - normalized_dir.x());
+							setX(this->x() - dir);
 						}	
 					}
 

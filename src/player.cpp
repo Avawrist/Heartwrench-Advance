@@ -270,21 +270,9 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				ScythePlatform* scythe_ptr = new ScythePlatform(dir, bn::fixed_point(x() + (dir * SCYTHE_X_OFFSET), 
 																					 y() + SCYTHE_Y_OFFSET));
 				scythe_ptr->setCamera(camera);
-				
-				// If a scythe already exists at the assigned index, delete it and create a new scythe.
-				if(game_objects.at(SCYTHE_OBJECT_LIST_INDEX)->object_type == SCYTHE_PLATFORM)
-				{
-					delete game_objects.at(SCYTHE_OBJECT_LIST_INDEX);
-					game_objects.at(SCYTHE_OBJECT_LIST_INDEX) = scythe_ptr;
-				}
-				// Otherwise, insert a new scythe for the first time, to the right of the Player index (0)
-				else
-				{
-					bn::ivector<GameObject*>::iterator first = game_objects.begin();
-					first++;
-					game_objects.insert(first, scythe_ptr);
-				}
-				// Hide the scythe until it's had its first update
+				delete game_objects.at(SCYTHE_OBJECT_LIST_INDEX);
+				game_objects.at(SCYTHE_OBJECT_LIST_INDEX) = scythe_ptr;
+
 				scythe_ptr->sprite_ptr->set_visible(false);
 			}
 

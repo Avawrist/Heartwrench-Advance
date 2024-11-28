@@ -24,6 +24,7 @@
 
 #define BLOCK_INDEX       1
 #define ONEWAYBLOCK_INDEX 2
+#define SLOW_BLOCK_INDEX  3
 
 #define TILE_WIDTH  8
 #define TILE_HEIGHT 8

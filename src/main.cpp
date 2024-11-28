@@ -19,6 +19,7 @@
 #include "player.h"
 #include "devil_platform.h"
 #include "angel_platform.h"
+#include "scythe_platform.h"
 #include "room.h"
 
 int main()
@@ -37,6 +38,10 @@ int main()
     game_objects.back()->setCamera(camera);
     game_objects.back()->setPos(0, -64);
 
+    // Create space for Scythe next.
+    ScythePlatform* scythe_ptr = NULL;
+    game_objects.push_back(scythe_ptr);
+
     // Create test Moving Platforms next. They must always be updated first.
     game_objects.push_back(new DevilPlatform(bn::point(-32, -32), bn::point(-192, -192)));
     game_objects.back()->setCamera(camera);
@@ -45,7 +50,7 @@ int main()
     game_objects.back()->setCamera(camera);
 
     // Create Test Room
-    Room room(ROOM_TEST, camera);
+    Room room(ROOM_TEST_2, camera);
 
     BN_LOG("Game Objects count: ", game_objects.size());
     BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
@@ -58,8 +63,11 @@ int main()
         BN_PROFILER_START("");
         for(int32 i = game_objects.size() - 1; i >= 0; i--)
         {
-            (game_objects.data())[i]->update(game_objects, room, camera);
-            (game_objects.data())[i]->draw();
+            if((game_objects.data())[i] != NULL)
+            {
+                (game_objects.data())[i]->update(game_objects, room, camera);
+                (game_objects.data())[i]->draw();
+            }
         }
         BN_PROFILER_STOP();
         //bn::profiler::show();
