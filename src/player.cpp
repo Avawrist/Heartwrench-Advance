@@ -257,6 +257,9 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 		case STATE_THROWING:
 
+			// Kill secondary jump momentum immediately
+			remaining_jump_input_frames = 0;
+
 			if(current_scythe_throw_frames == PLAYER_THROW_SCYTHE_FRAME)
 			{
 				// Add force :) //
