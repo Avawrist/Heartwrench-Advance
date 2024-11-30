@@ -39,8 +39,9 @@ int main()
     game_objects.back()->setPos(0, -64);
 
     // Create space for Scythe next.
-    ScythePlatform* scythe_ptr = NULL;
+    ScythePlatform* scythe_ptr = new ScythePlatform(RIGHT, bn::fixed_point(0, 0));
     game_objects.push_back(scythe_ptr);
+    game_objects.back()->setCamera(camera);
 
     // Create test Moving Platforms next. They must always be updated first.
     game_objects.push_back(new DevilPlatform(bn::point(-32, -32), bn::point(-192, -192)));

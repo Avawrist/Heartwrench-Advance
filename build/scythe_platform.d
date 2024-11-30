@@ -1,11 +1,12 @@
 scythe_platform.o: G:/game/src/scythe_platform.cpp \
  G:/game/include/scythe_platform.h \
+ G:/butano-master/butano/include/bn_keypad.h \
+ G:/butano-master/butano/include/bn_common.h \
+ G:/butano-master/butano/hw/include/bn_hw_common.h \
  G:/butano-master/butano/include/bn_math.h \
  G:/butano-master/butano/include/bn_array.h \
  G:/butano-master/butano/include/bn_assert.h \
  G:/butano-master/butano/include/bn_config_assert.h \
- G:/butano-master/butano/include/bn_common.h \
- G:/butano-master/butano/hw/include/bn_hw_common.h \
  G:/butano-master/butano/include/bn_config_doxygen.h \
  G:/butano-master/butano/include/bn_sstream.h \
  G:/butano-master/butano/include/bn_fixed_fwd.h \
@@ -75,12 +76,13 @@ scythe_platform.o: G:/game/src/scythe_platform.cpp \
  G:/game/build/bn_regular_bg_items_test_room_2.h \
  G:/game/build/bn_sprite_items_game_object.h
 G:/game/include/scythe_platform.h:
+G:/butano-master/butano/include/bn_keypad.h:
+G:/butano-master/butano/include/bn_common.h:
+G:/butano-master/butano/hw/include/bn_hw_common.h:
 G:/butano-master/butano/include/bn_math.h:
 G:/butano-master/butano/include/bn_array.h:
 G:/butano-master/butano/include/bn_assert.h:
 G:/butano-master/butano/include/bn_config_assert.h:
-G:/butano-master/butano/include/bn_common.h:
-G:/butano-master/butano/hw/include/bn_hw_common.h:
 G:/butano-master/butano/include/bn_config_doxygen.h:
 G:/butano-master/butano/include/bn_sstream.h:
 G:/butano-master/butano/include/bn_fixed_fwd.h:

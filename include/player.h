@@ -46,8 +46,8 @@
 #define PLAYER_WALL_RIDE_GRAVITY 1
 #define PLAYER_GRAVITY_DECAY 	 1
 
-#define PLAYER_THROW_X_FORCE 6
-#define PLAYER_THROW_FORCE_DECAY 0.05 
+#define PLAYER_THROW_X_FORCE 0
+#define PLAYER_THROW_FORCE_DECAY 0.05
 
 #define PLAYER_SQUISH_FRAMES_REQUIRED 3
 
@@ -83,7 +83,6 @@ enum PlayerState {
 struct Player : GameObject {
 	
 	PlayerState 	state;
-	Direction		dir;
 	bn::fixed       x_speed;
 	bn::fixed       jump_force;
 	bn::fixed       secondary_jump_force;

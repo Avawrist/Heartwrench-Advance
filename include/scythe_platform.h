@@ -2,6 +2,7 @@
 #define SCYTHE_PLATFORM_H
 
 // Butano
+#include "bn_keypad.h"
 #include "bn_math.h"
 
 // Assets
@@ -25,9 +26,11 @@
 // -Scythe movement is 2 directional.
 
 enum ScytheState {
-	STATE_THROWN = 0,
+	STATE_IDLE = 0,
+	STATE_THROWN,
 	STATE_STUCK_IN_OBJECT,
 	STATE_STUCK_IN_MAP,
+	STATE_RETURNING,
 };
 
 #define SCYTHE_PLATFORM_COLLIDER_WIDTH  24
@@ -37,13 +40,19 @@ enum ScytheState {
 #define SCYTHE_PLATFORM_SLOWED_SPEED 1
 #define SCYTHE_PLATFORM_DECAY        1
 
+#define SCYTHE_PLAYER_X_OFFSET 20 
+#define SCYTHE_PLAYER_Y_OFFSET 0
+
+#define SCYTHE_RETURN_COOLDOWN_FRAMES 3
+
 #define SCYTHE_PLATFORM_X_FORCE new Force(bn::fixed_point_t<12>(speed * dir, 0), SCYTHE_PLATFORM_DECAY)
 
 struct ScythePlatform : GameObject {
 
 	ScytheState state;
     bn::fixed speed;
-	Direction dir;
+
+	int32 return_cooldown;
 
     ScythePlatform(Direction _dir, bn::fixed_point _p);
     ~ScythePlatform();

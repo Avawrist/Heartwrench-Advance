@@ -50,6 +50,8 @@ struct GameObject {
 	int32 collider_offset_x = 0;
 	int32 collider_offset_y = 0;
 
+	Direction dir;
+
 	bool received_platform_force = false;
 
 	bn::fixed_point applyForces();

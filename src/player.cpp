@@ -64,8 +64,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	bool throw_scythe        = false;
 	bool kill_player         = false;
 
-	#define SCYTHE_X_OFFSET 20 
-	#define SCYTHE_Y_OFFSET 0
+	ScythePlatform* scythe_ptr = NULL;
 
     switch(state)
     {
@@ -257,35 +256,36 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 		case STATE_THROWING:
 
-			// Kill secondary jump momentum immediately
-			remaining_jump_input_frames = 0;
+			scythe_ptr = (ScythePlatform*)game_objects.at(SCYTHE_OBJECT_LIST_INDEX);
 
-			if(current_scythe_throw_frames == PLAYER_THROW_SCYTHE_FRAME)
+			if(scythe_ptr->state == STATE_IDLE)
 			{
-				// Add force :) //
-				rigidbody_ptr->addForce(PLAYER_THROW_FORCE);
+				// Kill secondary jump momentum immediately
+				remaining_jump_input_frames = 0;
 
-				// Add stretch for fun
-				sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
-				sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+				if(current_scythe_throw_frames == PLAYER_THROW_SCYTHE_FRAME)
+				{
+					// Add force :) 
+					rigidbody_ptr->addForce(PLAYER_THROW_FORCE);
 
-				// Create Scythe //
-				ScythePlatform* scythe_ptr = new ScythePlatform(dir, bn::fixed_point(x() + (dir * SCYTHE_X_OFFSET), 
-																					 y() + SCYTHE_Y_OFFSET));
-				scythe_ptr->setCamera(camera);
-				delete game_objects.at(SCYTHE_OBJECT_LIST_INDEX);
-				game_objects.at(SCYTHE_OBJECT_LIST_INDEX) = scythe_ptr;
+					// Add stretch for fun
+					sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
+					sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
 
-				scythe_ptr->sprite_ptr->set_visible(false);
+					// Set Scythe state
+					scythe_ptr->state = STATE_THROWN;
+				}
+
+				// Update frame counter
+				current_scythe_throw_frames++;
+				current_scythe_throw_frames = clamp(0, 
+													PLAYER_SCYTHE_THROW_FRAMES, 
+													current_scythe_throw_frames);
+
+				if(current_scythe_throw_frames != PLAYER_SCYTHE_THROW_FRAMES) {throw_scythe = true;}
 			}
 
-			// Update frame counter
-			current_scythe_throw_frames++;
-			current_scythe_throw_frames = clamp(0, 
-												PLAYER_SCYTHE_THROW_FRAMES, 
-												current_scythe_throw_frames);
-
-			if(current_scythe_throw_frames != PLAYER_SCYTHE_THROW_FRAMES) {throw_scythe = true;}
+			scythe_ptr = NULL;
 
 		break;
 
