@@ -16,6 +16,7 @@ ScythePlatform::ScythePlatform(Direction _dir, bn::fixed_point _p)
 								                                  bn::sprite_items::scythe_platform.tiles_item(),
 								                                  0,
 								                                  0);
+	sprite_ptr->set_visible(false);
 
     collider_offset_x = 0;
     collider_offset_y = 0;
@@ -41,8 +42,9 @@ ScythePlatform::~ScythePlatform()
 }
 
 void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
-                            const Room& room,
-                            const bn::camera_ptr& camera)
+							bn::regular_bg_ptr                         bg_ptr, 
+                        	bn::span<const bn::regular_bg_map_cell>    cells,
+                        	bn::regular_bg_item                        bg_item)
 {
 
     ///////////////////
@@ -154,8 +156,8 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 		Collider* other_collider_ptr = NULL;
 
 		// Get current cell index that Scythe resides in:
-		int32 half_room_width_pixels  = room.bg_ptr->dimensions().width() / 2;
-		int32 half_room_height_pixels = room.bg_ptr->dimensions().height() / 2;
+		int32 half_room_width_pixels  = bg_ptr.dimensions().width() / 2;
+		int32 half_room_height_pixels = bg_ptr.dimensions().height() / 2;
 		bn::fixed index_x = (x() + half_room_width_pixels)  / TILE_WIDTH;
 		bn::fixed index_y = (y() + half_room_height_pixels) / TILE_HEIGHT;
 		bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
@@ -174,7 +176,8 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 					int32 world_x = ((check_index_x * TILE_WIDTH)  - half_room_width_pixels)  + (TILE_WIDTH / 2);
 					int32 world_y = ((check_index_y * TILE_HEIGHT) - half_room_height_pixels) + (TILE_HEIGHT / 2);
 
-					uint32 tile_index = room.getTileAtIndex(check_index_x, check_index_y);
+					uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y,
+					                                     bg_ptr, cells, bg_item);
 
 					// Prepare offsets in case they are needed for Block collision.
 					int32 block_w_offset = 0;
@@ -188,8 +191,8 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 							// If the neighbor to the right is also a BLOCK, smooth over the corner.
 							// This is a hack to resolve collision since checks are always made from
 							// left to right. 
-							if(room.getTileAtIndex(check_index_x + 1,
-												check_index_y) == BLOCK_INDEX)
+							if(getTileAtBGIndex(check_index_x + 1, check_index_y,
+											    bg_ptr, cells, bg_item) == BLOCK_INDEX)
 							{
 								block_w_offset = TILE_WIDTH;
 								block_x_offset = TILE_WIDTH / 2;
@@ -235,8 +238,8 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 						case SLOW_BLOCK_INDEX:
 
 							// If the neighbor to the right is also a SLOW BLOCK, add it to the collision check.
-							if(room.getTileAtIndex(check_index_x + 1,
-												check_index_y) == SLOW_BLOCK_INDEX)
+							if(getTileAtBGIndex(check_index_x + 1, check_index_y,
+											    bg_ptr, cells, bg_item) == SLOW_BLOCK_INDEX)
 							{
 								block_w_offset = TILE_WIDTH;
 								block_x_offset = TILE_WIDTH / 2;

@@ -100,8 +100,9 @@ struct Player : GameObject {
 	~Player();
 
 	void update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
-	            const Room& room,
-				const bn::camera_ptr& camera) override;
+				bn::regular_bg_ptr                         bg_ptr, 
+                bn::span<const bn::regular_bg_map_cell>    cells,
+                bn::regular_bg_item                        bg_item) override;
 	
 };
 

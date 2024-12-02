@@ -21,17 +21,10 @@
 
 // My Libs
 #include "utility.h"
-
-#define BLOCK_INDEX       1
-#define ONEWAYBLOCK_INDEX 2
-#define SLOW_BLOCK_INDEX  3
-
-#define TILE_WIDTH  8
-#define TILE_HEIGHT 8
-
-#define ONEWAYBLOCK_COLLIDER_WIDTH     8
-#define ONEWAYBLOCK_COLLIDER_HEIGHT    1
-#define ONEWAYBLOCK_COLLIDER_Y_OFFSET -4
+#include "player.h"
+#include "devil_platform.h"
+#include "angel_platform.h"
+#include "scythe_platform.h"
 
 enum RoomName 
 {
@@ -41,6 +34,8 @@ enum RoomName
 
 struct Room
 {
+    bn::vector<GameObject*, MAX_GAME_OBJECTS> game_objects;
+
     bn::optional<bn::regular_bg_ptr>        bg_ptr;
     bn::optional<bn::regular_bg_ptr>        backdrop_ptr;
     bn::optional<bn::regular_bg_item>       bg_item;
@@ -48,10 +43,16 @@ struct Room
     uint32 tile_width;
     uint32 tile_height;
 
+    bn::point player_spawn;
+
     Room(RoomName room_name, 
-         const bn::camera_ptr& camera_ptr);
+         const bn::camera_ptr& camera);
     ~Room();
-    int32 getTileAtIndex(uint32 x, uint32 y) const;
+
+    void clear();
+    void load(RoomName room_name, 
+              const bn::camera_ptr& camera);
+
 };
 
 #endif

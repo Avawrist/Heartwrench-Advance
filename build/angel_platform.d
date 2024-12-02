@@ -68,13 +68,20 @@ angel_platform.o: G:/game/src/angel_platform.cpp \
  G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h \
  G:/game/build/bn_regular_bg_items_test_bg.h \
  G:/game/build/bn_regular_bg_items_test_room.h \
- G:/game/build/bn_regular_bg_items_test_room_2.h \
- G:/game/build/bn_sprite_items_angel_platform.h \
+ G:/game/build/bn_regular_bg_items_test_room_2.h G:/game/include/player.h \
+ G:/butano-master/butano/include/bn_keypad.h \
+ G:/game/build/bn_sprite_items_player.h \
  G:/butano-master/butano/include/bn_sprite_item.h \
  G:/butano-master/butano/include/bn_sprite_shape_size.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/game/include/game_object.h \
- G:/game/build/bn_sprite_items_game_object.h
+ G:/game/build/bn_sprite_items_game_object.h \
+ G:/game/include/scythe_platform.h \
+ G:/game/build/bn_sprite_items_scythe_platform.h \
+ G:/game/include/devil_platform.h \
+ G:/game/build/bn_sprite_items_devil_platform.h \
+ G:/game/include/angel_platform.h \
+ G:/game/build/bn_sprite_items_angel_platform.h
 G:/game/include/angel_platform.h:
 G:/butano-master/butano/include/bn_optional.h:
 G:/butano-master/butano/include/bn_assert.h:
@@ -149,9 +156,17 @@ G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h:
 G:/game/build/bn_regular_bg_items_test_bg.h:
 G:/game/build/bn_regular_bg_items_test_room.h:
 G:/game/build/bn_regular_bg_items_test_room_2.h:
-G:/game/build/bn_sprite_items_angel_platform.h:
+G:/game/include/player.h:
+G:/butano-master/butano/include/bn_keypad.h:
+G:/game/build/bn_sprite_items_player.h:
 G:/butano-master/butano/include/bn_sprite_item.h:
 G:/butano-master/butano/include/bn_sprite_shape_size.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/game/include/game_object.h:
 G:/game/build/bn_sprite_items_game_object.h:
+G:/game/include/scythe_platform.h:
+G:/game/build/bn_sprite_items_scythe_platform.h:
+G:/game/include/devil_platform.h:
+G:/game/build/bn_sprite_items_devil_platform.h:
+G:/game/include/angel_platform.h:
+G:/game/build/bn_sprite_items_angel_platform.h:

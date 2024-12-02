@@ -8,12 +8,16 @@
 #include "bn_camera_ptr.h"
 #include "bn_fixed.h"
 #include "bn_fixed_point.h"
+#include "bn_regular_bg_ptr.h"
+#include "bn_regular_bg_item.h"
+#include "bn_regular_bg_map_ptr.h"
+#include "bn_regular_bg_map_cell.h"
+#include "bn_regular_bg_map_cell_info.h"
 
 // My Libs
 #include "utility.h"
 #include "physics.h"
 #include "collider.h"
-#include "room.h"
 
 // Assets
 #include "bn_sprite_items_game_object.h"
@@ -60,8 +64,9 @@ struct GameObject {
 	virtual ~GameObject();
 
 	virtual void update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
-						const Room& room, 
-						const bn::camera_ptr& camera) = 0;
+						bn::regular_bg_ptr                         bg_ptr, 
+                        bn::span<const bn::regular_bg_map_cell>    cells,
+                        bn::regular_bg_item                        bg_item) = 0;
 	
 	void draw();
 	void setCamera(const bn::camera_ptr& camera);
@@ -72,6 +77,12 @@ struct GameObject {
 	void setY(bn::fixed new_y);
 	void setPos(bn::fixed new_x, bn::fixed new_y);
 	void setPos(bn::fixed_point new_pos);
+
+	int32 getTileAtBGIndex(uint32 x, uint32 y, 
+						   bn::regular_bg_ptr                      bg_ptr, 
+						   bn::span<const bn::regular_bg_map_cell> cells,
+						   bn::regular_bg_item                     bg_item) const;
+
 
 };
 

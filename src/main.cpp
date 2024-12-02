@@ -15,11 +15,6 @@
 
 // My Libs
 #include "utility.h"
-#include "game_object.h"
-#include "player.h"
-#include "devil_platform.h"
-#include "angel_platform.h"
-#include "scythe_platform.h"
 #include "room.h"
 
 int main()
@@ -29,52 +24,54 @@ int main()
     // Camera
     bn::camera_ptr camera = bn::camera_ptr::create(0, 0);
 
-    // Game Objects test
-    bn::vector<GameObject*, MAX_GAME_OBJECTS> game_objects;
-
-    // Create Player FIRST. They will always be updated last.
-    Player* player_ptr = new Player();
-    game_objects.push_back(player_ptr);
-    game_objects.back()->setCamera(camera);
-    game_objects.back()->setPos(0, -64);
-
-    // Create space for Scythe next.
-    ScythePlatform* scythe_ptr = new ScythePlatform(RIGHT, bn::fixed_point(0, 0));
-    game_objects.push_back(scythe_ptr);
-    game_objects.back()->setCamera(camera);
-
-    // Create test Moving Platforms next. They must always be updated first.
-    game_objects.push_back(new DevilPlatform(bn::point(-32, -32), bn::point(-192, -192)));
-    game_objects.back()->setCamera(camera);
-    
-    game_objects.push_back(new DevilPlatform(bn::point(96, 44), bn::point(228, 44)));
-    game_objects.back()->setCamera(camera);
-
     // Create Test Room
-    Room room(ROOM_TEST, camera);
+    Room* current_room_ptr = new Room(ROOM_TEST, camera);
 
-    BN_LOG("Game Objects count: ", game_objects.size());
     BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
     BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
-    
+
+    // Array of room names
+    #define MAX_ROOMS 2
+    RoomName room_names[MAX_ROOMS];
+    room_names[0]   = ROOM_TEST;
+    room_names[1]   = ROOM_TEST_2;
+    int32 room_name_index = 0;
+
     // Game Loop
     while(true)
     {
         // Update Game Objects from Back of the list to the front
         BN_PROFILER_START("");
-        for(int32 i = game_objects.size() - 1; i >= 0; i--)
+        for(int32 i = current_room_ptr->game_objects.size() - 1; i >= 0; i--)
         {
-            if((game_objects.data())[i] != NULL)
-            {
-                (game_objects.data())[i]->update(game_objects, room, camera);
-                (game_objects.data())[i]->draw();
-            }
+            (current_room_ptr->game_objects.data())[i]->update(current_room_ptr->game_objects, 
+                                                               current_room_ptr->bg_ptr.value(),
+                                                               current_room_ptr->cells,
+                                                               current_room_ptr->bg_item.value());
+            (current_room_ptr->game_objects.data())[i]->draw();
         }
         BN_PROFILER_STOP();
         //bn::profiler::show();
 
+        // Room load test
+        if(bn::keypad::l_pressed()) 
+        {
+            room_name_index--;
+            room_name_index = clamp(0, MAX_ROOMS - 1, room_name_index);
+            current_room_ptr->clear(); 
+            current_room_ptr->load(room_names[room_name_index], camera);
+        }
+
+        else if(bn::keypad::r_pressed()) 
+        {
+            room_name_index++;
+            room_name_index = clamp(0, MAX_ROOMS - 1, room_name_index);
+            current_room_ptr->clear(); 
+            current_room_ptr->load(room_names[room_name_index], camera);
+        }
+
         // Update Camera
-        camera.set_position(player_ptr->pos());
+        camera.set_position(current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos());
         
         // Update Core
         bn::core::update();
