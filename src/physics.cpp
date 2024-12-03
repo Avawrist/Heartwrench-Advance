@@ -85,3 +85,8 @@ uint32 RigidBody::addForce(Force* force_p)
     }
     return 0;
 }
+
+void RigidBody::removeForces()
+{
+    forces.clear();
+}

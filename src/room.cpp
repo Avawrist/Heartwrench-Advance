@@ -33,7 +33,8 @@ void Room::load(RoomName room_name,
                 const bn::camera_ptr& camera)
 {
     // Init Player & Scythe FIRST. They will always be updated last //
-    game_objects.push_back(new Player());
+    Player* player_ptr = new Player();
+    game_objects.push_back(player_ptr);
     game_objects.back()->setCamera(camera);
     game_objects.back()->setPos(player_spawn.x(), player_spawn.y());
 
@@ -53,7 +54,8 @@ void Room::load(RoomName room_name,
             bg_item      = bn::regular_bg_items::test_room;
 
             // Set Player spawn //
-            player_spawn = bn::point(0, 0);
+            player_spawn            = bn::point(-192, 96);
+            player_ptr->respawn_pos = player_spawn; 
             game_objects.at(PLAYER_OBJECT_LIST_INDEX)->setPos(player_spawn.x(), 
                                                               player_spawn.y());
 
@@ -76,7 +78,8 @@ void Room::load(RoomName room_name,
             bg_item      = bn::regular_bg_items::test_room_2;
 
             // Set Player spawn //
-            player_spawn = bn::point(0, -128);
+            player_spawn            = bn::point(0, -128);
+            player_ptr->respawn_pos = player_spawn;
             game_objects.at(PLAYER_OBJECT_LIST_INDEX)->setPos(player_spawn.x(), 
                                                               player_spawn.y());
 

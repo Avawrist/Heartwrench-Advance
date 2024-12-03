@@ -43,6 +43,8 @@ Player::Player()
 	owp_grace_frames                 = 0;
 	air_frames_elapsed               = 0;
 
+	respawn_pos = bn::point(0, 0);
+
 }
 
 Player::~Player()
@@ -293,7 +295,15 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 		case STATE_DEAD:
 
 			// Flesh out the death state later
-			setPos(-64, 0);
+			rigidbody_ptr->removeForces();
+			
+			remaining_jump_input_frames      = 0;
+			remaining_x_drift_lockout_frames = 0;
+			current_scythe_throw_frames      = 0;
+			owp_grace_frames                 = 0;
+			air_frames_elapsed               = 0;
+
+			setPos(respawn_pos);
 			state = STATE_AIR_NEUTRAL;
 
 		break;
@@ -473,14 +483,17 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			// 2. If the tile is collidable make a temporary collider //
 			switch(tile_index)
 			{
-				case BLOCK_INDEX:
+				case HARD_BLOCK_INDEX:
+				case SOFT_BLOCK_INDEX:
 
 					// If the neighbor to the right is also a BLOCK, smooth over the corner.
 					// This is a hack to resolve collision since checks are always made from
 					// left to right. 
 					
 					if(getTileAtBGIndex(check_index_x + 1, check_index_y, 
-									    bg_ptr, cells, bg_item) == BLOCK_INDEX)
+									    bg_ptr, cells, bg_item) == HARD_BLOCK_INDEX || 
+					   getTileAtBGIndex(check_index_x + 1, check_index_y, 
+									    bg_ptr, cells, bg_item) == SOFT_BLOCK_INDEX)
 					{
 						block_w_offset = TILE_WIDTH;
 						block_x_offset = TILE_WIDTH / 2;
@@ -563,7 +576,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 				break;
 
-				case ONEWAYBLOCK_INDEX:
+				case ONEWAY_BLOCK_INDEX:
 
 					other_collider_ptr = new Collider(world_x, 
 													  world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
@@ -713,7 +726,8 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 			switch(tile_index)
 			{
-				case BLOCK_INDEX:
+				case HARD_BLOCK_INDEX:
+				case SOFT_BLOCK_INDEX:
 
 					other_collider_ptr = new Collider(world_x,
 													  world_y, 
@@ -745,7 +759,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 				break;
 
-				case ONEWAYBLOCK_INDEX:
+				case ONEWAY_BLOCK_INDEX:
 
 					other_collider_ptr = new Collider(world_x, 
 													  world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
@@ -763,6 +777,23 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 							grounded_detected = true;
 						}
 					}
+
+					delete other_collider_ptr;
+
+				break;
+
+				case UP_SPIKE_BLOCK_INDEX:
+				case DOWN_SPIKE_BLOCK_INDEX:
+				case LEFT_SPIKE_BLOCK_INDEX:
+				case RIGHT_SPIKE_BLOCK_INDEX:
+
+					other_collider_ptr = new Collider(world_x,
+													  world_y, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT);
+					
+					if(collider_ptr->isCollision(*other_collider_ptr))
+					{kill_player = true;}
 
 					delete other_collider_ptr;
 

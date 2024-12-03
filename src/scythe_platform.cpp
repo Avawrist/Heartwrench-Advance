@@ -186,13 +186,13 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 					// 2. If the tile is collidable make a temporary collider //
 					switch(tile_index)
 					{
-						case BLOCK_INDEX:
+						case HARD_BLOCK_INDEX:
 
 							// If the neighbor to the right is also a BLOCK, smooth over the corner.
 							// This is a hack to resolve collision since checks are always made from
 							// left to right. 
 							if(getTileAtBGIndex(check_index_x + 1, check_index_y,
-											    bg_ptr, cells, bg_item) == BLOCK_INDEX)
+											    bg_ptr, cells, bg_item) == HARD_BLOCK_INDEX)
 							{
 								block_w_offset = TILE_WIDTH;
 								block_x_offset = TILE_WIDTH / 2;
@@ -203,6 +203,56 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 															world_y, 
 															TILE_WIDTH + block_w_offset, 
 															TILE_HEIGHT);
+
+							if(collider_ptr->isCollision(*(other_collider_ptr)))
+							{
+								// Update state (deferred)
+								state = STATE_RETURNING; 
+								return_cooldown = SCYTHE_RETURN_COOLDOWN_FRAMES;
+
+								// Handle Default Collision Cases //
+								while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
+								{
+									temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - dir);
+									setX(this->x() - dir);
+								}
+
+								while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
+								{
+									if(normalized_dir.y() == 0) {break;}
+									temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
+									setY(this->y() - normalized_dir.y());
+								}
+
+								// If there is still collision somehow, must be corner case //
+								while(collider_ptr->isCollision(*(other_collider_ptr)))
+								{
+									// We always resolve diagonal corner collisions with a horizontal shift. 
+									setX(this->x() - dir);
+								}
+							}
+
+							delete other_collider_ptr;
+
+						break;
+
+						case SOFT_BLOCK_INDEX:
+
+							// If the neighbor to the right is also a BLOCK, smooth over the corner.
+							// This is a hack to resolve collision since checks are always made from
+							// left to right. 
+							if(getTileAtBGIndex(check_index_x + 1, check_index_y,
+											    bg_ptr, cells, bg_item) == SOFT_BLOCK_INDEX)
+							{
+								block_w_offset = TILE_WIDTH;
+								block_x_offset = TILE_WIDTH / 2;
+								x++; // Skip checking the next cell, since we already accounted for it here.
+							}
+
+							other_collider_ptr = new Collider(world_x + block_x_offset,
+															  world_y, 
+															  TILE_WIDTH + block_w_offset, 
+															  TILE_HEIGHT);
 
 							if(collider_ptr->isCollision(*(other_collider_ptr)))
 							{
@@ -247,14 +297,35 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 							} 
 
 							other_collider_ptr = new Collider(world_x + block_x_offset,
-															world_y, 
-															TILE_WIDTH + block_w_offset,
-															TILE_HEIGHT);
+															  world_y, 
+															  TILE_WIDTH + block_w_offset,
+															  TILE_HEIGHT);
 
 							// Check for an actual collision. If so, slow down the Scythe.
 							if(collider_ptr->isCollision(*(other_collider_ptr)))
 							{
 								speed = 1;
+							}
+
+							delete other_collider_ptr;
+
+						break;
+
+						case UP_SPIKE_BLOCK_INDEX:
+						case DOWN_SPIKE_BLOCK_INDEX:
+						case LEFT_SPIKE_BLOCK_INDEX:
+						case RIGHT_SPIKE_BLOCK_INDEX:
+
+							other_collider_ptr = new Collider(world_x,
+													  		  world_y, 
+													  		  TILE_WIDTH, 
+													  		  TILE_HEIGHT);
+					
+							if(collider_ptr->isCollision(*other_collider_ptr))
+							{								
+								// Update state (deferred)
+								state = STATE_RETURNING; 
+								return_cooldown = SCYTHE_RETURN_COOLDOWN_FRAMES; 
 							}
 
 							delete other_collider_ptr;

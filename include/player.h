@@ -95,6 +95,8 @@ struct Player : GameObject {
 	int32           current_scythe_throw_frames;
 	int32           owp_grace_frames;
 	int32           air_frames_elapsed;
+
+	bn::point       respawn_pos;
 	
 	Player();
 	~Player();

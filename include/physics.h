@@ -41,8 +41,9 @@ struct RigidBody {
 	bn::vector<Force*, MAX_FORCES> forces;
 	
 	RigidBody();
-	void applyDecay();
+	void   applyDecay();
     uint32 addForce(Force* force_p);
+	void   removeForces();
 };
 
 #endif
