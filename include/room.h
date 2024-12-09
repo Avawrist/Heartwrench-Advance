@@ -25,10 +25,12 @@
 #include "devil_platform.h"
 #include "angel_platform.h"
 #include "scythe_platform.h"
+#include "exit.h"
 
 enum RoomName 
 {
-    ROOM_TEST = 0,
+    NO_ROOM = 0,
+    ROOM_TEST,
     ROOM_TEST_2,
 };
 

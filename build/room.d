@@ -81,7 +81,8 @@ room.o: G:/game/src/room.cpp G:/game/include/room.h \
  G:/game/include/devil_platform.h \
  G:/game/build/bn_sprite_items_devil_platform.h \
  G:/game/include/angel_platform.h G:/game/include/room.h \
- G:/game/build/bn_sprite_items_angel_platform.h
+ G:/game/build/bn_sprite_items_angel_platform.h G:/game/include/exit.h \
+ G:/game/build/bn_sprite_items_exit.h
 G:/game/include/room.h:
 G:/butano-master/butano/include/bn_log.h:
 G:/butano-master/butano/include/bn_config_log.h:
@@ -170,3 +171,5 @@ G:/game/build/bn_sprite_items_devil_platform.h:
 G:/game/include/angel_platform.h:
 G:/game/include/room.h:
 G:/game/build/bn_sprite_items_angel_platform.h:
+G:/game/include/exit.h:
+G:/game/build/bn_sprite_items_exit.h:

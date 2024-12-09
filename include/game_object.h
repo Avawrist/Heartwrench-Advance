@@ -39,6 +39,7 @@ enum ObjectType
 	DEVIL_PLATFORM,
 	ANGEL_PLATFORM,
 	SCYTHE_PLATFORM,
+	EXIT,
 };
 
 struct GameObject {

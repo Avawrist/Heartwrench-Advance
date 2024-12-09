@@ -32,7 +32,9 @@ void Room::clear()
 void Room::load(RoomName room_name, 
                 const bn::camera_ptr& camera)
 {
-    // Init Player & Scythe FIRST. They will always be updated last //
+    if(room_name == NO_ROOM) {return;}
+
+    // Init Player, Scythe and Exits FIRST. They will always be updated last //
     Player* player_ptr = new Player();
     game_objects.push_back(player_ptr);
     game_objects.back()->setCamera(camera);
@@ -42,10 +44,25 @@ void Room::load(RoomName room_name,
     game_objects.push_back(new ScythePlatform(RIGHT, bn::fixed_point(0, 0)));
     game_objects.back()->setCamera(camera);
 
+    // Exit 1
+    game_objects.push_back(new Exit(NO_ROOM, bn::point(0, 0)));
+    game_objects.back()->setCamera(camera);
+
+    // Exit 2
+    game_objects.push_back(new Exit(NO_ROOM, bn::point(0, 0)));
+    game_objects.back()->setCamera(camera);
+
+    // Exit 3
+    game_objects.push_back(new Exit(NO_ROOM, bn::point(0, 0)));
+    game_objects.back()->setCamera(camera);
+
+    // Exit 4
+    game_objects.push_back(new Exit(NO_ROOM, bn::point(0, 0)));
+    game_objects.back()->setCamera(camera);
+
     // Initialize Variables
     switch(room_name)
     {
-
         case ROOM_TEST:
 
             // Load BG //
@@ -58,6 +75,11 @@ void Room::load(RoomName room_name,
             player_ptr->respawn_pos = player_spawn; 
             game_objects.at(PLAYER_OBJECT_LIST_INDEX)->setPos(player_spawn.x(), 
                                                               player_spawn.y());
+
+            // Init Exits //
+            delete game_objects.at(EXIT_1_OBJECT_LIST_INDEX);
+            game_objects.at(EXIT_1_OBJECT_LIST_INDEX) = new Exit(ROOM_TEST_2, bn::point(0, 0));
+            game_objects.at(EXIT_1_OBJECT_LIST_INDEX)->setCamera(camera);
 
             // Init Game Objects //
             game_objects.push_back(new DevilPlatform(bn::point(-32, -32), 
@@ -82,6 +104,8 @@ void Room::load(RoomName room_name,
             player_ptr->respawn_pos = player_spawn;
             game_objects.at(PLAYER_OBJECT_LIST_INDEX)->setPos(player_spawn.x(), 
                                                               player_spawn.y());
+
+            // Init Exits //
 
             // Init Game Objects //
 
