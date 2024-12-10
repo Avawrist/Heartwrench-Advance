@@ -67,8 +67,8 @@ player.o: G:/game/src/player.cpp G:/game/include/player.h \
  G:/game/include/physics.h G:/butano-master/butano/include/bn_vector.h \
  G:/game/include/math.h G:/game/include/collider.h \
  G:/game/build/bn_sprite_items_game_object.h \
- G:/game/include/scythe_platform.h \
- G:/game/build/bn_sprite_items_scythe_platform.h
+ G:/game/include/missile_platform.h \
+ G:/game/build/bn_sprite_items_missile_platform.h
 G:/game/include/player.h:
 G:/butano-master/butano/include/bn_keypad.h:
 G:/butano-master/butano/include/bn_common.h:
@@ -142,5 +142,5 @@ G:/butano-master/butano/include/bn_vector.h:
 G:/game/include/math.h:
 G:/game/include/collider.h:
 G:/game/build/bn_sprite_items_game_object.h:
-G:/game/include/scythe_platform.h:
-G:/game/build/bn_sprite_items_scythe_platform.h:
+G:/game/include/missile_platform.h:
+G:/game/build/bn_sprite_items_missile_platform.h:

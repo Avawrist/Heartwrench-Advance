@@ -1,6 +1,6 @@
-#include "scythe_platform.h"
+#include "missile_platform.h"
 
-ScythePlatform::ScythePlatform(Direction _dir, bn::fixed_point _p)
+MissilePlatform::MissilePlatform(Direction _dir, bn::fixed_point _p)
 {
     // Reset Variables //
     sprite_ptr.reset();
@@ -9,11 +9,11 @@ ScythePlatform::ScythePlatform(Direction _dir, bn::fixed_point _p)
     delete collider_ptr;
 
     // Init Variables //
-    object_type = SCYTHE_PLATFORM;
-    sprite_ptr  = bn::sprite_items::scythe_platform.create_sprite(0, 0);
+    object_type = MISSILE_PLATFORM;
+    sprite_ptr  = bn::sprite_items::missile_platform.create_sprite(0, 0);
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								                                  2,
-								                                  bn::sprite_items::scythe_platform.tiles_item(),
+								                                  bn::sprite_items::missile_platform.tiles_item(),
 								                                  0,
 								                                  0);
 	sprite_ptr->set_visible(false);
@@ -24,24 +24,24 @@ ScythePlatform::ScythePlatform(Direction _dir, bn::fixed_point _p)
     rigidbody_ptr = new RigidBody();
 	collider_ptr  = new Collider(x() + collider_offset_x, 
                                  y() + collider_offset_y, 
-                                 SCYTHE_PLATFORM_COLLIDER_WIDTH, 
-                                 SCYTHE_PLATFORM_COLLIDER_HEIGHT);
+                                 MISSILE_PLATFORM_COLLIDER_WIDTH, 
+                                 MISSILE_PLATFORM_COLLIDER_HEIGHT);
 
-    state = STATE_IDLE;
-    speed = SCYTHE_PLATFORM_SPEED;
-    dir   = _dir;
+    state   = STATE_IDLE;
+    speed   = MISSILE_PLATFORM_BASE_SPEED;
+    dir     = _dir;
 
 	return_cooldown = 0;
 
     setPos(_p);
 }
 
-ScythePlatform::~ScythePlatform()
+MissilePlatform::~MissilePlatform()
 {
 
 }
 
-void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
+void MissilePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 							bn::regular_bg_ptr                         bg_ptr, 
                         	bn::span<const bn::regular_bg_map_cell>    cells,
                         	bn::regular_bg_item                        bg_item)
@@ -59,6 +59,9 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 
 			sprite_ptr->set_visible(false);
 
+			// Reset speed variables
+			speed = MISSILE_PLATFORM_BASE_SPEED;
+
 			// Get player ptr
 			player_ptr = game_objects.at(PLAYER_OBJECT_LIST_INDEX);
 
@@ -66,8 +69,8 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 			dir = player_ptr->dir;
 
 			// Set position to player pos plus an offset
-			setPos(player_ptr->x() + (dir * SCYTHE_PLAYER_X_OFFSET), 
-			       player_ptr->y() + SCYTHE_PLAYER_Y_OFFSET);
+			setPos(player_ptr->x() + (dir * MISSILE_PLAYER_X_OFFSET), 
+			       player_ptr->y() + MISSILE_PLAYER_Y_OFFSET);
 
 			player_ptr = NULL;
 
@@ -76,24 +79,27 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
         case STATE_THROWN:
 
 			sprite_ptr->set_visible(true);
-            rigidbody_ptr->addForce(SCYTHE_PLATFORM_X_FORCE);
 
+			// Add speed
+            rigidbody_ptr->addForce(MISSILE_PLATFORM_X_FORCE);
+
+			// Recall missile (detonate?)
 			if(bn::keypad::r_pressed()) {state = STATE_RETURNING; 
-										 return_cooldown = SCYTHE_RETURN_COOLDOWN_FRAMES;}
+										 return_cooldown = MISSILE_RETURN_COOLDOWN_FRAMES;}
 
         break;
 
         case STATE_STUCK_IN_MAP:
 
 			if(bn::keypad::r_pressed()) {state = STATE_RETURNING; 
-										 return_cooldown = SCYTHE_RETURN_COOLDOWN_FRAMES;}
+										 return_cooldown = MISSILE_RETURN_COOLDOWN_FRAMES;}
 
         break;
 
 		case STATE_STUCK_IN_OBJECT:
 
 			if(bn::keypad::r_pressed()) {state = STATE_RETURNING; 
-										 return_cooldown = SCYTHE_RETURN_COOLDOWN_FRAMES;}
+										 return_cooldown = MISSILE_RETURN_COOLDOWN_FRAMES;}
 
 		break;
 
@@ -102,7 +108,7 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 			if(return_cooldown == 0) {state = STATE_IDLE;}
 
 			return_cooldown--;
-			return_cooldown = clamp(0, SCYTHE_RETURN_COOLDOWN_FRAMES, return_cooldown);
+			return_cooldown = clamp(0, MISSILE_RETURN_COOLDOWN_FRAMES, return_cooldown);
 
 		break;
 
@@ -117,7 +123,7 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
     // Apply Decay to Forces
     rigidbody_ptr->applyDecay();
 
-    // Apply forces to scythe platform
+    // Apply forces to missile platform
     bn::fixed_point final_dir = applyForces();
 
 	//////////////////////////////////////
@@ -125,8 +131,6 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 	//////////////////////////////////////
     bool is_stuck_in_object = false;
 	bool is_stuck_in_map    = false;
-
-	speed = SCYTHE_PLATFORM_SPEED;
 
 	////////////////////////////
     // Resolve Tile Collision //
@@ -143,7 +147,7 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 		bn::fixed_point normalized_dir = bn::fixed_point(normalized_dir_x, normalized_dir_y);
 
 		// Create one temporary collider for each axis. If a collider finds a collision
-		// in its axis, move the temp collider AND the Scythe back along the dir vector
+		// in its axis, move the temp collider AND the Missile back along the dir vector
 		// in units of 1 until the collision is resolved on that axis.
 		Collider* temp_collider_x_ptr = new Collider(collider_ptr->x(),
 													collider_ptr->y() - final_dir.y(),
@@ -155,7 +159,7 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 													collider_ptr->height);
 		Collider* other_collider_ptr = NULL;
 
-		// Get current cell index that Scythe resides in:
+		// Get current cell index that Missile resides in:
 		int32 half_room_width_pixels  = bg_ptr.dimensions().width() / 2;
 		int32 half_room_height_pixels = bg_ptr.dimensions().height() / 2;
 		bn::fixed index_x = (x() + half_room_width_pixels)  / TILE_WIDTH;
@@ -208,7 +212,7 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 							{
 								// Update state (deferred)
 								state = STATE_RETURNING; 
-								return_cooldown = SCYTHE_RETURN_COOLDOWN_FRAMES;
+								return_cooldown = MISSILE_RETURN_COOLDOWN_FRAMES;
 
 								// Handle Default Collision Cases //
 								while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
@@ -301,7 +305,7 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 															  TILE_WIDTH + block_w_offset,
 															  TILE_HEIGHT);
 
-							// Check for an actual collision. If so, slow down the Scythe.
+							// Check for an actual collision. If so, slow down the Missile.
 							if(collider_ptr->isCollision(*(other_collider_ptr)))
 							{
 								speed = 1;
@@ -325,7 +329,7 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 							{								
 								// Update state (deferred)
 								state = STATE_RETURNING; 
-								return_cooldown = SCYTHE_RETURN_COOLDOWN_FRAMES; 
+								return_cooldown = MISSILE_RETURN_COOLDOWN_FRAMES; 
 							}
 
 							delete other_collider_ptr;
@@ -345,13 +349,13 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 		///////////////////////////////////
 
 		// Create test collider for roof collision checks
-		#define SCYTHE_PLATFORM_ROOF_OFFSET           -3
-		#define SCYTHE_PLATFORM_ROOF_COLLIDER_HEIGHT   1
+		#define MISSILE_PLATFORM_ROOF_OFFSET           -3
+		#define MISSILE_PLATFORM_ROOF_COLLIDER_HEIGHT   1
 
 		Collider* test_collider_roof_ptr = new Collider(collider_ptr->x(),
-														collider_ptr->y() + SCYTHE_PLATFORM_ROOF_OFFSET,
+														collider_ptr->y() + MISSILE_PLATFORM_ROOF_OFFSET,
 														collider_ptr->width,
-														SCYTHE_PLATFORM_ROOF_COLLIDER_HEIGHT);
+														MISSILE_PLATFORM_ROOF_COLLIDER_HEIGHT);
 
 		if(state != STATE_STUCK_IN_MAP)
 		{
@@ -375,14 +379,14 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 								// If descending, applying force to the x axis is all that's needed.
 								// The player gravity will take care of the rest. 
 								object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 0),
-																			SCYTHE_PLATFORM_DECAY));
+																			MISSILE_PLATFORM_DECAY));
 							}
 							else
 							{
 								// If ascending, apply force to BOTH axes and offset y by 1 
 								// so the player hugs the platform tight.
 								object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), final_dir.y() + 1),
-																			SCYTHE_PLATFORM_DECAY));
+																			MISSILE_PLATFORM_DECAY));
 							}
 						}
 

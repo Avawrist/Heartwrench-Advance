@@ -12,7 +12,7 @@
 #include "game_object.h"
 
 // My Libs
-#include "scythe_platform.h"
+#include "missile_platform.h"
 
 ///////////////////
 // Struct Player //
@@ -34,8 +34,8 @@
 
 #define PLAYER_BASE_JUMP_FORCE       -7
 #define PLAYER_SECOND_JUMP_FORCE     -3
-#define PLAYER_WALL_JUMP_X_FORCE      9
-#define PLAYER_WALL_JUMP_Y_FORCE     -9
+#define PLAYER_WALL_JUMP_X_FORCE      4
+#define PLAYER_WALL_JUMP_Y_FORCE     -14
 #define PLAYER_JUMP_DECAY             0.1
 #define PLAYER_SECONDARY_JUMP_DECAY   0.4
 #define PLAYER_X_DRIFT_LOCKOUT_FRAMES 8
@@ -46,13 +46,13 @@
 #define PLAYER_WALL_RIDE_GRAVITY 1
 #define PLAYER_GRAVITY_DECAY 	 1
 
-#define PLAYER_THROW_X_FORCE 0
+#define PLAYER_THROW_X_FORCE 4
 #define PLAYER_THROW_FORCE_DECAY 0.05
 
 #define PLAYER_SQUISH_FRAMES_REQUIRED 3
 
-#define PLAYER_SCYTHE_THROW_FRAMES 8
-#define PLAYER_THROW_SCYTHE_FRAME  4
+#define PLAYER_MISSILE_THROW_FRAMES 8
+#define PLAYER_THROW_MISSILE_FRAME  4
 
 #define PLAYER_OWP_SNAP_FRAMES 2
 
@@ -92,7 +92,7 @@ struct Player : GameObject {
 	bn::fixed       wall_ride_gravity;
 	int32           remaining_jump_input_frames;
 	int32           remaining_x_drift_lockout_frames;
-	int32           current_scythe_throw_frames;
+	int32           current_missile_throw_frames;
 	int32           owp_grace_frames;
 	int32           air_frames_elapsed;
 

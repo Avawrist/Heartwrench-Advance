@@ -76,8 +76,8 @@ room.o: G:/game/src/room.cpp G:/game/include/room.h \
  G:/butano-master/butano/include/bn_fixed_point.h \
  G:/game/include/physics.h G:/game/include/math.h \
  G:/game/include/collider.h G:/game/build/bn_sprite_items_game_object.h \
- G:/game/include/scythe_platform.h \
- G:/game/build/bn_sprite_items_scythe_platform.h \
+ G:/game/include/missile_platform.h \
+ G:/game/build/bn_sprite_items_missile_platform.h \
  G:/game/include/devil_platform.h \
  G:/game/build/bn_sprite_items_devil_platform.h \
  G:/game/include/angel_platform.h G:/game/include/room.h \
@@ -164,8 +164,8 @@ G:/game/include/physics.h:
 G:/game/include/math.h:
 G:/game/include/collider.h:
 G:/game/build/bn_sprite_items_game_object.h:
-G:/game/include/scythe_platform.h:
-G:/game/build/bn_sprite_items_scythe_platform.h:
+G:/game/include/missile_platform.h:
+G:/game/build/bn_sprite_items_missile_platform.h:
 G:/game/include/devil_platform.h:
 G:/game/build/bn_sprite_items_devil_platform.h:
 G:/game/include/angel_platform.h:

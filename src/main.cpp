@@ -17,6 +17,7 @@
 #include "utility.h"
 #include "room.h"
 #include "exit.h"
+#include "player.h"
 
 int main()
 {   
@@ -46,6 +47,11 @@ int main()
         }
         BN_PROFILER_STOP();
         //bn::profiler::show();
+
+        // If player died, reload the room
+        if(((Player*)(current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->state == STATE_DEAD)
+        {current_room_ptr->clear(); 
+         current_room_ptr->load(current_room_ptr->current_room, camera);}
 
         // Check Exit 1
         Exit* exit_1_ptr = (Exit*)(current_room_ptr->game_objects.at(EXIT_1_OBJECT_LIST_INDEX));

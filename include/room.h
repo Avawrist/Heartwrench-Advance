@@ -24,7 +24,7 @@
 #include "player.h"
 #include "devil_platform.h"
 #include "angel_platform.h"
-#include "scythe_platform.h"
+#include "missile_platform.h"
 #include "exit.h"
 
 enum RoomName 
@@ -44,6 +44,8 @@ struct Room
     bn::span<const bn::regular_bg_map_cell> cells;
     uint32 tile_width;
     uint32 tile_height;
+
+    RoomName current_room;
 
     bn::point player_spawn;
 
