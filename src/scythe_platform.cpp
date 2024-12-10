@@ -78,21 +78,21 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 			sprite_ptr->set_visible(true);
             rigidbody_ptr->addForce(SCYTHE_PLATFORM_X_FORCE);
 
-			if(bn::keypad::b_pressed()) {state = STATE_RETURNING; 
+			if(bn::keypad::r_pressed()) {state = STATE_RETURNING; 
 										 return_cooldown = SCYTHE_RETURN_COOLDOWN_FRAMES;}
 
         break;
 
         case STATE_STUCK_IN_MAP:
 
-			if(bn::keypad::b_pressed()) {state = STATE_RETURNING; 
+			if(bn::keypad::r_pressed()) {state = STATE_RETURNING; 
 										 return_cooldown = SCYTHE_RETURN_COOLDOWN_FRAMES;}
 
         break;
 
 		case STATE_STUCK_IN_OBJECT:
 
-			if(bn::keypad::b_pressed()) {state = STATE_RETURNING; 
+			if(bn::keypad::r_pressed()) {state = STATE_RETURNING; 
 										 return_cooldown = SCYTHE_RETURN_COOLDOWN_FRAMES;}
 
 		break;

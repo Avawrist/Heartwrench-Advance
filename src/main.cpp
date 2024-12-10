@@ -31,13 +31,6 @@ int main()
     BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
     BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
 
-    // Array of room names
-    #define MAX_ROOMS 2
-    RoomName room_names[MAX_ROOMS];
-    room_names[0] = ROOM_TEST;
-    room_names[1] = ROOM_TEST_2;
-    int32 room_name_index = 0;
-
     // Game Loop
     while(true)
     {
@@ -54,23 +47,6 @@ int main()
         BN_PROFILER_STOP();
         //bn::profiler::show();
 
-        // Room load test
-        if(bn::keypad::l_pressed()) 
-        {
-            room_name_index--;
-            room_name_index = clamp(0, MAX_ROOMS - 1, room_name_index);
-            current_room_ptr->clear(); 
-            current_room_ptr->load(room_names[room_name_index], camera);
-        }
-
-        else if(bn::keypad::r_pressed()) 
-        {
-            room_name_index++;
-            room_name_index = clamp(0, MAX_ROOMS - 1, room_name_index);
-            current_room_ptr->clear(); 
-            current_room_ptr->load(room_names[room_name_index], camera);
-        }
-
         // Check Exit 1
         Exit* exit_1_ptr = (Exit*)(current_room_ptr->game_objects.at(EXIT_1_OBJECT_LIST_INDEX));
         if(exit_1_ptr->is_triggered) 
@@ -80,20 +56,20 @@ int main()
         // Check Exit 2
         Exit* exit_2_ptr = (Exit*)(current_room_ptr->game_objects.at(EXIT_2_OBJECT_LIST_INDEX));
         if(exit_2_ptr->is_triggered) 
-        {current_room_ptr->clear(); current_room_ptr->load((RoomName)(exit_2_ptr->go_to_room_enum), 
-                                                            camera);}
+        {current_room_ptr->clear(); 
+         current_room_ptr->load((RoomName)(exit_2_ptr->go_to_room_enum), camera);}
 
         // Check Exit 3
         Exit* exit_3_ptr = (Exit*)(current_room_ptr->game_objects.at(EXIT_3_OBJECT_LIST_INDEX));
         if(exit_3_ptr->is_triggered) 
-        {current_room_ptr->clear(); current_room_ptr->load((RoomName)(exit_3_ptr->go_to_room_enum), 
-                                                            camera);}
+        {current_room_ptr->clear(); 
+         current_room_ptr->load((RoomName)(exit_3_ptr->go_to_room_enum), camera);}
 
         // Check Exit 4
         Exit* exit_4_ptr = (Exit*)(current_room_ptr->game_objects.at(EXIT_4_OBJECT_LIST_INDEX));
         if(exit_4_ptr->is_triggered) 
-        {current_room_ptr->clear(); current_room_ptr->load((RoomName)(exit_4_ptr->go_to_room_enum), 
-                                                            camera);}
+        {current_room_ptr->clear(); 
+         current_room_ptr->load((RoomName)(exit_4_ptr->go_to_room_enum), camera);}
 
         // Do NOT delete the Exit pointers, they are handled by the Room object.
 

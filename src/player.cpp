@@ -32,7 +32,7 @@ Player::Player()
     x_speed        	  	 = PLAYER_MIN_X_SPEED;
     jump_force           = PLAYER_BASE_JUMP_FORCE;
 	secondary_jump_force = PLAYER_SECOND_JUMP_FORCE;
-    wall_jump_force   	 = bn::fixed_point(PLAYER_WALL_JUMP_X_FORCE, 
+    wall_jump_force   	 = bn::fixed_point(PLAYER_WALL_JUMP_X_FORCE,
 										   PLAYER_WALL_JUMP_Y_FORCE);
     gravity           	 = PLAYER_GRAVITY;
 	wall_ride_gravity 	 = PLAYER_WALL_RIDE_GRAVITY;
@@ -115,7 +115,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			}
 
 			// Scythe Throw
-			if(bn::keypad::b_pressed()) {current_scythe_throw_frames = 0; throw_scythe = true;}
+			if(bn::keypad::r_pressed()) {current_scythe_throw_frames = 0; throw_scythe = true;}
 
 		break;
 	
@@ -159,7 +159,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			else if(bn::keypad::a_released()) {remaining_jump_input_frames = 0;}
 
 			// Scythe Throw
-			if(bn::keypad::b_pressed()) {current_scythe_throw_frames = 0; throw_scythe = true;}
+			if(bn::keypad::r_pressed()) {current_scythe_throw_frames = 0; throw_scythe = true;}
 			
 			// Add Gravity //
 			rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);
@@ -213,7 +213,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			{gripping_wall_right = true; dir = LEFT;}
 
 			// Scythe Throw
-			if(bn::keypad::b_pressed()) {current_scythe_throw_frames = 0; throw_scythe = true;}
+			if(bn::keypad::r_pressed()) {current_scythe_throw_frames = 0; throw_scythe = true;}
 			
 			// Add Gravity //
 			if(gripping_wall_right) {rigidbody_ptr->addForce(PLAYER_WALL_GRAVITY_FORCE);}
@@ -249,7 +249,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			{rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE);}
 
 			// Scythe Throw
-			if(bn::keypad::b_pressed()) {current_scythe_throw_frames = 0; throw_scythe = true;}
+			if(bn::keypad::r_pressed()) {current_scythe_throw_frames = 0; throw_scythe = true;}
 			
 			// Add Gravity //
 			if(gripping_wall_left) {rigidbody_ptr->addForce(PLAYER_WALL_GRAVITY_FORCE);}
