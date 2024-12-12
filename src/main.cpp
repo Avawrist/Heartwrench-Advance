@@ -40,10 +40,11 @@ int main()
         for(int32 i = current_room_ptr->game_objects.size() - 1; i >= 0; i--)
         {
             (current_room_ptr->game_objects.data())[i]->update(current_room_ptr->game_objects, 
-                                                               current_room_ptr->bg_ptr.value(),
-                                                               current_room_ptr->cells,
-                                                               current_room_ptr->bg_item.value());
-            (current_room_ptr->game_objects.data())[i]->draw();
+                                                                current_room_ptr->bg_ptr.value(),
+                                                                current_room_ptr->cells,
+                                                                current_room_ptr->bg_item.value(),
+                                                                camera);
+            (current_room_ptr->game_objects.data())[i]->draw();   
         }
         BN_PROFILER_STOP();
         //bn::profiler::show();

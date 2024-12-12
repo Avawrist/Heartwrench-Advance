@@ -29,11 +29,9 @@
 // -Missile movement is 2 directional.
 
 enum MissileState {
-	STATE_IDLE = 0,
-	STATE_THROWN,
+	STATE_THROWN = 0,
 	STATE_STUCK_IN_OBJECT,
 	STATE_STUCK_IN_MAP,
-	STATE_RETURNING,
 };
 
 #define MISSILE_PLATFORM_COLLIDER_WIDTH  24
@@ -64,15 +62,14 @@ struct MissilePlatform : GameObject {
     bn::fixed speed;
 	bool player_was_riding;
 
-	int32 return_cooldown;
-
     MissilePlatform(Direction _dir, bn::fixed_point _p);
     ~MissilePlatform();
 
     void update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				bn::regular_bg_ptr                        bg_ptr, 
                 bn::span<const bn::regular_bg_map_cell>   cells,
-                bn::regular_bg_item                       bg_item) override;
+                bn::regular_bg_item                       bg_item,
+				bn::camera_ptr                            camera) override;
 	
 };
 

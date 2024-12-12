@@ -52,14 +52,18 @@
 
 #define PLAYER_SQUISH_FRAMES_REQUIRED 3
 
-#define PLAYER_MISSILE_THROW_FRAMES 25
-#define PLAYER_THROW_MISSILE_FRAME  4
+#define PLAYER_MISSILE_THROW_FRAMES 6
+#define PLAYER_THROW_MISSILE_FRAME  5
+#define PLAYER_THROW_COOLDOWN_FRAMES 40
 
 #define PLAYER_LEAP_X_FORCE 10 
 #define PLAYER_LEAP_Y_FORCE -8
 #define PLAYER_LEAP_FORCE_DECAY 0.05
+#define PLAYER_MAX_LEAP_CANCEL_FRAMES 25
 
 #define PLAYER_OWP_SNAP_FRAMES 2
+
+#define PLAYER_MAX_AMMO 1
 
 #define PLAYER_X_LEFT_FORCE  	      new Force(bn::fixed_point_t<12>(-x_speed, 0), PLAYER_X_DECAY)
 #define PLAYER_X_RIGHT_FORCE 	      new Force(bn::fixed_point_t<12>( x_speed, 0), PLAYER_X_DECAY)
@@ -100,8 +104,11 @@ struct Player : GameObject {
 	int32           remaining_jump_input_frames;
 	int32           remaining_x_drift_lockout_frames;
 	int32           current_missile_throw_frames;
+	int32           missile_throw_cooldown_frames;
 	int32           owp_grace_frames;
 	int32           air_frames_elapsed;
+	int32           remaining_leap_cancel_frames;
+	int32           ammo_count;
 
 	bn::point       respawn_pos;
 	
@@ -111,7 +118,8 @@ struct Player : GameObject {
 	void update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				bn::regular_bg_ptr                         bg_ptr, 
                 bn::span<const bn::regular_bg_map_cell>    cells,
-                bn::regular_bg_item                        bg_item) override;
+                bn::regular_bg_item                        bg_item,
+				bn::camera_ptr                             camera) override;
 	
 };
 
