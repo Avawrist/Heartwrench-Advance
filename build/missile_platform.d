@@ -54,6 +54,7 @@ missile_platform.o: G:/game/src/missile_platform.cpp \
  G:/butano-master/butano/include/bn_sprite_ptr.h \
  G:/butano-master/butano/include/bn_sprite_tiles_ptr.h \
  G:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h \
+ G:/butano-master/butano/include/bn_sprite_palette_ptr.h \
  G:/butano-master/butano/include/bn_camera_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_item.h \
@@ -66,7 +67,10 @@ missile_platform.o: G:/game/src/missile_platform.cpp \
  G:/butano-master/butano/include/bn_regular_bg_map_cell.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h \
  G:/game/include/physics.h G:/butano-master/butano/include/bn_vector.h \
- G:/game/include/collider.h G:/game/build/bn_sprite_items_game_object.h
+ G:/game/include/collider.h G:/game/build/bn_sprite_items_game_object.h \
+ G:/game/build/bn_sprite_palette_items_default_sprite_palette.h \
+ G:/butano-master/butano/include/bn_sprite_palette_item.h \
+ G:/game/build/bn_sprite_palette_items_white_sprite_palette.h
 G:/game/include/missile_platform.h:
 G:/butano-master/butano/include/bn_keypad.h:
 G:/butano-master/butano/include/bn_common.h:
@@ -125,6 +129,7 @@ G:/butano-master/butano/include/bn_vector_fwd.h:
 G:/butano-master/butano/include/bn_sprite_ptr.h:
 G:/butano-master/butano/include/bn_sprite_tiles_ptr.h:
 G:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h:
+G:/butano-master/butano/include/bn_sprite_palette_ptr.h:
 G:/butano-master/butano/include/bn_camera_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_item.h:
@@ -140,3 +145,6 @@ G:/game/include/physics.h:
 G:/butano-master/butano/include/bn_vector.h:
 G:/game/include/collider.h:
 G:/game/build/bn_sprite_items_game_object.h:
+G:/game/build/bn_sprite_palette_items_default_sprite_palette.h:
+G:/butano-master/butano/include/bn_sprite_palette_item.h:
+G:/game/build/bn_sprite_palette_items_white_sprite_palette.h:

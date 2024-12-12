@@ -12,6 +12,7 @@ GameObject::GameObject()
 								  								  bn::sprite_items::game_object.tiles_item(),
 								  								  0,
 								  								  0);
+    sprite_palette_ptr = bn::sprite_palette_items::default_sprite_palette.create_palette();
 
     rigidbody_ptr = new RigidBody();
 	collider_ptr  = new Collider(x() + collider_offset_x, 
@@ -24,6 +25,7 @@ GameObject::~GameObject()
 {
     sprite_ptr.reset();
     animate_action_ptr.reset();
+    sprite_palette_ptr.reset();
     
     delete collider_ptr;
     delete rigidbody_ptr;

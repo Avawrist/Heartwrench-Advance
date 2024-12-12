@@ -46,13 +46,18 @@
 #define PLAYER_WALL_RIDE_GRAVITY 1
 #define PLAYER_GRAVITY_DECAY 	 1
 
-#define PLAYER_THROW_X_FORCE 4
+#define PLAYER_THROW_X_FORCE 5
+#define PLAYER_THROW_Y_FORCE -5
 #define PLAYER_THROW_FORCE_DECAY 0.05
 
 #define PLAYER_SQUISH_FRAMES_REQUIRED 3
 
-#define PLAYER_MISSILE_THROW_FRAMES 8
+#define PLAYER_MISSILE_THROW_FRAMES 25
 #define PLAYER_THROW_MISSILE_FRAME  4
+
+#define PLAYER_LEAP_X_FORCE 10 
+#define PLAYER_LEAP_Y_FORCE -8
+#define PLAYER_LEAP_FORCE_DECAY 0.05
 
 #define PLAYER_OWP_SNAP_FRAMES 2
 
@@ -69,7 +74,9 @@
 #define PLAYER_GRAVITY_FORCE          new Force(bn::fixed_point_t<12>(0, gravity), 			 PLAYER_GRAVITY_DECAY)
 #define PLAYER_WALL_GRAVITY_FORCE     new Force(bn::fixed_point_t<12>(0, wall_ride_gravity), PLAYER_GRAVITY_DECAY)
 
-#define PLAYER_THROW_FORCE            new Force(bn::fixed_point_t<12>(PLAYER_THROW_X_FORCE * dir * -1, 0), PLAYER_THROW_FORCE_DECAY)
+#define PLAYER_THROW_FORCE            new Force(bn::fixed_point_t<12>(PLAYER_THROW_X_FORCE * dir * -1, PLAYER_THROW_Y_FORCE), PLAYER_THROW_FORCE_DECAY)
+#define PLAYER_LEAP_FORCE             new Force(bn::fixed_point_t<12>(PLAYER_LEAP_X_FORCE * dir, PLAYER_LEAP_Y_FORCE), PLAYER_LEAP_FORCE_DECAY)
+
 
 enum PlayerState {
 	STATE_GROUNDED_NEUTRAL,

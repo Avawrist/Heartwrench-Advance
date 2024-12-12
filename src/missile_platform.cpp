@@ -29,6 +29,7 @@ MissilePlatform::MissilePlatform(Direction _dir, bn::fixed_point _p)
 
     state   = STATE_IDLE;
     speed   = MISSILE_PLATFORM_BASE_SPEED;
+	player_was_riding = false;
     dir     = _dir;
 
 	return_cooldown = 0;
@@ -61,6 +62,7 @@ void MissilePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obj
 
 			// Reset speed variables
 			speed = MISSILE_PLATFORM_BASE_SPEED;
+			player_was_riding = false;
 
 			// Get player ptr
 			player_ptr = game_objects.at(PLAYER_OBJECT_LIST_INDEX);
@@ -84,21 +86,21 @@ void MissilePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obj
             rigidbody_ptr->addForce(MISSILE_PLATFORM_X_FORCE);
 
 			// Recall missile (detonate?)
-			if(bn::keypad::r_pressed()) {state = STATE_RETURNING; 
+			if(bn::keypad::b_pressed()) {state = STATE_RETURNING; 
 										 return_cooldown = MISSILE_RETURN_COOLDOWN_FRAMES;}
 
         break;
 
         case STATE_STUCK_IN_MAP:
 
-			if(bn::keypad::r_pressed()) {state = STATE_RETURNING; 
+			if(bn::keypad::b_pressed()) {state = STATE_RETURNING; 
 										 return_cooldown = MISSILE_RETURN_COOLDOWN_FRAMES;}
 
         break;
 
 		case STATE_STUCK_IN_OBJECT:
 
-			if(bn::keypad::r_pressed()) {state = STATE_RETURNING; 
+			if(bn::keypad::b_pressed()) {state = STATE_RETURNING; 
 										 return_cooldown = MISSILE_RETURN_COOLDOWN_FRAMES;}
 
 		break;
@@ -374,6 +376,14 @@ void MissilePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obj
 						test_collider_roof_ptr->isCollision(*other_collider_ptr) &&
 						other_collider_ptr->p4.y() < collider_ptr->p1.y() - final_dir.y())
 						{
+							// Set to max speed
+							speed = MISSILE_PLATFORM_MAX_SPEED;
+							if(!player_was_riding)
+							{
+								rigidbody_ptr->addForce(MISSILE_PLATFORM_DRIFT_DOWN_FORCE);
+								player_was_riding = true;
+							}
+
 							if(final_dir.y() <= 0)
 							{
 								// If descending, applying force to the x axis is all that's needed.
@@ -387,6 +397,15 @@ void MissilePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obj
 								// so the player hugs the platform tight.
 								object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), final_dir.y() + 1),
 																			MISSILE_PLATFORM_DECAY));
+							}
+						}
+						else 
+						{
+							speed = MISSILE_PLATFORM_BASE_SPEED;
+							if(player_was_riding)
+							{
+								rigidbody_ptr->addForce(MISSILE_PLATFORM_DRIFT_UP_FORCE);
+								player_was_riding = false;
 							}
 						}
 

@@ -115,7 +115,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			}
 
 			// Missile Throw
-			if(bn::keypad::r_pressed()) {current_missile_throw_frames = 0; throw_missile = true;}
+			if(bn::keypad::b_pressed()) {current_missile_throw_frames = 0; throw_missile = true;}
 
 		break;
 	
@@ -159,7 +159,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			else if(bn::keypad::a_released()) {remaining_jump_input_frames = 0;}
 
 			// Missile Throw
-			if(bn::keypad::r_pressed()) {current_missile_throw_frames = 0; throw_missile = true;}
+			if(bn::keypad::b_pressed()) {current_missile_throw_frames = 0; throw_missile = true;}
 			
 			// Add Gravity //
 			rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);
@@ -198,6 +198,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			}
 
 			// Get Input //
+			/*
 			if(bn::keypad::a_pressed())
 			{
 				rigidbody_ptr->addForce(PLAYER_WALL_JUMP_LEFT_FORCE);
@@ -205,7 +206,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
 				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
 				dir = LEFT;
-			}
+			} */
 			
 			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames) 
 			{rigidbody_ptr->addForce(PLAYER_X_LEFT_FORCE);}
@@ -213,7 +214,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			{gripping_wall_right = true; dir = LEFT;}
 
 			// Missile Throw
-			if(bn::keypad::r_pressed()) {current_missile_throw_frames = 0; throw_missile = true;}
+			if(bn::keypad::b_pressed()) {current_missile_throw_frames = 0; throw_missile = true;}
 			
 			// Add Gravity //
 			if(gripping_wall_right) {rigidbody_ptr->addForce(PLAYER_WALL_GRAVITY_FORCE);}
@@ -235,6 +236,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			}
 
 			// Get Input //
+			/*
 			if(bn::keypad::a_pressed())
 			{
 				rigidbody_ptr->addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);
@@ -242,14 +244,14 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
 				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
 				dir = RIGHT;
-			}
+			} */
 			
 			if(bn::keypad::left_held()) {gripping_wall_left = true; dir = RIGHT;}
 			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames) 
 			{rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE);}
 
 			// Missile Throw
-			if(bn::keypad::r_pressed()) {current_missile_throw_frames = 0; throw_missile = true;}
+			if(bn::keypad::b_pressed()) {current_missile_throw_frames = 0; throw_missile = true;}
 			
 			// Add Gravity //
 			if(gripping_wall_left) {rigidbody_ptr->addForce(PLAYER_WALL_GRAVITY_FORCE);}
@@ -259,36 +261,43 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 		case STATE_THROWING:
 
+			// Kill secondary jump momentum immediately
+			remaining_jump_input_frames = 0;
+
+			// Throw the missile if it is available to be thrown
 			missile_ptr = (MissilePlatform*)game_objects.at(MISSILE_OBJECT_LIST_INDEX);
-
-			if(missile_ptr->state == STATE_IDLE)
+			if(current_missile_throw_frames == PLAYER_THROW_MISSILE_FRAME && 
+			   missile_ptr->state == STATE_IDLE)
 			{
-				// Kill secondary jump momentum immediately
-				remaining_jump_input_frames = 0;
+				// Add force :) 
+				rigidbody_ptr->addForce(PLAYER_THROW_FORCE);
 
-				if(current_missile_throw_frames == PLAYER_THROW_MISSILE_FRAME)
-				{
-					// Add force :) 
-					rigidbody_ptr->addForce(PLAYER_THROW_FORCE);
+				// Add stretch for fun
+				sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
+				sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
 
-					// Add stretch for fun
-					sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
-					sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+				// Set Missile state
+				missile_ptr->state = STATE_THROWN;
+			}
+			missile_ptr = NULL;
 
-					// Set Missile state
-					missile_ptr->state = STATE_THROWN;
-				}
-
-				// Update frame counter
-				current_missile_throw_frames++;
-				current_missile_throw_frames = clamp(0, 
-													PLAYER_MISSILE_THROW_FRAMES, 
-													current_missile_throw_frames);
-
-				if(current_missile_throw_frames != PLAYER_MISSILE_THROW_FRAMES) {throw_missile = true;}
+			// Leap Cancel
+			if(current_missile_throw_frames >= PLAYER_THROW_MISSILE_FRAME)
+			{
+				if(bn::keypad::a_pressed()) {rigidbody_ptr->addForce(PLAYER_LEAP_FORCE);}
 			}
 
-			missile_ptr = NULL;
+			// Add gravity
+			if(current_missile_throw_frames >= PLAYER_THROW_MISSILE_FRAME)
+			{rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);}
+
+			// Keep the player in the throw state until throw frames are up
+			current_missile_throw_frames++;
+			current_missile_throw_frames = clamp(0, 
+												 PLAYER_MISSILE_THROW_FRAMES, 
+												 current_missile_throw_frames);
+			if(current_missile_throw_frames != PLAYER_MISSILE_THROW_FRAMES) 
+			{throw_missile = true;}
 
 		break;
 
@@ -806,6 +815,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	if(throw_missile)
 	{
 		state = STATE_THROWING;
+		air_frames_elapsed = 0;
 	}
     else if(grounded_detected)        
 	{

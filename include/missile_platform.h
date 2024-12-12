@@ -40,8 +40,13 @@ enum MissileState {
 #define MISSILE_PLATFORM_COLLIDER_HEIGHT 2
 
 #define MISSILE_PLATFORM_BASE_SPEED   1
+#define MISSILE_PLATFORM_MAX_SPEED    2
 #define MISSILE_PLATFORM_SLOWED_SPEED 1
 #define MISSILE_PLATFORM_DECAY        1
+
+#define MISSILE_PLATFORM_DRIFT_DOWN_Y 2
+#define MISSILE_PLATFORM_DRIFT_UP_Y  -2
+#define MISSILE_PLATFORM_DRIFT_DECAY 0.5
 
 #define MISSILE_PLAYER_X_OFFSET 20 
 #define MISSILE_PLAYER_Y_OFFSET 0
@@ -50,10 +55,14 @@ enum MissileState {
 
 #define MISSILE_PLATFORM_X_FORCE new Force(bn::fixed_point_t<12>(speed * dir, 0), MISSILE_PLATFORM_DECAY)
 
+#define MISSILE_PLATFORM_DRIFT_DOWN_FORCE new Force(bn::fixed_point_t<12>(0, MISSILE_PLATFORM_DRIFT_DOWN_Y), MISSILE_PLATFORM_DRIFT_DECAY)
+#define MISSILE_PLATFORM_DRIFT_UP_FORCE   new Force(bn::fixed_point_t<12>(0, MISSILE_PLATFORM_DRIFT_UP_Y), MISSILE_PLATFORM_DRIFT_DECAY)
+
 struct MissilePlatform : GameObject {
 
 	MissileState state;
     bn::fixed speed;
+	bool player_was_riding;
 
 	int32 return_cooldown;
 

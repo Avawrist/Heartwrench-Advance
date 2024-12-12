@@ -5,6 +5,7 @@
 #include "bn_optional.h"
 #include "bn_sprite_ptr.h"
 #include "bn_sprite_animate_actions.h"
+#include "bn_sprite_palette_ptr.h"
 #include "bn_camera_ptr.h"
 #include "bn_fixed.h"
 #include "bn_fixed_point.h"
@@ -21,6 +22,8 @@
 
 // Assets
 #include "bn_sprite_items_game_object.h"
+#include "bn_sprite_palette_items_default_sprite_palette.h"
+#include "bn_sprite_palette_items_white_sprite_palette.h"
 
 #define MAX_ANIM_FRAMES 16
 
@@ -46,8 +49,9 @@ struct GameObject {
 
 	ObjectType object_type;
 
-	bn::optional<bn::sprite_ptr> sprite_ptr;
+	bn::optional<bn::sprite_ptr>                             sprite_ptr;
 	bn::optional<bn::sprite_animate_action<MAX_ANIM_FRAMES>> animate_action_ptr;
+	bn::optional<bn::sprite_palette_ptr>                     sprite_palette_ptr;
 
 	Collider*  collider_ptr  = NULL;
 	RigidBody* rigidbody_ptr = NULL;

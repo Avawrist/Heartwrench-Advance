@@ -50,6 +50,7 @@ exit.o: G:/game/src/exit.cpp G:/game/include/exit.h \
  G:/butano-master/butano/include/bn_sprite_ptr.h \
  G:/butano-master/butano/include/bn_sprite_tiles_ptr.h \
  G:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h \
+ G:/butano-master/butano/include/bn_sprite_palette_ptr.h \
  G:/butano-master/butano/include/bn_camera_ptr.h \
  G:/butano-master/butano/include/bn_fixed.h \
  G:/butano-master/butano/include/bn_fixed_point.h \
@@ -65,7 +66,10 @@ exit.o: G:/game/src/exit.cpp G:/game/include/exit.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h \
  G:/game/include/physics.h G:/butano-master/butano/include/bn_vector.h \
  G:/game/include/math.h G:/game/include/collider.h \
- G:/game/build/bn_sprite_items_game_object.h
+ G:/game/build/bn_sprite_items_game_object.h \
+ G:/game/build/bn_sprite_palette_items_default_sprite_palette.h \
+ G:/butano-master/butano/include/bn_sprite_palette_item.h \
+ G:/game/build/bn_sprite_palette_items_white_sprite_palette.h
 G:/game/include/exit.h:
 G:/butano-master/butano/include/bn_math.h:
 G:/butano-master/butano/include/bn_array.h:
@@ -120,6 +124,7 @@ G:/butano-master/butano/include/bn_vector_fwd.h:
 G:/butano-master/butano/include/bn_sprite_ptr.h:
 G:/butano-master/butano/include/bn_sprite_tiles_ptr.h:
 G:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h:
+G:/butano-master/butano/include/bn_sprite_palette_ptr.h:
 G:/butano-master/butano/include/bn_camera_ptr.h:
 G:/butano-master/butano/include/bn_fixed.h:
 G:/butano-master/butano/include/bn_fixed_point.h:
@@ -138,3 +143,6 @@ G:/butano-master/butano/include/bn_vector.h:
 G:/game/include/math.h:
 G:/game/include/collider.h:
 G:/game/build/bn_sprite_items_game_object.h:
+G:/game/build/bn_sprite_palette_items_default_sprite_palette.h:
+G:/butano-master/butano/include/bn_sprite_palette_item.h:
+G:/game/build/bn_sprite_palette_items_white_sprite_palette.h:
