@@ -34,14 +34,17 @@ void Room::load(RoomName room_name,
 {
     if(room_name == NO_ROOM) {return;}
 
-    // Init Player, Scythe and Exits FIRST. They will always be updated last //
+    // Record current room
+    current_room = room_name;
+
+    // Init Player, Missile and Exits FIRST. They will always be updated last //
     Player* player_ptr = new Player();
     game_objects.push_back(player_ptr);
     game_objects.back()->setCamera(camera);
     game_objects.back()->setPos(player_spawn.x(), player_spawn.y());
 
-    // Create space for Scythe next.
-    game_objects.push_back(new ScythePlatform(RIGHT, bn::fixed_point(0, 0)));
+    // Create space for Missile next.
+    game_objects.push_back(new MissilePlatform(RIGHT, bn::fixed_point(0, 0)));
     game_objects.back()->setCamera(camera);
 
     // Exit 1
@@ -77,6 +80,7 @@ void Room::load(RoomName room_name,
                                                               player_spawn.y());
 
             // Init Exits //
+<<<<<<< HEAD
             /*
             delete game_objects.at(EXIT_1_OBJECT_LIST_INDEX);
             game_objects.at(EXIT_1_OBJECT_LIST_INDEX) = new Exit(ROOM_TEST_2, bn::point(0, 0));
@@ -90,6 +94,13 @@ void Room::load(RoomName room_name,
             game_objects.push_back(new DevilPlatform(bn::point(96, 44), 
                                                      bn::point(228, 44)));
             game_objects.back()->setCamera(camera); */
+=======
+            //delete game_objects.at(EXIT_1_OBJECT_LIST_INDEX);
+            //game_objects.at(EXIT_1_OBJECT_LIST_INDEX) = new Exit(ROOM_TEST_2, bn::point(0, 0));
+            //game_objects.at(EXIT_1_OBJECT_LIST_INDEX)->setCamera(camera);
+
+            // Init Game Objects //
+>>>>>>> c2ba7c92b9c969f0814ab8d22e2cb13d09b314e5
     
         break;
 
