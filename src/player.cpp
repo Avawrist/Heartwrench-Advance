@@ -227,6 +227,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			 remaining_leap_cancel_frames = 0;}
 
 			// Get Input //
+			/*
 			else if(bn::keypad::a_pressed())
 			{
 				rigidbody_ptr->addForce(PLAYER_WALL_JUMP_LEFT_FORCE);
@@ -234,7 +235,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
 				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
 				dir = LEFT;
-			}
+			} */
 			
 			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames) 
 			{rigidbody_ptr->addForce(PLAYER_X_LEFT_FORCE);}
@@ -276,6 +277,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			{rigidbody_ptr->addForce(PLAYER_LEAP_FORCE);
 			 remaining_leap_cancel_frames = 0;}
 
+			/*
 			else if(bn::keypad::a_pressed())
 			{
 				rigidbody_ptr->addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);
@@ -283,7 +285,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
 				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
 				dir = RIGHT;
-			}
+			} */
 			
 			if(bn::keypad::left_held()) {gripping_wall_left = true; dir = RIGHT;}
 			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames) 
@@ -313,7 +315,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			if(current_missile_throw_frames == PLAYER_THROW_MISSILE_FRAME)
 			{
 				// Add force :) 
-				rigidbody_ptr->addForce(PLAYER_THROW_FORCE);
+				//rigidbody_ptr->addForce(PLAYER_THROW_FORCE);
 
 				// Add stretch for fun
 				sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
@@ -327,7 +329,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				game_objects.at(MISSILE_OBJECT_LIST_INDEX)->setCamera(camera);
 
 				// Set leap cancel frames
-				remaining_leap_cancel_frames = PLAYER_MAX_LEAP_CANCEL_FRAMES;
+				//remaining_leap_cancel_frames = PLAYER_MAX_LEAP_CANCEL_FRAMES;
 			}
 
 			// Keep the player in the throw state until throw frames are up

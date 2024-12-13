@@ -80,13 +80,12 @@ void Room::load(RoomName room_name,
                                                               player_spawn.y());
 
             // Init Exits //
-<<<<<<< HEAD
-            /*
             delete game_objects.at(EXIT_1_OBJECT_LIST_INDEX);
             game_objects.at(EXIT_1_OBJECT_LIST_INDEX) = new Exit(ROOM_TEST_2, bn::point(0, 0));
             game_objects.at(EXIT_1_OBJECT_LIST_INDEX)->setCamera(camera);
 
             // Init Game Objects //
+            /*
             game_objects.push_back(new DevilPlatform(bn::point(-32, -32), 
                                                      bn::point(-192, -192)));
             game_objects.back()->setCamera(camera);
@@ -94,13 +93,6 @@ void Room::load(RoomName room_name,
             game_objects.push_back(new DevilPlatform(bn::point(96, 44), 
                                                      bn::point(228, 44)));
             game_objects.back()->setCamera(camera); */
-=======
-            //delete game_objects.at(EXIT_1_OBJECT_LIST_INDEX);
-            //game_objects.at(EXIT_1_OBJECT_LIST_INDEX) = new Exit(ROOM_TEST_2, bn::point(0, 0));
-            //game_objects.at(EXIT_1_OBJECT_LIST_INDEX)->setCamera(camera);
-
-            // Init Game Objects //
->>>>>>> c2ba7c92b9c969f0814ab8d22e2cb13d09b314e5
     
         break;
 

@@ -9,11 +9,7 @@
 @	+ regular map (flat), not compressed, 128x64 
 @	Total size: 128 + 448 + 16384 = 16960
 @
-<<<<<<< HEAD
-@	Time-stamp: 2024-12-12, 17:58:26
-=======
-@	Time-stamp: 2024-12-12, 17:19:05
->>>>>>> c2ba7c92b9c969f0814ab8d22e2cb13d09b314e5
+@	Time-stamp: 2024-12-12, 18:10:23
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
