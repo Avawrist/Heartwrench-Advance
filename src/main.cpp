@@ -80,8 +80,22 @@ int main()
 
         // Do NOT delete the Exit pointers, they are handled by the Room object.
 
-        // Update Camera
-        camera.set_position(current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos());
+        // Update Camera //
+        #define HALF_SCREEN_WIDTH  120
+        #define HALF_SCREEN_HEIGHT 80
+        #define TILESET_HEIGHT     8
+        bn::regular_bg_ptr temp_bg_ptr = current_room_ptr->bg_ptr.value();
+        int32 half_room_width_pixels   = temp_bg_ptr.dimensions().width()  / 2;
+	    int32 half_room_height_pixels  = temp_bg_ptr.dimensions().height() / 2;
+        int32 new_cam_x = current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos().x().integer();
+        int32 new_cam_y = current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos().y().integer();
+        new_cam_x = clamp(-half_room_width_pixels + HALF_SCREEN_WIDTH,  
+                           half_room_width_pixels - HALF_SCREEN_WIDTH, 
+                           new_cam_x);
+        new_cam_y = clamp(-half_room_height_pixels + HALF_SCREEN_HEIGHT + TILESET_HEIGHT, 
+                           half_room_height_pixels - HALF_SCREEN_HEIGHT, 
+                           new_cam_y);
+        camera.set_position(new_cam_x, new_cam_y);
         
         // Update Core
         bn::core::update();

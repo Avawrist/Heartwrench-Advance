@@ -851,6 +851,19 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	delete test_collider_ptr;
 	delete test_collider_right_ptr;
 	delete test_collider_left_ptr;
+
+	////////////////////
+	// Clamp Position //
+	////////////////////
+
+	bn::fixed new_x = x();
+	bn::fixed new_y = y();
+	new_x = clamp(-half_room_width_pixels,  half_room_width_pixels,  new_x);
+	new_y = clamp(-half_room_height_pixels, half_room_height_pixels, new_y);
+	setPos(new_x, new_y);
+
+	#define Y_KILL_BUFFER 32
+	if(y() > half_room_height_pixels - Y_KILL_BUFFER) {kill_player = true;}
 	
     ///////////////////
     // Update States //

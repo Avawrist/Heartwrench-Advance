@@ -327,11 +327,12 @@ void MissilePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obj
 					{
 						// Set to max speed
 						speed = MISSILE_PLATFORM_MAX_SPEED;
+						/*
 						if(!player_was_riding)
 						{
 							rigidbody_ptr->addForce(MISSILE_PLATFORM_DRIFT_DOWN_FORCE);
 							player_was_riding = true;
-						}
+						} */
 
 						if(final_dir.y() <= 0)
 						{
@@ -351,11 +352,12 @@ void MissilePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obj
 					else 
 					{
 						speed = MISSILE_PLATFORM_BASE_SPEED;
+						/*
 						if(player_was_riding)
 						{
 							rigidbody_ptr->addForce(MISSILE_PLATFORM_DRIFT_UP_FORCE);
 							player_was_riding = false;
-						}
+						} */
 					}
 
 				break;
