@@ -14,8 +14,8 @@
 #define EXIT_4_OBJECT_LIST_INDEX 5
 
 #define NO_BLOCK_INDEX     0
-#define HARD_BLOCK_INDEX   1
-#define SOFT_BLOCK_INDEX   2
+#define SOFT_BLOCK_INDEX   1
+#define HARD_BLOCK_INDEX   2
 #define ONEWAY_BLOCK_INDEX 3
 #define SLOW_BLOCK_INDEX   4
 #define UP_SPIKE_BLOCK_INDEX    5 

@@ -71,12 +71,13 @@ void Room::load(RoomName room_name,
             bg_item      = bn::regular_bg_items::test_room;
 
             // Set Player spawn //
-            player_spawn            = bn::point(-192, 96);
+            player_spawn            = bn::point(-480, 96);
             player_ptr->respawn_pos = player_spawn; 
             game_objects.at(PLAYER_OBJECT_LIST_INDEX)->setPos(player_spawn.x(), 
                                                               player_spawn.y());
 
             // Init Exits //
+            /*
             delete game_objects.at(EXIT_1_OBJECT_LIST_INDEX);
             game_objects.at(EXIT_1_OBJECT_LIST_INDEX) = new Exit(ROOM_TEST_2, bn::point(0, 0));
             game_objects.at(EXIT_1_OBJECT_LIST_INDEX)->setCamera(camera);
@@ -88,7 +89,7 @@ void Room::load(RoomName room_name,
     
             game_objects.push_back(new DevilPlatform(bn::point(96, 44), 
                                                      bn::point(228, 44)));
-            game_objects.back()->setCamera(camera);
+            game_objects.back()->setCamera(camera); */
     
         break;
 
