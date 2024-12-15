@@ -47,6 +47,7 @@ void DevilPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
                            bn::regular_bg_item                        bg_item,
                            bn::camera_ptr                             camera)
 {
+
     if(update_counter % 2 == 0) // Perform update on even frames.
     {
         //////////////////////////////

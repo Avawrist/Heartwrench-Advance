@@ -498,7 +498,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
     // Resolve Tile Collision //
     ////////////////////////////
 
-	for(int32 y = -1; y < 2; y++)
+	for(int32 y = -2; y < 3; y++)
 	{
 		for(int32 x = -1; x < 2; x++)
 		{
@@ -740,7 +740,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
     // Get State Info from Tiles //
     ///////////////////////////////							   
 
-	for(int32 y = -1; y < 2; y++)
+	for(int32 y = -2; y < 3; y++)
 	{
 		for(int32 x = -2; x < 3; x++)
 		{

@@ -21,17 +21,13 @@ int32 Room::addObject(GameObject* object_ptr)
     return game_objects.back()->object_id;
 }
 
-void   Room::deleteObject(GameObject* object_ptr)
-{
-
-}
-
 void Room::clear()
 {
     // Free room pointers
     bg_ptr.reset();
     backdrop_ptr.reset();
     bg_item.reset();
+    camera.reset();
 
     // Reset non-pointer variables
     player_spawn = bn::point(0, 0);
@@ -61,11 +57,11 @@ void Room::load(RoomName room_name)
     game_objects.back()->setPos(player_spawn.x(), player_spawn.y());
 
     // Create space for Missile next.
-    addObject(new MissilePlatform(RIGHT, bn::fixed_point(0, 0)));
+    addObject(NULL);
 
     // Exits
     #define EXIT_COUNT 4
-    for(uint i = 0; i < EXIT_COUNT; i++)
+    for(uint32 i = 0; i < EXIT_COUNT; i++)
     {addObject(new Exit(NO_ROOM, bn::point(0, 0)));}
 
     // Initialize Variables
@@ -88,6 +84,8 @@ void Room::load(RoomName room_name)
             delete game_objects.at(EXIT_1_OBJECT_LIST_INDEX);
             game_objects.at(EXIT_1_OBJECT_LIST_INDEX) = new Exit(ROOM_TEST_2, bn::point(0, 0));
             game_objects.at(EXIT_1_OBJECT_LIST_INDEX)->setCamera(camera.value());
+
+            // Init Game Objects //
     
         break;
 
@@ -122,4 +120,103 @@ void Room::load(RoomName room_name)
     backdrop_ptr->set_camera(camera.value());
     bg_ptr->set_camera(camera.value());
 
+}
+
+void Room::updateAndDraw()
+{
+    for(int32 i = game_objects.size() - 1; i >= 0; i--)
+    {
+        if(game_objects.data()[i] != NULL)
+        {
+            game_objects.data()[i]->update(game_objects, 
+                                       bg_ptr.value(),
+                                       cells,
+                                       bg_item.value(),
+                                       camera.value());
+            game_objects.data()[i]->draw();
+        }   
+    }
+}
+
+void Room::reload()
+{
+    clear(); 
+    load(current_room);
+}
+
+void Room::updateCamera()
+{
+    #define HALF_SCREEN_WIDTH  120
+    #define HALF_SCREEN_HEIGHT 80
+    #define TILESET_HEIGHT     8
+    int32 half_room_width_pixels  = bg_ptr.value().dimensions().width()  / 2;
+    int32 half_room_height_pixels = bg_ptr.value().dimensions().height() / 2;
+    int32 new_cam_x = game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos().x().integer();
+    int32 new_cam_y = game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos().y().integer();
+    new_cam_x = clamp(-half_room_width_pixels + HALF_SCREEN_WIDTH,  
+                       half_room_width_pixels - HALF_SCREEN_WIDTH, 
+                       new_cam_x);
+    new_cam_y = clamp(-half_room_height_pixels + HALF_SCREEN_HEIGHT + TILESET_HEIGHT, 
+                       half_room_height_pixels - HALF_SCREEN_HEIGHT, 
+                       new_cam_y);
+    camera.value().set_position(new_cam_x, new_cam_y);
+}
+
+void Room::checkConditions()
+{
+    // If player died, reload the room
+    if(((Player*)(game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->state == STATE_DEAD)
+    {reload();}
+
+    // Check Exit 1
+    Exit* exit_1_ptr = (Exit*)(game_objects.at(EXIT_1_OBJECT_LIST_INDEX));
+    if(exit_1_ptr->is_triggered) 
+    {clear(); load((RoomName)(exit_1_ptr->go_to_room_enum));}
+
+    // Check Exit 2
+    Exit* exit_2_ptr = (Exit*)(game_objects.at(EXIT_2_OBJECT_LIST_INDEX));
+    if(exit_2_ptr->is_triggered) 
+    {clear(); load((RoomName)(exit_2_ptr->go_to_room_enum));}
+
+    // Check Exit 3
+    Exit* exit_3_ptr = (Exit*)(game_objects.at(EXIT_3_OBJECT_LIST_INDEX));
+    if(exit_3_ptr->is_triggered) 
+    {clear(); load((RoomName)(exit_3_ptr->go_to_room_enum));}
+
+    // Check Exit 4
+    Exit* exit_4_ptr = (Exit*)(game_objects.at(EXIT_4_OBJECT_LIST_INDEX));
+    if(exit_4_ptr->is_triggered) 
+    {clear(); load((RoomName)(exit_4_ptr->go_to_room_enum));}
+}
+
+void Room::freeInactiveObjects()
+{
+    // Get an iterator to the gameobjects vector starting after the first two entries
+    // if object at current iterator is NULL
+    // erase the object :D 
+
+    bn::ivector<GameObject*>::iterator current = game_objects.begin();
+    bn::ivector<GameObject*>::iterator last    = game_objects.end();
+    current++; // Skip player index
+    current++; // Skip missile index
+    while(current != last)
+    {
+        if((*current)->inactive)
+        {
+            //delete game_objects.at(index);
+            game_objects.erase(current);
+            delete *current;
+        }
+        current++;
+    }
+
+    updateIndexes();
+}
+
+void Room::updateIndexes()
+{    
+    for(int32 i = game_objects.size() - 1; i >= 0; i--)
+    {
+        game_objects.data()[i]->object_id = i;
+    }
 }

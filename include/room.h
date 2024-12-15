@@ -55,9 +55,14 @@ struct Room
     ~Room();
 
     int32  addObject(GameObject* object_ptr);
-    void   deleteObject(GameObject* object_ptr);
     void   clear();
     void   load(RoomName room_name);
+    void   reload();
+    void   updateAndDraw();
+    void   updateCamera();
+    void   checkConditions();
+    void   freeInactiveObjects();
+    void   updateIndexes();
 
 };
 

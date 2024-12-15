@@ -62,6 +62,8 @@ struct GameObject {
 
 	Direction dir;
 
+	bool inactive = false;
+
 	bool received_platform_force = false;
 
 	bn::fixed_point applyForces();
