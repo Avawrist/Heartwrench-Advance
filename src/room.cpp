@@ -1,13 +1,29 @@
 #include "room.h"
 
-Room::Room(RoomName room_name, const bn::camera_ptr& camera)
+Room::Room(RoomName room_name)
 {
-    load(room_name, camera);
+    load(room_name);
 }
 
 Room::~Room()
 {
     clear();
+}
+
+int32 Room::addObject(GameObject* object_ptr)
+{
+    if(game_objects.size() >= MAX_GAME_OBJECTS) {return -1;}
+
+    game_objects.push_back(object_ptr);
+    game_objects.back()->setCamera(camera.value());
+    game_objects.back()->object_id = game_objects.size() - 1;
+
+    return game_objects.back()->object_id;
+}
+
+void   Room::deleteObject(GameObject* object_ptr)
+{
+
 }
 
 void Room::clear()
@@ -29,39 +45,28 @@ void Room::clear()
 
 }
 
-void Room::load(RoomName room_name, 
-                const bn::camera_ptr& camera)
+void Room::load(RoomName room_name)
 {
     if(room_name == NO_ROOM) {return;}
 
     // Record current room
     current_room = room_name;
 
+    // Init camera
+    camera = bn::camera_ptr::create(0, 0);
+
     // Init Player, Missile and Exits FIRST. They will always be updated last //
     Player* player_ptr = new Player();
-    game_objects.push_back(player_ptr);
-    game_objects.back()->setCamera(camera);
+    addObject(player_ptr);
     game_objects.back()->setPos(player_spawn.x(), player_spawn.y());
 
     // Create space for Missile next.
-    game_objects.push_back(new MissilePlatform(RIGHT, bn::fixed_point(0, 0)));
-    game_objects.back()->setCamera(camera);
+    addObject(new MissilePlatform(RIGHT, bn::fixed_point(0, 0)));
 
-    // Exit 1
-    game_objects.push_back(new Exit(NO_ROOM, bn::point(0, 0)));
-    game_objects.back()->setCamera(camera);
-
-    // Exit 2
-    game_objects.push_back(new Exit(NO_ROOM, bn::point(0, 0)));
-    game_objects.back()->setCamera(camera);
-
-    // Exit 3
-    game_objects.push_back(new Exit(NO_ROOM, bn::point(0, 0)));
-    game_objects.back()->setCamera(camera);
-
-    // Exit 4
-    game_objects.push_back(new Exit(NO_ROOM, bn::point(0, 0)));
-    game_objects.back()->setCamera(camera);
+    // Exits
+    #define EXIT_COUNT 4
+    for(uint i = 0; i < EXIT_COUNT; i++)
+    {addObject(new Exit(NO_ROOM, bn::point(0, 0)));}
 
     // Initialize Variables
     switch(room_name)
@@ -82,17 +87,7 @@ void Room::load(RoomName room_name,
             // Init Exits //
             delete game_objects.at(EXIT_1_OBJECT_LIST_INDEX);
             game_objects.at(EXIT_1_OBJECT_LIST_INDEX) = new Exit(ROOM_TEST_2, bn::point(0, 0));
-            game_objects.at(EXIT_1_OBJECT_LIST_INDEX)->setCamera(camera);
-
-            // Init Game Objects //
-            /*
-            game_objects.push_back(new DevilPlatform(bn::point(-32, -32), 
-                                                     bn::point(-192, -192)));
-            game_objects.back()->setCamera(camera);
-    
-            game_objects.push_back(new DevilPlatform(bn::point(96, 44), 
-                                                     bn::point(228, 44)));
-            game_objects.back()->setCamera(camera); */
+            game_objects.at(EXIT_1_OBJECT_LIST_INDEX)->setCamera(camera.value());
     
         break;
 
@@ -124,7 +119,7 @@ void Room::load(RoomName room_name,
     cells = bg_ptr->map().cells_ref().value();
     
     // Set Camera
-    backdrop_ptr->set_camera(camera);
-    bg_ptr->set_camera(camera);
+    backdrop_ptr->set_camera(camera.value());
+    bg_ptr->set_camera(camera.value());
 
 }

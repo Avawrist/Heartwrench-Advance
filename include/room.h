@@ -21,6 +21,7 @@
 
 // My Libs
 #include "utility.h"
+#include "game_object.h"
 #include "player.h"
 #include "devil_platform.h"
 #include "angel_platform.h"
@@ -38,6 +39,7 @@ struct Room
 {
     bn::vector<GameObject*, MAX_GAME_OBJECTS> game_objects;
 
+    bn::optional<bn::camera_ptr>            camera;
     bn::optional<bn::regular_bg_ptr>        bg_ptr;
     bn::optional<bn::regular_bg_ptr>        backdrop_ptr;
     bn::optional<bn::regular_bg_item>       bg_item;
@@ -49,13 +51,13 @@ struct Room
 
     bn::point player_spawn;
 
-    Room(RoomName room_name, 
-         const bn::camera_ptr& camera);
+    Room(RoomName room_name);
     ~Room();
 
-    void clear();
-    void load(RoomName room_name, 
-              const bn::camera_ptr& camera);
+    int32  addObject(GameObject* object_ptr);
+    void   deleteObject(GameObject* object_ptr);
+    void   clear();
+    void   load(RoomName room_name);
 
 };
 

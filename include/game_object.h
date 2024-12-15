@@ -48,6 +48,7 @@ enum ObjectType
 struct GameObject {
 
 	ObjectType object_type;
+	uint32     object_id;
 
 	bn::optional<bn::sprite_ptr>                             sprite_ptr;
 	bn::optional<bn::sprite_animate_action<MAX_ANIM_FRAMES>> animate_action_ptr;
