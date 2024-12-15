@@ -2,6 +2,7 @@
 
 Room::Room(RoomName room_name)
 {
+    camera = bn::camera_ptr::create(0, 0);
     load(room_name);
 }
 
@@ -23,11 +24,11 @@ int32 Room::addObject(GameObject* object_ptr)
 
 void Room::clear()
 {
+    
     // Free room pointers
     bg_ptr.reset();
     backdrop_ptr.reset();
     bg_item.reset();
-    camera.reset();
 
     // Reset non-pointer variables
     player_spawn = bn::point(0, 0);
@@ -47,9 +48,6 @@ void Room::load(RoomName room_name)
 
     // Record current room
     current_room = room_name;
-
-    // Init camera
-    camera = bn::camera_ptr::create(0, 0);
 
     // Init Player, Missile and Exits FIRST. They will always be updated last //
     Player* player_ptr = new Player();
