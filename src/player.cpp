@@ -34,17 +34,23 @@ Player::Player()
 	secondary_jump_force = PLAYER_SECOND_JUMP_FORCE;
     wall_jump_force   	 = bn::fixed_point(PLAYER_WALL_JUMP_X_FORCE,
 										   PLAYER_WALL_JUMP_Y_FORCE);
+	normalized_dir	     = bn::fixed_point(0, 0);
+
     gravity           	 = PLAYER_GRAVITY;
 	wall_ride_gravity 	 = PLAYER_WALL_RIDE_GRAVITY;
 	
 	remaining_jump_input_frames      = 0;
 	remaining_x_drift_lockout_frames = 0;
-	current_missile_throw_frames     = 0;
-	missile_throw_cooldown_frames    = 0;
-	owp_grace_frames                 = 0;
+	current_scythe_throw_frames     = 0;
+	scythe_throw_cooldown_frames    = 0;
 	air_frames_elapsed               = 0;
-	remaining_leap_cancel_frames     = 0;
-	ammo_count                       = 0;
+	v_collision_grace_frames         = 0;
+	late_jump_grace_frames           = 0;
+
+	wall_right_detected   = false;
+    wall_left_detected    = false;
+    grounded_detected     = false;
+	grounded_owp_detected = false;
 
 	respawn_pos = bn::point(0, 0);
 
@@ -68,7 +74,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 	bool gripping_wall_right = false;
 	bool gripping_wall_left  = false;
-	bool throw_missile       = false;
+	bool throw_scythe       = false;
 	bool kill_player         = false;
 
     switch(state)
@@ -78,6 +84,9 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			///////////////////////////////////
 			// Player Grounded Neutral State //
 			///////////////////////////////////
+
+			// Set Jump Grace frames to full
+			late_jump_grace_frames = PLAYER_LATE_JUMP_GRACE_FRAMES;
 
 			// Update walk speed //
 			if(bn::keypad::left_released())        
@@ -107,28 +116,18 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			else if(bn::keypad::right_held()) 
 			{rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE); dir = RIGHT;}
 
-			// Leap Cancel
-			if(bn::keypad::a_pressed() && remaining_leap_cancel_frames) 
-			{rigidbody_ptr->addForce(PLAYER_LEAP_FORCE);
-			 remaining_leap_cancel_frames = 0;}
-
 			// Jump
-			else if(bn::keypad::a_pressed())
-			{
-				remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
-				rigidbody_ptr->addForce(PLAYER_JUMP_FORCE);
-				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
-				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
-			}
+			if(bn::keypad::a_pressed()) {jump();}
 
-			// Missile Throw
-			if(bn::keypad::b_pressed() && 
-			   ammo_count > 0 && 
-			   !missile_throw_cooldown_frames) 
-			{current_missile_throw_frames  = 0; 
-			 missile_throw_cooldown_frames = PLAYER_THROW_COOLDOWN_FRAMES;
-			 ammo_count                   -= 1;
-			 throw_missile                 = true;}
+			// Scythe Throw
+			if(bn::keypad::b_pressed() &&
+			   !scythe_throw_cooldown_frames) 
+			{current_scythe_throw_frames  = 0; 
+			 scythe_throw_cooldown_frames = PLAYER_THROW_COOLDOWN_FRAMES;
+			 throw_scythe                 = true;}
+
+			// Add Gravity if Grounded on OWP
+			if(grounded_owp_detected) {rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);}
 
 		break;
 	
@@ -160,30 +159,32 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			}
 
 			// Get Input //
+
+			// Drift
 			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames)       
 			{rigidbody_ptr->addForce(PLAYER_X_LEFT_FORCE); dir = LEFT;}
 
-			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames) 
+			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames)
 			{rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE); dir = RIGHT;}
+
+			// Fast Fall
+			if(bn::keypad::down_held() && normalized_dir.y() >= 0) {fastFall();}
 			
+			// Late Jump
+			if(bn::keypad::a_pressed() && late_jump_grace_frames) {jump();}
+
+			// High Jump
 			if(bn::keypad::a_held() && remaining_jump_input_frames > 0)
 			{rigidbody_ptr->addForce(PLAYER_SECONDARY_JUMP_FORCE);}
 
 			else if(bn::keypad::a_released()) {remaining_jump_input_frames = 0;}
 
-			// Missile Throw
-			if(bn::keypad::b_pressed() && 
-			   ammo_count > 0 && 
-			   !missile_throw_cooldown_frames) 
-			{current_missile_throw_frames  = 0; 
-			 missile_throw_cooldown_frames = PLAYER_THROW_COOLDOWN_FRAMES;
-			 ammo_count                   -= 1;
-			 throw_missile                 = true;}
-
-			// Leap Cancel
-			if(bn::keypad::a_pressed() && remaining_leap_cancel_frames) 
-			{rigidbody_ptr->addForce(PLAYER_LEAP_FORCE);
-			 remaining_leap_cancel_frames = 0;}
+			// Scythe Throw
+			if(bn::keypad::b_pressed() &&
+			   !scythe_throw_cooldown_frames) 
+			{current_scythe_throw_frames  = 0; 
+			 scythe_throw_cooldown_frames = PLAYER_THROW_COOLDOWN_FRAMES;
+			 throw_scythe                 = true;}
 			
 			// Add Gravity //
 			rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);
@@ -221,35 +222,28 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
 			}
 
-			// Leap Cancel
-			if(bn::keypad::a_pressed() && remaining_leap_cancel_frames) 
-			{rigidbody_ptr->addForce(PLAYER_LEAP_FORCE);
-			 remaining_leap_cancel_frames = 0;}
-
 			// Get Input //
-			/*
-			else if(bn::keypad::a_pressed())
+	
+			if(bn::keypad::a_pressed())
 			{
 				rigidbody_ptr->addForce(PLAYER_WALL_JUMP_LEFT_FORCE);
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
 				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
 				dir = LEFT;
-			} */
+			} 
 			
 			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames) 
 			{rigidbody_ptr->addForce(PLAYER_X_LEFT_FORCE);}
 			else if(bn::keypad::right_held()) 								 
 			{gripping_wall_right = true; dir = LEFT;}
 
-			// Missile Throw
-			if(bn::keypad::b_pressed() && 
-			   ammo_count > 0 && 
-			   !missile_throw_cooldown_frames) 
-			{current_missile_throw_frames  = 0; 
-			 missile_throw_cooldown_frames = PLAYER_THROW_COOLDOWN_FRAMES;
-			 ammo_count                   -= 1;
-			 throw_missile                 = true;}
+			// Scythe Throw
+			if(bn::keypad::b_pressed() &&
+			   !scythe_throw_cooldown_frames) 
+			{current_scythe_throw_frames  = 0; 
+			 scythe_throw_cooldown_frames = PLAYER_THROW_COOLDOWN_FRAMES;
+			 throw_scythe                 = true;}
 			
 			// Add Gravity //
 			if(gripping_wall_right) {rigidbody_ptr->addForce(PLAYER_WALL_GRAVITY_FORCE);}
@@ -272,33 +266,25 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 			// Get Input //
 
-			// Leap Cancel
-			if(bn::keypad::a_pressed() && remaining_leap_cancel_frames) 
-			{rigidbody_ptr->addForce(PLAYER_LEAP_FORCE);
-			 remaining_leap_cancel_frames = 0;}
-
-			/*
-			else if(bn::keypad::a_pressed())
+			if(bn::keypad::a_pressed())
 			{
 				rigidbody_ptr->addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
 				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
 				dir = RIGHT;
-			} */
+			}
 			
 			if(bn::keypad::left_held()) {gripping_wall_left = true; dir = RIGHT;}
 			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames) 
 			{rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE);}
 
-			// Missile Throw
-			if(bn::keypad::b_pressed() && 
-			   ammo_count > 0 && 
-			   !missile_throw_cooldown_frames) 
-			{current_missile_throw_frames  = 0; 
-			 missile_throw_cooldown_frames = PLAYER_THROW_COOLDOWN_FRAMES;
-			 ammo_count                   -= 1;
-			 throw_missile                 = true;}
+			// Scythe Throw
+			if(bn::keypad::b_pressed() &&
+			   !scythe_throw_cooldown_frames) 
+			{current_scythe_throw_frames  = 0; 
+			 scythe_throw_cooldown_frames = PLAYER_THROW_COOLDOWN_FRAMES;
+			 throw_scythe                 = true;}
 			
 			// Add Gravity //
 			if(gripping_wall_left) {rigidbody_ptr->addForce(PLAYER_WALL_GRAVITY_FORCE);}
@@ -311,34 +297,31 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			// Kill secondary jump momentum immediately
 			remaining_jump_input_frames = 0;
 
-			// Throw a new missile
-			if(current_missile_throw_frames == PLAYER_THROW_MISSILE_FRAME)
+			// Throw a new scythe
+			if(current_scythe_throw_frames == PLAYER_THROW_SCYTHE_FRAME)
 			{
-				// Add force :) 
-				//rigidbody_ptr->addForce(PLAYER_THROW_FORCE);
-
 				// Add stretch for fun
 				sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
 				sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
 
-				// Create new Missile
-				delete game_objects.at(MISSILE_OBJECT_LIST_INDEX);
-				game_objects.at(MISSILE_OBJECT_LIST_INDEX) = new MissilePlatform(dir, 
-				                                             bn::fixed_point(x() + (dir * MISSILE_PLAYER_X_OFFSET), 
-			       															 y() + MISSILE_PLAYER_Y_OFFSET));
-				game_objects.at(MISSILE_OBJECT_LIST_INDEX)->setCamera(camera);
+				// Create new Scythe
+				delete game_objects.at(SCYTHE_OBJECT_LIST_INDEX);
+				game_objects.at(SCYTHE_OBJECT_LIST_INDEX) = new ScythePlatform(dir, 
+				                                             bn::fixed_point(x() + (dir * SCYTHE_PLAYER_X_OFFSET), 
+			       															 y() + SCYTHE_PLAYER_Y_OFFSET));
+				game_objects.at(SCYTHE_OBJECT_LIST_INDEX)->setCamera(camera);
 
 				// Set leap cancel frames
 				//remaining_leap_cancel_frames = PLAYER_MAX_LEAP_CANCEL_FRAMES;
 			}
 
 			// Keep the player in the throw state until throw frames are up
-			current_missile_throw_frames++;
-			current_missile_throw_frames = clamp(0, 
-												 PLAYER_MISSILE_THROW_FRAMES, 
-												 current_missile_throw_frames);
-			if(current_missile_throw_frames != PLAYER_MISSILE_THROW_FRAMES) 
-			{throw_missile = true;}
+			current_scythe_throw_frames++;
+			current_scythe_throw_frames = clamp(0, 
+												 PLAYER_SCYTHE_THROW_FRAMES, 
+												 current_scythe_throw_frames);
+			if(current_scythe_throw_frames != PLAYER_SCYTHE_THROW_FRAMES) 
+			{throw_scythe = true;}
 
 		break;
 
@@ -369,7 +352,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	bn::fixed normalized_dir_y = 0;
 	if(final_dir.x() != 0) {normalized_dir_x = final_dir.x() / abs(final_dir.x());}
 	if(final_dir.y() != 0) {normalized_dir_y = final_dir.y() / abs(final_dir.y());}
-	bn::fixed_point normalized_dir = bn::fixed_point(normalized_dir_x, normalized_dir_y);
+	normalized_dir = bn::fixed_point(normalized_dir_x, normalized_dir_y);
 
 	// Create one temporary collider for each axis. If a collider finds a collision
 	// in its axis, move the temp collider AND the Player back along the dir vector
@@ -456,10 +439,12 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				
 			break;
 
-			case MISSILE_PLATFORM:
+			case SCYTHE_PLATFORM:
 				
 				if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
 				{
+					if(bn::keypad::down_held())       {break;}
+					else if(v_collision_grace_frames) {break;}
 
 					// Handle Corner Case //
 					if(!temp_collider_x_ptr->isCollision(*(other_collider_ptr)) &&
@@ -467,17 +452,15 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 					{
 						while(collider_ptr->isCollision(*(other_collider_ptr)))
 						{
-							owp_grace_frames = PLAYER_OWP_SNAP_FRAMES;
 							setY(this->y() - 1);
 						}
-					}
+					} 
 				
 					// Handle Remaining Collision Cases //
 					else
 					{
 						while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
 						{
-							owp_grace_frames = PLAYER_OWP_SNAP_FRAMES;
 							temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - 1);
 							setY(this->y() - 1);
 						}
@@ -543,69 +526,31 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 					if(collider_ptr->isCollision(*(other_collider_ptr)))
 					{
+			
+						// Handle Default Collision Cases //
+						while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
+						{
+							if(normalized_dir.x() == 0) {kill_player = true; break;}
+							temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
+							setX(this->x() - normalized_dir.x());
+						}
+
+						while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
+						{
+							if(normalized_dir.y() == 0) {kill_player = true; break;}
+							temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
+							setY(this->y() - normalized_dir.y());
+							v_collision_grace_frames = PLAYER_V_COLLISION_MAX_GRACE_FRAMES;
+						}
+
+						// If there is still collision somehow, must be corner case //
+						while(collider_ptr->isCollision(*(other_collider_ptr)))
+						{
+							if(normalized_dir.x() == 0) {kill_player = true; break;}
+							// We always resolve diagonal corner collisions with a horizontal shift. 
+							setX(this->x() - normalized_dir.x());
+						}
 						
-						// If Player snapped through a OWP this frame, handle differently
-						// because player may have no move speed 
-						if(owp_grace_frames)
-						{
-							// Ignore x axis, only resolve y axis
-							while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
-							{
-								if(normalized_dir.y() == 0)
-								{
-									temp_collider_y_ptr->setY(temp_collider_y_ptr->y() + 1);
-									setY(this->y() + 1);
-
-									// Cheeky fix, move missile platform down one pixel. 
-									if(game_objects.at(MISSILE_OBJECT_LIST_INDEX) != NULL)
-									{
-										GameObject* temp = game_objects.at(MISSILE_OBJECT_LIST_INDEX);
-										temp->setY(temp->y() + 1);
-										temp = NULL;
-									}
-								}
-								else
-								{
-									temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
-									setY(this->y() - normalized_dir.y());
-								}
-							}
-
-							// If there is still collision somehow, must be corner case //
-							while(collider_ptr->isCollision(*(other_collider_ptr)))
-							{
-								if(normalized_dir.x() == 0) {break;}
-								// We always resolve diagonal corner collisions with a horizontal shift. 
-								setX(this->x() - normalized_dir.x());
-							}
-						}
-
-						// If didn't snap to OWP this frame, handle the default way.
-						else
-						{
-							// Handle Default Collision Cases //
-							while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
-							{
-								if(normalized_dir.x() == 0) {kill_player = true; break;}
-								temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
-								setX(this->x() - normalized_dir.x());
-							}
-
-							while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
-							{
-								if(normalized_dir.y() == 0) {kill_player = true; break;}
-								temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
-								setY(this->y() - normalized_dir.y());
-							}
-
-							// If there is still collision somehow, must be corner case //
-							while(collider_ptr->isCollision(*(other_collider_ptr)))
-							{
-								if(normalized_dir.x() == 0) {kill_player = true; break;}
-								// We always resolve diagonal corner collisions with a horizontal shift. 
-								setX(this->x() - normalized_dir.x());
-							}
-						}
 					}
 
 					delete other_collider_ptr;
@@ -619,8 +564,13 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 													  TILE_WIDTH, 
 													  ONEWAYBLOCK_COLLIDER_HEIGHT);
 
-					if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
+					if(normalized_dir.y() >= 0 &&
+					   temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
 					{
+
+						if(bn::keypad::down_held())  {rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE); break;}
+						if(v_collision_grace_frames) {rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE); break;}
+
 						// Handle Corner Case //
 						if(!temp_collider_x_ptr->isCollision(*(other_collider_ptr)) &&
 						   !temp_collider_y_ptr->isCollision(*(other_collider_ptr)))
@@ -657,9 +607,10 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	////////////////////////////////////////
 
 	// Initialize state variables, to be updated on collision.
-    bool wall_right_detected = false;
-    bool wall_left_detected  = false;
-    bool grounded_detected   = false;
+    wall_right_detected   = false;
+    wall_left_detected    = false;
+    grounded_detected     = false;
+	grounded_owp_detected = false;
 
 	// Create test collider for grounded collision checks
 	const uint32 ground_ray_length = 1;
@@ -698,7 +649,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 					{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
 					 sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
 					grounded_detected = true;
-					ammo_count = PLAYER_MAX_AMMO;
 				}
 
 				// Test for wall riding on right side
@@ -712,17 +662,21 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			break;
 
 			case ANGEL_PLATFORM:
-			case MISSILE_PLATFORM:
+			case SCYTHE_PLATFORM:
 				
 				if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
 				{
 					// Test for, and log grounded collision
 					if(test_collider_ptr->isCollision(*(other_collider_ptr)) && normalized_dir.y() >= 0)
-					{
-						if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) 
-						{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
-						 sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
-						grounded_detected = true;
+					{ 
+						if(!bn::keypad::down_held()) 
+						{
+							grounded_detected     = true;
+							grounded_owp_detected = true;
+							if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED)
+							{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
+						     sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
+						}
 					}
 				}
 				
@@ -778,7 +732,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 						{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
 						 sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
 						grounded_detected = true;
-						ammo_count = PLAYER_MAX_AMMO;
 					}
 
 					// Test for wall riding on right side
@@ -809,11 +762,13 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 						// Test for, and log grounded collision
 						if(test_collider_ptr->isCollision(*(other_collider_ptr)) && normalized_dir.y() >= 0)
 						{
-							if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) 
-							{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
-						     sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
-							grounded_detected = true;
-							ammo_count = PLAYER_MAX_AMMO;
+							if(!bn::keypad::down_held()) 
+							{
+								grounded_detected = true;
+								if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED)
+								{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
+						     	 sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
+							}
 						}
 					}
 
@@ -868,7 +823,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
     // Update States //
     ///////////////////
 
-	if(throw_missile)
+	if(throw_scythe)
 	{
 		state = STATE_THROWING;
 		air_frames_elapsed = 0;
@@ -895,20 +850,21 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	///////////////////
 	// Update Timers //
 	///////////////////
-	owp_grace_frames--;
-	owp_grace_frames = clamp(0, 
-	                         PLAYER_OWP_SNAP_FRAMES, 
-							 owp_grace_frames);
 
-	remaining_leap_cancel_frames--;
-	remaining_leap_cancel_frames = clamp(0, 
-										 PLAYER_MAX_LEAP_CANCEL_FRAMES, 
-										 remaining_leap_cancel_frames);
-
-	missile_throw_cooldown_frames--;
-	missile_throw_cooldown_frames = clamp(0, 
+	scythe_throw_cooldown_frames--;
+	scythe_throw_cooldown_frames = clamp(0, 
 										  PLAYER_THROW_COOLDOWN_FRAMES, 
-										  missile_throw_cooldown_frames);
+										  scythe_throw_cooldown_frames);
+
+	v_collision_grace_frames--;
+	v_collision_grace_frames = clamp(0, 
+									 PLAYER_V_COLLISION_MAX_GRACE_FRAMES, 
+									 v_collision_grace_frames);
+
+	late_jump_grace_frames--;
+	late_jump_grace_frames = clamp(0, 
+								   PLAYER_LATE_JUMP_GRACE_FRAMES, 
+								   late_jump_grace_frames);
 
 	received_platform_force = false;
 
@@ -937,4 +893,20 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
     else if (v_scale < 1) {sprite_ptr->set_vertical_scale(v_scale + increment);}
     if(abs(1 - sprite_ptr->vertical_scale()) < increment) {sprite_ptr->set_vertical_scale(1);}
 
+}
+
+void Player::jump()
+{
+	remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
+	late_jump_grace_frames      = 0;
+	rigidbody_ptr->addForce(PLAYER_JUMP_FORCE);
+	sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
+	sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
+}
+
+void Player::fastFall()
+{
+	rigidbody_ptr->addForce(PLAYER_FAST_GRAVITY_FORCE);
+	sprite_ptr->set_vertical_scale(PLAYER_FALL_STRETCH_V);
+	sprite_ptr->set_horizontal_scale(PLAYER_FALL_STRETCH_H);
 }

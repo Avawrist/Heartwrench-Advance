@@ -25,7 +25,7 @@
 #include "player.h"
 #include "devil_platform.h"
 #include "angel_platform.h"
-#include "missile_platform.h"
+#include "scythe_platform.h"
 #include "exit.h"
 
 enum RoomName 

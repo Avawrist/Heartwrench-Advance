@@ -49,12 +49,12 @@ void Room::load(RoomName room_name)
     // Record current room
     current_room = room_name;
 
-    // Init Player, Missile and Exits FIRST. They will always be updated last //
+    // Init Player, Scythe and Exits FIRST. They will always be updated last //
     Player* player_ptr = new Player();
     addObject(player_ptr);
     game_objects.back()->setPos(player_spawn.x(), player_spawn.y());
 
-    // Create space for Missile next.
+    // Create space for Scythe next.
     addObject(NULL);
 
     // Exits
@@ -196,7 +196,7 @@ void Room::freeInactiveObjects()
     bn::ivector<GameObject*>::iterator current = game_objects.begin();
     bn::ivector<GameObject*>::iterator last    = game_objects.end();
     current++; // Skip player index
-    current++; // Skip missile index
+    current++; // Skip scythe index
     while(current != last)
     {
         if((*current)->inactive)

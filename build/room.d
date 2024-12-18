@@ -78,9 +78,8 @@ room.o: G:/game/src/room.cpp G:/game/include/room.h \
  G:/butano-master/butano/include/bn_sin_lut.h \
  G:/butano-master/butano/include/bn_reciprocal_lut.h \
  G:/butano-master/butano/include/bn_rule_of_three_approximation.h \
- G:/game/build/bn_sprite_items_player.h \
- G:/game/include/missile_platform.h \
- G:/game/build/bn_sprite_items_missile_platform.h \
+ G:/game/build/bn_sprite_items_player.h G:/game/include/scythe_platform.h \
+ G:/game/build/bn_sprite_items_scythe_platform.h \
  G:/game/include/devil_platform.h \
  G:/game/build/bn_sprite_items_devil_platform.h \
  G:/game/include/angel_platform.h G:/game/include/room.h \
@@ -171,8 +170,8 @@ G:/butano-master/butano/include/bn_sin_lut.h:
 G:/butano-master/butano/include/bn_reciprocal_lut.h:
 G:/butano-master/butano/include/bn_rule_of_three_approximation.h:
 G:/game/build/bn_sprite_items_player.h:
-G:/game/include/missile_platform.h:
-G:/game/build/bn_sprite_items_missile_platform.h:
+G:/game/include/scythe_platform.h:
+G:/game/build/bn_sprite_items_scythe_platform.h:
 G:/game/include/devil_platform.h:
 G:/game/build/bn_sprite_items_devil_platform.h:
 G:/game/include/angel_platform.h:

@@ -10,7 +10,6 @@
 // Base Class
 #include "game_object.h"
 #include "player.h"
-#include "missile_platform.h"
 
 //////////////////////////
 // Struct DevilPlatform //

@@ -1,1 +1,0 @@
-missile_platform_bn_gfx.o: missile_platform_bn_gfx.s

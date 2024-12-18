@@ -79,9 +79,8 @@ angel_platform.o: G:/game/src/angel_platform.cpp \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/game/build/bn_sprite_palette_items_white_sprite_palette.h \
  G:/game/include/player.h G:/butano-master/butano/include/bn_keypad.h \
- G:/game/build/bn_sprite_items_player.h \
- G:/game/include/missile_platform.h \
- G:/game/build/bn_sprite_items_missile_platform.h \
+ G:/game/build/bn_sprite_items_player.h G:/game/include/scythe_platform.h \
+ G:/game/build/bn_sprite_items_scythe_platform.h \
  G:/game/include/devil_platform.h \
  G:/game/build/bn_sprite_items_devil_platform.h \
  G:/game/include/angel_platform.h G:/game/include/exit.h \
@@ -173,8 +172,8 @@ G:/game/build/bn_sprite_palette_items_white_sprite_palette.h:
 G:/game/include/player.h:
 G:/butano-master/butano/include/bn_keypad.h:
 G:/game/build/bn_sprite_items_player.h:
-G:/game/include/missile_platform.h:
-G:/game/build/bn_sprite_items_missile_platform.h:
+G:/game/include/scythe_platform.h:
+G:/game/build/bn_sprite_items_scythe_platform.h:
 G:/game/include/devil_platform.h:
 G:/game/build/bn_sprite_items_devil_platform.h:
 G:/game/include/angel_platform.h:
