@@ -79,9 +79,9 @@ void Room::load(RoomName room_name)
                                                               player_spawn.y());
 
             // Init Exits //
-            delete game_objects.at(EXIT_1_OBJECT_LIST_INDEX);
-            game_objects.at(EXIT_1_OBJECT_LIST_INDEX) = new Exit(ROOM_TEST_2, bn::point(0, 0));
-            game_objects.at(EXIT_1_OBJECT_LIST_INDEX)->setCamera(camera.value());
+            //delete game_objects.at(EXIT_1_OBJECT_LIST_INDEX);
+            //game_objects.at(EXIT_1_OBJECT_LIST_INDEX) = new Exit(ROOM_TEST_2, bn::point(0, 0));
+            //game_objects.at(EXIT_1_OBJECT_LIST_INDEX)->setCamera(camera.value());
 
             // Init Game Objects //
     

@@ -19,7 +19,7 @@
 ///////////////////
 
 #define PLAYER_COLLIDER_WIDTH 16
-#define PLAYER_COLLIDER_HEIGHT 24
+#define PLAYER_COLLIDER_HEIGHT 16
 
 #define PLAYER_MIN_STRETCH_V 0.75
 #define PLAYER_MAX_STRETCH_V 1.75
@@ -97,7 +97,6 @@ struct Player : GameObject {
 	bn::fixed       x_speed;
 	bn::fixed       jump_force;
 	bn::fixed       secondary_jump_force;
-	//bn::fixed 		dash_force;
 	bn::fixed_point wall_jump_force;
 	bn::fixed       gravity;
 	bn::fixed       wall_ride_gravity;

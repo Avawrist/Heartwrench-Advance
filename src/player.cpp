@@ -475,7 +475,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 					// Handle Remaining Collision Cases //
 					else
 					{
-
 						while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
 						{
 							owp_grace_frames = PLAYER_OWP_SNAP_FRAMES;

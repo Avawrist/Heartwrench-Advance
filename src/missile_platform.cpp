@@ -28,9 +28,11 @@ MissilePlatform::MissilePlatform(Direction _dir, bn::fixed_point _p)
                                  MISSILE_PLATFORM_COLLIDER_HEIGHT);
 
     state             = STATE_THROWN;
-    speed             = MISSILE_PLATFORM_BASE_SPEED;
 	player_was_riding = false;
     dir               = _dir;
+
+	// Apply throw force
+	rigidbody_ptr->addForce(MISSILE_PLATFORM_THROW_FORCE);
 
     setPos(_p);
 }
@@ -58,16 +60,7 @@ void MissilePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obj
 			// Make visible
 			sprite_ptr->set_visible(true);
 
-			// Add speed
-            rigidbody_ptr->addForce(MISSILE_PLATFORM_X_FORCE);
-
         break;
-
-        case STATE_STUCK_IN_MAP:
-        break;
-
-		case STATE_STUCK_IN_OBJECT:
-		break;
 
         default:
         break;
@@ -83,221 +76,11 @@ void MissilePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obj
     // Apply forces to missile platform
     bn::fixed_point final_dir = applyForces();
 
-	//////////////////////////////////////
-	// Reset some variables every frame //
-	//////////////////////////////////////
-    bool is_stuck_in_object = false;
-	bool is_stuck_in_map    = false;
-
-	////////////////////////////
-    // Resolve Tile Collision //
-    ////////////////////////////
-
-	// Get a normalized direction vector, to be used for collision correction if
-	// there is a collision.
-	bn::fixed normalized_dir_x = 0;
-	bn::fixed normalized_dir_y = 0;
-	if(final_dir.x() != 0) {normalized_dir_x = final_dir.x() / abs(final_dir.x());}
-	if(final_dir.y() != 0) {normalized_dir_y = final_dir.y() / abs(final_dir.y());}
-	bn::fixed_point normalized_dir = bn::fixed_point(normalized_dir_x, normalized_dir_y);
-
-	// Create one temporary collider for each axis. If a collider finds a collision
-	// in its axis, move the temp collider AND the Missile back along the dir vector
-	// in units of 1 until the collision is resolved on that axis.
-	Collider* temp_collider_x_ptr = new Collider(collider_ptr->x(),
-												collider_ptr->y() - final_dir.y(),
-												collider_ptr->width,
-												collider_ptr->height);
-	Collider* temp_collider_y_ptr = new Collider(collider_ptr->x() - final_dir.x(),
-												collider_ptr->y(),
-												collider_ptr->width,
-												collider_ptr->height);
-	Collider* other_collider_ptr = NULL;
-
-	// Get current cell index that Missile resides in:
-	int32 half_room_width_pixels  = bg_ptr.dimensions().width() / 2;
-	int32 half_room_height_pixels = bg_ptr.dimensions().height() / 2;
-	bn::fixed index_x = (x() + half_room_width_pixels)  / TILE_WIDTH;
-	bn::fixed index_y = (y() + half_room_height_pixels) / TILE_HEIGHT;
-	bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
-
-	if(state != STATE_STUCK_IN_OBJECT)
-	{
-		for(int32 y = -2; y < 3; y++)
-		{
-			for(int32 x = -2; x < 3; x++)
-			{
-				// 1. Get tile type at index //
-				int32 check_index_x = cell_index.x() + x;
-				int32 check_index_y = cell_index.y() + y;
-
-				// Determine world coords in case we need to make a collider.
-				int32 world_x = ((check_index_x * TILE_WIDTH)  - half_room_width_pixels)  + (TILE_WIDTH / 2);
-				int32 world_y = ((check_index_y * TILE_HEIGHT) - half_room_height_pixels) + (TILE_HEIGHT / 2);
-
-				uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y,
-														bg_ptr, cells, bg_item);
-
-				// Prepare offsets in case they are needed for Block collision.
-				int32 block_w_offset = 0;
-				int32 block_x_offset = 0;
-
-				// 2. If the tile is collidable make a temporary collider //
-				switch(tile_index)
-				{
-					case HARD_BLOCK_INDEX:
-
-						// If the neighbor to the right is also a BLOCK, smooth over the corner.
-						// This is a hack to resolve collision since checks are always made from
-						// left to right. 
-						if(getTileAtBGIndex(check_index_x + 1, check_index_y,
-											bg_ptr, cells, bg_item) == HARD_BLOCK_INDEX)
-						{
-							block_w_offset = TILE_WIDTH;
-							block_x_offset = TILE_WIDTH / 2;
-							x++; // Skip checking the next cell, since we already accounted for it here.
-						} 
-
-						other_collider_ptr = new Collider(world_x + block_x_offset,
-														world_y, 
-														TILE_WIDTH + block_w_offset, 
-														TILE_HEIGHT);
-
-						if(collider_ptr->isCollision(*(other_collider_ptr)))
-						{
-							// Delete self?
-
-							// Handle Default Collision Cases //
-							while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
-							{
-								temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - dir);
-								setX(this->x() - dir);
-							}
-
-							while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
-							{
-								if(normalized_dir.y() == 0) {break;}
-								temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
-								setY(this->y() - normalized_dir.y());
-							}
-
-							// If there is still collision somehow, must be corner case //
-							while(collider_ptr->isCollision(*(other_collider_ptr)))
-							{
-								// We always resolve diagonal corner collisions with a horizontal shift. 
-								setX(this->x() - dir);
-							}
-						}
-
-						delete other_collider_ptr;
-
-					break;
-
-					case SOFT_BLOCK_INDEX:
-
-						// If the neighbor to the right is also a BLOCK, smooth over the corner.
-						// This is a hack to resolve collision since checks are always made from
-						// left to right. 
-						if(getTileAtBGIndex(check_index_x + 1, check_index_y,
-											bg_ptr, cells, bg_item) == SOFT_BLOCK_INDEX)
-						{
-							block_w_offset = TILE_WIDTH;
-							block_x_offset = TILE_WIDTH / 2;
-							x++; // Skip checking the next cell, since we already accounted for it here.
-						}
-
-						other_collider_ptr = new Collider(world_x + block_x_offset,
-															world_y, 
-															TILE_WIDTH + block_w_offset, 
-															TILE_HEIGHT);
-
-						if(collider_ptr->isCollision(*(other_collider_ptr)))
-						{
-							// Update state (deferred)
-							is_stuck_in_map = true;    
-
-							// Handle Default Collision Cases //
-							while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
-							{
-								temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - dir);
-								setX(this->x() - dir);
-							}
-
-							while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
-							{
-								if(normalized_dir.y() == 0) {break;}
-								temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
-								setY(this->y() - normalized_dir.y());
-							}
-
-							// If there is still collision somehow, must be corner case //
-							while(collider_ptr->isCollision(*(other_collider_ptr)))
-							{
-								// We always resolve diagonal corner collisions with a horizontal shift. 
-								setX(this->x() - dir);
-							}
-						}
-
-						delete other_collider_ptr;
-
-					break;
-
-					case SLOW_BLOCK_INDEX:
-
-						// If the neighbor to the right is also a SLOW BLOCK, add it to the collision check.
-						if(getTileAtBGIndex(check_index_x + 1, check_index_y,
-											bg_ptr, cells, bg_item) == SLOW_BLOCK_INDEX)
-						{
-							block_w_offset = TILE_WIDTH;
-							block_x_offset = TILE_WIDTH / 2;
-							x++; // Skip checking the next cell, since we already accounted for it here.
-						} 
-
-						other_collider_ptr = new Collider(world_x + block_x_offset,
-															world_y, 
-															TILE_WIDTH + block_w_offset,
-															TILE_HEIGHT);
-
-						// Check for an actual collision. If so, slow down the Missile.
-						if(collider_ptr->isCollision(*(other_collider_ptr)))
-						{
-							speed = 1;
-						}
-
-						delete other_collider_ptr;
-
-					break;
-
-					case UP_SPIKE_BLOCK_INDEX:
-					case DOWN_SPIKE_BLOCK_INDEX:
-					case LEFT_SPIKE_BLOCK_INDEX:
-					case RIGHT_SPIKE_BLOCK_INDEX:
-
-						other_collider_ptr = new Collider(world_x,
-															world_y, 
-															TILE_WIDTH, 
-															TILE_HEIGHT);
-				
-						if(collider_ptr->isCollision(*other_collider_ptr))
-						{								
-							// Delete self?
-						}
-
-						delete other_collider_ptr;
-
-					break;
-
-					default:
-					break;
-				}
-			}
-		}
-	}
-	
-
 	///////////////////////////////////
 	// Resolve Game Object Collision //
 	///////////////////////////////////
+
+	Collider* other_collider_ptr = NULL;
 
 	// Create test collider for roof collision checks
 	#define MISSILE_PLATFORM_ROOF_OFFSET           -3
@@ -308,91 +91,55 @@ void MissilePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obj
 													collider_ptr->width,
 													MISSILE_PLATFORM_ROOF_COLLIDER_HEIGHT);
 
-	if(state != STATE_STUCK_IN_MAP)
+	for(int32 i = 0; i < game_objects.size(); i++)
 	{
-		for(int32 i = 0; i < game_objects.size(); i++)
+
+		GameObject* object_ptr = game_objects.at(i);
+		other_collider_ptr     = object_ptr->collider_ptr;
+
+		switch(object_ptr->object_type)
 		{
-
-			GameObject* object_ptr = game_objects.at(i);
-			other_collider_ptr     = object_ptr->collider_ptr;
-
-			switch(object_ptr->object_type)
-			{
-				case PLAYER:
+			case PLAYER:
+				
+				// If player is riding the platform:
+				if(!object_ptr->received_platform_force && 
+				test_collider_roof_ptr->isCollision(*other_collider_ptr) &&
+				other_collider_ptr->p4.y() < collider_ptr->p1.y() - final_dir.y())
+				{
 					
-					// If player is riding the platform:
-					if(!object_ptr->received_platform_force && 
-					test_collider_roof_ptr->isCollision(*other_collider_ptr) &&
-					other_collider_ptr->p4.y() < collider_ptr->p1.y() - final_dir.y())
+					if(final_dir.y() <= 0)
 					{
-						// Set to max speed
-						speed = MISSILE_PLATFORM_MAX_SPEED;
-						/*
-						if(!player_was_riding)
-						{
-							rigidbody_ptr->addForce(MISSILE_PLATFORM_DRIFT_DOWN_FORCE);
-							player_was_riding = true;
-						} */
-
-						if(final_dir.y() <= 0)
-						{
-							// If descending, applying force to the x axis is all that's needed.
-							// The player gravity will take care of the rest. 
-							object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 0),
-																		MISSILE_PLATFORM_DECAY));
-						}
-						else
-						{
-							// If ascending, apply force to BOTH axes and offset y by 1 
-							// so the player hugs the platform tight.
-							object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), final_dir.y() + 1),
-																		MISSILE_PLATFORM_DECAY));
-						}
+						// If descending, applying force to the x axis is all that's needed.
+						// The player gravity will take care of the rest. 
+						object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 0),
+																	  MISSILE_PLATFORM_DECAY));
 					}
-					else 
+					else
 					{
-						speed = MISSILE_PLATFORM_BASE_SPEED;
-						/*
-						if(player_was_riding)
-						{
-							rigidbody_ptr->addForce(MISSILE_PLATFORM_DRIFT_UP_FORCE);
-							player_was_riding = false;
-						} */
+						// If ascending, apply force to BOTH axes and offset y by 1 
+						// so the player hugs the platform tight.
+						object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), final_dir.y() + 1),
+																	  MISSILE_PLATFORM_DECAY));
 					}
+				}
 
-				break;
+			break;
 
-				case DEVIL_PLATFORM:
-					
-					if(collider_ptr->isCollision(*other_collider_ptr))
-					{
-						// Update state (deferred)
-						is_stuck_in_object = true;
-					}
-					
-				break;
-
-				default:
-				break;
-			}
-
-			object_ptr         = NULL;
-			other_collider_ptr = NULL;
-
+			default:
+			break;
 		}
+
+		object_ptr         = NULL;
+		other_collider_ptr = NULL;
+
 	}
 
 	// Clean up temp colliders
 	delete test_collider_roof_ptr;
-	delete temp_collider_x_ptr;
-	delete temp_collider_y_ptr;
     
     ///////////////////
     // Update States //
     ///////////////////
-
-	if(is_stuck_in_map) 		{state = STATE_STUCK_IN_MAP;}
-	else if(is_stuck_in_object) {state = STATE_STUCK_IN_OBJECT;}
 
     //////////////////////
 	// Update Direction //

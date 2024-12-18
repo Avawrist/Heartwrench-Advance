@@ -112,8 +112,6 @@ void DevilPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
 
         Collider temp_object_collider_ptr(0, 0, 0, 0);
 
-        Direction missile_dir;
-
         for(int32 i = 0; i < game_objects.size(); i++)
         {
 
@@ -183,36 +181,6 @@ void DevilPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
                             object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), final_dir.y() + 1),
                                                                         DEVIL_PLATFORM_DECAY));
                         }
-                    }
-
-                break;
-
-                case MISSILE_PLATFORM:
-
-                    #define MISSILE_TEST_COLLIDER_X_OFFSET 4
-                    #define MISSILE_DEVIL_PLAT_Y_OFFSET 15
-                    #define MISSILE_DEVIL_PLAT_X_OFFSET 28
-
-                    missile_dir = ((MissilePlatform*)(object_ptr))->dir;
-
-                    temp_object_collider_ptr = Collider(object_collider_ptr->x() + (missile_dir * MISSILE_TEST_COLLIDER_X_OFFSET),
-                                                        object_collider_ptr->y(),
-                                                        object_collider_ptr->width,
-                                                        object_collider_ptr->height);
-
-                    if(((MissilePlatform*)object_ptr)->state != STATE_STUCK_IN_MAP &&
-                       collider_ptr->isCollision(temp_object_collider_ptr))
-                    {
-
-                        // Snap the missile's X & Y to the platform on missile's update :)
-                        bn::fixed missile_x_diff = x() - object_ptr->x() - final_dir.x() - (MISSILE_DEVIL_PLAT_X_OFFSET * missile_dir);
-                        bn::fixed missile_y_diff = y() - object_ptr->y() - final_dir.y() - MISSILE_DEVIL_PLAT_Y_OFFSET;
-                        object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(missile_x_diff, missile_y_diff), 1));
-
-                        // Add force from the platform to our missile
-                        object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 
-                                                                                            final_dir.y()),
-                                                                                            DEVIL_PLATFORM_DECAY));
                     }
 
                 break;

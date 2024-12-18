@@ -14,9 +14,9 @@
 // Base Class
 #include "game_object.h"
 
-///////////////////////////
+////////////////////////////
 // Struct MissilePlatform //
-///////////////////////////
+////////////////////////////
 
 // The missile platform can lodge in blocks and carry the player. 
 
@@ -30,17 +30,10 @@
 
 enum MissileState {
 	STATE_THROWN = 0,
-	STATE_STUCK_IN_OBJECT,
-	STATE_STUCK_IN_MAP,
 };
 
 #define MISSILE_PLATFORM_COLLIDER_WIDTH  24
 #define MISSILE_PLATFORM_COLLIDER_HEIGHT 2
-
-#define MISSILE_PLATFORM_BASE_SPEED   1
-#define MISSILE_PLATFORM_MAX_SPEED    2
-#define MISSILE_PLATFORM_SLOWED_SPEED 1
-#define MISSILE_PLATFORM_DECAY        1
 
 #define MISSILE_PLATFORM_DRIFT_DOWN_Y 2
 #define MISSILE_PLATFORM_DRIFT_UP_Y  -2
@@ -49,17 +42,16 @@ enum MissileState {
 #define MISSILE_PLAYER_X_OFFSET 20 
 #define MISSILE_PLAYER_Y_OFFSET 0
 
-#define MISSILE_RETURN_COOLDOWN_FRAMES 3
+#define MISSILE_PLATFORM_THROW_X_FORCE 8
+#define MISSILE_PLATFORM_DECAY         0.1
 
-#define MISSILE_PLATFORM_X_FORCE new Force(bn::fixed_point_t<12>(speed * dir, 0), MISSILE_PLATFORM_DECAY)
-
+#define MISSILE_PLATFORM_THROW_FORCE      new Force(bn::fixed_point_t<12>(MISSILE_PLATFORM_THROW_X_FORCE * dir, 0), MISSILE_PLATFORM_DECAY)
 #define MISSILE_PLATFORM_DRIFT_DOWN_FORCE new Force(bn::fixed_point_t<12>(0, MISSILE_PLATFORM_DRIFT_DOWN_Y), MISSILE_PLATFORM_DRIFT_DECAY)
 #define MISSILE_PLATFORM_DRIFT_UP_FORCE   new Force(bn::fixed_point_t<12>(0, MISSILE_PLATFORM_DRIFT_UP_Y), MISSILE_PLATFORM_DRIFT_DECAY)
 
 struct MissilePlatform : GameObject {
 
 	MissileState state;
-    bn::fixed speed;
 	bool player_was_riding;
 
     MissilePlatform(Direction _dir, bn::fixed_point _p);
