@@ -41,16 +41,18 @@ Player::Player()
 	
 	remaining_jump_input_frames      = 0;
 	remaining_x_drift_lockout_frames = 0;
-	current_scythe_throw_frames     = 0;
-	scythe_throw_cooldown_frames    = 0;
+	current_scythe_throw_frames      = 0;
+	scythe_throw_cooldown_frames     = 0;
 	air_frames_elapsed               = 0;
 	v_collision_grace_frames         = 0;
 	late_jump_grace_frames           = 0;
+	scythe_charge_frames             = 0;
 
 	wall_right_detected   = false;
     wall_left_detected    = false;
     grounded_detected     = false;
 	grounded_owp_detected = false;
+	throw_scythe          = false;
 
 	respawn_pos = bn::point(0, 0);
 
@@ -74,8 +76,8 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 	bool gripping_wall_right = false;
 	bool gripping_wall_left  = false;
-	bool throw_scythe       = false;
 	bool kill_player         = false;
+	throw_scythe             = false;
 
     switch(state)
     {
@@ -119,13 +121,23 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			// Jump
 			if(bn::keypad::a_pressed()) {jump();}
 
-			// Scythe Throw
-			if(bn::keypad::b_pressed() &&
-			   !scythe_throw_cooldown_frames) 
-			{current_scythe_throw_frames  = 0; 
-			 scythe_throw_cooldown_frames = PLAYER_THROW_COOLDOWN_FRAMES;
-			 throw_scythe                 = true;}
+			// Scythe Charge
+			if(bn::keypad::b_held())
+			{
+				scythe_charge_frames++;
+				scythe_charge_frames = clamp(0, 
+											 PLAYER_SCYTHE_MAX_CHARGE_FRAMES, 
+											 scythe_charge_frames);
+			}
 
+			// Scythe Attack
+			if(bn::keypad::b_released())
+			{
+				if(scythe_charge_frames >= PLAYER_SCYTHE_MAX_CHARGE_FRAMES) 
+				{throwScythe();}
+				scythe_charge_frames = 0;
+			}
+			
 			// Add Gravity if Grounded on OWP
 			if(grounded_owp_detected) {rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);}
 
@@ -179,12 +191,22 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 			else if(bn::keypad::a_released()) {remaining_jump_input_frames = 0;}
 
-			// Scythe Throw
-			if(bn::keypad::b_pressed() &&
-			   !scythe_throw_cooldown_frames) 
-			{current_scythe_throw_frames  = 0; 
-			 scythe_throw_cooldown_frames = PLAYER_THROW_COOLDOWN_FRAMES;
-			 throw_scythe                 = true;}
+			// Scythe Charge
+			if(bn::keypad::b_held())
+			{
+				scythe_charge_frames++;
+				scythe_charge_frames = clamp(0, 
+											 PLAYER_SCYTHE_MAX_CHARGE_FRAMES, 
+											 scythe_charge_frames);
+			}
+
+			// Scythe Attack
+			if(bn::keypad::b_released())
+			{
+				if(scythe_charge_frames >= PLAYER_SCYTHE_MAX_CHARGE_FRAMES) 
+				{throwScythe();}
+				scythe_charge_frames = 0;
+			}
 			
 			// Add Gravity //
 			rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);
@@ -238,12 +260,22 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			else if(bn::keypad::right_held()) 								 
 			{gripping_wall_right = true; dir = LEFT;}
 
-			// Scythe Throw
-			if(bn::keypad::b_pressed() &&
-			   !scythe_throw_cooldown_frames) 
-			{current_scythe_throw_frames  = 0; 
-			 scythe_throw_cooldown_frames = PLAYER_THROW_COOLDOWN_FRAMES;
-			 throw_scythe                 = true;}
+			// Scythe Charge
+			if(bn::keypad::b_held())
+			{
+				scythe_charge_frames++;
+				scythe_charge_frames = clamp(0, 
+											 PLAYER_SCYTHE_MAX_CHARGE_FRAMES, 
+											 scythe_charge_frames);
+			}
+
+			// Scythe Attack
+			if(bn::keypad::b_released())
+			{
+				if(scythe_charge_frames >= PLAYER_SCYTHE_MAX_CHARGE_FRAMES) 
+				{throwScythe();}
+				scythe_charge_frames = 0;
+			}
 			
 			// Add Gravity //
 			if(gripping_wall_right) {rigidbody_ptr->addForce(PLAYER_WALL_GRAVITY_FORCE);}
@@ -279,12 +311,22 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames) 
 			{rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE);}
 
-			// Scythe Throw
-			if(bn::keypad::b_pressed() &&
-			   !scythe_throw_cooldown_frames) 
-			{current_scythe_throw_frames  = 0; 
-			 scythe_throw_cooldown_frames = PLAYER_THROW_COOLDOWN_FRAMES;
-			 throw_scythe                 = true;}
+			// Scythe Charge
+			if(bn::keypad::b_held())
+			{
+				scythe_charge_frames++;
+				scythe_charge_frames = clamp(0, 
+											 PLAYER_SCYTHE_MAX_CHARGE_FRAMES, 
+											 scythe_charge_frames);
+			}
+
+			// Scythe Attack
+			if(bn::keypad::b_released())
+			{
+				if(scythe_charge_frames >= PLAYER_SCYTHE_MAX_CHARGE_FRAMES) 
+				{throwScythe();}
+				scythe_charge_frames = 0;
+			}
 			
 			// Add Gravity //
 			if(gripping_wall_left) {rigidbody_ptr->addForce(PLAYER_WALL_GRAVITY_FORCE);}
@@ -909,4 +951,10 @@ void Player::fastFall()
 	rigidbody_ptr->addForce(PLAYER_FAST_GRAVITY_FORCE);
 	sprite_ptr->set_vertical_scale(PLAYER_FALL_STRETCH_V);
 	sprite_ptr->set_horizontal_scale(PLAYER_FALL_STRETCH_H);
+}
+
+void Player::throwScythe()
+{
+	current_scythe_throw_frames  = 0;
+	throw_scythe                 = true;
 }

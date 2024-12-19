@@ -46,7 +46,7 @@
 
 #define PLAYER_GRAVITY       	 3
 #define PLAYER_FAST_FALL_GRAVITY 2
-#define PLAYER_WALL_RIDE_GRAVITY 1
+#define PLAYER_WALL_RIDE_GRAVITY 2
 #define PLAYER_GRAVITY_DECAY 	 1
 
 #define PLAYER_SQUISH_FRAMES_REQUIRED 3
@@ -57,6 +57,8 @@
 
 #define PLAYER_V_COLLISION_MAX_GRACE_FRAMES 4
 #define PLAYER_LATE_JUMP_GRACE_FRAMES       8
+
+#define PLAYER_SCYTHE_MAX_CHARGE_FRAMES 35
 
 #define PLAYER_X_LEFT_FORCE  	      new Force(bn::fixed_point_t<12>(-x_speed, 0), PLAYER_X_DECAY)
 #define PLAYER_X_RIGHT_FORCE 	      new Force(bn::fixed_point_t<12>( x_speed, 0), PLAYER_X_DECAY)
@@ -100,11 +102,14 @@ struct Player : GameObject {
 	int32           air_frames_elapsed;
 	int32           v_collision_grace_frames;
 	int32           late_jump_grace_frames;
+	int32           scythe_charge_frames;
 
 	bool wall_right_detected;
     bool wall_left_detected;
     bool grounded_detected;
 	bool grounded_owp_detected;
+	bool throw_scythe;
+
 
 	bn::point       respawn_pos;
 	
@@ -118,6 +123,7 @@ struct Player : GameObject {
 				bn::camera_ptr                             camera) override;
 	void jump();
 	void fastFall();
+	void throwScythe();
 	
 };
 

@@ -110,9 +110,10 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 				
 				// If player is riding the platform:
 				if(!object_ptr->received_platform_force && 
-				test_collider_roof_ptr->isCollision(*other_collider_ptr) &&
-				other_collider_ptr->p4.y() < collider_ptr->p1.y() - final_dir.y())
+					test_collider_roof_ptr->isCollision(*other_collider_ptr) &&
+					other_collider_ptr->p4.y() < collider_ptr->p1.y() - final_dir.y())
 				{
+					setY(y() + 1);
 					
 					if(final_dir.y() <= 0)
 					{
