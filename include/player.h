@@ -61,9 +61,9 @@
 #define PLAYER_SCYTHE_MAX_CHARGE_FRAMES 35
  
 #define PLAYER_DEATH_FRAMES       20
-#define PLAYER_DEATH_X_FORCE      2
-#define PLAYER_DEATH_Y_FORCE      2
-#define PLAYER_DEATH_DECAY        0.1
+#define PLAYER_DEATH_X_FORCE      5
+#define PLAYER_DEATH_Y_FORCE      5
+#define PLAYER_DEATH_DECAY        0.2
 
 #define PLAYER_X_LEFT_FORCE  	     new Force(bn::fixed_point_t<12>(-x_speed, 0), PLAYER_X_DECAY)
 #define PLAYER_X_RIGHT_FORCE 	     new Force(bn::fixed_point_t<12>( x_speed, 0), PLAYER_X_DECAY)
