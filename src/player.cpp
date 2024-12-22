@@ -34,7 +34,6 @@ Player::Player()
 	secondary_jump_force = PLAYER_SECOND_JUMP_FORCE;
     wall_jump_force   	 = bn::fixed_point(PLAYER_WALL_JUMP_X_FORCE,
 										   PLAYER_WALL_JUMP_Y_FORCE);
-	normalized_dir	     = bn::fixed_point(0, 0);
 
     gravity           	 = PLAYER_GRAVITY;
 	wall_ride_gravity 	 = PLAYER_WALL_RIDE_GRAVITY;
@@ -47,12 +46,15 @@ Player::Player()
 	v_collision_grace_frames         = 0;
 	late_jump_grace_frames           = 0;
 	scythe_charge_frames             = 0;
+	current_death_frame              = 0;
 
 	wall_right_detected   = false;
     wall_left_detected    = false;
     grounded_detected     = false;
 	grounded_owp_detected = false;
 	throw_scythe          = false;
+	kill_player           = false;
+	is_dead               = false;
 
 	respawn_pos = bn::point(0, 0);
 
@@ -76,7 +78,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 	bool gripping_wall_right = false;
 	bool gripping_wall_left  = false;
-	bool kill_player         = false;
 	throw_scythe             = false;
 
     switch(state)
@@ -180,16 +181,19 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			{rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE); dir = RIGHT;}
 
 			// Fast Fall
-			if(bn::keypad::down_held() && normalized_dir.y() >= 0) {fastFall();}
+			if(bn::keypad::down_held() && rigidbody_ptr->normalized_dir.y() >= 0) 
+			{fastFall();}
 			
 			// Late Jump
-			if(bn::keypad::a_pressed() && late_jump_grace_frames) {jump();}
+			if(bn::keypad::a_pressed() && late_jump_grace_frames) 
+			{jump();}
 
 			// High Jump
 			if(bn::keypad::a_held() && remaining_jump_input_frames > 0)
 			{rigidbody_ptr->addForce(PLAYER_SECONDARY_JUMP_FORCE);}
 
-			else if(bn::keypad::a_released()) {remaining_jump_input_frames = 0;}
+			else if(bn::keypad::a_released()) 
+			{remaining_jump_input_frames = 0;}
 
 			// Scythe Charge
 			if(bn::keypad::b_held())
@@ -348,7 +352,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 				// Create new Scythe
 				delete game_objects.at(SCYTHE_OBJECT_LIST_INDEX);
-				game_objects.at(SCYTHE_OBJECT_LIST_INDEX) = new ScythePlatform(dir, 
+				game_objects.at(SCYTHE_OBJECT_LIST_INDEX) = new ScythePlatform(dir,
 				                                             bn::fixed_point(x() + (dir * SCYTHE_PLAYER_X_OFFSET), 
 			       															 y() + SCYTHE_PLAYER_Y_OFFSET));
 				game_objects.at(SCYTHE_OBJECT_LIST_INDEX)->setCamera(camera);
@@ -367,7 +371,16 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 		break;
 
-		case STATE_DEAD:
+		case STATE_DYING:
+
+			current_death_frame++;
+			current_death_frame = clamp(0, 
+										PLAYER_DEATH_FRAMES,
+										current_death_frame);
+
+			if(current_death_frame >= PLAYER_DEATH_FRAMES)
+			{is_dead = true;}
+
 		break;
 		
 		default:
@@ -379,31 +392,23 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
     ///////////////////
     
 	// Apply Decay to Forces
-    rigidbody_ptr->applyDecay();
+	rigidbody_ptr->applyDecay();
 
 	// Apply forces to player
-    bn::fixed_point final_dir = applyForces();
+	applyForces();
 
 	//////////////////////////////
 	// Init Collision Variables //
 	//////////////////////////////
-    
-	// Get a normalized direction vector, to be used for collision correction if
-	// there is a collision.
-	bn::fixed normalized_dir_x = 0;
-	bn::fixed normalized_dir_y = 0;
-	if(final_dir.x() != 0) {normalized_dir_x = final_dir.x() / abs(final_dir.x());}
-	if(final_dir.y() != 0) {normalized_dir_y = final_dir.y() / abs(final_dir.y());}
-	normalized_dir = bn::fixed_point(normalized_dir_x, normalized_dir_y);
 
 	// Create one temporary collider for each axis. If a collider finds a collision
 	// in its axis, move the temp collider AND the Player back along the dir vector
 	// in units of 1 until the collision is resolved on that axis.
 	Collider* temp_collider_x_ptr = new Collider(collider_ptr->x(),
-											     collider_ptr->y() - final_dir.y(),
+											     collider_ptr->y() - rigidbody_ptr->final_dir.y(),
 											     collider_ptr->width,
 												 collider_ptr->height);
-	Collider* temp_collider_y_ptr = new Collider(collider_ptr->x() - final_dir.x(),
+	Collider* temp_collider_y_ptr = new Collider(collider_ptr->x() - rigidbody_ptr->final_dir.x(),
 											     collider_ptr->y(),
 											     collider_ptr->width,
 												 collider_ptr->height);
@@ -433,24 +438,24 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 					// Handle Default Collision Cases //
 					while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
 					{
-						if(normalized_dir.x() == 0) {kill_player = true; break;}
-						temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
-						setX(this->x() - normalized_dir.x());
+						if(rigidbody_ptr->normalized_dir.x() == 0) {kill_player = true; break;}
+						temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - rigidbody_ptr->normalized_dir.x());
+						setX(this->x() - rigidbody_ptr->normalized_dir.x());
 					}
 
 					while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
 					{
-						if(normalized_dir.y() == 0) {kill_player = true; break;}
-						temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
-						setY(this->y() - normalized_dir.y());
+						if(rigidbody_ptr->normalized_dir.y() == 0) {kill_player = true; break;}
+						temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - rigidbody_ptr->normalized_dir.y());
+						setY(this->y() - rigidbody_ptr->normalized_dir.y());
 					}
 
 					// If there is still collision somehow, must be corner case //
 					while(collider_ptr->isCollision(*(other_collider_ptr)))
 					{
-						if(normalized_dir.x() == 0) {kill_player = true; break;}
+						if(rigidbody_ptr->normalized_dir.x() == 0) {kill_player = true; break;}
 						// We always resolve diagonal corner collisions with a horizontal shift. 
-						setX(this->x() - normalized_dir.x());
+						setX(this->x() - rigidbody_ptr->normalized_dir.x());
 					}	
 				}
 
@@ -572,25 +577,25 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 						// Handle Default Collision Cases //
 						while(temp_collider_x_ptr->isCollision(*other_collider_ptr))
 						{
-							if(normalized_dir.x() == 0) {kill_player = true; break;}
-							temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - normalized_dir.x());
-							setX(this->x() - normalized_dir.x());
+							if(rigidbody_ptr->normalized_dir.x() == 0) {kill_player = true; break;}
+							temp_collider_x_ptr->setX(temp_collider_x_ptr->x() - rigidbody_ptr->normalized_dir.x());
+							setX(this->x() - rigidbody_ptr->normalized_dir.x());
 						}
 
 						while(temp_collider_y_ptr->isCollision(*other_collider_ptr))
 						{
-							if(normalized_dir.y() == 0) {kill_player = true; break;}
-							temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - normalized_dir.y());
-							setY(this->y() - normalized_dir.y());
+							if(rigidbody_ptr->normalized_dir.y() == 0) {kill_player = true; break;}
+							temp_collider_y_ptr->setY(temp_collider_y_ptr->y() - rigidbody_ptr->normalized_dir.y());
+							setY(this->y() - rigidbody_ptr->normalized_dir.y());
 							v_collision_grace_frames = PLAYER_V_COLLISION_MAX_GRACE_FRAMES;
 						}
 
 						// If there is still collision somehow, must be corner case //
 						while(collider_ptr->isCollision(*(other_collider_ptr)))
 						{
-							if(normalized_dir.x() == 0) {kill_player = true; break;}
+							if(rigidbody_ptr->normalized_dir.x() == 0) {kill_player = true; break;}
 							// We always resolve diagonal corner collisions with a horizontal shift. 
-							setX(this->x() - normalized_dir.x());
+							setX(this->x() - rigidbody_ptr->normalized_dir.x());
 						}
 						
 					}
@@ -606,7 +611,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 													  TILE_WIDTH, 
 													  ONEWAYBLOCK_COLLIDER_HEIGHT);
 
-					if(normalized_dir.y() >= 0 &&
+					if(rigidbody_ptr->normalized_dir.y() >= 0 &&
 					   temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
 					{
 
@@ -685,7 +690,8 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			case DEVIL_PLATFORM:
 
 				// Test for, and log grounded collision
-				if(test_collider_ptr->isCollision(*other_collider_ptr) && normalized_dir.y() >= 0)
+				if(test_collider_ptr->isCollision(*other_collider_ptr) && 
+				   rigidbody_ptr->normalized_dir.y() >= 0)
 				{
 					if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) 
 					{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
@@ -694,11 +700,13 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				}
 
 				// Test for wall riding on right side
-				if(test_collider_right_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
+				if(test_collider_right_ptr->isCollision(*other_collider_ptr) && 
+				   rigidbody_ptr->final_dir.y() >= 0)
 				{wall_right_detected = true;}
 				
 				// Test for wall riding on left side
-				if(test_collider_left_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
+				if(test_collider_left_ptr->isCollision(*other_collider_ptr) && 
+				   rigidbody_ptr->final_dir.y() >= 0)
 				{wall_left_detected = true;}
 
 			break;
@@ -709,7 +717,8 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
 				{
 					// Test for, and log grounded collision
-					if(test_collider_ptr->isCollision(*(other_collider_ptr)) && normalized_dir.y() >= 0)
+					if(test_collider_ptr->isCollision(*(other_collider_ptr)) && 
+					   rigidbody_ptr->normalized_dir.y() >= 0)
 					{ 
 						if(!bn::keypad::down_held()) 
 						{
@@ -768,7 +777,8 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 													  TILE_HEIGHT);
 
 					// Test for, and log grounded collision
-					if(test_collider_ptr->isCollision(*other_collider_ptr) && normalized_dir.y() >= 0)
+					if(test_collider_ptr->isCollision(*other_collider_ptr) && 
+					   rigidbody_ptr->normalized_dir.y() >= 0)
 					{
 						if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) 
 						{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
@@ -777,13 +787,15 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 					}
 
 					// Test for wall riding on right side
-					if(test_collider_right_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
+					if(test_collider_right_ptr->isCollision(*other_collider_ptr) && 
+					   rigidbody_ptr->final_dir.y() >= 0)
 					{
 						wall_right_detected = true;
 					}
 					
 					// Test for wall riding on left side
-					if(test_collider_left_ptr->isCollision(*other_collider_ptr) && final_dir.y() >= 0)
+					if(test_collider_left_ptr->isCollision(*other_collider_ptr) && 
+					   rigidbody_ptr->final_dir.y() >= 0)
 					{
 						wall_left_detected = true;
 					}
@@ -802,7 +814,8 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 					if(temp_collider_y_ptr->p4.y() <= other_collider_ptr->p1.y() + PLAYER_GRAVITY)
 					{
 						// Test for, and log grounded collision
-						if(test_collider_ptr->isCollision(*(other_collider_ptr)) && normalized_dir.y() >= 0)
+						if(test_collider_ptr->isCollision(*(other_collider_ptr)) && 
+						   rigidbody_ptr->normalized_dir.y() >= 0)
 						{
 							if(!bn::keypad::down_held()) 
 							{
@@ -828,8 +841,11 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 													  TILE_WIDTH, 
 													  TILE_HEIGHT);
 					
-					if(collider_ptr->isCollision(*other_collider_ptr))
-					{kill_player = true;}
+					if(collider_ptr->isCollision(*other_collider_ptr) && state != STATE_DYING)
+					{
+						rigidbody_ptr->addForce(PLAYER_DEATH_FORCE);
+					 	kill_player = true;
+					}
 
 					delete other_collider_ptr;
 
@@ -887,7 +903,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	}
     else {state = STATE_AIR_NEUTRAL;}
 
-	if(kill_player) {state = STATE_DEAD;}
+	if(kill_player) {state = STATE_DYING;}
 
 	///////////////////
 	// Update Timers //

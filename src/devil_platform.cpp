@@ -87,7 +87,7 @@ void DevilPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
         rigidbody_ptr->applyDecay();
 
         // Apply forces to devil platform
-        bn::fixed_point final_dir = applyForces();
+        applyForces();
 
         ///////////////////////
         // Resolve Collision //
@@ -128,13 +128,13 @@ void DevilPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
                     if(collider_ptr->isCollision(*object_collider_ptr))
                     {
                         test_collider_x_ptr = new Collider(collider_ptr->x(),
-                                                        collider_ptr->y() - final_dir.y(),
-                                                        collider_ptr->width,
-                                                        collider_ptr->height);
-                        test_collider_y_ptr = new Collider(collider_ptr->x() - final_dir.x(),
-                                                        collider_ptr->y(),
-                                                        collider_ptr->width,
-                                                        collider_ptr->height);
+                                                           collider_ptr->y() - rigidbody_ptr->final_dir.y(),
+                                                           collider_ptr->width,
+                                                           collider_ptr->height);
+                        test_collider_y_ptr = new Collider(collider_ptr->x() - rigidbody_ptr->final_dir.x(),
+                                                           collider_ptr->y(),
+                                                           collider_ptr->width,
+                                                           collider_ptr->height);
                         
                         while(test_collider_x_ptr->isCollision(*object_collider_ptr))
                         {
@@ -158,7 +158,7 @@ void DevilPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
                     if(test_collider_slide_ptr->isCollision(*object_collider_ptr) && 
                     ((Player*)object_ptr)->state != STATE_GROUNDED_NEUTRAL)
                     {
-                        object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(0, final_dir.y()),
+                        object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(0, rigidbody_ptr->final_dir.y()),
                                                                     DEVIL_PLATFORM_DECAY));
                     }
 
@@ -167,18 +167,19 @@ void DevilPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
                     {
                         object_ptr->received_platform_force = true;
 
-                        if(final_dir.y() <= 0)
+                        if(rigidbody_ptr->final_dir.y() <= 0)
                         {
                             // If descending, applying force to the x axis is all that's needed.
                             // The player gravity will take care of the rest. 
-                            object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 0),
+                            object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(rigidbody_ptr->final_dir.x(), 0),
                                                                         DEVIL_PLATFORM_DECAY));
                         }
                         else
                         {
                             // If ascending, apply force to BOTH axes and offset y by 1 
                             // so the player hugs the platform tight.
-                            object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), final_dir.y() + 1),
+                            object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(rigidbody_ptr->final_dir.x(), 
+                                                                                                rigidbody_ptr->final_dir.y() + 1),
                                                                         DEVIL_PLATFORM_DECAY));
                         }
                     }

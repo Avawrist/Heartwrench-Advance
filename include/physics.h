@@ -39,7 +39,9 @@ struct Force {
 
 struct RigidBody {
 	bn::vector<Force*, MAX_FORCES> forces;
-	
+	bn::fixed_point normalized_dir;
+	bn::fixed_point final_dir;
+
 	RigidBody();
 	void   applyDecay();
     uint32 addForce(Force* force_p);

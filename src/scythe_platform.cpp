@@ -81,7 +81,7 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
     rigidbody_ptr->applyDecay();
 
     // Apply forces to scythe platform
-    bn::fixed_point final_dir = applyForces();
+    applyForces();
 
 	///////////////////////////////////
 	// Resolve Game Object Collision //
@@ -111,22 +111,23 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 				// If player is riding the platform:
 				if(!object_ptr->received_platform_force && 
 					test_collider_roof_ptr->isCollision(*other_collider_ptr) &&
-					other_collider_ptr->p4.y() < collider_ptr->p1.y() - final_dir.y())
+					other_collider_ptr->p4.y() < collider_ptr->p1.y() - rigidbody_ptr->final_dir.y())
 				{
 					setY(y() + 1);
 					
-					if(final_dir.y() <= 0)
+					if(rigidbody_ptr->final_dir.y() <= 0)
 					{
 						// If descending, applying force to the x axis is all that's needed.
 						// The player gravity will take care of the rest. 
-						object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 0),
+						object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(rigidbody_ptr->final_dir.x(), 0),
 																	  SCYTHE_PLATFORM_DECAY));
 					}
 					else
 					{
 						// If ascending, apply force to BOTH axes and offset y by 1 
 						// so the player hugs the platform tight.
-						object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), final_dir.y() + 1),
+						object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(rigidbody_ptr->final_dir.x(), 
+						                                                                    rigidbody_ptr->final_dir.y() + 1),
 																	  SCYTHE_PLATFORM_DECAY));
 					}
 				}

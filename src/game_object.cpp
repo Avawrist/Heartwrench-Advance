@@ -33,7 +33,7 @@ GameObject::~GameObject()
     delete rigidbody_ptr;
 }
 
-bn::fixed_point GameObject::applyForces()
+void GameObject::applyForces()
 {
     // Apply all of the forces in the RigidBody to the object
     bn::fixed_point final_dir(0, 0);
@@ -54,7 +54,13 @@ bn::fixed_point GameObject::applyForces()
         current++;
     }
 
-    return final_dir;
+    bn::fixed normalized_dir_x = 0;
+	bn::fixed normalized_dir_y = 0;
+	if(final_dir.x() != 0) {normalized_dir_x = final_dir.x() / abs(final_dir.x().integer());}
+	if(final_dir.y() != 0) {normalized_dir_y = final_dir.y() / abs(final_dir.y().integer());}
+
+    rigidbody_ptr->normalized_dir = bn::fixed_point(normalized_dir_x, normalized_dir_y);
+    rigidbody_ptr->final_dir      = final_dir;
 }
 
 void GameObject::draw()

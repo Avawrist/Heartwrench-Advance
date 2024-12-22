@@ -66,7 +66,7 @@ struct GameObject {
 
 	bool received_platform_force = false;
 
-	bn::fixed_point applyForces();
+	void applyForces();
 
 	GameObject();
 	virtual ~GameObject();

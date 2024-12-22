@@ -163,7 +163,7 @@ void Room::updateCamera()
 void Room::checkConditions()
 {
     // If player died, reload the room
-    if(((Player*)(game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->state == STATE_DEAD)
+    if(((Player*)(game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->is_dead)
     {reload();}
 
     // Check Exit 1

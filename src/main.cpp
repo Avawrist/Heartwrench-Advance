@@ -33,10 +33,12 @@ int main()
         // Update Game
 
         //BN_PROFILER_START("");
+        
         current_room_ptr->updateAndDraw();
         current_room_ptr->updateCamera();
         current_room_ptr->checkConditions();
         current_room_ptr->freeInactiveObjects();
+
         //BN_PROFILER_STOP();
         //bn::profiler::show();    
 

@@ -86,7 +86,7 @@ void AngelPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
         rigidbody_ptr->applyDecay();
 
         // Apply forces to angel platform
-        bn::fixed_point final_dir = applyForces();
+        applyForces();
 
         ///////////////////////
         // Resolve Collision //
@@ -114,18 +114,19 @@ void AngelPlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objec
                 {
                     player_ptr->received_platform_force = true;
 
-                    if(final_dir.y() <= 0)
+                    if(rigidbody_ptr->final_dir.y() <= 0)
                     {
                         // If descending, applying force to the x axis is all that's needed.
                         // The player gravity will take care of the rest. 
-                        player_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), 0),
+                        player_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(rigidbody_ptr->final_dir.x(), 0),
                                                                       ANGEL_PLATFORM_DECAY));
                     }
                     else
                     {
                         // If ascending, apply force to BOTH axes and offset y by 1 
                         // so the player hugs the platform tight.
-                        player_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(final_dir.x(), final_dir.y() + 1),
+                        player_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(rigidbody_ptr->final_dir.x(), 
+                                                                                            rigidbody_ptr->final_dir.y() + 1),
                                                                       ANGEL_PLATFORM_DECAY));
                     }
                 }

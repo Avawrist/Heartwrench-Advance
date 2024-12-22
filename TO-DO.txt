@@ -1,12 +1,18 @@
 ** Refactoring **
-- Move Game Object vector into Room?
 
 ** Gameplay **
+-Add to death state
 -Add window of momentum transfer if jumping from a moving platform
+-Uncharged B press leads into short dash -> 3 stage rekka. Three presses for 3 punches,
+ if in the air this will air stall. Ending the rekka by stopping presses or finishing
+ presses will lead into a free fall in the air.
+-Hitboxes as game objects
+-Evaluate juice opportunities: squish, flashes/shaders, screen shake, hit pause, 
+ animation.
 
->>Scythe verbs:
--Ride the scythe
--Activate switches with the scythe
--Die to the scythe
--Double jump or jump after the scythe is thrown?
--No knockback on grounded scythe?
+** Level Design **
+-Room routes offer multiple difficulties. Higher difficulty platforming combat
+ routes will reward the player with currency/exp/upgrades/bragging rights.
+-Smash some environmental objects may reward player with currency but cause area to
+ be more difficult.
+-Levels must have secrets!!

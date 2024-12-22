@@ -52,7 +52,8 @@ bool Force::isDecayed()
 
 RigidBody::RigidBody()
 {
-
+    normalized_dir = bn::fixed_point(0, 0);
+	final_dir      = bn::fixed_point(0, 0);
 }
 
 void RigidBody::applyDecay()
