@@ -65,8 +65,6 @@
 #define PLAYER_DEATH_Y_FORCE      2
 #define PLAYER_DEATH_DECAY        0.1
 
-#define PLAYER_DEATH_FORCE           new Force(bn::fixed_point_t<12>(-(rigidbody_ptr->normalized_dir.x()) * PLAYER_DEATH_X_FORCE, -(rigidbody_ptr->normalized_dir.y()) * PLAYER_DEATH_Y_FORCE), PLAYER_DEATH_DECAY)
-
 #define PLAYER_X_LEFT_FORCE  	     new Force(bn::fixed_point_t<12>(-x_speed, 0), PLAYER_X_DECAY)
 #define PLAYER_X_RIGHT_FORCE 	     new Force(bn::fixed_point_t<12>( x_speed, 0), PLAYER_X_DECAY)
 #define PLAYER_X_LEFT_DECAY_FORCE    new Force(bn::fixed_point_t<12>(-x_speed, 0), X_SPEED_DECAY_RATE)

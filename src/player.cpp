@@ -832,18 +832,75 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				break;
 
 				case UP_SPIKE_BLOCK_INDEX:
-				case DOWN_SPIKE_BLOCK_INDEX:
-				case LEFT_SPIKE_BLOCK_INDEX:
-				case RIGHT_SPIKE_BLOCK_INDEX:
 
 					other_collider_ptr = new Collider(world_x,
 													  world_y, 
 													  TILE_WIDTH, 
 													  TILE_HEIGHT);
 					
-					if(collider_ptr->isCollision(*other_collider_ptr) && state != STATE_DYING)
+					if(collider_ptr->isCollision(*other_collider_ptr) && !kill_player)
 					{
-						rigidbody_ptr->addForce(PLAYER_DEATH_FORCE);
+						rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * 0, 
+						                                                        PLAYER_DEATH_Y_FORCE * UP),
+																				PLAYER_DEATH_DECAY));
+					 	kill_player = true;
+					}
+
+					delete other_collider_ptr;
+
+				break;
+
+				case DOWN_SPIKE_BLOCK_INDEX:
+
+					other_collider_ptr = new Collider(world_x,
+													  world_y, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT);
+					
+					if(collider_ptr->isCollision(*other_collider_ptr) && !kill_player)
+					{
+						rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * 0, 
+						                                                        PLAYER_DEATH_Y_FORCE * DOWN), 
+																				PLAYER_DEATH_DECAY));
+					 	kill_player = true;
+					}
+
+					delete other_collider_ptr;
+
+				break;
+
+				
+				case LEFT_SPIKE_BLOCK_INDEX:
+
+					other_collider_ptr = new Collider(world_x,
+													  world_y, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT);
+					
+					if(collider_ptr->isCollision(*other_collider_ptr) && !kill_player)
+					{
+						rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * LEFT,
+						                                                        PLAYER_DEATH_Y_FORCE * 0), 
+																				PLAYER_DEATH_DECAY));
+					 	kill_player = true;
+					}
+
+					delete other_collider_ptr;
+
+				break;
+
+				case RIGHT_SPIKE_BLOCK_INDEX:
+
+					other_collider_ptr = new Collider(world_x,
+													  world_y, 
+													  TILE_WIDTH,
+													  TILE_HEIGHT);
+					
+					if(collider_ptr->isCollision(*other_collider_ptr) && !kill_player)
+					{
+						rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * RIGHT,
+						                                                        PLAYER_DEATH_Y_FORCE * 0), 
+																				PLAYER_DEATH_DECAY));
 					 	kill_player = true;
 					}
 

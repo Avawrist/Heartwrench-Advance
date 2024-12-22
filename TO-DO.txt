@@ -1,7 +1,6 @@
 ** Refactoring **
 
 ** Gameplay **
--Add to death state
 -Add window of momentum transfer if jumping from a moving platform
 -Uncharged B press leads into short dash -> 3 stage rekka. Three presses for 3 punches,
  if in the air this will air stall. Ending the rekka by stopping presses or finishing

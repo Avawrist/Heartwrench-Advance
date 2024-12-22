@@ -20,8 +20,8 @@
 #define SLOW_BLOCK_INDEX   4
 #define UP_SPIKE_BLOCK_INDEX    5 
 #define DOWN_SPIKE_BLOCK_INDEX  6
-#define LEFT_SPIKE_BLOCK_INDEX  7
-#define RIGHT_SPIKE_BLOCK_INDEX 8
+#define RIGHT_SPIKE_BLOCK_INDEX 7
+#define LEFT_SPIKE_BLOCK_INDEX  8
 
 #define TILE_WIDTH  8
 #define TILE_HEIGHT 8
@@ -46,9 +46,9 @@ typedef int   int32;
 enum Direction
 {
     LEFT  = -1,
-    RIGHT = 1,
+    RIGHT =  1,
     UP    = -1,
-    DOWN  = 1
+    DOWN  =  1,
 };
 
 #endif
