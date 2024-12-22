@@ -90,7 +90,7 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 	Collider* other_collider_ptr = NULL;
 
 	// Create test collider for roof collision checks
-	#define SCYTHE_PLATFORM_ROOF_OFFSET           -3
+	#define SCYTHE_PLATFORM_ROOF_OFFSET           -2
 	#define SCYTHE_PLATFORM_ROOF_COLLIDER_HEIGHT   1
 
 	Collider* test_collider_roof_ptr = new Collider(collider_ptr->x(),
