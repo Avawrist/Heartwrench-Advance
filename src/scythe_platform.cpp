@@ -32,6 +32,7 @@ ScythePlatform::ScythePlatform(Direction _dir, bn::fixed_point _p)
 
     state             = STATE_THROWN;
 	player_was_riding = false;
+	update_counter    = 0;
     dir               = _dir;
 
 	// Apply throw force
@@ -113,7 +114,8 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
 					test_collider_roof_ptr->isCollision(*other_collider_ptr) &&
 					other_collider_ptr->p4.y() < collider_ptr->p1.y() - rigidbody_ptr->final_dir.y())
 				{
-					setY(y() + 1);
+					if(update_counter % 2 == 0) // Lower every other frame.
+					{setY(y() + 1);}
 					
 					if(rigidbody_ptr->final_dir.y() <= 0)
 					{
@@ -149,6 +151,13 @@ void ScythePlatform::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_obje
     ///////////////////
     // Update States //
     ///////////////////
+
+	///////////////////
+	// Update Timers //
+	///////////////////
+
+	update_counter++;
+    if(update_counter >= 60) {update_counter = 0;}
 
     //////////////////////
 	// Update Direction //

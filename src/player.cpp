@@ -264,6 +264,10 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			else if(bn::keypad::right_held()) 								 
 			{gripping_wall_right = true; dir = LEFT;}
 
+			// Fast Fall
+			if(bn::keypad::down_held() && rigidbody_ptr->normalized_dir.y() >= 0) 
+			{fastFall();}
+
 			// Scythe Charge
 			if(bn::keypad::b_held())
 			{
@@ -314,6 +318,10 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			if(bn::keypad::left_held()) {gripping_wall_left = true; dir = RIGHT;}
 			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames) 
 			{rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE);}
+
+			// Fast Fall
+			if(bn::keypad::down_held() && rigidbody_ptr->normalized_dir.y() >= 0) 
+			{fastFall();}
 
 			// Scythe Charge
 			if(bn::keypad::b_held())

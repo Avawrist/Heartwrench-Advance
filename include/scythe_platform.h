@@ -61,7 +61,8 @@ enum ScytheState {
 struct ScythePlatform : GameObject {
 
 	ScytheState state;
-	bool player_was_riding;
+	bool  player_was_riding;
+    int32 update_counter;
 
     ScythePlatform(Direction _dir, bn::fixed_point _p);
     ~ScythePlatform();
