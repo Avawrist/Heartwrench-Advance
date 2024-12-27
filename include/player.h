@@ -28,16 +28,17 @@
 #define PLAYER_MAX_STRETCH_H 1.8
 #define PLAYER_FALL_STRETCH_H 0.75
 
-#define PLAYER_MIN_X_SPEED 0
-#define PLAYER_MAX_X_SPEED 2
-#define PLAYER_X_DECAY     1
-#define X_SPEED_ACC_RATE   0.2
-#define X_SPEED_DECAY_RATE 0.1
+#define PLAYER_MIN_X_SPEED    0
+#define PLAYER_MAX_X_SPEED    2
+#define PLAYER_SCYTHE_X_SPEED 1
+#define PLAYER_X_DECAY        1
+#define X_SPEED_ACC_RATE      0.2
+#define X_SPEED_DECAY_RATE    0.1
 
 #define PLAYER_BASE_JUMP_FORCE       -7
 #define PLAYER_SECOND_JUMP_FORCE     -3
-#define PLAYER_WALL_JUMP_X_FORCE      5
-#define PLAYER_WALL_JUMP_Y_FORCE     -8
+#define PLAYER_WALL_JUMP_X_FORCE      10
+#define PLAYER_WALL_JUMP_Y_FORCE     -10
 #define PLAYER_JUMP_DECAY             0.1
 #define PLAYER_SECONDARY_JUMP_DECAY   0.4
 #define PLAYER_X_DRIFT_LOCKOUT_FRAMES 12
@@ -47,6 +48,7 @@
 #define PLAYER_GRAVITY       	 3
 #define PLAYER_FAST_FALL_GRAVITY 2
 #define PLAYER_WALL_RIDE_GRAVITY 1
+#define PLAYER_SCYTHE_GRAVITY    1
 #define PLAYER_GRAVITY_DECAY 	 1
 
 #define PLAYER_SQUISH_FRAMES_REQUIRED 3
@@ -54,6 +56,12 @@
 #define PLAYER_SCYTHE_THROW_FRAMES 6
 #define PLAYER_THROW_SCYTHE_FRAME  5
 #define PLAYER_THROW_COOLDOWN_FRAMES 40
+
+#define PLAYER_SCYTHE_1_TOTAL_FRAMES 30
+#define PLAYER_SCYTHE_2_TOTAL_FRAMES 30
+#define PLAYER_SCYTHE_3_TOTAL_FRAMES 40
+#define PLAYER_MIN_SCYTHE_2_BUFFER_FRAMES 10
+#define PLAYER_MIN_SCYTHE_3_BUFFER_FRAMES 10
 
 #define PLAYER_V_COLLISION_MAX_GRACE_FRAMES 4
 #define PLAYER_LATE_JUMP_GRACE_FRAMES       8
@@ -67,6 +75,8 @@
 
 #define PLAYER_X_LEFT_FORCE  	     new Force(bn::fixed_point_t<12>(-x_speed, 0), PLAYER_X_DECAY)
 #define PLAYER_X_RIGHT_FORCE 	     new Force(bn::fixed_point_t<12>( x_speed, 0), PLAYER_X_DECAY)
+#define PLAYER_X_SCYTHE_LEFT_FORCE   new Force(bn::fixed_point_t<12>(-PLAYER_SCYTHE_X_SPEED, 0), PLAYER_X_DECAY)
+#define PLAYER_X_SCYTHE_RIGHT_FORCE  new Force(bn::fixed_point_t<12>( PLAYER_SCYTHE_X_SPEED, 0), PLAYER_X_DECAY)
 #define PLAYER_X_LEFT_DECAY_FORCE    new Force(bn::fixed_point_t<12>(-x_speed, 0), X_SPEED_DECAY_RATE)
 #define PLAYER_X_RIGHT_DECAY_FORCE   new Force(bn::fixed_point_t<12> (x_speed, 0), X_SPEED_DECAY_RATE)
 
@@ -78,6 +88,7 @@
 #define PLAYER_GRAVITY_FORCE         new Force(bn::fixed_point_t<12>(0, gravity), 			       PLAYER_GRAVITY_DECAY)
 #define PLAYER_FAST_GRAVITY_FORCE    new Force(bn::fixed_point_t<12>(0, PLAYER_FAST_FALL_GRAVITY), PLAYER_GRAVITY_DECAY)
 #define PLAYER_WALL_GRAVITY_FORCE    new Force(bn::fixed_point_t<12>(0, wall_ride_gravity),        PLAYER_GRAVITY_DECAY)
+#define PLAYER_SCYTHE_GRAVITY_FORCE  new Force(bn::fixed_point_t<12>(0, PLAYER_SCYTHE_GRAVITY),    PLAYER_GRAVITY_DECAY)
 
 enum PlayerState {
 	STATE_GROUNDED_NEUTRAL,
@@ -85,6 +96,9 @@ enum PlayerState {
 	STATE_WALL_SLIDE_RIGHT,
 	STATE_WALL_SLIDE_LEFT,
 	STATE_THROWING,
+	STATE_SCYTHE_1,
+	STATE_SCYTHE_2,
+	STATE_SCYTHE_3,
 	STATE_DYING,
 };
 
@@ -108,12 +122,15 @@ struct Player : GameObject {
 	int32           late_jump_grace_frames;
 	int32           scythe_charge_frames;
 	int32           current_death_frame;
+	int32           current_scythe_frame;
 
 	bool wall_right_detected;
     bool wall_left_detected;
     bool grounded_detected;
 	bool grounded_owp_detected;
 	bool throw_scythe;
+	bool scythe_2_buffered;
+	bool scythe_3_buffered;
 	bool kill_player;
 	bool is_dead;
 
@@ -130,6 +147,7 @@ struct Player : GameObject {
 	void jump();
 	void fastFall();
 	void throwScythe();
+	void setState(PlayerState new_state);
 	
 };
 

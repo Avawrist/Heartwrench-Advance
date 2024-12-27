@@ -53,6 +53,8 @@ Player::Player()
     grounded_detected     = false;
 	grounded_owp_detected = false;
 	throw_scythe          = false;
+	scythe_2_buffered     = false;
+	scythe_3_buffered     = false;
 	kill_player           = false;
 	is_dead               = false;
 
@@ -78,6 +80,9 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 	bool gripping_wall_right = false;
 	bool gripping_wall_left  = false;
+	bool in_scythe_1         = false;
+	bool in_scythe_2         = false;
+	bool in_scythe_3         = false;
 	throw_scythe             = false;
 
     switch(state)
@@ -122,7 +127,12 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			// Jump
 			if(bn::keypad::a_pressed()) {jump();}
 
+			// Scythe 1
+			if(bn::keypad::b_pressed())
+			{in_scythe_1 = true;}
+
 			// Scythe Charge
+			/*
 			if(bn::keypad::b_held())
 			{
 				scythe_charge_frames++;
@@ -138,6 +148,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				{throwScythe();}
 				scythe_charge_frames = 0;
 			}
+			*/
 			
 			// Add Gravity if Grounded on OWP
 			if(grounded_owp_detected) {rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);}
@@ -195,7 +206,12 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			else if(bn::keypad::a_released()) 
 			{remaining_jump_input_frames = 0;}
 
+			// Scythe 1
+			if(bn::keypad::b_pressed())
+			{in_scythe_1 = true;}
+
 			// Scythe Charge
+			/*
 			if(bn::keypad::b_held())
 			{
 				scythe_charge_frames++;
@@ -211,6 +227,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				{throwScythe();}
 				scythe_charge_frames = 0;
 			}
+			*/
 			
 			// Add Gravity //
 			rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);
@@ -250,6 +267,13 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 			// Get Input //
 	
+			// Drift
+			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames) 
+			{rigidbody_ptr->addForce(PLAYER_X_LEFT_FORCE);}
+			else if(bn::keypad::right_held()) 								 
+			{gripping_wall_right = true; dir = LEFT;}
+
+			// Wall Jump
 			if(bn::keypad::a_pressed())
 			{
 				rigidbody_ptr->addForce(PLAYER_WALL_JUMP_LEFT_FORCE);
@@ -258,17 +282,17 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
 				dir = LEFT;
 			} 
-			
-			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames) 
-			{rigidbody_ptr->addForce(PLAYER_X_LEFT_FORCE);}
-			else if(bn::keypad::right_held()) 								 
-			{gripping_wall_right = true; dir = LEFT;}
+
+			// Scythe 1
+			if(bn::keypad::b_pressed())
+			{in_scythe_1 = true;}
 
 			// Fast Fall
 			if(bn::keypad::down_held() && rigidbody_ptr->normalized_dir.y() >= 0) 
 			{fastFall();}
 
 			// Scythe Charge
+			/*
 			if(bn::keypad::b_held())
 			{
 				scythe_charge_frames++;
@@ -284,6 +308,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				{throwScythe();}
 				scythe_charge_frames = 0;
 			}
+			*/
 			
 			// Add Gravity //
 			if(gripping_wall_right) {rigidbody_ptr->addForce(PLAYER_WALL_GRAVITY_FORCE);}
@@ -306,6 +331,12 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 			// Get Input //
 
+			// Drift
+			if(bn::keypad::left_held()) {gripping_wall_left = true; dir = RIGHT;}
+			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames) 
+			{rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE);}
+
+			// Wall Jump
 			if(bn::keypad::a_pressed())
 			{
 				rigidbody_ptr->addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);
@@ -314,16 +345,17 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
 				dir = RIGHT;
 			}
-			
-			if(bn::keypad::left_held()) {gripping_wall_left = true; dir = RIGHT;}
-			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames) 
-			{rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE);}
+
+			// Scythe 1
+			if(bn::keypad::b_pressed())
+			{in_scythe_1 = true;}
 
 			// Fast Fall
 			if(bn::keypad::down_held() && rigidbody_ptr->normalized_dir.y() >= 0) 
 			{fastFall();}
 
 			// Scythe Charge
+			/*
 			if(bn::keypad::b_held())
 			{
 				scythe_charge_frames++;
@@ -339,6 +371,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				{throwScythe();}
 				scythe_charge_frames = 0;
 			}
+			*/
 			
 			// Add Gravity //
 			if(gripping_wall_left) {rigidbody_ptr->addForce(PLAYER_WALL_GRAVITY_FORCE);}
@@ -365,8 +398,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			       															 y() + SCYTHE_PLAYER_Y_OFFSET));
 				game_objects.at(SCYTHE_OBJECT_LIST_INDEX)->setCamera(camera);
 
-				// Set leap cancel frames
-				//remaining_leap_cancel_frames = PLAYER_MAX_LEAP_CANCEL_FRAMES;
 			}
 
 			// Keep the player in the throw state until throw frames are up
@@ -376,6 +407,119 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 												 current_scythe_throw_frames);
 			if(current_scythe_throw_frames != PLAYER_SCYTHE_THROW_FRAMES) 
 			{throw_scythe = true;}
+
+		break;
+
+		case STATE_SCYTHE_1:
+
+			BN_LOG("SCYTHE 1");
+			
+			/*
+			// Get Input //
+
+			// Drift
+			if(bn::keypad::left_held())       
+			{rigidbody_ptr->addForce(PLAYER_X_SCYTHE_LEFT_FORCE);}
+			else if(bn::keypad::right_held()) 
+			{rigidbody_ptr->addForce(PLAYER_X_SCYTHE_RIGHT_FORCE);}
+
+			// Add Gravity //
+			rigidbody_ptr->addForce(PLAYER_SCYTHE_GRAVITY_FORCE);
+			*/
+
+			// Increment Frame Counter
+			current_scythe_frame++;
+			current_scythe_frame = clamp(0, 
+										 PLAYER_SCYTHE_1_TOTAL_FRAMES, 
+										 current_scythe_frame);
+
+			// Take Buffer Input
+			if(bn::keypad::b_pressed() && 
+			   current_scythe_frame >= PLAYER_MIN_SCYTHE_2_BUFFER_FRAMES)
+			{scythe_2_buffered = true;}
+
+			// End state if frames are up
+			if(current_scythe_frame < PLAYER_SCYTHE_1_TOTAL_FRAMES)
+			{in_scythe_1 = true;}
+
+			else
+			{
+				current_scythe_frame = 0;
+				if(scythe_2_buffered) {in_scythe_2 = true;}
+			}
+
+		break;
+
+		case STATE_SCYTHE_2:
+
+			BN_LOG("SCYTHE 2");
+
+			/*
+			// Get Input //
+
+			// Drift
+			if(bn::keypad::left_held())       
+			{rigidbody_ptr->addForce(PLAYER_X_SCYTHE_LEFT_FORCE);}
+			else if(bn::keypad::right_held()) 
+			{rigidbody_ptr->addForce(PLAYER_X_SCYTHE_RIGHT_FORCE);}
+
+			// Add Gravity //
+			rigidbody_ptr->addForce(PLAYER_SCYTHE_GRAVITY_FORCE);
+			*/
+
+			// Increment Frame Counter
+			current_scythe_frame++;
+			current_scythe_frame = clamp(0, 
+										 PLAYER_SCYTHE_2_TOTAL_FRAMES, 
+										 current_scythe_frame);
+
+			// Take Buffer Input
+			if(bn::keypad::b_pressed() && 
+			   current_scythe_frame >= PLAYER_MIN_SCYTHE_3_BUFFER_FRAMES)
+			{scythe_3_buffered = true;}
+
+			// End state if frames are up
+			if(current_scythe_frame < PLAYER_SCYTHE_2_TOTAL_FRAMES)
+			{in_scythe_2 = true;}
+
+			else
+			{
+				current_scythe_frame = 0;
+				if(scythe_3_buffered) {in_scythe_3 = true;}
+			}
+
+		break;
+
+		case STATE_SCYTHE_3:
+
+			BN_LOG("SCYTHE 3");
+
+			/*
+			// Get Input //
+
+			// Drift
+			if(bn::keypad::left_held())       
+			{rigidbody_ptr->addForce(PLAYER_X_SCYTHE_LEFT_FORCE);}
+			else if(bn::keypad::right_held()) 
+			{rigidbody_ptr->addForce(PLAYER_X_SCYTHE_RIGHT_FORCE);}
+
+			// Add Gravity //
+			rigidbody_ptr->addForce(PLAYER_SCYTHE_GRAVITY_FORCE);
+			*/
+
+			// Increment Frame Counter
+			current_scythe_frame++;
+			current_scythe_frame = clamp(0, 
+										 PLAYER_SCYTHE_3_TOTAL_FRAMES, 
+										 current_scythe_frame);
+
+			// Take Buffer Input
+
+			// End state if frames are up
+			if(current_scythe_frame < PLAYER_SCYTHE_3_TOTAL_FRAMES)
+			{in_scythe_3 = true;}
+
+			else {current_scythe_frame = 0;}
 
 		break;
 
@@ -946,29 +1090,28 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
     // Update States //
     ///////////////////
 
-	if(throw_scythe)
-	{
-		state = STATE_THROWING;
-		air_frames_elapsed = 0;
-	}
-    else if(grounded_detected)        
-	{
-		state = STATE_GROUNDED_NEUTRAL;
-		air_frames_elapsed = 0;
-	}
-    else if(wall_right_detected) 
-	{
-		state = STATE_WALL_SLIDE_RIGHT;
-		air_frames_elapsed = 0;
-	}
-    else if(wall_left_detected)  
-	{
-		state = STATE_WALL_SLIDE_LEFT;
-		air_frames_elapsed = 0;
-	}
-    else {state = STATE_AIR_NEUTRAL;}
+	PlayerState new_state = STATE_GROUNDED_NEUTRAL;
 
-	if(kill_player) {state = STATE_DYING;}
+    if(grounded_detected)        
+	{new_state = STATE_GROUNDED_NEUTRAL;}
+
+    else if(wall_right_detected) 
+	{new_state = STATE_WALL_SLIDE_RIGHT;}
+
+    else if(wall_left_detected)  
+	{new_state = STATE_WALL_SLIDE_LEFT;}
+
+    else {new_state = STATE_AIR_NEUTRAL;}
+
+	if (in_scythe_1) {new_state = STATE_SCYTHE_1;}
+	if (in_scythe_2) {new_state = STATE_SCYTHE_2;}
+	if (in_scythe_3) {new_state = STATE_SCYTHE_3;}
+	if(throw_scythe) {new_state = STATE_THROWING;}
+
+	if(kill_player) {new_state = STATE_DYING;}
+
+	// Set the state
+	setState(new_state);
 
 	///////////////////
 	// Update Timers //
@@ -1038,4 +1181,64 @@ void Player::throwScythe()
 {
 	current_scythe_throw_frames  = 0;
 	throw_scythe                 = true;
+}
+
+void Player::setState(PlayerState new_state)
+{
+	// Set State
+	state = new_state;
+
+	// Set animations & other state specific variables
+	switch(new_state)
+	{
+		case STATE_THROWING:
+			air_frames_elapsed = 0;
+			scythe_2_buffered = false;
+			scythe_3_buffered = false;
+		break;
+
+		case STATE_GROUNDED_NEUTRAL:
+			air_frames_elapsed = 0;
+			scythe_2_buffered = false;
+			scythe_3_buffered = false;
+		break;
+
+		case STATE_WALL_SLIDE_RIGHT:
+			air_frames_elapsed = 0;
+			scythe_2_buffered = false;
+			scythe_3_buffered = false;
+		break;
+
+		case STATE_WALL_SLIDE_LEFT:
+			air_frames_elapsed = 0;
+			scythe_2_buffered = false;
+			scythe_3_buffered = false;
+		break;
+
+		case STATE_AIR_NEUTRAL:
+			scythe_2_buffered = false;
+			scythe_3_buffered = false;
+		break;
+
+		case STATE_DYING:
+			scythe_2_buffered = false;
+			scythe_3_buffered = false;
+		break;
+
+		case STATE_SCYTHE_1:
+			air_frames_elapsed = 0;
+		break;
+
+		case STATE_SCYTHE_2:
+			air_frames_elapsed = 0;
+		break;
+
+		case STATE_SCYTHE_3:
+			air_frames_elapsed = 0;
+		break;
+
+		default:
+		break;
+	}
+
 }
