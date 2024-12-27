@@ -254,8 +254,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 		break;
 		
 		case STATE_AIR_PLUMMET:
-
-			BN_LOG("PLUMMET STATE");
 			
 			//////////////////////////////
 			// Player Air Plummet State //
@@ -767,7 +765,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 					{
 
 						if(bn::keypad::down_held())  {rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE); break;}
-						if(v_collision_grace_frames) {rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE); break;}
+						//if(v_collision_grace_frames) {rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE); break;}
 
 						// Handle Corner Case //
 						if(!temp_collider_x_ptr->isCollision(*(other_collider_ptr)) &&
