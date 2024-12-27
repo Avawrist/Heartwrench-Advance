@@ -28,12 +28,12 @@
 #define PLAYER_MAX_STRETCH_H 1.8
 #define PLAYER_FALL_STRETCH_H 0.75
 
-#define PLAYER_MIN_X_SPEED    0
-#define PLAYER_MAX_X_SPEED    2
-#define PLAYER_SCYTHE_X_SPEED 1
-#define PLAYER_X_DECAY        1
-#define X_SPEED_ACC_RATE      0.2
-#define X_SPEED_DECAY_RATE    0.1
+#define PLAYER_MIN_X_SPEED     0
+#define PLAYER_MAX_X_SPEED     2
+#define PLAYER_PLUMMET_X_SPEED 1
+#define PLAYER_X_DECAY         1
+#define X_SPEED_ACC_RATE       0.2
+#define X_SPEED_DECAY_RATE     0.1
 
 #define PLAYER_BASE_JUMP_FORCE       -7
 #define PLAYER_SECOND_JUMP_FORCE     -3
@@ -75,8 +75,8 @@
 
 #define PLAYER_X_LEFT_FORCE  	     new Force(bn::fixed_point_t<12>(-x_speed, 0), PLAYER_X_DECAY)
 #define PLAYER_X_RIGHT_FORCE 	     new Force(bn::fixed_point_t<12>( x_speed, 0), PLAYER_X_DECAY)
-#define PLAYER_X_SCYTHE_LEFT_FORCE   new Force(bn::fixed_point_t<12>(-PLAYER_SCYTHE_X_SPEED, 0), PLAYER_X_DECAY)
-#define PLAYER_X_SCYTHE_RIGHT_FORCE  new Force(bn::fixed_point_t<12>( PLAYER_SCYTHE_X_SPEED, 0), PLAYER_X_DECAY)
+#define PLAYER_X_PLUMMET_LEFT_FORCE  new Force(bn::fixed_point_t<12>(-PLAYER_PLUMMET_X_SPEED, 0), PLAYER_X_DECAY)
+#define PLAYER_X_PLUMMET_RIGHT_FORCE new Force(bn::fixed_point_t<12>( PLAYER_PLUMMET_X_SPEED, 0), PLAYER_X_DECAY)
 #define PLAYER_X_LEFT_DECAY_FORCE    new Force(bn::fixed_point_t<12>(-x_speed, 0), X_SPEED_DECAY_RATE)
 #define PLAYER_X_RIGHT_DECAY_FORCE   new Force(bn::fixed_point_t<12> (x_speed, 0), X_SPEED_DECAY_RATE)
 
@@ -93,6 +93,7 @@
 enum PlayerState {
 	STATE_GROUNDED_NEUTRAL,
 	STATE_AIR_NEUTRAL,
+	STATE_AIR_PLUMMET,
 	STATE_WALL_SLIDE_RIGHT,
 	STATE_WALL_SLIDE_LEFT,
 	STATE_THROWING,

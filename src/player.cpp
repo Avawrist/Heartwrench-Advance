@@ -83,6 +83,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	bool in_scythe_1         = false;
 	bool in_scythe_2         = false;
 	bool in_scythe_3         = false;
+	bool plummet_eligible    = false;
 	throw_scythe             = false;
 
     switch(state)
@@ -252,6 +253,37 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 		break;
 		
+		case STATE_AIR_PLUMMET:
+
+			BN_LOG("PLUMMET STATE");
+			
+			//////////////////////////////
+			// Player Air Plummet State //
+			//////////////////////////////
+
+			plummet_eligible = true;
+
+			// Get Input //
+
+			// Drift
+			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames)       
+			{rigidbody_ptr->addForce(PLAYER_X_PLUMMET_LEFT_FORCE); dir = LEFT;}
+
+			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames)
+			{rigidbody_ptr->addForce(PLAYER_X_PLUMMET_RIGHT_FORCE); dir = RIGHT;}
+			
+			// Add Plummet Gravity //
+			rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);
+			rigidbody_ptr->addForce(PLAYER_FAST_GRAVITY_FORCE);
+
+			// Update Squish frames for squish eligibility // 
+			air_frames_elapsed++;
+			air_frames_elapsed = clamp(0, 
+									   PLAYER_SQUISH_FRAMES_REQUIRED, 
+									   air_frames_elapsed);
+
+		break;
+
 		case STATE_WALL_SLIDE_RIGHT:
 
 			///////////////////////////////////
@@ -413,19 +445,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 		case STATE_SCYTHE_1:
 
 			BN_LOG("SCYTHE 1");
-			
-			/*
-			// Get Input //
-
-			// Drift
-			if(bn::keypad::left_held())       
-			{rigidbody_ptr->addForce(PLAYER_X_SCYTHE_LEFT_FORCE);}
-			else if(bn::keypad::right_held()) 
-			{rigidbody_ptr->addForce(PLAYER_X_SCYTHE_RIGHT_FORCE);}
-
-			// Add Gravity //
-			rigidbody_ptr->addForce(PLAYER_SCYTHE_GRAVITY_FORCE);
-			*/
 
 			// Increment Frame Counter
 			current_scythe_frame++;
@@ -438,13 +457,14 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			   current_scythe_frame >= PLAYER_MIN_SCYTHE_2_BUFFER_FRAMES)
 			{scythe_2_buffered = true;}
 
-			// End state if frames are up
+			// End state if frames are not up
 			if(current_scythe_frame < PLAYER_SCYTHE_1_TOTAL_FRAMES)
 			{in_scythe_1 = true;}
 
 			else
 			{
 				current_scythe_frame = 0;
+				plummet_eligible     = true;
 				if(scythe_2_buffered) {in_scythe_2 = true;}
 			}
 
@@ -453,19 +473,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 		case STATE_SCYTHE_2:
 
 			BN_LOG("SCYTHE 2");
-
-			/*
-			// Get Input //
-
-			// Drift
-			if(bn::keypad::left_held())       
-			{rigidbody_ptr->addForce(PLAYER_X_SCYTHE_LEFT_FORCE);}
-			else if(bn::keypad::right_held()) 
-			{rigidbody_ptr->addForce(PLAYER_X_SCYTHE_RIGHT_FORCE);}
-
-			// Add Gravity //
-			rigidbody_ptr->addForce(PLAYER_SCYTHE_GRAVITY_FORCE);
-			*/
 
 			// Increment Frame Counter
 			current_scythe_frame++;
@@ -478,13 +485,14 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			   current_scythe_frame >= PLAYER_MIN_SCYTHE_3_BUFFER_FRAMES)
 			{scythe_3_buffered = true;}
 
-			// End state if frames are up
+			// End state if frames are not up
 			if(current_scythe_frame < PLAYER_SCYTHE_2_TOTAL_FRAMES)
 			{in_scythe_2 = true;}
 
 			else
 			{
 				current_scythe_frame = 0;
+				plummet_eligible     = true;
 				if(scythe_3_buffered) {in_scythe_3 = true;}
 			}
 
@@ -494,19 +502,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 			BN_LOG("SCYTHE 3");
 
-			/*
-			// Get Input //
-
-			// Drift
-			if(bn::keypad::left_held())       
-			{rigidbody_ptr->addForce(PLAYER_X_SCYTHE_LEFT_FORCE);}
-			else if(bn::keypad::right_held()) 
-			{rigidbody_ptr->addForce(PLAYER_X_SCYTHE_RIGHT_FORCE);}
-
-			// Add Gravity //
-			rigidbody_ptr->addForce(PLAYER_SCYTHE_GRAVITY_FORCE);
-			*/
-
 			// Increment Frame Counter
 			current_scythe_frame++;
 			current_scythe_frame = clamp(0, 
@@ -515,11 +510,15 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 			// Take Buffer Input
 
-			// End state if frames are up
+			// End state if frames are not up
 			if(current_scythe_frame < PLAYER_SCYTHE_3_TOTAL_FRAMES)
 			{in_scythe_3 = true;}
 
-			else {current_scythe_frame = 0;}
+			else 
+			{
+				current_scythe_frame = 0;
+				plummet_eligible     = true;
+			}
 
 		break;
 
@@ -1095,13 +1094,17 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
     if(grounded_detected)        
 	{new_state = STATE_GROUNDED_NEUTRAL;}
 
-    else if(wall_right_detected) 
+    else if(wall_right_detected && !plummet_eligible) 
 	{new_state = STATE_WALL_SLIDE_RIGHT;}
 
-    else if(wall_left_detected)  
+    else if(wall_left_detected && !plummet_eligible)  
 	{new_state = STATE_WALL_SLIDE_LEFT;}
 
-    else {new_state = STATE_AIR_NEUTRAL;}
+    else 
+	{
+		if(plummet_eligible) {new_state = STATE_AIR_PLUMMET;}
+		else 				 {new_state = STATE_AIR_NEUTRAL;}
+	}
 
 	if (in_scythe_1) {new_state = STATE_SCYTHE_1;}
 	if (in_scythe_2) {new_state = STATE_SCYTHE_2;}
@@ -1216,6 +1219,11 @@ void Player::setState(PlayerState new_state)
 		break;
 
 		case STATE_AIR_NEUTRAL:
+			scythe_2_buffered = false;
+			scythe_3_buffered = false;
+		break;
+
+		case STATE_AIR_PLUMMET:
 			scythe_2_buffered = false;
 			scythe_3_buffered = false;
 		break;
