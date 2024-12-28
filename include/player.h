@@ -53,6 +53,9 @@
 
 #define PLAYER_SQUISH_FRAMES_REQUIRED 3
 
+#define PLAYER_PHASE_STEP_TOTAL_FRAMES 25
+#define PLAYER_PHASE_FRAME             15
+
 #define PLAYER_SCYTHE_THROW_FRAMES 6
 #define PLAYER_THROW_SCYTHE_FRAME  5
 #define PLAYER_THROW_COOLDOWN_FRAMES 40
@@ -91,16 +94,19 @@
 #define PLAYER_SCYTHE_GRAVITY_FORCE  new Force(bn::fixed_point_t<12>(0, PLAYER_SCYTHE_GRAVITY),    PLAYER_GRAVITY_DECAY)
 
 enum PlayerState {
+
 	STATE_GROUNDED_NEUTRAL,
 	STATE_AIR_NEUTRAL,
 	STATE_AIR_PLUMMET,
 	STATE_WALL_SLIDE_RIGHT,
 	STATE_WALL_SLIDE_LEFT,
+	STATE_PHASE_STEP,
 	STATE_THROWING,
 	STATE_SCYTHE_1,
 	STATE_SCYTHE_2,
 	STATE_SCYTHE_3,
 	STATE_DYING,
+
 };
 
 struct Player : GameObject {
@@ -114,16 +120,17 @@ struct Player : GameObject {
 	bn::fixed       gravity;
 	bn::fixed       wall_ride_gravity;
 
-	int32           remaining_jump_input_frames;
-	int32           remaining_x_drift_lockout_frames;
-	int32           current_scythe_throw_frames;
-	int32           scythe_throw_cooldown_frames;
-	int32           air_frames_elapsed;
-	int32           v_collision_grace_frames;
-	int32           late_jump_grace_frames;
-	int32           scythe_charge_frames;
-	int32           current_death_frame;
-	int32           current_scythe_frame;
+	int32 remaining_jump_input_frames;
+	int32 remaining_x_drift_lockout_frames;
+	int32 current_scythe_throw_frames;
+	int32 scythe_throw_cooldown_frames;
+	int32 air_frames_elapsed;
+	int32 v_collision_grace_frames;
+	int32 late_jump_grace_frames;
+	int32 scythe_charge_frames;
+	int32 current_death_frame;
+	int32 current_scythe_frame;
+	int32 current_phase_step_frame;
 
 	bool wall_right_detected;
     bool wall_left_detected;

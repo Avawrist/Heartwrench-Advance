@@ -47,6 +47,7 @@ Player::Player()
 	late_jump_grace_frames           = 0;
 	scythe_charge_frames             = 0;
 	current_death_frame              = 0;
+	current_phase_step_frame         = 0;
 
 	wall_right_detected   = false;
     wall_left_detected    = false;
@@ -83,6 +84,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	bool in_scythe_1         = false;
 	bool in_scythe_2         = false;
 	bool in_scythe_3         = false;
+	bool in_phase_step       = false;
 	bool plummet_eligible    = false;
 	throw_scythe             = false;
 
@@ -127,6 +129,10 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 			// Jump
 			if(bn::keypad::a_pressed()) {jump();}
+
+			// Phase Step
+			if(bn::keypad::r_pressed()) 
+			{in_phase_step = true;}
 
 			// Scythe 1
 			if(bn::keypad::b_pressed())
@@ -206,6 +212,10 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 			else if(bn::keypad::a_released()) 
 			{remaining_jump_input_frames = 0;}
+
+			// Phase Step
+			if(bn::keypad::r_pressed()) 
+			{in_phase_step = true;}
 
 			// Scythe 1
 			if(bn::keypad::b_pressed())
@@ -311,7 +321,11 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
 				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
 				dir = LEFT;
-			} 
+			}
+
+			// Phase Step
+			if(bn::keypad::r_pressed()) 
+			{in_phase_step = true;}
 
 			// Scythe 1
 			if(bn::keypad::b_pressed())
@@ -376,6 +390,10 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				dir = RIGHT;
 			}
 
+			// Phase Step
+			if(bn::keypad::r_pressed()) 
+			{in_phase_step = true;}
+
 			// Scythe 1
 			if(bn::keypad::b_pressed())
 			{in_scythe_1 = true;}
@@ -407,6 +425,31 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			if(gripping_wall_left) {rigidbody_ptr->addForce(PLAYER_WALL_GRAVITY_FORCE);}
 			else {rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);}
 		
+		break;
+
+		case STATE_PHASE_STEP:
+
+			BN_LOG("PHASE STEPPING");
+
+			// Increment Frame Counter
+			current_phase_step_frame++;
+			current_phase_step_frame = clamp(0,
+											 PLAYER_PHASE_STEP_TOTAL_FRAMES, 
+											 current_phase_step_frame);
+
+			// Phase Player
+			if(current_phase_step_frame == PLAYER_PHASE_FRAME)
+			{
+
+			}
+
+			// Keep the player in phase step state until frames are up
+			if(current_phase_step_frame < PLAYER_PHASE_STEP_TOTAL_FRAMES)
+			{in_phase_step = true;}
+			else
+			{current_phase_step_frame = 0;
+			 plummet_eligible         = true;}
+
 		break;
 
 		case STATE_THROWING:
@@ -1104,10 +1147,11 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 		else 				 {new_state = STATE_AIR_NEUTRAL;}
 	}
 
-	if (in_scythe_1) {new_state = STATE_SCYTHE_1;}
-	if (in_scythe_2) {new_state = STATE_SCYTHE_2;}
-	if (in_scythe_3) {new_state = STATE_SCYTHE_3;}
-	if(throw_scythe) {new_state = STATE_THROWING;}
+	if (in_phase_step) {new_state = STATE_PHASE_STEP;}
+	if (in_scythe_1)   {new_state = STATE_SCYTHE_1;}
+	if (in_scythe_2)   {new_state = STATE_SCYTHE_2;}
+	if (in_scythe_3)   {new_state = STATE_SCYTHE_3;}
+	if (throw_scythe)  {new_state = STATE_THROWING;}
 
 	if(kill_player) {new_state = STATE_DYING;}
 
@@ -1139,7 +1183,7 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	// Update Sprite Direction //
 	/////////////////////////////
 	
-	if(dir == LEFT)        {sprite_ptr->set_horizontal_flip(true);}
+	if      (dir == LEFT)  {sprite_ptr->set_horizontal_flip(true);}
 	else if (dir == RIGHT) {sprite_ptr->set_horizontal_flip(false);}
     
     ////////////////////////////
@@ -1194,26 +1238,26 @@ void Player::setState(PlayerState new_state)
 	{
 		case STATE_THROWING:
 			air_frames_elapsed = 0;
-			scythe_2_buffered = false;
-			scythe_3_buffered = false;
+			scythe_2_buffered  = false;
+			scythe_3_buffered  = false;
 		break;
 
 		case STATE_GROUNDED_NEUTRAL:
 			air_frames_elapsed = 0;
-			scythe_2_buffered = false;
-			scythe_3_buffered = false;
+			scythe_2_buffered  = false;
+			scythe_3_buffered  = false;
 		break;
 
 		case STATE_WALL_SLIDE_RIGHT:
 			air_frames_elapsed = 0;
-			scythe_2_buffered = false;
-			scythe_3_buffered = false;
+			scythe_2_buffered  = false;
+			scythe_3_buffered  = false;
 		break;
 
 		case STATE_WALL_SLIDE_LEFT:
 			air_frames_elapsed = 0;
-			scythe_2_buffered = false;
-			scythe_3_buffered = false;
+			scythe_2_buffered  = false;
+			scythe_3_buffered  = false;
 		break;
 
 		case STATE_AIR_NEUTRAL:
@@ -1229,6 +1273,12 @@ void Player::setState(PlayerState new_state)
 		case STATE_DYING:
 			scythe_2_buffered = false;
 			scythe_3_buffered = false;
+		break;
+
+		case STATE_PHASE_STEP:
+			air_frames_elapsed = 0;
+			scythe_2_buffered  = false;
+			scythe_3_buffered  = false;
 		break;
 
 		case STATE_SCYTHE_1:
