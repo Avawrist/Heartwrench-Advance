@@ -88,6 +88,14 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	bool plummet_eligible    = false;
 	throw_scythe             = false;
 
+	//////////////////////////////
+	// Init Collision Variables //
+	//////////////////////////////
+
+	///////////////////
+	// Handle State ///
+	///////////////////
+
     switch(state)
     {
 		case STATE_GROUNDED_NEUTRAL:
@@ -440,8 +448,82 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			// Phase Player
 			if(current_phase_step_frame == PLAYER_PHASE_FRAME)
 			{
+				// Copy the player's collider at the full Phase Step
+				// distance, and increment it towards the player
+				// until there are no tile collisions. 
 
-			}
+				// Get current cell index that player resides in:
+				int32 half_room_width_pixels  = bg_ptr.dimensions().width()  / 2;
+				int32 half_room_height_pixels = bg_ptr.dimensions().height() / 2;
+				bn::fixed index_x = (x() + half_room_width_pixels)  / TILE_WIDTH;
+				bn::fixed index_y = (y() + half_room_height_pixels) / TILE_HEIGHT;
+				bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
+
+				int32 x_offset = PLAYER_PHASE_STEP_MAX_DISTANCE * dir;
+				int32 max_x    = (x_offset / TILE_WIDTH) + dir;
+
+				Collider* other_collider_ptr = NULL;
+				Collider* phase_collider_ptr = new Collider(collider_ptr->x() + x_offset,
+															collider_ptr->y(),
+															collider_ptr->width,
+															collider_ptr->height);
+
+				// Clamp Phase collider BEFORE checking for tile collision
+				bn::fixed new_x = phase_collider_ptr->x();
+				bn::fixed new_y = phase_collider_ptr->y();
+				new_x = clamp(-half_room_width_pixels,  half_room_width_pixels,  new_x);
+				new_y = clamp(-half_room_height_pixels, half_room_height_pixels, new_y);
+				phase_collider_ptr->setPos(new_x, new_y);
+
+				for(int32 y = -2; y < 3; y++)
+				{
+					for(int32 x = max_x; x != 0; x += (dir * -1))
+					{
+						// 1. Get tile type at index
+						int32 check_index_x = cell_index.x() + x;
+						int32 check_index_y = cell_index.y() + y;
+
+						// Determine world coords in case we need to make a collider.
+						int32 world_x = ((check_index_x * TILE_WIDTH)  - half_room_width_pixels)  + (TILE_WIDTH  / 2);
+						int32 world_y = ((check_index_y * TILE_HEIGHT) - half_room_height_pixels) + (TILE_HEIGHT / 2);
+
+						uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y,
+															 bg_ptr, cells, bg_item);
+
+						// 2. If the tile is collidable, check for collision
+						switch(tile_index)
+						{
+							case HARD_BLOCK_INDEX:
+							case SOFT_BLOCK_INDEX:
+							case UP_SPIKE_BLOCK_INDEX:
+							case DOWN_SPIKE_BLOCK_INDEX:
+							case LEFT_SPIKE_BLOCK_INDEX:
+							case RIGHT_SPIKE_BLOCK_INDEX:
+
+								other_collider_ptr = new Collider(world_x, 
+																  world_y, 
+																  TILE_WIDTH, 
+																  TILE_HEIGHT);
+
+								while(phase_collider_ptr->isCollision(*(other_collider_ptr)))
+								{phase_collider_ptr->setX(phase_collider_ptr->x() + (dir * -1));}
+
+								delete other_collider_ptr;
+
+							break;
+
+							default:
+							break;
+						}
+					}
+				}
+
+				// Update player position
+				setPos(phase_collider_ptr->x(), phase_collider_ptr->y());
+
+				// Clean up phase collider
+				delete phase_collider_ptr;
+			} 
 
 			// Keep the player in phase step state until frames are up
 			if(current_phase_step_frame < PLAYER_PHASE_STEP_TOTAL_FRAMES)
@@ -593,6 +675,13 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	// Init Collision Variables //
 	//////////////////////////////
 
+	// Get current cell index that player resides in:
+	int32 half_room_width_pixels  = bg_ptr.dimensions().width() / 2;
+	int32 half_room_height_pixels = bg_ptr.dimensions().height() / 2;
+	bn::fixed index_x = (x() + half_room_width_pixels)  / TILE_WIDTH;
+	bn::fixed index_y = (y() + half_room_height_pixels) / TILE_HEIGHT;
+	bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
+
 	// Create one temporary collider for each axis. If a collider finds a collision
 	// in its axis, move the temp collider AND the Player back along the dir vector
 	// in units of 1 until the collision is resolved on that axis.
@@ -606,12 +695,14 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 												 collider_ptr->height);
 	Collider* other_collider_ptr = NULL;
 
+	/*
 	// Get current cell index that player resides in:
 	int32 half_room_width_pixels  = bg_ptr.dimensions().width() / 2;
 	int32 half_room_height_pixels = bg_ptr.dimensions().height() / 2;
 	bn::fixed index_x = (x() + half_room_width_pixels)  / TILE_WIDTH;
 	bn::fixed index_y = (y() + half_room_height_pixels) / TILE_HEIGHT;
-	bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
+	bn::point cell_index = bn::point(index_x.integer(), index_y.integer()); 
+	*/
 
 	//////////////////////////////////
 	// Resolve GameObject Collision //
