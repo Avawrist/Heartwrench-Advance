@@ -47,20 +47,21 @@ struct Room
     uint32 tile_width;
     uint32 tile_height;
 
-    RoomName current_room;
+    RoomName  current_room;
+    bn::point current_pos;
 
     bn::point player_spawn;
 
-    Room(RoomName room_name);
+    Room(RoomName room_name, bn::point origin_pos);
     ~Room();
 
     int32  addObject(GameObject* object_ptr);
     void   clear();
-    void   load(RoomName room_name);
+    void   load(RoomName room_name, bn::point origin_pos);
     void   reload();
     void   updateAndDraw();
     void   updateCamera();
-    void   checkConditions();
+    void   checkConditions(Room* next_room_ptr);
     void   freeInactiveObjects();
     void   updateIndexes();
 

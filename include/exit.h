@@ -22,10 +22,13 @@
 
 struct Exit : GameObject {
 
-	int32 go_to_room_enum;
-    bool  is_triggered;
+    bn::point go_to_room_pos;
+	int32     go_to_room_enum;
+    bool      is_triggered;
 
-    Exit(int32 _go_to_room_enum, bn::point origin);
+    Exit(int32     _go_to_room_enum, 
+         bn::point _go_to_room_pos, 
+         bn::point origin);
     ~Exit();
 
     void update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,

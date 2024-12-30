@@ -1,6 +1,8 @@
 #include "exit.h"
 
-Exit::Exit(int32 _go_to_room_enum, bn::point origin)
+Exit::Exit(int32     _go_to_room_enum, 
+           bn::point _go_to_room_pos, 
+           bn::point origin)
 {
     object_type = EXIT;
     
@@ -11,8 +13,9 @@ Exit::Exit(int32 _go_to_room_enum, bn::point origin)
 								                                  0,
 								                                  0);
 
-    go_to_room_enum = _go_to_room_enum; 
-    is_triggered = false;
+    go_to_room_enum = _go_to_room_enum;
+    go_to_room_pos  = _go_to_room_pos;
+    is_triggered    = false;
 
     collider_offset_x = 0;
 	collider_offset_y = 0;
