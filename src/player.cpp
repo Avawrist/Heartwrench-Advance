@@ -437,8 +437,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 		case STATE_PHASE_STEP:
 
-			BN_LOG("PHASE STEPPING");
-
 			// Increment Frame Counter
 			current_phase_step_frame++;
 			current_phase_step_frame = clamp(0,
@@ -575,6 +573,26 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 										 PLAYER_SCYTHE_1_TOTAL_FRAMES, 
 										 current_scythe_frame);
 
+			// Create Hitbox
+			if(current_scythe_frame == PLAYER_SCYTHE_1_CREATE_HB_FRAME &&
+			   game_objects.size() < MAX_GAME_OBJECTS)
+			{
+				Hitbox* hitbox_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_1_X_OFFSET * dir), 
+														  y().integer() + PLAYER_SCYTHE_1_Y_OFFSET),
+												PLAYER_SCYTHE_1_HITSTUN_FRAMES,
+												PLAYER_SCYTHE_1_HB_LIFESPAN_FRAMES,
+												PLAYER_SCYTHE_1_X_KNOCKBACK,
+												PLAYER_SCYTHE_1_Y_KNOCKBACK,	
+												PLAYER_SCYTHE_1_KNOCKBACK_DECAY,
+												PLAYER_SCYTHE_1_HB_WIDTH,
+												PLAYER_SCYTHE_1_HB_HEIGHT,
+												dir);
+
+				game_objects.push_back(hitbox_ptr);
+    			game_objects.back()->setCamera(camera);
+    			game_objects.back()->object_id = game_objects.size() - 1;
+			}
+
 			// Take Buffer Input
 			if(bn::keypad::b_pressed() && 
 			   current_scythe_frame >= PLAYER_MIN_SCYTHE_2_BUFFER_FRAMES)
@@ -603,6 +621,26 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 										 PLAYER_SCYTHE_2_TOTAL_FRAMES, 
 										 current_scythe_frame);
 
+			// Create Hitbox
+			if(current_scythe_frame == PLAYER_SCYTHE_2_CREATE_HB_FRAME &&
+			   game_objects.size() < MAX_GAME_OBJECTS)
+			{
+				Hitbox* hitbox_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_2_X_OFFSET * dir), 
+														  y().integer() + PLAYER_SCYTHE_2_Y_OFFSET),
+												PLAYER_SCYTHE_2_HITSTUN_FRAMES,
+												PLAYER_SCYTHE_2_HB_LIFESPAN_FRAMES,
+												PLAYER_SCYTHE_2_X_KNOCKBACK,
+												PLAYER_SCYTHE_2_Y_KNOCKBACK,	
+												PLAYER_SCYTHE_2_KNOCKBACK_DECAY,
+												PLAYER_SCYTHE_2_HB_WIDTH,
+												PLAYER_SCYTHE_2_HB_HEIGHT,
+												dir);
+
+				game_objects.push_back(hitbox_ptr);
+    			game_objects.back()->setCamera(camera);
+    			game_objects.back()->object_id = game_objects.size() - 1;
+			}
+
 			// Take Buffer Input
 			if(bn::keypad::b_pressed() && 
 			   current_scythe_frame >= PLAYER_MIN_SCYTHE_3_BUFFER_FRAMES)
@@ -630,6 +668,26 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			current_scythe_frame = clamp(0, 
 										 PLAYER_SCYTHE_3_TOTAL_FRAMES, 
 										 current_scythe_frame);
+
+			// Create Hitbox
+			if(current_scythe_frame == PLAYER_SCYTHE_3_CREATE_HB_FRAME &&
+			   game_objects.size() < MAX_GAME_OBJECTS)
+			{
+				Hitbox* hitbox_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_3_X_OFFSET * dir), 
+														  y().integer() + PLAYER_SCYTHE_3_Y_OFFSET),
+												PLAYER_SCYTHE_3_HITSTUN_FRAMES,
+												PLAYER_SCYTHE_3_HB_LIFESPAN_FRAMES,
+												PLAYER_SCYTHE_3_X_KNOCKBACK,
+												PLAYER_SCYTHE_3_Y_KNOCKBACK,	
+												PLAYER_SCYTHE_3_KNOCKBACK_DECAY,
+												PLAYER_SCYTHE_3_HB_WIDTH,
+												PLAYER_SCYTHE_3_HB_HEIGHT,
+												dir);
+
+				game_objects.push_back(hitbox_ptr);
+    			game_objects.back()->setCamera(camera);
+    			game_objects.back()->object_id = game_objects.size() - 1;
+			}
 
 			// Take Buffer Input
 

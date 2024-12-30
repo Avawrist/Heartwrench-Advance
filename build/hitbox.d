@@ -1,11 +1,10 @@
-player.o: G:/game/src/player.cpp G:/game/include/player.h \
- G:/butano-master/butano/include/bn_keypad.h \
- G:/butano-master/butano/include/bn_common.h \
- G:/butano-master/butano/hw/include/bn_hw_common.h \
+hitbox.o: G:/game/src/hitbox.cpp G:/game/include/hitbox.h \
  G:/butano-master/butano/include/bn_math.h \
  G:/butano-master/butano/include/bn_array.h \
  G:/butano-master/butano/include/bn_assert.h \
  G:/butano-master/butano/include/bn_config_assert.h \
+ G:/butano-master/butano/include/bn_common.h \
+ G:/butano-master/butano/hw/include/bn_hw_common.h \
  G:/butano-master/butano/include/bn_config_doxygen.h \
  G:/butano-master/butano/include/bn_sstream.h \
  G:/butano-master/butano/include/bn_fixed_fwd.h \
@@ -24,7 +23,7 @@ player.o: G:/game/src/player.cpp G:/game/include/player.h \
  G:/butano-master/butano/include/bn_sin_lut.h \
  G:/butano-master/butano/include/bn_reciprocal_lut.h \
  G:/butano-master/butano/include/bn_rule_of_three_approximation.h \
- G:/game/build/bn_sprite_items_player.h \
+ G:/game/build/bn_sprite_items_hitbox.h \
  G:/butano-master/butano/include/bn_sprite_item.h \
  G:/butano-master/butano/include/bn_fixed_point.h \
  G:/butano-master/butano/include/bn_point.h \
@@ -70,18 +69,14 @@ player.o: G:/game/src/player.cpp G:/game/include/player.h \
  G:/game/build/bn_sprite_items_game_object.h \
  G:/game/build/bn_sprite_palette_items_default_sprite_palette.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
- G:/game/build/bn_sprite_palette_items_white_sprite_palette.h \
- G:/game/include/scythe_platform.h \
- G:/game/build/bn_sprite_items_scythe_platform.h G:/game/include/hitbox.h \
- G:/game/build/bn_sprite_items_hitbox.h
-G:/game/include/player.h:
-G:/butano-master/butano/include/bn_keypad.h:
-G:/butano-master/butano/include/bn_common.h:
-G:/butano-master/butano/hw/include/bn_hw_common.h:
+ G:/game/build/bn_sprite_palette_items_white_sprite_palette.h
+G:/game/include/hitbox.h:
 G:/butano-master/butano/include/bn_math.h:
 G:/butano-master/butano/include/bn_array.h:
 G:/butano-master/butano/include/bn_assert.h:
 G:/butano-master/butano/include/bn_config_assert.h:
+G:/butano-master/butano/include/bn_common.h:
+G:/butano-master/butano/hw/include/bn_hw_common.h:
 G:/butano-master/butano/include/bn_config_doxygen.h:
 G:/butano-master/butano/include/bn_sstream.h:
 G:/butano-master/butano/include/bn_fixed_fwd.h:
@@ -100,7 +95,7 @@ G:/butano-master/butano/include/bn_compare.h:
 G:/butano-master/butano/include/bn_sin_lut.h:
 G:/butano-master/butano/include/bn_reciprocal_lut.h:
 G:/butano-master/butano/include/bn_rule_of_three_approximation.h:
-G:/game/build/bn_sprite_items_player.h:
+G:/game/build/bn_sprite_items_hitbox.h:
 G:/butano-master/butano/include/bn_sprite_item.h:
 G:/butano-master/butano/include/bn_fixed_point.h:
 G:/butano-master/butano/include/bn_point.h:
@@ -151,7 +146,3 @@ G:/game/build/bn_sprite_items_game_object.h:
 G:/game/build/bn_sprite_palette_items_default_sprite_palette.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/game/build/bn_sprite_palette_items_white_sprite_palette.h:
-G:/game/include/scythe_platform.h:
-G:/game/build/bn_sprite_items_scythe_platform.h:
-G:/game/include/hitbox.h:
-G:/game/build/bn_sprite_items_hitbox.h:
