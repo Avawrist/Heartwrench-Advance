@@ -5,6 +5,10 @@ Level::Level(LevelName level_name)
     camera       = bn::camera_ptr::create(0, 0);
     player_spawn = bn::point(0, 0);
 
+    cam_is_scrolling = false;
+    cam_x_offset    = 0;
+    cam_y_offset    = 0;
+
     load(level_name);
 }
 
@@ -94,15 +98,48 @@ void Level::updateCamera()
     #define HALF_SCREEN_WIDTH  120
     #define HALF_SCREEN_HEIGHT 80
 
-    int32 new_cam_x = current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos().x().integer();
-    int32 new_cam_y = current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos().y().integer();
-    new_cam_x = clamp(current_room_ptr->left_bound  + HALF_SCREEN_WIDTH,  
-                      current_room_ptr->right_bound - HALF_SCREEN_WIDTH, 
-                      new_cam_x);
-    new_cam_y = clamp(current_room_ptr->top_bound    + HALF_SCREEN_HEIGHT, 
-                      current_room_ptr->bottom_bound - HALF_SCREEN_HEIGHT,
-                      new_cam_y);
-    camera.value().set_position(new_cam_x, new_cam_y);
+    if(cam_is_scrolling)
+    {
+        // This method does NOT support diagonal scrolling. 
+        // Don't even try it babyyyy.
+
+        // No clamp - apply offsets gradually
+        if(abs(cam_x_offset) > 0)
+        {
+            int32 cam_x_offset_unit = (abs(cam_x_offset) / cam_x_offset) * SCROLL_SPEED;
+            camera.value().set_x(camera.value().x() + cam_x_offset_unit);
+
+            cam_x_offset -= cam_x_offset_unit;
+        }
+        else if(abs(cam_y_offset) > 0)
+        {
+            int32 cam_y_offset_unit = (abs(cam_y_offset) / cam_y_offset) * SCROLL_SPEED;
+            camera.value().set_y(camera.value().y() + cam_y_offset_unit);
+
+            cam_y_offset -= cam_y_offset_unit;
+        }
+        else
+        {
+            // Both offsets are 0. Scroll is finished.
+            cam_is_scrolling = false;
+        }
+
+    }
+    else
+    {
+        // Typical camera behavior - Follow the player & clamp to the room bounds. 
+        int32 new_cam_x = current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos().x().integer();
+        int32 new_cam_y = current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos().y().integer();
+        new_cam_x = clamp(current_room_ptr->left_bound  + HALF_SCREEN_WIDTH,  
+                          current_room_ptr->right_bound - HALF_SCREEN_WIDTH, 
+                          new_cam_x);
+        new_cam_y = clamp(current_room_ptr->top_bound    + HALF_SCREEN_HEIGHT, 
+                          current_room_ptr->bottom_bound - HALF_SCREEN_HEIGHT,
+                          new_cam_y);
+        camera.value().set_position(new_cam_x, new_cam_y);
+
+    }
+
 }
 
 void Level::reloadOnDeath()
@@ -151,6 +188,9 @@ void Level::updateIndexes()
 
 void Level::transitionRoom()
 {
+    #define SCREEN_WIDTH  240
+    #define SCREEN_HEIGHT 160
+
     if(current_room_ptr == NULL) {return;}
 
     Player* player_ptr = (Player*)current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX);
@@ -173,6 +213,11 @@ void Level::transitionRoom()
             // Delete the old room
             delete temp_room_ptr;
 
+            // Set camera offsets
+            cam_is_scrolling = true;
+            cam_x_offset     = SCREEN_WIDTH;
+            cam_y_offset     = 0;
+
             return;
         }
     }
@@ -193,6 +238,11 @@ void Level::transitionRoom()
 
             // Delete the old room
             delete temp_room_ptr;
+
+            // Set camera offsets
+            cam_is_scrolling = true;
+            cam_x_offset     = -SCREEN_WIDTH;
+            cam_y_offset     = 0;
             
             return;
         }
@@ -214,6 +264,11 @@ void Level::transitionRoom()
 
             // Delete the old room
             delete temp_room_ptr;
+
+            // Set camera offsets
+            cam_is_scrolling = true;
+            cam_x_offset     = 0;
+            cam_y_offset     = -SCREEN_HEIGHT;
             
             return;
         }
@@ -235,6 +290,11 @@ void Level::transitionRoom()
 
             // Delete the old room
             delete temp_room_ptr;
+
+            // Set camera offsets
+            cam_is_scrolling = true;
+            cam_x_offset     = 0;
+            cam_y_offset     = SCREEN_HEIGHT;
             
             return;
         }

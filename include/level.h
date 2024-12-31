@@ -27,6 +27,9 @@
 // Struct Level //
 //////////////////
 
+// MUST divide screen dimensions 240/160 cleanly.
+#define SCROLL_SPEED 4
+
 enum LevelName 
 {
     NO_LEVEL = 0,
@@ -48,6 +51,10 @@ struct Level
     LevelName current_level;
 
     bn::point player_spawn;
+
+    bool cam_is_scrolling;
+    int32 cam_x_offset;
+    int32 cam_y_offset;
 
     Level(LevelName level_name);
     ~Level();

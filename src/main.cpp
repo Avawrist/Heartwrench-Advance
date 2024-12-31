@@ -35,11 +35,18 @@ int main()
         //BN_PROFILER_START("");
 
         // Update Levels
-        current_level_ptr->updateAndDraw();
-        current_level_ptr->updateCamera();
-        current_level_ptr->freeInactiveObjects();
-        current_level_ptr->reloadOnDeath();
-        current_level_ptr->transitionRoom();
+        if(current_level_ptr->cam_is_scrolling)
+        {
+            current_level_ptr->updateCamera();
+        }
+        else
+        {
+            current_level_ptr->updateAndDraw();
+            current_level_ptr->updateCamera();
+            current_level_ptr->freeInactiveObjects();
+            current_level_ptr->reloadOnDeath();
+            current_level_ptr->transitionRoom();
+        }
 
         //BN_PROFILER_STOP();
         //bn::profiler::show();    
