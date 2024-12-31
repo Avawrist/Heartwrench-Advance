@@ -22,11 +22,10 @@ int main()
     bn::core::init();
     
     // Create Test Room
-    Room* current_room_ptr = new Room(ROOM_TEST_2, bn::point(0, 0));
-    Room* next_room_ptr    = NULL;
+    Room* current_room_ptr = new Room(ROOM_TEST, bn::point(0, 0));
 
-    BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
-    BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
+    //BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
+    //BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
 
     // Game Loop
     while(true)
@@ -35,21 +34,11 @@ int main()
 
         //BN_PROFILER_START("");
 
-        // Update Next Room
-        if(next_room_ptr == NULL)
-        {
-            // Update Current Room
-            current_room_ptr->updateAndDraw();
-            current_room_ptr->updateCamera();
-            current_room_ptr->checkConditions(next_room_ptr);
-            current_room_ptr->freeInactiveObjects();
-        }
-        else
-        {
-            // Shift room positions gradually
-
-            // If rooms are fully shifted, update pointers
-        }
+        // Update Rooms
+        current_room_ptr->updateAndDraw();
+        current_room_ptr->updateCamera();
+        current_room_ptr->freeInactiveObjects();
+        current_room_ptr->checkConditions();
 
         //BN_PROFILER_STOP();
         //bn::profiler::show();    
@@ -60,5 +49,4 @@ int main()
     }
 
     delete current_room_ptr;
-    delete next_room_ptr;
 }

@@ -61,7 +61,7 @@ struct Room
     void   reload();
     void   updateAndDraw();
     void   updateCamera();
-    void   checkConditions(Room* next_room_ptr);
+    void   checkConditions();
     void   freeInactiveObjects();
     void   updateIndexes();
 
