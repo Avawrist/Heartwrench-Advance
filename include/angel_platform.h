@@ -11,7 +11,6 @@
 #include "utility.h"
 #include "physics.h"
 #include "collider.h"
-#include "room.h"
 
 // Assets
 #include "bn_sprite_items_angel_platform.h"

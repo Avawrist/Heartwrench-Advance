@@ -15,14 +15,14 @@
 
 // My Libs
 #include "utility.h"
-#include "room.h"
+#include "level.h"
 
 int main()
 {   
     bn::core::init();
     
-    // Create Test Room
-    Room* current_room_ptr = new Room(ROOM_TEST, bn::point(0, 0));
+    // Create Test Level
+    Level* current_level_ptr = new Level(LEVEL_TEST);
 
     //BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
     //BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
@@ -34,11 +34,12 @@ int main()
 
         //BN_PROFILER_START("");
 
-        // Update Rooms
-        current_room_ptr->updateAndDraw();
-        current_room_ptr->updateCamera();
-        current_room_ptr->freeInactiveObjects();
-        current_room_ptr->checkConditions();
+        // Update Levels
+        current_level_ptr->updateAndDraw();
+        current_level_ptr->updateCamera();
+        current_level_ptr->freeInactiveObjects();
+        current_level_ptr->reloadOnDeath();
+        current_level_ptr->transitionRoom();
 
         //BN_PROFILER_STOP();
         //bn::profiler::show();    
@@ -48,5 +49,5 @@ int main()
         //BN_LOG(bn::core::last_missed_frames());
     }
 
-    delete current_room_ptr;
+    delete current_level_ptr;
 }

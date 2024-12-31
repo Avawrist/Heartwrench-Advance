@@ -12,7 +12,6 @@
 #include "game_object.h"
 
 // My Libs
-#include "scythe_platform.h"
 #include "hitbox.h"
 
 ///////////////////
@@ -57,10 +56,6 @@
 #define PLAYER_PHASE_STEP_MAX_DISTANCE PLAYER_COLLIDER_WIDTH * 5
 #define PLAYER_PHASE_STEP_TOTAL_FRAMES 25
 #define PLAYER_PHASE_FRAME             15
-
-#define PLAYER_SCYTHE_THROW_FRAMES 6
-#define PLAYER_THROW_SCYTHE_FRAME  5
-#define PLAYER_THROW_COOLDOWN_FRAMES 40
 
 #define PLAYER_SCYTHE_1_TOTAL_FRAMES 30
 #define PLAYER_SCYTHE_2_TOTAL_FRAMES 30
@@ -136,7 +131,6 @@ enum PlayerState {
 	STATE_WALL_SLIDE_RIGHT,
 	STATE_WALL_SLIDE_LEFT,
 	STATE_PHASE_STEP,
-	STATE_THROWING,
 	STATE_SCYTHE_1,
 	STATE_SCYTHE_2,
 	STATE_SCYTHE_3,
@@ -157,8 +151,6 @@ struct Player : GameObject {
 
 	int32 remaining_jump_input_frames;
 	int32 remaining_x_drift_lockout_frames;
-	int32 current_scythe_throw_frames;
-	int32 scythe_throw_cooldown_frames;
 	int32 air_frames_elapsed;
 	int32 v_collision_grace_frames;
 	int32 late_jump_grace_frames;
@@ -171,14 +163,11 @@ struct Player : GameObject {
     bool wall_left_detected;
     bool grounded_detected;
 	bool grounded_owp_detected;
-	bool throw_scythe;
 	bool scythe_2_buffered;
 	bool scythe_3_buffered;
 	bool kill_player;
 	bool is_dead;
 
-	bn::point       respawn_pos;
-	
 	Player();
 	~Player();
 
@@ -189,7 +178,6 @@ struct Player : GameObject {
 				bn::camera_ptr                             camera) override;
 	void jump();
 	void fastFall();
-	void throwScythe();
 	void setState(PlayerState new_state);
 	
 };

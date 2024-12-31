@@ -40,8 +40,6 @@ Player::Player()
 	
 	remaining_jump_input_frames      = 0;
 	remaining_x_drift_lockout_frames = 0;
-	current_scythe_throw_frames      = 0;
-	scythe_throw_cooldown_frames     = 0;
 	air_frames_elapsed               = 0;
 	v_collision_grace_frames         = 0;
 	late_jump_grace_frames           = 0;
@@ -53,14 +51,11 @@ Player::Player()
     wall_left_detected    = false;
     grounded_detected     = false;
 	grounded_owp_detected = false;
-	throw_scythe          = false;
 	scythe_2_buffered     = false;
 	scythe_3_buffered     = false;
 	kill_player           = false;
 	is_dead               = false;
-
-	respawn_pos = bn::point(0, 0);
-
+	
 }
 
 Player::~Player()
@@ -86,7 +81,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	bool in_scythe_3         = false;
 	bool in_phase_step       = false;
 	bool plummet_eligible    = false;
-	throw_scythe             = false;
 
 	//////////////////////////////
 	// Init Collision Variables //
@@ -145,25 +139,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			// Scythe 1
 			if(bn::keypad::b_pressed())
 			{in_scythe_1 = true;}
-
-			// Scythe Charge
-			/*
-			if(bn::keypad::b_held())
-			{
-				scythe_charge_frames++;
-				scythe_charge_frames = clamp(0, 
-											 PLAYER_SCYTHE_MAX_CHARGE_FRAMES, 
-											 scythe_charge_frames);
-			}
-
-			// Scythe Attack
-			if(bn::keypad::b_released())
-			{
-				if(scythe_charge_frames >= PLAYER_SCYTHE_MAX_CHARGE_FRAMES) 
-				{throwScythe();}
-				scythe_charge_frames = 0;
-			}
-			*/
 			
 			// Add Gravity if Grounded on OWP
 			if(grounded_owp_detected) {rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);}
@@ -228,25 +203,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			// Scythe 1
 			if(bn::keypad::b_pressed())
 			{in_scythe_1 = true;}
-
-			// Scythe Charge
-			/*
-			if(bn::keypad::b_held())
-			{
-				scythe_charge_frames++;
-				scythe_charge_frames = clamp(0, 
-											 PLAYER_SCYTHE_MAX_CHARGE_FRAMES, 
-											 scythe_charge_frames);
-			}
-
-			// Scythe Attack
-			if(bn::keypad::b_released())
-			{
-				if(scythe_charge_frames >= PLAYER_SCYTHE_MAX_CHARGE_FRAMES) 
-				{throwScythe();}
-				scythe_charge_frames = 0;
-			}
-			*/
 			
 			// Add Gravity //
 			rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);
@@ -342,25 +298,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			// Fast Fall
 			if(bn::keypad::down_held() && rigidbody_ptr->normalized_dir.y() >= 0) 
 			{fastFall();}
-
-			// Scythe Charge
-			/*
-			if(bn::keypad::b_held())
-			{
-				scythe_charge_frames++;
-				scythe_charge_frames = clamp(0, 
-											 PLAYER_SCYTHE_MAX_CHARGE_FRAMES, 
-											 scythe_charge_frames);
-			}
-
-			// Scythe Attack
-			if(bn::keypad::b_released())
-			{
-				if(scythe_charge_frames >= PLAYER_SCYTHE_MAX_CHARGE_FRAMES) 
-				{throwScythe();}
-				scythe_charge_frames = 0;
-			}
-			*/
 			
 			// Add Gravity //
 			if(gripping_wall_right) {rigidbody_ptr->addForce(PLAYER_WALL_GRAVITY_FORCE);}
@@ -409,25 +346,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			// Fast Fall
 			if(bn::keypad::down_held() && rigidbody_ptr->normalized_dir.y() >= 0) 
 			{fastFall();}
-
-			// Scythe Charge
-			/*
-			if(bn::keypad::b_held())
-			{
-				scythe_charge_frames++;
-				scythe_charge_frames = clamp(0, 
-											 PLAYER_SCYTHE_MAX_CHARGE_FRAMES, 
-											 scythe_charge_frames);
-			}
-
-			// Scythe Attack
-			if(bn::keypad::b_released())
-			{
-				if(scythe_charge_frames >= PLAYER_SCYTHE_MAX_CHARGE_FRAMES) 
-				{throwScythe();}
-				scythe_charge_frames = 0;
-			}
-			*/
 			
 			// Add Gravity //
 			if(gripping_wall_left) {rigidbody_ptr->addForce(PLAYER_WALL_GRAVITY_FORCE);}
@@ -451,10 +369,10 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				// until there are no tile collisions. 
 
 				// Get current cell index that player resides in:
-				int32 half_room_width_pixels  = bg_ptr.dimensions().width()  / 2;
-				int32 half_room_height_pixels = bg_ptr.dimensions().height() / 2;
-				bn::fixed index_x = (x() + half_room_width_pixels)  / TILE_WIDTH;
-				bn::fixed index_y = (y() + half_room_height_pixels) / TILE_HEIGHT;
+				int32 half_level_width_pixels  = bg_ptr.dimensions().width()  / 2;
+				int32 half_level_height_pixels = bg_ptr.dimensions().height() / 2;
+				bn::fixed index_x = (x() + half_level_width_pixels)  / TILE_WIDTH;
+				bn::fixed index_y = (y() + half_level_height_pixels) / TILE_HEIGHT;
 				bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
 
 				int32 x_offset = PLAYER_PHASE_STEP_MAX_DISTANCE * dir;
@@ -469,8 +387,8 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				// Clamp Phase collider BEFORE checking for tile collision
 				bn::fixed new_x = phase_collider_ptr->x();
 				bn::fixed new_y = phase_collider_ptr->y();
-				new_x = clamp(-half_room_width_pixels,  half_room_width_pixels,  new_x);
-				new_y = clamp(-half_room_height_pixels, half_room_height_pixels, new_y);
+				new_x = clamp(-half_level_width_pixels,  half_level_width_pixels,  new_x);
+				new_y = clamp(-half_level_height_pixels, half_level_height_pixels, new_y);
 				phase_collider_ptr->setPos(new_x, new_y);
 
 				for(int32 y = -2; y < 3; y++)
@@ -482,8 +400,8 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 						int32 check_index_y = cell_index.y() + y;
 
 						// Determine world coords in case we need to make a collider.
-						int32 world_x = ((check_index_x * TILE_WIDTH)  - half_room_width_pixels)  + (TILE_WIDTH  / 2);
-						int32 world_y = ((check_index_y * TILE_HEIGHT) - half_room_height_pixels) + (TILE_HEIGHT / 2);
+						int32 world_x = ((check_index_x * TILE_WIDTH)  - half_level_width_pixels)  + (TILE_WIDTH  / 2);
+						int32 world_y = ((check_index_y * TILE_HEIGHT) - half_level_height_pixels) + (TILE_HEIGHT / 2);
 
 						uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y,
 															 bg_ptr, cells, bg_item);
@@ -529,37 +447,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			else
 			{current_phase_step_frame = 0;
 			 plummet_eligible         = true;}
-
-		break;
-
-		case STATE_THROWING:
-
-			// Kill secondary jump momentum immediately
-			remaining_jump_input_frames = 0;
-
-			// Throw a new scythe
-			if(current_scythe_throw_frames == PLAYER_THROW_SCYTHE_FRAME)
-			{
-				// Add stretch for fun
-				sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
-				sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-
-				// Create new Scythe
-				delete game_objects.at(SCYTHE_OBJECT_LIST_INDEX);
-				game_objects.at(SCYTHE_OBJECT_LIST_INDEX) = new ScythePlatform(dir,
-				                                             bn::fixed_point(x() + (dir * SCYTHE_PLAYER_X_OFFSET), 
-			       															 y() + SCYTHE_PLAYER_Y_OFFSET));
-				game_objects.at(SCYTHE_OBJECT_LIST_INDEX)->setCamera(camera);
-
-			}
-
-			// Keep the player in the throw state until throw frames are up
-			current_scythe_throw_frames++;
-			current_scythe_throw_frames = clamp(0, 
-												 PLAYER_SCYTHE_THROW_FRAMES, 
-												 current_scythe_throw_frames);
-			if(current_scythe_throw_frames != PLAYER_SCYTHE_THROW_FRAMES) 
-			{throw_scythe = true;}
 
 		break;
 
@@ -734,10 +621,10 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	//////////////////////////////
 
 	// Get current cell index that player resides in:
-	int32 half_room_width_pixels  = bg_ptr.dimensions().width() / 2;
-	int32 half_room_height_pixels = bg_ptr.dimensions().height() / 2;
-	bn::fixed index_x = (x() + half_room_width_pixels)  / TILE_WIDTH;
-	bn::fixed index_y = (y() + half_room_height_pixels) / TILE_HEIGHT;
+	int32 half_level_width_pixels  = bg_ptr.dimensions().width() / 2;
+	int32 half_level_height_pixels = bg_ptr.dimensions().height() / 2;
+	bn::fixed index_x = (x() + half_level_width_pixels)  / TILE_WIDTH;
+	bn::fixed index_y = (y() + half_level_height_pixels) / TILE_HEIGHT;
 	bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
 
 	// Create one temporary collider for each axis. If a collider finds a collision
@@ -752,15 +639,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 											     collider_ptr->width,
 												 collider_ptr->height);
 	Collider* other_collider_ptr = NULL;
-
-	/*
-	// Get current cell index that player resides in:
-	int32 half_room_width_pixels  = bg_ptr.dimensions().width() / 2;
-	int32 half_room_height_pixels = bg_ptr.dimensions().height() / 2;
-	bn::fixed index_x = (x() + half_room_width_pixels)  / TILE_WIDTH;
-	bn::fixed index_y = (y() + half_room_height_pixels) / TILE_HEIGHT;
-	bn::point cell_index = bn::point(index_x.integer(), index_y.integer()); 
-	*/
 
 	//////////////////////////////////
 	// Resolve GameObject Collision //
@@ -877,8 +755,8 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			int32 check_index_y = cell_index.y() + y;
 
 			// Determine world coords in case we need to make a collider.
-			int32 world_x = ((check_index_x * TILE_WIDTH)  - half_room_width_pixels)  + (TILE_WIDTH / 2);
-			int32 world_y = ((check_index_y * TILE_HEIGHT) - half_room_height_pixels) + (TILE_HEIGHT / 2);
+			int32 world_x = ((check_index_x * TILE_WIDTH)  - half_level_width_pixels)  + (TILE_WIDTH / 2);
+			int32 world_y = ((check_index_y * TILE_HEIGHT) - half_level_height_pixels) + (TILE_HEIGHT / 2);
 
 			uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y, 
 			                                     bg_ptr, cells, bg_item);
@@ -1101,8 +979,8 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 			while(check_index_y > (bg_ptr.dimensions().height() / 8) - 1) {check_index_y--;}
 
 			// Determine world coords in case we need to make a collider.
-			int32 world_x = ((check_index_x * TILE_WIDTH)  - half_room_width_pixels)  + (TILE_WIDTH / 2);
-			int32 world_y = ((check_index_y * TILE_HEIGHT) - half_room_height_pixels) + (TILE_HEIGHT / 2);
+			int32 world_x = ((check_index_x * TILE_WIDTH)  - half_level_width_pixels)  + (TILE_WIDTH / 2);
+			int32 world_y = ((check_index_y * TILE_HEIGHT) - half_level_height_pixels) + (TILE_HEIGHT / 2);
 
 			uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y, 
 			                                     bg_ptr, cells, bg_item);
@@ -1268,12 +1146,12 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 
 	bn::fixed new_x = x();
 	bn::fixed new_y = y();
-	new_x = clamp(-half_room_width_pixels,  half_room_width_pixels,  new_x);
-	new_y = clamp(-half_room_height_pixels, half_room_height_pixels, new_y);
+	new_x = clamp(-half_level_width_pixels,  half_level_width_pixels,  new_x);
+	new_y = clamp(-half_level_height_pixels, half_level_height_pixels, new_y);
 	setPos(new_x, new_y);
 
 	#define Y_KILL_BUFFER 32
-	if(y() > half_room_height_pixels - Y_KILL_BUFFER) {kill_player = true;}
+	if(y() > half_level_height_pixels - Y_KILL_BUFFER) {kill_player = true;}
 	
     ///////////////////
     // Update States //
@@ -1300,7 +1178,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	if (in_scythe_1)   {new_state = STATE_SCYTHE_1;}
 	if (in_scythe_2)   {new_state = STATE_SCYTHE_2;}
 	if (in_scythe_3)   {new_state = STATE_SCYTHE_3;}
-	if (throw_scythe)  {new_state = STATE_THROWING;}
 
 	if(kill_player) {new_state = STATE_DYING;}
 
@@ -1310,11 +1187,6 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 	///////////////////
 	// Update Timers //
 	///////////////////
-
-	scythe_throw_cooldown_frames--;
-	scythe_throw_cooldown_frames = clamp(0, 
-										  PLAYER_THROW_COOLDOWN_FRAMES, 
-										  scythe_throw_cooldown_frames);
 
 	v_collision_grace_frames--;
 	v_collision_grace_frames = clamp(0, 
@@ -1371,12 +1243,6 @@ void Player::fastFall()
 	sprite_ptr->set_horizontal_scale(PLAYER_FALL_STRETCH_H);
 }
 
-void Player::throwScythe()
-{
-	current_scythe_throw_frames  = 0;
-	throw_scythe                 = true;
-}
-
 void Player::setState(PlayerState new_state)
 {
 	// Set State
@@ -1385,12 +1251,7 @@ void Player::setState(PlayerState new_state)
 	// Set animations & other state specific variables
 	switch(new_state)
 	{
-		case STATE_THROWING:
-			air_frames_elapsed = 0;
-			scythe_2_buffered  = false;
-			scythe_3_buffered  = false;
-		break;
-
+		
 		case STATE_GROUNDED_NEUTRAL:
 			air_frames_elapsed = 0;
 			scythe_2_buffered  = false;

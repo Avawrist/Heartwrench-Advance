@@ -7,17 +7,6 @@
 
 #include "bn_vector.h"
 #include "bn_camera_ptr.h"
-#include "bn_span.h"
-#include "bn_regular_bg_ptr.h"
-#include "bn_regular_bg_item.h"
-#include "bn_regular_bg_map_ptr.h"
-#include "bn_regular_bg_map_cell.h"
-#include "bn_regular_bg_map_cell_info.h"
-
-// Assets
-#include "bn_regular_bg_items_test_bg.h"
-#include "bn_regular_bg_items_test_room.h"
-#include "bn_regular_bg_items_test_room_2.h"
 
 // My Libs
 #include "utility.h"
@@ -25,46 +14,40 @@
 #include "player.h"
 #include "devil_platform.h"
 #include "angel_platform.h"
-#include "scythe_platform.h"
-#include "exit.h"
+
+/////////////////
+// Struct Room //
+/////////////////
 
 enum RoomName 
 {
     NO_ROOM = 0,
-    ROOM_TEST,
+    ROOM_TEST_1,
     ROOM_TEST_2,
 };
 
 struct Room
 {
+
     bn::vector<GameObject*, MAX_GAME_OBJECTS> game_objects;
 
-    bn::optional<bn::camera_ptr>            camera;
-    bn::optional<bn::regular_bg_ptr>        bg_ptr;
-    bn::optional<bn::regular_bg_ptr>        backdrop_ptr;
-    bn::optional<bn::regular_bg_item>       bg_item;
-    bn::span<const bn::regular_bg_map_cell> cells;
-    uint32 tile_width;
-    uint32 tile_height;
+    RoomName top_neighbor;
+    RoomName right_neighbor;
+    RoomName bottom_neighbor;
+    RoomName left_neighbor;
 
-    RoomName  current_room;
-    bn::point current_pos;
+    int32 top_bound;
+    int32 right_bound;
+    int32 bottom_bound;
+    int32 left_bound;
 
-    bn::point player_spawn;
-
-    Room(RoomName room_name, bn::point origin_pos);
+    Room(RoomName room_name, bn::camera_ptr camera_ptr);
     ~Room();
 
-    int32  addObject(GameObject* object_ptr);
+    int32  addObject(GameObject* object_ptr, bn::camera_ptr camera_ptr);
     void   clear();
-    void   load(RoomName room_name, bn::point origin_pos);
-    void   reload();
-    void   updateAndDraw();
-    void   updateCamera();
-    void   checkConditions();
-    void   freeInactiveObjects();
-    void   updateIndexes();
-
+    void   load(RoomName room_name, bn::camera_ptr camera_ptr);
+    
 };
 
 #endif

@@ -1,0 +1,242 @@
+#include "level.h"
+
+Level::Level(LevelName level_name)
+{
+    camera       = bn::camera_ptr::create(0, 0);
+    player_spawn = bn::point(0, 0);
+
+    load(level_name);
+}
+
+Level::~Level()
+{
+    clear();
+}
+
+void Level::clear()
+{
+    
+    // Free Room
+    delete current_room_ptr;
+    current_room_ptr = NULL;
+
+    // Free level pointers
+    bg_ptr.reset();
+    backdrop_ptr.reset();
+    bg_item.reset();
+
+}
+
+void Level::load(LevelName level_name)
+{
+    if(level_name == NO_LEVEL) {return;}
+
+    // Record current level & pos
+    current_level = level_name;
+
+    // Initialize Variables
+    switch(level_name)
+    {
+        case LEVEL_TEST:
+
+            // Set Room Ptr //
+            current_room_ptr = new Room(ROOM_TEST_1, camera.value());
+
+            // Load BG //
+            backdrop_ptr = bn::regular_bg_items::test_bg.create_bg(0, 0);
+            bg_ptr       = bn::regular_bg_items::test_level.create_bg(0, 0);
+            bg_item      = bn::regular_bg_items::test_level;
+
+        break;
+
+        default:
+
+            BN_LOG("Level creation failed - Level Name not found.");
+            return;
+
+        break;
+    }
+
+    cells = bg_ptr->map().cells_ref().value();
+    
+    // Set Camera
+    backdrop_ptr->set_camera(camera.value());
+    bg_ptr->set_camera(camera.value());
+
+}
+
+void Level::reload()
+{
+    clear(); 
+    load(current_level);
+}
+
+void Level::updateAndDraw()
+{
+    if(current_room_ptr == NULL) {return;}
+
+    for(int32 i = current_room_ptr->game_objects.size() - 1; i >= 0; i--)
+    {
+        if(current_room_ptr->game_objects.data()[i] != NULL)
+        {
+            current_room_ptr->game_objects.data()[i]->update(current_room_ptr->game_objects, 
+                                                             bg_ptr.value(),
+                                                             cells,
+                                                             bg_item.value(),
+                                                             camera.value());
+            current_room_ptr->game_objects.data()[i]->draw();
+        }   
+    }
+}
+
+void Level::updateCamera()
+{
+    #define HALF_SCREEN_WIDTH  120
+    #define HALF_SCREEN_HEIGHT 80
+
+    int32 new_cam_x = current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos().x().integer();
+    int32 new_cam_y = current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos().y().integer();
+    new_cam_x = clamp(current_room_ptr->left_bound  + HALF_SCREEN_WIDTH,  
+                      current_room_ptr->right_bound - HALF_SCREEN_WIDTH, 
+                      new_cam_x);
+    new_cam_y = clamp(current_room_ptr->top_bound    + HALF_SCREEN_HEIGHT, 
+                      current_room_ptr->bottom_bound - HALF_SCREEN_HEIGHT,
+                      new_cam_y);
+    camera.value().set_position(new_cam_x, new_cam_y);
+}
+
+void Level::reloadOnDeath()
+{
+    if(current_room_ptr == NULL) {return;}
+
+    // If player died, reload the level
+    if(((Player*)(current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->is_dead)
+    {reload();}
+}
+
+void Level::freeInactiveObjects()
+{
+    // Get an iterator to the gameobjects vector starting after the first two entries
+    // if object at current iterator is NULL
+    // erase the object :D 
+
+    if(current_room_ptr == NULL) {return;}
+
+    bn::ivector<GameObject*>::iterator current = current_room_ptr->game_objects.begin();
+    bn::ivector<GameObject*>::iterator last    = current_room_ptr->game_objects.end();
+    current++; // Skip player index
+    while(current != last)
+    {
+        if((*current)->inactive)
+        {
+            //delete game_objects.at(index);
+            current_room_ptr->game_objects.erase(current);
+            delete *current;
+        }
+        current++;
+    }
+
+    updateIndexes();
+}
+
+void Level::updateIndexes()
+{    
+    if(current_room_ptr == NULL) {return;}
+
+    for(int32 i = current_room_ptr->game_objects.size() - 1; i >= 0; i--)
+    {
+        current_room_ptr->game_objects.data()[i]->object_id = i;
+    }
+}
+
+void Level::transitionRoom()
+{
+    if(current_room_ptr == NULL) {return;}
+
+    Player* player_ptr = (Player*)current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+    bn::fixed_point player_pos = player_ptr->pos();
+    
+    if(player_pos.x() > current_room_ptr->right_bound)
+    {
+        if(current_room_ptr->right_neighbor != NO_ROOM)
+        {
+
+            // Store the current room in a temp ptr
+            Room* temp_room_ptr = current_room_ptr;
+
+            // Create the neighbor room
+            current_room_ptr = new Room(current_room_ptr->right_neighbor, camera.value());
+
+            // Copy the player object to the new room
+            current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX) = player_ptr;
+
+            // Delete the old room
+            delete temp_room_ptr;
+
+            return;
+        }
+    }
+
+    if(player_pos.x() < current_room_ptr->left_bound)
+    {
+        if(current_room_ptr->left_neighbor != NO_ROOM)
+        {
+
+            // Store the current room in a temp ptr
+            Room* temp_room_ptr = current_room_ptr;
+
+            // Create the neighbor room
+            current_room_ptr = new Room(current_room_ptr->left_neighbor, camera.value());
+
+            // Copy the player object to the new room
+            current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX) = player_ptr;
+
+            // Delete the old room
+            delete temp_room_ptr;
+            
+            return;
+        }
+    }
+
+    if(player_pos.y() < current_room_ptr->top_bound)
+    {
+        if(current_room_ptr->top_neighbor != NO_ROOM)
+        {
+
+            // Store the current room in a temp ptr
+            Room* temp_room_ptr = current_room_ptr;
+
+            // Create the neighbor room
+            current_room_ptr = new Room(current_room_ptr->top_neighbor, camera.value());
+
+            // Copy the player object to the new room
+            current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX) = player_ptr;
+
+            // Delete the old room
+            delete temp_room_ptr;
+            
+            return;
+        }
+    }
+
+    if(player_pos.y() > current_room_ptr->bottom_bound)
+    {
+        if(current_room_ptr->bottom_neighbor != NO_ROOM)
+        {
+
+            // Store the current room in a temp ptr
+            Room* temp_room_ptr = current_room_ptr;
+
+            // Create the neighbor room
+            current_room_ptr = new Room(current_room_ptr->bottom_neighbor, camera.value());
+
+            // Copy the player object to the new room
+            current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX) = player_ptr;
+
+            // Delete the old room
+            delete temp_room_ptr;
+            
+            return;
+        }
+    }
+}

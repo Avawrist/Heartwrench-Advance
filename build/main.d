@@ -62,7 +62,7 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_log.h \
  G:/butano-master/butano/include/bn_utf8_characters_map.h \
  G:/game/build/bn_sprite_items_common_variable_8x16_font.h \
  G:/butano-master/butano/include/bn_sprite_item.h \
- G:/game/include/utility.h G:/game/include/room.h \
+ G:/game/include/utility.h G:/game/include/level.h \
  G:/butano-master/butano/include/bn_regular_bg_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_item.h \
  G:/butano-master/butano/include/bn_bg_palette_item.h \
@@ -74,8 +74,7 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_log.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h \
  G:/game/build/bn_regular_bg_items_test_bg.h \
- G:/game/build/bn_regular_bg_items_test_room.h \
- G:/game/build/bn_regular_bg_items_test_room_2.h \
+ G:/game/build/bn_regular_bg_items_test_level.h G:/game/include/room.h \
  G:/game/include/utility.h G:/game/include/game_object.h \
  G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_sprite_animate_actions.h \
@@ -93,13 +92,11 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_log.h \
  G:/butano-master/butano/include/bn_sin_lut.h \
  G:/butano-master/butano/include/bn_reciprocal_lut.h \
  G:/butano-master/butano/include/bn_rule_of_three_approximation.h \
- G:/game/build/bn_sprite_items_player.h G:/game/include/scythe_platform.h \
- G:/game/build/bn_sprite_items_scythe_platform.h G:/game/include/hitbox.h \
+ G:/game/build/bn_sprite_items_player.h G:/game/include/hitbox.h \
  G:/game/build/bn_sprite_items_hitbox.h G:/game/include/devil_platform.h \
  G:/game/build/bn_sprite_items_devil_platform.h \
- G:/game/include/angel_platform.h G:/game/include/room.h \
- G:/game/build/bn_sprite_items_angel_platform.h G:/game/include/exit.h \
- G:/game/build/bn_sprite_items_exit.h
+ G:/game/include/angel_platform.h \
+ G:/game/build/bn_sprite_items_angel_platform.h
 G:/butano-master/butano/include/bn_log.h:
 G:/butano-master/butano/include/bn_config_log.h:
 G:/butano-master/butano/include/bn_log_backend.h:
@@ -166,7 +163,7 @@ G:/butano-master/butano/include/bn_utf8_characters_map.h:
 G:/game/build/bn_sprite_items_common_variable_8x16_font.h:
 G:/butano-master/butano/include/bn_sprite_item.h:
 G:/game/include/utility.h:
-G:/game/include/room.h:
+G:/game/include/level.h:
 G:/butano-master/butano/include/bn_regular_bg_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_item.h:
 G:/butano-master/butano/include/bn_bg_palette_item.h:
@@ -178,8 +175,8 @@ G:/butano-master/butano/include/bn_regular_bg_map_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_map_cell.h:
 G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h:
 G:/game/build/bn_regular_bg_items_test_bg.h:
-G:/game/build/bn_regular_bg_items_test_room.h:
-G:/game/build/bn_regular_bg_items_test_room_2.h:
+G:/game/build/bn_regular_bg_items_test_level.h:
+G:/game/include/room.h:
 G:/game/include/utility.h:
 G:/game/include/game_object.h:
 G:/butano-master/butano/include/bn_optional.h:
@@ -202,14 +199,9 @@ G:/butano-master/butano/include/bn_sin_lut.h:
 G:/butano-master/butano/include/bn_reciprocal_lut.h:
 G:/butano-master/butano/include/bn_rule_of_three_approximation.h:
 G:/game/build/bn_sprite_items_player.h:
-G:/game/include/scythe_platform.h:
-G:/game/build/bn_sprite_items_scythe_platform.h:
 G:/game/include/hitbox.h:
 G:/game/build/bn_sprite_items_hitbox.h:
 G:/game/include/devil_platform.h:
 G:/game/build/bn_sprite_items_devil_platform.h:
 G:/game/include/angel_platform.h:
-G:/game/include/room.h:
 G:/game/build/bn_sprite_items_angel_platform.h:
-G:/game/include/exit.h:
-G:/game/build/bn_sprite_items_exit.h:
