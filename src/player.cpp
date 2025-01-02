@@ -58,12 +58,45 @@ Player::Player()
 	
 }
 
+Player::Player(const Player& other) : GameObject(other)
+{
+
+	state             	 = other.state;
+    x_speed        	  	 = other.x_speed;
+    jump_force           = other.jump_force;
+	secondary_jump_force = other.secondary_jump_force;
+    wall_jump_force   	 = other.wall_jump_force;
+
+    gravity           	 = other.gravity;
+	wall_ride_gravity 	 = other.wall_ride_gravity;
+	
+	remaining_jump_input_frames      = other.remaining_jump_input_frames;
+	remaining_x_drift_lockout_frames = other.remaining_x_drift_lockout_frames;
+	air_frames_elapsed               = other.air_frames_elapsed;
+	v_collision_grace_frames         = other.v_collision_grace_frames;
+	late_jump_grace_frames           = other.late_jump_grace_frames;
+	scythe_charge_frames             = other.scythe_charge_frames;
+	current_death_frame              = other.current_death_frame;
+	current_phase_step_frame         = other.current_phase_step_frame;
+
+	wall_right_detected   = other.wall_right_detected;
+    wall_left_detected    = other.wall_left_detected;
+    grounded_detected     = other.grounded_detected;
+	grounded_owp_detected = other.grounded_owp_detected;
+	scythe_2_buffered     = other.scythe_2_buffered;
+	scythe_3_buffered     = other.scythe_3_buffered;
+	kill_player           = other.kill_player;
+	is_dead               = other.is_dead;
+
+}
+
 Player::~Player()
 {
 	
 }
 
-void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
+void Player::update(RoomBounds 								   room_bounds,
+					bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 					bn::regular_bg_ptr                         bg_ptr, 
                     bn::span<const bn::regular_bg_map_cell>    cells,
                     bn::regular_bg_item                        bg_item,
@@ -387,8 +420,8 @@ void Player::update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				// Clamp Phase collider BEFORE checking for tile collision
 				bn::fixed new_x = phase_collider_ptr->x();
 				bn::fixed new_y = phase_collider_ptr->y();
-				new_x = clamp(-half_level_width_pixels,  half_level_width_pixels,  new_x);
-				new_y = clamp(-half_level_height_pixels, half_level_height_pixels, new_y);
+				new_x = clamp(room_bounds.left_bound, room_bounds.right_bound,  new_x);
+				new_y = clamp(room_bounds.top_bound,  room_bounds.bottom_bound, new_y);
 				phase_collider_ptr->setPos(new_x, new_y);
 
 				for(int32 y = -2; y < 3; y++)

@@ -51,7 +51,7 @@
 #define PLAYER_SCYTHE_GRAVITY    1
 #define PLAYER_GRAVITY_DECAY 	 1
 
-#define PLAYER_SQUISH_FRAMES_REQUIRED 3
+#define PLAYER_SQUISH_FRAMES_REQUIRED 5
 
 #define PLAYER_PHASE_STEP_MAX_DISTANCE PLAYER_COLLIDER_WIDTH * 5
 #define PLAYER_PHASE_STEP_TOTAL_FRAMES 25
@@ -169,9 +169,11 @@ struct Player : GameObject {
 	bool is_dead;
 
 	Player();
+	Player(const Player& other);
 	~Player();
 
-	void update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
+	void update(RoomBounds room_bounds,
+				bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 				bn::regular_bg_ptr                         bg_ptr, 
                 bn::span<const bn::regular_bg_map_cell>    cells,
                 bn::regular_bg_item                        bg_item,

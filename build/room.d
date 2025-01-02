@@ -35,7 +35,8 @@ room.o: G:/game/src/room.cpp G:/game/include/room.h \
  G:/butano-master/butano/include/bn_fixed_point.h \
  G:/butano-master/butano/include/bn_point.h \
  G:/butano-master/butano/include/bn_fixed_point_fwd.h \
- G:/game/include/utility.h G:/game/include/game_object.h \
+ G:/game/include/room_bounds.h G:/game/include/utility.h \
+ G:/game/include/game_object.h \
  G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_sprite_ptr.h \
  G:/butano-master/butano/include/bn_sprite_animate_actions.h \
@@ -116,6 +117,7 @@ G:/butano-master/butano/include/bn_camera_ptr.h:
 G:/butano-master/butano/include/bn_fixed_point.h:
 G:/butano-master/butano/include/bn_point.h:
 G:/butano-master/butano/include/bn_fixed_point_fwd.h:
+G:/game/include/room_bounds.h:
 G:/game/include/utility.h:
 G:/game/include/game_object.h:
 G:/butano-master/butano/include/bn_optional.h:

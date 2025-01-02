@@ -16,7 +16,6 @@
 
 struct Collider {
 	
-	//ColliderSize size;
 	uint32 width;
 	uint32 height;
 	bn::fixed_point position;
@@ -28,6 +27,7 @@ struct Collider {
 		 	 bn::fixed origin_y,
 		 	 uint32 _width,
 			 uint32 _height);
+	Collider(const Collider& other);
 	
 	void update();
     void draw();

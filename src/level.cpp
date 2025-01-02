@@ -83,7 +83,8 @@ void Level::updateAndDraw()
     {
         if(current_room_ptr->game_objects.data()[i] != NULL)
         {
-            current_room_ptr->game_objects.data()[i]->update(current_room_ptr->game_objects, 
+            current_room_ptr->game_objects.data()[i]->update(current_room_ptr->room_bounds,
+                                                             current_room_ptr->game_objects,
                                                              bg_ptr.value(),
                                                              cells,
                                                              bg_item.value(),
@@ -130,11 +131,11 @@ void Level::updateCamera()
         // Typical camera behavior - Follow the player & clamp to the room bounds. 
         int32 new_cam_x = current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos().x().integer();
         int32 new_cam_y = current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos().y().integer();
-        new_cam_x = clamp(current_room_ptr->left_bound  + HALF_SCREEN_WIDTH,  
-                          current_room_ptr->right_bound - HALF_SCREEN_WIDTH, 
+        new_cam_x = clamp(current_room_ptr->room_bounds.left_bound  + HALF_SCREEN_WIDTH,  
+                          current_room_ptr->room_bounds.right_bound - HALF_SCREEN_WIDTH, 
                           new_cam_x);
-        new_cam_y = clamp(current_room_ptr->top_bound    + HALF_SCREEN_HEIGHT, 
-                          current_room_ptr->bottom_bound - HALF_SCREEN_HEIGHT,
+        new_cam_y = clamp(current_room_ptr->room_bounds.top_bound    + HALF_SCREEN_HEIGHT, 
+                          current_room_ptr->room_bounds.bottom_bound - HALF_SCREEN_HEIGHT,
                           new_cam_y);
         camera.value().set_position(new_cam_x, new_cam_y);
 
@@ -148,7 +149,9 @@ void Level::reloadOnDeath()
 
     // If player died, reload the level
     if(((Player*)(current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->is_dead)
-    {reload();}
+    {
+        reload();
+    }
 }
 
 void Level::freeInactiveObjects()
@@ -196,19 +199,20 @@ void Level::transitionRoom()
     Player* player_ptr = (Player*)current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX);
     bn::fixed_point player_pos = player_ptr->pos();
     
-    if(player_pos.x() > current_room_ptr->right_bound)
+    if(player_pos.x() > current_room_ptr->room_bounds.right_bound)
     {
         if(current_room_ptr->right_neighbor != NO_ROOM)
         {
-
             // Store the current room in a temp ptr
             Room* temp_room_ptr = current_room_ptr;
 
             // Create the neighbor room
-            current_room_ptr = new Room(current_room_ptr->right_neighbor, camera.value());
+            current_room_ptr = new Room(temp_room_ptr->right_neighbor, camera.value());
 
-            // Copy the player object to the new room
-            current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX) = player_ptr;
+            // Free up the default player object that came with the new room,
+            // and replace with the player object from the previous room
+            delete current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+            current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(*player_ptr);
 
             // Delete the old room
             delete temp_room_ptr;
@@ -222,19 +226,20 @@ void Level::transitionRoom()
         }
     }
 
-    if(player_pos.x() < current_room_ptr->left_bound)
+    if(player_pos.x() < current_room_ptr->room_bounds.left_bound)
     {
         if(current_room_ptr->left_neighbor != NO_ROOM)
         {
-
             // Store the current room in a temp ptr
             Room* temp_room_ptr = current_room_ptr;
 
             // Create the neighbor room
-            current_room_ptr = new Room(current_room_ptr->left_neighbor, camera.value());
+            current_room_ptr = new Room(temp_room_ptr->left_neighbor, camera.value());
 
-            // Copy the player object to the new room
-            current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX) = player_ptr;
+            // Free up the default player object that came with the new room,
+            // and replace with the player object from the previous room
+            delete current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+            current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(*player_ptr);
 
             // Delete the old room
             delete temp_room_ptr;
@@ -243,24 +248,25 @@ void Level::transitionRoom()
             cam_is_scrolling = true;
             cam_x_offset     = -SCREEN_WIDTH;
             cam_y_offset     = 0;
-            
+
             return;
         }
     }
 
-    if(player_pos.y() < current_room_ptr->top_bound)
+    if(player_pos.y() < current_room_ptr->room_bounds.top_bound)
     {
         if(current_room_ptr->top_neighbor != NO_ROOM)
         {
-
             // Store the current room in a temp ptr
             Room* temp_room_ptr = current_room_ptr;
 
             // Create the neighbor room
-            current_room_ptr = new Room(current_room_ptr->top_neighbor, camera.value());
+            current_room_ptr = new Room(temp_room_ptr->top_neighbor, camera.value());
 
-            // Copy the player object to the new room
-            current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX) = player_ptr;
+            // Free up the default player object that came with the new room,
+            // and replace with the player object from the previous room
+            delete current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+            current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(*player_ptr);
 
             // Delete the old room
             delete temp_room_ptr;
@@ -269,24 +275,25 @@ void Level::transitionRoom()
             cam_is_scrolling = true;
             cam_x_offset     = 0;
             cam_y_offset     = -SCREEN_HEIGHT;
-            
+
             return;
         }
     }
 
-    if(player_pos.y() > current_room_ptr->bottom_bound)
+    if(player_pos.y() > current_room_ptr->room_bounds.bottom_bound)
     {
         if(current_room_ptr->bottom_neighbor != NO_ROOM)
         {
-
             // Store the current room in a temp ptr
             Room* temp_room_ptr = current_room_ptr;
 
             // Create the neighbor room
-            current_room_ptr = new Room(current_room_ptr->bottom_neighbor, camera.value());
+            current_room_ptr = new Room(temp_room_ptr->bottom_neighbor, camera.value());
 
-            // Copy the player object to the new room
-            current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX) = player_ptr;
+            // Free up the default player object that came with the new room,
+            // and replace with the player object from the previous room
+            delete current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+            current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(*player_ptr);
 
             // Delete the old room
             delete temp_room_ptr;
@@ -295,7 +302,7 @@ void Level::transitionRoom()
             cam_is_scrolling = true;
             cam_x_offset     = 0;
             cam_y_offset     = SCREEN_HEIGHT;
-            
+
             return;
         }
     }

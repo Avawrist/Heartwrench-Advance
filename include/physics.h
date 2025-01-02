@@ -43,6 +43,7 @@ struct RigidBody {
 	bn::fixed_point final_dir;
 
 	RigidBody();
+	RigidBody(const RigidBody& other);
 	void   applyDecay();
     uint32 addForce(Force* force_p);
 	void   removeForces();

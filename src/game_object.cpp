@@ -23,6 +23,30 @@ GameObject::GameObject()
                                  GAME_OBJECT_COLLIDER_HEIGHT);
 }
 
+GameObject::GameObject(const GameObject& other)
+{
+
+    object_type = other.object_type;
+    object_id   = other.object_id;
+
+    sprite_ptr         = other.sprite_ptr;
+    animate_action_ptr = other.animate_action_ptr;
+    sprite_palette_ptr = other.sprite_palette_ptr;
+
+    collider_ptr  = new Collider(*(other.collider_ptr));
+    rigidbody_ptr = new RigidBody(*(other.rigidbody_ptr));
+
+    collider_offset_x = other.collider_offset_x;
+	collider_offset_y = other.collider_offset_y;
+
+	dir = other.dir;
+
+	inactive = other.inactive;
+
+	received_platform_force = other.received_platform_force;
+
+}
+
 GameObject::~GameObject()
 {
     sprite_ptr.reset();

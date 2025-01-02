@@ -1,5 +1,9 @@
 #include "room.h"
 
+/////////////////
+// Struct Room //
+/////////////////
+
 Room::Room(RoomName room_name, bn::camera_ptr camera_ptr)
 {
     load(room_name, camera_ptr);
@@ -25,7 +29,7 @@ void Room::clear()
 {
 
     // Free game object pointers
-    for(int32 i = game_objects.size() - 1; i > PLAYER_OBJECT_LIST_INDEX; i--)
+    for(int32 i = game_objects.size() - 1; i >= 0; i--)
     {delete game_objects.at(i);}
 
     // Remove all game objects from vector
@@ -54,10 +58,10 @@ void Room::load(RoomName room_name, bn::camera_ptr camera_ptr)
             bottom_neighbor = NO_ROOM;
             left_neighbor   = NO_ROOM;
 
-            top_bound    = -256;
-            right_bound  =  512;
-            bottom_bound =  256;
-            left_bound   = -512;
+            room_bounds.top_bound    = -256;
+            room_bounds.right_bound  =  512;
+            room_bounds.bottom_bound =  256;
+            room_bounds.left_bound   = -512;
 
             // Init Game Objects //
     
@@ -71,10 +75,10 @@ void Room::load(RoomName room_name, bn::camera_ptr camera_ptr)
             bottom_neighbor = NO_ROOM;
             left_neighbor   = ROOM_TEST_1;
 
-            right_bound  =  1536;
-            left_bound   =  512;
-            top_bound    = -256;
-            bottom_bound =  256;
+            room_bounds.right_bound  =  1536;
+            room_bounds.left_bound   =  512;
+            room_bounds.top_bound    = -256;
+            room_bounds.bottom_bound =  256;
 
             // Init Game Objects //
     

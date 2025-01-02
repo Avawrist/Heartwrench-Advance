@@ -75,7 +75,8 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_log.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h \
  G:/game/build/bn_regular_bg_items_test_bg.h \
  G:/game/build/bn_regular_bg_items_test_level.h G:/game/include/room.h \
- G:/game/include/utility.h G:/game/include/game_object.h \
+ G:/game/include/room_bounds.h G:/game/include/utility.h \
+ G:/game/include/game_object.h \
  G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_sprite_animate_actions.h \
  G:/butano-master/butano/include/bn_vector.h \
@@ -177,6 +178,7 @@ G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h:
 G:/game/build/bn_regular_bg_items_test_bg.h:
 G:/game/build/bn_regular_bg_items_test_level.h:
 G:/game/include/room.h:
+G:/game/include/room_bounds.h:
 G:/game/include/utility.h:
 G:/game/include/game_object.h:
 G:/butano-master/butano/include/bn_optional.h:

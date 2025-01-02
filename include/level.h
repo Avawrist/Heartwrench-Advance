@@ -52,7 +52,7 @@ struct Level
 
     bn::point player_spawn;
 
-    bool cam_is_scrolling;
+    bool  cam_is_scrolling;
     int32 cam_x_offset;
     int32 cam_y_offset;
 

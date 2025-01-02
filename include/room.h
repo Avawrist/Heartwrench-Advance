@@ -9,6 +9,7 @@
 #include "bn_camera_ptr.h"
 
 // My Libs
+#include "room_bounds.h"
 #include "utility.h"
 #include "game_object.h"
 #include "player.h"
@@ -31,15 +32,12 @@ struct Room
 
     bn::vector<GameObject*, MAX_GAME_OBJECTS> game_objects;
 
+    RoomBounds room_bounds;
+
     RoomName top_neighbor;
     RoomName right_neighbor;
     RoomName bottom_neighbor;
     RoomName left_neighbor;
-
-    int32 top_bound;
-    int32 right_bound;
-    int32 bottom_bound;
-    int32 left_bound;
 
     Room(RoomName room_name, bn::camera_ptr camera_ptr);
     ~Room();

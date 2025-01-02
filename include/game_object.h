@@ -16,6 +16,7 @@
 #include "bn_regular_bg_map_cell_info.h"
 
 // My Libs
+#include "room_bounds.h"
 #include "utility.h"
 #include "physics.h"
 #include "collider.h"
@@ -70,9 +71,11 @@ struct GameObject {
 	void applyForces();
 
 	GameObject();
+	GameObject(const GameObject& other);
 	virtual ~GameObject();
 
-	virtual void update(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
+	virtual void update(RoomBounds room_bounds,
+	                    bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 						bn::regular_bg_ptr                         bg_ptr, 
                         bn::span<const bn::regular_bg_map_cell>    cells,
                         bn::regular_bg_item                        bg_item,

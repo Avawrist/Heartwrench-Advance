@@ -62,7 +62,8 @@ devil_platform.o: G:/game/src/devil_platform.cpp \
  G:/butano-master/butano/include/bn_regular_bg_map_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h \
- G:/game/include/utility.h G:/butano-master/butano/include/bn_log.h \
+ G:/game/include/room_bounds.h G:/game/include/utility.h \
+ G:/butano-master/butano/include/bn_log.h \
  G:/butano-master/butano/include/bn_config_log.h \
  G:/butano-master/butano/include/bn_log_backend.h \
  G:/game/include/physics.h G:/butano-master/butano/include/bn_vector.h \
@@ -138,6 +139,7 @@ G:/butano-master/butano/include/bn_regular_bg_tiles_item.h:
 G:/butano-master/butano/include/bn_regular_bg_map_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_map_cell.h:
 G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h:
+G:/game/include/room_bounds.h:
 G:/game/include/utility.h:
 G:/butano-master/butano/include/bn_log.h:
 G:/butano-master/butano/include/bn_config_log.h:

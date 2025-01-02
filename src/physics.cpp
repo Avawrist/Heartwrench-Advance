@@ -56,6 +56,13 @@ RigidBody::RigidBody()
 	final_dir      = bn::fixed_point(0, 0);
 }
 
+RigidBody::RigidBody(const RigidBody& other)
+{
+    forces         = other.forces;
+    normalized_dir = other.normalized_dir;
+    final_dir      = other.final_dir;
+}
+
 void RigidBody::applyDecay()
 {
         // Update all of the forces in the RigidBody
