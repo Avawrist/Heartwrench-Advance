@@ -112,6 +112,9 @@ void Player::update(RoomBounds 								   room_bounds,
 	bool in_scythe_1         = false;
 	bool in_scythe_2         = false;
 	bool in_scythe_3         = false;
+	bool create_scythe_hb_1  = false;
+	bool create_scythe_hb_2  = false;
+	bool create_scythe_hb_3  = false;
 	bool in_phase_step       = false;
 	bool plummet_eligible    = false;
 
@@ -490,36 +493,27 @@ void Player::update(RoomBounds 								   room_bounds,
 			// Increment Frame Counter
 			current_scythe_frame++;
 			current_scythe_frame = clamp(0, 
-										 PLAYER_SCYTHE_1_TOTAL_FRAMES, 
+										 PLAYER_SCYTHE_1_TOTAL_FRAMES,
 										 current_scythe_frame);
 
 			// Create Hitbox
 			if(current_scythe_frame == PLAYER_SCYTHE_1_CREATE_HB_FRAME &&
 			   game_objects.size() < MAX_GAME_OBJECTS)
-			{
-				Hitbox* hitbox_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_1_X_OFFSET * dir), 
-														  y().integer() + PLAYER_SCYTHE_1_Y_OFFSET),
-												PLAYER_SCYTHE_1_HITSTUN_FRAMES,
-												PLAYER_SCYTHE_1_HB_LIFESPAN_FRAMES,
-												PLAYER_SCYTHE_1_X_KNOCKBACK,
-												PLAYER_SCYTHE_1_Y_KNOCKBACK,	
-												PLAYER_SCYTHE_1_KNOCKBACK_DECAY,
-												PLAYER_SCYTHE_1_HB_WIDTH,
-												PLAYER_SCYTHE_1_HB_HEIGHT,
-												dir);
+			{create_scythe_hb_1 = true;}
 
-				game_objects.push_back(hitbox_ptr);
-    			game_objects.back()->setCamera(camera);
-    			game_objects.back()->object_id = game_objects.size() - 1;
-			}
-
-			// Take Buffer Input
+			// Take Cancel Input
 			if(bn::keypad::b_pressed() && 
-			   current_scythe_frame >= PLAYER_MIN_SCYTHE_2_BUFFER_FRAMES)
-			{scythe_2_buffered = true;}
+			   current_scythe_frame >= PLAYER_MIN_SCYTHE_1_CANCEL_FRAMES)
+			{in_scythe_2          = true;
+			 current_scythe_frame = 0;} 
+
+			if(bn::keypad::r_pressed() && 
+			   current_scythe_frame >= PLAYER_MIN_SCYTHE_1_CANCEL_FRAMES)
+			{in_phase_step        = true;
+			 current_scythe_frame = 0;}
 
 			// End state if frames are not up
-			if(current_scythe_frame < PLAYER_SCYTHE_1_TOTAL_FRAMES)
+			else if(current_scythe_frame < PLAYER_SCYTHE_1_TOTAL_FRAMES)
 			{in_scythe_1 = true;}
 
 			else
@@ -544,30 +538,21 @@ void Player::update(RoomBounds 								   room_bounds,
 			// Create Hitbox
 			if(current_scythe_frame == PLAYER_SCYTHE_2_CREATE_HB_FRAME &&
 			   game_objects.size() < MAX_GAME_OBJECTS)
-			{
-				Hitbox* hitbox_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_2_X_OFFSET * dir), 
-														  y().integer() + PLAYER_SCYTHE_2_Y_OFFSET),
-												PLAYER_SCYTHE_2_HITSTUN_FRAMES,
-												PLAYER_SCYTHE_2_HB_LIFESPAN_FRAMES,
-												PLAYER_SCYTHE_2_X_KNOCKBACK,
-												PLAYER_SCYTHE_2_Y_KNOCKBACK,	
-												PLAYER_SCYTHE_2_KNOCKBACK_DECAY,
-												PLAYER_SCYTHE_2_HB_WIDTH,
-												PLAYER_SCYTHE_2_HB_HEIGHT,
-												dir);
+			{create_scythe_hb_2 = true;}
 
-				game_objects.push_back(hitbox_ptr);
-    			game_objects.back()->setCamera(camera);
-    			game_objects.back()->object_id = game_objects.size() - 1;
-			}
-
-			// Take Buffer Input
+			// Take Cancel Input
 			if(bn::keypad::b_pressed() && 
-			   current_scythe_frame >= PLAYER_MIN_SCYTHE_3_BUFFER_FRAMES)
-			{scythe_3_buffered = true;}
+			   current_scythe_frame >= PLAYER_MIN_SCYTHE_2_CANCEL_FRAMES)
+			{in_scythe_3 = true;
+			 current_scythe_frame = 0;}
+
+			if(bn::keypad::r_pressed() && 
+			   current_scythe_frame >= PLAYER_MIN_SCYTHE_2_CANCEL_FRAMES)
+			{in_phase_step        = true;
+			 current_scythe_frame = 0;}
 
 			// End state if frames are not up
-			if(current_scythe_frame < PLAYER_SCYTHE_2_TOTAL_FRAMES)
+			else if(current_scythe_frame < PLAYER_SCYTHE_2_TOTAL_FRAMES)
 			{in_scythe_2 = true;}
 
 			else
@@ -592,27 +577,16 @@ void Player::update(RoomBounds 								   room_bounds,
 			// Create Hitbox
 			if(current_scythe_frame == PLAYER_SCYTHE_3_CREATE_HB_FRAME &&
 			   game_objects.size() < MAX_GAME_OBJECTS)
-			{
-				Hitbox* hitbox_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_3_X_OFFSET * dir), 
-														  y().integer() + PLAYER_SCYTHE_3_Y_OFFSET),
-												PLAYER_SCYTHE_3_HITSTUN_FRAMES,
-												PLAYER_SCYTHE_3_HB_LIFESPAN_FRAMES,
-												PLAYER_SCYTHE_3_X_KNOCKBACK,
-												PLAYER_SCYTHE_3_Y_KNOCKBACK,	
-												PLAYER_SCYTHE_3_KNOCKBACK_DECAY,
-												PLAYER_SCYTHE_3_HB_WIDTH,
-												PLAYER_SCYTHE_3_HB_HEIGHT,
-												dir);
+			{create_scythe_hb_3 = true;}
 
-				game_objects.push_back(hitbox_ptr);
-    			game_objects.back()->setCamera(camera);
-    			game_objects.back()->object_id = game_objects.size() - 1;
-			}
-
-			// Take Buffer Input
+			// Take Cancel Input
+			if(bn::keypad::r_pressed() && 
+			   current_scythe_frame >= PLAYER_MIN_SCYTHE_3_CANCEL_FRAMES)
+			{in_phase_step        = true;
+			 current_scythe_frame = 0;}
 
 			// End state if frames are not up
-			if(current_scythe_frame < PLAYER_SCYTHE_3_TOTAL_FRAMES)
+			else if(current_scythe_frame < PLAYER_SCYTHE_3_TOTAL_FRAMES)
 			{in_scythe_3 = true;}
 
 			else 
@@ -648,6 +622,64 @@ void Player::update(RoomBounds 								   room_bounds,
 
 	// Apply forces to player
 	applyForces();
+
+	/////////////////////
+	// Create Hitboxes //
+	/////////////////////
+
+	if(create_scythe_hb_1)
+	{
+		Hitbox* hitbox_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_1_X_OFFSET * dir),
+										y().integer() + PLAYER_SCYTHE_1_Y_OFFSET),
+										PLAYER_SCYTHE_1_HITSTUN_FRAMES,
+										PLAYER_SCYTHE_1_HB_LIFESPAN_FRAMES,
+										PLAYER_SCYTHE_1_X_KNOCKBACK,
+										PLAYER_SCYTHE_1_Y_KNOCKBACK,	
+										PLAYER_SCYTHE_1_KNOCKBACK_DECAY,
+										PLAYER_SCYTHE_1_HB_WIDTH,
+										PLAYER_SCYTHE_1_HB_HEIGHT,
+										dir);
+
+		game_objects.push_back(hitbox_ptr);
+		game_objects.back()->setCamera(camera);
+		game_objects.back()->object_id = game_objects.size() - 1;
+	}
+
+	if(create_scythe_hb_2)
+	{
+		Hitbox* hitbox_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_2_X_OFFSET * dir),
+										y().integer() + PLAYER_SCYTHE_2_Y_OFFSET),
+										PLAYER_SCYTHE_2_HITSTUN_FRAMES,
+										PLAYER_SCYTHE_2_HB_LIFESPAN_FRAMES,
+										PLAYER_SCYTHE_2_X_KNOCKBACK,
+										PLAYER_SCYTHE_2_Y_KNOCKBACK,	
+										PLAYER_SCYTHE_2_KNOCKBACK_DECAY,
+										PLAYER_SCYTHE_2_HB_WIDTH,
+										PLAYER_SCYTHE_2_HB_HEIGHT,
+										dir);
+
+		game_objects.push_back(hitbox_ptr);
+		game_objects.back()->setCamera(camera);
+		game_objects.back()->object_id = game_objects.size() - 1;
+	}
+
+	if(create_scythe_hb_3)
+	{
+		Hitbox* hitbox_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_3_X_OFFSET * dir), 
+										y().integer() + PLAYER_SCYTHE_3_Y_OFFSET),
+										PLAYER_SCYTHE_3_HITSTUN_FRAMES,
+										PLAYER_SCYTHE_3_HB_LIFESPAN_FRAMES,
+										PLAYER_SCYTHE_3_X_KNOCKBACK,
+										PLAYER_SCYTHE_3_Y_KNOCKBACK,	
+										PLAYER_SCYTHE_3_KNOCKBACK_DECAY,
+										PLAYER_SCYTHE_3_HB_WIDTH,
+										PLAYER_SCYTHE_3_HB_HEIGHT,
+										dir);
+
+		game_objects.push_back(hitbox_ptr);
+		game_objects.back()->setCamera(camera);
+		game_objects.back()->object_id = game_objects.size() - 1;
+	}
 
 	//////////////////////////////
 	// Init Collision Variables //
@@ -1032,9 +1064,15 @@ void Player::update(RoomBounds 								   room_bounds,
 					if(test_collider_ptr->isCollision(*other_collider_ptr) && 
 					   rigidbody_ptr->normalized_dir.y() >= 0)
 					{
-						if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED) 
-						{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
-						 sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
+						if(air_frames_elapsed == PLAYER_SQUISH_FRAMES_REQUIRED)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+
+							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD && 
+							   (bn::keypad::right_held() || bn::keypad::left_held()))
+							{rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);}
+						}
 						grounded_detected = true;
 					}
 
@@ -1195,10 +1233,10 @@ void Player::update(RoomBounds 								   room_bounds,
     if(grounded_detected)        
 	{new_state = STATE_GROUNDED_NEUTRAL;}
 
-    else if(wall_right_detected && !plummet_eligible) 
+    else if(wall_right_detected) 
 	{new_state = STATE_WALL_SLIDE_RIGHT;}
 
-    else if(wall_left_detected && !plummet_eligible)  
+    else if(wall_left_detected)  
 	{new_state = STATE_WALL_SLIDE_LEFT;}
 
     else 
@@ -1223,7 +1261,7 @@ void Player::update(RoomBounds 								   room_bounds,
 
 	v_collision_grace_frames--;
 	v_collision_grace_frames = clamp(0, 
-									 PLAYER_V_COLLISION_MAX_GRACE_FRAMES, 
+									 PLAYER_V_COLLISION_MAX_GRACE_FRAMES,
 									 v_collision_grace_frames);
 
 	late_jump_grace_frames--;

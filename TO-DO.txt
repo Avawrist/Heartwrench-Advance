@@ -2,10 +2,6 @@
 
 ** Gameplay **
 -Add window of momentum transfer if jumping from a moving platform
--Uncharged B press leads into short dash -> 3 stage rekka. Three presses for 3 punches,
- if in the air this will air stall. Ending the rekka by stopping presses or finishing
- presses will lead into a free fall in the air.
--Hitboxes as game objects
 -Evaluate juice opportunities: squish, flashes/shaders, screen shake, hit pause, 
  animation.
 
