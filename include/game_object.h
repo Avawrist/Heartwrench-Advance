@@ -44,7 +44,9 @@ enum ObjectType
 	ANGEL_PLATFORM,
 	SCYTHE_PLATFORM,
 	EXIT,
-	HITBOX,
+	HITBOX_SCYTHE_1,
+	HITBOX_SCYTHE_2,
+	HITBOX_SCYTHE_3
 };
 
 struct GameObject {

@@ -1,14 +1,15 @@
 #include "hitbox.h"
 
 Hitbox::Hitbox(bn::point pos,
-       int32     _hitstun_frames,
-       int32     _lifespan_frames,
-       int32     _x_knockback,
-       int32     _y_knockback,
-       int32     _knockback_decay,
-       int32     _width,
-       int32     _height,
-       Direction _dir)
+       int32      _hitstun_frames,
+       int32      _lifespan_frames,
+       int32      _x_knockback,
+       int32      _y_knockback,
+       int32      _knockback_decay,
+       int32      _width,
+       int32      _height,
+       Direction  _dir,
+       ObjectType _type)
 {
 
     // Reset Variables //
@@ -18,7 +19,7 @@ Hitbox::Hitbox(bn::point pos,
     delete collider_ptr;
 
     // Init Variables //
-	object_type        = HITBOX;
+	object_type        = _type;
 	dir                = _dir;
     sprite_ptr         = bn::sprite_items::hitbox.create_sprite(pos.x(), pos.y());
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
@@ -58,6 +59,7 @@ void Hitbox::update(RoomBounds                                 room_bounds,
                     bn::regular_bg_item                        bg_item,
                     bn::camera_ptr                             camera)
 {
+
     //////////////////////////
     // Udpate Frame Counter //
     //////////////////////////

@@ -169,7 +169,12 @@ void Level::freeInactiveObjects()
     {
         if((*current)->inactive)
         {
-            //delete game_objects.at(index);
+            // Clean up Hitbox references
+            if((*current)->object_type == HITBOX_SCYTHE_1) {((Player*)(current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->hitbox_1_ptr = NULL;}
+            if((*current)->object_type == HITBOX_SCYTHE_2) {((Player*)(current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->hitbox_2_ptr = NULL;}
+            if((*current)->object_type == HITBOX_SCYTHE_3) {((Player*)(current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->hitbox_3_ptr = NULL;}
+
+            // Erase game object
             current_room_ptr->game_objects.erase(current);
             delete *current;
         }

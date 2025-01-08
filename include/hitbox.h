@@ -28,15 +28,16 @@ struct Hitbox : GameObject
     int32 width;
     int32 height;
 
-    Hitbox(bn::point pos,
-           int32     _hitstun_frames,
-           int32     _lifespan_frames,
-           int32     _x_knockback,
-           int32     _y_knockback,
-           int32     _knockback_decay,
-           int32     _width,
-           int32     _height,
-           Direction _dir);
+    Hitbox(bn::point  pos,
+           int32      _hitstun_frames,
+           int32      _lifespan_frames,
+           int32      _x_knockback,
+           int32      _y_knockback,
+           int32      _knockback_decay,
+           int32      _width,
+           int32      _height,
+           Direction  _dir,
+           ObjectType _type);
     ~Hitbox();
 
     void update(RoomBounds room_bounds,

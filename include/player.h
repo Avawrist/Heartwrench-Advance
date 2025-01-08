@@ -18,8 +18,8 @@
 // Struct Player //
 ///////////////////
 
-#define PLAYER_COLLIDER_WIDTH 16
-#define PLAYER_COLLIDER_HEIGHT 16
+#define PLAYER_COLLIDER_WIDTH  24
+#define PLAYER_COLLIDER_HEIGHT 24
 
 #define PLAYER_MIN_STRETCH_V  0.7
 #define PLAYER_MAX_STRETCH_V  1.8
@@ -45,20 +45,24 @@
 #define PLAYER_MAX_JUMP_INPUT_FRAMES  15
 #define PLAYER_WALL_JUMP_DECAY        0.1
 
-#define PLAYER_GRAVITY       	 3
-#define PLAYER_FAST_FALL_GRAVITY 2
-#define PLAYER_WALL_RIDE_GRAVITY 1
-#define PLAYER_SCYTHE_GRAVITY    1
-#define PLAYER_GRAVITY_DECAY 	 1
+#define PLAYER_GRAVITY       	             3
+#define PLAYER_PROLONGED_GRAVITY             1
+#define PLAYER_PROLONGED_AIR_FRAMES_REQUIRED 20
+#define PLAYER_FAST_FALL_GRAVITY             1
+#define PLAYER_PLUMMET_GRAVITY               3
+#define PLAYER_WALL_RIDE_GRAVITY             1
+#define PLAYER_SCYTHE_GRAVITY                1
+#define PLAYER_GRAVITY_DECAY 	             1
 
-#define PLAYER_ROLL_SPEED_THRESHOLD 5
+#define PLAYER_ROLL_SPEED_THRESHOLD 6
 #define PLAYER_ROLL_X_SPEED 		2
 #define PLAYER_ROLL_Y_SPEED 		0
-#define PLAYER_ROLL_DECAY   		0.05
+#define PLAYER_ROLL_DECAY   		0.1
 
-#define PLAYER_SQUISH_FRAMES_REQUIRED 5
+#define PLAYER_SQUISH_FRAMES_REQUIRED 1
+#define PLAYER_MAX_AIR_FRAMES         180
 
-#define PLAYER_PHASE_STEP_MAX_DISTANCE PLAYER_COLLIDER_WIDTH * 5
+#define PLAYER_PHASE_STEP_MAX_DISTANCE PLAYER_COLLIDER_WIDTH * 3
 #define PLAYER_PHASE_STEP_TOTAL_FRAMES 25
 #define PLAYER_PHASE_FRAME             15
 
@@ -124,10 +128,12 @@
 #define PLAYER_WALL_JUMP_RIGHT_FORCE new Force(bn::fixed_point_t<12>( wall_jump_force.x(), wall_jump_force.y()), PLAYER_WALL_JUMP_DECAY)
 #define PLAYER_WALL_JUMP_LEFT_FORCE  new Force(bn::fixed_point_t<12>(-wall_jump_force.x(), wall_jump_force.y()), PLAYER_WALL_JUMP_DECAY)
 
-#define PLAYER_GRAVITY_FORCE         new Force(bn::fixed_point_t<12>(0, gravity), 			       PLAYER_GRAVITY_DECAY)
-#define PLAYER_FAST_GRAVITY_FORCE    new Force(bn::fixed_point_t<12>(0, PLAYER_FAST_FALL_GRAVITY), PLAYER_GRAVITY_DECAY)
-#define PLAYER_WALL_GRAVITY_FORCE    new Force(bn::fixed_point_t<12>(0, wall_ride_gravity),        PLAYER_GRAVITY_DECAY)
-#define PLAYER_SCYTHE_GRAVITY_FORCE  new Force(bn::fixed_point_t<12>(0, PLAYER_SCYTHE_GRAVITY),    PLAYER_GRAVITY_DECAY)
+#define PLAYER_GRAVITY_FORCE           new Force(bn::fixed_point_t<12>(0, gravity), 			     PLAYER_GRAVITY_DECAY)
+#define PLAYER_PROLONGED_GRAVITY_FORCE new Force(bn::fixed_point_t<12>(0, PLAYER_PROLONGED_GRAVITY), PLAYER_GRAVITY_DECAY)
+#define PLAYER_FAST_GRAVITY_FORCE      new Force(bn::fixed_point_t<12>(0, PLAYER_FAST_FALL_GRAVITY), PLAYER_GRAVITY_DECAY)
+#define PLAYER_PLUMMET_GRAVITY_FORCE   new Force(bn::fixed_point_t<12>(0, PLAYER_PLUMMET_GRAVITY),   PLAYER_GRAVITY_DECAY)
+#define PLAYER_WALL_GRAVITY_FORCE      new Force(bn::fixed_point_t<12>(0, wall_ride_gravity),        PLAYER_GRAVITY_DECAY)
+#define PLAYER_SCYTHE_GRAVITY_FORCE    new Force(bn::fixed_point_t<12>(0, PLAYER_SCYTHE_GRAVITY),    PLAYER_GRAVITY_DECAY)
 
 #define PLAYER_ROLL_FORCE new Force(bn::fixed_point_t<12>(PLAYER_ROLL_X_SPEED * dir, PLAYER_ROLL_Y_SPEED), PLAYER_ROLL_DECAY)
 
@@ -176,6 +182,10 @@ struct Player : GameObject {
 	bool kill_player;
 	bool is_dead;
 
+	Hitbox* hitbox_1_ptr;
+	Hitbox* hitbox_2_ptr;
+	Hitbox* hitbox_3_ptr;
+	
 	Player();
 	Player(const Player& other);
 	~Player();

@@ -28,6 +28,11 @@ int32 Room::addObject(GameObject* object_ptr, bn::camera_ptr camera_ptr)
 void Room::clear()
 {
 
+    // Remove hitbox references
+    ((Player*)(game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->hitbox_1_ptr = NULL;
+    ((Player*)(game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->hitbox_2_ptr = NULL;
+    ((Player*)(game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->hitbox_3_ptr = NULL;
+
     // Free game object pointers
     for(int32 i = game_objects.size() - 1; i >= 0; i--)
     {delete game_objects.at(i);}
