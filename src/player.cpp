@@ -100,7 +100,9 @@ Player::Player(const Player& other) : GameObject(other)
 
 Player::~Player()
 {
-
+	delete hitbox_1_ptr;
+	delete hitbox_2_ptr;
+	delete hitbox_3_ptr;
 }
 
 void Player::update(RoomBounds 								   room_bounds,
@@ -125,10 +127,6 @@ void Player::update(RoomBounds 								   room_bounds,
 	bool create_scythe_hb_3  = false;
 	bool in_phase_step       = false;
 	bool plummet_eligible    = false;
-
-	//////////////////////////////
-	// Init Collision Variables //
-	//////////////////////////////
 
 	///////////////////
 	// Handle State ///
@@ -187,11 +185,11 @@ void Player::update(RoomBounds 								   room_bounds,
 			// Add Gravity if Grounded on OWP
 			if(grounded_owp_detected) {rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);}
 
-			// Update X Drift Lockout Frames //
-			remaining_x_drift_lockout_frames--;
-			remaining_x_drift_lockout_frames = clamp(0, 
-													PLAYER_X_DRIFT_LOCKOUT_FRAMES, 
-													remaining_x_drift_lockout_frames);
+			// Add Gravity //
+			if(!remaining_x_drift_lockout_frames)
+			{
+				rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);
+			}
 
 		break;
 	
@@ -255,9 +253,12 @@ void Player::update(RoomBounds 								   room_bounds,
 			{in_scythe_1 = true;}
 			
 			// Add Gravity //
-			rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);
-			if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
-			{rigidbody_ptr->addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
+			if(!remaining_x_drift_lockout_frames)
+			{
+				rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);
+				if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
+				{rigidbody_ptr->addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
+			}
 
 			// Update Remaining Jump Input Frames //
 			remaining_jump_input_frames--;
@@ -365,12 +366,6 @@ void Player::update(RoomBounds 								   room_bounds,
 			air_frames_elapsed = clamp(0, 
 									   PLAYER_MAX_AIR_FRAMES, 
 									   air_frames_elapsed);
-
-			// Update X Drift Lockout Frames //
-			remaining_x_drift_lockout_frames--;
-			remaining_x_drift_lockout_frames = clamp(0, 
-													PLAYER_X_DRIFT_LOCKOUT_FRAMES, 
-													remaining_x_drift_lockout_frames);
 			
 		break;
 		
@@ -430,12 +425,6 @@ void Player::update(RoomBounds 								   room_bounds,
 			air_frames_elapsed = clamp(0, 
 									   PLAYER_MAX_AIR_FRAMES, 
 									   air_frames_elapsed);
-
-			// Update X Drift Lockout Frames //
-			remaining_x_drift_lockout_frames--;
-			remaining_x_drift_lockout_frames = clamp(0, 
-													PLAYER_X_DRIFT_LOCKOUT_FRAMES, 
-													remaining_x_drift_lockout_frames);
 		
 		break;
 
@@ -462,7 +451,7 @@ void Player::update(RoomBounds 								   room_bounds,
 				bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
 
 				int32 x_offset = PLAYER_PHASE_STEP_MAX_DISTANCE * dir;
-				int32 max_x    = (x_offset / TILE_WIDTH) + dir;
+				int32 max_x    = (x_offset / TILE_WIDTH) + (dir * 2);
 
 				Collider* other_collider_ptr = NULL;
 				Collider* phase_collider_ptr = new Collider(collider_ptr->x() + x_offset,
@@ -571,12 +560,6 @@ void Player::update(RoomBounds 								   room_bounds,
 				if(scythe_2_buffered) {in_scythe_2 = true;}
 			}
 
-			// Update X Drift Lockout Frames //
-			remaining_x_drift_lockout_frames--;
-			remaining_x_drift_lockout_frames = clamp(0, 
-													PLAYER_X_DRIFT_LOCKOUT_FRAMES, 
-													remaining_x_drift_lockout_frames);
-
 		break;
 
 		case STATE_SCYTHE_2:
@@ -614,12 +597,6 @@ void Player::update(RoomBounds 								   room_bounds,
 				if(scythe_3_buffered) {in_scythe_3 = true;}
 			}
 
-			// Update X Drift Lockout Frames //
-			remaining_x_drift_lockout_frames--;
-			remaining_x_drift_lockout_frames = clamp(0, 
-													PLAYER_X_DRIFT_LOCKOUT_FRAMES, 
-													remaining_x_drift_lockout_frames);
-
 		break;
 
 		case STATE_SCYTHE_3:
@@ -650,12 +627,6 @@ void Player::update(RoomBounds 								   room_bounds,
 				current_scythe_frame = 0;
 				plummet_eligible     = true;
 			}
-
-			// Update X Drift Lockout Frames //
-			remaining_x_drift_lockout_frames--;
-			remaining_x_drift_lockout_frames = clamp(0, 
-													PLAYER_X_DRIFT_LOCKOUT_FRAMES, 
-													remaining_x_drift_lockout_frames);
 
 		break;
 
@@ -890,6 +861,145 @@ void Player::update(RoomBounds 								   room_bounds,
 
 					delete other_collider_ptr;
 
+				break;
+
+				case LEFT_STEEP_SLOPE_INDEX:
+
+					other_collider_ptr = new Collider(world_x, 
+													  world_y, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT);
+
+					if(collider_ptr->isCollision(*(other_collider_ptr)))
+					{
+						// Derive slope height at player position:
+						int32 index = abs(other_collider_ptr->p1.x() - collider_ptr->p4.x()).integer();
+						index = clamp(0, 7, index);
+						int32 local_height  = left_steep_slope_arr[index];
+						int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					}
+
+					delete other_collider_ptr;
+
+				break;
+				
+				case LEFT_SHALLOW_SLOPE_1_INDEX:
+
+					other_collider_ptr = new Collider(world_x, 
+													  world_y, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT);
+
+					if(collider_ptr->isCollision(*(other_collider_ptr)))
+					{
+						// Derive slope height at player position:
+						int32 index = abs(other_collider_ptr->p1.x() - collider_ptr->p4.x()).integer();
+						index = clamp(0, 7, index);
+						int32 local_height  = left_shallow_slope_1_arr[index];
+						int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					}
+
+					delete other_collider_ptr;
+
+				break;
+
+				case LEFT_SHALLOW_SLOPE_2_INDEX:
+
+					other_collider_ptr = new Collider(world_x, 
+													  world_y, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT);
+
+					if(collider_ptr->isCollision(*(other_collider_ptr)))
+					{
+						// Derive slope height at player position:
+						int32 index = abs(other_collider_ptr->p1.x() - collider_ptr->p4.x()).integer();
+						index = clamp(0, 7, index);
+						int32 local_height  = left_shallow_slope_2_arr[index];
+						int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					}
+
+					delete other_collider_ptr;
+
+				break;
+
+				case RIGHT_STEEP_SLOPE_INDEX:
+
+					other_collider_ptr = new Collider(world_x, 
+													  world_y, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT);
+
+					if(collider_ptr->isCollision(*(other_collider_ptr)))
+					{
+						// Derive slope height at player position:
+						int32 index = (collider_ptr->p1.x() - other_collider_ptr->p1.x()).integer();
+						index = clamp(0, 7, index);
+						int32 local_height  = right_steep_slope_arr[index];
+						int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					}
+
+					delete other_collider_ptr;
+
+				break;
+
+				case RIGHT_SHALLOW_SLOPE_1_INDEX:
+
+					other_collider_ptr = new Collider(world_x, 
+													  world_y, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT);
+
+					if(collider_ptr->isCollision(*(other_collider_ptr)))
+					{
+						// Derive slope height at player position:
+						int32 index = (collider_ptr->p1.x() - other_collider_ptr->p1.x()).integer();
+						index = clamp(0, 7, index);
+						BN_LOG(index);
+						int32 local_height  = right_shallow_slope_1_arr[index];
+						int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					}
+
+					delete other_collider_ptr;
+
+				break;
+
+				case RIGHT_SHALLOW_SLOPE_2_INDEX:
+
+					other_collider_ptr = new Collider(world_x, 
+													  world_y, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT);
+
+					if(collider_ptr->isCollision(*(other_collider_ptr)))
+					{
+						// Derive slope height at player position:
+						int32 index = (collider_ptr->p1.x() - other_collider_ptr->p1.x()).integer();
+						index = clamp(0, 7, index);
+						int32 local_height  = right_shallow_slope_2_arr[index];
+						int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					}
+
+					delete other_collider_ptr;
+				
 				break;
 
 				case ONEWAY_BLOCK_INDEX:
@@ -1144,6 +1254,7 @@ void Player::update(RoomBounds 								   room_bounds,
 					
 					if(collider_ptr->isCollision(*other_collider_ptr) && !kill_player)
 					{
+						rigidbody_ptr->removeForces();
 						rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * 0, 
 						                                                        PLAYER_DEATH_Y_FORCE * UP),
 																				PLAYER_DEATH_DECAY));
@@ -1163,6 +1274,7 @@ void Player::update(RoomBounds 								   room_bounds,
 					
 					if(collider_ptr->isCollision(*other_collider_ptr) && !kill_player)
 					{
+						rigidbody_ptr->removeForces();
 						rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * 0, 
 						                                                        PLAYER_DEATH_Y_FORCE * DOWN), 
 																				PLAYER_DEATH_DECAY));
@@ -1173,7 +1285,6 @@ void Player::update(RoomBounds 								   room_bounds,
 
 				break;
 
-				
 				case LEFT_SPIKE_BLOCK_INDEX:
 
 					other_collider_ptr = new Collider(world_x,
@@ -1183,6 +1294,7 @@ void Player::update(RoomBounds 								   room_bounds,
 					
 					if(collider_ptr->isCollision(*other_collider_ptr) && !kill_player)
 					{
+						rigidbody_ptr->removeForces();
 						rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * LEFT,
 						                                                        PLAYER_DEATH_Y_FORCE * 0), 
 																				PLAYER_DEATH_DECAY));
@@ -1202,6 +1314,7 @@ void Player::update(RoomBounds 								   room_bounds,
 					
 					if(collider_ptr->isCollision(*other_collider_ptr) && !kill_player)
 					{
+						rigidbody_ptr->removeForces();
 						rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * RIGHT,
 						                                                        PLAYER_DEATH_Y_FORCE * 0), 
 																				PLAYER_DEATH_DECAY));
@@ -1210,6 +1323,49 @@ void Player::update(RoomBounds 								   room_bounds,
 
 					delete other_collider_ptr;
 
+				break;
+
+				case LEFT_STEEP_SLOPE_INDEX:
+				case LEFT_SHALLOW_SLOPE_1_INDEX:
+				case LEFT_SHALLOW_SLOPE_2_INDEX:
+				case RIGHT_STEEP_SLOPE_INDEX:
+				case RIGHT_SHALLOW_SLOPE_1_INDEX:
+				case RIGHT_SHALLOW_SLOPE_2_INDEX:
+					
+					other_collider_ptr = new Collider(world_x,
+													  world_y, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT);
+
+					// Test for, and log grounded collision
+					if(test_collider_ptr->isCollision(*other_collider_ptr) && 
+					   rigidbody_ptr->normalized_dir.y() >= 0)
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+
+							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+							{
+								if(bn::keypad::right_held())
+								{
+									dir = RIGHT;
+									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+								}
+								else if(bn::keypad::left_held())
+								{
+									dir = LEFT;
+									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+								}
+							}
+						}
+
+						grounded_detected = true;
+					}
+
+					delete other_collider_ptr;
+					
 				break;
 
 				default:
@@ -1257,9 +1413,7 @@ void Player::update(RoomBounds 								   room_bounds,
 										dir,
 										HITBOX_SCYTHE_1);
 
-		game_objects.push_back(hitbox_1_ptr);
-		game_objects.back()->setCamera(camera);
-		game_objects.back()->object_id = game_objects.size() - 1;
+		hitbox_1_ptr->setCamera(camera);
 	}
 
 	if(create_scythe_hb_2)
@@ -1275,10 +1429,7 @@ void Player::update(RoomBounds 								   room_bounds,
 										PLAYER_SCYTHE_2_HB_HEIGHT,
 										dir,
 										HITBOX_SCYTHE_2);
-
-		game_objects.push_back(hitbox_2_ptr);
-		game_objects.back()->setCamera(camera);
-		game_objects.back()->object_id = game_objects.size() - 1;
+		hitbox_2_ptr->setCamera(camera);
 	}
 
 	if(create_scythe_hb_3)
@@ -1295,18 +1446,69 @@ void Player::update(RoomBounds 								   room_bounds,
 										dir,
 										HITBOX_SCYTHE_3);
 
-		game_objects.push_back(hitbox_3_ptr);
-		game_objects.back()->setCamera(camera);
-		game_objects.back()->object_id = game_objects.size() - 1;
+		hitbox_3_ptr->setCamera(camera);
 	}
 
-	// Update hitbox positions manually
-	if(hitbox_1_ptr != NULL) {hitbox_1_ptr->setPos(bn::point(x().integer() + (PLAYER_SCYTHE_1_X_OFFSET * dir),
-															 y().integer() + PLAYER_SCYTHE_1_Y_OFFSET));}
-	if(hitbox_2_ptr != NULL) {hitbox_2_ptr->setPos(bn::point(x().integer() + (PLAYER_SCYTHE_2_X_OFFSET * dir),
-															 y().integer() + PLAYER_SCYTHE_2_Y_OFFSET));}
-	if(hitbox_3_ptr != NULL) {hitbox_3_ptr->setPos(bn::point(x().integer() + (PLAYER_SCYTHE_3_X_OFFSET * dir),
-															 y().integer() + PLAYER_SCYTHE_3_Y_OFFSET));}
+	// Update hitboxes
+	if(hitbox_1_ptr != NULL) 
+	{
+		hitbox_1_ptr->setPos(bn::point(x().integer() + (PLAYER_SCYTHE_1_X_OFFSET * dir),
+									   y().integer() + PLAYER_SCYTHE_1_Y_OFFSET));
+
+		hitbox_1_ptr->update(room_bounds,
+							 game_objects,
+							 bg_ptr, 
+                    		 cells,
+                    		 bg_item,
+							 camera);
+		hitbox_1_ptr->draw();
+
+		if(hitbox_1_ptr->inactive) 
+		{
+			delete hitbox_1_ptr;
+			hitbox_1_ptr = NULL;
+		}													 
+	}
+	
+	if(hitbox_2_ptr != NULL) 
+	{
+		hitbox_2_ptr->setPos(bn::point(x().integer() + (PLAYER_SCYTHE_2_X_OFFSET * dir),
+									   y().integer() + PLAYER_SCYTHE_2_Y_OFFSET));
+
+		hitbox_2_ptr->update(room_bounds,
+							 game_objects,
+							 bg_ptr, 
+                    		 cells,
+                    		 bg_item,
+							 camera);
+		hitbox_2_ptr->draw();
+
+		if(hitbox_2_ptr->inactive) 
+		{
+			delete hitbox_2_ptr;
+			hitbox_2_ptr = NULL;
+		}
+	}
+	
+	if(hitbox_3_ptr != NULL) 
+	{
+		hitbox_3_ptr->setPos(bn::point(x().integer() + (PLAYER_SCYTHE_3_X_OFFSET * dir),
+									   y().integer() + PLAYER_SCYTHE_3_Y_OFFSET));
+
+		hitbox_3_ptr->update(room_bounds,
+							 game_objects,
+							 bg_ptr, 
+                    		 cells,
+                    		 bg_item,
+							 camera);
+		hitbox_3_ptr->draw();
+
+		if(hitbox_3_ptr->inactive) 
+		{
+			delete hitbox_3_ptr;
+			hitbox_3_ptr = NULL;
+		}
+	}
 	
     ///////////////////
     // Update States //
@@ -1408,18 +1610,21 @@ void Player::setState(PlayerState new_state)
 	{
 		
 		case STATE_GROUNDED_NEUTRAL:
+			remaining_x_drift_lockout_frames = 0;
 			air_frames_elapsed = 0;
 			scythe_2_buffered  = false;
 			scythe_3_buffered  = false;
 		break;
 
 		case STATE_WALL_SLIDE_RIGHT:
+			remaining_x_drift_lockout_frames = 0;
 			air_frames_elapsed = 0;
 			scythe_2_buffered  = false;
 			scythe_3_buffered  = false;
 		break;
 
 		case STATE_WALL_SLIDE_LEFT:
+			remaining_x_drift_lockout_frames = 0;
 			air_frames_elapsed = 0;
 			scythe_2_buffered  = false;
 			scythe_3_buffered  = false;
@@ -1431,6 +1636,7 @@ void Player::setState(PlayerState new_state)
 		break;
 
 		case STATE_AIR_PLUMMET:
+			remaining_x_drift_lockout_frames = 0;
 			scythe_2_buffered = false;
 			scythe_3_buffered = false;
 		break;
@@ -1442,19 +1648,23 @@ void Player::setState(PlayerState new_state)
 
 		case STATE_PHASE_STEP:
 			air_frames_elapsed = 0;
+			remaining_x_drift_lockout_frames = 0;
 			scythe_2_buffered  = false;
 			scythe_3_buffered  = false;
 		break;
 
 		case STATE_SCYTHE_1:
+			remaining_x_drift_lockout_frames = 0;
 			air_frames_elapsed = 0;
 		break;
 
 		case STATE_SCYTHE_2:
+			remaining_x_drift_lockout_frames = 0;
 			air_frames_elapsed = 0;
 		break;
 
 		case STATE_SCYTHE_3:
+			remaining_x_drift_lockout_frames = 0;
 			air_frames_elapsed = 0;
 		break;
 
