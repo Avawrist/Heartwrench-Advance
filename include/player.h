@@ -49,6 +49,7 @@
 #define PLAYER_PROLONGED_GRAVITY             1
 #define PLAYER_PROLONGED_AIR_FRAMES_REQUIRED 15
 #define PLAYER_FAST_FALL_GRAVITY             1
+#define PLAYER_MIN_FAST_FALL_FRAMES          3
 #define PLAYER_PLUMMET_GRAVITY               3
 #define PLAYER_WALL_RIDE_GRAVITY             1
 #define PLAYER_SCYTHE_GRAVITY                1

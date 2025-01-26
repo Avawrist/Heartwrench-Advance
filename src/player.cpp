@@ -224,7 +224,9 @@ void Player::update(RoomBounds 								   room_bounds,
 			{rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE); dir = RIGHT;}
 
 			// Fast Fall
-			if(bn::keypad::down_held() && rigidbody_ptr->normalized_dir.y() >= 0) 
+			if(bn::keypad::down_held() && 
+			   rigidbody_ptr->normalized_dir.y() >= 0 && 
+			   air_frames_elapsed >= PLAYER_MIN_FAST_FALL_FRAMES)
 			{fastFall();}
 			
 			// Late Jump
@@ -861,35 +863,12 @@ void Player::update(RoomBounds 								   room_bounds,
 
 				break;
 
-				case LEFT_STEEP_SLOPE_INDEX:
-
-					other_collider_ptr = new Collider(world_x, 
-													  world_y, 
-													  TILE_WIDTH, 
-													  TILE_HEIGHT);
-
-					if(collider_ptr->isCollision(*(other_collider_ptr)))
-					{
-						// Derive slope height at player position:
-						index = abs(other_collider_ptr->p1.x() - collider_ptr->p4.x()).integer();
-						index = clamp(0, 7, index);
-						local_height  = left_steep_slope_arr[index];
-						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-						// Manually set player position:
-						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
-					}
-
-					delete other_collider_ptr;
-
-				break;
-				
 				case LEFT_SHALLOW_SLOPE_1_INDEX:
 
 					other_collider_ptr = new Collider(world_x, 
-													  world_y, 
+													  world_y + 3, 
 													  TILE_WIDTH, 
-													  TILE_HEIGHT);
+													  TILE_HEIGHT / 4);
 
 					if(collider_ptr->isCollision(*(other_collider_ptr)))
 					{
@@ -906,11 +885,11 @@ void Player::update(RoomBounds 								   room_bounds,
 					delete other_collider_ptr;
 
 				break;
-
+				
 				case LEFT_SHALLOW_SLOPE_2_INDEX:
 
 					other_collider_ptr = new Collider(world_x, 
-													  world_y + (TILE_HEIGHT / 4), 
+													  world_y + 2, 
 													  TILE_WIDTH, 
 													  TILE_HEIGHT / 2);
 
@@ -930,7 +909,30 @@ void Player::update(RoomBounds 								   room_bounds,
 
 				break;
 
-				case RIGHT_STEEP_SLOPE_INDEX:
+				case LEFT_SHALLOW_SLOPE_3_INDEX:
+
+					other_collider_ptr = new Collider(world_x, 
+													  world_y + 1, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT - 2);
+
+					if(collider_ptr->isCollision(*(other_collider_ptr)))
+					{
+						// Derive slope height at player position:
+						index = abs(other_collider_ptr->p1.x() - collider_ptr->p4.x()).integer();
+						index = clamp(0, 7, index);
+						local_height  = left_shallow_slope_3_arr[index];
+						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					}
+
+					delete other_collider_ptr;
+
+				break;
+
+				case LEFT_SHALLOW_SLOPE_4_INDEX:
 
 					other_collider_ptr = new Collider(world_x, 
 													  world_y, 
@@ -940,9 +942,55 @@ void Player::update(RoomBounds 								   room_bounds,
 					if(collider_ptr->isCollision(*(other_collider_ptr)))
 					{
 						// Derive slope height at player position:
-						index = (collider_ptr->p1.x() - other_collider_ptr->p1.x()).integer();
+						index = abs(other_collider_ptr->p1.x() - collider_ptr->p4.x()).integer();
 						index = clamp(0, 7, index);
-						local_height  = right_steep_slope_arr[index];
+						local_height  = left_shallow_slope_4_arr[index];
+						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					}
+
+					delete other_collider_ptr;
+
+				break;
+
+				case LEFT_STEEP_SLOPE_1_INDEX:
+
+					other_collider_ptr = new Collider(world_x, 
+													  world_y + 2, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT / 2);
+
+					if(collider_ptr->isCollision(*(other_collider_ptr)))
+					{
+						// Derive slope height at player position:
+						index = abs(other_collider_ptr->p1.x() - collider_ptr->p4.x()).integer();
+						index = clamp(0, 7, index);
+						local_height  = left_steep_slope_1_arr[index];
+						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					}
+
+					delete other_collider_ptr;
+
+				break;
+
+				case LEFT_STEEP_SLOPE_2_INDEX:
+
+					other_collider_ptr = new Collider(world_x, 
+													  world_y, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT);
+
+					if(collider_ptr->isCollision(*(other_collider_ptr)))
+					{
+						// Derive slope height at player position:
+						index = abs(other_collider_ptr->p1.x() - collider_ptr->p4.x()).integer();
+						index = clamp(0, 7, index);
+						local_height  = left_steep_slope_2_arr[index];
 						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 						// Manually set player position:
@@ -956,16 +1004,16 @@ void Player::update(RoomBounds 								   room_bounds,
 				case RIGHT_SHALLOW_SLOPE_1_INDEX:
 
 					other_collider_ptr = new Collider(world_x, 
-													  world_y, 
+													  world_y + 3, 
 													  TILE_WIDTH, 
-													  TILE_HEIGHT);
+													  TILE_HEIGHT / 4);
 
 					if(collider_ptr->isCollision(*(other_collider_ptr)))
 					{
 						// Derive slope height at player position:
 						index = (collider_ptr->p1.x() - other_collider_ptr->p1.x()).integer();
 						index = clamp(0, 7, index);
-						local_height = right_shallow_slope_1_arr[index];
+						local_height  = right_shallow_slope_1_arr[index];
 						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 						// Manually set player position:
@@ -979,7 +1027,7 @@ void Player::update(RoomBounds 								   room_bounds,
 				case RIGHT_SHALLOW_SLOPE_2_INDEX:
 
 					other_collider_ptr = new Collider(world_x, 
-													  world_y + (TILE_HEIGHT / 4),
+													  world_y + 2, 
 													  TILE_WIDTH, 
 													  TILE_HEIGHT / 2);
 
@@ -988,7 +1036,99 @@ void Player::update(RoomBounds 								   room_bounds,
 						// Derive slope height at player position:
 						index = (collider_ptr->p1.x() - other_collider_ptr->p1.x()).integer();
 						index = clamp(0, 7, index);
-						local_height  = right_shallow_slope_2_arr[index];
+						local_height = right_shallow_slope_2_arr[index];
+						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					}
+
+					delete other_collider_ptr;
+
+				break;
+
+				case RIGHT_SHALLOW_SLOPE_3_INDEX:
+
+					other_collider_ptr = new Collider(world_x, 
+													  world_y + 1,
+													  TILE_WIDTH, 
+													  TILE_HEIGHT - 2);
+
+					if(collider_ptr->isCollision(*(other_collider_ptr)))
+					{
+						// Derive slope height at player position:
+						index = (collider_ptr->p1.x() - other_collider_ptr->p1.x()).integer();
+						index = clamp(0, 7, index);
+						local_height  = right_shallow_slope_3_arr[index];
+						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					}
+
+					delete other_collider_ptr;
+				
+				break;
+
+				case RIGHT_SHALLOW_SLOPE_4_INDEX:
+
+					other_collider_ptr = new Collider(world_x, 
+													  world_y,
+													  TILE_WIDTH, 
+													  TILE_HEIGHT);
+
+					if(collider_ptr->isCollision(*(other_collider_ptr)))
+					{
+						// Derive slope height at player position:
+						index = (collider_ptr->p1.x() - other_collider_ptr->p1.x()).integer();
+						index = clamp(0, 7, index);
+						local_height  = right_shallow_slope_4_arr[index];
+						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					}
+
+					delete other_collider_ptr;
+				
+				break;
+
+				case RIGHT_STEEP_SLOPE_1_INDEX:
+
+					other_collider_ptr = new Collider(world_x, 
+													  world_y + 2,
+													  TILE_WIDTH, 
+													  TILE_HEIGHT / 2);
+
+					if(collider_ptr->isCollision(*(other_collider_ptr)))
+					{
+						// Derive slope height at player position:
+						index = (collider_ptr->p1.x() - other_collider_ptr->p1.x()).integer();
+						index = clamp(0, 7, index);
+						local_height  = right_steep_slope_1_arr[index];
+						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					}
+
+					delete other_collider_ptr;
+				
+				break;
+
+				case RIGHT_STEEP_SLOPE_2_INDEX:
+
+					other_collider_ptr = new Collider(world_x, 
+													  world_y,
+													  TILE_WIDTH, 
+													  TILE_HEIGHT);
+
+					if(collider_ptr->isCollision(*(other_collider_ptr)))
+					{
+						// Derive slope height at player position:
+						index = (collider_ptr->p1.x() - other_collider_ptr->p1.x()).integer();
+						index = clamp(0, 7, index);
+						local_height  = right_steep_slope_2_arr[index];
 						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 						// Manually set player position:
@@ -1326,56 +1466,12 @@ void Player::update(RoomBounds 								   room_bounds,
 
 				break;
 
-				case LEFT_STEEP_SLOPE_INDEX:
-					
-					other_collider_ptr = new Collider(world_x,
-													  world_y, 
-													  TILE_WIDTH, 
-													  TILE_HEIGHT);
-
-					index = abs(other_collider_ptr->p1.x() - collider_ptr->p4.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = left_steep_slope_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Test for, and log grounded collision
-					if(test_collider_ptr->isCollision(*other_collider_ptr) &&
-					   test_collider_ptr->p4.y() >= global_height)
-					{
-						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						   rigidbody_ptr->normalized_dir.y() >= 0)
-						{
-							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
-							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-
-							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
-							{
-								if(bn::keypad::right_held())
-								{
-									dir = RIGHT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
-								}
-								else if(bn::keypad::left_held())
-								{
-									dir = LEFT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
-								}
-							}
-						}
-
-						grounded_detected = true;
-					}
-
-					delete other_collider_ptr;
-					
-				break;
-
 				case LEFT_SHALLOW_SLOPE_1_INDEX:
-
+					
 					other_collider_ptr = new Collider(world_x,
-													  world_y, 
+													  world_y + 3, 
 													  TILE_WIDTH, 
-													  TILE_HEIGHT);
+													  TILE_HEIGHT / 4);
 
 					index = abs(other_collider_ptr->p1.x() - collider_ptr->p4.x()).integer();
 					index = clamp(0, 7, index);
@@ -1411,13 +1507,13 @@ void Player::update(RoomBounds 								   room_bounds,
 					}
 
 					delete other_collider_ptr;
-
+					
 				break;
 
 				case LEFT_SHALLOW_SLOPE_2_INDEX:
-
+					
 					other_collider_ptr = new Collider(world_x,
-													  world_y + (TILE_HEIGHT / 4),
+													  world_y + 2, 
 													  TILE_WIDTH, 
 													  TILE_HEIGHT / 2);
 
@@ -1430,7 +1526,7 @@ void Player::update(RoomBounds 								   room_bounds,
 					if(test_collider_ptr->isCollision(*other_collider_ptr) &&
 					   test_collider_ptr->p4.y() >= global_height)
 					{
-						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED && 
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
 						   rigidbody_ptr->normalized_dir.y() >= 0)
 						{
 							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
@@ -1455,24 +1551,156 @@ void Player::update(RoomBounds 								   room_bounds,
 					}
 
 					delete other_collider_ptr;
-
+					
 				break;
 
-				case RIGHT_STEEP_SLOPE_INDEX:
+				case LEFT_SHALLOW_SLOPE_3_INDEX:
+					
+					other_collider_ptr = new Collider(world_x,
+													  world_y + 1, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT - 2);
 
+					index = abs(other_collider_ptr->p1.x() - collider_ptr->p4.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = left_shallow_slope_3_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Test for, and log grounded collision
+					if(test_collider_ptr->isCollision(*other_collider_ptr) &&
+					   test_collider_ptr->p4.y() >= global_height)
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+						   rigidbody_ptr->normalized_dir.y() >= 0)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+
+							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+							{
+								if(bn::keypad::right_held())
+								{
+									dir = RIGHT;
+									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+								}
+								else if(bn::keypad::left_held())
+								{
+									dir = LEFT;
+									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+								}
+							}
+						}
+
+						grounded_detected = true;
+					}
+
+					delete other_collider_ptr;
+					
+				break;
+
+				case LEFT_SHALLOW_SLOPE_4_INDEX:
+					
 					other_collider_ptr = new Collider(world_x,
 													  world_y, 
 													  TILE_WIDTH, 
 													  TILE_HEIGHT);
 
-					index = (collider_ptr->p1.x() - other_collider_ptr->p1.x()).integer();
+					index = abs(other_collider_ptr->p1.x() - collider_ptr->p4.x()).integer();
 					index = clamp(0, 7, index);
-					local_height  = right_steep_slope_arr[index];
+					local_height  = left_shallow_slope_4_arr[index];
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Test for, and log grounded collision
 					if(test_collider_ptr->isCollision(*other_collider_ptr) &&
-					   collider_ptr->p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
+					   test_collider_ptr->p4.y() >= global_height)
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+						   rigidbody_ptr->normalized_dir.y() >= 0)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+
+							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+							{
+								if(bn::keypad::right_held())
+								{
+									dir = RIGHT;
+									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+								}
+								else if(bn::keypad::left_held())
+								{
+									dir = LEFT;
+									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+								}
+							}
+						}
+
+						grounded_detected = true;
+					}
+
+					delete other_collider_ptr;
+					
+				break;
+
+				case LEFT_STEEP_SLOPE_1_INDEX:
+					
+					other_collider_ptr = new Collider(world_x,
+													  world_y + 2, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT / 2);
+
+					index = abs(other_collider_ptr->p1.x() - collider_ptr->p4.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = left_steep_slope_1_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Test for, and log grounded collision
+					if(test_collider_ptr->isCollision(*other_collider_ptr) &&
+					   test_collider_ptr->p4.y() >= global_height)
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+						   rigidbody_ptr->normalized_dir.y() >= 0)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+
+							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+							{
+								if(bn::keypad::right_held())
+								{
+									dir = RIGHT;
+									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+								}
+								else if(bn::keypad::left_held())
+								{
+									dir = LEFT;
+									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+								}
+							}
+						}
+
+						grounded_detected = true;
+					}
+
+					delete other_collider_ptr;
+					
+				break;
+
+				case LEFT_STEEP_SLOPE_2_INDEX:
+					
+					other_collider_ptr = new Collider(world_x,
+													  world_y, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT);
+
+					index = abs(other_collider_ptr->p1.x() - collider_ptr->p4.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = left_steep_slope_2_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Test for, and log grounded collision
+					if(test_collider_ptr->isCollision(*other_collider_ptr) &&
+					   test_collider_ptr->p4.y() >= global_height)
 					{
 						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
 						   rigidbody_ptr->normalized_dir.y() >= 0)
@@ -1503,11 +1731,11 @@ void Player::update(RoomBounds 								   room_bounds,
 				break;
 
 				case RIGHT_SHALLOW_SLOPE_1_INDEX:
-				
+
 					other_collider_ptr = new Collider(world_x,
-													  world_y, 
+													  world_y + 3, 
 													  TILE_WIDTH, 
-													  TILE_HEIGHT);
+													  TILE_HEIGHT / 4);
 
 					index = (collider_ptr->p1.x() - other_collider_ptr->p1.x()).integer();
 					index = clamp(0, 7, index);
@@ -1543,13 +1771,13 @@ void Player::update(RoomBounds 								   room_bounds,
 					}
 
 					delete other_collider_ptr;
-				
+					
 				break;
 
 				case RIGHT_SHALLOW_SLOPE_2_INDEX:
 
 					other_collider_ptr = new Collider(world_x,
-													  world_y + (TILE_HEIGHT / 4), 
+													  world_y + 2, 
 													  TILE_WIDTH, 
 													  TILE_HEIGHT / 2);
 
@@ -1587,7 +1815,183 @@ void Player::update(RoomBounds 								   room_bounds,
 					}
 
 					delete other_collider_ptr;
+					
+				break;
 
+				case RIGHT_SHALLOW_SLOPE_3_INDEX:
+
+					other_collider_ptr = new Collider(world_x,
+													  world_y + 1, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT - 2);
+
+					index = (collider_ptr->p1.x() - other_collider_ptr->p1.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = right_shallow_slope_3_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Test for, and log grounded collision
+					if(test_collider_ptr->isCollision(*other_collider_ptr) &&
+					   collider_ptr->p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+						   rigidbody_ptr->normalized_dir.y() >= 0)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+
+							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+							{
+								if(bn::keypad::right_held())
+								{
+									dir = RIGHT;
+									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+								}
+								else if(bn::keypad::left_held())
+								{
+									dir = LEFT;
+									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+								}
+							}
+						}
+
+						grounded_detected = true;
+					}
+
+					delete other_collider_ptr;
+					
+				break;
+
+				case RIGHT_SHALLOW_SLOPE_4_INDEX:
+
+					other_collider_ptr = new Collider(world_x,
+													  world_y, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT);
+
+					index = (collider_ptr->p1.x() - other_collider_ptr->p1.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = right_shallow_slope_4_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Test for, and log grounded collision
+					if(test_collider_ptr->isCollision(*other_collider_ptr) &&
+					   collider_ptr->p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+						   rigidbody_ptr->normalized_dir.y() >= 0)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+
+							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+							{
+								if(bn::keypad::right_held())
+								{
+									dir = RIGHT;
+									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+								}
+								else if(bn::keypad::left_held())
+								{
+									dir = LEFT;
+									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+								}
+							}
+						}
+
+						grounded_detected = true;
+					}
+
+					delete other_collider_ptr;
+					
+				break;
+
+				case RIGHT_STEEP_SLOPE_1_INDEX:
+
+					other_collider_ptr = new Collider(world_x,
+													  world_y + 2, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT / 2);
+
+					index = (collider_ptr->p1.x() - other_collider_ptr->p1.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = right_steep_slope_1_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Test for, and log grounded collision
+					if(test_collider_ptr->isCollision(*other_collider_ptr) &&
+					   collider_ptr->p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+						   rigidbody_ptr->normalized_dir.y() >= 0)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+
+							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+							{
+								if(bn::keypad::right_held())
+								{
+									dir = RIGHT;
+									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+								}
+								else if(bn::keypad::left_held())
+								{
+									dir = LEFT;
+									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+								}
+							}
+						}
+
+						grounded_detected = true;
+					}
+
+					delete other_collider_ptr;
+					
+				break;
+
+				case RIGHT_STEEP_SLOPE_2_INDEX:
+
+					other_collider_ptr = new Collider(world_x,
+													  world_y, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT);
+
+					index = (collider_ptr->p1.x() - other_collider_ptr->p1.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = right_steep_slope_2_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Test for, and log grounded collision
+					if(test_collider_ptr->isCollision(*other_collider_ptr) &&
+					   collider_ptr->p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+						   rigidbody_ptr->normalized_dir.y() >= 0)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+
+							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+							{
+								if(bn::keypad::right_held())
+								{
+									dir = RIGHT;
+									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+								}
+								else if(bn::keypad::left_held())
+								{
+									dir = LEFT;
+									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+								}
+							}
+						}
+
+						grounded_detected = true;
+					}
+
+					delete other_collider_ptr;
+					
 				break;
 
 				default:

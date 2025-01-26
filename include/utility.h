@@ -29,12 +29,21 @@ typedef int   int32;
 #define RIGHT_SPIKE_BLOCK_INDEX     7
 #define LEFT_SPIKE_BLOCK_INDEX      8
 
-#define LEFT_STEEP_SLOPE_INDEX      9
-#define LEFT_SHALLOW_SLOPE_1_INDEX  10
-#define LEFT_SHALLOW_SLOPE_2_INDEX  11
-#define RIGHT_STEEP_SLOPE_INDEX     12
-#define RIGHT_SHALLOW_SLOPE_1_INDEX 13 
-#define RIGHT_SHALLOW_SLOPE_2_INDEX 14
+#define LEFT_SHALLOW_SLOPE_1_INDEX  9
+#define LEFT_SHALLOW_SLOPE_2_INDEX  10
+#define LEFT_SHALLOW_SLOPE_3_INDEX  11
+#define LEFT_SHALLOW_SLOPE_4_INDEX  12
+
+#define LEFT_STEEP_SLOPE_1_INDEX 13
+#define LEFT_STEEP_SLOPE_2_INDEX 14
+
+#define RIGHT_SHALLOW_SLOPE_1_INDEX  15
+#define RIGHT_SHALLOW_SLOPE_2_INDEX  16
+#define RIGHT_SHALLOW_SLOPE_3_INDEX  17
+#define RIGHT_SHALLOW_SLOPE_4_INDEX  18
+
+#define RIGHT_STEEP_SLOPE_1_INDEX 19
+#define RIGHT_STEEP_SLOPE_2_INDEX 20
 
 #define TILE_WIDTH  8
 #define TILE_HEIGHT 8
@@ -44,12 +53,21 @@ typedef int   int32;
 #define ONEWAYBLOCK_COLLIDER_Y_OFFSET -4
 
 // Global Arrays
-extern int32 left_steep_slope_arr[TILE_WIDTH];
 extern int32 left_shallow_slope_1_arr[TILE_WIDTH];
 extern int32 left_shallow_slope_2_arr[TILE_WIDTH];
-extern int32 right_steep_slope_arr[TILE_WIDTH];
+extern int32 left_shallow_slope_3_arr[TILE_WIDTH];
+extern int32 left_shallow_slope_4_arr[TILE_WIDTH];
+
+extern int32 left_steep_slope_1_arr[TILE_WIDTH];
+extern int32 left_steep_slope_2_arr[TILE_WIDTH];
+
 extern int32 right_shallow_slope_1_arr[TILE_WIDTH];
-extern int32 right_shallow_slope_2_arr[TILE_WIDTH]; 
+extern int32 right_shallow_slope_2_arr[TILE_WIDTH];
+extern int32 right_shallow_slope_3_arr[TILE_WIDTH];
+extern int32 right_shallow_slope_4_arr[TILE_WIDTH];
+
+extern int32 right_steep_slope_1_arr[TILE_WIDTH];
+extern int32 right_steep_slope_2_arr[TILE_WIDTH];
 
 // Debug Mode
 #define DEBUG_BUILD false
