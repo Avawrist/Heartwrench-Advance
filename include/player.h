@@ -56,7 +56,7 @@
 #define PLAYER_GRAVITY_DECAY 	             1
 
 #define PLAYER_ROLL_SPEED_THRESHOLD 6
-#define PLAYER_ROLL_X_SPEED 		2
+#define PLAYER_ROLL_X_SPEED 		3
 #define PLAYER_ROLL_Y_SPEED 		0
 #define PLAYER_ROLL_DECAY   		0.1
 

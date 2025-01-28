@@ -15,6 +15,7 @@
 #include "player.h"
 #include "devil_platform.h"
 #include "angel_platform.h"
+#include "test_enemy.h"
 
 /////////////////
 // Struct Room //
