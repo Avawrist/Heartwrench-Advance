@@ -82,7 +82,8 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/build/bn_sprite_items_hitbox.h G:/game/include/devil_platform.h \
  G:/game/build/bn_sprite_items_devil_platform.h \
  G:/game/include/angel_platform.h \
- G:/game/build/bn_sprite_items_angel_platform.h
+ G:/game/build/bn_sprite_items_angel_platform.h \
+ G:/game/include/test_enemy.h G:/game/build/bn_sprite_items_test_enemy.h
 G:/game/include/level.h:
 G:/butano-master/butano/include/bn_log.h:
 G:/butano-master/butano/include/bn_config_log.h:
@@ -175,3 +176,5 @@ G:/game/include/devil_platform.h:
 G:/game/build/bn_sprite_items_devil_platform.h:
 G:/game/include/angel_platform.h:
 G:/game/build/bn_sprite_items_angel_platform.h:
+G:/game/include/test_enemy.h:
+G:/game/build/bn_sprite_items_test_enemy.h:

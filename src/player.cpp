@@ -66,6 +66,7 @@ Player::Player(const Player& other) : GameObject(other)
 {
 
 	state             	 = other.state;
+	dir                  = other.dir;
     x_speed        	  	 = other.x_speed;
     jump_force           = other.jump_force;
 	secondary_jump_force = other.secondary_jump_force;

@@ -24,8 +24,8 @@ int main()
     // Create Test Level
     Level* current_level_ptr = new Level(LEVEL_TEST);
 
-    //BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
-    //BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
+    BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
+    BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
 
     // Game Loop
     while(true)
@@ -53,7 +53,7 @@ int main()
 
         // Update Core
         bn::core::update();
-        //BN_LOG(bn::core::last_missed_frames());
+        BN_LOG(bn::core::last_missed_frames());
     }
 
     delete current_level_ptr;

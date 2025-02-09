@@ -14,8 +14,13 @@
 // Struct TestEnemy //
 //////////////////////
 
-#define TEST_ENEMY_COLLIDER_WIDTH  24
-#define TEST_ENEMY_COLLIDER_HEIGHT 24
+#define TEST_ENEMY_COLLIDER_WIDTH  16
+#define TEST_ENEMY_COLLIDER_HEIGHT 16
+
+#define TEST_ENEMY_GRAVITY         3
+#define TEST_ENEMY_GRAVITY_DECAY   1
+
+#define TEST_ENEMY_GRAVITY_FORCE   new Force(bn::fixed_point_t<12>(0, TEST_ENEMY_GRAVITY), TEST_ENEMY_GRAVITY_DECAY)
 
 struct TestEnemy : GameObject {
 
