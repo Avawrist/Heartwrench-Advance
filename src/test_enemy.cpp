@@ -73,6 +73,7 @@ void TestEnemy::update(RoomBounds room_bounds,
 	// Create one temporary collider for each axis. If a collider finds a collision
 	// in its axis, move the temp collider AND the Player back along the dir vector
 	// in units of 1 until the collision is resolved on that axis.
+    /*
 	Collider* temp_collider_x_ptr = new Collider(collider_ptr->x(),
 											     collider_ptr->y() - rigidbody_ptr->final_dir.y(),
 											     collider_ptr->width,
@@ -81,12 +82,24 @@ void TestEnemy::update(RoomBounds room_bounds,
 											     collider_ptr->y(),
 											     collider_ptr->width,
 												 collider_ptr->height);
+
 	Collider* other_collider_ptr = NULL;
+    */
+    /*
+    Collider temp_collider_x_ptr(collider_ptr->x(),
+                                 collider_ptr->y() - rigidbody_ptr->final_dir.y(),
+                                 collider_ptr->width,
+                                 collider_ptr->height);
+    Collider temp_collider_y_ptr(collider_ptr->x() - rigidbody_ptr->final_dir.x(),
+                                 collider_ptr->y(),
+                                 collider_ptr->width,
+                                 collider_ptr->height);
+    */
 
     ////////////////////////////
     // Resolve Tile Collision //
     ////////////////////////////
-    
+    /*
 	for(int32 y = -1; y < 2; y++)
 	{
 		for(int32 x = -1; x < 2; x++)
@@ -485,5 +498,6 @@ void TestEnemy::update(RoomBounds room_bounds,
     // Clean up temp colliders
 	delete temp_collider_x_ptr;
 	delete temp_collider_y_ptr;
+    */
 
 }
