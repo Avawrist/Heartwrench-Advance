@@ -6,7 +6,6 @@ TestEnemy::TestEnemy()
     // Reset Variables //
     sprite_ptr.reset();
     animate_action_ptr.reset();
-    delete rigidbody_ptr;
 
     // Init Variables //
 	object_type = TEST_ENEMY;
@@ -18,11 +17,9 @@ TestEnemy::TestEnemy()
 								  								  0,
 								  								  0);
 
-    rigidbody_ptr = new RigidBody();
-	
-	collider        = Collider(x(), y(), TEST_ENEMY_COLLIDER_WIDTH, TEST_ENEMY_COLLIDER_HEIGHT);
-	collider_x_axis = collider;
-	collider_y_axis = collider;
+	collider          = Collider(x(), y(), TEST_ENEMY_COLLIDER_WIDTH, TEST_ENEMY_COLLIDER_HEIGHT);
+	collider_x_axis   = collider;
+	collider_y_axis   = collider;
 	collider_offset_x = 0;
 	collider_offset_y = 0;
     
@@ -49,14 +46,14 @@ void TestEnemy::update(RoomBounds room_bounds,
     // State Machine //
     ///////////////////
 
-    rigidbody_ptr->addForce(TEST_ENEMY_GRAVITY_FORCE);
+    rigidbody.addForce(TEST_ENEMY_GRAVITY_FORCE);
 
     ////////////////////
     // Update Physics //
     ////////////////////
 
     // Apply Decay to Forces
-	rigidbody_ptr->applyDecay();
+	rigidbody.applyDecay();
 
 	// Apply forces to enemy
 	applyForces();
@@ -76,8 +73,8 @@ void TestEnemy::update(RoomBounds room_bounds,
 	// in its axis, move the temp collider AND the Player back along the dir vector
 	// in units of 1 until the collision is resolved on that axis.
 
-	collider_x_axis.setPos(collider.x(), collider.y() - rigidbody_ptr->final_dir.y());
-	collider_y_axis.setPos(collider.x() - rigidbody_ptr->final_dir.x(), collider.y());
+	collider_x_axis.setPos(collider.x(), collider.y() - rigidbody.final_dir.y());
+	collider_y_axis.setPos(collider.x() - rigidbody.final_dir.x(), collider.y());
 
 	Collider other_collider;
 
@@ -133,24 +130,27 @@ void TestEnemy::update(RoomBounds room_bounds,
 											  TILE_WIDTH + block_w_offset, 
 											  TILE_HEIGHT);
 			
-					// Handle Default Collision Cases //
-					while(collider_x_axis.isCollision(other_collider))
+					if(collider.isCollision(other_collider))
 					{
-						collider_x_axis.setX(collider_x_axis.x() - rigidbody_ptr->normalized_dir.x());
-						setX(this->x() - rigidbody_ptr->normalized_dir.x());
-					}
+						// Handle Default Collision Cases //
+						while(collider_x_axis.isCollision(other_collider))
+						{
+							collider_x_axis.setX(collider_x_axis.x() - rigidbody.normalized_dir.x());
+							setX(this->x() - rigidbody.normalized_dir.x());
+						}
 
-					while(collider_y_axis.isCollision(other_collider))
-					{
-						collider_y_axis.setY(collider_y_axis.y() - rigidbody_ptr->normalized_dir.y());
-						setY(this->y() - rigidbody_ptr->normalized_dir.y());
-					}
+						while(collider_y_axis.isCollision(other_collider))
+						{
+							collider_y_axis.setY(collider_y_axis.y() - rigidbody.normalized_dir.y());
+							setY(this->y() - rigidbody.normalized_dir.y());
+						}
 
-					// If there is still collision somehow, must be corner case //
-					while(collider.isCollision(other_collider))
-					{
-						// We always resolve diagonal corner collisions with a horizontal shift. 
-						setX(this->x() - rigidbody_ptr->normalized_dir.x());
+						// If there is still collision somehow, must be corner case //
+						while(collider.isCollision(other_collider))
+						{
+							// We always resolve diagonal corner collisions with a horizontal shift. 
+							setX(this->x() - rigidbody.normalized_dir.x());
+						}
 					}
 
 				break;
@@ -414,7 +414,7 @@ void TestEnemy::update(RoomBounds room_bounds,
 											  TILE_WIDTH, 
 											  ONEWAYBLOCK_COLLIDER_HEIGHT);
 
-					if(rigidbody_ptr->normalized_dir.y() >= 0 &&
+					if(rigidbody.normalized_dir.y() >= 0 &&
 					   collider_y_axis.p4.y() <= other_collider.p1.y() + TEST_ENEMY_GRAVITY)
 					{
 

@@ -5,7 +5,6 @@ AngelPlatform::AngelPlatform(bn::point _p1, bn::point _p2)
     // Reset Variables //
     sprite_ptr.reset();
     animate_action_ptr.reset();
-    delete rigidbody_ptr;
 
     // Init Variables //
     object_type = ANGEL_PLATFORM;
@@ -15,8 +14,6 @@ AngelPlatform::AngelPlatform(bn::point _p1, bn::point _p2)
 								                                  bn::sprite_items::angel_platform.tiles_item(),
 								                                  0,
 								                                  0);
-
-    rigidbody_ptr = new RigidBody();
 
 	collider = Collider(x() + collider_offset_x, 
                         y() + collider_offset_y, 
@@ -66,9 +63,9 @@ void AngelPlatform::update(RoomBounds                                 room_bound
         if(normalized_dir_x || normalized_dir_y)
         {
             // Move toward target
-            rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(speed * normalized_dir.x(), 
-                                                                    speed * normalized_dir.y()),
-                                                                    ANGEL_PLATFORM_DECAY));
+            rigidbody.addForce(new Force(bn::fixed_point_t<12>(speed * normalized_dir.x(), 
+                                                               speed * normalized_dir.y()),
+                                                               ANGEL_PLATFORM_DECAY));
         }
         else
         {
@@ -83,7 +80,7 @@ void AngelPlatform::update(RoomBounds                                 room_bound
         ///////////////////
         
         // Apply Decay to Forces
-        rigidbody_ptr->applyDecay();
+        rigidbody.applyDecay();
 
         // Apply forces to angel platform
         applyForces();
@@ -114,19 +111,19 @@ void AngelPlatform::update(RoomBounds                                 room_bound
                 {
                     player_ptr->received_platform_force = true;
 
-                    if(rigidbody_ptr->final_dir.y() <= 0)
+                    if(rigidbody.final_dir.y() <= 0)
                     {
                         // If descending, applying force to the x axis is all that's needed.
                         // The player gravity will take care of the rest. 
-                        player_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(rigidbody_ptr->final_dir.x(), 0),
+                        player_ptr->rigidbody.addForce(new Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), 0),
                                                                       ANGEL_PLATFORM_DECAY));
                     }
                     else
                     {
                         // If ascending, apply force to BOTH axes and offset y by 1 
                         // so the player hugs the platform tight.
-                        player_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(rigidbody_ptr->final_dir.x(), 
-                                                                                            rigidbody_ptr->final_dir.y() + 1),
+                        player_ptr->rigidbody.addForce(new Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), 
+                                                                                            rigidbody.final_dir.y() + 1),
                                                                       ANGEL_PLATFORM_DECAY));
                     }
                 }

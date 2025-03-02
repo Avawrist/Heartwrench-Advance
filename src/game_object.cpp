@@ -15,8 +15,6 @@ GameObject::GameObject()
 								  								  0,
 								  								  0);
     sprite_palette_ptr = bn::sprite_palette_items::default_sprite_palette.create_palette();
-
-    rigidbody_ptr = new RigidBody();
 	
     collider = Collider(x() + collider_offset_x, 
                         y() + collider_offset_y, 
@@ -34,9 +32,11 @@ GameObject::GameObject(const GameObject& other)
     animate_action_ptr = other.animate_action_ptr;
     sprite_palette_ptr = other.sprite_palette_ptr;
 
-    rigidbody_ptr = new RigidBody(*(other.rigidbody_ptr));
+    rigidbody = other.rigidbody;
 
-    collider = other.collider;
+    collider          = other.collider;
+    collider_x_axis   = other.collider_x_axis;
+    collider_y_axis   = other.collider_y_axis;
     collider_offset_x = other.collider_offset_x;
 	collider_offset_y = other.collider_offset_y;
 
@@ -53,8 +53,6 @@ GameObject::~GameObject()
     sprite_ptr.reset();
     animate_action_ptr.reset();
     sprite_palette_ptr.reset();
-    
-    delete rigidbody_ptr;
 }
 
 void GameObject::applyForces()
@@ -62,8 +60,8 @@ void GameObject::applyForces()
     // Apply all of the forces in the RigidBody to the object
     bn::fixed_point final_dir(0, 0);
     
-    bn::ivector<Force*>::iterator current = rigidbody_ptr->forces.begin();
-    bn::ivector<Force*>::iterator last    = rigidbody_ptr->forces.end();
+    bn::ivector<Force*>::iterator current = rigidbody.forces.begin();
+    bn::ivector<Force*>::iterator last    = rigidbody.forces.end();
     while(current != last)
     {
         // Update object position with new force
@@ -83,8 +81,8 @@ void GameObject::applyForces()
 	if(final_dir.x() != 0) {normalized_dir_x = final_dir.x() / abs(final_dir.x().integer());}
 	if(final_dir.y() != 0) {normalized_dir_y = final_dir.y() / abs(final_dir.y().integer());}
 
-    rigidbody_ptr->normalized_dir = bn::fixed_point(normalized_dir_x, normalized_dir_y);
-    rigidbody_ptr->final_dir      = final_dir;
+    rigidbody.normalized_dir = bn::fixed_point(normalized_dir_x, normalized_dir_y);
+    rigidbody.final_dir      = final_dir;
 }
 
 void GameObject::draw()

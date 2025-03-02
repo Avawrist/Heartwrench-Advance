@@ -32,7 +32,7 @@ Collider::Collider(const Collider& other)
 
 }
 
-void Collider::operator=(const Collider& other)
+Collider& Collider::operator =(const Collider& other)
 {
 
     width    = other.width;
@@ -40,6 +40,8 @@ void Collider::operator=(const Collider& other)
 	position = other.position;
 	p1       = other.p1;
 	p4       = other.p4;
+
+    return *this;
 
 }
 

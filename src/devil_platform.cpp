@@ -5,7 +5,6 @@ DevilPlatform::DevilPlatform(bn::point _p1, bn::point _p2)
     // Reset Variables //
     sprite_ptr.reset();
     animate_action_ptr.reset();
-    delete rigidbody_ptr;
 
     // Init Variables //
     object_type = DEVIL_PLATFORM;
@@ -15,8 +14,6 @@ DevilPlatform::DevilPlatform(bn::point _p1, bn::point _p2)
 								                                  bn::sprite_items::devil_platform.tiles_item(),
 								                                  0,
 								                                  0);
-
-    rigidbody_ptr = new RigidBody();
 
 	collider = Collider(x() + collider_offset_x, 
                         y() + collider_offset_y, 
@@ -67,7 +64,7 @@ void DevilPlatform::update(RoomBounds                                 room_bound
         if(normalized_dir_x || normalized_dir_y)
         {
             // Move toward target
-            rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(speed * normalized_dir.x(), 
+            rigidbody.addForce(new Force(bn::fixed_point_t<12>(speed * normalized_dir.x(), 
                                                                     speed * normalized_dir.y()),
                                                                     DEVIL_PLATFORM_DECAY));
         }
@@ -84,7 +81,7 @@ void DevilPlatform::update(RoomBounds                                 room_bound
         ///////////////////
         
         // Apply Decay to Forces
-        rigidbody_ptr->applyDecay();
+        rigidbody.applyDecay();
 
         // Apply forces to devil platform
         applyForces();
@@ -126,10 +123,10 @@ void DevilPlatform::update(RoomBounds                                 room_bound
                     if(collider.isCollision(*object_collider_ptr))
                     {
                         test_collider_x_ptr = new Collider(collider.x(),
-                                                           collider.y() - rigidbody_ptr->final_dir.y(),
+                                                           collider.y() - rigidbody.final_dir.y(),
                                                            collider.width,
                                                            collider.height);
-                        test_collider_y_ptr = new Collider(collider.x() - rigidbody_ptr->final_dir.x(),
+                        test_collider_y_ptr = new Collider(collider.x() - rigidbody.final_dir.x(),
                                                            collider.y(),
                                                            collider.width,
                                                            collider.height);
@@ -156,7 +153,7 @@ void DevilPlatform::update(RoomBounds                                 room_bound
                     if(test_collider_slide_ptr->isCollision(*object_collider_ptr) && 
                     ((Player*)object_ptr)->state != STATE_GROUNDED_NEUTRAL)
                     {
-                        object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(0, rigidbody_ptr->final_dir.y()),
+                        object_ptr->rigidbody.addForce(new Force(bn::fixed_point_t<12>(0, rigidbody.final_dir.y()),
                                                                     DEVIL_PLATFORM_DECAY));
                     }
 
@@ -165,20 +162,20 @@ void DevilPlatform::update(RoomBounds                                 room_bound
                     {
                         object_ptr->received_platform_force = true;
 
-                        if(rigidbody_ptr->final_dir.y() <= 0)
+                        if(rigidbody.final_dir.y() <= 0)
                         {
                             // If descending, applying force to the x axis is all that's needed.
                             // The player gravity will take care of the rest. 
-                            object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(rigidbody_ptr->final_dir.x(), 0),
+                            object_ptr->rigidbody.addForce(new Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), 0),
                                                                         DEVIL_PLATFORM_DECAY));
                         }
                         else
                         {
                             // If ascending, apply force to BOTH axes and offset y by 1 
                             // so the player hugs the platform tight.
-                            object_ptr->rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(rigidbody_ptr->final_dir.x(), 
-                                                                                                rigidbody_ptr->final_dir.y() + 1),
-                                                                        DEVIL_PLATFORM_DECAY));
+                            object_ptr->rigidbody.addForce(new Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), 
+                                                                                           rigidbody.final_dir.y() + 1),
+                                                                                           DEVIL_PLATFORM_DECAY));
                         }
                     }
 

@@ -44,6 +44,9 @@ struct RigidBody {
 
 	RigidBody();
 	RigidBody(const RigidBody& other);
+
+	RigidBody& operator =(const RigidBody& other);
+
 	void   applyDecay();
     uint32 addForce(Force* force_p);
 	void   removeForces();

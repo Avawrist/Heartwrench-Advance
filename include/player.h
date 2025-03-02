@@ -183,6 +183,10 @@ struct Player : GameObject {
 	bool kill_player;
 	bool is_dead;
 
+	Collider test_collider;
+	Collider test_collider_right;
+	Collider test_collider_left;
+
 	Hitbox* hitbox_1_ptr;
 	Hitbox* hitbox_2_ptr;
 	Hitbox* hitbox_3_ptr;

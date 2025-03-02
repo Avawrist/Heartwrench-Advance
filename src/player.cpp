@@ -10,7 +10,6 @@ Player::Player()
     // Reset Variables //
     sprite_ptr.reset();
     animate_action_ptr.reset();
-    delete rigidbody_ptr;
 
     // Init Variables //
 	object_type = PLAYER;
@@ -22,11 +21,12 @@ Player::Player()
 								  								  0,
 								  								  0);
 
-    rigidbody_ptr = new RigidBody();
-
-	collider        = Collider(x(), y(), PLAYER_COLLIDER_WIDTH, PLAYER_COLLIDER_HEIGHT);
-	collider_x_axis = collider;
-	collider_y_axis = collider;
+	collider            = Collider(x(), y(), PLAYER_COLLIDER_WIDTH, PLAYER_COLLIDER_HEIGHT);
+	collider_x_axis     = collider;
+	collider_y_axis     = collider;
+	test_collider       = collider;
+	test_collider_right = collider;
+	test_collider_left  = collider;
 	collider_offset_x = 0;
 	collider_offset_y = 0;
     
@@ -95,6 +95,10 @@ Player::Player(const Player& other) : GameObject(other)
 	kill_player           = other.kill_player;
 	is_dead               = other.is_dead;
 
+	test_collider         = other.test_collider;
+	test_collider_right   = other.test_collider_right;
+	test_collider_left    = other.test_collider_left;
+
 	hitbox_1_ptr = other.hitbox_1_ptr;
 	hitbox_2_ptr = other.hitbox_2_ptr;
 	hitbox_3_ptr = other.hitbox_3_ptr;
@@ -149,12 +153,12 @@ void Player::update(RoomBounds 								   room_bounds,
 			// Update walk speed //
 			if(bn::keypad::left_released())        
 			{
-				rigidbody_ptr->addForce(PLAYER_X_LEFT_DECAY_FORCE);
+				rigidbody.addForce(PLAYER_X_LEFT_DECAY_FORCE);
 				x_speed = PLAYER_MIN_X_SPEED;
 			}
 			else if (bn::keypad::right_released()) 
 			{
-				rigidbody_ptr->addForce(PLAYER_X_RIGHT_DECAY_FORCE);
+				rigidbody.addForce(PLAYER_X_RIGHT_DECAY_FORCE);
 				x_speed = PLAYER_MIN_X_SPEED;
 			}
 
@@ -169,10 +173,10 @@ void Player::update(RoomBounds 								   room_bounds,
 			
 			// Walk
 			if(bn::keypad::left_held())       
-			{rigidbody_ptr->addForce(PLAYER_X_LEFT_FORCE); dir = LEFT;}
+			{rigidbody.addForce(PLAYER_X_LEFT_FORCE); dir = LEFT;}
 
 			else if(bn::keypad::right_held()) 
-			{rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE); dir = RIGHT;}
+			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE); dir = RIGHT;}
 
 			// Jump
 			if(bn::keypad::a_pressed()) {jump();}
@@ -186,7 +190,7 @@ void Player::update(RoomBounds 								   room_bounds,
 			{in_scythe_1 = true;}
 			
 			// Add Gravity if Grounded on OWP
-			if(grounded_owp_detected) {rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);}
+			if(grounded_owp_detected) {rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 
 		break;
 	
@@ -208,12 +212,12 @@ void Player::update(RoomBounds 								   room_bounds,
 			// Simulate momentum
 			if(bn::keypad::left_released())        
 			{
-				rigidbody_ptr->addForce(PLAYER_X_LEFT_DECAY_FORCE);
+				rigidbody.addForce(PLAYER_X_LEFT_DECAY_FORCE);
 				x_speed = PLAYER_MIN_X_SPEED;
 			}
 			else if (bn::keypad::right_released()) 
 			{
-				rigidbody_ptr->addForce(PLAYER_X_RIGHT_DECAY_FORCE);
+				rigidbody.addForce(PLAYER_X_RIGHT_DECAY_FORCE);
 				x_speed = PLAYER_MIN_X_SPEED;
 			}
 
@@ -221,14 +225,14 @@ void Player::update(RoomBounds 								   room_bounds,
 
 			// Drift
 			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames)       
-			{rigidbody_ptr->addForce(PLAYER_X_LEFT_FORCE); dir = LEFT;}
+			{rigidbody.addForce(PLAYER_X_LEFT_FORCE); dir = LEFT;}
 
 			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames)
-			{rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE); dir = RIGHT;}
+			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE); dir = RIGHT;}
 
 			// Fast Fall
 			if(bn::keypad::down_held() && 
-			   rigidbody_ptr->normalized_dir.y() >= 0 && 
+			   rigidbody.normalized_dir.y() >= 0 && 
 			   air_frames_elapsed >= PLAYER_MIN_FAST_FALL_FRAMES)
 			{fastFall();}
 			
@@ -238,7 +242,7 @@ void Player::update(RoomBounds 								   room_bounds,
 
 			// High Jump
 			if(bn::keypad::a_held() && remaining_jump_input_frames > 0)
-			{rigidbody_ptr->addForce(PLAYER_SECONDARY_JUMP_FORCE);}
+			{rigidbody.addForce(PLAYER_SECONDARY_JUMP_FORCE);}
 
 			else if(bn::keypad::a_released()) 
 			{remaining_jump_input_frames = 0;}
@@ -254,9 +258,9 @@ void Player::update(RoomBounds 								   room_bounds,
 			// Add Gravity //
 			if(!remaining_x_drift_lockout_frames)
 			{
-				rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);
+				rigidbody.addForce(PLAYER_GRAVITY_FORCE);
 				if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
-				{rigidbody_ptr->addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
+				{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
 			}
 
 			// Update Remaining Jump Input Frames //
@@ -291,14 +295,14 @@ void Player::update(RoomBounds 								   room_bounds,
 
 			// Drift
 			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames)       
-			{rigidbody_ptr->addForce(PLAYER_X_PLUMMET_LEFT_FORCE); dir = LEFT;}
+			{rigidbody.addForce(PLAYER_X_PLUMMET_LEFT_FORCE); dir = LEFT;}
 
 			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames)
-			{rigidbody_ptr->addForce(PLAYER_X_PLUMMET_RIGHT_FORCE); dir = RIGHT;}
+			{rigidbody.addForce(PLAYER_X_PLUMMET_RIGHT_FORCE); dir = RIGHT;}
 			
 			// Add Plummet Gravity //
-			rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);
-			rigidbody_ptr->addForce(PLAYER_PLUMMET_GRAVITY_FORCE);
+			rigidbody.addForce(PLAYER_GRAVITY_FORCE);
+			rigidbody.addForce(PLAYER_PLUMMET_GRAVITY_FORCE);
 
 			// Update Squish frames for squish eligibility // 
 			air_frames_elapsed++;
@@ -325,14 +329,14 @@ void Player::update(RoomBounds 								   room_bounds,
 	
 			// Drift
 			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames) 
-			{rigidbody_ptr->addForce(PLAYER_X_LEFT_FORCE);}
+			{rigidbody.addForce(PLAYER_X_LEFT_FORCE);}
 			else if(bn::keypad::right_held()) 								 
 			{gripping_wall_right = true; dir = LEFT;}
 
 			// Wall Jump
 			if(bn::keypad::a_pressed())
 			{
-				rigidbody_ptr->addForce(PLAYER_WALL_JUMP_LEFT_FORCE);
+				rigidbody.addForce(PLAYER_WALL_JUMP_LEFT_FORCE);
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
 				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
@@ -348,16 +352,16 @@ void Player::update(RoomBounds 								   room_bounds,
 			{in_scythe_1 = true;}
 
 			// Fast Fall
-			if(bn::keypad::down_held() && rigidbody_ptr->normalized_dir.y() >= 0) 
+			if(bn::keypad::down_held() && rigidbody.normalized_dir.y() >= 0) 
 			{fastFall();}
 			
 			// Add Gravity //
-			if(gripping_wall_right) {rigidbody_ptr->addForce(PLAYER_WALL_GRAVITY_FORCE);}
+			if(gripping_wall_right) {rigidbody.addForce(PLAYER_WALL_GRAVITY_FORCE);}
 			else 
 			{
-				rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);
+				rigidbody.addForce(PLAYER_GRAVITY_FORCE);
 				if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
-				{rigidbody_ptr->addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
+				{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
 			}
 
 			// Update Squish frames for squish eligibility // 
@@ -386,12 +390,12 @@ void Player::update(RoomBounds 								   room_bounds,
 			// Drift
 			if(bn::keypad::left_held()) {gripping_wall_left = true; dir = RIGHT;}
 			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames) 
-			{rigidbody_ptr->addForce(PLAYER_X_RIGHT_FORCE);}
+			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE);}
 
 			// Wall Jump
 			if(bn::keypad::a_pressed())
 			{
-				rigidbody_ptr->addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);
+				rigidbody.addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
 				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
@@ -407,16 +411,16 @@ void Player::update(RoomBounds 								   room_bounds,
 			{in_scythe_1 = true;}
 
 			// Fast Fall
-			if(bn::keypad::down_held() && rigidbody_ptr->normalized_dir.y() >= 0) 
+			if(bn::keypad::down_held() && rigidbody.normalized_dir.y() >= 0) 
 			{fastFall();}
 			
 			// Add Gravity //
-			if(gripping_wall_left) {rigidbody_ptr->addForce(PLAYER_WALL_GRAVITY_FORCE);}
+			if(gripping_wall_left) {rigidbody.addForce(PLAYER_WALL_GRAVITY_FORCE);}
 			else 
 			{
-				rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE);
+				rigidbody.addForce(PLAYER_GRAVITY_FORCE);
 				if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
-				{rigidbody_ptr->addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
+				{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
 			}
 
 			// Update Squish frames for squish eligibility // 
@@ -646,7 +650,7 @@ void Player::update(RoomBounds 								   room_bounds,
     ///////////////////
     
 	// Apply Decay to Forces
-	rigidbody_ptr->applyDecay();
+	rigidbody.applyDecay();
 
 	// Apply forces to player
 	applyForces();
@@ -663,8 +667,8 @@ void Player::update(RoomBounds 								   room_bounds,
 	bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
 
 	// Update colliders for each axis. 
-	collider_x_axis.setPos(collider.x(), collider.y() - rigidbody_ptr->final_dir.y());
-	collider_y_axis.setPos(collider.x() - rigidbody_ptr->final_dir.x(), collider.y());
+	collider_x_axis.setPos(collider.x(), collider.y() - rigidbody.final_dir.y());
+	collider_y_axis.setPos(collider.x() - rigidbody.final_dir.x(), collider.y());
 
 	// Placeholder for other objects
 	Collider other_collider;
@@ -686,24 +690,24 @@ void Player::update(RoomBounds 								   room_bounds,
 					// Handle Default Collision Cases //
 					while(collider_x_axis.isCollision(other_collider))
 					{
-						if(rigidbody_ptr->normalized_dir.x() == 0) {kill_player = true; break;}
-						collider_x_axis.setX(collider_x_axis.x() - rigidbody_ptr->normalized_dir.x());
-						setX(this->x() - rigidbody_ptr->normalized_dir.x());
+						if(rigidbody.normalized_dir.x() == 0) {kill_player = true; break;}
+						collider_x_axis.setX(collider_x_axis.x() - rigidbody.normalized_dir.x());
+						setX(this->x() - rigidbody.normalized_dir.x());
 					}
 
 					while(collider_y_axis.isCollision(other_collider))
 					{
-						if(rigidbody_ptr->normalized_dir.y() == 0) {kill_player = true; break;}
-						collider_y_axis.setY(collider_y_axis.y() - rigidbody_ptr->normalized_dir.y());
-						setY(this->y() - rigidbody_ptr->normalized_dir.y());
+						if(rigidbody.normalized_dir.y() == 0) {kill_player = true; break;}
+						collider_y_axis.setY(collider_y_axis.y() - rigidbody.normalized_dir.y());
+						setY(this->y() - rigidbody.normalized_dir.y());
 					}
 
 					// If there is still collision somehow, must be corner case //
 					while(collider.isCollision(other_collider))
 					{
-						if(rigidbody_ptr->normalized_dir.x() == 0) {kill_player = true; break;}
+						if(rigidbody.normalized_dir.x() == 0) {kill_player = true; break;}
 						// We always resolve diagonal corner collisions with a horizontal shift. 
-						setX(this->x() - rigidbody_ptr->normalized_dir.x());
+						setX(this->x() - rigidbody.normalized_dir.x());
 					}	
 				}
 
@@ -821,28 +825,31 @@ void Player::update(RoomBounds 								   room_bounds,
 										      TILE_WIDTH + block_w_offset, 
 											  TILE_HEIGHT);
 
-					// Handle Default Collision Cases //
-					while(collider_x_axis.isCollision(other_collider))
+					if(collider.isCollision(other_collider))
 					{
-						if(rigidbody_ptr->normalized_dir.x() == 0) {kill_player = true; break;}
-						collider_x_axis.setX(collider_x_axis.x() - rigidbody_ptr->normalized_dir.x());
-						setX(this->x() - rigidbody_ptr->normalized_dir.x());
-					}
+						// Handle Default Collision Cases //
+						while(collider_x_axis.isCollision(other_collider))
+						{
+							if(rigidbody.normalized_dir.x() == 0) {kill_player = true; break;}
+							collider_x_axis.setX(collider_x_axis.x() - rigidbody.normalized_dir.x());
+							setX(this->x() - rigidbody.normalized_dir.x());
+						}
 
-					while(collider_y_axis.isCollision(other_collider))
-					{
-						if(rigidbody_ptr->normalized_dir.y() == 0) {kill_player = true; break;}
-						collider_y_axis.setY(collider_y_axis.y() - rigidbody_ptr->normalized_dir.y());
-						setY(this->y() - rigidbody_ptr->normalized_dir.y());
-						v_collision_grace_frames = PLAYER_V_COLLISION_MAX_GRACE_FRAMES;
-					}
+						while(collider_y_axis.isCollision(other_collider))
+						{
+							if(rigidbody.normalized_dir.y() == 0) {kill_player = true; break;}
+							collider_y_axis.setY(collider_y_axis.y() - rigidbody.normalized_dir.y());
+							setY(this->y() - rigidbody.normalized_dir.y());
+							v_collision_grace_frames = PLAYER_V_COLLISION_MAX_GRACE_FRAMES;
+						}
 
-					// If there is still collision somehow, must be corner case //
-					while(collider.isCollision(other_collider))
-					{
-						if(rigidbody_ptr->normalized_dir.x() == 0) {kill_player = true; break;}
-						// We always resolve diagonal corner collisions with a horizontal shift. 
-						setX(this->x() - rigidbody_ptr->normalized_dir.x());
+						// If there is still collision somehow, must be corner case //
+						while(collider.isCollision(other_collider))
+						{
+							if(rigidbody.normalized_dir.x() == 0) {kill_player = true; break;}
+							// We always resolve diagonal corner collisions with a horizontal shift. 
+							setX(this->x() - rigidbody.normalized_dir.x());
+						}
 					}
 						
 				break;
@@ -1106,11 +1113,11 @@ void Player::update(RoomBounds 								   room_bounds,
 											  TILE_WIDTH, 
 											  ONEWAYBLOCK_COLLIDER_HEIGHT);
 
-					if(rigidbody_ptr->normalized_dir.y() >= 0 &&
+					if(rigidbody.normalized_dir.y() >= 0 &&
 					   collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
 					{
 
-						if(bn::keypad::down_held())  {rigidbody_ptr->addForce(PLAYER_GRAVITY_FORCE); break;}
+						if(bn::keypad::down_held())  {rigidbody.addForce(PLAYER_GRAVITY_FORCE); break;}
 
 						// Handle Corner Case //
 						if(!collider_x_axis.isCollision(other_collider) &&
@@ -1151,23 +1158,17 @@ void Player::update(RoomBounds 								   room_bounds,
     grounded_detected     = false;
 	grounded_owp_detected = false;
 
-	// Create test collider for grounded collision checks
+	// Update test colliders for grounded collision checks
 	const uint32 ground_ray_length = 1;
-	Collider*    test_collider_ptr = new Collider(collider.x(),
-											      collider.y() + ground_ray_length,
-												  collider.width,
-												  collider.height);
+	test_collider.setPos(collider.x(),
+                         collider.y() + ground_ray_length);
 
 	// Create test colliders for wall collision checks
-	const uint32 wall_ray_length         = 1;
-	Collider*    test_collider_right_ptr = new Collider(collider.x() + wall_ray_length,
-													    collider.y(),
-													    collider.width,
-												 		collider.height);
-	Collider*    test_collider_left_ptr  = new Collider(collider.x() - wall_ray_length,
-													    collider.y(),
-													    collider.width,
-												 		collider.height);	
+	const uint32 wall_ray_length = 1;
+	test_collider_right.setPos(collider.x() + wall_ray_length,
+                               collider.y());
+	test_collider_left.setPos(collider.x() - wall_ray_length,
+                              collider.y());
 
 	/////////////////////////////////////
 	// Get State Info from GameObjects //
@@ -1182,8 +1183,8 @@ void Player::update(RoomBounds 								   room_bounds,
 			case DEVIL_PLATFORM:
 
 				// Test for, and log grounded collision
-				if(test_collider_ptr->isCollision(other_collider) && 
-				   rigidbody_ptr->normalized_dir.y() >= 0)
+				if(test_collider.isCollision(other_collider) && 
+				   rigidbody.normalized_dir.y() >= 0)
 				{
 					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED) 
 					{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
@@ -1192,13 +1193,13 @@ void Player::update(RoomBounds 								   room_bounds,
 				}
 
 				// Test for wall riding on right side
-				if(test_collider_right_ptr->isCollision(other_collider) && 
-				   rigidbody_ptr->final_dir.y() >= 0)
+				if(test_collider_right.isCollision(other_collider) && 
+				   rigidbody.final_dir.y() >= 0)
 				{wall_right_detected = true;}
 				
 				// Test for wall riding on left side
-				if(test_collider_left_ptr->isCollision(other_collider) && 
-				   rigidbody_ptr->final_dir.y() >= 0)
+				if(test_collider_left.isCollision(other_collider) && 
+				   rigidbody.final_dir.y() >= 0)
 				{wall_left_detected = true;}
 
 			break;
@@ -1209,8 +1210,8 @@ void Player::update(RoomBounds 								   room_bounds,
 				if(collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
 				{
 					// Test for, and log grounded collision
-					if(test_collider_ptr->isCollision(other_collider) && 
-					   rigidbody_ptr->normalized_dir.y() >= 0)
+					if(test_collider.isCollision(other_collider) && 
+					   rigidbody.normalized_dir.y() >= 0)
 					{ 
 						if(!bn::keypad::down_held()) 
 						{
@@ -1271,25 +1272,25 @@ void Player::update(RoomBounds 								   room_bounds,
 											  TILE_HEIGHT);
 
 					// Test for, and log grounded collision
-					if(test_collider_ptr->isCollision(other_collider) && 
-					   rigidbody_ptr->normalized_dir.y() >= 0)
+					if(test_collider.isCollision(other_collider) && 
+					   rigidbody.normalized_dir.y() >= 0)
 					{
 						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED)
 						{
 							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
 							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
 
-							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+							if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
 							{
 								if(bn::keypad::right_held())
 								{
 									dir = RIGHT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 								else if(bn::keypad::left_held())
 								{
 									dir = LEFT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 							}
 						}
@@ -1297,15 +1298,15 @@ void Player::update(RoomBounds 								   room_bounds,
 					}
 
 					// Test for wall riding on right side
-					if(test_collider_right_ptr->isCollision(other_collider) && 
-					   rigidbody_ptr->final_dir.y() >= 0)
+					if(test_collider_right.isCollision(other_collider) && 
+					   rigidbody.final_dir.y() >= 0)
 					{
 						wall_right_detected = true;
 					}
 					
 					// Test for wall riding on left side
-					if(test_collider_left_ptr->isCollision(other_collider) && 
-					   rigidbody_ptr->final_dir.y() >= 0)
+					if(test_collider_left.isCollision(other_collider) && 
+					   rigidbody.final_dir.y() >= 0)
 					{
 						wall_left_detected = true;
 					}
@@ -1322,8 +1323,8 @@ void Player::update(RoomBounds 								   room_bounds,
 					if(collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
 					{
 						// Test for, and log grounded collision
-						if(test_collider_ptr->isCollision(other_collider) && 
-						   rigidbody_ptr->normalized_dir.y() >= 0)
+						if(test_collider.isCollision(other_collider) && 
+						   rigidbody.normalized_dir.y() >= 0)
 						{
 							if(!bn::keypad::down_held()) 
 							{
@@ -1346,10 +1347,10 @@ void Player::update(RoomBounds 								   room_bounds,
 					
 					if(collider.isCollision(other_collider) && !kill_player)
 					{
-						rigidbody_ptr->removeForces();
-						rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * 0, 
-						                                                        PLAYER_DEATH_Y_FORCE * UP),
-																				PLAYER_DEATH_DECAY));
+						rigidbody.removeForces();
+						rigidbody.addForce(new Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * 0, 
+																			PLAYER_DEATH_Y_FORCE * UP),
+																			PLAYER_DEATH_DECAY));
 					 	kill_player = true;
 					}
 
@@ -1364,10 +1365,10 @@ void Player::update(RoomBounds 								   room_bounds,
 					
 					if(collider.isCollision(other_collider) && !kill_player)
 					{
-						rigidbody_ptr->removeForces();
-						rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * 0, 
-						                                                        PLAYER_DEATH_Y_FORCE * DOWN), 
-																				PLAYER_DEATH_DECAY));
+						rigidbody.removeForces();
+						rigidbody.addForce(new Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * 0, 
+																			PLAYER_DEATH_Y_FORCE * DOWN), 
+																			PLAYER_DEATH_DECAY));
 					 	kill_player = true;
 					}
 
@@ -1382,10 +1383,10 @@ void Player::update(RoomBounds 								   room_bounds,
 					
 					if(collider.isCollision(other_collider) && !kill_player)
 					{
-						rigidbody_ptr->removeForces();
-						rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * LEFT,
-						                                                        PLAYER_DEATH_Y_FORCE * 0), 
-																				PLAYER_DEATH_DECAY));
+						rigidbody.removeForces();
+						rigidbody.addForce(new Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * LEFT,
+																			PLAYER_DEATH_Y_FORCE * 0), 
+																			PLAYER_DEATH_DECAY));
 					 	kill_player = true;
 					}
 
@@ -1400,10 +1401,10 @@ void Player::update(RoomBounds 								   room_bounds,
 					
 					if(collider.isCollision(other_collider) && !kill_player)
 					{
-						rigidbody_ptr->removeForces();
-						rigidbody_ptr->addForce(new Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * RIGHT,
-						                                                        PLAYER_DEATH_Y_FORCE * 0), 
-																				PLAYER_DEATH_DECAY));
+						rigidbody.removeForces();
+						rigidbody.addForce(new Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * RIGHT,
+																			PLAYER_DEATH_Y_FORCE * 0), 
+																			PLAYER_DEATH_DECAY));
 					 	kill_player = true;
 					}
 
@@ -1422,26 +1423,26 @@ void Player::update(RoomBounds 								   room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Test for, and log grounded collision
-					if(test_collider_ptr->isCollision(other_collider) &&
-					   test_collider_ptr->p4.y() >= global_height)
+					if(test_collider.isCollision(other_collider) &&
+					   test_collider.p4.y() >= global_height)
 					{
 						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						   rigidbody_ptr->normalized_dir.y() >= 0)
+						   rigidbody.normalized_dir.y() >= 0)
 						{
 							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
 
-							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+							if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
 							{
 								if(bn::keypad::right_held())
 								{
 									dir = RIGHT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 								else if(bn::keypad::left_held())
 								{
 									dir = LEFT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 							}
 						}
@@ -1464,26 +1465,26 @@ void Player::update(RoomBounds 								   room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Test for, and log grounded collision
-					if(test_collider_ptr->isCollision(other_collider) &&
-					   test_collider_ptr->p4.y() >= global_height)
+					if(test_collider.isCollision(other_collider) &&
+					   test_collider.p4.y() >= global_height)
 					{
 						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						   rigidbody_ptr->normalized_dir.y() >= 0)
+						   rigidbody.normalized_dir.y() >= 0)
 						{
 							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
 
-							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+							if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
 							{
 								if(bn::keypad::right_held())
 								{
 									dir = RIGHT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 								else if(bn::keypad::left_held())
 								{
 									dir = LEFT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 							}
 						}
@@ -1506,26 +1507,26 @@ void Player::update(RoomBounds 								   room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Test for, and log grounded collision
-					if(test_collider_ptr->isCollision(other_collider) &&
-					   test_collider_ptr->p4.y() >= global_height)
+					if(test_collider.isCollision(other_collider) &&
+					   test_collider.p4.y() >= global_height)
 					{
 						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						   rigidbody_ptr->normalized_dir.y() >= 0)
+						   rigidbody.normalized_dir.y() >= 0)
 						{
 							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
 
-							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+							if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
 							{
 								if(bn::keypad::right_held())
 								{
 									dir = RIGHT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 								else if(bn::keypad::left_held())
 								{
 									dir = LEFT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 							}
 						}
@@ -1548,26 +1549,26 @@ void Player::update(RoomBounds 								   room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Test for, and log grounded collision
-					if(test_collider_ptr->isCollision(other_collider) &&
-					   test_collider_ptr->p4.y() >= global_height)
+					if(test_collider.isCollision(other_collider) &&
+					   test_collider.p4.y() >= global_height)
 					{
 						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						   rigidbody_ptr->normalized_dir.y() >= 0)
+						   rigidbody.normalized_dir.y() >= 0)
 						{
 							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
 
-							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+							if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
 							{
 								if(bn::keypad::right_held())
 								{
 									dir = RIGHT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 								else if(bn::keypad::left_held())
 								{
 									dir = LEFT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 							}
 						}
@@ -1590,26 +1591,26 @@ void Player::update(RoomBounds 								   room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Test for, and log grounded collision
-					if(test_collider_ptr->isCollision(other_collider) &&
-					   test_collider_ptr->p4.y() >= global_height)
+					if(test_collider.isCollision(other_collider) &&
+					   test_collider.p4.y() >= global_height)
 					{
 						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						   rigidbody_ptr->normalized_dir.y() >= 0)
+						   rigidbody.normalized_dir.y() >= 0)
 						{
 							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
 
-							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+							if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
 							{
 								if(bn::keypad::right_held())
 								{
 									dir = RIGHT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 								else if(bn::keypad::left_held())
 								{
 									dir = LEFT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 							}
 						}
@@ -1632,26 +1633,26 @@ void Player::update(RoomBounds 								   room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Test for, and log grounded collision
-					if(test_collider_ptr->isCollision(other_collider) &&
-					   test_collider_ptr->p4.y() >= global_height)
+					if(test_collider.isCollision(other_collider) &&
+					   test_collider.p4.y() >= global_height)
 					{
 						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						   rigidbody_ptr->normalized_dir.y() >= 0)
+						   rigidbody.normalized_dir.y() >= 0)
 						{
 							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
 
-							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+							if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
 							{
 								if(bn::keypad::right_held())
 								{
 									dir = RIGHT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 								else if(bn::keypad::left_held())
 								{
 									dir = LEFT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 							}
 						}
@@ -1674,26 +1675,26 @@ void Player::update(RoomBounds 								   room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Test for, and log grounded collision
-					if(test_collider_ptr->isCollision(other_collider) &&
+					if(test_collider.isCollision(other_collider) &&
 					   collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
 					{
 						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						   rigidbody_ptr->normalized_dir.y() >= 0)
+						   rigidbody.normalized_dir.y() >= 0)
 						{
 							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
 
-							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+							if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
 							{
 								if(bn::keypad::right_held())
 								{
 									dir = RIGHT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 								else if(bn::keypad::left_held())
 								{
 									dir = LEFT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 							}
 						}
@@ -1716,26 +1717,26 @@ void Player::update(RoomBounds 								   room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Test for, and log grounded collision
-					if(test_collider_ptr->isCollision(other_collider) &&
+					if(test_collider.isCollision(other_collider) &&
 					   collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
 					{
 						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						   rigidbody_ptr->normalized_dir.y() >= 0)
+						   rigidbody.normalized_dir.y() >= 0)
 						{
 							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
 
-							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+							if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
 							{
 								if(bn::keypad::right_held())
 								{
 									dir = RIGHT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 								else if(bn::keypad::left_held())
 								{
 									dir = LEFT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 							}
 						}
@@ -1758,26 +1759,26 @@ void Player::update(RoomBounds 								   room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Test for, and log grounded collision
-					if(test_collider_ptr->isCollision(other_collider) &&
+					if(test_collider.isCollision(other_collider) &&
 					   collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
 					{
 						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						   rigidbody_ptr->normalized_dir.y() >= 0)
+						   rigidbody.normalized_dir.y() >= 0)
 						{
 							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
 
-							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+							if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
 							{
 								if(bn::keypad::right_held())
 								{
 									dir = RIGHT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 								else if(bn::keypad::left_held())
 								{
 									dir = LEFT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 							}
 						}
@@ -1800,26 +1801,26 @@ void Player::update(RoomBounds 								   room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Test for, and log grounded collision
-					if(test_collider_ptr->isCollision(other_collider) &&
+					if(test_collider.isCollision(other_collider) &&
 					   collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
 					{
 						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						   rigidbody_ptr->normalized_dir.y() >= 0)
+						   rigidbody.normalized_dir.y() >= 0)
 						{
 							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
 
-							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+							if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
 							{
 								if(bn::keypad::right_held())
 								{
 									dir = RIGHT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 								else if(bn::keypad::left_held())
 								{
 									dir = LEFT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 							}
 						}
@@ -1842,26 +1843,26 @@ void Player::update(RoomBounds 								   room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Test for, and log grounded collision
-					if(test_collider_ptr->isCollision(other_collider) &&
+					if(test_collider.isCollision(other_collider) &&
 					   collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
 					{
 						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						   rigidbody_ptr->normalized_dir.y() >= 0)
+						   rigidbody.normalized_dir.y() >= 0)
 						{
 							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
 
-							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+							if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
 							{
 								if(bn::keypad::right_held())
 								{
 									dir = RIGHT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 								else if(bn::keypad::left_held())
 								{
 									dir = LEFT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 							}
 						}
@@ -1884,26 +1885,26 @@ void Player::update(RoomBounds 								   room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Test for, and log grounded collision
-					if(test_collider_ptr->isCollision(other_collider) &&
+					if(test_collider.isCollision(other_collider) &&
 					   collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
 					{
 						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						   rigidbody_ptr->normalized_dir.y() >= 0)
+						   rigidbody.normalized_dir.y() >= 0)
 						{
 							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
 
-							if(rigidbody_ptr->final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+							if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
 							{
 								if(bn::keypad::right_held())
 								{
 									dir = RIGHT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 								else if(bn::keypad::left_held())
 								{
 									dir = LEFT;
-									rigidbody_ptr->addForce(PLAYER_ROLL_FORCE);
+									rigidbody.addForce(PLAYER_ROLL_FORCE);
 								}
 							}
 						}
@@ -1918,11 +1919,6 @@ void Player::update(RoomBounds 								   room_bounds,
 			}
 		}
 	}
-
-	// Clean up temp colliders
-	delete test_collider_ptr;
-	delete test_collider_right_ptr;
-	delete test_collider_left_ptr;
 
 	////////////////////
 	// Clamp Position //
@@ -2124,6 +2120,13 @@ void Player::update(RoomBounds 								   room_bounds,
     if(v_scale > 1) {sprite_ptr->set_vertical_scale(v_scale - increment);}
     else if (v_scale < 1) {sprite_ptr->set_vertical_scale(v_scale + increment);}
     if(abs(1 - sprite_ptr->vertical_scale()) < increment) {sprite_ptr->set_vertical_scale(1);}
+
+	// Test
+	BN_LOG("===========");
+	BN_LOG(collider.x());
+	BN_LOG(collider.y());
+	BN_LOG(collider.width);
+	BN_LOG(collider.height);
 	
 }
 
@@ -2131,14 +2134,14 @@ void Player::jump()
 {
 	remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
 	late_jump_grace_frames      = 0;
-	rigidbody_ptr->addForce(PLAYER_JUMP_FORCE);
+	rigidbody.addForce(PLAYER_JUMP_FORCE);
 	sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 	sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
 }
 
 void Player::fastFall()
 {
-	rigidbody_ptr->addForce(PLAYER_FAST_GRAVITY_FORCE);
+	rigidbody.addForce(PLAYER_FAST_GRAVITY_FORCE);
 	sprite_ptr->set_vertical_scale(PLAYER_FALL_STRETCH_V);
 	sprite_ptr->set_horizontal_scale(PLAYER_FALL_STRETCH_H);
 }

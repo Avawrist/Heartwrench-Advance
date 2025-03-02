@@ -28,7 +28,8 @@ struct Collider {
 		 	 uint32 _width,
 			 uint32 _height);
 	Collider(const Collider& other);
-	void operator=(const Collider& c2);
+	
+	Collider& operator =(const Collider& other);
 	
 	void update();
     void draw();

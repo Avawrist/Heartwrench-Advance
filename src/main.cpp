@@ -22,7 +22,7 @@ int main()
     bn::core::init();
     
     // Create Test Level
-    Level* current_level_ptr = new Level(LEVEL_TEST);
+    Level current_level(LEVEL_TEST);
 
     BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
     BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
@@ -32,29 +32,27 @@ int main()
     {
         // Update Game
 
-        //BN_PROFILER_START("");
+        BN_PROFILER_START("");
 
         // Update Levels
-        if(current_level_ptr->cam_is_scrolling)
+        if(current_level.cam_is_scrolling)
         {
-            current_level_ptr->updateCamera();
+            current_level.updateCamera();
         }
         else
         {
-            current_level_ptr->updateAndDraw();
-            current_level_ptr->updateCamera();
-            current_level_ptr->freeInactiveObjects();
-            current_level_ptr->reloadOnDeath();
-            current_level_ptr->transitionRoom();
+            current_level.updateAndDraw();
+            current_level.updateCamera();
+            current_level.freeInactiveObjects();
+            current_level.reloadOnDeath();
+            current_level.transitionRoom();
         }
 
-        //BN_PROFILER_STOP();
-        //bn::profiler::show();
+        BN_PROFILER_STOP();
+        bn::profiler::show();
 
         // Update Core
         bn::core::update();
         BN_LOG(bn::core::last_missed_frames());
     }
-
-    delete current_level_ptr;
 }

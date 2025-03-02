@@ -63,6 +63,15 @@ RigidBody::RigidBody(const RigidBody& other)
     final_dir      = other.final_dir;
 }
 
+RigidBody& RigidBody::operator =(const RigidBody& other)
+{
+    forces         = other.forces;
+    normalized_dir = other.normalized_dir;
+    final_dir      = other.final_dir;
+
+    return *this;
+}
+
 void RigidBody::applyDecay()
 {
         // Update all of the forces in the RigidBody
