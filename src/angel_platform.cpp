@@ -6,7 +6,6 @@ AngelPlatform::AngelPlatform(bn::point _p1, bn::point _p2)
     sprite_ptr.reset();
     animate_action_ptr.reset();
     delete rigidbody_ptr;
-    delete collider_ptr;
 
     // Init Variables //
     object_type = ANGEL_PLATFORM;
@@ -17,14 +16,14 @@ AngelPlatform::AngelPlatform(bn::point _p1, bn::point _p2)
 								                                  0,
 								                                  0);
 
-    collider_offset_x = 0;
-	collider_offset_y = -16;
-
     rigidbody_ptr = new RigidBody();
-	collider_ptr  = new Collider(x() + collider_offset_x, 
-                                 y() + collider_offset_y, 
-                                 ANGEL_PLATFORM_COLLIDER_WIDTH, 
-                                 ANGEL_PLATFORM_COLLIDER_HEIGHT);
+
+	collider = Collider(x() + collider_offset_x, 
+                        y() + collider_offset_y, 
+                        ANGEL_PLATFORM_COLLIDER_WIDTH, 
+                        ANGEL_PLATFORM_COLLIDER_HEIGHT);
+    collider_offset_x = 0;
+    collider_offset_y = -16;
 
     speed = ANGEL_PLATFORM_SPEED;
 
@@ -97,9 +96,9 @@ void AngelPlatform::update(RoomBounds                                 room_bound
         #define ANGEL_PLATFORM_ROOF_OFFSET           -6
         #define ANGEL_PLATFORM_ROOF_COLLIDER_HEIGHT   1
 
-        Collider* test_collider_roof_ptr = new Collider(collider_ptr->x(),
-                                                        collider_ptr->y() + ANGEL_PLATFORM_ROOF_OFFSET,
-                                                        collider_ptr->width,
+        Collider* test_collider_roof_ptr = new Collider(collider.x(),
+                                                        collider.y() + ANGEL_PLATFORM_ROOF_OFFSET,
+                                                        collider.width,
                                                         ANGEL_PLATFORM_ROOF_COLLIDER_HEIGHT);
 
         for(int32 i = 0; i < game_objects.size(); i++)
@@ -107,11 +106,11 @@ void AngelPlatform::update(RoomBounds                                 room_bound
             if(game_objects.at(i)->object_type == PLAYER)
             {
                 GameObject* player_ptr          = game_objects.at(i);
-                Collider*   player_collider_ptr = player_ptr->collider_ptr;
+                Collider*   player_collider_ptr = &(player_ptr->collider);
 
                 // If player is riding the platform:
                 if(test_collider_roof_ptr->isCollision(*player_collider_ptr) && 
-                   player_collider_ptr->p4.y() < collider_ptr->p1.y() + ANGEL_PLATFORM_SPEED)
+                   player_collider_ptr->p4.y() < collider.p1.y() + ANGEL_PLATFORM_SPEED)
                 {
                     player_ptr->received_platform_force = true;
 

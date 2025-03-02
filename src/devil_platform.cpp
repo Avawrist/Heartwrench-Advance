@@ -6,7 +6,6 @@ DevilPlatform::DevilPlatform(bn::point _p1, bn::point _p2)
     sprite_ptr.reset();
     animate_action_ptr.reset();
     delete rigidbody_ptr;
-    delete collider_ptr;
 
     // Init Variables //
     object_type = DEVIL_PLATFORM;
@@ -17,14 +16,14 @@ DevilPlatform::DevilPlatform(bn::point _p1, bn::point _p2)
 								                                  0,
 								                                  0);
 
-    collider_offset_x = 0;
-	collider_offset_y = -12;
-
     rigidbody_ptr = new RigidBody();
-	collider_ptr  = new Collider(x() + collider_offset_x, 
-                                 y() + collider_offset_y, 
-                                 DEVIL_PLATFORM_COLLIDER_WIDTH, 
-                                 DEVIL_PLATFORM_COLLIDER_HEIGHT);
+
+	collider = Collider(x() + collider_offset_x, 
+                        y() + collider_offset_y, 
+                        DEVIL_PLATFORM_COLLIDER_WIDTH, 
+                        DEVIL_PLATFORM_COLLIDER_HEIGHT);
+    collider_offset_x = 0;
+    collider_offset_y = -12;
 
     speed = DEVIL_PLATFORM_SPEED;
 
@@ -99,25 +98,23 @@ void DevilPlatform::update(RoomBounds                                 room_bound
         #define DEVIL_PLATFORM_ROOF_COLLIDER_HEIGHT   1
         #define DEVIL_PLATFORM_SLIDE_COLLIDER_PADDING 2
 
-        Collider* test_collider_roof_ptr = new Collider(collider_ptr->x(),
-                                                        collider_ptr->y() + DEVIL_PLATFORM_ROOF_OFFSET,
-                                                        collider_ptr->width,
+        Collider* test_collider_roof_ptr = new Collider(collider.x(),
+                                                        collider.y() + DEVIL_PLATFORM_ROOF_OFFSET,
+                                                        collider.width,
                                                         DEVIL_PLATFORM_ROOF_COLLIDER_HEIGHT);
 
-        Collider* test_collider_slide_ptr = new Collider(collider_ptr->x(),
-                                                         collider_ptr->y(),
-                                                         collider_ptr->width + DEVIL_PLATFORM_SLIDE_COLLIDER_PADDING,
-                                                         collider_ptr->height);
+        Collider* test_collider_slide_ptr = new Collider(collider.x(),
+                                                         collider.y(),
+                                                         collider.width + DEVIL_PLATFORM_SLIDE_COLLIDER_PADDING,
+                                                         collider.height);
         Collider* test_collider_x_ptr = NULL;
         Collider* test_collider_y_ptr = NULL;
-
-        Collider temp_object_collider_ptr(0, 0, 0, 0);
 
         for(int32 i = 0; i < game_objects.size(); i++)
         {
 
             GameObject* object_ptr          = game_objects.at(i);
-            Collider*   object_collider_ptr = object_ptr->collider_ptr;
+            Collider*   object_collider_ptr = &(object_ptr->collider);
 
             switch(game_objects.at(i)->object_type)
             {
@@ -126,16 +123,16 @@ void DevilPlatform::update(RoomBounds                                 room_bound
                     // If the player has any collision with the platform,
                     // resolve it immediately by shifting the player until
                     // there is no collision.
-                    if(collider_ptr->isCollision(*object_collider_ptr))
+                    if(collider.isCollision(*object_collider_ptr))
                     {
-                        test_collider_x_ptr = new Collider(collider_ptr->x(),
-                                                           collider_ptr->y() - rigidbody_ptr->final_dir.y(),
-                                                           collider_ptr->width,
-                                                           collider_ptr->height);
-                        test_collider_y_ptr = new Collider(collider_ptr->x() - rigidbody_ptr->final_dir.x(),
-                                                           collider_ptr->y(),
-                                                           collider_ptr->width,
-                                                           collider_ptr->height);
+                        test_collider_x_ptr = new Collider(collider.x(),
+                                                           collider.y() - rigidbody_ptr->final_dir.y(),
+                                                           collider.width,
+                                                           collider.height);
+                        test_collider_y_ptr = new Collider(collider.x() - rigidbody_ptr->final_dir.x(),
+                                                           collider.y(),
+                                                           collider.width,
+                                                           collider.height);
                         
                         while(test_collider_x_ptr->isCollision(*object_collider_ptr))
                         {
@@ -148,7 +145,7 @@ void DevilPlatform::update(RoomBounds                                 room_bound
                         }
 
                         // If there is still a collision, it must be a corner case:
-                        while(collider_ptr->isCollision(*object_collider_ptr))
+                        while(collider.isCollision(*object_collider_ptr))
                         {
                             // We resolve a diagonal corner collision with a horizontal shift. 
                             object_ptr->setX(object_ptr->x() + normalized_dir.x());

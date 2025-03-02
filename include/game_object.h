@@ -59,8 +59,11 @@ struct GameObject {
 	bn::optional<bn::sprite_animate_action<MAX_ANIM_FRAMES>> animate_action_ptr;
 	bn::optional<bn::sprite_palette_ptr>                     sprite_palette_ptr;
 
-	Collider*  collider_ptr  = NULL;
 	RigidBody* rigidbody_ptr = NULL;
+
+	Collider collider;
+	Collider collider_x_axis;
+	Collider collider_y_axis;
 
 	int32 collider_offset_x = 0;
 	int32 collider_offset_y = 0;

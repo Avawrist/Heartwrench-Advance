@@ -32,6 +32,17 @@ Collider::Collider(const Collider& other)
 
 }
 
+void Collider::operator=(const Collider& other)
+{
+
+    width    = other.width;
+	height   = other.height;
+	position = other.position;
+	p1       = other.p1;
+	p4       = other.p4;
+
+}
+
 bn::fixed Collider::x() const
 {
     return position.x().integer();

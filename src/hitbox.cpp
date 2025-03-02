@@ -16,7 +16,6 @@ Hitbox::Hitbox(bn::point pos,
     sprite_ptr.reset();
     animate_action_ptr.reset();
     delete rigidbody_ptr;
-    delete collider_ptr;
 
     // Init Variables //
 	object_type        = _type;
@@ -29,8 +28,8 @@ Hitbox::Hitbox(bn::point pos,
 								  								  0);
 
     rigidbody_ptr = new RigidBody();
-	collider_ptr  = new Collider(pos.x(), pos.y(), _width, _height);
 
+	collider = Collider(pos.x(), pos.y(), _width, _height);
     collider_offset_x = 0;
 	collider_offset_y = 0;
 

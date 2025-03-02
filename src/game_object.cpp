@@ -17,10 +17,11 @@ GameObject::GameObject()
     sprite_palette_ptr = bn::sprite_palette_items::default_sprite_palette.create_palette();
 
     rigidbody_ptr = new RigidBody();
-	collider_ptr  = new Collider(x() + collider_offset_x, 
-                                 y() + collider_offset_y, 
-                                 GAME_OBJECT_COLLIDER_WIDTH, 
-                                 GAME_OBJECT_COLLIDER_HEIGHT);
+	
+    collider = Collider(x() + collider_offset_x, 
+                        y() + collider_offset_y, 
+                        GAME_OBJECT_COLLIDER_WIDTH, 
+                        GAME_OBJECT_COLLIDER_HEIGHT);
 }
 
 GameObject::GameObject(const GameObject& other)
@@ -33,9 +34,9 @@ GameObject::GameObject(const GameObject& other)
     animate_action_ptr = other.animate_action_ptr;
     sprite_palette_ptr = other.sprite_palette_ptr;
 
-    collider_ptr  = new Collider(*(other.collider_ptr));
     rigidbody_ptr = new RigidBody(*(other.rigidbody_ptr));
 
+    collider = other.collider;
     collider_offset_x = other.collider_offset_x;
 	collider_offset_y = other.collider_offset_y;
 
@@ -53,7 +54,6 @@ GameObject::~GameObject()
     animate_action_ptr.reset();
     sprite_palette_ptr.reset();
     
-    delete collider_ptr;
     delete rigidbody_ptr;
 }
 
@@ -95,7 +95,7 @@ void GameObject::draw()
 void GameObject::setCamera(const bn::camera_ptr& camera)
 {
     sprite_ptr->set_camera(camera);
-    collider_ptr->setCamera(camera);
+    collider.setCamera(camera);
 }
 
 bn::fixed GameObject::x() const
@@ -118,29 +118,29 @@ bn::fixed_point GameObject::pos() const
 void GameObject::setX(bn::fixed new_x)
 {
     sprite_ptr->set_x(new_x.integer());
-    collider_ptr->setX(new_x.integer() + collider_offset_x);
+    collider.setX(new_x.integer() + collider_offset_x);
 }
 
 void GameObject::setY(bn::fixed new_y)
 {
     sprite_ptr->set_y(new_y.integer());
-    collider_ptr->setY(new_y.integer() + collider_offset_y);
+    collider.setY(new_y.integer() + collider_offset_y);
 }
 
 void GameObject::setPos(bn::fixed new_x, bn::fixed new_y)
 {
     sprite_ptr->set_x(new_x.integer());
     sprite_ptr->set_y(new_y.integer());
-	collider_ptr->setX(new_x.integer() + collider_offset_x);
-	collider_ptr->setY(new_y.integer() + collider_offset_y);
+	collider.setX(new_x.integer() + collider_offset_x);
+	collider.setY(new_y.integer() + collider_offset_y);
 }
 
 void GameObject::setPos(bn::fixed_point new_pos)
 {
     sprite_ptr->set_x(new_pos.x().integer());
     sprite_ptr->set_y(new_pos.y().integer());
-	collider_ptr->setX(new_pos.x().integer() + collider_offset_x);
-	collider_ptr->setY(new_pos.y().integer() + collider_offset_y);
+	collider.setX(new_pos.x().integer() + collider_offset_x);
+	collider.setY(new_pos.y().integer() + collider_offset_y);
 }
 
 int32 GameObject::getTileAtBGIndex(uint32 x, uint32 y, 

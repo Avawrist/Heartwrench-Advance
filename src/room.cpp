@@ -66,7 +66,7 @@ void Room::load(RoomName room_name, bn::camera_ptr camera_ptr)
             room_bounds.left_bound   = -512;
 
             // Init Game Objects //
-            for(int i = 0; i < 10; i++)
+            for(int i = 0; i < 15; i++)
             {
                 temp_ptr = new TestEnemy();
                 temp_ptr->setPos(0, 0);

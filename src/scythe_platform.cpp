@@ -6,7 +6,6 @@ ScythePlatform::ScythePlatform(Direction _dir, bn::fixed_point _p)
     sprite_ptr.reset();
     animate_action_ptr.reset();
     delete rigidbody_ptr;
-    delete collider_ptr;
 
     // Init Variables //
     object_type = SCYTHE_PLATFORM;
@@ -21,14 +20,14 @@ ScythePlatform::ScythePlatform(Direction _dir, bn::fixed_point _p)
 	// so we don't see ugly collisions on creation
 	sprite_ptr->set_visible(false);
 
-    collider_offset_x = 0;
-    collider_offset_y = 0;
-
     rigidbody_ptr = new RigidBody();
-	collider_ptr  = new Collider(x() + collider_offset_x, 
-                                 y() + collider_offset_y, 
-                                 SCYTHE_PLATFORM_COLLIDER_WIDTH, 
-                                 SCYTHE_PLATFORM_COLLIDER_HEIGHT);
+
+	collider = Collider(x() + collider_offset_x, 
+						y() + collider_offset_y, 
+						SCYTHE_PLATFORM_COLLIDER_WIDTH, 
+						SCYTHE_PLATFORM_COLLIDER_HEIGHT);
+	collider_offset_x = 0;
+	collider_offset_y = 0;
 
     state             = STATE_THROWN;
 	player_was_riding = false;
@@ -95,16 +94,16 @@ void ScythePlatform::update(RoomBounds 								   room_bounds,
 	#define SCYTHE_PLATFORM_ROOF_OFFSET           -2
 	#define SCYTHE_PLATFORM_ROOF_COLLIDER_HEIGHT   1
 
-	Collider* test_collider_roof_ptr = new Collider(collider_ptr->x(),
-													collider_ptr->y() + SCYTHE_PLATFORM_ROOF_OFFSET,
-													collider_ptr->width,
+	Collider* test_collider_roof_ptr = new Collider(collider.x(),
+													collider.y() + SCYTHE_PLATFORM_ROOF_OFFSET,
+													collider.width,
 													SCYTHE_PLATFORM_ROOF_COLLIDER_HEIGHT);
 
 	for(int32 i = 0; i < game_objects.size(); i++)
 	{
 
 		GameObject* object_ptr = game_objects.at(i);
-		other_collider_ptr     = object_ptr->collider_ptr;
+		other_collider_ptr     = &(object_ptr->collider);
 
 		switch(object_ptr->object_type)
 		{
@@ -113,7 +112,7 @@ void ScythePlatform::update(RoomBounds 								   room_bounds,
 				// If player is riding the platform:
 				if(!object_ptr->received_platform_force && 
 					test_collider_roof_ptr->isCollision(*other_collider_ptr) &&
-					other_collider_ptr->p4.y() < collider_ptr->p1.y() - rigidbody_ptr->final_dir.y())
+					other_collider_ptr->p4.y() < collider.p1.y() - rigidbody_ptr->final_dir.y())
 				{
 					if(update_counter % 2 == 0) // Lower every other frame.
 					{setY(y() + 1);}

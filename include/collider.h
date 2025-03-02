@@ -28,6 +28,7 @@ struct Collider {
 		 	 uint32 _width,
 			 uint32 _height);
 	Collider(const Collider& other);
+	void operator=(const Collider& c2);
 	
 	void update();
     void draw();
@@ -43,6 +44,7 @@ struct Collider {
 	
 	bool isCollision(bn::fixed_point target_point);
 	bool isCollision(Collider& target);
+
 };
 
 #endif
