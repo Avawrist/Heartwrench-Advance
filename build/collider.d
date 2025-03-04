@@ -43,7 +43,18 @@ collider.o: G:/game/src/collider.cpp G:/game/include/collider.h \
  G:/butano-master/butano/include/bn_fixed_point.h \
  G:/game/include/utility.h G:/butano-master/butano/include/bn_log.h \
  G:/butano-master/butano/include/bn_config_log.h \
- G:/butano-master/butano/include/bn_log_backend.h
+ G:/butano-master/butano/include/bn_log_backend.h \
+ G:/butano-master/butano/include/bn_regular_bg_ptr.h \
+ G:/butano-master/butano/include/bn_regular_bg_item.h \
+ G:/butano-master/butano/include/bn_bg_palette_item.h \
+ G:/butano-master/butano/include/bn_color.h \
+ G:/butano-master/butano/include/bn_regular_bg_map_item.h \
+ G:/butano-master/butano/include/bn_size.h \
+ G:/butano-master/butano/include/bn_regular_bg_map_cell.h \
+ G:/butano-master/butano/include/bn_regular_bg_tiles_item.h \
+ G:/butano-master/butano/include/bn_regular_bg_map_ptr.h \
+ G:/butano-master/butano/include/bn_regular_bg_map_cell.h \
+ G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h
 G:/game/include/collider.h:
 G:/butano-master/butano/include/bn_optional.h:
 G:/butano-master/butano/include/bn_assert.h:
@@ -91,3 +102,14 @@ G:/game/include/utility.h:
 G:/butano-master/butano/include/bn_log.h:
 G:/butano-master/butano/include/bn_config_log.h:
 G:/butano-master/butano/include/bn_log_backend.h:
+G:/butano-master/butano/include/bn_regular_bg_ptr.h:
+G:/butano-master/butano/include/bn_regular_bg_item.h:
+G:/butano-master/butano/include/bn_bg_palette_item.h:
+G:/butano-master/butano/include/bn_color.h:
+G:/butano-master/butano/include/bn_regular_bg_map_item.h:
+G:/butano-master/butano/include/bn_size.h:
+G:/butano-master/butano/include/bn_regular_bg_map_cell.h:
+G:/butano-master/butano/include/bn_regular_bg_tiles_item.h:
+G:/butano-master/butano/include/bn_regular_bg_map_ptr.h:
+G:/butano-master/butano/include/bn_regular_bg_map_cell.h:
+G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h:

@@ -3,8 +3,8 @@
 Collider::Collider()
 {
     position  = bn::fixed_point(0, 0);
-    width     = 8;
-    height    = 8;
+    width     = 0;
+    height    = 0;
 
     update();
 }

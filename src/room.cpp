@@ -37,7 +37,8 @@ void Room::clear()
 
 }
 
-void Room::load(RoomName room_name, bn::camera_ptr camera_ptr)
+void Room::load(RoomName       room_name, 
+                bn::camera_ptr camera_ptr)
 {
 
     if(room_name == NO_ROOM) {return;}
@@ -66,7 +67,7 @@ void Room::load(RoomName room_name, bn::camera_ptr camera_ptr)
             room_bounds.left_bound   = -512;
 
             // Init Game Objects //
-            for(int i = 0; i < 15; i++)
+            for(int i = 0; i < 0; i++)
             {
                 temp_ptr = new TestEnemy();
                 temp_ptr->setPos(0, 0);
@@ -99,6 +100,94 @@ void Room::load(RoomName room_name, bn::camera_ptr camera_ptr)
             return;
 
         break;
+    }
+
+}
+
+void Room::populateTileColliders(bn::regular_bg_ptr                      bg_ptr, 
+                                 bn::span<const bn::regular_bg_map_cell> cells,
+                                 bn::regular_bg_item                     bg_item)
+{
+    
+    // This function is called by the Level that owns the room, the Level object is
+    // responsible for populating the tile colliders of each room on room load and
+    // on transition.
+
+    // Initialize Tile Colliders
+    #define WORLD_X_OFFSET 4
+    #define WORLD_Y_OFFSET 4
+
+    #define TILE_WIDTH  8
+    #define TILE_HEIGHT 8
+
+    for(int world_x = room_bounds.left_bound; world_x < room_bounds.right_bound; world_x += 8)
+    {
+        for(int world_y = room_bounds.top_bound; world_y < room_bounds.bottom_bound; world_y += 8)
+        {
+            uint32 check_index_x = (world_x / TILE_WIDTH)  - 1;
+            uint32 check_index_y = (world_y / TILE_HEIGHT) - 1;
+
+            uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y, bg_ptr, cells, bg_item);
+
+            switch(tile_index)
+            {
+                case HARD_BLOCK_INDEX:
+                case SOFT_BLOCK_INDEX:
+                case UP_SPIKE_BLOCK_INDEX:
+                case DOWN_SPIKE_BLOCK_INDEX:
+                case LEFT_SPIKE_BLOCK_INDEX:
+                case RIGHT_SPIKE_BLOCK_INDEX:
+
+                    tile_colliders[check_index_x][check_index_y] = new Collider(world_x + WORLD_X_OFFSET, 
+                                                                                world_y + WORLD_Y_OFFSET,
+                                                                                TILE_WIDTH,
+                                                                                TILE_HEIGHT);
+
+                break;
+
+                case LEFT_SHALLOW_SLOPE_1_INDEX:
+                break;
+
+                case LEFT_SHALLOW_SLOPE_2_INDEX:
+                break;
+
+                case LEFT_SHALLOW_SLOPE_3_INDEX:
+                break;
+
+                case LEFT_SHALLOW_SLOPE_4_INDEX:
+                break;
+
+                case LEFT_STEEP_SLOPE_1_INDEX:
+                break;
+
+                case LEFT_STEEP_SLOPE_2_INDEX:
+                break;
+
+                case RIGHT_SHALLOW_SLOPE_1_INDEX:
+                break;
+
+                case RIGHT_SHALLOW_SLOPE_2_INDEX:
+                break;
+
+                case RIGHT_SHALLOW_SLOPE_3_INDEX:
+                break;
+
+                case RIGHT_SHALLOW_SLOPE_4_INDEX:
+                break;
+
+                case RIGHT_STEEP_SLOPE_1_INDEX:
+                break;
+
+                case RIGHT_STEEP_SLOPE_2_INDEX:
+                break;
+
+                case ONEWAY_BLOCK_INDEX:
+                break;
+
+                default:
+                break;
+            };
+        }
     }
 
 }

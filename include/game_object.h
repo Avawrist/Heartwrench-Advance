@@ -79,7 +79,8 @@ struct GameObject {
 	GameObject(const GameObject& other);
 	virtual ~GameObject();
 
-	virtual void update(RoomBounds room_bounds,
+	virtual void update(RoomBounds 								   room_bounds,
+						Collider** 								   tile_colliders,
 	                    bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 						bn::regular_bg_ptr                         bg_ptr, 
                         bn::span<const bn::regular_bg_map_cell>    cells,
@@ -95,13 +96,7 @@ struct GameObject {
 	void setY(bn::fixed new_y);
 	void setPos(bn::fixed new_x, bn::fixed new_y);
 	void setPos(bn::fixed_point new_pos);
-
-	int32 getTileAtBGIndex(uint32 x, uint32 y, 
-						   bn::regular_bg_ptr                      bg_ptr, 
-						   bn::span<const bn::regular_bg_map_cell> cells,
-						   bn::regular_bg_item                     bg_item) const;
-
-
+	
 };
 
 # endif

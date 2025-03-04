@@ -67,6 +67,9 @@ void Level::load(LevelName level_name)
     backdrop_ptr->set_camera(camera.value());
     bg_ptr->set_camera(camera.value());
 
+    // Initialize Room Colliders
+    current_room_ptr->populateTileColliders(bg_ptr.value(), cells, bg_item.value());
+
 }
 
 void Level::reload()
@@ -84,6 +87,7 @@ void Level::updateAndDraw()
         if(current_room_ptr->game_objects.data()[i] != NULL)
         {
             current_room_ptr->game_objects.data()[i]->update(current_room_ptr->room_bounds,
+                                                             *(current_room_ptr->tile_colliders),
                                                              current_room_ptr->game_objects,
                                                              bg_ptr.value(),
                                                              cells,
@@ -208,6 +212,7 @@ void Level::transitionRoom()
 
             // Create the neighbor room
             current_room_ptr = new Room(temp_room_ptr->right_neighbor, camera.value());
+            current_room_ptr->populateTileColliders(bg_ptr.value(), cells, bg_item.value());
 
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room
@@ -235,6 +240,7 @@ void Level::transitionRoom()
 
             // Create the neighbor room
             current_room_ptr = new Room(temp_room_ptr->left_neighbor, camera.value());
+            current_room_ptr->populateTileColliders(bg_ptr.value(), cells, bg_item.value());
 
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room
@@ -262,6 +268,7 @@ void Level::transitionRoom()
 
             // Create the neighbor room
             current_room_ptr = new Room(temp_room_ptr->top_neighbor, camera.value());
+            current_room_ptr->populateTileColliders(bg_ptr.value(), cells, bg_item.value());
 
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room
@@ -289,6 +296,7 @@ void Level::transitionRoom()
 
             // Create the neighbor room
             current_room_ptr = new Room(temp_room_ptr->bottom_neighbor, camera.value());
+            current_room_ptr->populateTileColliders(bg_ptr.value(), cells, bg_item.value());
 
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room

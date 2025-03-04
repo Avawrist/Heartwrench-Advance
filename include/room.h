@@ -7,10 +7,16 @@
 
 #include "bn_vector.h"
 #include "bn_camera_ptr.h"
+#include "bn_regular_bg_ptr.h"
+#include "bn_regular_bg_item.h"
+#include "bn_regular_bg_map_ptr.h"
+#include "bn_regular_bg_map_cell.h"
+#include "bn_regular_bg_map_cell_info.h"
 
 // My Libs
 #include "room_bounds.h"
 #include "utility.h"
+#include "collider.h"
 #include "game_object.h"
 #include "player.h"
 #include "devil_platform.h"
@@ -20,6 +26,9 @@
 /////////////////
 // Struct Room //
 /////////////////
+
+#define ROOM_MAX_WIDTH  128
+#define ROOM_MAX_HEIGHT 64
 
 enum RoomName 
 {
@@ -32,6 +41,7 @@ struct Room
 {
 
     bn::vector<GameObject*, MAX_GAME_OBJECTS> game_objects;
+    Collider* tile_colliders[ROOM_MAX_WIDTH][ROOM_MAX_HEIGHT];
 
     RoomBounds room_bounds;
 
@@ -46,7 +56,9 @@ struct Room
     int32  addObject(GameObject* object_ptr, bn::camera_ptr camera_ptr);
     void   clear();
     void   load(RoomName room_name, bn::camera_ptr camera_ptr);
-    
+    void   populateTileColliders(bn::regular_bg_ptr                      bg_ptr, 
+                                 bn::span<const bn::regular_bg_map_cell> cells,
+                                 bn::regular_bg_item                     bg_item);
 };
 
 #endif

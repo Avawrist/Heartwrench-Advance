@@ -32,7 +32,7 @@ int main()
     {
         // Update Game
 
-        BN_PROFILER_START("");
+        //BN_PROFILER_START("");
 
         // Update Levels
         if(current_level.cam_is_scrolling)
@@ -48,8 +48,8 @@ int main()
             current_level.transitionRoom();
         }
 
-        BN_PROFILER_STOP();
-        bn::profiler::show();
+        //BN_PROFILER_STOP();
+        //bn::profiler::show();
 
         // Update Core
         bn::core::update();

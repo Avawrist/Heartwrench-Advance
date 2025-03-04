@@ -2,6 +2,11 @@
 #define UTILITY_H
 
 #include "bn_log.h"
+#include "bn_regular_bg_ptr.h"
+#include "bn_regular_bg_item.h"
+#include "bn_regular_bg_map_ptr.h"
+#include "bn_regular_bg_map_cell.h"
+#include "bn_regular_bg_map_cell_info.h"
 
 // Types
 typedef unsigned char  uint8;
@@ -81,5 +86,12 @@ enum Direction
     UP    = -1,
     DOWN  =  1,
 };
+
+// Functions
+
+int32 getTileAtBGIndex(uint32 x, uint32 y, 
+                       bn::regular_bg_ptr                      bg_ptr, 
+                       bn::span<const bn::regular_bg_map_cell> cells,
+                       bn::regular_bg_item                     bg_item);
 
 #endif
