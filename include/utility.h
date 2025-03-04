@@ -19,6 +19,9 @@ typedef int   int32;
 // Global Macros
 #define MAX_GAME_OBJECTS 50
 
+#define ROOM_MAX_WIDTH  128
+#define ROOM_MAX_HEIGHT 64
+
 #define PLAYER_OBJECT_LIST_INDEX  0
 
 #define NO_BLOCK_INDEX              0

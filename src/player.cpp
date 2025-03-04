@@ -113,7 +113,6 @@ Player::~Player()
 }
 
 void Player::update(RoomBounds 								   room_bounds,
-					Collider**                                 tile_colliders,
 					bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
 					bn::regular_bg_ptr                         bg_ptr, 
                     bn::span<const bn::regular_bg_map_cell>    cells,
@@ -810,7 +809,7 @@ void Player::update(RoomBounds 								   room_bounds,
 					// If the neighbor to the right is also a BLOCK, smooth over the corner.
 					// This is a hack to resolve collision since checks are always made from
 					// left to right. 
-					/*
+					
 					if(getTileAtBGIndex(check_index_x + 1, check_index_y, 
 									    bg_ptr, cells, bg_item) == HARD_BLOCK_INDEX || 
 					   getTileAtBGIndex(check_index_x + 1, check_index_y, 
@@ -825,9 +824,6 @@ void Player::update(RoomBounds 								   room_bounds,
 											  world_y, 
 										      TILE_WIDTH + block_w_offset,
 											  TILE_HEIGHT);
-					*/
-					other_collider = tile_colliders[check_index_x][check_index_y];
-					
 
 					if(collider.isCollision(other_collider))
 					{
@@ -1999,7 +1995,6 @@ void Player::update(RoomBounds 								   room_bounds,
 									   y().integer() + PLAYER_SCYTHE_1_Y_OFFSET));
 
 		hitbox_1_ptr->update(room_bounds,
-							 tile_colliders,
 							 game_objects,
 							 bg_ptr, 
                     		 cells,
@@ -2020,7 +2015,6 @@ void Player::update(RoomBounds 								   room_bounds,
 									   y().integer() + PLAYER_SCYTHE_2_Y_OFFSET));
 
 		hitbox_2_ptr->update(room_bounds,
-							 tile_colliders,
 							 game_objects,
 							 bg_ptr, 
                     		 cells,
@@ -2041,7 +2035,6 @@ void Player::update(RoomBounds 								   room_bounds,
 									   y().integer() + PLAYER_SCYTHE_3_Y_OFFSET));
 
 		hitbox_3_ptr->update(room_bounds,
-							 tile_colliders,
 							 game_objects,
 							 bg_ptr, 
                     		 cells,
@@ -2127,13 +2120,6 @@ void Player::update(RoomBounds 								   room_bounds,
     if(v_scale > 1) {sprite_ptr->set_vertical_scale(v_scale - increment);}
     else if (v_scale < 1) {sprite_ptr->set_vertical_scale(v_scale + increment);}
     if(abs(1 - sprite_ptr->vertical_scale()) < increment) {sprite_ptr->set_vertical_scale(1);}
-
-	// Test
-	BN_LOG("===========");
-	BN_LOG(collider.x());
-	BN_LOG(collider.y());
-	BN_LOG(collider.width);
-	BN_LOG(collider.height);
 	
 }
 

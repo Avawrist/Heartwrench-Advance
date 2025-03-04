@@ -44,6 +44,7 @@ struct RigidBody {
 
 	RigidBody();
 	RigidBody(const RigidBody& other);
+	~RigidBody();
 
 	RigidBody& operator =(const RigidBody& other);
 

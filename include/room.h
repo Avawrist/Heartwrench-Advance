@@ -12,6 +12,7 @@
 #include "bn_regular_bg_map_ptr.h"
 #include "bn_regular_bg_map_cell.h"
 #include "bn_regular_bg_map_cell_info.h"
+#include "bn_memory.h"
 
 // My Libs
 #include "room_bounds.h"
@@ -27,9 +28,6 @@
 // Struct Room //
 /////////////////
 
-#define ROOM_MAX_WIDTH  128
-#define ROOM_MAX_HEIGHT 64
-
 enum RoomName 
 {
     NO_ROOM = 0,
@@ -41,7 +39,8 @@ struct Room
 {
 
     bn::vector<GameObject*, MAX_GAME_OBJECTS> game_objects;
-    Collider* tile_colliders[ROOM_MAX_WIDTH][ROOM_MAX_HEIGHT];
+    //Collider* tile_colliders[ROOM_MAX_WIDTH][ROOM_MAX_HEIGHT];
+    //uint32    tile_types[ROOM_MAX_WIDTH][ROOM_MAX_HEIGHT];
 
     RoomBounds room_bounds;
 

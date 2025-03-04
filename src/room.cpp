@@ -30,10 +30,23 @@ void Room::clear()
 
     // Free game object pointers
     for(int32 i = game_objects.size() - 1; i >= 0; i--)
-    {delete game_objects.at(i);}
+    {
+        delete game_objects.at(i);
+    }
 
     // Remove all game objects from vector
     game_objects.clear();
+
+    // Free tile colliders array
+    /*
+    for(uint32 x = 0; x < ROOM_MAX_WIDTH; x++)
+    {
+        for(uint32 y = 0; y < ROOM_MAX_HEIGHT; y++)
+        {
+            delete tile_colliders[x][y];
+        }
+    }
+    */
 
 }
 
@@ -113,13 +126,14 @@ void Room::populateTileColliders(bn::regular_bg_ptr                      bg_ptr,
     // responsible for populating the tile colliders of each room on room load and
     // on transition.
 
+    // populateTileColliders will look at the global tile indexes and populate two arrays with data:
+    // 1. The first array will contain the room's tile types in a locally indexed array
+    // 2. The second array will contain the room's tile colliders in a locally indexed array
+
     // Initialize Tile Colliders
     #define WORLD_X_OFFSET 4
     #define WORLD_Y_OFFSET 4
-
-    #define TILE_WIDTH  8
-    #define TILE_HEIGHT 8
-
+    /*
     for(int world_x = room_bounds.left_bound; world_x < room_bounds.right_bound; world_x += 8)
     {
         for(int world_y = room_bounds.top_bound; world_y < room_bounds.bottom_bound; world_y += 8)
@@ -189,5 +203,6 @@ void Room::populateTileColliders(bn::regular_bg_ptr                      bg_ptr,
             };
         }
     }
+    */
 
 }

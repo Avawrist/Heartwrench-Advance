@@ -36,7 +36,6 @@ TestEnemy::~TestEnemy()
 }
 
 void TestEnemy::update(RoomBounds                      room_bounds,
-			Collider**                                 tile_colliders,
             bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
             bn::regular_bg_ptr                         bg_ptr, 
             bn::span<const bn::regular_bg_map_cell>    cells,

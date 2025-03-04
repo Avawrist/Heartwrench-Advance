@@ -63,6 +63,11 @@ RigidBody::RigidBody(const RigidBody& other)
     final_dir      = other.final_dir;
 }
 
+RigidBody::~RigidBody()
+{
+    removeForces();
+}
+
 RigidBody& RigidBody::operator =(const RigidBody& other)
 {
     forces         = other.forces;
@@ -105,5 +110,12 @@ uint32 RigidBody::addForce(Force* force_p)
 
 void RigidBody::removeForces()
 {
+    // Free force pointers
+    for(int32 i = 0; i < forces.size(); i++)
+    {
+        delete forces.at(i);
+    }
+
+    // Clear vector of dead pointers
     forces.clear();
 }

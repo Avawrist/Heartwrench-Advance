@@ -52,6 +52,9 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h \
  G:/game/build/bn_regular_bg_items_test_bg.h \
  G:/game/build/bn_regular_bg_items_test_level.h G:/game/include/room.h \
+ G:/butano-master/butano/include/bn_memory.h \
+ G:/butano-master/butano/include/bn_unique_ptr.h \
+ G:/butano-master/butano/include/bn_unique_ptr_fwd.h \
  G:/game/include/room_bounds.h G:/game/include/utility.h \
  G:/game/include/collider.h G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_sprite_ptr.h \
@@ -139,6 +142,9 @@ G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h:
 G:/game/build/bn_regular_bg_items_test_bg.h:
 G:/game/build/bn_regular_bg_items_test_level.h:
 G:/game/include/room.h:
+G:/butano-master/butano/include/bn_memory.h:
+G:/butano-master/butano/include/bn_unique_ptr.h:
+G:/butano-master/butano/include/bn_unique_ptr_fwd.h:
 G:/game/include/room_bounds.h:
 G:/game/include/utility.h:
 G:/game/include/collider.h:
