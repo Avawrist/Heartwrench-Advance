@@ -36,8 +36,8 @@ void Level::load(LevelName level_name)
     player_spawn = bn::point(0, 0);
 
     cam_is_scrolling = false;
-    cam_x_offset    = 0;
-    cam_y_offset    = 0;
+    cam_x_offset     = 0;
+    cam_y_offset     = 0;
 
     // Record current level & pos
     current_level = level_name;
@@ -206,7 +206,7 @@ void Level::transitionRoom()
 
     if(current_room_ptr == NULL) {return;}
 
-    Player* player_ptr = (Player*)current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+    Player* player_ptr = (Player*)current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX);   
     bn::fixed_point player_pos = player_ptr->pos();
     
     if(player_pos.x() > current_room_ptr->room_bounds.right_bound)
@@ -255,6 +255,9 @@ void Level::transitionRoom()
             // Create the neighbor room
             current_room_ptr = new Room(temp_room_ptr->left_neighbor, camera.value());
 
+            BN_LOG("=== New room loaded ===");
+            BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
+
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room
             delete current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX);
@@ -262,6 +265,9 @@ void Level::transitionRoom()
 
             // Delete the old room
             delete temp_room_ptr;
+
+            BN_LOG("=== Past room cleared ===");
+            BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
 
             // Populate tile colliders in new room
             current_room_ptr->populateTileColliders(bg_ptr.value(), cells, bg_item.value());

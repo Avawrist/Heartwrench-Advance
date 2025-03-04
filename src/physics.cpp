@@ -65,7 +65,7 @@ RigidBody::RigidBody(const RigidBody& other)
 
 RigidBody::~RigidBody()
 {
-    removeForces();
+
 }
 
 RigidBody& RigidBody::operator =(const RigidBody& other)

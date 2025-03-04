@@ -53,6 +53,11 @@ GameObject::~GameObject()
     sprite_ptr.reset();
     animate_action_ptr.reset();
     sprite_palette_ptr.reset();
+    
+    if(object_type != PLAYER)
+    {
+        rigidbody.removeForces();
+    }
 }
 
 void GameObject::applyForces()
