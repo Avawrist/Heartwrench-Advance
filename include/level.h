@@ -27,7 +27,7 @@
 // Struct Level //
 //////////////////
 
-// MUST divide screen dimensions 240/160 cleanly.
+// 240 and 160 MUST be divisible by SCROLL_SPEED.
 #define SCROLL_SPEED 4
 
 enum LevelName 

@@ -24,9 +24,6 @@ int main()
     // Create Test Level
     Level current_level(LEVEL_TEST);
 
-    //BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
-    //BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
-
     // Game Loop
     while(true)
     {
@@ -47,6 +44,9 @@ int main()
             current_level.reloadOnDeath();
             current_level.transitionRoom();
         }
+
+        BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
+        BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
 
         //BN_PROFILER_STOP();
         //bn::profiler::show();

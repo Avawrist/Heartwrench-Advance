@@ -48,7 +48,7 @@ void Level::load(LevelName level_name)
         case LEVEL_TEST:
 
             // Set Room Ptr //
-            current_room_ptr = new Room(ROOM_TEST_1, camera.value());
+            current_room_ptr = new Room(ROOM_TEST_2, camera.value());
 
             // Load BG //
             backdrop_ptr = bn::regular_bg_items::test_bg.create_bg(0, 0);
@@ -206,21 +206,19 @@ void Level::transitionRoom()
 
     if(current_room_ptr == NULL) {return;}
 
-    Player* player_ptr = (Player*)current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX);   
+    Player* player_ptr = (Player*)current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX);
     bn::fixed_point player_pos = player_ptr->pos();
-    
+
     if(player_pos.x() > current_room_ptr->room_bounds.right_bound)
     {
         if(current_room_ptr->right_neighbor != NO_ROOM)
         {
+            
             // Store the current room in a temp ptr
             Room* temp_room_ptr = current_room_ptr;
 
             // Create the neighbor room
             current_room_ptr = new Room(temp_room_ptr->right_neighbor, camera.value());
-
-            BN_LOG("=== New room loaded ===");
-            BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
 
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room
@@ -228,10 +226,8 @@ void Level::transitionRoom()
             current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(*player_ptr);
 
             // Delete the old room
+            // Something is going wrong here, deleting the temp pointer leads to undefined behavior and crash?
             delete temp_room_ptr;
-
-            BN_LOG("=== Past room cleared ===");
-            BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
 
             // Populate tile colliders in new room
             current_room_ptr->populateTileColliders(bg_ptr.value(), cells, bg_item.value());
@@ -245,7 +241,7 @@ void Level::transitionRoom()
         }
     }
 
-    if(player_pos.x() < current_room_ptr->room_bounds.left_bound)
+    else if(player_pos.x() < current_room_ptr->room_bounds.left_bound)
     {
         if(current_room_ptr->left_neighbor != NO_ROOM)
         {
@@ -255,19 +251,14 @@ void Level::transitionRoom()
             // Create the neighbor room
             current_room_ptr = new Room(temp_room_ptr->left_neighbor, camera.value());
 
-            BN_LOG("=== New room loaded ===");
-            BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
-
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room
             delete current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX);
             current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(*player_ptr);
 
             // Delete the old room
+            // Something is going wrong here, deleting the temp pointer leads to undefined behavior and crash?
             delete temp_room_ptr;
-
-            BN_LOG("=== Past room cleared ===");
-            BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
 
             // Populate tile colliders in new room
             current_room_ptr->populateTileColliders(bg_ptr.value(), cells, bg_item.value());
@@ -281,7 +272,7 @@ void Level::transitionRoom()
         }
     }
 
-    if(player_pos.y() < current_room_ptr->room_bounds.top_bound)
+    else if(player_pos.y() < current_room_ptr->room_bounds.top_bound)
     {
         if(current_room_ptr->top_neighbor != NO_ROOM)
         {
@@ -311,7 +302,7 @@ void Level::transitionRoom()
         }
     }
 
-    if(player_pos.y() > current_room_ptr->room_bounds.bottom_bound)
+    else if(player_pos.y() > current_room_ptr->room_bounds.bottom_bound)
     {
         if(current_room_ptr->bottom_neighbor != NO_ROOM)
         {

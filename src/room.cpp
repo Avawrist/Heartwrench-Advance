@@ -28,7 +28,7 @@ int32 Room::addObject(GameObject* object_ptr, bn::camera_ptr camera_ptr)
 void Room::clear()
 {
 
-    // Free game object pointers
+    // Free all game object pointers
     for(int32 i = game_objects.size() - 1; i >= 0; i--)
     {
         delete game_objects.at(i);
@@ -38,15 +38,11 @@ void Room::clear()
     game_objects.clear();
 
     // Free tile colliders array
-    /*
-    for(uint32 x = 0; x < ROOM_MAX_WIDTH; x++)
+    // Needs both dimensions initialized
+    for(int x = 0; x < ROOM_MAX_WIDTH; x++)
     {
-        for(uint32 y = 0; y < ROOM_MAX_HEIGHT; y++)
-        {
-            delete tile_colliders[x][y];
-        }
+        delete tile_colliders[x][0];
     }
-    */
 
 }
 
@@ -59,9 +55,9 @@ void Room::load(RoomName       room_name,
     // Init Player FIRST. They will always be updated last.
     Player* player_ptr = new Player();
     addObject(player_ptr, camera_ptr);
-    game_objects.back()->setPos(0, 0);
+    game_objects.back()->setPos(1000, 0);
 
-    GameObject* temp_ptr = NULL;
+    //GameObject* temp_ptr = NULL;
 
     // Initialize Objects
     switch(room_name)
@@ -80,13 +76,15 @@ void Room::load(RoomName       room_name,
             room_bounds.left_bound   = -512;
 
             // Init Game Objects //
-            for(int i = 0; i < 5; i++)
+            /*
+            for(int i = 0; i < 0; i++)
             {
                 temp_ptr = new TestEnemy();
                 temp_ptr->setPos(0, 0);
                 addObject(temp_ptr, camera_ptr);
             }
             temp_ptr = NULL;
+            */
     
         break;
 
@@ -98,10 +96,10 @@ void Room::load(RoomName       room_name,
             bottom_neighbor = NO_ROOM;
             left_neighbor   = ROOM_TEST_1;
 
-            room_bounds.right_bound  =  1536;
-            room_bounds.left_bound   =  512;
             room_bounds.top_bound    = -256;
+            room_bounds.right_bound  =  1536;
             room_bounds.bottom_bound =  256;
+            room_bounds.left_bound   =  512;
 
             // Init Game Objects //
     
@@ -130,9 +128,12 @@ void Room::populateTileColliders(bn::regular_bg_ptr                      bg_ptr,
     // 1. The first array will contain the room's tile types in a locally indexed array
     // 2. The second array will contain the room's tile colliders in a locally indexed array
 
-    // Initialize Tile Colliders
-    #define WORLD_X_OFFSET 4
-    #define WORLD_Y_OFFSET 4
+    // Initialize Tile Colliders 
+    for(int x = 0; x < ROOM_MAX_WIDTH; x++)
+    {
+        tile_colliders[x][0] = new Collider(0, 0, 0, 0);
+    }
+
     /*
     for(int world_x = room_bounds.left_bound; world_x < room_bounds.right_bound; world_x += 8)
     {

@@ -39,8 +39,8 @@ struct Room
 {
 
     bn::vector<GameObject*, MAX_GAME_OBJECTS> game_objects;
-    //Collider* tile_colliders[ROOM_MAX_WIDTH][ROOM_MAX_HEIGHT];
-    //uint32    tile_types[ROOM_MAX_WIDTH][ROOM_MAX_HEIGHT];
+    Collider* tile_colliders[ROOM_MAX_WIDTH][ROOM_MAX_HEIGHT] = {NULL};
+    uint32    tile_types[ROOM_MAX_WIDTH][ROOM_MAX_HEIGHT]     = {NO_BLOCK_INDEX};
 
     RoomBounds room_bounds;
 
@@ -58,6 +58,7 @@ struct Room
     void   populateTileColliders(bn::regular_bg_ptr                      bg_ptr, 
                                  bn::span<const bn::regular_bg_map_cell> cells,
                                  bn::regular_bg_item                     bg_item);
+                                 
 };
 
 #endif

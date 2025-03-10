@@ -56,6 +56,9 @@ typedef int   int32;
 #define TILE_WIDTH  8
 #define TILE_HEIGHT 8
 
+#define WORLD_X_OFFSET 4
+#define WORLD_Y_OFFSET 4
+
 #define ONEWAYBLOCK_COLLIDER_WIDTH     8
 #define ONEWAYBLOCK_COLLIDER_HEIGHT    1
 #define ONEWAYBLOCK_COLLIDER_Y_OFFSET -4
