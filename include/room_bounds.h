@@ -20,6 +20,9 @@ struct RoomBounds
                int32 _right_bound, 
                int32 _bottom_bound, 
                int32 _left_bound);
+    RoomBounds(const RoomBounds& other);
+
+    RoomBounds& operator =(const RoomBounds& other);
 };
 
 #endif

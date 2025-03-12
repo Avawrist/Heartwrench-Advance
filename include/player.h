@@ -117,26 +117,26 @@
 #define PLAYER_DEATH_Y_FORCE      5
 #define PLAYER_DEATH_DECAY        0.2
 
-#define PLAYER_X_LEFT_FORCE  	     new Force(bn::fixed_point_t<12>(-x_speed, 0), PLAYER_X_DECAY)
-#define PLAYER_X_RIGHT_FORCE 	     new Force(bn::fixed_point_t<12>( x_speed, 0), PLAYER_X_DECAY)
-#define PLAYER_X_PLUMMET_LEFT_FORCE  new Force(bn::fixed_point_t<12>(-PLAYER_PLUMMET_X_SPEED, 0), PLAYER_X_DECAY)
-#define PLAYER_X_PLUMMET_RIGHT_FORCE new Force(bn::fixed_point_t<12>( PLAYER_PLUMMET_X_SPEED, 0), PLAYER_X_DECAY)
-#define PLAYER_X_LEFT_DECAY_FORCE    new Force(bn::fixed_point_t<12>(-x_speed, 0), X_SPEED_DECAY_RATE)
-#define PLAYER_X_RIGHT_DECAY_FORCE   new Force(bn::fixed_point_t<12> (x_speed, 0), X_SPEED_DECAY_RATE)
+#define PLAYER_X_LEFT_FORCE  	     Force(bn::fixed_point_t<12>(-x_speed, 0), PLAYER_X_DECAY)
+#define PLAYER_X_RIGHT_FORCE 	     Force(bn::fixed_point_t<12>( x_speed, 0), PLAYER_X_DECAY)
+#define PLAYER_X_PLUMMET_LEFT_FORCE  Force(bn::fixed_point_t<12>(-PLAYER_PLUMMET_X_SPEED, 0), PLAYER_X_DECAY)
+#define PLAYER_X_PLUMMET_RIGHT_FORCE Force(bn::fixed_point_t<12>( PLAYER_PLUMMET_X_SPEED, 0), PLAYER_X_DECAY)
+#define PLAYER_X_LEFT_DECAY_FORCE    Force(bn::fixed_point_t<12>(-x_speed, 0), X_SPEED_DECAY_RATE)
+#define PLAYER_X_RIGHT_DECAY_FORCE   Force(bn::fixed_point_t<12> (x_speed, 0), X_SPEED_DECAY_RATE)
 
-#define PLAYER_JUMP_FORCE            new Force(bn::fixed_point_t<12>(0, jump_force), PLAYER_JUMP_DECAY)
-#define PLAYER_SECONDARY_JUMP_FORCE  new Force(bn::fixed_point_t<12>(0, secondary_jump_force), PLAYER_SECONDARY_JUMP_DECAY)
-#define PLAYER_WALL_JUMP_RIGHT_FORCE new Force(bn::fixed_point_t<12>( wall_jump_force.x(), wall_jump_force.y()), PLAYER_WALL_JUMP_DECAY)
-#define PLAYER_WALL_JUMP_LEFT_FORCE  new Force(bn::fixed_point_t<12>(-wall_jump_force.x(), wall_jump_force.y()), PLAYER_WALL_JUMP_DECAY)
+#define PLAYER_JUMP_FORCE            Force(bn::fixed_point_t<12>(0, jump_force), PLAYER_JUMP_DECAY)
+#define PLAYER_SECONDARY_JUMP_FORCE  Force(bn::fixed_point_t<12>(0, secondary_jump_force), PLAYER_SECONDARY_JUMP_DECAY)
+#define PLAYER_WALL_JUMP_RIGHT_FORCE Force(bn::fixed_point_t<12>( wall_jump_force.x(), wall_jump_force.y()), PLAYER_WALL_JUMP_DECAY)
+#define PLAYER_WALL_JUMP_LEFT_FORCE  Force(bn::fixed_point_t<12>(-wall_jump_force.x(), wall_jump_force.y()), PLAYER_WALL_JUMP_DECAY)
 
-#define PLAYER_GRAVITY_FORCE           new Force(bn::fixed_point_t<12>(0, gravity), 			     PLAYER_GRAVITY_DECAY)
-#define PLAYER_PROLONGED_GRAVITY_FORCE new Force(bn::fixed_point_t<12>(0, PLAYER_PROLONGED_GRAVITY), PLAYER_GRAVITY_DECAY)
-#define PLAYER_FAST_GRAVITY_FORCE      new Force(bn::fixed_point_t<12>(0, PLAYER_FAST_FALL_GRAVITY), PLAYER_GRAVITY_DECAY)
-#define PLAYER_PLUMMET_GRAVITY_FORCE   new Force(bn::fixed_point_t<12>(0, PLAYER_PLUMMET_GRAVITY),   PLAYER_GRAVITY_DECAY)
-#define PLAYER_WALL_GRAVITY_FORCE      new Force(bn::fixed_point_t<12>(0, wall_ride_gravity),        PLAYER_GRAVITY_DECAY)
-#define PLAYER_SCYTHE_GRAVITY_FORCE    new Force(bn::fixed_point_t<12>(0, PLAYER_SCYTHE_GRAVITY),    PLAYER_GRAVITY_DECAY)
+#define PLAYER_GRAVITY_FORCE           Force(bn::fixed_point_t<12>(0, gravity), 			     PLAYER_GRAVITY_DECAY)
+#define PLAYER_PROLONGED_GRAVITY_FORCE Force(bn::fixed_point_t<12>(0, PLAYER_PROLONGED_GRAVITY), PLAYER_GRAVITY_DECAY)
+#define PLAYER_FAST_GRAVITY_FORCE      Force(bn::fixed_point_t<12>(0, PLAYER_FAST_FALL_GRAVITY), PLAYER_GRAVITY_DECAY)
+#define PLAYER_PLUMMET_GRAVITY_FORCE   Force(bn::fixed_point_t<12>(0, PLAYER_PLUMMET_GRAVITY),   PLAYER_GRAVITY_DECAY)
+#define PLAYER_WALL_GRAVITY_FORCE      Force(bn::fixed_point_t<12>(0, wall_ride_gravity),        PLAYER_GRAVITY_DECAY)
+#define PLAYER_SCYTHE_GRAVITY_FORCE    Force(bn::fixed_point_t<12>(0, PLAYER_SCYTHE_GRAVITY),    PLAYER_GRAVITY_DECAY)
 
-#define PLAYER_ROLL_FORCE new Force(bn::fixed_point_t<12>(PLAYER_ROLL_X_SPEED * dir, PLAYER_ROLL_Y_SPEED), PLAYER_ROLL_DECAY)
+#define PLAYER_ROLL_FORCE Force(bn::fixed_point_t<12>(PLAYER_ROLL_X_SPEED * dir, PLAYER_ROLL_Y_SPEED), PLAYER_ROLL_DECAY)
 
 enum PlayerState {
 
@@ -187,20 +187,22 @@ struct Player : GameObject {
 	Collider test_collider_right;
 	Collider test_collider_left;
 
-	Hitbox* hitbox_1_ptr;
-	Hitbox* hitbox_2_ptr;
-	Hitbox* hitbox_3_ptr;
+	//Hitbox hitbox_1;
+	//Hitbox hitbox_2;
+	//Hitbox hitbox_3;
 	
 	Player();
 	Player(const Player& other);
 	~Player();
 
-	void update(RoomBounds room_bounds,
-				bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
-				bn::regular_bg_ptr                         bg_ptr, 
-                bn::span<const bn::regular_bg_map_cell>    cells,
-                bn::regular_bg_item                        bg_item,
-				bn::camera_ptr                             camera) override;
+	Player& operator =(const Player& other);
+
+	void update(const RoomBounds& 								 room_bounds,
+				bn::vector<GameObject*, MAX_GAME_OBJECTS>&       game_objects,
+				const bn::regular_bg_ptr&                        bg_ptr, 
+                const bn::span<const bn::regular_bg_map_cell>&   cells,
+                const bn::regular_bg_item&                       bg_item,
+				const bn::camera_ptr&                            camera) override;
 	void jump();
 	void fastFall();
 	void setState(PlayerState new_state);

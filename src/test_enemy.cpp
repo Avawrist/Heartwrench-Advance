@@ -35,18 +35,30 @@ TestEnemy::~TestEnemy()
 
 }
 
-void TestEnemy::update(RoomBounds                      room_bounds,
-            bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
-            bn::regular_bg_ptr                         bg_ptr, 
-            bn::span<const bn::regular_bg_map_cell>    cells,
-            bn::regular_bg_item                        bg_item,
-            bn::camera_ptr                             camera)
+TestEnemy& TestEnemy::operator =(const TestEnemy& other)
 {
+	return *this;
+}
+
+void TestEnemy::update(const RoomBounds&                              room_bounds,
+            		   bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+            		   const bn::regular_bg_ptr&                      bg_ptr, 
+            		   const bn::span<const bn::regular_bg_map_cell>& cells,
+            		   const bn::regular_bg_item&                     bg_item,
+            		   const bn::camera_ptr&                          camera)
+{
+
+	//bool profile = false;
+
+	//if(bn::keypad::l_held()) {profile = true;}
+	//if(profile) {BN_PROFILER_START("test enemy update");}
+
     ///////////////////
     // State Machine //
     ///////////////////
 
     rigidbody.addForce(TEST_ENEMY_GRAVITY_FORCE);
+	//rigidbody.addForce(Force(bn::fixed_point_t<12>(1, 0), TEST_ENEMY_GRAVITY_DECAY));
 
     ////////////////////
     // Update Physics //
@@ -62,7 +74,7 @@ void TestEnemy::update(RoomBounds                      room_bounds,
 	// Init Collision Variables //
 	//////////////////////////////
 
-	// Get current cell index that player resides in:
+	// Get current cell index that enemy resides in:
 	int32 half_level_width_pixels  = bg_ptr.dimensions().width() / 2;
 	int32 half_level_height_pixels = bg_ptr.dimensions().height() / 2;
 	bn::fixed index_x = (x() + half_level_width_pixels)  / TILE_WIDTH;
@@ -70,7 +82,7 @@ void TestEnemy::update(RoomBounds                      room_bounds,
 	bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
 
 	// Create one temporary collider for each axis. If a collider finds a collision
-	// in its axis, move the temp collider AND the Player back along the dir vector
+	// in its axis, move the temp collider AND the enemy back along the dir vector
 	// in units of 1 until the collision is resolved on that axis.
 
 	collider_x_axis.setPos(collider.x(), collider.y() - rigidbody.final_dir.y());
@@ -116,7 +128,7 @@ void TestEnemy::update(RoomBounds                      room_bounds,
 					// left to right. 
 					
 					if(getTileAtBGIndex(check_index_x + 1, check_index_y, 
-									    bg_ptr, cells, bg_item) == HARD_BLOCK_INDEX || 
+									    bg_ptr, cells, bg_item) == HARD_BLOCK_INDEX ||
 					   getTileAtBGIndex(check_index_x + 1, check_index_y, 
 									    bg_ptr, cells, bg_item) == SOFT_BLOCK_INDEX)
 					{
@@ -154,7 +166,7 @@ void TestEnemy::update(RoomBounds                      room_bounds,
 					}
 
 				break;
-
+				
 				case LEFT_SHALLOW_SLOPE_1_INDEX:
 
 					other_collider = Collider(world_x, 
@@ -446,5 +458,11 @@ void TestEnemy::update(RoomBounds                      room_bounds,
 			}
 		}
 	}
+
+	//if(profile)
+	//{
+	//	BN_PROFILER_STOP();
+	//	bn::profiler::show();
+	//}
 
 }

@@ -43,8 +43,8 @@ struct Collider {
 	void setPos(bn::fixed new_x, bn::fixed new_y);
 	void setPos(bn::fixed_point new_pos);
 	
-	bool isCollision(bn::fixed_point target_point);
-	bool isCollision(Collider& target);
+	bool isCollision(const bn::fixed_point target_point);
+	bool isCollision(const Collider& target);
 
 };
 

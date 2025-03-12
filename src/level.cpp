@@ -13,10 +13,6 @@ Level::~Level()
 void Level::clear()
 {
     
-    // Free Room
-    delete current_room_ptr;
-    current_room_ptr = NULL;
-
     // Free level pointers
     camera.reset();
     bg_ptr.reset();
@@ -40,16 +36,16 @@ void Level::load(LevelName level_name)
     cam_y_offset     = 0;
 
     // Record current level & pos
-    current_level = level_name;
+    current_level_name = level_name;
 
     // Initialize Variables
     switch(level_name)
     {
         case LEVEL_TEST:
 
-            // Set Room Ptr //
-            current_room_ptr = new Room(ROOM_TEST_2, camera.value());
-
+            // Set Room //
+            current_room = Room(ROOM_TEST_1, camera.value());
+            
             // Load BG //
             backdrop_ptr = bn::regular_bg_items::test_bg.create_bg(0, 0);
             bg_ptr       = bn::regular_bg_items::test_level.create_bg(0, 0);
@@ -71,9 +67,6 @@ void Level::load(LevelName level_name)
     backdrop_ptr->set_camera(camera.value());
     bg_ptr->set_camera(camera.value());
 
-    // Initialize Room Colliders
-    current_room_ptr->populateTileColliders(bg_ptr.value(), cells, bg_item.value());
-
     BN_LOG("=== Level loaded ===");
     BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
     
@@ -82,26 +75,26 @@ void Level::load(LevelName level_name)
 void Level::reload()
 {
     clear(); 
-    load(current_level);
+    load(current_level_name);
 }
 
 void Level::updateAndDraw()
 {
-    if(current_room_ptr == NULL) {return;}
 
-    for(int32 i = current_room_ptr->game_objects.size() - 1; i >= 0; i--)
+    for(int32 i = current_room.game_objects.size() - 1; i >= 0; i--)
     {
-        if(current_room_ptr->game_objects.data()[i] != NULL)
+        if(current_room.game_objects.data()[i] != NULL)
         {
-            current_room_ptr->game_objects.data()[i]->update(current_room_ptr->room_bounds,
-                                                             current_room_ptr->game_objects,
-                                                             bg_ptr.value(),
-                                                             cells,
-                                                             bg_item.value(),
-                                                             camera.value());
-            current_room_ptr->game_objects.data()[i]->draw();
+            current_room.game_objects.data()[i]->update(current_room.room_bounds,
+                                                        current_room.game_objects,
+                                                        bg_ptr.value(),
+                                                        cells,
+                                                        bg_item.value(),
+                                                        camera.value());
+            current_room.game_objects.data()[i]->draw();
         }   
-    }
+    } 
+
 }
 
 void Level::updateCamera()
@@ -139,13 +132,13 @@ void Level::updateCamera()
     else
     {
         // Typical camera behavior - Follow the player & clamp to the room bounds. 
-        int32 new_cam_x = current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos().x().integer();
-        int32 new_cam_y = current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos().y().integer();
-        new_cam_x = clamp(current_room_ptr->room_bounds.left_bound  + HALF_SCREEN_WIDTH,  
-                          current_room_ptr->room_bounds.right_bound - HALF_SCREEN_WIDTH, 
+        int32 new_cam_x = current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos().x().integer();
+        int32 new_cam_y = current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos().y().integer();
+        new_cam_x = clamp(current_room.room_bounds.left_bound  + HALF_SCREEN_WIDTH,  
+                          current_room.room_bounds.right_bound - HALF_SCREEN_WIDTH, 
                           new_cam_x);
-        new_cam_y = clamp(current_room_ptr->room_bounds.top_bound    + HALF_SCREEN_HEIGHT, 
-                          current_room_ptr->room_bounds.bottom_bound - HALF_SCREEN_HEIGHT,
+        new_cam_y = clamp(current_room.room_bounds.top_bound    + HALF_SCREEN_HEIGHT, 
+                          current_room.room_bounds.bottom_bound - HALF_SCREEN_HEIGHT,
                           new_cam_y);
         camera.value().set_position(new_cam_x, new_cam_y);
 
@@ -155,10 +148,8 @@ void Level::updateCamera()
 
 void Level::reloadOnDeath()
 {
-    if(current_room_ptr == NULL) {return;}
-
     // If player died, reload the level
-    if(((Player*)(current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->is_dead)
+    if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->is_dead)
     {
         reload();
     }
@@ -170,17 +161,15 @@ void Level::freeInactiveObjects()
     // if object at current iterator is NULL
     // erase the object :D 
 
-    if(current_room_ptr == NULL) {return;}
-
-    bn::ivector<GameObject*>::iterator current = current_room_ptr->game_objects.begin();
-    bn::ivector<GameObject*>::iterator last    = current_room_ptr->game_objects.end();
+    bn::ivector<GameObject*>::iterator current = current_room.game_objects.begin();
+    bn::ivector<GameObject*>::iterator last    = current_room.game_objects.end();
     current++; // Skip player index
     while(current != last)
     {
         if((*current)->inactive)
         {
             // Erase game object
-            current_room_ptr->game_objects.erase(current);
+            current_room.game_objects.erase(current);
             delete *current;
         }
         current++;
@@ -191,11 +180,9 @@ void Level::freeInactiveObjects()
 
 void Level::updateIndexes()
 {    
-    if(current_room_ptr == NULL) {return;}
-
-    for(int32 i = current_room_ptr->game_objects.size() - 1; i >= 0; i--)
+    for(int32 i = current_room.game_objects.size() - 1; i >= 0; i--)
     {
-        current_room_ptr->game_objects.data()[i]->object_id = i;
+        current_room.game_objects.data()[i]->object_id = i;
     }
 }
 
@@ -204,33 +191,21 @@ void Level::transitionRoom()
     #define SCREEN_WIDTH  240
     #define SCREEN_HEIGHT 160
 
-    if(current_room_ptr == NULL) {return;}
+    if(current_room.game_objects.size() == 0) {return;}
 
-    Player* player_ptr = (Player*)current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX);
-    bn::fixed_point player_pos = player_ptr->pos();
-
-    if(player_pos.x() > current_room_ptr->room_bounds.right_bound)
+    Player temp_player = Player(*((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))));
+    
+    if(temp_player.pos().x() > current_room.room_bounds.right_bound)
     {
-        if(current_room_ptr->right_neighbor != NO_ROOM)
+        if(current_room.right_neighbor != NO_ROOM)
         {
-            
-            // Store the current room in a temp ptr
-            Room* temp_room_ptr = current_room_ptr;
-
             // Create the neighbor room
-            current_room_ptr = new Room(temp_room_ptr->right_neighbor, camera.value());
+            current_room = Room(current_room.right_neighbor, camera.value());
 
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room
-            delete current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX);
-            current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(*player_ptr);
-
-            // Delete the old room
-            // Something is going wrong here, deleting the temp pointer leads to undefined behavior and crash?
-            delete temp_room_ptr;
-
-            // Populate tile colliders in new room
-            current_room_ptr->populateTileColliders(bg_ptr.value(), cells, bg_item.value());
+            delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(temp_player);
 
             // Set camera offsets
             cam_is_scrolling = true;
@@ -241,27 +216,17 @@ void Level::transitionRoom()
         }
     }
 
-    else if(player_pos.x() < current_room_ptr->room_bounds.left_bound)
+    else if(temp_player.pos().x() < current_room.room_bounds.left_bound)
     {
-        if(current_room_ptr->left_neighbor != NO_ROOM)
+        if(current_room.left_neighbor != NO_ROOM)
         {
-            // Store the current room in a temp ptr
-            Room* temp_room_ptr = current_room_ptr;
-
             // Create the neighbor room
-            current_room_ptr = new Room(temp_room_ptr->left_neighbor, camera.value());
+            current_room = Room(current_room.right_neighbor, camera.value());
 
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room
-            delete current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX);
-            current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(*player_ptr);
-
-            // Delete the old room
-            // Something is going wrong here, deleting the temp pointer leads to undefined behavior and crash?
-            delete temp_room_ptr;
-
-            // Populate tile colliders in new room
-            current_room_ptr->populateTileColliders(bg_ptr.value(), cells, bg_item.value());
+            delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(temp_player);
 
             // Set camera offsets
             cam_is_scrolling = true;
@@ -272,26 +237,17 @@ void Level::transitionRoom()
         }
     }
 
-    else if(player_pos.y() < current_room_ptr->room_bounds.top_bound)
+    else if(temp_player.pos().y() < current_room.room_bounds.top_bound)
     {
-        if(current_room_ptr->top_neighbor != NO_ROOM)
+        if(current_room.top_neighbor != NO_ROOM)
         {
-            // Store the current room in a temp ptr
-            Room* temp_room_ptr = current_room_ptr;
-
             // Create the neighbor room
-            current_room_ptr = new Room(temp_room_ptr->top_neighbor, camera.value());
+            current_room = Room(current_room.right_neighbor, camera.value());
 
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room
-            delete current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX);
-            current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(*player_ptr);
-
-            // Delete the old room
-            delete temp_room_ptr;
-
-            // Populate tile colliders in new room
-            current_room_ptr->populateTileColliders(bg_ptr.value(), cells, bg_item.value());
+            delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(temp_player);
 
             // Set camera offsets
             cam_is_scrolling = true;
@@ -302,26 +258,17 @@ void Level::transitionRoom()
         }
     }
 
-    else if(player_pos.y() > current_room_ptr->room_bounds.bottom_bound)
+    else if(temp_player.pos().y() > current_room.room_bounds.bottom_bound)
     {
-        if(current_room_ptr->bottom_neighbor != NO_ROOM)
+        if(current_room.bottom_neighbor != NO_ROOM)
         {
-            // Store the current room in a temp ptr
-            Room* temp_room_ptr = current_room_ptr;
-
             // Create the neighbor room
-            current_room_ptr = new Room(temp_room_ptr->bottom_neighbor, camera.value());
+            current_room = Room(current_room.right_neighbor, camera.value());
 
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room
-            delete current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX);
-            current_room_ptr->game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(*player_ptr);
-
-            // Delete the old room
-            delete temp_room_ptr;
-
-            // Populate tile colliders in new room
-            current_room_ptr->populateTileColliders(bg_ptr.value(), cells, bg_item.value());
+            delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(temp_player);
 
             // Set camera offsets
             cam_is_scrolling = true;

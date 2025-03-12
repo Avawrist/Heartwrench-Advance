@@ -19,11 +19,14 @@ typedef int   int32;
 // Global Macros
 #define MAX_GAME_OBJECTS 50
 
-#define ROOM_MAX_WIDTH  128
-#define ROOM_MAX_HEIGHT 64
+#define ROOM_MAX_COLLIDERS 1800
+#define ROOM_MAX_WIDTH     128
+#define ROOM_MAX_HEIGHT    64
 
 #define PLAYER_OBJECT_LIST_INDEX  0
 
+
+// === Tile Indexes === //
 #define NO_BLOCK_INDEX              0
 #define SOFT_BLOCK_INDEX            1
 #define HARD_BLOCK_INDEX            2
@@ -53,11 +56,17 @@ typedef int   int32;
 #define RIGHT_STEEP_SLOPE_1_INDEX 19
 #define RIGHT_STEEP_SLOPE_2_INDEX 20
 
+#define TILE_TOTAL_COUNT 21
+
+// Tile Dimensions //
+
 #define TILE_WIDTH  8
 #define TILE_HEIGHT 8
 
 #define WORLD_X_OFFSET 4
 #define WORLD_Y_OFFSET 4
+
+// Collider Dimensions //
 
 #define ONEWAYBLOCK_COLLIDER_WIDTH     8
 #define ONEWAYBLOCK_COLLIDER_HEIGHT    1

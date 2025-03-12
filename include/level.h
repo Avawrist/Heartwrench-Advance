@@ -38,17 +38,18 @@ enum LevelName
 
 struct Level
 {
-    Room* current_room_ptr;
+    Room current_room;
 
     bn::optional<bn::camera_ptr>            camera;
     bn::optional<bn::regular_bg_ptr>        bg_ptr;
     bn::optional<bn::regular_bg_ptr>        backdrop_ptr;
     bn::optional<bn::regular_bg_item>       bg_item;
     bn::span<const bn::regular_bg_map_cell> cells;
+
     uint32 tile_width;
     uint32 tile_height;
 
-    LevelName current_level;
+    LevelName current_level_name;
 
     bn::point player_spawn;
 

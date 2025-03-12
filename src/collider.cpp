@@ -106,7 +106,7 @@ void Collider::setCamera(const bn::camera_ptr& camera)
 
 }
 
-bool Collider::isCollision(bn::fixed_point target)
+bool Collider::isCollision(const bn::fixed_point target)
 {
     if(target.x() >= p1.x() && target.x() <= p4.x() &&
        target.y() >= p1.y() && target.y() <= p4.y())
@@ -116,7 +116,7 @@ bool Collider::isCollision(bn::fixed_point target)
     return false;
 }
 
-bool Collider::isCollision(Collider& target)
+bool Collider::isCollision(const Collider& target)
 {
     if(p1.x() <= target.p4.x() &&
        p4.x() >= target.p1.x() &&

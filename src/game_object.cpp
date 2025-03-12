@@ -60,22 +60,48 @@ GameObject::~GameObject()
     }
 }
 
+GameObject& GameObject::operator =(const GameObject& other)
+{
+    object_type = other.object_type;
+    object_id   = other.object_id;
+
+    sprite_ptr         = other.sprite_ptr;
+    animate_action_ptr = other.animate_action_ptr;
+    sprite_palette_ptr = other.sprite_palette_ptr;
+
+    rigidbody = other.rigidbody;
+
+    collider          = other.collider;
+    collider_x_axis   = other.collider_x_axis;
+    collider_y_axis   = other.collider_y_axis;
+    collider_offset_x = other.collider_offset_x;
+	collider_offset_y = other.collider_offset_y;
+
+	dir = other.dir;
+
+	inactive = other.inactive;
+
+	received_platform_force = other.received_platform_force;
+
+    return *this;
+}
+
 void GameObject::applyForces()
 {
     // Apply all of the forces in the RigidBody to the object
     bn::fixed_point final_dir(0, 0);
     
-    bn::ivector<Force*>::iterator current = rigidbody.forces.begin();
-    bn::ivector<Force*>::iterator last    = rigidbody.forces.end();
+    bn::ivector<Force>::iterator current = rigidbody.forces.begin();
+    bn::ivector<Force>::iterator last    = rigidbody.forces.end();
     while(current != last)
     {
         // Update object position with new force
-        setX(x() + (*current)->x());
-        setY(y() + (*current)->y());
+        setX(x() + current->x());
+        setY(y() + current->y());
 
         // Update final dir vector with new force
-        final_dir.set_x(final_dir.x() + (*current)->x());
-        final_dir.set_y(final_dir.y() + (*current)->y());
+        final_dir.set_x(final_dir.x() + current->x());
+        final_dir.set_y(final_dir.y() + current->y());
 
         // Update iterator
         current++;

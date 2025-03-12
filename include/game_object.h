@@ -15,6 +15,9 @@
 #include "bn_regular_bg_map_cell.h"
 #include "bn_regular_bg_map_cell_info.h"
 
+#include "bn_keypad.h"
+#include "bn_profiler.h"
+
 // My Libs
 #include "room_bounds.h"
 #include "utility.h"
@@ -79,12 +82,14 @@ struct GameObject {
 	GameObject(const GameObject& other);
 	virtual ~GameObject();
 
-	virtual void update(RoomBounds 								   room_bounds,
-	                    bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
-						bn::regular_bg_ptr                         bg_ptr, 
-                        bn::span<const bn::regular_bg_map_cell>    cells,
-                        bn::regular_bg_item                        bg_item,
-						bn::camera_ptr                             camera) = 0;
+	GameObject& operator =(const GameObject& other);
+
+	virtual void update(const RoomBounds& 							   room_bounds,
+	                    bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+						const bn::regular_bg_ptr&                      bg_ptr, 
+                        const bn::span<const bn::regular_bg_map_cell>& cells,
+                        const bn::regular_bg_item&                     bg_item,
+						const bn::camera_ptr&                          camera) = 0;
 	
 	void draw();
 	void setCamera(const bn::camera_ptr& camera);

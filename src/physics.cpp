@@ -80,17 +80,16 @@ RigidBody& RigidBody::operator =(const RigidBody& other)
 void RigidBody::applyDecay()
 {
         // Update all of the forces in the RigidBody
-    bn::ivector<Force*>::iterator current = forces.begin();
-    bn::ivector<Force*>::iterator last    = forces.end();
+    bn::ivector<Force>::iterator current = forces.begin();
+    bn::ivector<Force>::iterator last    = forces.end();
     while(current != last)
     {
         // Update the force (apply decay to it). 
-        (*current)->update();
+        current->update();
 
         // If the force is decayed, remove it from RigidBody.
-        if((*current)->isDecayed())
+        if(current->isDecayed())
         {
-            delete *current;
             current = forces.erase(current);
             last    = forces.end();
         }
@@ -98,11 +97,11 @@ void RigidBody::applyDecay()
     }
 }
 
-uint32 RigidBody::addForce(Force* force_p)
+uint32 RigidBody::addForce(const Force& force)
 {
     if(!forces.full())
     {
-	    forces.push_back(force_p);
+	    forces.push_back(force);
 	    return 1;
     }
     return 0;
@@ -110,12 +109,6 @@ uint32 RigidBody::addForce(Force* force_p)
 
 void RigidBody::removeForces()
 {
-    // Free force pointers
-    for(int32 i = 0; i < forces.size(); i++)
-    {
-        delete forces.at(i);
-    }
-
-    // Clear vector of dead pointers
+    // Clear vector
     forces.clear();
 }

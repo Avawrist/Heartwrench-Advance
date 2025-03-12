@@ -28,8 +28,10 @@ int main()
     while(true)
     {
         // Update Game
+        bool profile = false;
 
-        //BN_PROFILER_START("");
+        if(bn::keypad::l_held()) {profile = true;}
+        if(profile) {BN_PROFILER_START("game update");}
 
         // Update Levels
         if(current_level.cam_is_scrolling)
@@ -48,8 +50,11 @@ int main()
         BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
         BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
 
-        //BN_PROFILER_STOP();
-        //bn::profiler::show();
+        if(profile)
+        {
+            BN_PROFILER_STOP();
+            bn::profiler::show();
+        }
 
         // Update Core
         bn::core::update();

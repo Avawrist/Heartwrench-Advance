@@ -53,10 +53,10 @@ enum ScytheState {
 #define SCYTHE_PLATFORM_GRAVITY 1
 #define SCYTHE_PLATFORM_GRAVITY_DECAY 1
 
-#define SCYTHE_PLATFORM_THROW_FORCE      new Force(bn::fixed_point_t<12>(SCYTHE_PLATFORM_THROW_X_FORCE * dir, 0), SCYTHE_PLATFORM_DECAY)
-#define SCYTHE_PLATFORM_DRIFT_DOWN_FORCE new Force(bn::fixed_point_t<12>(0, SCYTHE_PLATFORM_DRIFT_DOWN_Y), SCYTHE_PLATFORM_DRIFT_DECAY)
-#define SCYTHE_PLATFORM_DRIFT_UP_FORCE   new Force(bn::fixed_point_t<12>(0, SCYTHE_PLATFORM_DRIFT_UP_Y), SCYTHE_PLATFORM_DRIFT_DECAY)
-#define SCYTHE_PLATFORM_GRAVITY_FORCE    new Force(bn::fixed_point_t<12>(0, SCYTHE_PLATFORM_GRAVITY), SCYTHE_PLATFORM_GRAVITY_DECAY)
+#define SCYTHE_PLATFORM_THROW_FORCE      Force(bn::fixed_point_t<12>(SCYTHE_PLATFORM_THROW_X_FORCE * dir, 0), SCYTHE_PLATFORM_DECAY)
+#define SCYTHE_PLATFORM_DRIFT_DOWN_FORCE Force(bn::fixed_point_t<12>(0, SCYTHE_PLATFORM_DRIFT_DOWN_Y), SCYTHE_PLATFORM_DRIFT_DECAY)
+#define SCYTHE_PLATFORM_DRIFT_UP_FORCE   Force(bn::fixed_point_t<12>(0, SCYTHE_PLATFORM_DRIFT_UP_Y), SCYTHE_PLATFORM_DRIFT_DECAY)
+#define SCYTHE_PLATFORM_GRAVITY_FORCE    Force(bn::fixed_point_t<12>(0, SCYTHE_PLATFORM_GRAVITY), SCYTHE_PLATFORM_GRAVITY_DECAY)
 
 struct ScythePlatform : GameObject {
 
@@ -67,12 +67,12 @@ struct ScythePlatform : GameObject {
     ScythePlatform(Direction _dir, bn::fixed_point _p);
     ~ScythePlatform();
 
-    void update(RoomBounds                                 room_bounds,
-                bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
-				bn::regular_bg_ptr                         bg_ptr, 
-                bn::span<const bn::regular_bg_map_cell>    cells,
-                bn::regular_bg_item                        bg_item,
-				bn::camera_ptr                             camera) override;
+    void update(const RoomBounds&                              room_bounds,
+                bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+				const bn::regular_bg_ptr&                      bg_ptr, 
+                const bn::span<const bn::regular_bg_map_cell>& cells,
+                const bn::regular_bg_item&                     bg_item,
+				const bn::camera_ptr&                          camera) override;
 	
 };
 

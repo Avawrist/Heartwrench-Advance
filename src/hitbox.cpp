@@ -43,17 +43,29 @@ Hitbox::Hitbox(bn::point pos,
 
 }
 
+Hitbox::Hitbox(const Hitbox& other) : GameObject(other)
+{
+    hitstun_frames         = other.hitstun_frames;
+    lifespan_frames        = other.lifespan_frames;
+    current_lifespan_frame = other.current_lifespan_frame;
+    x_knockback            = other.x_knockback;
+    y_knockback            = other.y_knockback;
+    knockback_decay        = other.knockback_decay;
+    width                  = other.width;
+    height                 = other.height;
+}
+
 Hitbox::~Hitbox()
 {
 
 }
 
-void Hitbox::update(RoomBounds                                 room_bounds,
-                    bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
-                    bn::regular_bg_ptr                         bg_ptr, 
-                    bn::span<const bn::regular_bg_map_cell>    cells,
-                    bn::regular_bg_item                        bg_item,
-                    bn::camera_ptr                             camera)
+void Hitbox::update(const RoomBounds&                              room_bounds,
+                    bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                    const bn::regular_bg_ptr&                      bg_ptr, 
+                    const bn::span<const bn::regular_bg_map_cell>& cells,
+                    const bn::regular_bg_item&                     bg_item,
+                    const bn::camera_ptr&                          camera)
 {
 
     //////////////////////////

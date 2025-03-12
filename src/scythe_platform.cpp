@@ -46,12 +46,12 @@ ScythePlatform::~ScythePlatform()
 
 }
 
-void ScythePlatform::update(RoomBounds 								   room_bounds,
-							bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
-							bn::regular_bg_ptr                         bg_ptr, 
-                        	bn::span<const bn::regular_bg_map_cell>    cells,
-                        	bn::regular_bg_item                        bg_item,
-							bn::camera_ptr                             camera)
+void ScythePlatform::update(const RoomBounds& 								  room_bounds,
+							bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
+							const bn::regular_bg_ptr&                         bg_ptr, 
+                        	const bn::span<const bn::regular_bg_map_cell>&    cells,
+                        	const bn::regular_bg_item&                        bg_item,
+							const bn::camera_ptr&                             camera)
 {
 
     ///////////////////
@@ -118,16 +118,16 @@ void ScythePlatform::update(RoomBounds 								   room_bounds,
 					{
 						// If descending, applying force to the x axis is all that's needed.
 						// The player gravity will take care of the rest. 
-						object_ptr->rigidbody.addForce(new Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), 0),
-																	  SCYTHE_PLATFORM_DECAY));
+						object_ptr->rigidbody.addForce(Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), 0),
+															 SCYTHE_PLATFORM_DECAY));
 					}
 					else
 					{
 						// If ascending, apply force to BOTH axes and offset y by 1 
 						// so the player hugs the platform tight.
-						object_ptr->rigidbody.addForce(new Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), 
-						                                                                    rigidbody.final_dir.y() + 1),
-																	  SCYTHE_PLATFORM_DECAY));
+						object_ptr->rigidbody.addForce(Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), 
+																				   rigidbody.final_dir.y() + 1),
+															 SCYTHE_PLATFORM_DECAY));
 					}
 				}
 

@@ -18,6 +18,7 @@
 //////////////////
 
 struct Force {
+
 	bn::fixed_point force;
 	bn::fixed_point decayed_force;
 	bn::fixed timer;
@@ -25,6 +26,7 @@ struct Force {
 
 	Force();
 	Force(bn::fixed_point _force, bn::fixed _decay_rate);
+
 	void update();
 	const bn::fixed x();
 	const bn::fixed y();
@@ -38,7 +40,8 @@ struct Force {
 #define MAX_FORCES 10
 
 struct RigidBody {
-	bn::vector<Force*, MAX_FORCES> forces;
+
+	bn::vector<Force, MAX_FORCES> forces;
 	bn::fixed_point normalized_dir;
 	bn::fixed_point final_dir;
 
@@ -49,7 +52,7 @@ struct RigidBody {
 	RigidBody& operator =(const RigidBody& other);
 
 	void   applyDecay();
-    uint32 addForce(Force* force_p);
+    uint32 addForce(const Force& force);
 	void   removeForces();
 };
 

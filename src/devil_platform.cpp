@@ -37,12 +37,12 @@ DevilPlatform::~DevilPlatform()
     
 }
 
-void DevilPlatform::update(RoomBounds                                 room_bounds,
-                           bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects,
-				           bn::regular_bg_ptr                         bg_ptr, 
-                           bn::span<const bn::regular_bg_map_cell>    cells,
-                           bn::regular_bg_item                        bg_item,
-                           bn::camera_ptr                             camera)
+void DevilPlatform::update(const RoomBounds&                              room_bounds,
+                           bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+				           const bn::regular_bg_ptr&                      bg_ptr, 
+                           const bn::span<const bn::regular_bg_map_cell>& cells,
+                           const bn::regular_bg_item&                     bg_item,
+                           const bn::camera_ptr&                          camera)
 {
 
     if(update_counter % 2 == 0) // Perform update on even frames.
@@ -64,9 +64,9 @@ void DevilPlatform::update(RoomBounds                                 room_bound
         if(normalized_dir_x || normalized_dir_y)
         {
             // Move toward target
-            rigidbody.addForce(new Force(bn::fixed_point_t<12>(speed * normalized_dir.x(), 
-                                                                    speed * normalized_dir.y()),
-                                                                    DEVIL_PLATFORM_DECAY));
+            rigidbody.addForce(Force(bn::fixed_point_t<12>(speed * normalized_dir.x(), 
+                                                           speed * normalized_dir.y()),
+                                                           DEVIL_PLATFORM_DECAY));
         }
         else
         {
@@ -153,8 +153,8 @@ void DevilPlatform::update(RoomBounds                                 room_bound
                     if(test_collider_slide_ptr->isCollision(*object_collider_ptr) && 
                     ((Player*)object_ptr)->state != STATE_GROUNDED_NEUTRAL)
                     {
-                        object_ptr->rigidbody.addForce(new Force(bn::fixed_point_t<12>(0, rigidbody.final_dir.y()),
-                                                                    DEVIL_PLATFORM_DECAY));
+                        object_ptr->rigidbody.addForce(Force(bn::fixed_point_t<12>(0, rigidbody.final_dir.y()),
+                                                             DEVIL_PLATFORM_DECAY));
                     }
 
                     // Finally, if player is riding the platform:
@@ -166,16 +166,16 @@ void DevilPlatform::update(RoomBounds                                 room_bound
                         {
                             // If descending, applying force to the x axis is all that's needed.
                             // The player gravity will take care of the rest. 
-                            object_ptr->rigidbody.addForce(new Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), 0),
-                                                                        DEVIL_PLATFORM_DECAY));
+                            object_ptr->rigidbody.addForce(Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), 0),
+                                                                 DEVIL_PLATFORM_DECAY));
                         }
                         else
                         {
                             // If ascending, apply force to BOTH axes and offset y by 1 
                             // so the player hugs the platform tight.
-                            object_ptr->rigidbody.addForce(new Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), 
-                                                                                           rigidbody.final_dir.y() + 1),
-                                                                                           DEVIL_PLATFORM_DECAY));
+                            object_ptr->rigidbody.addForce(Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), 
+                                                                                       rigidbody.final_dir.y() + 1),
+                                                                                       DEVIL_PLATFORM_DECAY));
                         }
                     }
 

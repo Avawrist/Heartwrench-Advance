@@ -39,9 +39,7 @@ struct Room
 {
 
     bn::vector<GameObject*, MAX_GAME_OBJECTS> game_objects;
-    Collider* tile_colliders[ROOM_MAX_WIDTH][ROOM_MAX_HEIGHT] = {NULL};
-    uint32    tile_types[ROOM_MAX_WIDTH][ROOM_MAX_HEIGHT]     = {NO_BLOCK_INDEX};
-
+    
     RoomBounds room_bounds;
 
     RoomName top_neighbor;
@@ -49,15 +47,16 @@ struct Room
     RoomName bottom_neighbor;
     RoomName left_neighbor;
 
+    Room();
     Room(RoomName room_name, bn::camera_ptr camera_ptr);
+    Room(const Room& other);
     ~Room();
+
+    void operator =(const Room& other);
 
     int32  addObject(GameObject* object_ptr, bn::camera_ptr camera_ptr);
     void   clear();
     void   load(RoomName room_name, bn::camera_ptr camera_ptr);
-    void   populateTileColliders(bn::regular_bg_ptr                      bg_ptr, 
-                                 bn::span<const bn::regular_bg_map_cell> cells,
-                                 bn::regular_bg_item                     bg_item);
                                  
 };
 
