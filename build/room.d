@@ -65,6 +65,10 @@ room.o: G:/game/src/room.cpp G:/game/include/room.h \
  G:/butano-master/butano/include/bn_fixed_point.h \
  G:/game/include/game_object.h \
  G:/butano-master/butano/include/bn_sprite_palette_ptr.h \
+ G:/butano-master/butano/include/bn_keypad.h \
+ G:/butano-master/butano/include/bn_profiler.h \
+ G:/butano-master/butano/include/bn_config_profiler.h \
+ G:/butano-master/butano/include/bn_unordered_map_fwd.h \
  G:/game/include/physics.h G:/game/include/math.h \
  G:/game/build/bn_sprite_items_game_object.h \
  G:/butano-master/butano/include/bn_sprite_item.h \
@@ -73,8 +77,7 @@ room.o: G:/game/src/room.cpp G:/game/include/room.h \
  G:/game/build/bn_sprite_palette_items_default_sprite_palette.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/game/build/bn_sprite_palette_items_white_sprite_palette.h \
- G:/game/include/player.h G:/butano-master/butano/include/bn_keypad.h \
- G:/butano-master/butano/include/bn_math.h \
+ G:/game/include/player.h G:/butano-master/butano/include/bn_math.h \
  G:/butano-master/butano/include/bn_sin_lut.h \
  G:/butano-master/butano/include/bn_reciprocal_lut.h \
  G:/butano-master/butano/include/bn_rule_of_three_approximation.h \
@@ -153,6 +156,10 @@ G:/butano-master/butano/include/bn_fixed.h:
 G:/butano-master/butano/include/bn_fixed_point.h:
 G:/game/include/game_object.h:
 G:/butano-master/butano/include/bn_sprite_palette_ptr.h:
+G:/butano-master/butano/include/bn_keypad.h:
+G:/butano-master/butano/include/bn_profiler.h:
+G:/butano-master/butano/include/bn_config_profiler.h:
+G:/butano-master/butano/include/bn_unordered_map_fwd.h:
 G:/game/include/physics.h:
 G:/game/include/math.h:
 G:/game/build/bn_sprite_items_game_object.h:
@@ -163,7 +170,6 @@ G:/game/build/bn_sprite_palette_items_default_sprite_palette.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/game/build/bn_sprite_palette_items_white_sprite_palette.h:
 G:/game/include/player.h:
-G:/butano-master/butano/include/bn_keypad.h:
 G:/butano-master/butano/include/bn_math.h:
 G:/butano-master/butano/include/bn_sin_lut.h:
 G:/butano-master/butano/include/bn_reciprocal_lut.h:

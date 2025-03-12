@@ -68,6 +68,10 @@ angel_platform.o: G:/game/src/angel_platform.cpp \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/game/include/game_object.h \
  G:/butano-master/butano/include/bn_sprite_palette_ptr.h \
+ G:/butano-master/butano/include/bn_keypad.h \
+ G:/butano-master/butano/include/bn_profiler.h \
+ G:/butano-master/butano/include/bn_config_profiler.h \
+ G:/butano-master/butano/include/bn_unordered_map_fwd.h \
  G:/game/include/room_bounds.h \
  G:/game/build/bn_sprite_items_game_object.h \
  G:/game/build/bn_sprite_palette_items_default_sprite_palette.h \
@@ -145,6 +149,10 @@ G:/butano-master/butano/include/bn_sprite_shape_size.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/game/include/game_object.h:
 G:/butano-master/butano/include/bn_sprite_palette_ptr.h:
+G:/butano-master/butano/include/bn_keypad.h:
+G:/butano-master/butano/include/bn_profiler.h:
+G:/butano-master/butano/include/bn_config_profiler.h:
+G:/butano-master/butano/include/bn_unordered_map_fwd.h:
 G:/game/include/room_bounds.h:
 G:/game/build/bn_sprite_items_game_object.h:
 G:/game/build/bn_sprite_palette_items_default_sprite_palette.h:

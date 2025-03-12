@@ -67,6 +67,9 @@ scythe_platform.o: G:/game/src/scythe_platform.cpp \
  G:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h \
  G:/butano-master/butano/include/bn_sprite_palette_ptr.h \
  G:/butano-master/butano/include/bn_camera_ptr.h \
+ G:/butano-master/butano/include/bn_profiler.h \
+ G:/butano-master/butano/include/bn_config_profiler.h \
+ G:/butano-master/butano/include/bn_unordered_map_fwd.h \
  G:/game/include/room_bounds.h G:/game/include/physics.h \
  G:/butano-master/butano/include/bn_vector.h G:/game/include/collider.h \
  G:/game/build/bn_sprite_items_game_object.h \
@@ -143,6 +146,9 @@ G:/butano-master/butano/include/bn_sprite_tiles_ptr.h:
 G:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h:
 G:/butano-master/butano/include/bn_sprite_palette_ptr.h:
 G:/butano-master/butano/include/bn_camera_ptr.h:
+G:/butano-master/butano/include/bn_profiler.h:
+G:/butano-master/butano/include/bn_config_profiler.h:
+G:/butano-master/butano/include/bn_unordered_map_fwd.h:
 G:/game/include/room_bounds.h:
 G:/game/include/physics.h:
 G:/butano-master/butano/include/bn_vector.h:

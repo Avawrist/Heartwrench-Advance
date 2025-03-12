@@ -62,6 +62,10 @@ devil_platform.o: G:/game/src/devil_platform.cpp \
  G:/butano-master/butano/include/bn_regular_bg_map_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h \
+ G:/butano-master/butano/include/bn_keypad.h \
+ G:/butano-master/butano/include/bn_profiler.h \
+ G:/butano-master/butano/include/bn_config_profiler.h \
+ G:/butano-master/butano/include/bn_unordered_map_fwd.h \
  G:/game/include/room_bounds.h G:/game/include/utility.h \
  G:/butano-master/butano/include/bn_log.h \
  G:/butano-master/butano/include/bn_config_log.h \
@@ -72,9 +76,8 @@ devil_platform.o: G:/game/src/devil_platform.cpp \
  G:/game/build/bn_sprite_palette_items_default_sprite_palette.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/game/build/bn_sprite_palette_items_white_sprite_palette.h \
- G:/game/include/player.h G:/butano-master/butano/include/bn_keypad.h \
- G:/game/build/bn_sprite_items_player.h G:/game/include/hitbox.h \
- G:/game/build/bn_sprite_items_hitbox.h
+ G:/game/include/player.h G:/game/build/bn_sprite_items_player.h \
+ G:/game/include/hitbox.h G:/game/build/bn_sprite_items_hitbox.h
 G:/game/include/devil_platform.h:
 G:/butano-master/butano/include/bn_math.h:
 G:/butano-master/butano/include/bn_array.h:
@@ -139,6 +142,10 @@ G:/butano-master/butano/include/bn_regular_bg_tiles_item.h:
 G:/butano-master/butano/include/bn_regular_bg_map_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_map_cell.h:
 G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h:
+G:/butano-master/butano/include/bn_keypad.h:
+G:/butano-master/butano/include/bn_profiler.h:
+G:/butano-master/butano/include/bn_config_profiler.h:
+G:/butano-master/butano/include/bn_unordered_map_fwd.h:
 G:/game/include/room_bounds.h:
 G:/game/include/utility.h:
 G:/butano-master/butano/include/bn_log.h:
@@ -153,7 +160,6 @@ G:/game/build/bn_sprite_palette_items_default_sprite_palette.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/game/build/bn_sprite_palette_items_white_sprite_palette.h:
 G:/game/include/player.h:
-G:/butano-master/butano/include/bn_keypad.h:
 G:/game/build/bn_sprite_items_player.h:
 G:/game/include/hitbox.h:
 G:/game/build/bn_sprite_items_hitbox.h:
