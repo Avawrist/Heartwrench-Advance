@@ -47,8 +47,8 @@ int main()
             current_level.transitionRoom();
         }
 
-        BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
-        BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
+        //BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
+        //BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
 
         if(profile)
         {

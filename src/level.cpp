@@ -220,8 +220,9 @@ void Level::transitionRoom()
     {
         if(current_room.left_neighbor != NO_ROOM)
         {
+
             // Create the neighbor room
-            current_room = Room(current_room.right_neighbor, camera.value());
+            current_room = Room(current_room.left_neighbor, camera.value());
 
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room
@@ -242,7 +243,7 @@ void Level::transitionRoom()
         if(current_room.top_neighbor != NO_ROOM)
         {
             // Create the neighbor room
-            current_room = Room(current_room.right_neighbor, camera.value());
+            current_room = Room(current_room.top_neighbor, camera.value());
 
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room
@@ -263,7 +264,7 @@ void Level::transitionRoom()
         if(current_room.bottom_neighbor != NO_ROOM)
         {
             // Create the neighbor room
-            current_room = Room(current_room.right_neighbor, camera.value());
+            current_room = Room(current_room.bottom_neighbor, camera.value());
 
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room

@@ -16,6 +16,7 @@ Room::Room(RoomName room_name, bn::camera_ptr camera_ptr)
 
 Room::Room(const Room& other)
 {
+
     for(int i = 0; i < game_objects.size(); i++)
     {
         delete game_objects.at(i);
@@ -35,7 +36,6 @@ Room::Room(const Room& other)
             break;
 
             default:
-                game_objects.at(i) = NULL;
             break;
         }
     }
@@ -46,6 +46,7 @@ Room::Room(const Room& other)
     right_neighbor  = other.right_neighbor;
     bottom_neighbor = other.bottom_neighbor;
     left_neighbor   = other.left_neighbor;
+
 }
 
 Room::~Room()
@@ -55,6 +56,7 @@ Room::~Room()
 
 void Room::operator =(const Room& other)
 {
+
     for(int i = 0; i < game_objects.size(); i++)
     {
         delete game_objects.at(i);
@@ -74,7 +76,6 @@ void Room::operator =(const Room& other)
             break;
 
             default:
-                game_objects.at(i) = NULL;
             break;
         }
     }
@@ -85,6 +86,7 @@ void Room::operator =(const Room& other)
     right_neighbor  = other.right_neighbor;
     bottom_neighbor = other.bottom_neighbor;
     left_neighbor   = other.left_neighbor;
+    
 }
 
 int32 Room::addObject(GameObject* object_ptr, bn::camera_ptr camera_ptr)
@@ -141,7 +143,7 @@ void Room::load(RoomName       room_name,
             room_bounds.left_bound   = -512;
 
             // Init Game Objects //
-            for(int i = 0; i < 5; i++)
+            for(int i = 0; i < 0; i++)
             {
                 temp_ptr = new TestEnemy();
                 temp_ptr->setPos(-496, 0);

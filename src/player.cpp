@@ -824,9 +824,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	{
 		for(int32 x = -2; x < 3; x++)
 		{
-			if(rigidbody.normalized_dir.x() == 0 &&
-		       rigidbody.normalized_dir.y() == 0) {break;}
-
+			// 0. Early outs for optimization
+			if(rigidbody.normalized_dir.x().integer() == 0 &&
+		       rigidbody.normalized_dir.y().integer() == 0) {break;}
+			
 			// 1. Get tile type at index //
 			int32 check_index_x = cell_index.x() + x;
 			int32 check_index_y = cell_index.y() + y;
@@ -1289,8 +1290,16 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	{
 		for(int32 x = -2; x < 3; x++)
 		{
-			if(rigidbody.normalized_dir.x() == 0 &&
-			rigidbody.normalized_dir.y() == 0) {break;}
+			// 0. Early outs for optimization
+			if(rigidbody.normalized_dir.x().integer() == 0 &&
+		       rigidbody.normalized_dir.y().integer() == 0) {break;}
+			
+			if(rigidbody.normalized_dir.y().integer() >= 0 &&
+		       y <= 0)
+			{
+				if(rigidbody.normalized_dir.x().integer() < 0 && x >= 0)       {break;}
+				else if(rigidbody.normalized_dir.x().integer() > 0 && x <= 0)  {break;}
+			}
 
 			// 1. Get tile type at index //
 			int32 check_index_x = cell_index.x() + x;
@@ -1968,7 +1977,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			}
 		}
 	}
-
+	
 	////////////////////
 	// Clamp Position //
 	////////////////////

@@ -58,7 +58,7 @@ void TestEnemy::update(const RoomBounds&                              room_bound
     ///////////////////
 
     rigidbody.addForce(TEST_ENEMY_GRAVITY_FORCE);
-	//rigidbody.addForce(Force(bn::fixed_point_t<12>(1, 0), TEST_ENEMY_GRAVITY_DECAY));
+	rigidbody.addForce(Force(bn::fixed_point_t<12>(-1, 0), TEST_ENEMY_GRAVITY_DECAY));
 
     ////////////////////
     // Update Physics //
@@ -98,6 +98,10 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 	{
 		for(int32 x = -1; x < 2; x++)
 		{
+			// 0. Early outs for optimization
+			if(rigidbody.normalized_dir.x() == 0 &&
+			   rigidbody.normalized_dir.y() == 0) {break;}
+			
 			// 1. Get tile type at index //
 			int32 check_index_x = cell_index.x() + x;
 			int32 check_index_y = cell_index.y() + y;
@@ -136,6 +140,10 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 						block_x_offset = TILE_WIDTH / 2;
 						x++; // Skip checking the next cell, since we already accounted for it here.
 					}
+
+					// Idea for optimizing algorithm: have collision check function return collision overlap value by
+					// by each axis, then move the collider back by the collision overlap amount instead of using while loops.
+					// Not sure if this is possible without using a while loop but could speed things up.
 
 					other_collider = Collider(world_x + block_x_offset, 
 											  world_y, 
