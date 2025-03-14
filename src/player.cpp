@@ -883,17 +883,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						col_x_offset = collider_x_axis.getCollisionXOffset(other_collider, rigidbody.normalized_dir.x());
 						collider_x_axis.setX(collider_x_axis.x() + col_x_offset);
 						setX(this->x() + col_x_offset); 
-
-						/*
-						while(collider_x_axis.isCollision(other_collider))
-						{
-							if(rigidbody.normalized_dir.x() == 0) {kill_player = true; break;}
-							collider_x_axis.setX(collider_x_axis.x() - rigidbody.normalized_dir.x());
-							setX(this->x() - rigidbody.normalized_dir.x());
-						}
-						*/
-
-						// Resolve Y axis collision
+						
+						// Resolve X axis collision
 						col_y_offset = collider_y_axis.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y());
 						collider_y_axis.setY(collider_y_axis.y() + col_y_offset);
 						setY(this->y() + col_y_offset); 

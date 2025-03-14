@@ -143,7 +143,7 @@ void Room::load(RoomName       room_name,
             room_bounds.left_bound   = -512;
 
             // Init Game Objects //
-            for(int i = 0; i < 10; i++)
+            for(int i = 0; i < 8; i++)
             {
                 temp_ptr = new TestEnemy();
                 temp_ptr->setPos(-496, 0);
