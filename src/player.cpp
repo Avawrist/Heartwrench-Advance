@@ -827,6 +827,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// 0. Early outs for optimization
 			if(rigidbody.normalized_dir.x().integer() == 0 &&
 		       rigidbody.normalized_dir.y().integer() == 0) {break;}
+
+			if(x == 0 && y == 0) {break;}
 			
 			// 1. Get tile type at index //
 			int32 check_index_x = cell_index.x() + x;
@@ -1293,13 +1295,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// 0. Early outs for optimization
 			if(rigidbody.normalized_dir.x().integer() == 0 &&
 		       rigidbody.normalized_dir.y().integer() == 0) {break;}
-			
-			if(rigidbody.normalized_dir.y().integer() >= 0 &&
-		       y <= 0)
-			{
-				if(rigidbody.normalized_dir.x().integer() < 0 && x >= 0)       {break;}
-				else if(rigidbody.normalized_dir.x().integer() > 0 && x <= 0)  {break;}
-			}
 
 			// 1. Get tile type at index //
 			int32 check_index_x = cell_index.x() + x;
@@ -1368,7 +1363,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{
 						wall_left_detected = true;
 					}
-
+					
 				break;
 
 				case ONEWAY_BLOCK_INDEX:

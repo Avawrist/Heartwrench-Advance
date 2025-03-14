@@ -30,7 +30,7 @@ int main()
         // Update Game
         bool profile = false;
 
-        if(bn::keypad::l_held()) {profile = true;}
+        if(bn::keypad::l_pressed()) {profile = true;}
         if(profile) {BN_PROFILER_START("game update");}
 
         // Update Levels
