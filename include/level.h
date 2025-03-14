@@ -18,6 +18,8 @@
 #include "bn_regular_bg_items_test_bg.h"
 #include "bn_regular_bg_items_test_level.h"
 
+#include "bn_regular_bg_items_test_small_level.h"
+
 // My Libs
 #include "room.h"
 #include "utility.h"

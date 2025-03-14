@@ -58,7 +58,7 @@ void TestEnemy::update(const RoomBounds&                              room_bound
     ///////////////////
 
     rigidbody.addForce(TEST_ENEMY_GRAVITY_FORCE);
-	rigidbody.addForce(Force(bn::fixed_point_t<12>(-1, 0), TEST_ENEMY_GRAVITY_DECAY));
+	rigidbody.addForce(Force(bn::fixed_point_t<12>(1, 0), TEST_ENEMY_GRAVITY_DECAY));
 
     ////////////////////
     // Update Physics //
@@ -93,7 +93,7 @@ void TestEnemy::update(const RoomBounds&                              room_bound
     ////////////////////////////
     // Resolve Tile Collision //
     ////////////////////////////
-	
+	/*
 	for(int32 y = -1; y < 2; y++)
 	{
 		for(int32 x = -1; x < 2; x++)
@@ -116,6 +116,9 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 			// Prepare offsets in case they are needed for Block collision.
 			int32 block_w_offset = 0;
 			int32 block_x_offset = 0;
+
+			bn::fixed col_x_offset;
+			bn::fixed col_y_offset;
 
 			int32 index;
 			int32 local_height;
@@ -152,18 +155,15 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 			
 					if(collider.isCollision(other_collider))
 					{
-						// Handle Default Collision Cases //
-						while(collider_x_axis.isCollision(other_collider))
-						{
-							collider_x_axis.setX(collider_x_axis.x() - rigidbody.normalized_dir.x());
-							setX(this->x() - rigidbody.normalized_dir.x());
-						}
-
-						while(collider_y_axis.isCollision(other_collider))
-						{
-							collider_y_axis.setY(collider_y_axis.y() - rigidbody.normalized_dir.y());
-							setY(this->y() - rigidbody.normalized_dir.y());
-						}
+						// Resolve X Axis collision					
+						col_x_offset = collider_x_axis.getCollisionXOffset(other_collider, rigidbody.normalized_dir.x());
+						collider_x_axis.setX(collider_x_axis.x() + col_x_offset);
+						setX(this->x() + col_x_offset); 
+						
+						// Resolve Y Axis collision
+						col_y_offset = collider_y_axis.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y());
+						collider_y_axis.setY(collider_y_axis.y() + col_y_offset);
+						setY(this->y() + col_y_offset); 
 
 						// If there is still collision somehow, must be corner case //
 						while(collider.isCollision(other_collider))
@@ -466,6 +466,7 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 			}
 		}
 	}
+	*/
 
 	//if(profile)
 	//{

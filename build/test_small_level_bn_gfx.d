@@ -1,0 +1,1 @@
+test_small_level_bn_gfx.o: test_small_level_bn_gfx.s

@@ -128,27 +128,29 @@ bool Collider::isCollision(const Collider& target)
     return false;
 }
 
-int32 getCollisionXOffset(const Collider& target, Direction dir)
+bn::fixed Collider::getCollisionXOffset(const Collider& target, bn::fixed x_dir)
 {
     if(p1.x() <= target.p4.x() &&
        p4.x() >= target.p1.x() &&
        p1.y() <= target.p4.y() &&
        p4.y() >= target.p1.y())
     {
-        
+        if     (x_dir < 0) {return target.p4.x() - p1.x() - x_dir;}
+        else if(x_dir > 0) {return target.p1.x() - p4.x() - x_dir;}
     }
 
     return 0;
 }
 
-int32 getCollisionYOffset(const Collider& target, Direction dir)
+bn::fixed Collider::getCollisionYOffset(const Collider& target, bn::fixed y_dir)
 {
     if(p1.x() <= target.p4.x() &&
        p4.x() >= target.p1.x() &&
        p1.y() <= target.p4.y() &&
        p4.y() >= target.p1.y())
     {
-     
+        if     (y_dir < 0) {return target.p4.y() - p1.y() - y_dir;}
+        else if(y_dir > 0) {return target.p1.y() - p4.y() - y_dir;}
     }
 
     return 0;
