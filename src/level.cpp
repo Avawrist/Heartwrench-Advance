@@ -81,6 +81,7 @@ void Level::reload()
 void Level::updateAndDraw()
 {
 
+    // Update & draw all objects
     for(int32 i = current_room.game_objects.size() - 1; i >= 0; i--)
     {
         if(current_room.game_objects.data()[i] != NULL)
@@ -94,6 +95,9 @@ void Level::updateAndDraw()
             current_room.game_objects.data()[i]->draw();
         }   
     } 
+
+    // Load unloaded objects if needed - Is it appropriate to have this here? 
+    current_room.monitorUnloadedObjects(camera.value());
 
 }
 
@@ -157,22 +161,17 @@ void Level::reloadOnDeath()
 
 void Level::freeInactiveObjects()
 {
-    // Get an iterator to the gameobjects vector starting after the first two entries
-    // if object at current iterator is NULL
-    // erase the object :D 
-
-    bn::ivector<GameObject*>::iterator current = current_room.game_objects.begin();
-    bn::ivector<GameObject*>::iterator last    = current_room.game_objects.end();
-    current++; // Skip player index
-    while(current != last)
+    
+    int32 last_index = current_room.game_objects.size() - 1;
+    for(int i = 1; i <= last_index; i++)
     {
-        if((*current)->inactive)
+        if(current_room.game_objects.at(i)->inactive)
         {
-            // Erase game object
-            current_room.game_objects.erase(current);
-            delete *current;
+            delete current_room.game_objects.at(i);
+            current_room.game_objects.at(i) = current_room.game_objects.at(last_index);
+            current_room.game_objects.pop_back();
+            last_index--;
         }
-        current++;
     }
 
     updateIndexes();

@@ -24,6 +24,23 @@
 #include "angel_platform.h"
 #include "test_enemy.h"
 
+///////////////////////////
+// Struct UnloadedObject //
+///////////////////////////
+
+struct UnloadedObject
+{
+    bn::point  room_pos;
+    ObjectType object_type;
+
+    UnloadedObject();
+    UnloadedObject(bn::point _room_pos, ObjectType _object_type);
+    UnloadedObject(const UnloadedObject& other);
+    ~UnloadedObject();
+
+    void operator =(const UnloadedObject& other);
+};
+
 /////////////////
 // Struct Room //
 /////////////////
@@ -38,7 +55,8 @@ enum RoomName
 struct Room
 {
 
-    bn::vector<GameObject*, MAX_GAME_OBJECTS> game_objects;
+    bn::vector<GameObject*,    MAX_GAME_OBJECTS>     game_objects;
+    bn::vector<UnloadedObject, MAX_UNLOADED_OBJECTS> unloaded_objects;
     
     RoomBounds room_bounds;
 
@@ -54,9 +72,13 @@ struct Room
 
     void operator =(const Room& other);
 
-    int32  addObject(GameObject* object_ptr, bn::camera_ptr camera_ptr);
-    void   clear();
-    void   load(RoomName room_name, bn::camera_ptr camera_ptr);
+    int32 addObject(GameObject* object_ptr, const bn::camera_ptr& camera_ptr);
+    int32 addObject(const UnloadedObject& object, const bn::camera_ptr& camera_ptr);
+    int32 addUnloadedObject(const UnloadedObject& new_object); // This will be called when the room is loaded.
+    void  clear();
+    void  load(RoomName room_name, const bn::camera_ptr& camera_ptr);
+    void  monitorUnloadedObjects(const bn::camera_ptr& camera_ptr); // This will be called every frame to 
+                                                                    // test for objects that should be loaded.
                                  
 };
 

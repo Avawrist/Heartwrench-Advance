@@ -195,4 +195,12 @@ void DevilPlatform::update(const RoomBounds&                              room_b
 
     update_counter++;
     if(update_counter >= 60) {update_counter = 0;}
+
+    //////////////////////////////
+    // Monitor unloading bounds //
+    //////////////////////////////
+    
+    if(pos().x() < camera.position().x() - LOAD_RANGE_HALF_W || 
+       pos().x() > camera.position().x() + LOAD_RANGE_HALF_W)
+    {inactive = true;}
 }

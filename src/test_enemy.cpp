@@ -467,6 +467,14 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 		}
 	}
 
+	//////////////////////////////
+    // Monitor unloading bounds //
+    //////////////////////////////
+    
+    if(pos().x() < camera.position().x() - LOAD_RANGE_HALF_W || 
+       pos().x() > camera.position().x() + LOAD_RANGE_HALF_W)
+    {inactive = true;}
+
 	//if(profile)
 	//{
 	//	BN_PROFILER_STOP();

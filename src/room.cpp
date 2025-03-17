@@ -1,5 +1,38 @@
 #include "room.h"
 
+///////////////////////////
+// Struct UnloadedObject //
+///////////////////////////
+
+UnloadedObject::UnloadedObject()
+{
+    room_pos    = bn::point(0, 0);
+    object_type = NO_TYPE;
+}
+
+UnloadedObject::UnloadedObject(bn::point _room_pos, ObjectType _object_type)
+{
+    room_pos    = _room_pos;
+    object_type = _object_type;
+}
+
+UnloadedObject::UnloadedObject(const UnloadedObject& other)
+{
+    room_pos    = other.room_pos;
+    object_type = other.object_type;
+}
+
+UnloadedObject::~UnloadedObject()
+{
+
+}
+
+void UnloadedObject::operator =(const UnloadedObject& other)
+{
+    room_pos    = other.room_pos;
+    object_type = other.object_type;
+}
+
 /////////////////
 // Struct Room //
 /////////////////
@@ -39,6 +72,9 @@ Room::Room(const Room& other)
             break;
         }
     }
+
+    // Copy unloaded objects
+    unloaded_objects = other.unloaded_objects;
 
     room_bounds = other.room_bounds;
 
@@ -80,6 +116,9 @@ void Room::operator =(const Room& other)
         }
     }
 
+    // Copy unloaded objects
+    unloaded_objects = other.unloaded_objects;
+
     room_bounds = other.room_bounds;
 
     top_neighbor    = other.top_neighbor;
@@ -89,7 +128,7 @@ void Room::operator =(const Room& other)
     
 }
 
-int32 Room::addObject(GameObject* object_ptr, bn::camera_ptr camera_ptr)
+int32 Room::addObject(GameObject* object_ptr, const bn::camera_ptr& camera_ptr)
 {
     if(game_objects.size() >= MAX_GAME_OBJECTS) {return -1;}
 
@@ -98,6 +137,63 @@ int32 Room::addObject(GameObject* object_ptr, bn::camera_ptr camera_ptr)
     game_objects.back()->object_id = game_objects.size() - 1;
 
     return game_objects.back()->object_id;
+
+    BN_LOG("Object loaded: ", object_ptr->object_type);
+}
+
+int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera_ptr)
+{
+    if(game_objects.size() >= MAX_GAME_OBJECTS) {return -1;}
+
+    GameObject* temp_object_ptr = NULL;
+
+    // Allocate object based on type
+    // NOTE: All object types should be represented here. When adding object types 
+    //       this list must be updated.
+    switch(object.object_type)
+    {
+        case PLAYER:
+            temp_object_ptr = new Player();
+        break;
+
+        case TEST_ENEMY:
+            temp_object_ptr = new TestEnemy();
+        break;
+
+        case DEVIL_PLATFORM:
+        case ANGEL_PLATFORM:
+        case SCYTHE_PLATFORM:
+        case HITBOX_SCYTHE_1:
+        case HITBOX_SCYTHE_2:
+        case HITBOX_SCYTHE_3:
+            BN_LOG("Loading object of type ", object.object_type);
+            BN_LOG("is not supported by function Room::addObject");
+        break;
+
+        case NO_TYPE:
+        default:
+            BN_LOG("Failed to load object - No type provided.");
+            return -1;
+        break;
+    }
+	
+    game_objects.push_back(temp_object_ptr);
+    game_objects.back()->setCamera(camera_ptr);
+    game_objects.back()->setPos(object.room_pos);
+    game_objects.back()->object_id = game_objects.size() - 1;
+
+    return game_objects.back()->object_id;
+
+    BN_LOG("Object loaded: ", temp_object_ptr->object_type);
+}
+
+int32 Room::addUnloadedObject(const UnloadedObject& new_object)
+{
+    if(unloaded_objects.size() >= MAX_UNLOADED_OBJECTS) {return 0;}
+
+    unloaded_objects.push_back(new_object);
+
+    return 1;
 }
 
 void Room::clear()
@@ -114,8 +210,8 @@ void Room::clear()
 
 }
 
-void Room::load(RoomName       room_name, 
-                bn::camera_ptr camera_ptr)
+void Room::load(RoomName              room_name, 
+                const bn::camera_ptr& camera_ptr)
 {
     if(room_name == NO_ROOM) {return;}
 
@@ -123,8 +219,6 @@ void Room::load(RoomName       room_name,
     Player* player_ptr = new Player();
     addObject(player_ptr, camera_ptr);
     game_objects.back()->setPos(0, 0);
-
-    GameObject* temp_ptr = NULL;
 
     // Initialize Objects
     switch(room_name)
@@ -142,14 +236,8 @@ void Room::load(RoomName       room_name,
             room_bounds.bottom_bound =  256;
             room_bounds.left_bound   = -512;
 
-            // Init Game Objects //
-            for(int i = 0; i < 0; i++)
-            {
-                temp_ptr = new TestEnemy();
-                temp_ptr->setPos(-496, 0);
-                addObject(temp_ptr, camera_ptr);
-            }
-            temp_ptr = NULL;
+            // Record unloaded objects
+            addUnloadedObject(UnloadedObject(bn::point(200, 0), TEST_ENEMY));
             
         break;
 
@@ -178,4 +266,22 @@ void Room::load(RoomName       room_name,
         break;
     }
 
+}
+
+void Room::monitorUnloadedObjects(const bn::camera_ptr& camera_ptr)
+{
+    if(game_objects.at(PLAYER_OBJECT_LIST_INDEX) == NULL) {return;}
+
+    bn::fixed_point camera_center = game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos();
+
+    // Look at all unloaded objects in the list. If the position is within the defined
+    // camera boundaries, actually load the object.
+    for(int i = 0; i < unloaded_objects.size(); i++)
+    {
+        if(unloaded_objects.at(i).room_pos.x() >= camera_center.x() - LOAD_RANGE_HALF_W &&
+           unloaded_objects.at(i).room_pos.x() <= camera_center.x() + LOAD_RANGE_HALF_W)
+        {
+            addObject(unloaded_objects.at(i), camera_ptr);\
+        }
+    }
 }
