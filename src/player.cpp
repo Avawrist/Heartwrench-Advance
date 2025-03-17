@@ -843,6 +843,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			int32 block_w_offset = 0;
 			int32 block_x_offset = 0;
 
+			bn::fixed col_x_offset;
+			bn::fixed col_y_offset;
+
 			int32 index;
 			int32 local_height;
 			int32 global_height;
@@ -874,21 +877,16 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 					if(collider.isCollision(other_collider))
 					{
-						// Handle Default Collision Cases //
-						while(collider_x_axis.isCollision(other_collider))
-						{
-							if(rigidbody.normalized_dir.x() == 0) {kill_player = true; break;}
-							collider_x_axis.setX(collider_x_axis.x() - rigidbody.normalized_dir.x());
-							setX(this->x() - rigidbody.normalized_dir.x());
-						}
+						// Resolve X Axis Collision //
+						col_x_offset = collider_x_axis.getCollisionXOffset(other_collider, rigidbody.normalized_dir.x());
+						collider_x_axis.setX(collider_x_axis.x() + col_x_offset);
+						setX(this->x() + col_x_offset);
 
-						while(collider_y_axis.isCollision(other_collider))
-						{
-							if(rigidbody.normalized_dir.y() == 0) {kill_player = true; break;}
-							collider_y_axis.setY(collider_y_axis.y() - rigidbody.normalized_dir.y());
-							setY(this->y() - rigidbody.normalized_dir.y());
-							v_collision_grace_frames = PLAYER_V_COLLISION_MAX_GRACE_FRAMES;
-						}
+						// Resolve Y Axis Collision //
+						col_y_offset = collider_y_axis.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y());
+						collider_y_axis.setY(collider_y_axis.y() + col_y_offset);
+						setY(this->y() + col_y_offset);
+						v_collision_grace_frames = PLAYER_V_COLLISION_MAX_GRACE_FRAMES * col_y_offset.integer();
 
 						// If there is still collision somehow, must be corner case //
 						while(collider.isCollision(other_collider))

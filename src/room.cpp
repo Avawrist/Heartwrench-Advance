@@ -137,8 +137,6 @@ int32 Room::addObject(GameObject* object_ptr, const bn::camera_ptr& camera_ptr)
     game_objects.back()->object_id = game_objects.size() - 1;
 
     return game_objects.back()->object_id;
-
-    BN_LOG("Object loaded: ", object_ptr->object_type);
 }
 
 int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera_ptr)
@@ -183,8 +181,6 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
     game_objects.back()->object_id = game_objects.size() - 1;
 
     return game_objects.back()->object_id;
-
-    BN_LOG("Object loaded: ", temp_object_ptr->object_type);
 }
 
 int32 Room::addUnloadedObject(const UnloadedObject& new_object)
