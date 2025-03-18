@@ -75,7 +75,7 @@ void Hitbox::update(const RoomBounds&                              room_bounds,
     current_lifespan_frame--;
     current_lifespan_frame = clamp(0, lifespan_frames, current_lifespan_frame);
     
-    if(current_lifespan_frame <= 0) {inactive = true;}
+    if(current_lifespan_frame <= 0) {is_inactive = true;}
 
     //////////////////////////////
     // Monitor unloading bounds //
@@ -83,6 +83,6 @@ void Hitbox::update(const RoomBounds&                              room_bounds,
     
     if(pos().x() < camera.position().x() - LOAD_RANGE_HALF_W || 
        pos().x() > camera.position().x() + LOAD_RANGE_HALF_W)
-    {inactive = true;}
+    {is_inactive = true;}
 
 }

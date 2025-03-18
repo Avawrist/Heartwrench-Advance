@@ -159,14 +159,37 @@ void Level::reloadOnDeath()
     }
 }
 
-void Level::freeInactiveObjects()
+void Level::freeObjects()
 {
-    
+    #define INDEX_AFTER_PLAYER 1
+
     int32 last_index = current_room.game_objects.size() - 1;
-    for(int i = 1; i <= last_index; i++)
+    for(int32 i = INDEX_AFTER_PLAYER; i <= last_index; i++)
     {
-        if(current_room.game_objects.at(i)->inactive)
+        if(current_room.game_objects.at(i)->is_dead)
         {
+            // 1. Update the UnloadedObject with the Unloaded ID:
+            int32 object_id = current_room.game_objects.at(i)->object_id;
+            int32 unloaded_index = current_room.findUnloadedObjectIndex(object_id);
+            if(unloaded_index > -1)
+            {current_room.unloaded_objects.at(unloaded_index).loaded_instance_id = UNLOADED_OBJECT_STATE_DEAD;}
+
+            // 2. Remove the dead object:
+            delete current_room.game_objects.at(i);
+            current_room.game_objects.at(i) = current_room.game_objects.at(last_index);
+            current_room.game_objects.pop_back();
+            last_index--;
+        }
+
+        else if(current_room.game_objects.at(i)->is_inactive)
+        {
+            // 1. Update the UnloadedObject with the Unloaded ID:
+            int32 object_id = current_room.game_objects.at(i)->object_id;
+            int32 unloaded_index = current_room.findUnloadedObjectIndex(object_id);
+            if(unloaded_index > -1)
+            {current_room.unloaded_objects.at(unloaded_index).loaded_instance_id = UNLOADED_OBJECT_STATE_UNLOADED;}
+
+            // 2. Remove the inactive object:
             delete current_room.game_objects.at(i);
             current_room.game_objects.at(i) = current_room.game_objects.at(last_index);
             current_room.game_objects.pop_back();
@@ -181,6 +204,13 @@ void Level::updateIndexes()
 {    
     for(int32 i = current_room.game_objects.size() - 1; i >= 0; i--)
     {
+        // Search for the unloaded object by index, if found, update the ID:
+        int32 object_id = current_room.game_objects.at(i)->object_id;
+        int32 unloaded_index = current_room.findUnloadedObjectIndex(object_id);
+        if(unloaded_index > -1)
+        {current_room.unloaded_objects.at(unloaded_index).loaded_instance_id = i;}
+
+        // Update the loaded object's ID:
         current_room.game_objects.data()[i]->object_id = i;
     }
 }

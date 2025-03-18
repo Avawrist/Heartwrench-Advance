@@ -67,7 +67,7 @@ struct Level
     void updateAndDraw();
     void updateCamera();
     void reloadOnDeath();
-    void freeInactiveObjects();
+    void freeObjects();
     void updateIndexes();
     void transitionRoom();
 

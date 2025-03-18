@@ -42,13 +42,23 @@ int main()
         {
             current_level.updateAndDraw();
             current_level.updateCamera();
-            current_level.freeInactiveObjects();
+            current_level.freeObjects();
             current_level.reloadOnDeath();
             current_level.transitionRoom();
         }
 
         BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
         BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
+
+        /*
+        BN_LOG("Game Object IDs: ");
+        for(int32 i = 0; i < current_level.current_room.game_objects.size(); i++)
+        {BN_LOG(current_level.current_room.game_objects.at(i)->object_id);}
+
+        BN_LOG("Unloaded Object IDs: ");
+        for(int32 j = 0; j < current_level.current_room.unloaded_objects.size(); j++)
+        {BN_LOG(current_level.current_room.unloaded_objects.at(j).loaded_instance_id);}
+        */
 
         if(profile)
         {

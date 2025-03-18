@@ -2050,7 +2050,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 							 camera);
 	hitbox_1_ptr->draw();
 
-		if(hitbox_1_ptr->inactive) 
+		if(hitbox_1_ptr->is_inactive) 
 		{
 			delete hitbox_1_ptr;
 			hitbox_1_ptr = NULL;
@@ -2070,7 +2070,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 							 camera);
 		hitbox_2_ptr->draw();
 
-		if(hitbox_2_ptr->inactive) 
+		if(hitbox_2_ptr->is_inactive) 
 		{
 			delete hitbox_2_ptr;
 			hitbox_2_ptr = NULL;
@@ -2090,7 +2090,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 							 camera);
 		hitbox_3_ptr->draw();
 
-		if(hitbox_3_ptr->inactive) 
+		if(hitbox_3_ptr->is_inactive) 
 		{
 			delete hitbox_3_ptr;
 			hitbox_3_ptr = NULL;

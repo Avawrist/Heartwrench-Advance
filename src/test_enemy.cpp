@@ -48,17 +48,12 @@ void TestEnemy::update(const RoomBounds&                              room_bound
             		   const bn::camera_ptr&                          camera)
 {
 
-	//bool profile = false;
-
-	//if(bn::keypad::l_held()) {profile = true;}
-	//if(profile) {BN_PROFILER_START("test enemy update");}
-
     ///////////////////
     // State Machine //
     ///////////////////
 
     rigidbody.addForce(TEST_ENEMY_GRAVITY_FORCE);
-	rigidbody.addForce(Force(bn::fixed_point_t<12>(-1, 0), TEST_ENEMY_GRAVITY_DECAY));
+	//rigidbody.addForce(Force(bn::fixed_point_t<12>(1, 0), TEST_ENEMY_GRAVITY_DECAY));
 
     ////////////////////
     // Update Physics //
@@ -473,12 +468,6 @@ void TestEnemy::update(const RoomBounds&                              room_bound
     
     if(pos().x() < camera.position().x() - LOAD_RANGE_HALF_W || 
        pos().x() > camera.position().x() + LOAD_RANGE_HALF_W)
-    {inactive = true;}
-
-	//if(profile)
-	//{
-	//	BN_PROFILER_STOP();
-	//	bn::profiler::show();
-	//}
+    {is_inactive = true;}
 
 }

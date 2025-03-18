@@ -56,7 +56,7 @@ enum ObjectType
 struct GameObject {
 
 	ObjectType object_type;
-	uint32     object_id;
+	int32      object_id;
 
 	bn::optional<bn::sprite_ptr>                             sprite_ptr;
 	bn::optional<bn::sprite_animate_action<MAX_ANIM_FRAMES>> animate_action_ptr;
@@ -72,7 +72,8 @@ struct GameObject {
 
 	Direction dir;
 
-	bool inactive = false;
+	bool is_inactive = false;
+	bool is_dead     = false;
 
 	bool received_platform_force = false;
 
@@ -101,6 +102,27 @@ struct GameObject {
 	void setPos(bn::fixed new_x, bn::fixed new_y);
 	void setPos(bn::fixed_point new_pos);
 	
+};
+
+///////////////////////////
+// Struct UnloadedObject //
+///////////////////////////
+
+#define UNLOADED_OBJECT_STATE_UNLOADED -1
+#define UNLOADED_OBJECT_STATE_DEAD     -2
+
+struct UnloadedObject
+{
+    bn::point  room_pos;
+    ObjectType object_type;
+	int32      loaded_instance_id;
+
+    UnloadedObject();
+    UnloadedObject(bn::point _room_pos, ObjectType _object_type);
+    UnloadedObject(const UnloadedObject& other);
+    ~UnloadedObject();
+
+    void operator =(const UnloadedObject& other);
 };
 
 # endif

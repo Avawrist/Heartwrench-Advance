@@ -18,7 +18,7 @@ typedef int   int32;
 
 // Global Macros
 #define MAX_GAME_OBJECTS     10
-#define MAX_UNLOADED_OBJECTS 10
+#define MAX_UNLOADED_OBJECTS 25
 
 #define LOAD_RANGE_HALF_W 180
 #define LOAD_RANGE_HALF_H 160

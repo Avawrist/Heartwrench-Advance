@@ -42,7 +42,8 @@ GameObject::GameObject(const GameObject& other)
 
 	dir = other.dir;
 
-	inactive = other.inactive;
+	is_inactive = other.is_inactive;
+    is_dead     = other.is_dead;
 
 	received_platform_force = other.received_platform_force;
 
@@ -79,7 +80,8 @@ GameObject& GameObject::operator =(const GameObject& other)
 
 	dir = other.dir;
 
-	inactive = other.inactive;
+	is_inactive = other.is_inactive;
+    is_dead     = other.is_dead;
 
 	received_platform_force = other.received_platform_force;
 
@@ -170,4 +172,41 @@ void GameObject::setPos(bn::fixed_point new_pos)
     sprite_ptr->set_y(new_pos.y().integer());
 	collider.setX(new_pos.x().integer() + collider_offset_x);
 	collider.setY(new_pos.y().integer() + collider_offset_y);
+}
+
+///////////////////////////
+// Struct UnloadedObject //
+///////////////////////////
+
+UnloadedObject::UnloadedObject()
+{
+    room_pos           = bn::point(0, 0);
+    object_type        = NO_TYPE;
+    loaded_instance_id = UNLOADED_OBJECT_STATE_UNLOADED;
+}
+
+UnloadedObject::UnloadedObject(bn::point _room_pos, ObjectType _object_type)
+{
+    room_pos           = _room_pos;
+    object_type        = _object_type;
+    loaded_instance_id = UNLOADED_OBJECT_STATE_UNLOADED;
+}
+
+UnloadedObject::UnloadedObject(const UnloadedObject& other)
+{
+    room_pos           = other.room_pos;
+    object_type        = other.object_type;
+    loaded_instance_id = other.loaded_instance_id;
+}
+
+UnloadedObject::~UnloadedObject()
+{
+
+}
+
+void UnloadedObject::operator =(const UnloadedObject& other)
+{
+    room_pos           = other.room_pos;
+    object_type        = other.object_type;
+    loaded_instance_id = other.loaded_instance_id;
 }

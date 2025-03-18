@@ -1,38 +1,5 @@
 #include "room.h"
 
-///////////////////////////
-// Struct UnloadedObject //
-///////////////////////////
-
-UnloadedObject::UnloadedObject()
-{
-    room_pos    = bn::point(0, 0);
-    object_type = NO_TYPE;
-}
-
-UnloadedObject::UnloadedObject(bn::point _room_pos, ObjectType _object_type)
-{
-    room_pos    = _room_pos;
-    object_type = _object_type;
-}
-
-UnloadedObject::UnloadedObject(const UnloadedObject& other)
-{
-    room_pos    = other.room_pos;
-    object_type = other.object_type;
-}
-
-UnloadedObject::~UnloadedObject()
-{
-
-}
-
-void UnloadedObject::operator =(const UnloadedObject& other)
-{
-    room_pos    = other.room_pos;
-    object_type = other.object_type;
-}
-
 /////////////////
 // Struct Room //
 /////////////////
@@ -192,6 +159,19 @@ int32 Room::addUnloadedObject(const UnloadedObject& new_object)
     return 1;
 }
 
+int32 Room::findUnloadedObjectIndex(int32 object_id)
+{
+    for(int32 i = 0; i < unloaded_objects.size(); i++)
+    {
+        if(unloaded_objects.at(i).loaded_instance_id == object_id)
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 void Room::clear()
 {
 
@@ -211,7 +191,7 @@ void Room::load(RoomName              room_name,
 {
     if(room_name == NO_ROOM) {return;}
 
-    // Init Player FIRST. They will always be updated last.
+    // Init Player FIRST. Player will always be updated last.
     Player* player_ptr = new Player();
     addObject(player_ptr, camera_ptr);
     game_objects.back()->setPos(0, 0);
@@ -232,8 +212,10 @@ void Room::load(RoomName              room_name,
             room_bounds.bottom_bound =  256;
             room_bounds.left_bound   = -512;
 
-            // Record unloaded objects
+            // Add UnloadedObjects //
             addUnloadedObject(UnloadedObject(bn::point(200, 0), TEST_ENEMY));
+            addUnloadedObject(UnloadedObject(bn::point(-200, 0), TEST_ENEMY));
+            addUnloadedObject(UnloadedObject(bn::point(0, -100), TEST_ENEMY));
             
         break;
 
@@ -250,13 +232,13 @@ void Room::load(RoomName              room_name,
             room_bounds.bottom_bound =  256;
             room_bounds.left_bound   =  512;
 
-            // Init Game Objects //
+            // Add UnloadedObjects //
     
         break;
 
         default:
 
-            BN_LOG("Room creation failed - Room Name not found.");
+            BN_LOG("Room creation failed - RoomName not found.");
             return;
 
         break;
@@ -277,7 +259,9 @@ void Room::monitorUnloadedObjects(const bn::camera_ptr& camera_ptr)
         if(unloaded_objects.at(i).room_pos.x() >= camera_center.x() - LOAD_RANGE_HALF_W &&
            unloaded_objects.at(i).room_pos.x() <= camera_center.x() + LOAD_RANGE_HALF_W)
         {
-            addObject(unloaded_objects.at(i), camera_ptr);\
+            // If there is not already a loaded instance, load one in:
+            if(unloaded_objects.at(i).loaded_instance_id == UNLOADED_OBJECT_STATE_UNLOADED)
+            {unloaded_objects.at(i).loaded_instance_id = addObject(unloaded_objects.at(i), camera_ptr);}
         }
     }
 }

@@ -187,5 +187,5 @@ void ScythePlatform::update(const RoomBounds& 								  room_bounds,
     
     if(pos().x() < camera.position().x() - LOAD_RANGE_HALF_W || 
        pos().x() > camera.position().x() + LOAD_RANGE_HALF_W)
-    {inactive = true;}
+    {is_inactive = true;}
 }
