@@ -1162,26 +1162,13 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					   collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
 					{
 
-						if(bn::keypad::down_held())  {rigidbody.addForce(PLAYER_GRAVITY_FORCE); break;}
-
-						// Handle Corner Case //
-						if(!collider_x_axis.isCollision(other_collider) &&
-						   !collider_y_axis.isCollision(other_collider))
-						{
-							while(collider.isCollision(other_collider))
-							{
-								setY(this->y() - 1);
-							}
-						}
+						if(bn::keypad::down_held()) {rigidbody.addForce(PLAYER_GRAVITY_FORCE); break;}
 					
 						// Handle Remaining Collision Cases //
-						else
+						while(collider_y_axis.isCollision(other_collider))
 						{
-							while(collider_y_axis.isCollision(other_collider))
-							{
-								collider_y_axis.setY(collider_y_axis.y() - 1);
-								setY(this->y() - 1);
-							}
+							collider_y_axis.setY(collider_y_axis.y() - 1);
+							setY(this->y() - 1);
 						}
 					}
 
