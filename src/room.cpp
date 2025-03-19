@@ -216,6 +216,9 @@ void Room::load(RoomName              room_name,
             addUnloadedObject(UnloadedObject(bn::point(200, 0), TEST_ENEMY));
             addUnloadedObject(UnloadedObject(bn::point(-200, 0), TEST_ENEMY));
             addUnloadedObject(UnloadedObject(bn::point(0, -100), TEST_ENEMY));
+            addUnloadedObject(UnloadedObject(bn::point(200, 0), TEST_ENEMY));
+            addUnloadedObject(UnloadedObject(bn::point(-200, 0), TEST_ENEMY));
+            addUnloadedObject(UnloadedObject(bn::point(0, -100), TEST_ENEMY));
             
         break;
 
