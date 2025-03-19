@@ -425,7 +425,7 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 				case ONEWAY_BLOCK_INDEX:
 
 					other_collider = Collider(world_x, 
-											  world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
+											  world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET,
 											  TILE_WIDTH, 
 											  ONEWAYBLOCK_COLLIDER_HEIGHT);
 
