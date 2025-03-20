@@ -42,8 +42,9 @@ GameObject::GameObject(const GameObject& other)
 
 	dir = other.dir;
 
-	is_inactive = other.is_inactive;
-    is_dead     = other.is_dead;
+	is_inactive   = other.is_inactive;
+    is_dead       = other.is_dead;
+    is_persistent = other.is_persistent;
 
 	received_platform_force = other.received_platform_force;
 
@@ -80,8 +81,9 @@ GameObject& GameObject::operator =(const GameObject& other)
 
 	dir = other.dir;
 
-	is_inactive = other.is_inactive;
-    is_dead     = other.is_dead;
+	is_inactive   = other.is_inactive;
+    is_dead       = other.is_dead;
+    is_persistent = other.is_persistent;
 
 	received_platform_force = other.received_platform_force;
 
@@ -174,6 +176,17 @@ void GameObject::setPos(bn::fixed_point new_pos)
 	collider.setY(new_pos.y().integer() + collider_offset_y);
 }
 
+void GameObject::updateInactiveState(const bn::camera_ptr& camera)
+{
+    if(is_persistent) {return;}
+
+    if(pos().x() < camera.position().x() - LOAD_RANGE_HALF_W || 
+       pos().x() > camera.position().x() + LOAD_RANGE_HALF_W ||
+       pos().y() < camera.position().y() - LOAD_RANGE_HALF_H ||
+       pos().y() > camera.position().y() + LOAD_RANGE_HALF_H)
+    {is_inactive = true;}
+}
+
 ///////////////////////////
 // Struct UnloadedObject //
 ///////////////////////////
@@ -197,6 +210,7 @@ UnloadedObject::UnloadedObject(const UnloadedObject& other)
     room_pos           = other.room_pos;
     object_type        = other.object_type;
     loaded_instance_id = other.loaded_instance_id;
+    is_persistent      = other.is_persistent;
 }
 
 UnloadedObject::~UnloadedObject()
@@ -209,4 +223,5 @@ void UnloadedObject::operator =(const UnloadedObject& other)
     room_pos           = other.room_pos;
     object_type        = other.object_type;
     loaded_instance_id = other.loaded_instance_id;
+    is_persistent      = other.is_persistent;
 }

@@ -181,7 +181,6 @@ struct Player : GameObject {
 	bool scythe_2_buffered;
 	bool scythe_3_buffered;
 	bool kill_player;
-	bool is_dead;
 
 	Collider test_collider;
 	Collider test_collider_right;

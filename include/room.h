@@ -57,7 +57,7 @@ struct Room
 
     int32 addObject(GameObject* object_ptr, const bn::camera_ptr& camera_ptr);
     int32 addObject(const UnloadedObject& object, const bn::camera_ptr& camera_ptr);
-    int32 addUnloadedObject(const UnloadedObject& new_object); // This will be called when the room is loaded.
+    int32 addUnloadedObject(const UnloadedObject& new_object, bool is_persistent); // This will be called when the room is loaded.
     int32 findUnloadedObjectIndex(int32 object_id);
     void  clear();
     void  load(RoomName room_name, const bn::camera_ptr& camera_ptr);

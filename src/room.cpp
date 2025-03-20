@@ -146,15 +146,17 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
     game_objects.back()->setCamera(camera_ptr);
     game_objects.back()->setPos(object.room_pos);
     game_objects.back()->object_id = game_objects.size() - 1;
+    game_objects.back()->is_persistent = object.is_persistent;
 
     return game_objects.back()->object_id;
 }
 
-int32 Room::addUnloadedObject(const UnloadedObject& new_object)
+int32 Room::addUnloadedObject(const UnloadedObject& new_object, bool is_persistent)
 {
     if(unloaded_objects.size() >= MAX_UNLOADED_OBJECTS) {return 0;}
 
     unloaded_objects.push_back(new_object);
+    unloaded_objects.back().is_persistent = is_persistent;
 
     return 1;
 }
@@ -213,12 +215,9 @@ void Room::load(RoomName              room_name,
             room_bounds.left_bound   = -512;
 
             // Add UnloadedObjects //
-            addUnloadedObject(UnloadedObject(bn::point(200, 0), TEST_ENEMY));
-            addUnloadedObject(UnloadedObject(bn::point(-200, 0), TEST_ENEMY));
-            addUnloadedObject(UnloadedObject(bn::point(0, -100), TEST_ENEMY));
-            addUnloadedObject(UnloadedObject(bn::point(200, 0), TEST_ENEMY));
-            addUnloadedObject(UnloadedObject(bn::point(-200, 0), TEST_ENEMY));
-            addUnloadedObject(UnloadedObject(bn::point(0, -100), TEST_ENEMY));
+            addUnloadedObject(UnloadedObject(bn::point(200, 0), TEST_ENEMY),  false);
+            addUnloadedObject(UnloadedObject(bn::point(-200, 0), TEST_ENEMY), false);
+            addUnloadedObject(UnloadedObject(bn::point(0, -100), TEST_ENEMY), false);
             
         break;
 
@@ -260,11 +259,16 @@ void Room::monitorUnloadedObjects(const bn::camera_ptr& camera_ptr)
     for(int i = 0; i < unloaded_objects.size(); i++)
     {
         if(unloaded_objects.at(i).room_pos.x() >= camera_center.x() - LOAD_RANGE_HALF_W &&
-           unloaded_objects.at(i).room_pos.x() <= camera_center.x() + LOAD_RANGE_HALF_W)
+           unloaded_objects.at(i).room_pos.x() <= camera_center.x() + LOAD_RANGE_HALF_W &&
+           unloaded_objects.at(i).room_pos.y() >= camera_center.y() - LOAD_RANGE_HALF_H &&
+           unloaded_objects.at(i).room_pos.y() <= camera_center.y() + LOAD_RANGE_HALF_H)
         {
             // If there is not already a loaded instance, load one in:
             if(unloaded_objects.at(i).loaded_instance_id == UNLOADED_OBJECT_STATE_UNLOADED)
-            {unloaded_objects.at(i).loaded_instance_id = addObject(unloaded_objects.at(i), camera_ptr);}
+            {
+                unloaded_objects.at(i).loaded_instance_id = addObject(unloaded_objects.at(i),
+                                                                      camera_ptr);
+            }
         }
     }
 }

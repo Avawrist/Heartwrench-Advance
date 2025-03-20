@@ -72,8 +72,9 @@ struct GameObject {
 
 	Direction dir;
 
-	bool is_inactive = false;
-	bool is_dead     = false;
+	bool is_inactive   = false;
+	bool is_dead       = false;
+	bool is_persistent = false;
 
 	bool received_platform_force = false;
 
@@ -101,7 +102,8 @@ struct GameObject {
 	void setY(bn::fixed new_y);
 	void setPos(bn::fixed new_x, bn::fixed new_y);
 	void setPos(bn::fixed_point new_pos);
-	
+	void updateInactiveState(const bn::camera_ptr& camera);
+
 };
 
 ///////////////////////////
@@ -116,6 +118,7 @@ struct UnloadedObject
     bn::point  room_pos;
     ObjectType object_type;
 	int32      loaded_instance_id;
+	bool       is_persistent = false;
 
     UnloadedObject();
     UnloadedObject(bn::point _room_pos, ObjectType _object_type);
