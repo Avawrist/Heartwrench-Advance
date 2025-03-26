@@ -1,13 +1,58 @@
 #include "level.h"
 
+Level::Level()
+{
+    
+}
+
 Level::Level(LevelName level_name)
 {
     load(level_name);
 }
 
+Level::Level(const Level& other)
+{
+    current_room = other.current_room;
+    
+    camera       = other.camera;
+    bg_ptr       = other.bg_ptr;
+    backdrop_ptr = other.backdrop_ptr;
+    bg_item      = other.bg_item;
+    cells        = other.cells;
+
+    tile_width  = other.tile_width;
+    tile_height = other.tile_height;
+
+    current_level_name = other.current_level_name;
+    player_spawn       = other.player_spawn;
+    cam_is_scrolling   = other.cam_is_scrolling;
+    cam_x_offset       = other.cam_x_offset;
+    cam_y_offset       = other.cam_y_offset;
+}
+
 Level::~Level()
 {
     clear();
+}
+
+void Level::operator =(const Level& other)
+{
+    current_room = other.current_room;
+
+    camera       = other.camera;
+    bg_ptr       = other.bg_ptr;
+    backdrop_ptr = other.backdrop_ptr;
+    bg_item      = other.bg_item;
+    cells        = other.cells;
+
+    tile_width  = other.tile_width;
+    tile_height = other.tile_height;
+
+    current_level_name = other.current_level_name;
+    player_spawn       = other.player_spawn;
+    cam_is_scrolling   = other.cam_is_scrolling;
+    cam_x_offset       = other.cam_x_offset;
+    cam_y_offset       = other.cam_y_offset;
 }
 
 void Level::clear()

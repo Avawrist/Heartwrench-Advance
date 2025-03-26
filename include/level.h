@@ -57,8 +57,12 @@ struct Level
     int32 cam_x_offset;
     int32 cam_y_offset;
 
+    Level();
     Level(LevelName level_name);
+    Level(const Level& other);
     ~Level();
+
+    void operator =(const Level& other);
 
     void load(LevelName level_name);
     void clear();

@@ -28,10 +28,10 @@ int main()
     while(true)
     {
         // Update Game
-        bool profile = false;
+        //bool profile = false;
 
-        if(bn::keypad::l_held()) {profile = true;}
-        if(profile) {BN_PROFILER_START("game update");}
+        //if(bn::keypad::l_held()) {profile = true;}
+        //if(profile) {BN_PROFILER_START("game update");}
 
         // Update Levels
         if(current_level.cam_is_scrolling)
@@ -60,11 +60,11 @@ int main()
         {BN_LOG(current_level.current_room.unloaded_objects.at(j).loaded_instance_id);}
         */
 
-        if(profile)
-        {
-            BN_PROFILER_STOP();
-            bn::profiler::show();
-        }
+        //if(profile)
+        //{
+        //    BN_PROFILER_STOP();
+        //    bn::profiler::show();
+        //}
 
         // Update Core
         bn::core::update();
