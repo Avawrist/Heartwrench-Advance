@@ -52,7 +52,7 @@ void TestEnemy::update(const RoomBounds&                              room_bound
     // State Machine //
     ///////////////////
 
-    rigidbody.addForce(TEST_ENEMY_GRAVITY_FORCE);
+    //rigidbody.addForce(TEST_ENEMY_GRAVITY_FORCE);
 	//rigidbody.addForce(Force(bn::fixed_point_t<12>(1, 0), TEST_ENEMY_GRAVITY_DECAY));
 
     ////////////////////

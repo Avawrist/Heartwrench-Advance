@@ -215,9 +215,7 @@ void Room::load(RoomName              room_name,
             room_bounds.left_bound   = -512;
 
             // Add UnloadedObjects //
-            addUnloadedObject(UnloadedObject(bn::point(200, 0), TEST_ENEMY),  false);
-            addUnloadedObject(UnloadedObject(bn::point(-200, 0), TEST_ENEMY), false);
-            addUnloadedObject(UnloadedObject(bn::point(0, -100), TEST_ENEMY), false);
+            addUnloadedObject(UnloadedObject(bn::point(344, 56), TEST_ENEMY),  false);
             
         break;
 
