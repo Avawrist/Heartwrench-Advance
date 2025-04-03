@@ -186,9 +186,9 @@ struct Player : GameObject {
 	Collider test_collider_right;
 	Collider test_collider_left;
 
-	//Hitbox hitbox_1;
-	//Hitbox hitbox_2;
-	//Hitbox hitbox_3;
+	Hitbox* hitbox_1_ptr;
+	Hitbox* hitbox_2_ptr;
+	Hitbox* hitbox_3_ptr;
 	
 	Player();
 	Player(const Player& other);

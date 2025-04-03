@@ -41,6 +41,8 @@ struct Hitbox : GameObject
     Hitbox(const Hitbox& other);
     ~Hitbox();
 
+    Hitbox& operator =(const Hitbox& other);
+
     void update(const RoomBounds&                              room_bounds,
                 bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
                 const bn::regular_bg_ptr&                      bg_ptr,

@@ -58,9 +58,9 @@ Player::Player()
 	kill_player           = false;
 	is_dead               = false;
 
-	//hitbox_1_ptr = NULL;
-	//hitbox_2_ptr = NULL;
-	//hitbox_3_ptr = NULL;
+	hitbox_1_ptr = NULL;
+	hitbox_2_ptr = NULL;
+	hitbox_3_ptr = NULL;
 	
 }
 
@@ -99,14 +99,22 @@ Player::Player(const Player& other) : GameObject(other)
 	test_collider_right   = other.test_collider_right;
 	test_collider_left    = other.test_collider_left;
 
-	//hitbox_1 = other.hitbox_1;
-	//hitbox_2 = other.hitbox_2;
-	//hitbox_3 = other.hitbox_3;
+	if(other.hitbox_1_ptr == NULL) {hitbox_1_ptr = NULL;}
+	else {hitbox_1_ptr = new Hitbox(*(other.hitbox_1_ptr));}
+
+	if(other.hitbox_2_ptr == NULL) {hitbox_2_ptr = NULL;}
+	else {hitbox_2_ptr = new Hitbox(*(other.hitbox_2_ptr));}	
+	
+	if(other.hitbox_3_ptr == NULL) {hitbox_3_ptr = NULL;}
+	else {hitbox_3_ptr = new Hitbox(*(other.hitbox_3_ptr));}
+	
 }
 
 Player::~Player()
 {
-	
+	delete hitbox_1_ptr;
+	delete hitbox_2_ptr;
+	delete hitbox_3_ptr;	
 }
 
 Player& Player::operator =(const Player& other)
@@ -143,9 +151,14 @@ Player& Player::operator =(const Player& other)
 	test_collider_right   = other.test_collider_right;
 	test_collider_left    = other.test_collider_left;
 
-	//hitbox_1 = other.hitbox_1;
-	//hitbox_2 = other.hitbox_2;
-	//hitbox_3 = other.hitbox_3;
+	if(other.hitbox_1_ptr == NULL) {hitbox_1_ptr = NULL;}
+	else {hitbox_1_ptr = new Hitbox(*(other.hitbox_1_ptr));}
+
+	if(other.hitbox_2_ptr == NULL) {hitbox_2_ptr = NULL;}
+	else {hitbox_2_ptr = new Hitbox(*(other.hitbox_2_ptr));}	
+	
+	if(other.hitbox_3_ptr == NULL) {hitbox_3_ptr = NULL;}
+	else {hitbox_3_ptr = new Hitbox(*(other.hitbox_3_ptr));}
 
 	return *this;
 }
@@ -166,9 +179,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	bool in_scythe_1         = false;
 	bool in_scythe_2         = false;
 	bool in_scythe_3         = false;
-	//bool create_scythe_hb_1  = false;
-	//bool create_scythe_hb_2  = false;
-	//bool create_scythe_hb_3  = false;
+	bool create_scythe_hb_1  = false;
+	bool create_scythe_hb_2  = false;
+	bool create_scythe_hb_3  = false;
 	bool in_phase_step       = false;
 	bool plummet_eligible    = false;
 
@@ -563,7 +576,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			if(current_scythe_frame == PLAYER_SCYTHE_1_CREATE_HB_FRAME &&
 			   game_objects.size() < MAX_GAME_OBJECTS)
 			{
-				//create_scythe_hb_1 = true;
+				create_scythe_hb_1 = true;
 			}
 
 			// Take Cancel Input
@@ -602,7 +615,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			if(current_scythe_frame == PLAYER_SCYTHE_2_CREATE_HB_FRAME &&
 			   game_objects.size() < MAX_GAME_OBJECTS)
 			{
-				//create_scythe_hb_2 = true;
+				create_scythe_hb_2 = true;
 			}
 
 			// Take Cancel Input
@@ -641,7 +654,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			if(current_scythe_frame == PLAYER_SCYTHE_3_CREATE_HB_FRAME &&
 			   game_objects.size() < MAX_GAME_OBJECTS)
 			{
-				//create_scythe_hb_3 = true;
+				create_scythe_hb_3 = true;
 			}
 
 			// Take Cancel Input
@@ -1922,11 +1935,12 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	// Manage Hitboxes //
 	/////////////////////
 
-	// Create hitboxes
-	/*
+	/////////////////////
+	// Create hitboxes //
+	
 	if(create_scythe_hb_1)
 	{
-		hitbox_1 = Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_1_X_OFFSET * dir),
+		hitbox_1_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_1_X_OFFSET * dir),
 									y().integer() + PLAYER_SCYTHE_1_Y_OFFSET),
 										PLAYER_SCYTHE_1_HITSTUN_FRAMES,
 										PLAYER_SCYTHE_1_HB_LIFESPAN_FRAMES,
@@ -1938,12 +1952,12 @@ void Player::update(const RoomBounds& 								  room_bounds,
 										dir,
 										HITBOX_SCYTHE_1);
 
-		hitbox_1.setCamera(camera);
+		hitbox_1_ptr->setCamera(camera);
 	}
 
 	if(create_scythe_hb_2)
 	{
-		hitbox_2 = Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_2_X_OFFSET * dir),
+		hitbox_2_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_2_X_OFFSET * dir),
 									y().integer() + PLAYER_SCYTHE_2_Y_OFFSET),
 						  PLAYER_SCYTHE_2_HITSTUN_FRAMES,
 						  PLAYER_SCYTHE_2_HB_LIFESPAN_FRAMES,
@@ -1954,12 +1968,12 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						  PLAYER_SCYTHE_2_HB_HEIGHT,
 						  dir,
 						  HITBOX_SCYTHE_2);
-		hitbox_2.setCamera(camera);
+		hitbox_2_ptr->setCamera(camera);
 	}
 
 	if(create_scythe_hb_3)
 	{
-		hitbox_3 = Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_3_X_OFFSET * dir), 
+		hitbox_3_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_3_X_OFFSET * dir), 
 									y().integer() + PLAYER_SCYTHE_3_Y_OFFSET),
 						  PLAYER_SCYTHE_3_HITSTUN_FRAMES,
 						  PLAYER_SCYTHE_3_HB_LIFESPAN_FRAMES,
@@ -1974,17 +1988,20 @@ void Player::update(const RoomBounds& 								  room_bounds,
 		hitbox_3_ptr->setCamera(camera);
 	}
 
-	// Update hitboxes
-	hitbox_1_ptr->setPos(bn::point(x().integer() + (PLAYER_SCYTHE_1_X_OFFSET * dir),
-								   y().integer() + PLAYER_SCYTHE_1_Y_OFFSET));
+	/////////////////////
+	// Update hitboxes //
 
-	hitbox_1_ptr->update(room_bounds,
-							 game_objects,
+	if(hitbox_1_ptr != NULL)
+	{
+		hitbox_1_ptr->setPos(bn::point(x().integer() + (PLAYER_SCYTHE_1_X_OFFSET * dir),
+									   y().integer() + PLAYER_SCYTHE_1_Y_OFFSET));
+		hitbox_1_ptr->update(room_bounds,
+						     game_objects,
 							 bg_ptr, 
-                    		 cells,
-                    		 bg_item,
+							 cells,
+							 bg_item,
 							 camera);
-	hitbox_1_ptr->draw();
+		hitbox_1_ptr->draw();
 
 		if(hitbox_1_ptr->is_inactive) 
 		{
@@ -1997,7 +2014,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	{
 		hitbox_2_ptr->setPos(bn::point(x().integer() + (PLAYER_SCYTHE_2_X_OFFSET * dir),
 									   y().integer() + PLAYER_SCYTHE_2_Y_OFFSET));
-
 		hitbox_2_ptr->update(room_bounds,
 							 game_objects,
 							 bg_ptr, 
@@ -2032,7 +2048,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			hitbox_3_ptr = NULL;
 		}
 	}
-	*/
 	
     ///////////////////
     // Update States //
