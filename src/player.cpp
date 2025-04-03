@@ -1941,16 +1941,16 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	if(create_scythe_hb_1)
 	{
 		hitbox_1_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_1_X_OFFSET * dir),
-									y().integer() + PLAYER_SCYTHE_1_Y_OFFSET),
-										PLAYER_SCYTHE_1_HITSTUN_FRAMES,
-										PLAYER_SCYTHE_1_HB_LIFESPAN_FRAMES,
-										PLAYER_SCYTHE_1_X_KNOCKBACK,
-										PLAYER_SCYTHE_1_Y_KNOCKBACK,	
-										PLAYER_SCYTHE_1_KNOCKBACK_DECAY,
-										PLAYER_SCYTHE_1_HB_WIDTH,
-										PLAYER_SCYTHE_1_HB_HEIGHT,
-										dir,
-										HITBOX_SCYTHE_1);
+								  y().integer() + PLAYER_SCYTHE_1_Y_OFFSET),
+								  PLAYER_SCYTHE_1_HITSTUN_FRAMES,
+								  PLAYER_SCYTHE_1_HB_LIFESPAN_FRAMES,
+								  PLAYER_SCYTHE_1_X_KNOCKBACK,
+								  PLAYER_SCYTHE_1_Y_KNOCKBACK,	
+								  PLAYER_SCYTHE_1_KNOCKBACK_DECAY,
+								  PLAYER_SCYTHE_1_HB_WIDTH,
+								  PLAYER_SCYTHE_1_HB_HEIGHT,
+								  dir,
+								  HITBOX_SCYTHE_1);
 
 		hitbox_1_ptr->setCamera(camera);
 	}
@@ -1958,33 +1958,33 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	if(create_scythe_hb_2)
 	{
 		hitbox_2_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_2_X_OFFSET * dir),
-									y().integer() + PLAYER_SCYTHE_2_Y_OFFSET),
-						  PLAYER_SCYTHE_2_HITSTUN_FRAMES,
-						  PLAYER_SCYTHE_2_HB_LIFESPAN_FRAMES,
-						  PLAYER_SCYTHE_2_X_KNOCKBACK,
-						  PLAYER_SCYTHE_2_Y_KNOCKBACK,	
-						  PLAYER_SCYTHE_2_KNOCKBACK_DECAY,
-						  PLAYER_SCYTHE_2_HB_WIDTH,
-						  PLAYER_SCYTHE_2_HB_HEIGHT,
-						  dir,
-						  HITBOX_SCYTHE_2);
-						  
+								  y().integer() + PLAYER_SCYTHE_2_Y_OFFSET),
+						  		  PLAYER_SCYTHE_2_HITSTUN_FRAMES,
+						  		  PLAYER_SCYTHE_2_HB_LIFESPAN_FRAMES,
+						  		  PLAYER_SCYTHE_2_X_KNOCKBACK,
+						  		  PLAYER_SCYTHE_2_Y_KNOCKBACK,	
+						  		  PLAYER_SCYTHE_2_KNOCKBACK_DECAY,
+						  		  PLAYER_SCYTHE_2_HB_WIDTH,
+						  		  PLAYER_SCYTHE_2_HB_HEIGHT,
+						  		  dir,
+						  		  HITBOX_SCYTHE_2);
+
 		hitbox_2_ptr->setCamera(camera);
 	}
 
 	if(create_scythe_hb_3)
 	{
 		hitbox_3_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_3_X_OFFSET * dir), 
-									y().integer() + PLAYER_SCYTHE_3_Y_OFFSET),
-						  PLAYER_SCYTHE_3_HITSTUN_FRAMES,
-						  PLAYER_SCYTHE_3_HB_LIFESPAN_FRAMES,
-						  PLAYER_SCYTHE_3_X_KNOCKBACK,
-						  PLAYER_SCYTHE_3_Y_KNOCKBACK,	
-						  PLAYER_SCYTHE_3_KNOCKBACK_DECAY,
-						  PLAYER_SCYTHE_3_HB_WIDTH,
-						  PLAYER_SCYTHE_3_HB_HEIGHT,
-						  dir,
-						  HITBOX_SCYTHE_3);
+								  y().integer() + PLAYER_SCYTHE_3_Y_OFFSET),
+						  		  PLAYER_SCYTHE_3_HITSTUN_FRAMES,
+						  		  PLAYER_SCYTHE_3_HB_LIFESPAN_FRAMES,
+						  		  PLAYER_SCYTHE_3_X_KNOCKBACK,
+						  	 	  PLAYER_SCYTHE_3_Y_KNOCKBACK,	
+						  		  PLAYER_SCYTHE_3_KNOCKBACK_DECAY,
+						  		  PLAYER_SCYTHE_3_HB_WIDTH,
+						  		  PLAYER_SCYTHE_3_HB_HEIGHT,
+						  		  dir,
+						  		  HITBOX_SCYTHE_3);
 
 		hitbox_3_ptr->setCamera(camera);
 	}
