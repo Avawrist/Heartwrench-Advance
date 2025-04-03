@@ -1968,6 +1968,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						  PLAYER_SCYTHE_2_HB_HEIGHT,
 						  dir,
 						  HITBOX_SCYTHE_2);
+						  
 		hitbox_2_ptr->setCamera(camera);
 	}
 
