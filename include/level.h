@@ -28,7 +28,7 @@
 //////////////////
 
 // 240 and 160 MUST be divisible by SCROLL_SPEED.
-#define SCROLL_SPEED 4
+#define SCROLL_SPEED 8
 
 enum LevelName 
 {
