@@ -196,7 +196,7 @@ void Room::load(RoomName              room_name,
     // Init Player FIRST. Player will always be updated last.
     Player* player_ptr = new Player();
     addObject(player_ptr, camera_ptr);
-    game_objects.back()->setPos(0, 0);
+    game_objects.back()->setPos(-4800, -2200);
 
     // Initialize Objects
     switch(room_name)
@@ -209,13 +209,13 @@ void Room::load(RoomName              room_name,
             bottom_neighbor = NO_ROOM;
             left_neighbor   = NO_ROOM;
 
-            room_bounds.top_bound    = -256;
-            room_bounds.right_bound  =  512;
-            room_bounds.bottom_bound =  256;
-            room_bounds.left_bound   = -512;
+            room_bounds.top_bound    = -2431;
+            room_bounds.right_bound  = -4624;
+            room_bounds.bottom_bound =  2560;
+            room_bounds.left_bound   = -5120;
 
             // Add UnloadedObjects //
-            addUnloadedObject(UnloadedObject(bn::point(344, 56), TEST_ENEMY),  false);
+            addUnloadedObject(UnloadedObject(bn::point(-4928, -2280), TEST_ENEMY),  false);
             
         break;
 
@@ -227,10 +227,10 @@ void Room::load(RoomName              room_name,
             bottom_neighbor = NO_ROOM;
             left_neighbor   = ROOM_TEST_1;
 
-            room_bounds.top_bound    = -256;
-            room_bounds.right_bound  =  1536;
-            room_bounds.bottom_bound =  256;
-            room_bounds.left_bound   =  512;
+            room_bounds.top_bound    = -2431;
+            room_bounds.right_bound  =  5000;
+            room_bounds.bottom_bound =  2560;
+            room_bounds.left_bound   = -4624;
 
             // Add UnloadedObjects //
     

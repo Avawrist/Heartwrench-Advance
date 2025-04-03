@@ -24,14 +24,14 @@ int32 getTileAtBGIndex(uint32 x, uint32 y,
                        bn::regular_bg_item                     bg_item)
 {
 
-// Returns -1 if input range is invalid. 
-if(x > (uint32)((bg_ptr.dimensions().width() / 8) - 1) ||
-y > (uint32)((bg_ptr.dimensions().height() / 8) - 1))
-{return -1;}
+    // Returns -1 if input range is invalid. 
+    if(x > (uint32)((bg_ptr.dimensions().width() / 8) - 1) ||
+    y > (uint32)((bg_ptr.dimensions().height() / 8) - 1))
+    {return -1;}
 
-bn::regular_bg_map_cell       cell_index = cells[bg_item.map_item().cell_index(x, y)];
-bn::regular_bg_map_cell_info  cell_info(cell_index);    
+    bn::regular_bg_map_cell       cell_index = cells[bg_item.map_item().cell_index(x, y)];
+    bn::regular_bg_map_cell_info  cell_info(cell_index);    
 
-return cell_info.tile_index();
+    return cell_info.tile_index();
 
 }

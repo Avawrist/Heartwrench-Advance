@@ -120,330 +120,311 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 			int32 global_height;
 
 			// 2. If the tile is collidable make a temporary collider
-			switch(tile_index)
-			{
-				case HARD_BLOCK_INDEX:
-				case SOFT_BLOCK_INDEX:
-
-					// If the neighbor to the right is also a BLOCK, smooth over the corner.
-					// This is a hack to resolve collision since checks are always made from
-					// left to right. 
-					
-					if(getTileAtBGIndex(check_index_x + 1, check_index_y, 
-									    bg_ptr, cells, bg_item) == HARD_BLOCK_INDEX ||
-					   getTileAtBGIndex(check_index_x + 1, check_index_y, 
-									    bg_ptr, cells, bg_item) == SOFT_BLOCK_INDEX)
-					{
-						block_w_offset = TILE_WIDTH;
-						block_x_offset = TILE_WIDTH / 2;
-						x++; // Skip checking the next cell, since we already accounted for it here.
-					}
-
-					// Idea for optimizing algorithm: have collision check function return collision overlap value by
-					// by each axis, then move the collider back by the collision overlap amount instead of using while loops.
-					// Not sure if this is possible without using a while loop but could speed things up.
-
-					other_collider = Collider(world_x + block_x_offset, 
-											  world_y, 
-											  TILE_WIDTH + block_w_offset, 
-											  TILE_HEIGHT);
 			
-					if(collider.isCollision(other_collider))
-					{
-						// Resolve X Axis Collision //
-						col_x_offset = collider_x_axis.getCollisionXOffset(other_collider, rigidbody.normalized_dir.x());
-						collider_x_axis.setX(collider_x_axis.x() + col_x_offset);
-						setX(this->x() + col_x_offset);
-
-						// Resolve Y Axis Collision //
-						col_y_offset = collider_y_axis.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y());
-						collider_y_axis.setY(collider_y_axis.y() + col_y_offset);
-						setY(this->y() + col_y_offset);
-
-						// If there is still collision somehow, must be corner case //
-						while(collider.isCollision(other_collider))
-						{
-							// We always resolve diagonal corner collisions with a horizontal shift. 
-							setX(this->x() - rigidbody.normalized_dir.x());
-						}
-					}
-
-				break;
+			if(tile_index >= HARD_BLOCK_MIN_INDEX &&
+			   tile_index <= HARD_BLOCK_MAX_INDEX)
+			{
+				// If the neighbor to the right is also a BLOCK, smooth over the corner.
+				// This is a hack to resolve collision since checks are always made from
+				// left to right. 
 				
-				case LEFT_SHALLOW_SLOPE_1_INDEX:
+				if(getTileAtBGIndex(check_index_x + 1, check_index_y, 
+									bg_ptr, cells, bg_item) >= HARD_BLOCK_MIN_INDEX &&
+					getTileAtBGIndex(check_index_x + 1, check_index_y, 
+									bg_ptr, cells, bg_item) <= HARD_BLOCK_MAX_INDEX)
+				{
+					block_w_offset = TILE_WIDTH;
+					block_x_offset = TILE_WIDTH / 2;
+					x++; // Skip checking the next cell, since we already accounted for it here.
+				}
 
-					other_collider = Collider(world_x, 
-											  world_y + 3, 
-											  TILE_WIDTH, 
-											  TILE_HEIGHT / 4);
+				// Idea for optimizing algorithm: have collision check function return collision overlap value by
+				// by each axis, then move the collider back by the collision overlap amount instead of using while loops.
+				// Not sure if this is possible without using a while loop but could speed things up.
 
-					if(collider.isCollision(other_collider))
+				other_collider = Collider(world_x + block_x_offset, 
+											world_y, 
+											TILE_WIDTH + block_w_offset, 
+											TILE_HEIGHT);
+		
+				if(collider.isCollision(other_collider))
+				{
+					// Resolve X Axis Collision //
+					col_x_offset = collider_x_axis.getCollisionXOffset(other_collider, rigidbody.normalized_dir.x());
+					collider_x_axis.setX(collider_x_axis.x() + col_x_offset);
+					setX(this->x() + col_x_offset);
+
+					// Resolve Y Axis Collision //
+					col_y_offset = collider_y_axis.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y());
+					collider_y_axis.setY(collider_y_axis.y() + col_y_offset);
+					setY(this->y() + col_y_offset);
+
+					// If there is still collision somehow, must be corner case //
+					while(collider.isCollision(other_collider))
 					{
-						// Derive slope height at player position:
-						index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-						index = clamp(0, 7, index);
-						local_height  = left_shallow_slope_1_arr[index];
-						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-						// Manually set player position:
-						setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+						// We always resolve diagonal corner collisions with a horizontal shift. 
+						setX(this->x() - rigidbody.normalized_dir.x());
 					}
-
-				break;
+				}
+			}
 				
-				case LEFT_SHALLOW_SLOPE_2_INDEX:
+			else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
+			{
+				other_collider = Collider(world_x, 
+											world_y + 3, 
+											TILE_WIDTH, 
+											TILE_HEIGHT / 4);
 
-					other_collider = Collider(world_x, 
-											  world_y + 2, 
-											  TILE_WIDTH, 
-											  TILE_HEIGHT / 2);
+				if(collider.isCollision(other_collider))
+				{
+					// Derive slope height at player position:
+					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = left_shallow_slope_1_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
-					if(collider.isCollision(other_collider))
-					{
-						// Derive slope height at player position:
-						index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-						index = clamp(0, 7, index);
-						local_height  = left_shallow_slope_2_arr[index];
-						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-						// Manually set player position:
-						setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
-					}
-
-				break;
-
-				case LEFT_SHALLOW_SLOPE_3_INDEX:
-
-					other_collider = Collider(world_x, 
-											  world_y + 1, 
-											  TILE_WIDTH, 
-											  TILE_HEIGHT - 2);
-
-					if(collider.isCollision(other_collider))
-					{
-						// Derive slope height at player position:
-						index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-						index = clamp(0, 7, index);
-						local_height  = left_shallow_slope_3_arr[index];
-						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-						// Manually set player position:
-						setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
-					}
-
-				break;
-
-				case LEFT_SHALLOW_SLOPE_4_INDEX:
-
-					other_collider = Collider(world_x, 
-											  world_y, 
-											  TILE_WIDTH, 
-											  TILE_HEIGHT);
-
-					if(collider.isCollision(other_collider))
-					{
-						// Derive slope height at player position:
-						index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-						index = clamp(0, 7, index);
-						local_height  = left_shallow_slope_4_arr[index];
-						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-						// Manually set player position:
-						setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
-					}
-
-				break;
-
-				case LEFT_STEEP_SLOPE_1_INDEX:
-
-					other_collider = Collider(world_x, 
-											  world_y + 2, 
-											  TILE_WIDTH, 
-											  TILE_HEIGHT / 2);
-
-					if(collider.isCollision(other_collider))
-					{
-						// Derive slope height at player position:
-						index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-						index = clamp(0, 7, index);
-						local_height  = left_steep_slope_1_arr[index];
-						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-						// Manually set player position:
-						setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
-					}
-
-				break;
-
-				case LEFT_STEEP_SLOPE_2_INDEX:
-
-					other_collider = Collider(world_x, 
-											  world_y, 
-											  TILE_WIDTH, 
-											  TILE_HEIGHT);
-
-					if(collider.isCollision(other_collider))
-					{
-						// Derive slope height at player position:
-						index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-						index = clamp(0, 7, index);
-						local_height  = left_steep_slope_2_arr[index];
-						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-						// Manually set player position:
-						setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
-					}
-
-				break;
-
-				case RIGHT_SHALLOW_SLOPE_1_INDEX:
-
-					other_collider = Collider(world_x, 
-											  world_y + 3, 
-											  TILE_WIDTH, 
-											  TILE_HEIGHT / 4);
-
-					if(collider.isCollision(other_collider))
-					{
-						// Derive slope height at player position:
-						index = (collider.p1.x() - other_collider.p1.x()).integer();
-						index = clamp(0, 7, index);
-						local_height  = right_shallow_slope_1_arr[index];
-						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-						// Manually set player position:
-						setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
-					}
-
-				break;
-
-				case RIGHT_SHALLOW_SLOPE_2_INDEX:
-
-					other_collider = Collider(world_x, 
-											  world_y + 2, 
-											  TILE_WIDTH, 
-											  TILE_HEIGHT / 2);
-
-					if(collider.isCollision(other_collider))
-					{
-						// Derive slope height at player position:
-						index = (collider.p1.x() - other_collider.p1.x()).integer();
-						index = clamp(0, 7, index);
-						local_height = right_shallow_slope_2_arr[index];
-						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-						// Manually set player position:
-						setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
-					}
-
-				break;
-
-				case RIGHT_SHALLOW_SLOPE_3_INDEX:
-
-					other_collider = Collider(world_x, 
-											  world_y + 1,
-											  TILE_WIDTH, 
-											  TILE_HEIGHT - 2);
-
-					if(collider.isCollision(other_collider))
-					{
-						// Derive slope height at player position:
-						index = (collider.p1.x() - other_collider.p1.x()).integer();
-						index = clamp(0, 7, index);
-						local_height  = right_shallow_slope_3_arr[index];
-						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-						// Manually set player position:
-						setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
-					}
+					// Manually set player position:
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+				}
+			}
 				
-				break;
+			else if(LEFT_SHALLOW_SLOPE_2_INDEX)
+			{
+				other_collider = Collider(world_x, 
+											world_y + 2, 
+											TILE_WIDTH, 
+											TILE_HEIGHT / 2);
 
-				case RIGHT_SHALLOW_SLOPE_4_INDEX:
+				if(collider.isCollision(other_collider))
+				{
+					// Derive slope height at player position:
+					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = left_shallow_slope_2_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
-					other_collider = Collider(world_x, 
-											  world_y,
-											  TILE_WIDTH, 
-											  TILE_HEIGHT);
+					// Manually set player position:
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+				}
+			}
 
-					if(collider.isCollision(other_collider))
+			else if(LEFT_SHALLOW_SLOPE_3_INDEX)
+			{
+				other_collider = Collider(world_x, 
+											world_y + 1, 
+											TILE_WIDTH, 
+											TILE_HEIGHT - 2);
+
+				if(collider.isCollision(other_collider))
+				{
+					// Derive slope height at player position:
+					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = left_shallow_slope_3_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Manually set player position:
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+				}
+			}
+
+			else if(tile_index == LEFT_SHALLOW_SLOPE_4_INDEX)
+			{
+				other_collider = Collider(world_x, 
+											world_y, 
+											TILE_WIDTH, 
+											TILE_HEIGHT);
+
+				if(collider.isCollision(other_collider))
+				{
+					// Derive slope height at player position:
+					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = left_shallow_slope_4_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Manually set player position:
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+				}
+			}
+
+			else if(tile_index == LEFT_STEEP_SLOPE_1_INDEX)
+			{
+				other_collider = Collider(world_x, 
+											world_y + 2, 
+											TILE_WIDTH, 
+											TILE_HEIGHT / 2);
+
+				if(collider.isCollision(other_collider))
+				{
+					// Derive slope height at player position:
+					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = left_steep_slope_1_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Manually set player position:
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+				}
+			}
+
+			else if(tile_index == LEFT_STEEP_SLOPE_2_INDEX)
+			{
+				other_collider = Collider(world_x, 
+											world_y, 
+											TILE_WIDTH, 
+											TILE_HEIGHT);
+
+				if(collider.isCollision(other_collider))
+				{
+					// Derive slope height at player position:
+					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = left_steep_slope_2_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Manually set player position:
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+				}
+			}
+
+			else if(tile_index == RIGHT_SHALLOW_SLOPE_1_INDEX)
+			{
+				other_collider = Collider(world_x, 
+											world_y + 3, 
+											TILE_WIDTH, 
+											TILE_HEIGHT / 4);
+
+				if(collider.isCollision(other_collider))
+				{
+					// Derive slope height at player position:
+					index = (collider.p1.x() - other_collider.p1.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = right_shallow_slope_1_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Manually set player position:
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+				}
+			}
+
+			else if(tile_index == RIGHT_SHALLOW_SLOPE_2_INDEX)
+			{
+				other_collider = Collider(world_x, 
+											world_y + 2, 
+											TILE_WIDTH, 
+											TILE_HEIGHT / 2);
+
+				if(collider.isCollision(other_collider))
+				{
+					// Derive slope height at player position:
+					index = (collider.p1.x() - other_collider.p1.x()).integer();
+					index = clamp(0, 7, index);
+					local_height = right_shallow_slope_2_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Manually set player position:
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+				}
+			}
+
+			else if(tile_index == RIGHT_SHALLOW_SLOPE_3_INDEX)
+			{
+				other_collider = Collider(world_x, 
+											world_y + 1,
+											TILE_WIDTH, 
+											TILE_HEIGHT - 2);
+
+				if(collider.isCollision(other_collider))
+				{
+					// Derive slope height at player position:
+					index = (collider.p1.x() - other_collider.p1.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = right_shallow_slope_3_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Manually set player position:
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+				}
+			}
+			
+			else if(tile_index == RIGHT_SHALLOW_SLOPE_4_INDEX)
+			{
+				other_collider = Collider(world_x, 
+											world_y,
+											TILE_WIDTH, 
+											TILE_HEIGHT);
+
+				if(collider.isCollision(other_collider))
+				{
+					// Derive slope height at player position:
+					index = (collider.p1.x() - other_collider.p1.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = right_shallow_slope_4_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Manually set player position:
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+				}
+			}
+			
+			else if(tile_index == RIGHT_STEEP_SLOPE_1_INDEX)
+			{
+				other_collider = Collider(world_x, 
+											world_y + 2,
+											TILE_WIDTH, 
+											TILE_HEIGHT / 2);
+
+				if(collider.isCollision(other_collider))
+				{
+					// Derive slope height at player position:
+					index = (collider.p1.x() - other_collider.p1.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = right_steep_slope_1_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Manually set player position:
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+				}
+			}
+			
+			else if(tile_index == RIGHT_STEEP_SLOPE_2_INDEX)
+			{	
+				other_collider = Collider(world_x, 
+											world_y,
+											TILE_WIDTH, 
+											TILE_HEIGHT);
+
+				if(collider.isCollision(other_collider))
+				{
+					// Derive slope height at player position:
+					index = (collider.p1.x() - other_collider.p1.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = right_steep_slope_2_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Manually set player position:
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+				}
+			}
+			
+			else if(tile_index == ONEWAY_BLOCK_INDEX)
+			{
+				other_collider = Collider(world_x, 
+											world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET,
+											TILE_WIDTH, 
+											ONEWAYBLOCK_COLLIDER_HEIGHT);
+
+				if(rigidbody.normalized_dir.y() >= 0 &&
+					collider_y_axis.p4.y() <= other_collider.p1.y() + TEST_ENEMY_GRAVITY)
+				{					
+					// Handle Remaining Collision Cases //
+					while(collider_y_axis.isCollision(other_collider))
 					{
-						// Derive slope height at player position:
-						index = (collider.p1.x() - other_collider.p1.x()).integer();
-						index = clamp(0, 7, index);
-						local_height  = right_shallow_slope_4_arr[index];
-						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-						// Manually set player position:
-						setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+						collider_y_axis.setY(collider_y_axis.y() - 1);
+						setY(this->y() - 1);
 					}
-				
-				break;
-
-				case RIGHT_STEEP_SLOPE_1_INDEX:
-
-					other_collider = Collider(world_x, 
-											  world_y + 2,
-											  TILE_WIDTH, 
-											  TILE_HEIGHT / 2);
-
-					if(collider.isCollision(other_collider))
-					{
-						// Derive slope height at player position:
-						index = (collider.p1.x() - other_collider.p1.x()).integer();
-						index = clamp(0, 7, index);
-						local_height  = right_steep_slope_1_arr[index];
-						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-						// Manually set player position:
-						setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
-					}
-				
-				break;
-
-				case RIGHT_STEEP_SLOPE_2_INDEX:
-
-					other_collider = Collider(world_x, 
-											  world_y,
-											  TILE_WIDTH, 
-											  TILE_HEIGHT);
-
-					if(collider.isCollision(other_collider))
-					{
-						// Derive slope height at player position:
-						index = (collider.p1.x() - other_collider.p1.x()).integer();
-						index = clamp(0, 7, index);
-						local_height  = right_steep_slope_2_arr[index];
-						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-						// Manually set player position:
-						setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
-					}
-				
-				break;
-
-				case ONEWAY_BLOCK_INDEX:
-
-					other_collider = Collider(world_x, 
-											  world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET,
-											  TILE_WIDTH, 
-											  ONEWAYBLOCK_COLLIDER_HEIGHT);
-
-					if(rigidbody.normalized_dir.y() >= 0 &&
-					   collider_y_axis.p4.y() <= other_collider.p1.y() + TEST_ENEMY_GRAVITY)
-					{					
-						// Handle Remaining Collision Cases //
-						while(collider_y_axis.isCollision(other_collider))
-						{
-							collider_y_axis.setY(collider_y_axis.y() - 1);
-							setY(this->y() - 1);
-						}
-					}
-
-				break;
-
-				default:
-				break;
+				}
 			}
 		}
 	}
