@@ -400,10 +400,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Scythe 1
 			if(bn::keypad::b_pressed())
 			{in_scythe_1 = true;}
-
-			// Fast Fall
-			if(bn::keypad::down_held() && rigidbody.normalized_dir.y() >= 0) 
-			{fastFall();}
 			
 			// Add Gravity //
 			if(gripping_wall_right) {rigidbody.addForce(PLAYER_WALL_GRAVITY_FORCE);}
@@ -412,6 +408,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				rigidbody.addForce(PLAYER_GRAVITY_FORCE);
 				if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
 				{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
+
+				// Fast Fall
+				if(bn::keypad::down_held() && rigidbody.normalized_dir.y() >= 0) 
+				{fastFall();}
 			}
 
 			// Update Squish frames for squish eligibility // 
@@ -459,10 +459,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Scythe 1
 			if(bn::keypad::b_pressed())
 			{in_scythe_1 = true;}
-
-			// Fast Fall
-			if(bn::keypad::down_held() && rigidbody.normalized_dir.y() >= 0) 
-			{fastFall();}
 			
 			// Add Gravity //
 			if(gripping_wall_left) {rigidbody.addForce(PLAYER_WALL_GRAVITY_FORCE);}
@@ -471,6 +467,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				rigidbody.addForce(PLAYER_GRAVITY_FORCE);
 				if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
 				{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
+
+				// Fast Fall
+				if(bn::keypad::down_held() && rigidbody.normalized_dir.y() >= 0) 
+				{fastFall();}
 			}
 
 			// Update Squish frames for squish eligibility // 
@@ -872,9 +872,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				}
 				
 				other_collider = Collider(world_x + block_x_offset, 
-											world_y, 
-											TILE_WIDTH + block_w_offset,
-											TILE_HEIGHT);
+										  world_y, 
+										  TILE_WIDTH + block_w_offset,
+										  TILE_HEIGHT);
 
 				if(collider.isCollision(other_collider))
 				{
@@ -1294,8 +1294,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 				// Test for, and log grounded collision
 				if(test_collider.isCollision(other_collider) && 
-				rigidbody.normalized_dir.y() >= 0)
+				   rigidbody.normalized_dir.y() >= 0)
 				{
+					BN_LOG("touched");
 					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED)
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
@@ -2164,14 +2165,14 @@ void Player::setState(PlayerState new_state)
 
 		case STATE_WALL_SLIDE_RIGHT:
 			remaining_x_drift_lockout_frames = 0;
-			air_frames_elapsed = 0;
+			//air_frames_elapsed = 0;
 			scythe_2_buffered  = false;
 			scythe_3_buffered  = false;
 		break;
 
 		case STATE_WALL_SLIDE_LEFT:
 			remaining_x_drift_lockout_frames = 0;
-			air_frames_elapsed = 0;
+			//air_frames_elapsed = 0;
 			scythe_2_buffered  = false;
 			scythe_3_buffered  = false;
 		break;
