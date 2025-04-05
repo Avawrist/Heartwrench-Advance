@@ -1,0 +1,20 @@
+======================
+=== Game Mechanics ===
+======================
+
+=== Level Mechanics ===
+
+Mesopotamian themes:
+Humans as slaves or servants to the gods
+Immortality
+The Fall
+Flood/plague/disaster as devices of the gods to maintain control over humans
+
+= Platforming =
+
+
+= Enemies/Combat =
+
+
+
+=== Overworld Mechanics ===

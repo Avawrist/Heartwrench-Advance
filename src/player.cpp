@@ -854,6 +854,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			int32 global_height;
 
 			// 2. If the tile is collidable make a temporary collider based on type//
+
 			if(tile_index >= HARD_BLOCK_MIN_INDEX && 
 			   tile_index <= HARD_BLOCK_MAX_INDEX)
 			{
@@ -902,9 +903,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
 			{
 				other_collider = Collider(world_x, 
-											world_y + 3, 
-											TILE_WIDTH, 
-											TILE_HEIGHT / 4);
+										  world_y + 3, 
+										  TILE_WIDTH, 
+										  TILE_HEIGHT / 4);
 
 				if(collider.isCollision(other_collider))
 				{
@@ -1296,7 +1297,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				if(test_collider.isCollision(other_collider) && 
 				   rigidbody.normalized_dir.y() >= 0)
 				{
-					BN_LOG("touched");
 					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED)
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
@@ -1933,11 +1933,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	if(y() > half_level_height_pixels - Y_KILL_BUFFER) {kill_player = true;}
 
 	/////////////////////
-	// Manage Hitboxes //
+	// Create Hitboxes //
 	/////////////////////
-
-	/////////////////////
-	// Create hitboxes //
 	
 	if(create_scythe_hb_1)
 	{
@@ -1991,7 +1988,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	}
 
 	/////////////////////
-	// Update hitboxes //
+	// Update Hitboxes //
+	/////////////////////
 
 	if(hitbox_1_ptr != NULL)
 	{
