@@ -537,7 +537,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						// 2. If the tile is collidable, check for collision
 
 						if(tile_index >= HARD_BLOCK_MIN_INDEX &&
-						   tile_index <= LEFT_SPIKE_BLOCK_INDEX)
+						   tile_index <= RIGHT_STEEP_SLOPE_2_INDEX)
 						{
 							other_collider = Collider(world_x, 
 														world_y, 
@@ -1371,7 +1371,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				}
 			}
 
-			else if(tile_index == UP_SPIKE_BLOCK_INDEX)
+			else if(tile_index == UP_SPIKE_BLOCK_1_INDEX ||
+			        tile_index == UP_SPIKE_BLOCK_2_INDEX)
 			{
 				other_collider = Collider(world_x,
 											world_y, 
@@ -1388,7 +1389,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				}
 			}
 
-			else if(tile_index == DOWN_SPIKE_BLOCK_INDEX)
+			else if(tile_index == DOWN_SPIKE_BLOCK_1_INDEX ||
+			        tile_index == DOWN_SPIKE_BLOCK_2_INDEX)
 			{
 				other_collider = Collider(world_x,
 										  world_y, 
@@ -1405,7 +1407,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				}
 			}
 
-			else if(tile_index == LEFT_SPIKE_BLOCK_INDEX)
+			else if(tile_index == LEFT_SPIKE_BLOCK_1_INDEX ||
+			        tile_index == LEFT_SPIKE_BLOCK_2_INDEX)
 			{
 				other_collider = Collider(world_x,
 											world_y, 
@@ -1422,7 +1425,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				}
 			}
 
-			else if(tile_index == RIGHT_SPIKE_BLOCK_INDEX)
+			else if(tile_index == RIGHT_SPIKE_BLOCK_1_INDEX || 
+			        tile_index == RIGHT_SPIKE_BLOCK_2_INDEX)
 			{
 				other_collider = Collider(world_x,
 											world_y, 
