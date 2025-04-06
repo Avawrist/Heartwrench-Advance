@@ -11,7 +11,7 @@
 //	+ palette 32 entries, not compressed
 //	Total size: 64 = 64
 //
-//	Time-stamp: 2025-04-06, 13:29:03
+//	Time-stamp: 2025-04-06, 15:27:43
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
