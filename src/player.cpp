@@ -902,6 +902,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			
 			else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
 			{
+				BN_LOG("LEFT SHALLOW 1");
 				other_collider = Collider(world_x, 
 										  world_y + 3, 
 										  TILE_WIDTH, 
@@ -922,6 +923,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				
 			else if(tile_index == LEFT_SHALLOW_SLOPE_2_INDEX)
 			{
+				BN_LOG("LEFT SHALLOW 2");
 				other_collider = Collider(world_x, 
 											world_y + 2, 
 											TILE_WIDTH, 
@@ -942,6 +944,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			else if(tile_index == LEFT_SHALLOW_SLOPE_3_INDEX)
 			{
+				BN_LOG("LEFT SHALLOW 3");
 				other_collider = Collider(world_x, 
 											world_y + 1, 
 											TILE_WIDTH, 
@@ -962,6 +965,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			else if(tile_index == LEFT_SHALLOW_SLOPE_4_INDEX)
 			{
+				BN_LOG("LEFT SHALLOW 4");
 				other_collider = Collider(world_x, 
 											world_y, 
 											TILE_WIDTH, 
@@ -982,6 +986,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			else if(tile_index == LEFT_STEEP_SLOPE_1_INDEX)
 			{
+				BN_LOG("LEFT STEEP 1");
 				other_collider = Collider(world_x, 
 											world_y + 2, 
 											TILE_WIDTH, 
@@ -1002,6 +1007,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			else if(tile_index == LEFT_STEEP_SLOPE_2_INDEX)
 			{
+				BN_LOG("LEFT STEEP 2");	
 				other_collider = Collider(world_x, 
 											world_y, 
 											TILE_WIDTH, 
@@ -1022,6 +1028,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			else if(tile_index == RIGHT_SHALLOW_SLOPE_1_INDEX)
 			{
+				BN_LOG("RIGHT SHALLOW 1");
 				other_collider = Collider(world_x, 
 											world_y + 3, 
 											TILE_WIDTH, 
@@ -1042,6 +1049,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			else if(tile_index == RIGHT_SHALLOW_SLOPE_2_INDEX)
 			{
+				BN_LOG("RIGHT SHALLOW 2");
 				other_collider = Collider(world_x, 
 											world_y + 2, 
 											TILE_WIDTH, 
@@ -1062,6 +1070,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			else if(tile_index == RIGHT_SHALLOW_SLOPE_3_INDEX)
 			{
+				BN_LOG("RIGHT SHALLOW 3");
 				other_collider = Collider(world_x, 
 											world_y + 1,
 											TILE_WIDTH, 
@@ -1082,6 +1091,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			
 			else if(tile_index == RIGHT_SHALLOW_SLOPE_4_INDEX)
 			{
+				BN_LOG("RIGHT SHALLOW 4");
 				other_collider = Collider(world_x, 
 											world_y,
 											TILE_WIDTH, 
@@ -1102,6 +1112,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			
 			else if(tile_index == RIGHT_STEEP_SLOPE_1_INDEX)
 			{
+				BN_LOG("RIGHT STEEP 1");
 				other_collider = Collider(world_x, 
 											world_y + 2,
 											TILE_WIDTH, 
@@ -1122,6 +1133,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			
 			else if(tile_index == RIGHT_STEEP_SLOPE_2_INDEX)
 			{
+				BN_LOG("RIGHT STEEP 2");
 				other_collider = Collider(world_x, 
 											world_y,
 											TILE_WIDTH, 
@@ -1140,8 +1152,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				}
 			}
 			
-			else if(tile_index == ONEWAY_BLOCK_INDEX)
+			else if(tile_index >= ONEWAY_BLOCK_MIN_INDEX &&
+			        tile_index <= ONEWAY_BLOCK_MAX_INDEX)
 			{
+				BN_LOG("ONEWAY");
 				other_collider = Collider(world_x, 
 											world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
 											TILE_WIDTH, 
@@ -1331,7 +1345,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			}
 					
-			else if(tile_index == ONEWAY_BLOCK_INDEX)
+			else if(tile_index >= ONEWAY_BLOCK_MIN_INDEX &&
+			        tile_index <= ONEWAY_BLOCK_MAX_INDEX)
 			{
 			
 				other_collider = Collider(world_x, 

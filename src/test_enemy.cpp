@@ -408,7 +408,8 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 				}
 			}
 			
-			else if(tile_index == ONEWAY_BLOCK_INDEX)
+			else if(tile_index >= ONEWAY_BLOCK_MIN_INDEX &&
+			        tile_index <= ONEWAY_BLOCK_MAX_INDEX)
 			{
 				other_collider = Collider(world_x, 
 											world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET,
