@@ -14,7 +14,14 @@ Flood/plague/disaster as devices of the gods to maintain control over humans
 
 
 = Enemies/Combat =
+-Basic RPS with Dash/Slash/Jump
+-Build on RPS difficulty with enemy and terrain based mixups
 
-
+= Progression =
+- Each level contains a set amount of currency.
+- Currency can be spent to unlock checkpoints in levels.
+- Player can play faster and skip currency, but runs a higher risk of losing progress.
+- Exploration (overworld and in level) pays for checkpoints via currency rewards.
+- Progress is lost on death. Currency is permanent and not lost on death.
 
 === Overworld Mechanics ===
