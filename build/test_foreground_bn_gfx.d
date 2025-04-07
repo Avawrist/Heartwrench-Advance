@@ -1,0 +1,1 @@
+test_foreground_bn_gfx.o: test_foreground_bn_gfx.s

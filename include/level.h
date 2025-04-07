@@ -17,6 +17,8 @@
 // Assets
 #include "bn_regular_bg_items_test_bg.h"
 #include "bn_regular_bg_items_test_level.h"
+#include "bn_regular_bg_items_test_painted_bg.h"
+#include "bn_regular_bg_items_test_foreground.h"
 
 // My Libs
 #include "room.h"
@@ -30,6 +32,12 @@
 // 240 and 160 MUST be divisible by SCROLL_SPEED.
 #define SCROLL_SPEED 8
 
+// BG Z orders (Higher orders are drawn first)
+#define PAINTED_BG_ORDER 4
+#define BACKDROP_ORDER   3
+#define MAIN_BG_ORDER    2
+#define FOREGROUND_ORDER 1
+
 enum LevelName 
 {
     NO_LEVEL = 0,
@@ -41,8 +49,10 @@ struct Level
     Room current_room;
 
     bn::optional<bn::camera_ptr>            camera;
-    bn::optional<bn::regular_bg_ptr>        bg_ptr;
+    bn::optional<bn::regular_bg_ptr>        main_bg_ptr;
     bn::optional<bn::regular_bg_ptr>        backdrop_ptr;
+    bn::optional<bn::regular_bg_ptr>        painted_bg_ptr;
+    bn::optional<bn::regular_bg_ptr>        foreground_ptr;
     bn::optional<bn::regular_bg_item>       bg_item;
     bn::span<const bn::regular_bg_map_cell> cells;
 

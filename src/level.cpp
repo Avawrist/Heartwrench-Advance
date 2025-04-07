@@ -14,11 +14,13 @@ Level::Level(const Level& other)
 {
     current_room = other.current_room;
     
-    camera       = other.camera;
-    bg_ptr       = other.bg_ptr;
-    backdrop_ptr = other.backdrop_ptr;
-    bg_item      = other.bg_item;
-    cells        = other.cells;
+    camera         = other.camera;
+    main_bg_ptr    = other.main_bg_ptr;
+    backdrop_ptr   = other.backdrop_ptr;
+    painted_bg_ptr = other.painted_bg_ptr;
+    foreground_ptr = other.foreground_ptr;
+    bg_item        = other.bg_item;
+    cells          = other.cells;
 
     tile_width  = other.tile_width;
     tile_height = other.tile_height;
@@ -39,11 +41,13 @@ void Level::operator =(const Level& other)
 {
     current_room = other.current_room;
 
-    camera       = other.camera;
-    bg_ptr       = other.bg_ptr;
-    backdrop_ptr = other.backdrop_ptr;
-    bg_item      = other.bg_item;
-    cells        = other.cells;
+    camera         = other.camera;
+    main_bg_ptr    = other.main_bg_ptr;
+    backdrop_ptr   = other.backdrop_ptr;
+    painted_bg_ptr = other.painted_bg_ptr;
+    foreground_ptr = other.foreground_ptr;
+    bg_item        = other.bg_item;
+    cells          = other.cells;
 
     tile_width  = other.tile_width;
     tile_height = other.tile_height;
@@ -60,8 +64,10 @@ void Level::clear()
     
     // Free level pointers
     camera.reset();
-    bg_ptr.reset();
+    main_bg_ptr.reset();
     backdrop_ptr.reset();
+    painted_bg_ptr.reset();
+    foreground_ptr.reset();
     bg_item.reset();
 
     BN_LOG("=== Level cleared ===");
@@ -92,9 +98,11 @@ void Level::load(LevelName level_name)
             current_room = Room(ROOM_TEST_1, camera.value());
             
             // Load BG //
-            backdrop_ptr = bn::regular_bg_items::test_bg.create_bg(0, 0);
-            bg_ptr       = bn::regular_bg_items::test_level.create_bg(0, 0);
-            bg_item      = bn::regular_bg_items::test_level;
+            backdrop_ptr   = bn::regular_bg_items::test_bg.create_bg(0, 0);
+            main_bg_ptr    = bn::regular_bg_items::test_level.create_bg(0, 0);
+            painted_bg_ptr = bn::regular_bg_items::test_painted_bg.create_bg(0, 0);
+            foreground_ptr = bn::regular_bg_items::test_foreground.create_bg(0, 0);
+            bg_item        = bn::regular_bg_items::test_level;
 
         break;
 
@@ -106,11 +114,20 @@ void Level::load(LevelName level_name)
         break;
     }
 
-    cells = bg_ptr->map().cells_ref().value();
+    // Update cells
+    cells = main_bg_ptr->map().cells_ref().value();
     
+    // Set draw priority for BGs
+    painted_bg_ptr->set_z_order(PAINTED_BG_ORDER);
+    backdrop_ptr->set_z_order(BACKDROP_ORDER);
+    main_bg_ptr->set_z_order(MAIN_BG_ORDER);
+    foreground_ptr->set_z_order(FOREGROUND_ORDER);
+
     // Set Camera
     backdrop_ptr->set_camera(camera.value());
-    bg_ptr->set_camera(camera.value());
+    main_bg_ptr->set_camera(camera.value());
+    painted_bg_ptr->set_camera(camera.value());
+    foreground_ptr->set_camera(camera.value());
 
     BN_LOG("=== Level loaded ===");
     BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
@@ -133,7 +150,7 @@ void Level::updateAndDraw()
         {
             current_room.game_objects.data()[i]->update(current_room.room_bounds,
                                                         current_room.game_objects,
-                                                        bg_ptr.value(),
+                                                        main_bg_ptr.value(),
                                                         cells,
                                                         bg_item.value(),
                                                         camera.value());
