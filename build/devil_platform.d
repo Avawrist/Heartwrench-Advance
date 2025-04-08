@@ -77,7 +77,9 @@ devil_platform.o: G:/game/src/devil_platform.cpp \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/game/build/bn_sprite_palette_items_white_sprite_palette.h \
  G:/game/include/player.h G:/game/build/bn_sprite_items_player.h \
- G:/game/include/hitbox.h G:/game/build/bn_sprite_items_hitbox.h
+ G:/game/include/hitbox.h G:/game/build/bn_sprite_items_hitbox.h \
+ G:/game/include/tile_passage.h \
+ G:/game/build/bn_sprite_items_tile_passage.h
 G:/game/include/devil_platform.h:
 G:/butano-master/butano/include/bn_math.h:
 G:/butano-master/butano/include/bn_array.h:
@@ -163,3 +165,5 @@ G:/game/include/player.h:
 G:/game/build/bn_sprite_items_player.h:
 G:/game/include/hitbox.h:
 G:/game/build/bn_sprite_items_hitbox.h:
+G:/game/include/tile_passage.h:
+G:/game/build/bn_sprite_items_tile_passage.h:

@@ -1,0 +1,1 @@
+tile_passage_open_bn_gfx.o: tile_passage_open_bn_gfx.s

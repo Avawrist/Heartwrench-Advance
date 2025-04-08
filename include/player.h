@@ -13,10 +13,13 @@
 
 // My Libs
 #include "hitbox.h"
+#include "tile_passage.h"
 
 ///////////////////
 // Struct Player //
 ///////////////////
+
+#define PLAYER_Z_ORDER 0
 
 #define PLAYER_COLLIDER_WIDTH  24
 #define PLAYER_COLLIDER_HEIGHT 24
@@ -37,8 +40,8 @@
 
 #define PLAYER_BASE_JUMP_FORCE       -7
 #define PLAYER_SECOND_JUMP_FORCE     -3
-#define PLAYER_WALL_JUMP_X_FORCE      6
-#define PLAYER_WALL_JUMP_Y_FORCE     -4
+#define PLAYER_WALL_JUMP_X_FORCE      8
+#define PLAYER_WALL_JUMP_Y_FORCE     -6
 #define PLAYER_JUMP_DECAY             0.1
 #define PLAYER_SECONDARY_JUMP_DECAY   0.4
 #define PLAYER_X_DRIFT_LOCKOUT_FRAMES 12
@@ -116,6 +119,8 @@
 #define PLAYER_DEATH_X_FORCE      5
 #define PLAYER_DEATH_Y_FORCE      5
 #define PLAYER_DEATH_DECAY        0.2
+
+#define PLAYER_MIN_PASSAGE_SPEED PLAYER_GRAVITY + PLAYER_PROLONGED_GRAVITY + PLAYER_FAST_FALL_GRAVITY
 
 #define PLAYER_X_LEFT_FORCE  	     Force(bn::fixed_point_t<12>(-x_speed, 0), PLAYER_X_DECAY)
 #define PLAYER_X_RIGHT_FORCE 	     Force(bn::fixed_point_t<12>( x_speed, 0), PLAYER_X_DECAY)

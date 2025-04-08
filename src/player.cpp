@@ -15,6 +15,7 @@ Player::Player()
 	object_type = PLAYER;
 	dir         = RIGHT;
     sprite_ptr  = bn::sprite_items::player.create_sprite(0, 0);
+	sprite_ptr->set_z_order(PLAYER_Z_ORDER);
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  2,
 								  								  bn::sprite_items::player.tiles_item(),
@@ -726,6 +727,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	for(int32 i = 0; i < game_objects.size(); i++)
     {
 		other_collider = game_objects.at(i)->collider;
+		
+		bn::fixed col_x_offset;
+		bn::fixed col_y_offset;
 
 		switch(game_objects.at(i)->object_type)
 		{
@@ -812,6 +816,33 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					}
 				}
 				
+			break;
+
+			case TILE_PASSAGE:
+			
+				if(((TilePassage*)(game_objects.at(i)))->state == TILE_PASSAGE_STATE_SHUT &&
+				   collider.isCollision(other_collider))
+				{
+					// Resolve X Axis Collision //
+					col_x_offset = collider_x_axis.getCollisionXOffset(other_collider, rigidbody.normalized_dir.x());
+					collider_x_axis.setX(collider_x_axis.x() + col_x_offset);
+					setX(this->x() + col_x_offset);
+
+					// Resolve Y Axis Collision //
+					col_y_offset = collider_y_axis.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y());
+					collider_y_axis.setY(collider_y_axis.y() + col_y_offset);
+					setY(this->y() + col_y_offset);
+					v_collision_grace_frames = PLAYER_V_COLLISION_MAX_GRACE_FRAMES * col_y_offset.integer();
+
+					// If there is still collision somehow, must be corner case //
+					while(collider.isCollision(other_collider))
+					{
+						if(rigidbody.normalized_dir.x() == 0) {kill_player = true; break;}
+						// We always resolve diagonal corner collisions with a horizontal shift. 
+						setX(this->x() - rigidbody.normalized_dir.x());
+					}
+				}
+
 			break;
 
 			default:
@@ -1263,6 +1294,52 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					}
 				}
 				
+			break;
+
+			case TILE_PASSAGE:
+
+				// Test for, and log grounded collision
+				if(((TilePassage*)(game_objects.at(i)))->state == TILE_PASSAGE_STATE_SHUT &&
+				   test_collider.isCollision(other_collider) && 
+				   rigidbody.normalized_dir.y() >= 0)
+				{
+					
+					if(rigidbody.final_dir.y() >= PLAYER_MIN_PASSAGE_SPEED)
+					{((TilePassage*)(game_objects.at(i)))->setState(TILE_PASSAGE_STATE_OPEN);}
+
+					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED)
+					{
+						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
+						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+
+						if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
+						{
+							if(bn::keypad::right_held())
+							{
+								dir = RIGHT;
+								rigidbody.addForce(PLAYER_ROLL_FORCE);
+							}
+							else if(bn::keypad::left_held())
+							{
+								dir = LEFT;
+								rigidbody.addForce(PLAYER_ROLL_FORCE);
+							}
+						}
+					}
+
+					grounded_detected = true;
+				}
+
+				// Test for wall riding on right side
+				if(test_collider_right.isCollision(other_collider) && 
+				   rigidbody.final_dir.y() >= 0)
+				{wall_right_detected = true;}
+
+				// Test for wall riding on left side
+				if(test_collider_left.isCollision(other_collider) && 
+				   rigidbody.final_dir.y() >= 0)
+				{wall_left_detected = true;}
+
 			break;
 
 			default:

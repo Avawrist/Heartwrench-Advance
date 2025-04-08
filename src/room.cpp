@@ -125,6 +125,10 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             temp_object_ptr = new TestEnemy();
         break;
 
+        case TILE_PASSAGE:
+            temp_object_ptr = new TilePassage();
+        break;
+
         case DEVIL_PLATFORM:
         case ANGEL_PLATFORM:
         case SCYTHE_PLATFORM:
@@ -205,32 +209,23 @@ void Room::load(RoomName              room_name,
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
-            right_neighbor  = ROOM_TEST_2;
+            right_neighbor  = NO_ROOM;
             bottom_neighbor = NO_ROOM;
             left_neighbor   = NO_ROOM;
 
             room_bounds.top_bound    = -2431;
-            room_bounds.right_bound  = -4688;
+            room_bounds.right_bound  = -4448;
             room_bounds.bottom_bound =  2560;
             room_bounds.left_bound   = -5120;
 
             // Add UnloadedObjects //
-            //addUnloadedObject(UnloadedObject(bn::point(-4928, -2280), TEST_ENEMY),  false);
+            addUnloadedObject(UnloadedObject(bn::point(-4736, -2248), TILE_PASSAGE), false);
             
         break;
 
         case ROOM_TEST_2:
 
             // Init Variables //
-            top_neighbor    = NO_ROOM;
-            right_neighbor  = NO_ROOM;
-            bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TEST_1;
-
-            room_bounds.top_bound    = -2431;
-            room_bounds.right_bound  = -4448;
-            room_bounds.bottom_bound =  2560;
-            room_bounds.left_bound   = -4688;
 
             // Add UnloadedObjects //
     

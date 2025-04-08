@@ -14,6 +14,8 @@
 // Struct TestEnemy //
 //////////////////////
 
+#define TEST_ENEMY_Z_ORDER 1
+
 #define TEST_ENEMY_COLLIDER_WIDTH  16
 #define TEST_ENEMY_COLLIDER_HEIGHT 16
 
