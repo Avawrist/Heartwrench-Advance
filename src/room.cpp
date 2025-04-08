@@ -219,7 +219,7 @@ void Room::load(RoomName              room_name,
             room_bounds.left_bound   = -5120;
 
             // Add UnloadedObjects //
-            addUnloadedObject(UnloadedObject(bn::point(-4736, -2248), TILE_PASSAGE), false);
+            addUnloadedObject(UnloadedObject(bn::point(-4800, -2248), TILE_PASSAGE), false);
             
         break;
 
