@@ -1156,6 +1156,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			        tile_index <= ONEWAY_BLOCK_MAX_INDEX)
 			{
 				BN_LOG("ONEWAY");
+
 				other_collider = Collider(world_x, 
 											world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
 											TILE_WIDTH, 
@@ -1165,14 +1166,20 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
 				{
 
-					if(bn::keypad::down_held()) {rigidbody.addForce(PLAYER_GRAVITY_FORCE); break;}
-				
-					// Handle Remaining Collision Cases //
-					while(collider_y_axis.isCollision(other_collider))
+					if(bn::keypad::down_held()) 
 					{
-						collider_y_axis.setY(collider_y_axis.y() - 1);
-						setY(this->y() - 1);
+						rigidbody.addForce(PLAYER_GRAVITY_FORCE);
 					}
+					else
+					{
+						// Handle Remaining Collision Cases //
+						while(collider_y_axis.isCollision(other_collider))
+						{
+							collider_y_axis.setY(collider_y_axis.y() - 1);
+							setY(this->y() - 1);
+						}
+					}
+					
 				}
 			}
 
