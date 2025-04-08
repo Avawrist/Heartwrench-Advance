@@ -228,7 +228,7 @@ void Room::load(RoomName              room_name,
             left_neighbor   = ROOM_TEST_1;
 
             room_bounds.top_bound    = -2431;
-            room_bounds.right_bound  =  5000;
+            room_bounds.right_bound  = -4448;
             room_bounds.bottom_bound =  2560;
             room_bounds.left_bound   = -4688;
 

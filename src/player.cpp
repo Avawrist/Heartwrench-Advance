@@ -1166,7 +1166,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
 				{
 
-					if(bn::keypad::down_held()) 
+					if(bn::keypad::down_held() && 
+					   (state == STATE_AIR_NEUTRAL || state == STATE_GROUNDED_NEUTRAL)) 
 					{
 						rigidbody.addForce(PLAYER_GRAVITY_FORCE);
 					}
