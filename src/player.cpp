@@ -301,10 +301,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			if(bn::keypad::r_pressed()) 
 			{in_phase_step = true;}
 
-			// Scythe 1
-			if(bn::keypad::b_pressed())
-			{in_scythe_1 = true;}
-			
 			// Add Gravity //
 			if(!remaining_x_drift_lockout_frames)
 			{
