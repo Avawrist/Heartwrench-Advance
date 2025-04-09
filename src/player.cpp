@@ -822,9 +822,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	{
 		for(int32 x = -2; x < 3; x++)
 		{
-			// 0. Early outs for optimization
-			if(rigidbody.normalized_dir.x().integer() == 0 &&
-		       rigidbody.normalized_dir.y().integer() == 0) {break;}
 			
 			// 1. Get tile type at index //
 			int32 check_index_x = cell_index.x() + x;
@@ -897,7 +894,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			
 			else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
 			{
-				BN_LOG("LEFT SHALLOW 1");
 				other_collider = Collider(world_x, 
 										  world_y + 3, 
 										  TILE_WIDTH, 
@@ -918,7 +914,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				
 			else if(tile_index == LEFT_SHALLOW_SLOPE_2_INDEX)
 			{
-				BN_LOG("LEFT SHALLOW 2");
 				other_collider = Collider(world_x, 
 											world_y + 2, 
 											TILE_WIDTH, 
@@ -939,7 +934,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			else if(tile_index == LEFT_SHALLOW_SLOPE_3_INDEX)
 			{
-				BN_LOG("LEFT SHALLOW 3");
 				other_collider = Collider(world_x, 
 											world_y + 1, 
 											TILE_WIDTH, 
@@ -960,7 +954,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			else if(tile_index == LEFT_SHALLOW_SLOPE_4_INDEX)
 			{
-				BN_LOG("LEFT SHALLOW 4");
 				other_collider = Collider(world_x, 
 											world_y, 
 											TILE_WIDTH, 
@@ -981,7 +974,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			else if(tile_index == LEFT_STEEP_SLOPE_1_INDEX)
 			{
-				BN_LOG("LEFT STEEP 1");
 				other_collider = Collider(world_x, 
 											world_y + 2, 
 											TILE_WIDTH, 
@@ -1002,7 +994,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			else if(tile_index == LEFT_STEEP_SLOPE_2_INDEX)
 			{
-				BN_LOG("LEFT STEEP 2");	
 				other_collider = Collider(world_x, 
 											world_y, 
 											TILE_WIDTH, 
@@ -1023,7 +1014,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			else if(tile_index == RIGHT_SHALLOW_SLOPE_1_INDEX)
 			{
-				BN_LOG("RIGHT SHALLOW 1");
 				other_collider = Collider(world_x, 
 											world_y + 3, 
 											TILE_WIDTH, 
@@ -1044,7 +1034,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			else if(tile_index == RIGHT_SHALLOW_SLOPE_2_INDEX)
 			{
-				BN_LOG("RIGHT SHALLOW 2");
 				other_collider = Collider(world_x, 
 											world_y + 2, 
 											TILE_WIDTH, 
@@ -1065,7 +1054,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			else if(tile_index == RIGHT_SHALLOW_SLOPE_3_INDEX)
 			{
-				BN_LOG("RIGHT SHALLOW 3");
 				other_collider = Collider(world_x, 
 											world_y + 1,
 											TILE_WIDTH, 
@@ -1086,7 +1074,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			
 			else if(tile_index == RIGHT_SHALLOW_SLOPE_4_INDEX)
 			{
-				BN_LOG("RIGHT SHALLOW 4");
 				other_collider = Collider(world_x, 
 											world_y,
 											TILE_WIDTH, 
@@ -1107,7 +1094,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			
 			else if(tile_index == RIGHT_STEEP_SLOPE_1_INDEX)
 			{
-				BN_LOG("RIGHT STEEP 1");
 				other_collider = Collider(world_x, 
 											world_y + 2,
 											TILE_WIDTH, 
@@ -1128,7 +1114,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			
 			else if(tile_index == RIGHT_STEEP_SLOPE_2_INDEX)
 			{
-				BN_LOG("RIGHT STEEP 2");
 				other_collider = Collider(world_x, 
 											world_y,
 											TILE_WIDTH, 
@@ -1150,8 +1135,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			else if(tile_index >= ONEWAY_BLOCK_MIN_INDEX &&
 			        tile_index <= ONEWAY_BLOCK_MAX_INDEX)
 			{
-				BN_LOG("ONEWAY");
-
 				other_collider = Collider(world_x, 
 											world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
 											TILE_WIDTH, 
@@ -1309,9 +1292,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	{
 		for(int32 x = -2; x < 3; x++)
 		{
-			// 0. Early outs for optimization //
-			if(rigidbody.normalized_dir.x().integer() == 0 &&
-		       rigidbody.normalized_dir.y().integer() == 0) {break;}
 			
 			// 1. Get tile type at index //
 			int32 check_index_x = cell_index.x() + x;
@@ -1336,7 +1316,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			if(tile_index >= HARD_BLOCK_MIN_INDEX &&
 			   tile_index <= HARD_BLOCK_MAX_INDEX)
 			{
-
 				other_collider = Collider(world_x,
 										  world_y, 
 										  TILE_WIDTH, 
@@ -1351,6 +1330,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
 					}
+
 					grounded_detected = true;
 				}
 
@@ -1467,9 +1447,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
 			{
 				other_collider = Collider(world_x,
-											world_y + 3, 
-											TILE_WIDTH, 
-											TILE_HEIGHT / 4);
+										  world_y + 3, 
+										  TILE_WIDTH, 
+										  TILE_HEIGHT / 4);
 
 				index = abs(other_collider.p1.x() - collider.p4.x()).integer();
 				index = clamp(0, 7, index);
@@ -1488,6 +1468,11 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					}
 
 					grounded_detected = true;
+
+					// Offset the decline of the slope if player is moving with it.
+					// This avoids a frame in air state when descending slopes.
+					if(rigidbody.normalized_dir.x() == -1)
+					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 				}
 			}
 
@@ -1515,6 +1500,11 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					}
 
 					grounded_detected = true;
+
+					// Offset the decline of the slope if player is moving with it.
+					// This avoids a frame in air state when descending slopes.
+					if(rigidbody.normalized_dir.x() == -1)
+					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 				}
 			}
 
@@ -1542,6 +1532,11 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					}
 
 					grounded_detected = true;
+
+					// Offset the decline of the slope if player is moving with it.
+					// This avoids a frame in air state when descending slopes.
+					if(rigidbody.normalized_dir.x() == -1)
+					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 				}
 			}
 
@@ -1569,6 +1564,11 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					}
 
 					grounded_detected = true;
+
+					// Offset the decline of the slope if player is moving with it.
+					// This avoids a frame in air state when descending slopes.
+					if(rigidbody.normalized_dir.x() == -1)
+					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 				}
 			}
 
@@ -1596,6 +1596,11 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					}
 
 					grounded_detected = true;
+
+					// Offset the decline of the slope if player is moving with it.
+					// This avoids a frame in air state when descending slopes.
+					if(rigidbody.normalized_dir.x() == -1)
+					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 				}
 			}
 
@@ -1623,6 +1628,11 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					}
 
 					grounded_detected = true;
+
+					// Offset the decline of the slope if player is moving with it.
+					// This avoids a frame in air state when descending slopes.
+					if(rigidbody.normalized_dir.x() == -1)
+					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 				}
 			}				
 
@@ -1650,6 +1660,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					}
 
 					grounded_detected = true;
+
+					if(rigidbody.normalized_dir.x() == 1)
+					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 				}
 			}
 
@@ -1677,6 +1690,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					}
 
 					grounded_detected = true;
+
+					if(rigidbody.normalized_dir.x() == 1)
+					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 				}
 			}
 
@@ -1704,6 +1720,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					}
 
 					grounded_detected = true;
+
+					if(rigidbody.normalized_dir.x() == 1)
+					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 				}
 			}
 
@@ -1731,6 +1750,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					}
 
 					grounded_detected = true;
+
+					if(rigidbody.normalized_dir.x() == 1)
+					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 				}
 			}
 
@@ -1758,6 +1780,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					}
 
 					grounded_detected = true;
+
+					if(rigidbody.normalized_dir.x() == 1)
+					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 				}
 			}
 
@@ -1785,9 +1810,13 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					}
 
 					grounded_detected = true;
+
+					// Offset the decline of the slope if player is moving with it.
+					// This avoids a frame in air state when descending slopes.
+					if(rigidbody.normalized_dir.x() == 1)
+					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 				}
 			}	
-		
 		}
 	}
 	
@@ -1995,6 +2024,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
     //////////////////////////////
     
 	updateInactiveState(camera);
+
+	BN_LOG(state);
 	
 }
 

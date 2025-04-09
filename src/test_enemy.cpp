@@ -94,9 +94,6 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 	{
 		for(int32 x = -1; x < 2; x++)
 		{
-			// 0. Early outs for optimization
-			if(rigidbody.normalized_dir.x() == 0 &&
-			   rigidbody.normalized_dir.y() == 0) {break;}
 			
 			// 1. Get tile type at index //
 			int32 check_index_x = cell_index.x() + x;
