@@ -361,6 +361,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
 				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
+				remaining_jump_input_frames      = 0;
 				dir = LEFT;
 			}
 
@@ -420,6 +421,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
 				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
+				remaining_jump_input_frames      = 0;
 				dir = RIGHT;
 			}
 
