@@ -184,7 +184,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	bool create_scythe_hb_2  = false;
 	bool create_scythe_hb_3  = false;
 	bool in_phase_step       = false;
-	bool plummet_eligible    = false;
 
 	///////////////////
 	// Handle State ///
@@ -325,35 +324,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			remaining_x_drift_lockout_frames = clamp(0, 
 													PLAYER_X_DRIFT_LOCKOUT_FRAMES, 
 													remaining_x_drift_lockout_frames);
-
-			// Update Squish frames for squish eligibility // 
-			air_frames_elapsed++;
-			air_frames_elapsed = clamp(0, 
-									   PLAYER_MAX_AIR_FRAMES, 
-									   air_frames_elapsed);
-
-		break;
-		
-		case STATE_AIR_PLUMMET:
-			
-			//////////////////////////////
-			// Player Air Plummet State //
-			//////////////////////////////
-
-			plummet_eligible = true;
-
-			// Get Input //
-
-			// Drift
-			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames)       
-			{rigidbody.addForce(PLAYER_X_PLUMMET_LEFT_FORCE); dir = LEFT;}
-
-			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames)
-			{rigidbody.addForce(PLAYER_X_PLUMMET_RIGHT_FORCE); dir = RIGHT;}
-			
-			// Add Plummet Gravity //
-			rigidbody.addForce(PLAYER_GRAVITY_FORCE);
-			rigidbody.addForce(PLAYER_PLUMMET_GRAVITY_FORCE);
 
 			// Update Squish frames for squish eligibility // 
 			air_frames_elapsed++;
@@ -560,8 +530,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			if(current_phase_step_frame < PLAYER_PHASE_STEP_TOTAL_FRAMES)
 			{in_phase_step = true;}
 			else
-			{current_phase_step_frame = 0;
-			 plummet_eligible         = true;}
+			{current_phase_step_frame = 0;}
 
 		break;
 
@@ -598,7 +567,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			else
 			{
 				current_scythe_frame = 0;
-				plummet_eligible     = true;
 				if(scythe_2_buffered) {in_scythe_2 = true;}
 			}
 
@@ -637,7 +605,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			else
 			{
 				current_scythe_frame = 0;
-				plummet_eligible     = true;
 				if(scythe_3_buffered) {in_scythe_3 = true;}
 			}
 
@@ -671,7 +638,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			else 
 			{
 				current_scythe_frame = 0;
-				plummet_eligible     = true;
 			}
 
 		break;
@@ -1311,20 +1277,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-
-						if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
-						{
-							if(bn::keypad::right_held())
-							{
-								dir = RIGHT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-							else if(bn::keypad::left_held())
-							{
-								dir = LEFT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-						}
 					}
 
 					grounded_detected = true;
@@ -1400,20 +1352,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-
-						if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
-						{
-							if(bn::keypad::right_held())
-							{
-								dir = RIGHT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-							else if(bn::keypad::left_held())
-							{
-								dir = LEFT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-						}
 					}
 					grounded_detected = true;
 				}
@@ -1549,20 +1487,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-
-						if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
-						{
-							if(bn::keypad::right_held())
-							{
-								dir = RIGHT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-							else if(bn::keypad::left_held())
-							{
-								dir = LEFT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-						}
 					}
 
 					grounded_detected = true;
@@ -1590,20 +1514,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-
-						if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
-						{
-							if(bn::keypad::right_held())
-							{
-								dir = RIGHT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-							else if(bn::keypad::left_held())
-							{
-								dir = LEFT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-						}
 					}
 
 					grounded_detected = true;
@@ -1631,20 +1541,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-
-						if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
-						{
-							if(bn::keypad::right_held())
-							{
-								dir = RIGHT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-							else if(bn::keypad::left_held())
-							{
-								dir = LEFT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-						}
 					}
 
 					grounded_detected = true;
@@ -1672,20 +1568,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-
-						if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
-						{
-							if(bn::keypad::right_held())
-							{
-								dir = RIGHT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-							else if(bn::keypad::left_held())
-							{
-								dir = LEFT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-						}
 					}
 
 					grounded_detected = true;
@@ -1713,20 +1595,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-
-						if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
-						{
-							if(bn::keypad::right_held())
-							{
-								dir = RIGHT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-							else if(bn::keypad::left_held())
-							{
-								dir = LEFT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-						}
 					}
 
 					grounded_detected = true;
@@ -1754,20 +1622,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-
-						if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
-						{
-							if(bn::keypad::right_held())
-							{
-								dir = RIGHT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-							else if(bn::keypad::left_held())
-							{
-								dir = LEFT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-						}
 					}
 
 					grounded_detected = true;
@@ -1795,20 +1649,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-
-						if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
-						{
-							if(bn::keypad::right_held())
-							{
-								dir = RIGHT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-							else if(bn::keypad::left_held())
-							{
-								dir = LEFT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-						}
 					}
 
 					grounded_detected = true;
@@ -1836,20 +1676,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-
-						if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
-						{
-							if(bn::keypad::right_held())
-							{
-								dir = RIGHT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-							else if(bn::keypad::left_held())
-							{
-								dir = LEFT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-						}
 					}
 
 					grounded_detected = true;
@@ -1877,20 +1703,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-
-						if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
-						{
-							if(bn::keypad::right_held())
-							{
-								dir = RIGHT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-							else if(bn::keypad::left_held())
-							{
-								dir = LEFT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-						}
 					}
 
 					grounded_detected = true;
@@ -1918,20 +1730,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-
-						if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
-						{
-							if(bn::keypad::right_held())
-							{
-								dir = RIGHT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-							else if(bn::keypad::left_held())
-							{
-								dir = LEFT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-						}
 					}
 
 					grounded_detected = true;
@@ -1959,20 +1757,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-
-						if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
-						{
-							if(bn::keypad::right_held())
-							{
-								dir = RIGHT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-							else if(bn::keypad::left_held())
-							{
-								dir = LEFT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-						}
 					}
 
 					grounded_detected = true;
@@ -2000,20 +1784,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-
-						if(rigidbody.final_dir.y() >= PLAYER_ROLL_SPEED_THRESHOLD)
-						{
-							if(bn::keypad::right_held())
-							{
-								dir = RIGHT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-							else if(bn::keypad::left_held())
-							{
-								dir = LEFT;
-								rigidbody.addForce(PLAYER_ROLL_FORCE);
-							}
-						}
 					}
 
 					grounded_detected = true;
@@ -2169,10 +1939,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	{new_state = STATE_WALL_SLIDE_LEFT;}
 
     else 
-	{
-		if(plummet_eligible) {new_state = STATE_AIR_PLUMMET;}
-		else 				 {new_state = STATE_AIR_NEUTRAL;}
-	}
+	{new_state = STATE_AIR_NEUTRAL;}
 
 	if (in_phase_step) {new_state = STATE_PHASE_STEP;}
 	if (in_scythe_1)   {new_state = STATE_SCYTHE_1;}
@@ -2280,12 +2047,6 @@ void Player::setState(PlayerState new_state)
 		break;
 
 		case STATE_AIR_NEUTRAL:
-			scythe_2_buffered = false;
-			scythe_3_buffered = false;
-		break;
-
-		case STATE_AIR_PLUMMET:
-			remaining_x_drift_lockout_frames = 0;
 			scythe_2_buffered = false;
 			scythe_3_buffered = false;
 		break;

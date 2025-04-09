@@ -33,7 +33,6 @@
 
 #define PLAYER_MIN_X_SPEED     0
 #define PLAYER_MAX_X_SPEED     2
-#define PLAYER_PLUMMET_X_SPEED 1
 #define PLAYER_X_DECAY         1
 #define X_SPEED_ACC_RATE       0.2
 #define X_SPEED_DECAY_RATE     0.1
@@ -53,15 +52,9 @@
 #define PLAYER_PROLONGED_AIR_FRAMES_REQUIRED 15
 #define PLAYER_FAST_FALL_GRAVITY             1
 #define PLAYER_MIN_FAST_FALL_FRAMES          3
-#define PLAYER_PLUMMET_GRAVITY               3
 #define PLAYER_WALL_RIDE_GRAVITY             1
 #define PLAYER_SCYTHE_GRAVITY                1
 #define PLAYER_GRAVITY_DECAY 	             1
-
-#define PLAYER_ROLL_SPEED_THRESHOLD 6
-#define PLAYER_ROLL_X_SPEED 		3
-#define PLAYER_ROLL_Y_SPEED 		0
-#define PLAYER_ROLL_DECAY   		0.1
 
 #define PLAYER_SQUISH_FRAMES_REQUIRED 3
 #define PLAYER_MAX_AIR_FRAMES         180
@@ -124,8 +117,6 @@
 
 #define PLAYER_X_LEFT_FORCE  	     Force(bn::fixed_point_t<12>(-x_speed, 0), PLAYER_X_DECAY)
 #define PLAYER_X_RIGHT_FORCE 	     Force(bn::fixed_point_t<12>( x_speed, 0), PLAYER_X_DECAY)
-#define PLAYER_X_PLUMMET_LEFT_FORCE  Force(bn::fixed_point_t<12>(-PLAYER_PLUMMET_X_SPEED, 0), PLAYER_X_DECAY)
-#define PLAYER_X_PLUMMET_RIGHT_FORCE Force(bn::fixed_point_t<12>( PLAYER_PLUMMET_X_SPEED, 0), PLAYER_X_DECAY)
 #define PLAYER_X_LEFT_DECAY_FORCE    Force(bn::fixed_point_t<12>(-x_speed, 0), X_SPEED_DECAY_RATE)
 #define PLAYER_X_RIGHT_DECAY_FORCE   Force(bn::fixed_point_t<12> (x_speed, 0), X_SPEED_DECAY_RATE)
 
@@ -137,17 +128,13 @@
 #define PLAYER_GRAVITY_FORCE           Force(bn::fixed_point_t<12>(0, gravity), 			     PLAYER_GRAVITY_DECAY)
 #define PLAYER_PROLONGED_GRAVITY_FORCE Force(bn::fixed_point_t<12>(0, PLAYER_PROLONGED_GRAVITY), PLAYER_GRAVITY_DECAY)
 #define PLAYER_FAST_GRAVITY_FORCE      Force(bn::fixed_point_t<12>(0, PLAYER_FAST_FALL_GRAVITY), PLAYER_GRAVITY_DECAY)
-#define PLAYER_PLUMMET_GRAVITY_FORCE   Force(bn::fixed_point_t<12>(0, PLAYER_PLUMMET_GRAVITY),   PLAYER_GRAVITY_DECAY)
 #define PLAYER_WALL_GRAVITY_FORCE      Force(bn::fixed_point_t<12>(0, wall_ride_gravity),        PLAYER_GRAVITY_DECAY)
 #define PLAYER_SCYTHE_GRAVITY_FORCE    Force(bn::fixed_point_t<12>(0, PLAYER_SCYTHE_GRAVITY),    PLAYER_GRAVITY_DECAY)
-
-#define PLAYER_ROLL_FORCE Force(bn::fixed_point_t<12>(PLAYER_ROLL_X_SPEED * dir, PLAYER_ROLL_Y_SPEED), PLAYER_ROLL_DECAY)
 
 enum PlayerState {
 
 	STATE_GROUNDED_NEUTRAL,
 	STATE_AIR_NEUTRAL,
-	STATE_AIR_PLUMMET,
 	STATE_WALL_SLIDE_RIGHT,
 	STATE_WALL_SLIDE_LEFT,
 	STATE_PHASE_STEP,
