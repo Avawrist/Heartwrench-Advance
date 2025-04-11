@@ -348,7 +348,12 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames) 
 			{rigidbody.addForce(PLAYER_X_LEFT_FORCE);}
 			else if(bn::keypad::right_held()) 								 
-			{gripping_wall_right = true; dir = LEFT;}
+			{
+				gripping_wall_right = true; 
+			 	dir = LEFT;
+				air_frames_elapsed = 0;
+				remaining_jump_input_frames = 0;
+			}
 
 			// Wall Jump
 			if(bn::keypad::a_pressed())
@@ -406,9 +411,15 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Get Input //
 
 			// Drift
-			if(bn::keypad::left_held()) {gripping_wall_left = true; dir = RIGHT;}
-			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames) 
+			if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames)
 			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE);}
+			else if(bn::keypad::left_held()) 								 
+			{
+				gripping_wall_left = true; 
+			 	dir = RIGHT;
+				air_frames_elapsed = 0;
+				remaining_jump_input_frames = 0;
+			}
 
 			// Wall Jump
 			if(bn::keypad::a_pressed())
@@ -818,9 +829,14 @@ void Player::update(const RoomBounds& 								  room_bounds,
     // Resolve Tile Collision //
     ////////////////////////////
 	
+	// Check cells for collision in the direction the player is facing
+	int32 x_check_dir; 
+	if(dir == LEFT) {x_check_dir = -1;}
+	else {x_check_dir = 1;}
+
 	for(int32 y = -2; y < 3; y++)
 	{
-		for(int32 x = -2; x < 3; x++)
+		for(int32 x = 2 * (x_check_dir * -1); x != 3 * x_check_dir; x += x_check_dir)
 		{
 			
 			// 1. Get tile type at index //
@@ -834,10 +850,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y, 
 			                                     bg_ptr, cells, bg_item);
 
-			// Prepare offsets in case they are needed for Block collision.
-			int32 block_w_offset = 0;
-			int32 block_x_offset = 0;
-
 			bn::fixed col_x_offset;
 			bn::fixed col_y_offset;
 
@@ -850,20 +862,22 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			if(tile_index >= HARD_BLOCK_MIN_INDEX && 
 			   tile_index <= HARD_BLOCK_MAX_INDEX)
 			{
+				// Prepare offsets in case they are needed for Block collision.
+				int32 block_w_offset = 0;
+				int32 block_x_offset = 0;
+
 				// If the neighbor to the right is also a BLOCK, smooth over the corner.
 				// This is a hack to resolve collision since checks are always made from
 				// left to right. 
-				
-				if(getTileAtBGIndex(check_index_x + 1, check_index_y, 
+				if(getTileAtBGIndex(check_index_x + x_check_dir, check_index_y, 
 									bg_ptr, cells, bg_item) >= HARD_BLOCK_MIN_INDEX && 
-					getTileAtBGIndex(check_index_x + 1, check_index_y, 
+					getTileAtBGIndex(check_index_x + x_check_dir, check_index_y, 
 									bg_ptr, cells, bg_item) <= HARD_BLOCK_MAX_INDEX)
 				{
 					block_w_offset = TILE_WIDTH;
-					block_x_offset = TILE_WIDTH / 2;
-					x++; // Skip checking the next cell, since we already accounted for it here.
+					block_x_offset = (TILE_WIDTH / 2) * x_check_dir;
 				}
-				
+
 				other_collider = Collider(world_x + block_x_offset, 
 										  world_y, 
 										  TILE_WIDTH + block_w_offset,
@@ -1311,14 +1325,14 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y, 
 			                                     bg_ptr, cells, bg_item);
 
-
 			// 2. Check Tile Type and update state accordingly //
 			if(tile_index >= HARD_BLOCK_MIN_INDEX &&
 			   tile_index <= HARD_BLOCK_MAX_INDEX)
 			{
+
 				other_collider = Collider(world_x,
 										  world_y, 
-										  TILE_WIDTH, 
+										  TILE_WIDTH,
 										  TILE_HEIGHT);
 
 				// Test for, and log grounded collision
