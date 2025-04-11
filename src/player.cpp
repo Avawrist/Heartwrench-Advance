@@ -28,8 +28,8 @@ Player::Player()
 	test_collider       = collider;
 	test_collider_right = collider;
 	test_collider_left  = collider;
-	collider_offset_x = 0;
-	collider_offset_y = 0;
+	collider_offset_x = PLAYER_COLLIDER_OFFSET_X;
+	collider_offset_y = PLAYER_COLLIDER_OFFSET_Y;
     
 	state             	 = STATE_AIR_NEUTRAL;
     x_speed        	  	 = PLAYER_MIN_X_SPEED;
