@@ -1329,7 +1329,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				if(test_collider.isCollision(other_collider) && 
 				   rigidbody.normalized_dir.y() >= 0)
 				{
-					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED)
+					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+					   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
@@ -1368,7 +1369,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						if(!bn::keypad::down_held()) 
 						{
 							grounded_detected = true;
-							if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED)
+							if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+							   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
 							{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
 							 sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
 						}
