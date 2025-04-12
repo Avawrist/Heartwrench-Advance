@@ -2027,6 +2027,7 @@ void Player::setState(PlayerState new_state)
 		break;
 
 		case STATE_WALL_SLIDE_RIGHT:
+			rigidbody.removeForces();
 			remaining_x_drift_lockout_frames = 0;
 			remaining_jump_input_frames      = 0;
 			air_frames_elapsed               = 0;
@@ -2035,6 +2036,7 @@ void Player::setState(PlayerState new_state)
 		break;
 
 		case STATE_WALL_SLIDE_LEFT:
+			rigidbody.removeForces();
 			remaining_x_drift_lockout_frames = 0;
 			remaining_jump_input_frames      = 0;
 			air_frames_elapsed               = 0;
