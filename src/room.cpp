@@ -214,12 +214,14 @@ void Room::load(RoomName              room_name,
             left_neighbor   = NO_ROOM;
 
             room_bounds.top_bound    = -2431;
-            room_bounds.right_bound  = -4448;
-            room_bounds.bottom_bound =  2560;
+            room_bounds.right_bound  = -3328;
+            room_bounds.bottom_bound = -1600;
             room_bounds.left_bound   = -5120;
 
             // Add UnloadedObjects //
             addUnloadedObject(UnloadedObject(bn::point(-4800, -2248), TILE_PASSAGE), false);
+            addUnloadedObject(UnloadedObject(bn::point(-4624, -2280), TILE_PASSAGE), false);
+            addUnloadedObject(UnloadedObject(bn::point(-4960, -1944), TILE_PASSAGE), false);
             
         break;
 

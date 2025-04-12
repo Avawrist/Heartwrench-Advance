@@ -232,8 +232,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			if(bn::keypad::a_pressed()) {jump();}
 
 			// Phase Step
-			if(bn::keypad::r_pressed()) 
-			{in_phase_step = true;}
+			//if(bn::keypad::r_pressed()) 
+			//{in_phase_step = true;}
 
 			// Scythe 1
 			if(bn::keypad::b_pressed())
@@ -282,7 +282,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			// Fast Fall
 			if(bn::keypad::down_held() && 
-			   rigidbody.normalized_dir.y() >= 0 && 
+			   rigidbody.normalized_dir.y() > 0 && 
 			   air_frames_elapsed >= PLAYER_MIN_FAST_FALL_FRAMES)
 			{fastFall();}
 			
@@ -298,8 +298,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			{remaining_jump_input_frames = 0;}
 
 			// Phase Step
-			if(bn::keypad::r_pressed()) 
-			{in_phase_step = true;}
+			//if(bn::keypad::r_pressed()) 
+			//{in_phase_step = true;}
 
 			// Add Gravity //
 			if(!remaining_x_drift_lockout_frames)
@@ -367,8 +367,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			}
 
 			// Phase Step
-			if(bn::keypad::r_pressed()) 
-			{in_phase_step = true;}
+			//if(bn::keypad::r_pressed()) 
+			//{in_phase_step = true;}
 
 			// Scythe 1
 			if(bn::keypad::b_pressed())
@@ -433,8 +433,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			}
 
 			// Phase Step
-			if(bn::keypad::r_pressed()) 
-			{in_phase_step = true;}
+			//if(bn::keypad::r_pressed()) 
+			//{in_phase_step = true;}
 
 			// Scythe 1
 			if(bn::keypad::b_pressed())
@@ -564,10 +564,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			{in_scythe_2          = true;
 			 current_scythe_frame = 0;} 
 
-			if(bn::keypad::r_pressed() && 
-			   current_scythe_frame >= PLAYER_MIN_SCYTHE_1_CANCEL_FRAMES)
-			{in_phase_step        = true;
-			 current_scythe_frame = 0;}
+			//if(bn::keypad::r_pressed() && 
+			//   current_scythe_frame >= PLAYER_MIN_SCYTHE_1_CANCEL_FRAMES)
+			//{in_phase_step        = true;
+			// current_scythe_frame = 0;}
 
 			// End state if frames are not up
 			else if(current_scythe_frame < PLAYER_SCYTHE_1_TOTAL_FRAMES)
@@ -602,10 +602,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			{in_scythe_3 = true;
 			 current_scythe_frame = 0;}
 
-			if(bn::keypad::r_pressed() && 
-			   current_scythe_frame >= PLAYER_MIN_SCYTHE_2_CANCEL_FRAMES)
-			{in_phase_step        = true;
-			 current_scythe_frame = 0;}
+			//if(bn::keypad::r_pressed() && 
+			//   current_scythe_frame >= PLAYER_MIN_SCYTHE_2_CANCEL_FRAMES)
+			//{in_phase_step        = true;
+			// current_scythe_frame = 0;}
 
 			// End state if frames are not up
 			else if(current_scythe_frame < PLAYER_SCYTHE_2_TOTAL_FRAMES)
@@ -635,10 +635,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			}
 
 			// Take Cancel Input
-			if(bn::keypad::r_pressed() && 
-			   current_scythe_frame >= PLAYER_MIN_SCYTHE_3_CANCEL_FRAMES)
-			{in_phase_step        = true;
-			 current_scythe_frame = 0;}
+			//if(bn::keypad::r_pressed() && 
+			//   current_scythe_frame >= PLAYER_MIN_SCYTHE_3_CANCEL_FRAMES)
+			//{in_phase_step        = true;
+			// current_scythe_frame = 0;}
 
 			// End state if frames are not up
 			else if(current_scythe_frame < PLAYER_SCYTHE_3_TOTAL_FRAMES)
@@ -794,7 +794,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			break;
 
 			case TILE_PASSAGE:
-			
+				
 				if(((TilePassage*)(game_objects.at(i)))->state == TILE_PASSAGE_STATE_SHUT &&
 				   collider.isCollision(other_collider))
 				{
@@ -836,7 +836,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 	for(int32 y = -2; y < 3; y++)
 	{
-		for(int32 x = 2 * (x_check_dir * -1); x != 3 * x_check_dir; x += x_check_dir)
+		for(int32 x = 1 * (x_check_dir * -1); x != 2 * x_check_dir; x += x_check_dir)
 		{
 			
 			// 1. Get tile type at index //
@@ -1276,16 +1276,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 					grounded_detected = true;
 				}
-
-				// Test for wall riding on right side
-				if(test_collider_right.isCollision(other_collider) && 
-				   rigidbody.final_dir.y() >= 0)
-				{wall_right_detected = true;}
-
-				// Test for wall riding on left side
-				if(test_collider_left.isCollision(other_collider) && 
-				   rigidbody.final_dir.y() >= 0)
-				{wall_left_detected = true;}
 
 			break;
 
