@@ -46,7 +46,7 @@
 #define PLAYER_WALL_JUMP_Y_FORCE     -8
 #define PLAYER_JUMP_DECAY             0.1
 #define PLAYER_SECONDARY_JUMP_DECAY   1
-#define PLAYER_X_DRIFT_LOCKOUT_FRAMES 5
+#define PLAYER_X_DRIFT_LOCKOUT_FRAMES 6
 #define PLAYER_MAX_JUMP_INPUT_FRAMES  24
 #define PLAYER_WALL_JUMP_DECAY        0.05
 
@@ -174,6 +174,8 @@ struct Player : GameObject {
     bool wall_left_detected;
     bool grounded_detected;
 	bool grounded_owp_detected;
+	bool left_wj_eligible;
+	bool right_wj_eligible;
 	bool scythe_2_buffered;
 	bool scythe_3_buffered;
 	bool kill_player;

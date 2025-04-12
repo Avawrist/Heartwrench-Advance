@@ -54,6 +54,8 @@ Player::Player()
     wall_left_detected      = false;
     grounded_detected       = false;
 	grounded_owp_detected   = false;
+	left_wj_eligible        = false;
+	right_wj_eligible       = false;
 	scythe_2_buffered       = false;
 	scythe_3_buffered       = false;
 	kill_player             = false;
@@ -91,6 +93,8 @@ Player::Player(const Player& other) : GameObject(other)
     wall_left_detected      = other.wall_left_detected;
     grounded_detected       = other.grounded_detected;
 	grounded_owp_detected   = other.grounded_owp_detected;
+	left_wj_eligible        = other.left_wj_eligible;
+	right_wj_eligible       = other.right_wj_eligible;
 	scythe_2_buffered       = other.scythe_2_buffered;
 	scythe_3_buffered       = other.scythe_3_buffered;
 	kill_player             = other.kill_player;
@@ -143,6 +147,8 @@ Player& Player::operator =(const Player& other)
     wall_left_detected      = other.wall_left_detected;
     grounded_detected       = other.grounded_detected;
 	grounded_owp_detected   = other.grounded_owp_detected;
+	left_wj_eligible        = other.left_wj_eligible;
+	right_wj_eligible       = other.right_wj_eligible;
 	scythe_2_buffered       = other.scythe_2_buffered;
 	scythe_3_buffered       = other.scythe_3_buffered;
 	kill_player             = other.kill_player;
@@ -284,6 +290,27 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			   air_frames_elapsed >= PLAYER_MIN_FAST_FALL_FRAMES)
 			{fastFall();}
 			
+			// Wall Jump
+			if(bn::keypad::a_pressed())
+			{
+				if(right_wj_eligible)
+				{
+					rigidbody.addForce(PLAYER_WALL_JUMP_LEFT_FORCE);
+					sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
+					sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
+					remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
+					dir = LEFT;
+				}
+				else if(left_wj_eligible)
+				{
+					rigidbody.addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);
+					sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
+					sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
+					remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
+					dir = RIGHT;
+				}
+			}
+
 			// Late Jump
 			if(bn::keypad::a_pressed() && late_jump_grace_frames) 
 			{jump();}
@@ -622,6 +649,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 		default:
 		break;
     }
+	
+	// Reset walljump variables
+	left_wj_eligible  = false;
+	right_wj_eligible = false;
 	
     ///////////////////
     // Apply Physics //
@@ -1296,16 +1327,22 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				}
 
 				// Test for wall riding on right side
-				if(test_collider_right.isCollision(other_collider) && 
-				   rigidbody.normalized_dir.y() >= 0 &&
-				   bn::keypad::right_held())
-				{wall_right_detected = true;}
+				if(test_collider_right.isCollision(other_collider)) 
+				{
+					right_wj_eligible = true;
+
+					if(rigidbody.normalized_dir.y() >= 0 &&
+					   bn::keypad::right_held()) {wall_right_detected = true;}
+				}
 				
 				// Test for wall riding on left side
-				if(test_collider_left.isCollision(other_collider) && 
-				   rigidbody.normalized_dir.y() >= 0 &&
-				   bn::keypad::left_held())
-				{wall_left_detected = true;}
+				if(test_collider_left.isCollision(other_collider))
+				{
+					left_wj_eligible = true;
+
+					if(rigidbody.normalized_dir.y() >= 0 &&
+					   bn::keypad::left_held()) {wall_left_detected = true;}
+				}
 
 			}
 					
@@ -1988,9 +2025,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
     //////////////////////////////
     
 	updateInactiveState(camera);
-
-	BN_LOG(state);
-	BN_LOG("Normalized dir: ", rigidbody.normalized_dir.y());
 	
 }
 
