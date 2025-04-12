@@ -50,14 +50,14 @@ Player::Player()
 	current_death_frame              = 0;
 	current_phase_step_frame         = 0;
 
-	wall_right_detected   = false;
-    wall_left_detected    = false;
-    grounded_detected     = false;
-	grounded_owp_detected = false;
-	scythe_2_buffered     = false;
-	scythe_3_buffered     = false;
-	kill_player           = false;
-	is_dead               = false;
+	wall_right_detected     = false;
+    wall_left_detected      = false;
+    grounded_detected       = false;
+	grounded_owp_detected   = false;
+	scythe_2_buffered       = false;
+	scythe_3_buffered       = false;
+	kill_player             = false;
+	is_dead                 = false;
 
 	hitbox_1_ptr = NULL;
 	hitbox_2_ptr = NULL;
@@ -87,14 +87,14 @@ Player::Player(const Player& other) : GameObject(other)
 	current_death_frame              = other.current_death_frame;
 	current_phase_step_frame         = other.current_phase_step_frame;
 
-	wall_right_detected   = other.wall_right_detected;
-    wall_left_detected    = other.wall_left_detected;
-    grounded_detected     = other.grounded_detected;
-	grounded_owp_detected = other.grounded_owp_detected;
-	scythe_2_buffered     = other.scythe_2_buffered;
-	scythe_3_buffered     = other.scythe_3_buffered;
-	kill_player           = other.kill_player;
-	is_dead               = other.is_dead;
+	wall_right_detected     = other.wall_right_detected;
+    wall_left_detected      = other.wall_left_detected;
+    grounded_detected       = other.grounded_detected;
+	grounded_owp_detected   = other.grounded_owp_detected;
+	scythe_2_buffered       = other.scythe_2_buffered;
+	scythe_3_buffered       = other.scythe_3_buffered;
+	kill_player             = other.kill_player;
+	is_dead                 = other.is_dead;
 
 	test_collider         = other.test_collider;
 	test_collider_right   = other.test_collider_right;
@@ -139,14 +139,14 @@ Player& Player::operator =(const Player& other)
 	current_death_frame              = other.current_death_frame;
 	current_phase_step_frame         = other.current_phase_step_frame;
 
-	wall_right_detected   = other.wall_right_detected;
-    wall_left_detected    = other.wall_left_detected;
-    grounded_detected     = other.grounded_detected;
-	grounded_owp_detected = other.grounded_owp_detected;
-	scythe_2_buffered     = other.scythe_2_buffered;
-	scythe_3_buffered     = other.scythe_3_buffered;
-	kill_player           = other.kill_player;
-	is_dead               = other.is_dead;
+	wall_right_detected     = other.wall_right_detected;
+    wall_left_detected      = other.wall_left_detected;
+    grounded_detected       = other.grounded_detected;
+	grounded_owp_detected   = other.grounded_owp_detected;
+	scythe_2_buffered       = other.scythe_2_buffered;
+	scythe_3_buffered       = other.scythe_3_buffered;
+	kill_player             = other.kill_player;
+	is_dead                 = other.is_dead;
 
 	test_collider         = other.test_collider;
 	test_collider_right   = other.test_collider_right;
@@ -175,8 +175,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
     // Player State Machine //
     //////////////////////////
 
-	bool gripping_wall_right = false;
-	bool gripping_wall_left  = false;
 	bool in_scythe_1         = false;
 	bool in_scythe_2         = false;
 	bool in_scythe_3         = false;
@@ -335,25 +333,19 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Player Wall Slide Right State //
 			///////////////////////////////////
 
+			// Update Dir
+			dir = LEFT;
+
 			// Simulate friction/momentum
 			if(bn::keypad::left_held())  
 			{
 				x_speed += X_SPEED_ACC_RATE;
 				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
 			}
-
-			// Get Input //
 	
 			// Drift
 			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames) 
 			{rigidbody.addForce(PLAYER_X_LEFT_FORCE);}
-			else if(bn::keypad::right_held()) 								 
-			{
-				gripping_wall_right = true; 
-			 	dir = LEFT;
-				air_frames_elapsed = 0;
-				remaining_jump_input_frames = 0;
-			}
 
 			// Wall Jump
 			if(bn::keypad::a_pressed())
@@ -362,30 +354,15 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
 				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
-				remaining_jump_input_frames      = 0;
 				dir = LEFT;
 			}
-
-			// Phase Step
-			//if(bn::keypad::r_pressed()) 
-			//{in_phase_step = true;}
 
 			// Scythe 1
 			if(bn::keypad::b_pressed())
 			{in_scythe_1 = true;}
 			
 			// Add Gravity //
-			if(gripping_wall_right) {rigidbody.addForce(PLAYER_WALL_GRAVITY_FORCE);}
-			else 
-			{
-				rigidbody.addForce(PLAYER_GRAVITY_FORCE);
-				if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
-				{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
-
-				// Fast Fall
-				if(bn::keypad::down_held() && rigidbody.normalized_dir.y() >= 0) 
-				{fastFall();}
-			}
+			rigidbody.addForce(PLAYER_WALL_GRAVITY_FORCE);
 
 			// Update Squish frames for squish eligibility // 
 			air_frames_elapsed++;
@@ -401,6 +378,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Player Wall Slide Left State //
 			//////////////////////////////////
 
+			// Update Dir
+			dir = RIGHT;
+
 			// Simulate friction/momentum
 			if(bn::keypad::right_held())  
 			{
@@ -408,18 +388,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
 			}
 
-			// Get Input //
-
 			// Drift
 			if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames)
 			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE);}
-			else if(bn::keypad::left_held()) 								 
-			{
-				gripping_wall_left = true; 
-			 	dir = RIGHT;
-				air_frames_elapsed = 0;
-				remaining_jump_input_frames = 0;
-			}
 
 			// Wall Jump
 			if(bn::keypad::a_pressed())
@@ -428,31 +399,16 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
 				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
-				remaining_jump_input_frames      = 0;
 				dir = RIGHT;
 			}
-
-			// Phase Step
-			//if(bn::keypad::r_pressed()) 
-			//{in_phase_step = true;}
 
 			// Scythe 1
 			if(bn::keypad::b_pressed())
 			{in_scythe_1 = true;}
 			
 			// Add Gravity //
-			if(gripping_wall_left) {rigidbody.addForce(PLAYER_WALL_GRAVITY_FORCE);}
-			else 
-			{
-				rigidbody.addForce(PLAYER_GRAVITY_FORCE);
-				if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
-				{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
-
-				// Fast Fall
-				if(bn::keypad::down_held() && rigidbody.normalized_dir.y() >= 0) 
-				{fastFall();}
-			}
-
+			rigidbody.addForce(PLAYER_WALL_GRAVITY_FORCE);
+			
 			// Update Squish frames for squish eligibility // 
 			air_frames_elapsed++;
 			air_frames_elapsed = clamp(0, 
@@ -1341,12 +1297,14 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 				// Test for wall riding on right side
 				if(test_collider_right.isCollision(other_collider) && 
-				   rigidbody.final_dir.y() >= 0)
+				   rigidbody.normalized_dir.y() >= 0 &&
+				   bn::keypad::right_held())
 				{wall_right_detected = true;}
-
+				
 				// Test for wall riding on left side
 				if(test_collider_left.isCollision(other_collider) && 
-				   rigidbody.final_dir.y() >= 0)
+				   rigidbody.normalized_dir.y() >= 0 &&
+				   bn::keypad::left_held())
 				{wall_left_detected = true;}
 
 			}
@@ -1467,7 +1425,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					test_collider.p4.y() >= global_height)
 				{
 					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.normalized_dir.y() >= 0)
+						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
@@ -1499,7 +1457,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					test_collider.p4.y() >= global_height)
 				{
 					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.normalized_dir.y() >= 0)
+						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
@@ -1531,7 +1489,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					test_collider.p4.y() >= global_height)
 				{
 					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.normalized_dir.y() >= 0)
+						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
@@ -1563,7 +1521,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					test_collider.p4.y() >= global_height)
 				{
 					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.normalized_dir.y() >= 0)
+						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
@@ -1595,7 +1553,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					test_collider.p4.y() >= global_height)
 				{
 					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.normalized_dir.y() >= 0)
+						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
@@ -1627,7 +1585,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					test_collider.p4.y() >= global_height)
 				{
 					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.normalized_dir.y() >= 0)
+						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
@@ -1659,7 +1617,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
 				{
 					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.normalized_dir.y() >= 0)
+						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
@@ -1689,7 +1647,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
 				{
 					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.normalized_dir.y() >= 0)
+						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
@@ -1719,7 +1677,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
 				{
 					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.normalized_dir.y() >= 0)
+						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
@@ -1749,7 +1707,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
 				{
 					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.normalized_dir.y() >= 0)
+						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
@@ -1779,7 +1737,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
 				{
 					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.normalized_dir.y() >= 0)
+						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
@@ -1809,7 +1767,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
 				{
 					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.normalized_dir.y() >= 0)
+						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
@@ -2032,6 +1990,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	updateInactiveState(camera);
 
 	BN_LOG(state);
+	BN_LOG("Normalized dir: ", rigidbody.normalized_dir.y());
 	
 }
 
@@ -2069,16 +2028,18 @@ void Player::setState(PlayerState new_state)
 
 		case STATE_WALL_SLIDE_RIGHT:
 			remaining_x_drift_lockout_frames = 0;
-			//air_frames_elapsed = 0;
-			scythe_2_buffered  = false;
-			scythe_3_buffered  = false;
+			remaining_jump_input_frames      = 0;
+			air_frames_elapsed               = 0;
+			scythe_2_buffered                = false;
+			scythe_3_buffered                = false;
 		break;
 
 		case STATE_WALL_SLIDE_LEFT:
 			remaining_x_drift_lockout_frames = 0;
-			//air_frames_elapsed = 0;
-			scythe_2_buffered  = false;
-			scythe_3_buffered  = false;
+			remaining_jump_input_frames      = 0;
+			air_frames_elapsed               = 0;
+			scythe_2_buffered                = false;
+			scythe_3_buffered                = false;
 		break;
 
 		case STATE_AIR_NEUTRAL:
