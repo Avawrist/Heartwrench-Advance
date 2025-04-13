@@ -361,7 +361,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			///////////////////////////////////
 
 			// Update Dir
-			dir = LEFT;
+			//dir = LEFT;
 
 			// Simulate friction/momentum
 			if(bn::keypad::left_held())  
@@ -406,7 +406,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			//////////////////////////////////
 
 			// Update Dir
-			dir = RIGHT;
+			//dir = RIGHT;
 
 			// Simulate friction/momentum
 			if(bn::keypad::right_held())  
@@ -1332,7 +1332,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					right_wj_eligible = true;
 
 					if(rigidbody.normalized_dir.y() >= 0 &&
-					   bn::keypad::right_held()) {wall_right_detected = true;}
+					   bn::keypad::right_held()) 
+					{
+						wall_right_detected = true;
+					}
 				}
 				
 				// Test for wall riding on left side
@@ -1341,7 +1344,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					left_wj_eligible = true;
 
 					if(rigidbody.normalized_dir.y() >= 0 &&
-					   bn::keypad::left_held()) {wall_left_detected = true;}
+					   bn::keypad::left_held()) 
+					{
+						wall_left_detected = true;
+					}
 				}
 
 			}
@@ -2067,6 +2073,7 @@ void Player::setState(PlayerState new_state)
 			air_frames_elapsed               = 0;
 			scythe_2_buffered                = false;
 			scythe_3_buffered                = false;
+			dir                              = LEFT;
 		break;
 
 		case STATE_WALL_SLIDE_LEFT:
@@ -2076,6 +2083,7 @@ void Player::setState(PlayerState new_state)
 			air_frames_elapsed               = 0;
 			scythe_2_buffered                = false;
 			scythe_3_buffered                = false;
+			dir                              = RIGHT;
 		break;
 
 		case STATE_AIR_NEUTRAL:
