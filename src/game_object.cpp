@@ -143,8 +143,8 @@ bn::fixed GameObject::y() const
 
 bn::fixed_point GameObject::pos() const
 {
-    bn::fixed_point point(sprite_ptr->position().x().integer(),
-			              sprite_ptr->position().y().integer());
+    bn::fixed_point point(sprite_ptr->position().x().integer() + collider_offset_x,
+			              sprite_ptr->position().y().integer() + collider_offset_y);
     return point; 
 }
 

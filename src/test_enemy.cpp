@@ -21,8 +21,8 @@ TestEnemy::TestEnemy()
 	collider          = Collider(x(), y(), TEST_ENEMY_COLLIDER_WIDTH, TEST_ENEMY_COLLIDER_HEIGHT);
 	collider_x_axis   = collider;
 	collider_y_axis   = collider;
-	collider_offset_x = 0;
-	collider_offset_y = 0;
+	collider_offset_x = TEST_ENEMY_COLLIDER_OFFSET_X;
+	collider_offset_y = TEST_ENEMY_COLLIDER_OFFSET_Y;
     
 }
 
@@ -53,8 +53,7 @@ void TestEnemy::update(const RoomBounds&                              room_bound
     // State Machine //
     ///////////////////
 
-    //rigidbody.addForce(TEST_ENEMY_GRAVITY_FORCE);
-	//rigidbody.addForce(Force(bn::fixed_point_t<12>(1, 0), TEST_ENEMY_GRAVITY_DECAY));
+    rigidbody.addForce(TEST_ENEMY_GRAVITY_FORCE);
 
     ////////////////////
     // Update Physics //
@@ -71,22 +70,20 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 	//////////////////////////////
 
 	// Get current cell index that enemy resides in:
-	int32 half_level_width_pixels  = bg_ptr.dimensions().width() / 2;
-	int32 half_level_height_pixels = bg_ptr.dimensions().height() / 2;
-	bn::fixed index_x = (x() + half_level_width_pixels)  / TILE_WIDTH;
-	bn::fixed index_y = (y() + half_level_height_pixels) / TILE_HEIGHT;
+	int32 half_level_width_pixels  = (bg_ptr.dimensions().width() / 2);
+	int32 half_level_height_pixels = (bg_ptr.dimensions().height() / 2);
+	bn::fixed index_x = (x() + half_level_width_pixels + TEST_ENEMY_COLLIDER_OFFSET_X)  / TILE_WIDTH;
+	bn::fixed index_y = (y() + half_level_height_pixels + TEST_ENEMY_COLLIDER_OFFSET_Y) / TILE_HEIGHT;
 	bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
 
-	// Create one temporary collider for each axis. If a collider finds a collision
-	// in its axis, move the temp collider AND the enemy back along the dir vector
-	// in units of 1 until the collision is resolved on that axis.
-
+	// Update colliders for each axis. 
 	collider_x_axis.setPos(collider.x(), collider.y() - rigidbody.final_dir.y());
 	collider_y_axis.setPos(collider.x() - rigidbody.final_dir.x(), collider.y());
 
+	// Placeholder for other objects
 	Collider other_collider;
 
-    ////////////////////////////
+	////////////////////////////
     // Resolve Tile Collision //
     ////////////////////////////
 	
@@ -106,10 +103,6 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 			uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y, 
 			                                     bg_ptr, cells, bg_item);
 
-			// Prepare offsets in case they are needed for Block collision.
-			int32 block_w_offset = 0;
-			int32 block_x_offset = 0;
-
 			bn::fixed col_x_offset;
 			bn::fixed col_y_offset;
 
@@ -117,34 +110,33 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 			int32 local_height;
 			int32 global_height;
 
-			// 2. If the tile is collidable make a temporary collider
-			
-			if(tile_index >= HARD_BLOCK_MIN_INDEX &&
+			// 2. If the tile is collidable make a temporary collider based on type//
+
+			if(tile_index >= HARD_BLOCK_MIN_INDEX && 
 			   tile_index <= HARD_BLOCK_MAX_INDEX)
 			{
+				// Prepare offsets in case they are needed for Block collision.
+				int32 block_w_offset = 0;
+				int32 block_x_offset = 0;
+
 				// If the neighbor to the right is also a BLOCK, smooth over the corner.
 				// This is a hack to resolve collision since checks are always made from
 				// left to right. 
-				
 				if(getTileAtBGIndex(check_index_x + 1, check_index_y, 
-									bg_ptr, cells, bg_item) >= HARD_BLOCK_MIN_INDEX &&
+									 bg_ptr, cells, bg_item) >= HARD_BLOCK_MIN_INDEX && 
 					getTileAtBGIndex(check_index_x + 1, check_index_y, 
-									bg_ptr, cells, bg_item) <= HARD_BLOCK_MAX_INDEX)
+									 bg_ptr, cells, bg_item) <= HARD_BLOCK_MAX_INDEX)
 				{
 					block_w_offset = TILE_WIDTH;
 					block_x_offset = TILE_WIDTH / 2;
-					x++; // Skip checking the next cell, since we already accounted for it here.
+					x++;
 				}
 
-				// Idea for optimizing algorithm: have collision check function return collision overlap value by
-				// by each axis, then move the collider back by the collision overlap amount instead of using while loops.
-				// Not sure if this is possible without using a while loop but could speed things up.
-
 				other_collider = Collider(world_x + block_x_offset, 
-											world_y, 
-											TILE_WIDTH + block_w_offset, 
-											TILE_HEIGHT);
-		
+										  world_y, 
+										  TILE_WIDTH + block_w_offset,
+										  TILE_HEIGHT);
+
 				if(collider.isCollision(other_collider))
 				{
 					// Resolve X Axis Collision //
@@ -164,14 +156,14 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 						setX(this->x() - rigidbody.normalized_dir.x());
 					}
 				}
-			}
-				
+			}	
+			
 			else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
 			{
 				other_collider = Collider(world_x, 
-											world_y + 3, 
-											TILE_WIDTH, 
-											TILE_HEIGHT / 4);
+										  world_y + 3, 
+										  TILE_WIDTH, 
+										  TILE_HEIGHT / 4);
 
 				if(collider.isCollision(other_collider))
 				{
@@ -182,11 +174,11 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2) - TEST_ENEMY_COLLIDER_OFFSET_Y);
 				}
 			}
 				
-			else if(LEFT_SHALLOW_SLOPE_2_INDEX)
+			else if(tile_index == LEFT_SHALLOW_SLOPE_2_INDEX)
 			{
 				other_collider = Collider(world_x, 
 											world_y + 2, 
@@ -202,11 +194,11 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2) - TEST_ENEMY_COLLIDER_OFFSET_Y);
 				}
 			}
 
-			else if(LEFT_SHALLOW_SLOPE_3_INDEX)
+			else if(tile_index == LEFT_SHALLOW_SLOPE_3_INDEX)
 			{
 				other_collider = Collider(world_x, 
 											world_y + 1, 
@@ -222,7 +214,7 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2) - TEST_ENEMY_COLLIDER_OFFSET_Y);
 				}
 			}
 
@@ -242,16 +234,17 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2) - TEST_ENEMY_COLLIDER_OFFSET_Y);
 				}
 			}
 
 			else if(tile_index == LEFT_STEEP_SLOPE_1_INDEX)
 			{
+				
 				other_collider = Collider(world_x, 
-											world_y + 2, 
-											TILE_WIDTH, 
-											TILE_HEIGHT / 2);
+										  world_y + 2, 
+										  TILE_WIDTH, 
+										  TILE_HEIGHT / 2);
 
 				if(collider.isCollision(other_collider))
 				{
@@ -262,16 +255,16 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2) - TEST_ENEMY_COLLIDER_OFFSET_Y);
 				}
 			}
 
 			else if(tile_index == LEFT_STEEP_SLOPE_2_INDEX)
 			{
 				other_collider = Collider(world_x, 
-											world_y, 
-											TILE_WIDTH, 
-											TILE_HEIGHT);
+										  world_y, 
+										  TILE_WIDTH, 
+										  TILE_HEIGHT);
 
 				if(collider.isCollision(other_collider))
 				{
@@ -282,7 +275,7 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2) - TEST_ENEMY_COLLIDER_OFFSET_Y);
 				}
 			}
 
@@ -302,7 +295,7 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2) - TEST_ENEMY_COLLIDER_OFFSET_Y);
 				}
 			}
 
@@ -322,7 +315,7 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2) - TEST_ENEMY_COLLIDER_OFFSET_Y);
 				}
 			}
 
@@ -342,7 +335,7 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2) - TEST_ENEMY_COLLIDER_OFFSET_Y);
 				}
 			}
 			
@@ -362,7 +355,7 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2) - TEST_ENEMY_COLLIDER_OFFSET_Y);
 				}
 			}
 			
@@ -382,12 +375,12 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2) - TEST_ENEMY_COLLIDER_OFFSET_Y);
 				}
 			}
 			
 			else if(tile_index == RIGHT_STEEP_SLOPE_2_INDEX)
-			{	
+			{
 				other_collider = Collider(world_x, 
 											world_y,
 											TILE_WIDTH, 
@@ -402,7 +395,7 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2));
+					setY(global_height - (TEST_ENEMY_COLLIDER_HEIGHT / 2) - TEST_ENEMY_COLLIDER_OFFSET_Y);
 				}
 			}
 			
@@ -410,13 +403,13 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 			        tile_index <= ONEWAY_BLOCK_MAX_INDEX)
 			{
 				other_collider = Collider(world_x, 
-											world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET,
-											TILE_WIDTH, 
-											ONEWAYBLOCK_COLLIDER_HEIGHT);
+										  world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
+										  TILE_WIDTH, 
+										  ONEWAYBLOCK_COLLIDER_HEIGHT);
 
 				if(rigidbody.normalized_dir.y() >= 0 &&
 					collider_y_axis.p4.y() <= other_collider.p1.y() + TEST_ENEMY_GRAVITY)
-				{					
+				{
 					// Handle Remaining Collision Cases //
 					while(collider_y_axis.isCollision(other_collider))
 					{

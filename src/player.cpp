@@ -462,8 +462,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				// Get current cell index that player resides in:
 				int32 half_level_width_pixels  = bg_ptr.dimensions().width()  / 2;
 				int32 half_level_height_pixels = bg_ptr.dimensions().height() / 2;
-				bn::fixed index_x = (x() + half_level_width_pixels)  / TILE_WIDTH;
-				bn::fixed index_y = (y() + half_level_height_pixels) / TILE_HEIGHT;
+				bn::fixed index_x = (x() + half_level_width_pixels + PLAYER_COLLIDER_OFFSET_X)  / TILE_WIDTH;
+				bn::fixed index_y = (y() + half_level_height_pixels + PLAYER_COLLIDER_OFFSET_Y) / TILE_HEIGHT;
 				bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
 
 				int32 x_offset = PLAYER_PHASE_STEP_MAX_DISTANCE * dir;
@@ -857,9 +857,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				// This is a hack to resolve collision since checks are always made from
 				// left to right. 
 				if(getTileAtBGIndex(check_index_x + x_check_dir, check_index_y, 
-									bg_ptr, cells, bg_item) >= HARD_BLOCK_MIN_INDEX && 
+									 bg_ptr, cells, bg_item) >= HARD_BLOCK_MIN_INDEX && 
 					getTileAtBGIndex(check_index_x + x_check_dir, check_index_y, 
-									bg_ptr, cells, bg_item) <= HARD_BLOCK_MAX_INDEX)
+									 bg_ptr, cells, bg_item) <= HARD_BLOCK_MAX_INDEX)
 				{
 					block_w_offset = TILE_WIDTH;
 					block_x_offset = (TILE_WIDTH / 2) * x_check_dir;
@@ -909,7 +909,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
 				}
 			}
 				
@@ -929,7 +929,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
 				}
 			}
 
@@ -949,7 +949,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
 				}
 			}
 
@@ -969,16 +969,17 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
 				}
 			}
 
 			else if(tile_index == LEFT_STEEP_SLOPE_1_INDEX)
 			{
+				
 				other_collider = Collider(world_x, 
-											world_y + 2, 
-											TILE_WIDTH, 
-											TILE_HEIGHT / 2);
+										  world_y + 2, 
+										  TILE_WIDTH, 
+										  TILE_HEIGHT / 2);
 
 				if(collider.isCollision(other_collider))
 				{
@@ -989,16 +990,16 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
 				}
 			}
 
 			else if(tile_index == LEFT_STEEP_SLOPE_2_INDEX)
 			{
 				other_collider = Collider(world_x, 
-											world_y, 
-											TILE_WIDTH, 
-											TILE_HEIGHT);
+										  world_y, 
+										  TILE_WIDTH, 
+										  TILE_HEIGHT);
 
 				if(collider.isCollision(other_collider))
 				{
@@ -1009,7 +1010,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
 				}
 			}
 
@@ -1029,7 +1030,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
 				}
 			}
 
@@ -1049,7 +1050,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
 				}
 			}
 
@@ -1069,7 +1070,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
 				}
 			}
 			
@@ -1089,7 +1090,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
 				}
 			}
 			
@@ -1109,7 +1110,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
 				}
 			}
 			
@@ -1129,7 +1130,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
 					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2));
+					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
 				}
 			}
 			
@@ -1578,7 +1579,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 				}
 			}
-
+			
 			else if(tile_index == LEFT_STEEP_SLOPE_1_INDEX)
 			{
 				other_collider = Collider(world_x,
@@ -1610,7 +1611,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 				}
 			}
-
+			
 			else if(tile_index == LEFT_STEEP_SLOPE_2_INDEX)
 			{	
 				other_collider = Collider(world_x,
