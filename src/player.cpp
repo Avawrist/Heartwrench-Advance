@@ -199,6 +199,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	bool create_scythe_hb_2  = false;
 	bool create_scythe_hb_3  = false;
 	bool in_phase_step       = false;
+	bool clear_to_jump 		 = true;
 
 	///////////////////
 	// Handle State ///
@@ -465,7 +466,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 		break;
 
 		case STATE_PHASE_STEP:
-
+				
 			// Locate Phase Destination on frame 1 of phase step
 			if(first_frame_phase)
 			{
@@ -538,17 +539,248 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				}
 
 				// Update player position
-				//setPos(phase_collider.x(), phase_collider.y());
 				phase_destination = bn::fixed_point(phase_collider.x(), 
 				                                    phase_collider.y());
 
 			}
-			
+			else
+			{
+				// Get current cell index that player resides in:
+				int32 half_level_width_pixels  = bg_ptr.dimensions().width()  / 2;
+				int32 half_level_height_pixels = bg_ptr.dimensions().height() / 2;
+				bn::fixed index_x = (x() + half_level_width_pixels  + collider_offset_x) / TILE_WIDTH;
+				bn::fixed index_y = (y() + half_level_height_pixels + collider_offset_y) / TILE_HEIGHT;
+				bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
+
+				Collider other_collider;
+
+				for(int32 y = -2; y < 3; y++)
+				{
+					for(int32 x = -2; x < 3; x++)
+					{
+						
+						// 1. Get tile type at index //
+						int32 check_index_x = cell_index.x() + x;
+						int32 check_index_y = cell_index.y() + y;
+
+						// Determine world coords in case we need to make a collider.
+						int32 world_x = ((check_index_x * TILE_WIDTH)  - half_level_width_pixels)  + (TILE_WIDTH / 2);
+						int32 world_y = ((check_index_y * TILE_HEIGHT) - half_level_height_pixels) + (TILE_HEIGHT / 2);
+
+						uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y, 
+															bg_ptr, cells, bg_item);
+
+						// 2. If the tile is collidable make a temporary collider based on type//
+
+						if(tile_index >= HARD_BLOCK_MIN_INDEX && 
+						   tile_index <= HARD_BLOCK_MAX_INDEX)
+						{
+							
+							other_collider = Collider(world_x, 
+														world_y, 
+														TILE_WIDTH,
+														TILE_HEIGHT);
+
+							if(collider.isCollision(other_collider))
+							{clear_to_jump = false;}
+
+						}		
+						
+						else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
+						{
+
+							other_collider = Collider(world_x, 
+														world_y + 3, 
+														TILE_WIDTH, 
+														TILE_HEIGHT / 4);
+
+							if(collider.isCollision(other_collider))
+							{clear_to_jump = false;}
+
+						}
+							
+						else if(tile_index == LEFT_SHALLOW_SLOPE_2_INDEX)
+						{
+							other_collider = Collider(world_x, 
+														world_y + 2, 
+														TILE_WIDTH, 
+														TILE_HEIGHT / 2);
+
+							if(collider.isCollision(other_collider))
+							{clear_to_jump = false;}
+						}
+
+						else if(tile_index == LEFT_SHALLOW_SLOPE_3_INDEX)
+						{
+
+							other_collider = Collider(world_x, 
+														world_y + 1, 
+														TILE_WIDTH, 
+														TILE_HEIGHT - 2);
+
+							if(collider.isCollision(other_collider))
+							{clear_to_jump = false;}
+
+						}
+
+						else if(tile_index == LEFT_SHALLOW_SLOPE_4_INDEX)
+						{
+
+							other_collider = Collider(world_x, 
+														world_y, 
+														TILE_WIDTH, 
+														TILE_HEIGHT);
+
+							if(collider.isCollision(other_collider))
+							{clear_to_jump = false;}
+
+						}
+
+						else if(tile_index == LEFT_STEEP_SLOPE_1_INDEX)
+						{
+							
+							other_collider = Collider(world_x, 
+														world_y + 2, 
+														TILE_WIDTH, 
+														TILE_HEIGHT / 2);
+
+							if(collider.isCollision(other_collider))
+							{clear_to_jump = false;}
+
+						}
+
+						else if(tile_index == LEFT_STEEP_SLOPE_2_INDEX)
+						{
+
+							other_collider = Collider(world_x, 
+														world_y, 
+														TILE_WIDTH, 
+														TILE_HEIGHT);
+
+							if(collider.isCollision(other_collider))
+							{clear_to_jump = false;}
+
+						}
+
+						else if(tile_index == RIGHT_SHALLOW_SLOPE_1_INDEX)
+						{
+
+							other_collider = Collider(world_x, 
+														world_y + 3, 
+														TILE_WIDTH, 
+														TILE_HEIGHT / 4);
+
+							if(collider.isCollision(other_collider))
+							{clear_to_jump = false;}
+
+						}
+
+						else if(tile_index == RIGHT_SHALLOW_SLOPE_2_INDEX)
+						{
+
+							other_collider = Collider(world_x, 
+														world_y + 2, 
+														TILE_WIDTH, 
+														TILE_HEIGHT / 2);
+
+							if(collider.isCollision(other_collider))
+							{clear_to_jump = false;}
+
+						}
+
+						else if(tile_index == RIGHT_SHALLOW_SLOPE_3_INDEX)
+						{
+
+							other_collider = Collider(world_x, 
+														world_y + 1,
+														TILE_WIDTH, 
+														TILE_HEIGHT - 2);
+
+							if(collider.isCollision(other_collider))
+							{clear_to_jump = false;}
+
+						}
+						
+						else if(tile_index == RIGHT_SHALLOW_SLOPE_4_INDEX)
+						{
+
+							other_collider = Collider(world_x, 
+														world_y,
+														TILE_WIDTH, 
+														TILE_HEIGHT);
+
+							if(collider.isCollision(other_collider))
+							{clear_to_jump = false;}
+
+						}
+						
+						else if(tile_index == RIGHT_STEEP_SLOPE_1_INDEX)
+						{
+						
+							other_collider = Collider(world_x, 
+														world_y + 2,
+														TILE_WIDTH, 
+														TILE_HEIGHT / 2);
+
+							if(collider.isCollision(other_collider))
+							{clear_to_jump = false;}
+
+						}
+						
+						else if(tile_index == RIGHT_STEEP_SLOPE_2_INDEX)
+						{
+
+							other_collider = Collider(world_x, 
+														world_y,
+														TILE_WIDTH, 
+														TILE_HEIGHT);
+
+							if(collider.isCollision(other_collider))
+							{clear_to_jump = false;}
+
+						}
+						
+						/*
+						else if(tile_index >= ONEWAY_BLOCK_MIN_INDEX &&
+								tile_index <= ONEWAY_BLOCK_MAX_INDEX)
+						{
+							other_collider = Collider(world_x, 
+														world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
+														TILE_WIDTH, 
+														ONEWAYBLOCK_COLLIDER_HEIGHT);
+
+							if(rigidbody.normalized_dir.y() >= 0 &&
+								collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
+							{
+
+								if(bn::keypad::down_held() && 
+								(state == STATE_AIR_NEUTRAL || state == STATE_GROUNDED_NEUTRAL)) 
+								{
+									rigidbody.addForce(PLAYER_GRAVITY_FORCE);
+								}
+								else
+								{
+									// Handle Remaining Collision Cases //
+									while(collider_y_axis.isCollision(other_collider))
+									{
+										collider_y_axis.setY(collider_y_axis.y() - 1);
+										setY(this->y() - 1);
+									}
+								}
+								
+							}
+						}
+						*/
+
+					}
+				}
+			}
+
 			// Keep moving towards phase destination until reached
 			if(dir == LEFT)
 			{
 				// Early jump breakout
-				if(bn::keypad::a_pressed())
+				if(bn::keypad::a_pressed() && clear_to_jump)
 				{
 					// Jump
 					jump();
@@ -564,10 +796,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					if(x() < phase_destination.x()) {setX(phase_destination.x());}
 				}
 			}
-			else if(dir == RIGHT)
+			else
 			{
 				// Early jump breakout
-				if(bn::keypad::a_pressed())
+				if(bn::keypad::a_pressed() && clear_to_jump)
 				{
 					// Jump
 					jump();

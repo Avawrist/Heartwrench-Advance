@@ -8,11 +8,11 @@
 //======================================================================
 //
 //	player_bn_gfx, 64x320@8, 
-//	+ palette 80 entries, not compressed
+//	+ palette 16 entries, not compressed
 //	+ 320 tiles not compressed
-//	Total size: 160 + 20480 = 20640
+//	Total size: 32 + 20480 = 20512
 //
-//	Time-stamp: 2025-04-14, 17:54:21
+//	Time-stamp: 2025-04-14, 19:58:42
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -24,8 +24,8 @@
 #define player_bn_gfxTilesLen 20480
 extern const bn::tile player_bn_gfxTiles[640];
 
-#define player_bn_gfxPalLen 160
-extern const bn::color player_bn_gfxPal[80];
+#define player_bn_gfxPalLen 32
+extern const bn::color player_bn_gfxPal[16];
 
 #endif // GRIT_PLAYER_BN_GFX_H
 
@@ -35,7 +35,7 @@ namespace bn::sprite_items
 {
     constexpr inline sprite_item player(sprite_shape_size(sprite_shape::SQUARE, sprite_size::HUGE), 
             sprite_tiles_item(span<const tile>(player_bn_gfxTiles, 640), bpp_mode::BPP_8, compression_type::NONE, 5), 
-            sprite_palette_item(span<const color>(player_bn_gfxPal, 80), bpp_mode::BPP_8, compression_type::NONE));
+            sprite_palette_item(span<const color>(player_bn_gfxPal, 16), bpp_mode::BPP_8, compression_type::NONE));
 }
 
 #endif
