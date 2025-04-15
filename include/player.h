@@ -42,13 +42,16 @@
 
 #define PLAYER_BASE_JUMP_FORCE       -6
 #define PLAYER_SECOND_JUMP_FORCE     -4
-#define PLAYER_WALL_JUMP_X_FORCE      8
-#define PLAYER_WALL_JUMP_Y_FORCE     -8
+#define PLAYER_WALL_JUMP_X_FORCE      4
+#define PLAYER_WALL_JUMP_Y_FORCE     -6
+#define PLAYER_P_WALL_JUMP_X_FORCE    8
+#define PLAYER_P_WALL_JUMP_Y_FORCE   -8
 #define PLAYER_JUMP_DECAY             0.1
 #define PLAYER_SECONDARY_JUMP_DECAY   1
 #define PLAYER_X_DRIFT_LOCKOUT_FRAMES 6
 #define PLAYER_MAX_JUMP_INPUT_FRAMES  24
 #define PLAYER_WALL_JUMP_DECAY        0.05
+#define PLAYER_P_WALL_JUMP_DECAY      0.05
 
 #define PLAYER_GRAVITY       	             3
 #define PLAYER_PROLONGED_GRAVITY             1
@@ -63,9 +66,10 @@
 #define PLAYER_SQUISH_FRAMES_REQUIRED 4
 #define PLAYER_MAX_AIR_FRAMES         180
 
-#define PLAYER_PHASE_STEP_MAX_DISTANCE PLAYER_COLLIDER_WIDTH * 5
-#define PLAYER_PHASE_STEP_TOTAL_FRAMES 25
-#define PLAYER_PHASE_FRAME             15
+#define PLAYER_PHASE_STEP_MAX_DISTANCE PLAYER_COLLIDER_WIDTH * 6
+#define PLAYER_PHASE_STEP_SPEED        3
+#define PLAYER_PHASE_STEP_EXIT_X_FORCE 8
+#define PLAYER_PHASE_STEP_EXIT_DECAY   0.05
 
 #define PLAYER_SCYTHE_1_TOTAL_FRAMES      30
 #define PLAYER_SCYTHE_2_TOTAL_FRAMES      30
@@ -124,16 +128,21 @@
 #define PLAYER_X_LEFT_DECAY_FORCE    Force(bn::fixed_point_t<12>(-x_speed, 0), X_SPEED_DECAY_RATE)
 #define PLAYER_X_RIGHT_DECAY_FORCE   Force(bn::fixed_point_t<12> (x_speed, 0), X_SPEED_DECAY_RATE)
 
-#define PLAYER_JUMP_FORCE            Force(bn::fixed_point_t<12>(0, jump_force), PLAYER_JUMP_DECAY)
-#define PLAYER_SECONDARY_JUMP_FORCE  Force(bn::fixed_point_t<12>(0, secondary_jump_force), PLAYER_SECONDARY_JUMP_DECAY)
-#define PLAYER_WALL_JUMP_RIGHT_FORCE Force(bn::fixed_point_t<12>( wall_jump_force.x(), wall_jump_force.y()), PLAYER_WALL_JUMP_DECAY)
-#define PLAYER_WALL_JUMP_LEFT_FORCE  Force(bn::fixed_point_t<12>(-wall_jump_force.x(), wall_jump_force.y()), PLAYER_WALL_JUMP_DECAY)
+#define PLAYER_JUMP_FORCE              Force(bn::fixed_point_t<12>(0, jump_force), PLAYER_JUMP_DECAY)
+#define PLAYER_SECONDARY_JUMP_FORCE    Force(bn::fixed_point_t<12>(0, secondary_jump_force), PLAYER_SECONDARY_JUMP_DECAY)
+#define PLAYER_WALL_JUMP_RIGHT_FORCE   Force(bn::fixed_point_t<12>( wall_jump_force.x(), wall_jump_force.y()), PLAYER_WALL_JUMP_DECAY)
+#define PLAYER_WALL_JUMP_LEFT_FORCE    Force(bn::fixed_point_t<12>(-wall_jump_force.x(), wall_jump_force.y()), PLAYER_WALL_JUMP_DECAY)
+#define PLAYER_P_WALL_JUMP_RIGHT_FORCE Force(bn::fixed_point_t<12>( p_wall_jump_force.x(), p_wall_jump_force.y()), PLAYER_P_WALL_JUMP_DECAY)
+#define PLAYER_P_WALL_JUMP_LEFT_FORCE  Force(bn::fixed_point_t<12>(-p_wall_jump_force.x(), p_wall_jump_force.y()), PLAYER_P_WALL_JUMP_DECAY)
 
 #define PLAYER_GRAVITY_FORCE           Force(bn::fixed_point_t<12>(0, gravity), 			     PLAYER_GRAVITY_DECAY)
 #define PLAYER_PROLONGED_GRAVITY_FORCE Force(bn::fixed_point_t<12>(0, PLAYER_PROLONGED_GRAVITY), PLAYER_GRAVITY_DECAY)
 #define PLAYER_FAST_GRAVITY_FORCE      Force(bn::fixed_point_t<12>(0, PLAYER_FAST_FALL_GRAVITY), PLAYER_GRAVITY_DECAY)
 #define PLAYER_WALL_GRAVITY_FORCE      Force(bn::fixed_point_t<12>(0, wall_ride_gravity),        PLAYER_GRAVITY_DECAY)
 #define PLAYER_SCYTHE_GRAVITY_FORCE    Force(bn::fixed_point_t<12>(0, PLAYER_SCYTHE_GRAVITY),    PLAYER_GRAVITY_DECAY)
+
+#define PLAYER_PHASE_STEP_EXIT_FORCE_LEFT  Force(bn::fixed_point_t<12>(-PLAYER_PHASE_STEP_EXIT_X_FORCE, 0), PLAYER_PHASE_STEP_EXIT_DECAY)
+#define PLAYER_PHASE_STEP_EXIT_FORCE_RIGHT Force(bn::fixed_point_t<12>(PLAYER_PHASE_STEP_EXIT_X_FORCE,  0), PLAYER_PHASE_STEP_EXIT_DECAY)
 
 enum PlayerState {
 
@@ -157,8 +166,10 @@ struct Player : GameObject {
 	bn::fixed       jump_force;
 	bn::fixed       secondary_jump_force;
 	bn::fixed_point wall_jump_force;
+	bn::fixed_point p_wall_jump_force;
 	bn::fixed       gravity;
 	bn::fixed       wall_ride_gravity;
+	bn::fixed_point phase_destination;
 
 	int32 remaining_jump_input_frames;
 	int32 remaining_x_drift_lockout_frames;
@@ -178,6 +189,7 @@ struct Player : GameObject {
 	bool right_wj_eligible;
 	bool scythe_2_buffered;
 	bool scythe_3_buffered;
+	bool first_frame_phase;
 	bool kill_player;
 
 	Collider test_collider;

@@ -12,10 +12,16 @@ Flood/plague/disaster as devices of the gods to maintain control over humans
 
 = Platforming =
 
-
 = Enemies/Combat =
 -Basic RPS with Dash/Slash/Jump
 -Build on RPS difficulty with enemy and terrain based mixups
+
+-Enemy types?
+-Enemies that are exclusively combat
+-Enemies that are platforming mechanics while alive
+-Enemies that create a platforming mechanic when killed
+-Cinematic sequence enemies
+-Bosses
 
 = Progression =
 - Each level contains a set amount of currency.
@@ -23,5 +29,6 @@ Flood/plague/disaster as devices of the gods to maintain control over humans
 - Player can play faster and skip currency, but runs a higher risk of losing progress.
 - Exploration (overworld and in level) pays for checkpoints via currency rewards.
 - Progress is lost on death. Currency is permanent and not lost on death.
+- The more currency held, the higher damage the player does?
 
 === Overworld Mechanics ===

@@ -17,7 +17,7 @@ Player::Player()
     sprite_ptr  = bn::sprite_items::player.create_sprite(0, 0);
 	sprite_ptr->set_z_order(PLAYER_Z_ORDER);
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								  								  2,
+								  								  1,
 								  								  bn::sprite_items::player.tiles_item(),
 								  								  0,
 								  								  0);
@@ -28,8 +28,8 @@ Player::Player()
 	test_collider       = collider;
 	test_collider_right = collider;
 	test_collider_left  = collider;
-	collider_offset_x = PLAYER_COLLIDER_OFFSET_X;
-	collider_offset_y = PLAYER_COLLIDER_OFFSET_Y;
+	collider_offset_x   = PLAYER_COLLIDER_OFFSET_X;
+	collider_offset_y   = PLAYER_COLLIDER_OFFSET_Y;
     
 	state             	 = STATE_AIR_NEUTRAL;
     x_speed        	  	 = PLAYER_MIN_X_SPEED;
@@ -37,9 +37,11 @@ Player::Player()
 	secondary_jump_force = PLAYER_SECOND_JUMP_FORCE;
     wall_jump_force   	 = bn::fixed_point(PLAYER_WALL_JUMP_X_FORCE,
 										   PLAYER_WALL_JUMP_Y_FORCE);
-
+	p_wall_jump_force    = bn::fixed_point(PLAYER_P_WALL_JUMP_X_FORCE,
+										   PLAYER_P_WALL_JUMP_Y_FORCE);
     gravity           	 = PLAYER_GRAVITY;
 	wall_ride_gravity 	 = PLAYER_WALL_RIDE_GRAVITY;
+	phase_destination    = bn::fixed_point(0, 0);
 	
 	remaining_jump_input_frames      = 0;
 	remaining_x_drift_lockout_frames = 0;
@@ -58,6 +60,7 @@ Player::Player()
 	right_wj_eligible       = false;
 	scythe_2_buffered       = false;
 	scythe_3_buffered       = false;
+	first_frame_phase       = false;
 	kill_player             = false;
 	is_dead                 = false;
 
@@ -76,9 +79,12 @@ Player::Player(const Player& other) : GameObject(other)
     jump_force           = other.jump_force;
 	secondary_jump_force = other.secondary_jump_force;
     wall_jump_force   	 = other.wall_jump_force;
+	p_wall_jump_force    = other.p_wall_jump_force;
 
     gravity           	 = other.gravity;
 	wall_ride_gravity 	 = other.wall_ride_gravity;
+
+	phase_destination    = other.phase_destination;
 	
 	remaining_jump_input_frames      = other.remaining_jump_input_frames;
 	remaining_x_drift_lockout_frames = other.remaining_x_drift_lockout_frames;
@@ -97,6 +103,7 @@ Player::Player(const Player& other) : GameObject(other)
 	right_wj_eligible       = other.right_wj_eligible;
 	scythe_2_buffered       = other.scythe_2_buffered;
 	scythe_3_buffered       = other.scythe_3_buffered;
+	first_frame_phase       = other.first_frame_phase;
 	kill_player             = other.kill_player;
 	is_dead                 = other.is_dead;
 
@@ -130,9 +137,12 @@ Player& Player::operator =(const Player& other)
     jump_force           = other.jump_force;
 	secondary_jump_force = other.secondary_jump_force;
     wall_jump_force   	 = other.wall_jump_force;
+	p_wall_jump_force    = other.p_wall_jump_force;
 
     gravity           	 = other.gravity;
 	wall_ride_gravity 	 = other.wall_ride_gravity;
+
+	phase_destination    = other.phase_destination;
 	
 	remaining_jump_input_frames      = other.remaining_jump_input_frames;
 	remaining_x_drift_lockout_frames = other.remaining_x_drift_lockout_frames;
@@ -151,6 +161,7 @@ Player& Player::operator =(const Player& other)
 	right_wj_eligible       = other.right_wj_eligible;
 	scythe_2_buffered       = other.scythe_2_buffered;
 	scythe_3_buffered       = other.scythe_3_buffered;
+	first_frame_phase       = other.first_frame_phase;
 	kill_player             = other.kill_player;
 	is_dead                 = other.is_dead;
 
@@ -232,16 +243,19 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			else if(bn::keypad::right_held()) 
 			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE); dir = RIGHT;}
 
-			// Jump
-			if(bn::keypad::a_pressed()) {jump();}
-
-			// Phase Step
-			//if(bn::keypad::r_pressed()) 
-			//{in_phase_step = true;}
-
 			// Scythe 1
 			if(bn::keypad::b_pressed())
 			{in_scythe_1 = true;}
+
+			// Jump
+			else if(bn::keypad::a_pressed()) {jump();}
+
+			// Phase Step
+			if(bn::keypad::r_pressed()) 
+			{
+				first_frame_phase  = true;
+				in_phase_step      = true;
+			}
 			
 			// Add Gravity if Grounded on OWP
 			if(grounded_owp_detected) {rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
@@ -295,7 +309,11 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			{
 				if(right_wj_eligible)
 				{
-					rigidbody.addForce(PLAYER_WALL_JUMP_LEFT_FORCE);
+					if(bn::keypad::r_held())
+					{rigidbody.addForce(PLAYER_P_WALL_JUMP_LEFT_FORCE);}
+					else
+					{rigidbody.addForce(PLAYER_WALL_JUMP_LEFT_FORCE);}
+					
 					sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 					sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
 					remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
@@ -303,7 +321,11 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				}
 				else if(left_wj_eligible)
 				{
-					rigidbody.addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);
+					if(bn::keypad::r_held())
+					{rigidbody.addForce(PLAYER_P_WALL_JUMP_RIGHT_FORCE);}
+					else
+					{rigidbody.addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);}
+					
 					sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 					sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
 					remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
@@ -321,10 +343,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			else if(bn::keypad::a_released()) 
 			{remaining_jump_input_frames = 0;}
-
-			// Phase Step
-			//if(bn::keypad::r_pressed()) 
-			//{in_phase_step = true;}
 
 			// Add Gravity //
 			if(!remaining_x_drift_lockout_frames)
@@ -360,9 +378,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Player Wall Slide Right State //
 			///////////////////////////////////
 
-			// Update Dir
-			//dir = LEFT;
-
 			// Simulate friction/momentum
 			if(bn::keypad::left_held())  
 			{
@@ -377,7 +392,11 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Wall Jump
 			if(bn::keypad::a_pressed())
 			{
-				rigidbody.addForce(PLAYER_WALL_JUMP_LEFT_FORCE);
+				if(bn::keypad::r_held())
+				{rigidbody.addForce(PLAYER_P_WALL_JUMP_LEFT_FORCE);}
+				else
+				{rigidbody.addForce(PLAYER_WALL_JUMP_LEFT_FORCE);}
+
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
 				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
@@ -405,9 +424,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Player Wall Slide Left State //
 			//////////////////////////////////
 
-			// Update Dir
-			//dir = RIGHT;
-
 			// Simulate friction/momentum
 			if(bn::keypad::right_held())  
 			{
@@ -422,7 +438,11 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Wall Jump
 			if(bn::keypad::a_pressed())
 			{
-				rigidbody.addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);
+				if(bn::keypad::r_held())
+				{rigidbody.addForce(PLAYER_P_WALL_JUMP_RIGHT_FORCE);}
+				else
+				{rigidbody.addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);}
+
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
 				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
@@ -446,15 +466,18 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 		case STATE_PHASE_STEP:
 
-			// Increment Frame Counter
-			current_phase_step_frame++;
-			current_phase_step_frame = clamp(0,
-											 PLAYER_PHASE_STEP_TOTAL_FRAMES, 
-											 current_phase_step_frame);
-
-			// Phase Player
-			if(current_phase_step_frame == PLAYER_PHASE_FRAME)
+			// Locate Phase Destination on frame 1 of phase step
+			if(first_frame_phase)
 			{
+
+				first_frame_phase = false;
+
+				animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+								  								  			  1,
+								  								  			  bn::sprite_items::player.tiles_item(),
+								  								  			  4,
+								  								  			  4);
+
 				// Copy the player's collider at the full Phase Step
 				// distance, and increment it towards the player
 				// until there are no tile collisions. 
@@ -462,16 +485,16 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				// Get current cell index that player resides in:
 				int32 half_level_width_pixels  = bg_ptr.dimensions().width()  / 2;
 				int32 half_level_height_pixels = bg_ptr.dimensions().height() / 2;
-				bn::fixed index_x = (x() + half_level_width_pixels + PLAYER_COLLIDER_OFFSET_X)  / TILE_WIDTH;
-				bn::fixed index_y = (y() + half_level_height_pixels + PLAYER_COLLIDER_OFFSET_Y) / TILE_HEIGHT;
+				bn::fixed index_x = (x() + half_level_width_pixels  + collider_offset_x) / TILE_WIDTH;
+				bn::fixed index_y = (y() + half_level_height_pixels + collider_offset_y) / TILE_HEIGHT;
 				bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
 
 				int32 x_offset = PLAYER_PHASE_STEP_MAX_DISTANCE * dir;
 				int32 max_x    = (x_offset / TILE_WIDTH) + (dir * 2);
 
 				Collider other_collider;
-				Collider phase_collider = Collider(collider.x() + x_offset,
-												   collider.y(),
+				Collider phase_collider = Collider(collider.x() - collider_offset_x + x_offset,
+												   collider.y() - collider_offset_y,
 												   collider.width,
 												   collider.height);
 
@@ -498,14 +521,13 @@ void Player::update(const RoomBounds& 								  room_bounds,
 															 bg_ptr, cells, bg_item);
 
 						// 2. If the tile is collidable, check for collision
-
 						if(tile_index >= HARD_BLOCK_MIN_INDEX &&
 						   tile_index <= RIGHT_STEEP_SLOPE_2_INDEX)
 						{
 							other_collider = Collider(world_x, 
-														world_y, 
-														TILE_WIDTH, 
-														TILE_HEIGHT);
+													  world_y, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT);
 
 							while(phase_collider.isCollision(other_collider))
 							{phase_collider.setX(phase_collider.x() + (dir * -1));}
@@ -514,16 +536,52 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				}
 
 				// Update player position
-				setPos(phase_collider.x(), phase_collider.y());
+				//setPos(phase_collider.x(), phase_collider.y());
+				phase_destination = bn::fixed_point(phase_collider.x(), 
+				                                    phase_collider.y());
 
-			} 
+			}
+			
+			// Keep moving towards phase destination until reached
+			if(dir == LEFT)
+			{
+				// Early jump breakout
+				if(bn::keypad::a_pressed())
+				{
+					// Jump
+					jump();
 
-			// Keep the player in phase step state until frames are up
-			if(current_phase_step_frame < PLAYER_PHASE_STEP_TOTAL_FRAMES)
-			{in_phase_step = true;}
-			else
-			{current_phase_step_frame = 0;}
+					// Add force
+					rigidbody.addForce(PLAYER_PHASE_STEP_EXIT_FORCE_LEFT);
+				}	
+				// Typical phase towards destination
+				else if(x() > phase_destination.x())
+				{
+					in_phase_step = true;
+					setX(x() - PLAYER_PHASE_STEP_SPEED);
+					if(x() < phase_destination.x()) {setX(phase_destination.x());}
+				}
+			}
+			else if(dir == RIGHT)
+			{
+				// Early jump breakout
+				if(bn::keypad::a_pressed())
+				{
+					// Jump
+					jump();
 
+					// Add force
+					rigidbody.addForce(PLAYER_PHASE_STEP_EXIT_FORCE_RIGHT);
+				}
+				// Typical phase towards destination
+				else if(x() < phase_destination.x())
+				{
+					in_phase_step = true;
+					setX(x() + PLAYER_PHASE_STEP_SPEED);
+					if(x() > phase_destination.x()) {setX(phase_destination.x());}
+				}
+			}
+			
 		break;
 
 		case STATE_SCYTHE_1:
@@ -686,129 +744,132 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	// Resolve GameObject Collision //
 	//////////////////////////////////
 
-	for(int32 i = 0; i < game_objects.size(); i++)
-    {
-		other_collider = game_objects.at(i)->collider;
-		
-		bn::fixed col_x_offset;
-		bn::fixed col_y_offset;
-
-		switch(game_objects.at(i)->object_type)
+	if(state != STATE_PHASE_STEP)
+	{
+		for(int32 i = 0; i < game_objects.size(); i++)
 		{
-			case DEVIL_PLATFORM:
-				
-				if(collider.isCollision(other_collider))
-				{
-					// Handle Default Collision Cases //
-					while(collider_x_axis.isCollision(other_collider))
+			other_collider = game_objects.at(i)->collider;
+			
+			bn::fixed col_x_offset;
+			bn::fixed col_y_offset;
+
+			switch(game_objects.at(i)->object_type)
+			{
+				case DEVIL_PLATFORM:
+					
+					if(collider.isCollision(other_collider))
 					{
-						if(rigidbody.normalized_dir.x() == 0) {kill_player = true; break;}
-						collider_x_axis.setX(collider_x_axis.x() - rigidbody.normalized_dir.x());
-						setX(this->x() - rigidbody.normalized_dir.x());
-					}
-
-					while(collider_y_axis.isCollision(other_collider))
-					{
-						if(rigidbody.normalized_dir.y() == 0) {kill_player = true; break;}
-						collider_y_axis.setY(collider_y_axis.y() - rigidbody.normalized_dir.y());
-						setY(this->y() - rigidbody.normalized_dir.y());
-					}
-
-					// If there is still collision somehow, must be corner case //
-					while(collider.isCollision(other_collider))
-					{
-						if(rigidbody.normalized_dir.x() == 0) {kill_player = true; break;}
-						// We always resolve diagonal corner collisions with a horizontal shift. 
-						setX(this->x() - rigidbody.normalized_dir.x());
-					}	
-				}
-
-			break;
-
-			case ANGEL_PLATFORM:
-
-				if(collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
-				{
-
-					// Handle Corner Case //
-					if(!collider_x_axis.isCollision(other_collider) &&
-					   !collider_y_axis.isCollision(other_collider))
-					{
-						while(collider.isCollision(other_collider))
-						{setY(this->y() - 1);}
-					}
-				
-					// Handle Remaining Collision Cases //
-					else
-					{
+						// Handle Default Collision Cases //
+						while(collider_x_axis.isCollision(other_collider))
+						{
+							if(rigidbody.normalized_dir.x() == 0) {kill_player = true; break;}
+							collider_x_axis.setX(collider_x_axis.x() - rigidbody.normalized_dir.x());
+							setX(this->x() - rigidbody.normalized_dir.x());
+						}
 
 						while(collider_y_axis.isCollision(other_collider))
-						{collider_y_axis.setY(collider_y_axis.y() - 1);
-							setY(this->y() - 1);}
-					}
-				}
-				
-			break;
+						{
+							if(rigidbody.normalized_dir.y() == 0) {kill_player = true; break;}
+							collider_y_axis.setY(collider_y_axis.y() - rigidbody.normalized_dir.y());
+							setY(this->y() - rigidbody.normalized_dir.y());
+						}
 
-			case SCYTHE_PLATFORM:
-				
-				if(collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
-				{
-					if(bn::keypad::down_held())       {break;}
-					else if(v_collision_grace_frames) {break;}
-
-					// Handle Corner Case //
-					if(!collider_x_axis.isCollision(other_collider) &&
-					   !collider_y_axis.isCollision(other_collider))
-					{
+						// If there is still collision somehow, must be corner case //
 						while(collider.isCollision(other_collider))
 						{
-							setY(this->y() - 1);
-						}
-					} 
-				
-					// Handle Remaining Collision Cases //
-					else
+							if(rigidbody.normalized_dir.x() == 0) {kill_player = true; break;}
+							// We always resolve diagonal corner collisions with a horizontal shift. 
+							setX(this->x() - rigidbody.normalized_dir.x());
+						}	
+					}
+
+				break;
+
+				case ANGEL_PLATFORM:
+
+					if(collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
 					{
-						while(collider_y_axis.isCollision(other_collider))
+
+						// Handle Corner Case //
+						if(!collider_x_axis.isCollision(other_collider) &&
+						!collider_y_axis.isCollision(other_collider))
 						{
-							collider_y_axis.setY(collider_y_axis.y() - 1);
-							setY(this->y() - 1);
+							while(collider.isCollision(other_collider))
+							{setY(this->y() - 1);}
+						}
+					
+						// Handle Remaining Collision Cases //
+						else
+						{
+
+							while(collider_y_axis.isCollision(other_collider))
+							{collider_y_axis.setY(collider_y_axis.y() - 1);
+								setY(this->y() - 1);}
 						}
 					}
-				}
-				
-			break;
+					
+				break;
 
-			case TILE_PASSAGE:
-				
-				if(((TilePassage*)(game_objects.at(i)))->state == TILE_PASSAGE_STATE_SHUT &&
-				   collider.isCollision(other_collider))
-				{
-					// Resolve X Axis Collision //
-					col_x_offset = collider_x_axis.getCollisionXOffset(other_collider, rigidbody.normalized_dir.x());
-					collider_x_axis.setX(collider_x_axis.x() + col_x_offset);
-					setX(this->x() + col_x_offset);
-
-					// Resolve Y Axis Collision //
-					col_y_offset = collider_y_axis.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y());
-					collider_y_axis.setY(collider_y_axis.y() + col_y_offset);
-					setY(this->y() + col_y_offset);
-					v_collision_grace_frames = PLAYER_V_COLLISION_MAX_GRACE_FRAMES * col_y_offset.integer();
-
-					// If there is still collision somehow, must be corner case //
-					while(collider.isCollision(other_collider))
+				case SCYTHE_PLATFORM:
+					
+					if(collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
 					{
-						if(rigidbody.normalized_dir.x() == 0) {kill_player = true; break;}
-						// We always resolve diagonal corner collisions with a horizontal shift. 
-						setX(this->x() - rigidbody.normalized_dir.x());
+						if(bn::keypad::down_held())       {break;}
+						else if(v_collision_grace_frames) {break;}
+
+						// Handle Corner Case //
+						if(!collider_x_axis.isCollision(other_collider) &&
+						!collider_y_axis.isCollision(other_collider))
+						{
+							while(collider.isCollision(other_collider))
+							{
+								setY(this->y() - 1);
+							}
+						} 
+					
+						// Handle Remaining Collision Cases //
+						else
+						{
+							while(collider_y_axis.isCollision(other_collider))
+							{
+								collider_y_axis.setY(collider_y_axis.y() - 1);
+								setY(this->y() - 1);
+							}
+						}
 					}
-				}
+					
+				break;
 
-			break;
+				case TILE_PASSAGE:
+					
+					if(((TilePassage*)(game_objects.at(i)))->state == TILE_PASSAGE_STATE_SHUT &&
+					collider.isCollision(other_collider))
+					{
+						// Resolve X Axis Collision //
+						col_x_offset = collider_x_axis.getCollisionXOffset(other_collider, rigidbody.normalized_dir.x());
+						collider_x_axis.setX(collider_x_axis.x() + col_x_offset);
+						setX(this->x() + col_x_offset);
 
-			default:
-			break;
+						// Resolve Y Axis Collision //
+						col_y_offset = collider_y_axis.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y());
+						collider_y_axis.setY(collider_y_axis.y() + col_y_offset);
+						setY(this->y() + col_y_offset);
+						v_collision_grace_frames = PLAYER_V_COLLISION_MAX_GRACE_FRAMES * col_y_offset.integer();
+
+						// If there is still collision somehow, must be corner case //
+						while(collider.isCollision(other_collider))
+						{
+							if(rigidbody.normalized_dir.x() == 0) {kill_player = true; break;}
+							// We always resolve diagonal corner collisions with a horizontal shift. 
+							setX(this->x() - rigidbody.normalized_dir.x());
+						}
+					}
+
+				break;
+
+				default:
+				break;
+			}
 		}
 	}
 
@@ -816,354 +877,357 @@ void Player::update(const RoomBounds& 								  room_bounds,
     // Resolve Tile Collision //
     ////////////////////////////
 	
-	// Check cells for collision in the direction the player is facing
-	int32 x_check_dir; 
-	if(dir == LEFT) {x_check_dir = -1;}
-	else {x_check_dir = 1;}
-
-	for(int32 y = -2; y < 3; y++)
+	if(state != STATE_PHASE_STEP)
 	{
-		for(int32 x = 1 * (x_check_dir * -1); x != 2 * x_check_dir; x += x_check_dir)
+		// Check cells for collision in the direction the player is facing
+		int32 x_check_dir; 
+		if(dir == LEFT) {x_check_dir = -1;}
+		else {x_check_dir = 1;}
+
+		for(int32 y = -2; y < 3; y++)
 		{
-			
-			// 1. Get tile type at index //
-			int32 check_index_x = cell_index.x() + x;
-			int32 check_index_y = cell_index.y() + y;
-
-			// Determine world coords in case we need to make a collider.
-			int32 world_x = ((check_index_x * TILE_WIDTH)  - half_level_width_pixels)  + (TILE_WIDTH / 2);
-			int32 world_y = ((check_index_y * TILE_HEIGHT) - half_level_height_pixels) + (TILE_HEIGHT / 2);
-
-			uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y, 
-			                                     bg_ptr, cells, bg_item);
-
-			bn::fixed col_x_offset;
-			bn::fixed col_y_offset;
-
-			int32 index;
-			int32 local_height;
-			int32 global_height;
-
-			// 2. If the tile is collidable make a temporary collider based on type//
-
-			if(tile_index >= HARD_BLOCK_MIN_INDEX && 
-			   tile_index <= HARD_BLOCK_MAX_INDEX)
+			for(int32 x = 1 * (x_check_dir * -1); x != 2 * x_check_dir; x += x_check_dir)
 			{
-				// Prepare offsets in case they are needed for Block collision.
-				int32 block_w_offset = 0;
-				int32 block_x_offset = 0;
-
-				// If the neighbor to the right is also a BLOCK, smooth over the corner.
-				// This is a hack to resolve collision since checks are always made from
-				// left to right. 
-				if(getTileAtBGIndex(check_index_x + x_check_dir, check_index_y, 
-									 bg_ptr, cells, bg_item) >= HARD_BLOCK_MIN_INDEX && 
-					getTileAtBGIndex(check_index_x + x_check_dir, check_index_y, 
-									 bg_ptr, cells, bg_item) <= HARD_BLOCK_MAX_INDEX)
-				{
-					block_w_offset = TILE_WIDTH;
-					block_x_offset = (TILE_WIDTH / 2) * x_check_dir;
-				}
-
-				other_collider = Collider(world_x + block_x_offset, 
-										  world_y, 
-										  TILE_WIDTH + block_w_offset,
-										  TILE_HEIGHT);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Resolve X Axis Collision //
-					col_x_offset = collider_x_axis.getCollisionXOffset(other_collider, rigidbody.normalized_dir.x());
-					collider_x_axis.setX(collider_x_axis.x() + col_x_offset);
-					setX(this->x() + col_x_offset);
-
-					// Resolve Y Axis Collision //
-					col_y_offset = collider_y_axis.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y());
-					collider_y_axis.setY(collider_y_axis.y() + col_y_offset);
-					setY(this->y() + col_y_offset);
-					v_collision_grace_frames = PLAYER_V_COLLISION_MAX_GRACE_FRAMES * col_y_offset.integer();
-
-					// If there is still collision somehow, must be corner case //
-					while(collider.isCollision(other_collider))
-					{
-						if(rigidbody.normalized_dir.x() == 0) {kill_player = true; break;}
-						// We always resolve diagonal corner collisions with a horizontal shift. 
-						setX(this->x() - rigidbody.normalized_dir.x());
-					}
-				}
-			}		
-			
-			else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
-			{
-				other_collider = Collider(world_x, 
-										  world_y + 3, 
-										  TILE_WIDTH, 
-										  TILE_HEIGHT / 4);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = left_shallow_slope_1_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
-				}
-			}
 				
-			else if(tile_index == LEFT_SHALLOW_SLOPE_2_INDEX)
-			{
-				other_collider = Collider(world_x, 
-											world_y + 2, 
-											TILE_WIDTH, 
-											TILE_HEIGHT / 2);
+				// 1. Get tile type at index //
+				int32 check_index_x = cell_index.x() + x;
+				int32 check_index_y = cell_index.y() + y;
 
-				if(collider.isCollision(other_collider))
+				// Determine world coords in case we need to make a collider.
+				int32 world_x = ((check_index_x * TILE_WIDTH)  - half_level_width_pixels)  + (TILE_WIDTH / 2);
+				int32 world_y = ((check_index_y * TILE_HEIGHT) - half_level_height_pixels) + (TILE_HEIGHT / 2);
+
+				uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y, 
+													bg_ptr, cells, bg_item);
+
+				bn::fixed col_x_offset;
+				bn::fixed col_y_offset;
+
+				int32 index;
+				int32 local_height;
+				int32 global_height;
+
+				// 2. If the tile is collidable make a temporary collider based on type//
+
+				if(tile_index >= HARD_BLOCK_MIN_INDEX && 
+				tile_index <= HARD_BLOCK_MAX_INDEX)
 				{
-					// Derive slope height at player position:
-					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = left_shallow_slope_2_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+					// Prepare offsets in case they are needed for Block collision.
+					int32 block_w_offset = 0;
+					int32 block_x_offset = 0;
 
-					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
-				}
-			}
+					// If the neighbor to the right is also a BLOCK, smooth over the corner.
+					// This is a hack to resolve collision since checks are always made from
+					// left to right. 
+					if(getTileAtBGIndex(check_index_x + x_check_dir, check_index_y, 
+										bg_ptr, cells, bg_item) >= HARD_BLOCK_MIN_INDEX && 
+						getTileAtBGIndex(check_index_x + x_check_dir, check_index_y, 
+										bg_ptr, cells, bg_item) <= HARD_BLOCK_MAX_INDEX)
+					{
+						block_w_offset = TILE_WIDTH;
+						block_x_offset = (TILE_WIDTH / 2) * x_check_dir;
+					}
 
-			else if(tile_index == LEFT_SHALLOW_SLOPE_3_INDEX)
-			{
-				other_collider = Collider(world_x, 
-											world_y + 1, 
-											TILE_WIDTH, 
-											TILE_HEIGHT - 2);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = left_shallow_slope_3_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
-				}
-			}
-
-			else if(tile_index == LEFT_SHALLOW_SLOPE_4_INDEX)
-			{
-				other_collider = Collider(world_x, 
+					other_collider = Collider(world_x + block_x_offset, 
 											world_y, 
-											TILE_WIDTH, 
+											TILE_WIDTH + block_w_offset,
 											TILE_HEIGHT);
 
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = left_shallow_slope_4_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+					if(collider.isCollision(other_collider))
+					{
+						// Resolve X Axis Collision //
+						col_x_offset = collider_x_axis.getCollisionXOffset(other_collider, rigidbody.normalized_dir.x());
+						collider_x_axis.setX(collider_x_axis.x() + col_x_offset);
+						setX(this->x() + col_x_offset);
 
-					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
-				}
-			}
+						// Resolve Y Axis Collision //
+						col_y_offset = collider_y_axis.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y());
+						collider_y_axis.setY(collider_y_axis.y() + col_y_offset);
+						setY(this->y() + col_y_offset);
+						v_collision_grace_frames = PLAYER_V_COLLISION_MAX_GRACE_FRAMES * col_y_offset.integer();
 
-			else if(tile_index == LEFT_STEEP_SLOPE_1_INDEX)
-			{
+						// If there is still collision somehow, must be corner case //
+						while(collider.isCollision(other_collider))
+						{
+							if(rigidbody.normalized_dir.x() == 0) {kill_player = true; break;}
+							// We always resolve diagonal corner collisions with a horizontal shift. 
+							setX(this->x() - rigidbody.normalized_dir.x());
+						}
+					}
+				}		
 				
-				other_collider = Collider(world_x, 
-										  world_y + 2, 
-										  TILE_WIDTH, 
-										  TILE_HEIGHT / 2);
-
-				if(collider.isCollision(other_collider))
+				else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
 				{
-					// Derive slope height at player position:
-					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = left_steep_slope_1_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
-				}
-			}
-
-			else if(tile_index == LEFT_STEEP_SLOPE_2_INDEX)
-			{
-				other_collider = Collider(world_x, 
-										  world_y, 
-										  TILE_WIDTH, 
-										  TILE_HEIGHT);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = left_steep_slope_2_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
-				}
-			}
-
-			else if(tile_index == RIGHT_SHALLOW_SLOPE_1_INDEX)
-			{
-				other_collider = Collider(world_x, 
+					other_collider = Collider(world_x, 
 											world_y + 3, 
 											TILE_WIDTH, 
 											TILE_HEIGHT / 4);
 
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = (collider.p1.x() - other_collider.p1.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = right_shallow_slope_1_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+					if(collider.isCollision(other_collider))
+					{
+						// Derive slope height at player position:
+						index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+						index = clamp(0, 7, index);
+						local_height  = left_shallow_slope_1_arr[index];
+						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
-					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
+					}
 				}
-			}
+					
+				else if(tile_index == LEFT_SHALLOW_SLOPE_2_INDEX)
+				{
+					other_collider = Collider(world_x, 
+												world_y + 2, 
+												TILE_WIDTH, 
+												TILE_HEIGHT / 2);
 
-			else if(tile_index == RIGHT_SHALLOW_SLOPE_2_INDEX)
-			{
-				other_collider = Collider(world_x, 
+					if(collider.isCollision(other_collider))
+					{
+						// Derive slope height at player position:
+						index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+						index = clamp(0, 7, index);
+						local_height  = left_shallow_slope_2_arr[index];
+						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
+					}
+				}
+
+				else if(tile_index == LEFT_SHALLOW_SLOPE_3_INDEX)
+				{
+					other_collider = Collider(world_x, 
+												world_y + 1, 
+												TILE_WIDTH, 
+												TILE_HEIGHT - 2);
+
+					if(collider.isCollision(other_collider))
+					{
+						// Derive slope height at player position:
+						index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+						index = clamp(0, 7, index);
+						local_height  = left_shallow_slope_3_arr[index];
+						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
+					}
+				}
+
+				else if(tile_index == LEFT_SHALLOW_SLOPE_4_INDEX)
+				{
+					other_collider = Collider(world_x, 
+												world_y, 
+												TILE_WIDTH, 
+												TILE_HEIGHT);
+
+					if(collider.isCollision(other_collider))
+					{
+						// Derive slope height at player position:
+						index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+						index = clamp(0, 7, index);
+						local_height  = left_shallow_slope_4_arr[index];
+						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
+					}
+				}
+
+				else if(tile_index == LEFT_STEEP_SLOPE_1_INDEX)
+				{
+					
+					other_collider = Collider(world_x, 
 											world_y + 2, 
 											TILE_WIDTH, 
 											TILE_HEIGHT / 2);
 
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = (collider.p1.x() - other_collider.p1.x()).integer();
-					index = clamp(0, 7, index);
-					local_height = right_shallow_slope_2_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
-				}
-			}
-
-			else if(tile_index == RIGHT_SHALLOW_SLOPE_3_INDEX)
-			{
-				other_collider = Collider(world_x, 
-											world_y + 1,
-											TILE_WIDTH, 
-											TILE_HEIGHT - 2);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = (collider.p1.x() - other_collider.p1.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = right_shallow_slope_3_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
-				}
-			}
-			
-			else if(tile_index == RIGHT_SHALLOW_SLOPE_4_INDEX)
-			{
-				other_collider = Collider(world_x, 
-											world_y,
-											TILE_WIDTH, 
-											TILE_HEIGHT);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = (collider.p1.x() - other_collider.p1.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = right_shallow_slope_4_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
-				}
-			}
-			
-			else if(tile_index == RIGHT_STEEP_SLOPE_1_INDEX)
-			{
-				other_collider = Collider(world_x, 
-											world_y + 2,
-											TILE_WIDTH, 
-											TILE_HEIGHT / 2);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = (collider.p1.x() - other_collider.p1.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = right_steep_slope_1_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
-				}
-			}
-			
-			else if(tile_index == RIGHT_STEEP_SLOPE_2_INDEX)
-			{
-				other_collider = Collider(world_x, 
-											world_y,
-											TILE_WIDTH, 
-											TILE_HEIGHT);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = (collider.p1.x() - other_collider.p1.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = right_steep_slope_2_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Manually set player position:
-					setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
-				}
-			}
-			
-			else if(tile_index >= ONEWAY_BLOCK_MIN_INDEX &&
-			        tile_index <= ONEWAY_BLOCK_MAX_INDEX)
-			{
-				other_collider = Collider(world_x, 
-											world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
-											TILE_WIDTH, 
-											ONEWAYBLOCK_COLLIDER_HEIGHT);
-
-				if(rigidbody.normalized_dir.y() >= 0 &&
-					collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
-				{
-
-					if(bn::keypad::down_held() && 
-					   (state == STATE_AIR_NEUTRAL || state == STATE_GROUNDED_NEUTRAL)) 
+					if(collider.isCollision(other_collider))
 					{
-						rigidbody.addForce(PLAYER_GRAVITY_FORCE);
+						// Derive slope height at player position:
+						index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+						index = clamp(0, 7, index);
+						local_height  = left_steep_slope_1_arr[index];
+						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
 					}
-					else
+				}
+
+				else if(tile_index == LEFT_STEEP_SLOPE_2_INDEX)
+				{
+					other_collider = Collider(world_x, 
+											world_y, 
+											TILE_WIDTH, 
+											TILE_HEIGHT);
+
+					if(collider.isCollision(other_collider))
 					{
-						// Handle Remaining Collision Cases //
-						while(collider_y_axis.isCollision(other_collider))
+						// Derive slope height at player position:
+						index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+						index = clamp(0, 7, index);
+						local_height  = left_steep_slope_2_arr[index];
+						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
+					}
+				}
+
+				else if(tile_index == RIGHT_SHALLOW_SLOPE_1_INDEX)
+				{
+					other_collider = Collider(world_x, 
+												world_y + 3, 
+												TILE_WIDTH, 
+												TILE_HEIGHT / 4);
+
+					if(collider.isCollision(other_collider))
+					{
+						// Derive slope height at player position:
+						index = (collider.p1.x() - other_collider.p1.x()).integer();
+						index = clamp(0, 7, index);
+						local_height  = right_shallow_slope_1_arr[index];
+						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
+					}
+				}
+
+				else if(tile_index == RIGHT_SHALLOW_SLOPE_2_INDEX)
+				{
+					other_collider = Collider(world_x, 
+												world_y + 2, 
+												TILE_WIDTH, 
+												TILE_HEIGHT / 2);
+
+					if(collider.isCollision(other_collider))
+					{
+						// Derive slope height at player position:
+						index = (collider.p1.x() - other_collider.p1.x()).integer();
+						index = clamp(0, 7, index);
+						local_height = right_shallow_slope_2_arr[index];
+						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
+					}
+				}
+
+				else if(tile_index == RIGHT_SHALLOW_SLOPE_3_INDEX)
+				{
+					other_collider = Collider(world_x, 
+												world_y + 1,
+												TILE_WIDTH, 
+												TILE_HEIGHT - 2);
+
+					if(collider.isCollision(other_collider))
+					{
+						// Derive slope height at player position:
+						index = (collider.p1.x() - other_collider.p1.x()).integer();
+						index = clamp(0, 7, index);
+						local_height  = right_shallow_slope_3_arr[index];
+						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
+					}
+				}
+				
+				else if(tile_index == RIGHT_SHALLOW_SLOPE_4_INDEX)
+				{
+					other_collider = Collider(world_x, 
+												world_y,
+												TILE_WIDTH, 
+												TILE_HEIGHT);
+
+					if(collider.isCollision(other_collider))
+					{
+						// Derive slope height at player position:
+						index = (collider.p1.x() - other_collider.p1.x()).integer();
+						index = clamp(0, 7, index);
+						local_height  = right_shallow_slope_4_arr[index];
+						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
+					}
+				}
+				
+				else if(tile_index == RIGHT_STEEP_SLOPE_1_INDEX)
+				{
+					other_collider = Collider(world_x, 
+												world_y + 2,
+												TILE_WIDTH, 
+												TILE_HEIGHT / 2);
+
+					if(collider.isCollision(other_collider))
+					{
+						// Derive slope height at player position:
+						index = (collider.p1.x() - other_collider.p1.x()).integer();
+						index = clamp(0, 7, index);
+						local_height  = right_steep_slope_1_arr[index];
+						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
+					}
+				}
+				
+				else if(tile_index == RIGHT_STEEP_SLOPE_2_INDEX)
+				{
+					other_collider = Collider(world_x, 
+												world_y,
+												TILE_WIDTH, 
+												TILE_HEIGHT);
+
+					if(collider.isCollision(other_collider))
+					{
+						// Derive slope height at player position:
+						index = (collider.p1.x() - other_collider.p1.x()).integer();
+						index = clamp(0, 7, index);
+						local_height  = right_steep_slope_2_arr[index];
+						global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+						// Manually set player position:
+						setY(global_height - (PLAYER_COLLIDER_HEIGHT / 2) - PLAYER_COLLIDER_OFFSET_Y);
+					}
+				}
+				
+				else if(tile_index >= ONEWAY_BLOCK_MIN_INDEX &&
+						tile_index <= ONEWAY_BLOCK_MAX_INDEX)
+				{
+					other_collider = Collider(world_x, 
+												world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
+												TILE_WIDTH, 
+												ONEWAYBLOCK_COLLIDER_HEIGHT);
+
+					if(rigidbody.normalized_dir.y() >= 0 &&
+						collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
+					{
+
+						if(bn::keypad::down_held() && 
+						(state == STATE_AIR_NEUTRAL || state == STATE_GROUNDED_NEUTRAL)) 
 						{
-							collider_y_axis.setY(collider_y_axis.y() - 1);
-							setY(this->y() - 1);
+							rigidbody.addForce(PLAYER_GRAVITY_FORCE);
 						}
+						else
+						{
+							// Handle Remaining Collision Cases //
+							while(collider_y_axis.isCollision(other_collider))
+							{
+								collider_y_axis.setY(collider_y_axis.y() - 1);
+								setY(this->y() - 1);
+							}
+						}
+						
 					}
-					
 				}
-			}
 
+			}
 		}
 	}
 	
@@ -1189,6 +1253,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	test_collider_left.setPos(collider.x() - wall_ray_length,
                               collider.y());
 
+	int32 index;
+	int32 local_height;
+	int32 global_height;
+
 	/////////////////////////////////////
 	// Get State Info from GameObjects //
 	/////////////////////////////////////
@@ -1203,22 +1271,22 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 				// Test for, and log grounded collision
 				if(test_collider.isCollision(other_collider) && 
-				   rigidbody.normalized_dir.y() >= 0)
+				rigidbody.normalized_dir.y() >= 0)
 				{
 					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED) 
 					{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
-					 sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
+					sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
 					grounded_detected = true;
 				}
 
 				// Test for wall riding on right side
 				if(test_collider_right.isCollision(other_collider) && 
-				   rigidbody.final_dir.y() >= 0)
+				rigidbody.final_dir.y() >= 0)
 				{wall_right_detected = true;}
 				
 				// Test for wall riding on left side
 				if(test_collider_left.isCollision(other_collider) && 
-				   rigidbody.final_dir.y() >= 0)
+				rigidbody.final_dir.y() >= 0)
 				{wall_left_detected = true;}
 
 			break;
@@ -1230,7 +1298,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				{
 					// Test for, and log grounded collision
 					if(test_collider.isCollision(other_collider) && 
-					   rigidbody.normalized_dir.y() >= 0)
+					rigidbody.normalized_dir.y() >= 0)
 					{ 
 						if(!bn::keypad::down_held()) 
 						{
@@ -1238,7 +1306,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 							grounded_owp_detected = true;
 							if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED)
 							{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
-						     sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
 						}
 					}
 				}
@@ -1249,8 +1317,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 				// Test for, and log grounded collision
 				if(((TilePassage*)(game_objects.at(i)))->state == TILE_PASSAGE_STATE_SHUT &&
-				   test_collider.isCollision(other_collider) && 
-				   rigidbody.normalized_dir.y() >= 0)
+				test_collider.isCollision(other_collider) && 
+				rigidbody.normalized_dir.y() >= 0)
 				{
 					
 					if(rigidbody.final_dir.y() >= PLAYER_MIN_PASSAGE_SPEED)
@@ -1276,10 +1344,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
     // Get State Info from Tiles //
     ///////////////////////////////							   
 
-	int32 index;
-	int32 local_height;
-	int32 global_height;
-	
 	for(int32 y = -2; y < 3; y++)
 	{
 		for(int32 x = -2; x < 3; x++)
@@ -1301,24 +1365,24 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			int32 world_y = ((check_index_y * TILE_HEIGHT) - half_level_height_pixels) + (TILE_HEIGHT / 2);
 
 			uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y, 
-			                                     bg_ptr, cells, bg_item);
+												bg_ptr, cells, bg_item);
 
 			// 2. Check Tile Type and update state accordingly //
 			if(tile_index >= HARD_BLOCK_MIN_INDEX &&
-			   tile_index <= HARD_BLOCK_MAX_INDEX)
+			tile_index <= HARD_BLOCK_MAX_INDEX)
 			{
 
 				other_collider = Collider(world_x,
-										  world_y, 
-										  TILE_WIDTH,
-										  TILE_HEIGHT);
+										world_y, 
+										TILE_WIDTH,
+										TILE_HEIGHT);
 
 				// Test for, and log grounded collision
 				if(test_collider.isCollision(other_collider) && 
-				   rigidbody.normalized_dir.y() >= 0)
+				rigidbody.normalized_dir.y() >= 0)
 				{
 					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-					   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+					rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
 					{
 						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
 						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
@@ -1333,7 +1397,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					right_wj_eligible = true;
 
 					if(rigidbody.normalized_dir.y() >= 0 &&
-					   bn::keypad::right_held()) 
+					bn::keypad::right_held()) 
 					{
 						wall_right_detected = true;
 					}
@@ -1345,7 +1409,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					left_wj_eligible = true;
 
 					if(rigidbody.normalized_dir.y() >= 0 &&
-					   bn::keypad::left_held()) 
+					bn::keypad::left_held()) 
 					{
 						wall_left_detected = true;
 					}
@@ -1354,7 +1418,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			}
 					
 			else if(tile_index >= ONEWAY_BLOCK_MIN_INDEX &&
-			        tile_index <= ONEWAY_BLOCK_MAX_INDEX)
+					tile_index <= ONEWAY_BLOCK_MAX_INDEX)
 			{
 			
 				other_collider = Collider(world_x, 
@@ -1368,20 +1432,21 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					if(test_collider.isCollision(other_collider) && 
 						rigidbody.normalized_dir.y() >= 0)
 					{
+						grounded_detected = true;
+
 						if(!bn::keypad::down_held()) 
 						{
-							grounded_detected = true;
 							if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-							   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
 							{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
-							 sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
 						}
 					}
 				}
 			}
 
 			else if(tile_index == UP_SPIKE_BLOCK_1_INDEX ||
-			        tile_index == UP_SPIKE_BLOCK_2_INDEX)
+					tile_index == UP_SPIKE_BLOCK_2_INDEX)
 			{
 				other_collider = Collider(world_x,
 											world_y, 
@@ -1399,12 +1464,12 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			}
 
 			else if(tile_index == DOWN_SPIKE_BLOCK_1_INDEX ||
-			        tile_index == DOWN_SPIKE_BLOCK_2_INDEX)
+					tile_index == DOWN_SPIKE_BLOCK_2_INDEX)
 			{
 				other_collider = Collider(world_x,
-										  world_y, 
-										  TILE_WIDTH, 
-										  TILE_HEIGHT);
+										world_y, 
+										TILE_WIDTH, 
+										TILE_HEIGHT);
 				
 				if(collider.isCollision(other_collider) && !kill_player)
 				{
@@ -1417,7 +1482,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			}
 
 			else if(tile_index == LEFT_SPIKE_BLOCK_1_INDEX ||
-			        tile_index == LEFT_SPIKE_BLOCK_2_INDEX)
+					tile_index == LEFT_SPIKE_BLOCK_2_INDEX)
 			{
 				other_collider = Collider(world_x,
 											world_y, 
@@ -1435,7 +1500,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			}
 
 			else if(tile_index == RIGHT_SPIKE_BLOCK_1_INDEX || 
-			        tile_index == RIGHT_SPIKE_BLOCK_2_INDEX)
+					tile_index == RIGHT_SPIKE_BLOCK_2_INDEX)
 			{
 				other_collider = Collider(world_x,
 											world_y, 
@@ -1455,9 +1520,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
 			{
 				other_collider = Collider(world_x,
-										  world_y + 3, 
-										  TILE_WIDTH, 
-										  TILE_HEIGHT / 4);
+										world_y + 3, 
+										TILE_WIDTH, 
+										TILE_HEIGHT / 4);
 
 				index = abs(other_collider.p1.x() - collider.p4.x()).integer();
 				index = clamp(0, 7, index);
@@ -1827,7 +1892,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			}	
 		}
 	}
-	
+
 	////////////////////
 	// Clamp Position //
 	////////////////////
@@ -2061,13 +2126,22 @@ void Player::setState(PlayerState new_state)
 	{
 		
 		case STATE_GROUNDED_NEUTRAL:
+
 			remaining_x_drift_lockout_frames = 0;
 			air_frames_elapsed = 0;
 			scythe_2_buffered  = false;
 			scythe_3_buffered  = false;
+
+			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+								  								  1,
+								  								  bn::sprite_items::player.tiles_item(),
+								  								  0,
+								  								  0);
+
 		break;
 
 		case STATE_WALL_SLIDE_RIGHT:
+
 			rigidbody.removeForces();
 			remaining_x_drift_lockout_frames = 0;
 			remaining_jump_input_frames      = 0;
@@ -2075,9 +2149,17 @@ void Player::setState(PlayerState new_state)
 			scythe_2_buffered                = false;
 			scythe_3_buffered                = false;
 			dir                              = LEFT;
+
+			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+								  								  1,
+								  								  bn::sprite_items::player.tiles_item(),
+								  								  3,
+								  								  3);
+
 		break;
 
 		case STATE_WALL_SLIDE_LEFT:
+			
 			rigidbody.removeForces();
 			remaining_x_drift_lockout_frames = 0;
 			remaining_jump_input_frames      = 0;
@@ -2085,11 +2167,26 @@ void Player::setState(PlayerState new_state)
 			scythe_2_buffered                = false;
 			scythe_3_buffered                = false;
 			dir                              = RIGHT;
+
+			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+								  								  1,
+								  								  bn::sprite_items::player.tiles_item(),
+								  								  3,
+								  								  3);
+
 		break;
 
 		case STATE_AIR_NEUTRAL:
+
 			scythe_2_buffered = false;
 			scythe_3_buffered = false;
+
+			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+								  								  1,
+								  								  bn::sprite_items::player.tiles_item(),
+								  								  2,
+								  								  2);
+
 		break;
 
 		case STATE_DYING:
@@ -2098,15 +2195,25 @@ void Player::setState(PlayerState new_state)
 		break;
 
 		case STATE_PHASE_STEP:
+
 			air_frames_elapsed = 0;
 			remaining_x_drift_lockout_frames = 0;
 			scythe_2_buffered  = false;
 			scythe_3_buffered  = false;
+
 		break;
 
 		case STATE_SCYTHE_1:
+
 			remaining_x_drift_lockout_frames = 0;
 			air_frames_elapsed = 0;
+
+			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+								  								  1,
+								  								  bn::sprite_items::player.tiles_item(),
+								  								  1,
+								  								  1);
+
 		break;
 
 		case STATE_SCYTHE_2:
