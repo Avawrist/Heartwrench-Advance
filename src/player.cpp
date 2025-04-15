@@ -477,6 +477,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 								  								  			  bn::sprite_items::player.tiles_item(),
 								  								  			  4,
 								  								  			  4);
+				sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
+				sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
 
 				// Copy the player's collider at the full Phase Step
 				// distance, and increment it towards the player
@@ -2197,6 +2199,7 @@ void Player::setState(PlayerState new_state)
 		case STATE_PHASE_STEP:
 
 			air_frames_elapsed = 0;
+			remaining_jump_input_frames      = 0;
 			remaining_x_drift_lockout_frames = 0;
 			scythe_2_buffered  = false;
 			scythe_3_buffered  = false;
