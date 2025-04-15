@@ -16,6 +16,9 @@ Player::Player()
 	dir         = RIGHT;
     sprite_ptr  = bn::sprite_items::player.create_sprite(0, 0);
 	sprite_ptr->set_z_order(PLAYER_Z_ORDER);
+	phase_marker_sprite_ptr = bn::sprite_items::phase_marker.create_sprite(0, 0);
+	phase_marker_sprite_ptr->set_z_order(PLAYER_Z_ORDER);
+	phase_marker_sprite_ptr->set_visible(false);
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  1,
 								  								  bn::sprite_items::player.tiles_item(),
@@ -84,7 +87,8 @@ Player::Player(const Player& other) : GameObject(other)
     gravity           	 = other.gravity;
 	wall_ride_gravity 	 = other.wall_ride_gravity;
 
-	phase_destination    = other.phase_destination;
+	phase_destination       = other.phase_destination;
+	phase_marker_sprite_ptr = other.phase_marker_sprite_ptr;
 	
 	remaining_jump_input_frames      = other.remaining_jump_input_frames;
 	remaining_x_drift_lockout_frames = other.remaining_x_drift_lockout_frames;
@@ -124,6 +128,8 @@ Player::Player(const Player& other) : GameObject(other)
 
 Player::~Player()
 {
+	phase_marker_sprite_ptr.reset();
+
 	delete hitbox_1_ptr;
 	delete hitbox_2_ptr;
 	delete hitbox_3_ptr;	
@@ -142,7 +148,8 @@ Player& Player::operator =(const Player& other)
     gravity           	 = other.gravity;
 	wall_ride_gravity 	 = other.wall_ride_gravity;
 
-	phase_destination    = other.phase_destination;
+	phase_destination       = other.phase_destination;
+	phase_marker_sprite_ptr = other.phase_marker_sprite_ptr;
 	
 	remaining_jump_input_frames      = other.remaining_jump_input_frames;
 	remaining_x_drift_lockout_frames = other.remaining_x_drift_lockout_frames;
@@ -200,6 +207,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	bool create_scythe_hb_3  = false;
 	bool in_phase_step       = false;
 	bool clear_to_jump 		 = true;
+	bool clear_to_drop       = true;
 
 	///////////////////
 	// Handle State ///
@@ -252,7 +260,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			else if(bn::keypad::a_pressed()) {jump();}
 
 			// Phase Step
-			if(bn::keypad::r_pressed()) 
+			else if(bn::keypad::r_pressed()) 
 			{
 				first_frame_phase  = true;
 				in_phase_step      = true;
@@ -310,10 +318,12 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			{
 				if(right_wj_eligible)
 				{
-					if(bn::keypad::r_held())
-					{rigidbody.addForce(PLAYER_P_WALL_JUMP_LEFT_FORCE);}
-					else
-					{rigidbody.addForce(PLAYER_WALL_JUMP_LEFT_FORCE);}
+					//if(bn::keypad::r_held())
+					//{rigidbody.addForce(PLAYER_P_WALL_JUMP_LEFT_FORCE);}
+					//else
+					//{
+					rigidbody.addForce(PLAYER_WALL_JUMP_LEFT_FORCE);
+					//}
 					
 					sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 					sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
@@ -322,10 +332,12 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				}
 				else if(left_wj_eligible)
 				{
-					if(bn::keypad::r_held())
-					{rigidbody.addForce(PLAYER_P_WALL_JUMP_RIGHT_FORCE);}
-					else
-					{rigidbody.addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);}
+					//if(bn::keypad::r_held())
+					//{rigidbody.addForce(PLAYER_P_WALL_JUMP_RIGHT_FORCE);}
+					//else
+					//{
+					rigidbody.addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);
+					//}
 					
 					sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 					sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
@@ -393,10 +405,12 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Wall Jump
 			if(bn::keypad::a_pressed())
 			{
-				if(bn::keypad::r_held())
-				{rigidbody.addForce(PLAYER_P_WALL_JUMP_LEFT_FORCE);}
-				else
-				{rigidbody.addForce(PLAYER_WALL_JUMP_LEFT_FORCE);}
+				//if(bn::keypad::r_held())
+				//{rigidbody.addForce(PLAYER_P_WALL_JUMP_LEFT_FORCE);}
+				//else
+				//{
+				rigidbody.addForce(PLAYER_WALL_JUMP_LEFT_FORCE);
+				//}
 
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
@@ -439,10 +453,12 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Wall Jump
 			if(bn::keypad::a_pressed())
 			{
-				if(bn::keypad::r_held())
-				{rigidbody.addForce(PLAYER_P_WALL_JUMP_RIGHT_FORCE);}
-				else
-				{rigidbody.addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);}
+				//if(bn::keypad::r_held())
+				//{rigidbody.addForce(PLAYER_P_WALL_JUMP_RIGHT_FORCE);}
+				//else
+				//{
+				rigidbody.addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);
+				//}
 
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
@@ -538,9 +554,15 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					}
 				}
 
-				// Update player position
+				// Update player destination
 				phase_destination = bn::fixed_point(phase_collider.x(), 
 				                                    phase_collider.y());
+
+				// Update phase marker	
+				phase_marker_sprite_ptr->set_camera(camera);								
+				phase_marker_sprite_ptr->set_position(phase_destination.x(), 
+													  phase_destination.y());
+				phase_marker_sprite_ptr->set_visible(true);
 
 			}
 			else
@@ -582,7 +604,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT);
 
 							if(collider.isCollision(other_collider))
-							{clear_to_jump = false;}
+							{
+								clear_to_jump = false;
+								clear_to_drop = false;
+							}
 
 						}		
 						
@@ -595,7 +620,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT / 4);
 
 							if(collider.isCollision(other_collider))
-							{clear_to_jump = false;}
+							{
+								clear_to_jump = false;
+								clear_to_drop = false;
+							}
 
 						}
 							
@@ -607,7 +635,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT / 2);
 
 							if(collider.isCollision(other_collider))
-							{clear_to_jump = false;}
+							{
+								clear_to_jump = false;
+								clear_to_drop = false;
+							}
 						}
 
 						else if(tile_index == LEFT_SHALLOW_SLOPE_3_INDEX)
@@ -619,7 +650,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT - 2);
 
 							if(collider.isCollision(other_collider))
-							{clear_to_jump = false;}
+							{
+								clear_to_jump = false;
+								clear_to_drop = false;
+							}
 
 						}
 
@@ -632,7 +666,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT);
 
 							if(collider.isCollision(other_collider))
-							{clear_to_jump = false;}
+							{
+								clear_to_jump = false;
+								clear_to_drop = false;
+							}
 
 						}
 
@@ -645,7 +682,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT / 2);
 
 							if(collider.isCollision(other_collider))
-							{clear_to_jump = false;}
+							{
+								clear_to_jump = false;
+								clear_to_drop = false;
+							}
 
 						}
 
@@ -658,7 +698,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT);
 
 							if(collider.isCollision(other_collider))
-							{clear_to_jump = false;}
+							{
+								clear_to_jump = false;
+								clear_to_drop = false;
+							}
 
 						}
 
@@ -671,7 +714,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT / 4);
 
 							if(collider.isCollision(other_collider))
-							{clear_to_jump = false;}
+							{
+								clear_to_jump = false;
+								clear_to_drop = false;
+							}
 
 						}
 
@@ -684,7 +730,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT / 2);
 
 							if(collider.isCollision(other_collider))
-							{clear_to_jump = false;}
+							{
+								clear_to_jump = false;
+								clear_to_drop = false;
+							}
 
 						}
 
@@ -697,7 +746,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT - 2);
 
 							if(collider.isCollision(other_collider))
-							{clear_to_jump = false;}
+							{
+								clear_to_jump = false;
+								clear_to_drop = false;
+							}
 
 						}
 						
@@ -710,7 +762,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT);
 
 							if(collider.isCollision(other_collider))
-							{clear_to_jump = false;}
+							{
+								clear_to_jump = false;
+								clear_to_drop = false;
+							}
 
 						}
 						
@@ -723,7 +778,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT / 2);
 
 							if(collider.isCollision(other_collider))
-							{clear_to_jump = false;}
+							{
+								clear_to_jump = false;
+								clear_to_drop = false;
+							}
 
 						}
 						
@@ -736,7 +794,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT);
 
 							if(collider.isCollision(other_collider))
-							{clear_to_jump = false;}
+							{
+								clear_to_jump = false;
+								clear_to_drop = false;
+							}
 
 						}
 						
@@ -787,7 +848,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 					// Add force
 					rigidbody.addForce(PLAYER_PHASE_STEP_EXIT_FORCE_LEFT);
-				}	
+				}
+				// Early drop breakout
+				else if(bn::keypad::down_held() && clear_to_drop)
+				{}	
 				// Typical phase towards destination
 				else if(x() > phase_destination.x())
 				{
@@ -807,6 +871,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					// Add force
 					rigidbody.addForce(PLAYER_PHASE_STEP_EXIT_FORCE_RIGHT);
 				}
+				// Early drop breakout
+				else if(bn::keypad::down_held() && clear_to_drop)
+				{}	
 				// Typical phase towards destination
 				else if(x() < phase_destination.x())
 				{
@@ -815,6 +882,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					if(x() > phase_destination.x()) {setX(phase_destination.x());}
 				}
 			}
+
+			if(!in_phase_step) {phase_marker_sprite_ptr->set_visible(false);}
 			
 		break;
 

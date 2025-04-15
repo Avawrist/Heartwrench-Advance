@@ -7,6 +7,7 @@
 
 // Assets
 #include "bn_sprite_items_player.h"
+#include "bn_sprite_items_phase_marker.h"
 
 // Base Class
 #include "game_object.h"
@@ -68,7 +69,7 @@
 
 #define PLAYER_PHASE_STEP_MAX_DISTANCE PLAYER_COLLIDER_WIDTH * 6
 #define PLAYER_PHASE_STEP_SPEED        3
-#define PLAYER_PHASE_STEP_EXIT_X_FORCE 7
+#define PLAYER_PHASE_STEP_EXIT_X_FORCE 6
 #define PLAYER_PHASE_STEP_EXIT_DECAY   0.05
 
 #define PLAYER_SCYTHE_1_TOTAL_FRAMES      30
@@ -170,6 +171,8 @@ struct Player : GameObject {
 	bn::fixed       gravity;
 	bn::fixed       wall_ride_gravity;
 	bn::fixed_point phase_destination;
+
+	bn::optional<bn::sprite_ptr> phase_marker_sprite_ptr;
 
 	int32 remaining_jump_input_frames;
 	int32 remaining_x_drift_lockout_frames;
