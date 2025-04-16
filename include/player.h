@@ -7,7 +7,6 @@
 
 // Assets
 #include "bn_sprite_items_player.h"
-#include "bn_sprite_items_phase_marker.h"
 
 // Base Class
 #include "game_object.h"
@@ -146,7 +145,7 @@
 #define PLAYER_PHASE_STEP_EXIT_FORCE_RIGHT Force(bn::fixed_point_t<12>(PLAYER_PHASE_STEP_EXIT_X_FORCE,  0), PLAYER_PHASE_STEP_EXIT_DECAY)
 
 enum PlayerState {
-
+	STATE_NO_STATE,
 	STATE_GROUNDED_NEUTRAL,
 	STATE_AIR_NEUTRAL,
 	STATE_WALL_SLIDE_RIGHT,
@@ -156,7 +155,6 @@ enum PlayerState {
 	STATE_SCYTHE_2,
 	STATE_SCYTHE_3,
 	STATE_DYING,
-
 };
 
 struct Player : GameObject {
@@ -171,8 +169,6 @@ struct Player : GameObject {
 	bn::fixed       gravity;
 	bn::fixed       wall_ride_gravity;
 	bn::fixed_point phase_destination;
-
-	bn::optional<bn::sprite_ptr> phase_marker_sprite_ptr;
 
 	int32 remaining_jump_input_frames;
 	int32 remaining_x_drift_lockout_frames;

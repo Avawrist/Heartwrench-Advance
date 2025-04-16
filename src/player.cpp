@@ -88,7 +88,6 @@ Player::Player(const Player& other) : GameObject(other)
 	wall_ride_gravity 	 = other.wall_ride_gravity;
 
 	phase_destination       = other.phase_destination;
-	phase_marker_sprite_ptr = other.phase_marker_sprite_ptr;
 	
 	remaining_jump_input_frames      = other.remaining_jump_input_frames;
 	remaining_x_drift_lockout_frames = other.remaining_x_drift_lockout_frames;
@@ -128,8 +127,6 @@ Player::Player(const Player& other) : GameObject(other)
 
 Player::~Player()
 {
-	phase_marker_sprite_ptr.reset();
-
 	delete hitbox_1_ptr;
 	delete hitbox_2_ptr;
 	delete hitbox_3_ptr;	
@@ -149,7 +146,6 @@ Player& Player::operator =(const Player& other)
 	wall_ride_gravity 	 = other.wall_ride_gravity;
 
 	phase_destination       = other.phase_destination;
-	phase_marker_sprite_ptr = other.phase_marker_sprite_ptr;
 	
 	remaining_jump_input_frames      = other.remaining_jump_input_frames;
 	remaining_x_drift_lockout_frames = other.remaining_x_drift_lockout_frames;
@@ -259,13 +255,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Jump
 			else if(bn::keypad::a_pressed()) {jump();}
 
-			// Phase Step
-			else if(bn::keypad::r_pressed()) 
-			{
-				first_frame_phase  = true;
-				in_phase_step      = true;
-			}
-			
 			// Add Gravity if Grounded on OWP
 			if(grounded_owp_detected) {rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 
