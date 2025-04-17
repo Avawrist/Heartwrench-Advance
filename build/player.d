@@ -39,9 +39,7 @@ player.o: G:/game/src/player.cpp G:/game/include/player.h \
  G:/butano-master/butano/include/bn_memory_alias.h \
  G:/butano-master/butano/include/bn_compression_type.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
- G:/butano-master/butano/include/bn_color.h \
- G:/game/build/bn_sprite_items_phase_marker.h \
- G:/game/include/game_object.h \
+ G:/butano-master/butano/include/bn_color.h G:/game/include/game_object.h \
  G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_sprite_ptr.h \
  G:/butano-master/butano/include/bn_sprite_animate_actions.h \
@@ -122,7 +120,6 @@ G:/butano-master/butano/include/bn_memory_alias.h:
 G:/butano-master/butano/include/bn_compression_type.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/butano-master/butano/include/bn_color.h:
-G:/game/build/bn_sprite_items_phase_marker.h:
 G:/game/include/game_object.h:
 G:/butano-master/butano/include/bn_optional.h:
 G:/butano-master/butano/include/bn_sprite_ptr.h:

@@ -44,14 +44,11 @@
 #define PLAYER_SECOND_JUMP_FORCE     -4
 #define PLAYER_WALL_JUMP_X_FORCE      4
 #define PLAYER_WALL_JUMP_Y_FORCE     -6
-#define PLAYER_P_WALL_JUMP_X_FORCE    7
-#define PLAYER_P_WALL_JUMP_Y_FORCE   -7
 #define PLAYER_JUMP_DECAY             0.1
 #define PLAYER_SECONDARY_JUMP_DECAY   1
 #define PLAYER_X_DRIFT_LOCKOUT_FRAMES 6
 #define PLAYER_MAX_JUMP_INPUT_FRAMES  24
 #define PLAYER_WALL_JUMP_DECAY        0.05
-#define PLAYER_P_WALL_JUMP_DECAY      0.05
 
 #define PLAYER_GRAVITY       	             3
 #define PLAYER_PROLONGED_GRAVITY             1
@@ -71,50 +68,48 @@
 #define PLAYER_PHASE_STEP_EXIT_X_FORCE 6
 #define PLAYER_PHASE_STEP_EXIT_DECAY   0.05
 
-#define PLAYER_SCYTHE_1_TOTAL_FRAMES      30
-#define PLAYER_SCYTHE_2_TOTAL_FRAMES      30
-#define PLAYER_SCYTHE_3_TOTAL_FRAMES      40
-#define PLAYER_MIN_SCYTHE_1_CANCEL_FRAMES 11 // Must be greater than PLAYER_SCYTHE_1_CREATE_HB_FRAME
-#define PLAYER_MIN_SCYTHE_2_CANCEL_FRAMES 11 // Must be greater than PLAYER_SCYTHE_2_CREATE_HB_FRAME
-#define PLAYER_MIN_SCYTHE_3_CANCEL_FRAMES 11 // Must be greater than PLAYER_SCYTHE_2_CREATE_HB_FRAME
+#define PLAYER_SCYTHE_GROUND_1_TOTAL_FRAMES      30
+#define PLAYER_SCYTHE_GROUND_2_TOTAL_FRAMES      30
+#define PLAYER_SCYTHE_GROUND_3_TOTAL_FRAMES      40
+#define PLAYER_MIN_SCYTHE_GROUND_1_BUFFER_FRAMES 11 // Must be greater than PLAYER_SCYTHE_1_CREATE_HB_FRAME
+#define PLAYER_MIN_SCYTHE_GROUND_2_BUFFER_FRAMES 11 // Must be greater than PLAYER_SCYTHE_2_CREATE_HB_FRAME
+#define PLAYER_MIN_SCYTHE_GROUND_3_BUFFER_FRAMES 11 // Must be greater than PLAYER_SCYTHE_2_CREATE_HB_FRAME
 
-#define PLAYER_SCYTHE_1_X_OFFSET           32
-#define PLAYER_SCYTHE_1_Y_OFFSET           0
-#define PLAYER_SCYTHE_1_HB_WIDTH           16
-#define PLAYER_SCYTHE_1_HB_HEIGHT          16
-#define PLAYER_SCYTHE_1_CREATE_HB_FRAME    10
-#define PLAYER_SCYTHE_1_HB_LIFESPAN_FRAMES 10
-#define PLAYER_SCYTHE_1_HITSTUN_FRAMES     10
-#define PLAYER_SCYTHE_1_X_KNOCKBACK        5
-#define PLAYER_SCYTHE_1_Y_KNOCKBACK        0
-#define PLAYER_SCYTHE_1_KNOCKBACK_DECAY    0.2
+#define PLAYER_SCYTHE_GROUND_1_X_OFFSET           32
+#define PLAYER_SCYTHE_GROUND_1_Y_OFFSET           0
+#define PLAYER_SCYTHE_GROUND_1_HB_WIDTH           16
+#define PLAYER_SCYTHE_GROUND_1_HB_HEIGHT          16
+#define PLAYER_SCYTHE_GROUND_1_CREATE_HB_FRAME    10
+#define PLAYER_SCYTHE_GROUND_1_HB_LIFESPAN_FRAMES 10
+#define PLAYER_SCYTHE_GROUND_1_HITSTUN_FRAMES     10
+#define PLAYER_SCYTHE_GROUND_1_X_KNOCKBACK        5
+#define PLAYER_SCYTHE_GROUND_1_Y_KNOCKBACK        0
+#define PLAYER_SCYTHE_GROUND_1_KNOCKBACK_DECAY    0.2
 
-#define PLAYER_SCYTHE_2_X_OFFSET           32
-#define PLAYER_SCYTHE_2_Y_OFFSET           0
-#define PLAYER_SCYTHE_2_HB_WIDTH           16
-#define PLAYER_SCYTHE_2_HB_HEIGHT          16
-#define PLAYER_SCYTHE_2_CREATE_HB_FRAME    10
-#define PLAYER_SCYTHE_2_HB_LIFESPAN_FRAMES 10
-#define PLAYER_SCYTHE_2_HITSTUN_FRAMES     10
-#define PLAYER_SCYTHE_2_X_KNOCKBACK        5
-#define PLAYER_SCYTHE_2_Y_KNOCKBACK        0
-#define PLAYER_SCYTHE_2_KNOCKBACK_DECAY    0.2
+#define PLAYER_SCYTHE_GROUND_2_X_OFFSET           32
+#define PLAYER_SCYTHE_GROUND_2_Y_OFFSET           0
+#define PLAYER_SCYTHE_GROUND_2_HB_WIDTH           16
+#define PLAYER_SCYTHE_GROUND_2_HB_HEIGHT          16
+#define PLAYER_SCYTHE_GROUND_2_CREATE_HB_FRAME    10
+#define PLAYER_SCYTHE_GROUND_2_HB_LIFESPAN_FRAMES 10
+#define PLAYER_SCYTHE_GROUND_2_HITSTUN_FRAMES     10
+#define PLAYER_SCYTHE_GROUND_2_X_KNOCKBACK        5
+#define PLAYER_SCYTHE_GROUND_2_Y_KNOCKBACK        0
+#define PLAYER_SCYTHE_GROUND_2_KNOCKBACK_DECAY    0.2
 
-#define PLAYER_SCYTHE_3_X_OFFSET           32
-#define PLAYER_SCYTHE_3_Y_OFFSET           0
-#define PLAYER_SCYTHE_3_HB_WIDTH           16
-#define PLAYER_SCYTHE_3_HB_HEIGHT          16
-#define PLAYER_SCYTHE_3_CREATE_HB_FRAME    10
-#define PLAYER_SCYTHE_3_HB_LIFESPAN_FRAMES 10
-#define PLAYER_SCYTHE_3_HITSTUN_FRAMES     10
-#define PLAYER_SCYTHE_3_X_KNOCKBACK        5
-#define PLAYER_SCYTHE_3_Y_KNOCKBACK        0
-#define PLAYER_SCYTHE_3_KNOCKBACK_DECAY    0.2
+#define PLAYER_SCYTHE_GROUND_3_X_OFFSET           32
+#define PLAYER_SCYTHE_GROUND_3_Y_OFFSET           0
+#define PLAYER_SCYTHE_GROUND_3_HB_WIDTH           16
+#define PLAYER_SCYTHE_GROUND_3_HB_HEIGHT          16
+#define PLAYER_SCYTHE_GROUND_3_CREATE_HB_FRAME    10
+#define PLAYER_SCYTHE_GROUND_3_HB_LIFESPAN_FRAMES 10
+#define PLAYER_SCYTHE_GROUND_3_HITSTUN_FRAMES     10
+#define PLAYER_SCYTHE_GROUND_3_X_KNOCKBACK        5
+#define PLAYER_SCYTHE_GROUND_3_Y_KNOCKBACK        0
+#define PLAYER_SCYTHE_GROUND_3_KNOCKBACK_DECAY    0.2
 
 #define PLAYER_V_COLLISION_MAX_GRACE_FRAMES 4
 #define PLAYER_LATE_JUMP_GRACE_FRAMES       6
-
-#define PLAYER_SCYTHE_MAX_CHARGE_FRAMES 35
  
 #define PLAYER_DEATH_FRAMES       20
 #define PLAYER_DEATH_X_FORCE      5
@@ -132,8 +127,6 @@
 #define PLAYER_SECONDARY_JUMP_FORCE    Force(bn::fixed_point_t<12>(0, secondary_jump_force), PLAYER_SECONDARY_JUMP_DECAY)
 #define PLAYER_WALL_JUMP_RIGHT_FORCE   Force(bn::fixed_point_t<12>( wall_jump_force.x(), wall_jump_force.y()), PLAYER_WALL_JUMP_DECAY)
 #define PLAYER_WALL_JUMP_LEFT_FORCE    Force(bn::fixed_point_t<12>(-wall_jump_force.x(), wall_jump_force.y()), PLAYER_WALL_JUMP_DECAY)
-#define PLAYER_P_WALL_JUMP_RIGHT_FORCE Force(bn::fixed_point_t<12>( p_wall_jump_force.x(), p_wall_jump_force.y()), PLAYER_P_WALL_JUMP_DECAY)
-#define PLAYER_P_WALL_JUMP_LEFT_FORCE  Force(bn::fixed_point_t<12>(-p_wall_jump_force.x(), p_wall_jump_force.y()), PLAYER_P_WALL_JUMP_DECAY)
 
 #define PLAYER_GRAVITY_FORCE           Force(bn::fixed_point_t<12>(0, gravity), 			     PLAYER_GRAVITY_DECAY)
 #define PLAYER_PROLONGED_GRAVITY_FORCE Force(bn::fixed_point_t<12>(0, PLAYER_PROLONGED_GRAVITY), PLAYER_GRAVITY_DECAY)
@@ -151,9 +144,9 @@ enum PlayerState {
 	STATE_WALL_SLIDE_RIGHT,
 	STATE_WALL_SLIDE_LEFT,
 	STATE_PHASE_STEP,
-	STATE_SCYTHE_1,
-	STATE_SCYTHE_2,
-	STATE_SCYTHE_3,
+	STATE_SCYTHE_GROUND_1,
+	STATE_SCYTHE_GROUND_2,
+	STATE_SCYTHE_GROUND_3,
 	STATE_DYING,
 };
 
@@ -165,7 +158,6 @@ struct Player : GameObject {
 	bn::fixed       jump_force;
 	bn::fixed       secondary_jump_force;
 	bn::fixed_point wall_jump_force;
-	bn::fixed_point p_wall_jump_force;
 	bn::fixed       gravity;
 	bn::fixed       wall_ride_gravity;
 	bn::fixed_point phase_destination;
@@ -175,19 +167,17 @@ struct Player : GameObject {
 	int32 air_frames_elapsed;
 	int32 v_collision_grace_frames;
 	int32 late_jump_grace_frames;
-	int32 scythe_charge_frames;
 	int32 current_death_frame;
 	int32 current_scythe_frame;
-	int32 current_phase_step_frame;
-
+	
 	bool wall_right_detected;
     bool wall_left_detected;
     bool grounded_detected;
 	bool grounded_owp_detected;
 	bool left_wj_eligible;
 	bool right_wj_eligible;
-	bool scythe_2_buffered;
-	bool scythe_3_buffered;
+	bool scythe_ground_2_buffered;
+	bool scythe_ground_3_buffered;
 	bool first_frame_phase;
 	bool kill_player;
 
@@ -214,6 +204,7 @@ struct Player : GameObject {
 	void jump();
 	void fastFall();
 	void setState(PlayerState new_state);
+	void createGroundedScythe1Hitboxes(const bn::camera_ptr& camera);
 	
 };
 
