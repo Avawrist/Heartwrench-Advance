@@ -178,16 +178,13 @@ void Player::update(const RoomBounds& 								  room_bounds,
                     const bn::regular_bg_item&                        bg_item,
 					const bn::camera_ptr&                             camera)
 {
-    //////////////////////////
-    // Player State Machine //
-    //////////////////////////
-
+    
 	bool clear_to_jump = true;
 	bool clear_to_drop = true;
 
-	///////////////////
-	// Handle State ///
-	///////////////////
+	//////////////////////////
+    // Player State Machine //
+    //////////////////////////
 	
     switch(state)
     {
