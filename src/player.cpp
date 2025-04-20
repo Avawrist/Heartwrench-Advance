@@ -1551,6 +1551,14 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				
 			break;
 
+			case PHASE_ORB:
+
+				if(collider.isCollision(other_collider))
+				{
+				}
+
+			break;
+
 			case TILE_PASSAGE:
 
 				// Test for, and log grounded collision

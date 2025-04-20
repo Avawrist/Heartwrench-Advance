@@ -9,7 +9,6 @@ TestEnemy::TestEnemy()
 
     // Init Variables //
 	object_type = TEST_ENEMY;
-	dir         = RIGHT;
     sprite_ptr  = bn::sprite_items::test_enemy.create_sprite(0, 0);
 	sprite_ptr->set_z_order(TEST_ENEMY_Z_ORDER);
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),

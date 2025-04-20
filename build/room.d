@@ -83,7 +83,8 @@ room.o: G:/game/src/room.cpp G:/game/include/room.h \
  G:/butano-master/butano/include/bn_rule_of_three_approximation.h \
  G:/game/build/bn_sprite_items_player.h G:/game/include/hitbox.h \
  G:/game/build/bn_sprite_items_hitbox.h G:/game/include/tile_passage.h \
- G:/game/build/bn_sprite_items_tile_passage.h \
+ G:/game/build/bn_sprite_items_tile_passage.h G:/game/include/phase_orb.h \
+ G:/game/build/bn_sprite_items_phase_orb.h \
  G:/game/include/devil_platform.h \
  G:/game/build/bn_sprite_items_devil_platform.h \
  G:/game/include/angel_platform.h \
@@ -181,6 +182,8 @@ G:/game/include/hitbox.h:
 G:/game/build/bn_sprite_items_hitbox.h:
 G:/game/include/tile_passage.h:
 G:/game/build/bn_sprite_items_tile_passage.h:
+G:/game/include/phase_orb.h:
+G:/game/build/bn_sprite_items_phase_orb.h:
 G:/game/include/devil_platform.h:
 G:/game/build/bn_sprite_items_devil_platform.h:
 G:/game/include/angel_platform.h:

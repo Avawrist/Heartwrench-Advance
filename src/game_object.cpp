@@ -20,6 +20,8 @@ GameObject::GameObject()
                         y() + collider_offset_y, 
                         GAME_OBJECT_COLLIDER_WIDTH, 
                         GAME_OBJECT_COLLIDER_HEIGHT);
+
+    dir = RIGHT;
 }
 
 GameObject::GameObject(const GameObject& other)

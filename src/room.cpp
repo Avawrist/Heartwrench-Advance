@@ -125,6 +125,10 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             temp_object_ptr = new TestEnemy();
         break;
 
+        case PHASE_ORB:
+            temp_object_ptr = new PhaseOrb();
+        break;
+
         case TILE_PASSAGE:
             temp_object_ptr = new TilePassage();
         break;
@@ -192,8 +196,7 @@ void Room::clear()
 
 }
 
-void Room::load(RoomName              room_name, 
-                const bn::camera_ptr& camera_ptr)
+void Room::load(RoomName room_name, const bn::camera_ptr& camera_ptr)
 {
     if(room_name == NO_ROOM) {return;}
 
@@ -222,6 +225,8 @@ void Room::load(RoomName              room_name,
             addUnloadedObject(UnloadedObject(bn::point(-4800, -2248), TILE_PASSAGE), false);
             addUnloadedObject(UnloadedObject(bn::point(-4624, -2280), TILE_PASSAGE), false);
             addUnloadedObject(UnloadedObject(bn::point(-4960, -1944), TILE_PASSAGE), false);
+
+            addUnloadedObject(UnloadedObject(bn::point(-4400, -2128), PHASE_ORB), true);
             
         break;
 

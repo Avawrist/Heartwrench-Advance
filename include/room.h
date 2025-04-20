@@ -20,6 +20,7 @@
 #include "collider.h"
 #include "game_object.h"
 #include "player.h"
+#include "phase_orb.h"
 #include "devil_platform.h"
 #include "angel_platform.h"
 #include "test_enemy.h"
