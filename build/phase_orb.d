@@ -23,7 +23,7 @@ phase_orb.o: G:/game/src/phase_orb.cpp G:/game/include/phase_orb.h \
  G:/butano-master/butano/include/bn_sin_lut.h \
  G:/butano-master/butano/include/bn_reciprocal_lut.h \
  G:/butano-master/butano/include/bn_rule_of_three_approximation.h \
- G:/game/build/bn_sprite_items_phase_orb.h \
+ G:/game/build/bn_sprite_items_phase_orb_up.h \
  G:/butano-master/butano/include/bn_sprite_item.h \
  G:/butano-master/butano/include/bn_fixed_point.h \
  G:/butano-master/butano/include/bn_point.h \
@@ -38,7 +38,11 @@ phase_orb.o: G:/game/src/phase_orb.cpp G:/game/include/phase_orb.h \
  G:/butano-master/butano/include/bn_memory_alias.h \
  G:/butano-master/butano/include/bn_compression_type.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
- G:/butano-master/butano/include/bn_color.h G:/game/include/game_object.h \
+ G:/butano-master/butano/include/bn_color.h \
+ G:/game/build/bn_sprite_items_phase_orb_down.h \
+ G:/game/build/bn_sprite_items_phase_orb_left.h \
+ G:/game/build/bn_sprite_items_phase_orb_right.h \
+ G:/game/include/game_object.h \
  G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_sprite_ptr.h \
  G:/butano-master/butano/include/bn_sprite_animate_actions.h \
@@ -100,7 +104,7 @@ G:/butano-master/butano/include/bn_compare.h:
 G:/butano-master/butano/include/bn_sin_lut.h:
 G:/butano-master/butano/include/bn_reciprocal_lut.h:
 G:/butano-master/butano/include/bn_rule_of_three_approximation.h:
-G:/game/build/bn_sprite_items_phase_orb.h:
+G:/game/build/bn_sprite_items_phase_orb_up.h:
 G:/butano-master/butano/include/bn_sprite_item.h:
 G:/butano-master/butano/include/bn_fixed_point.h:
 G:/butano-master/butano/include/bn_point.h:
@@ -116,6 +120,9 @@ G:/butano-master/butano/include/bn_memory_alias.h:
 G:/butano-master/butano/include/bn_compression_type.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/butano-master/butano/include/bn_color.h:
+G:/game/build/bn_sprite_items_phase_orb_down.h:
+G:/game/build/bn_sprite_items_phase_orb_left.h:
+G:/game/build/bn_sprite_items_phase_orb_right.h:
 G:/game/include/game_object.h:
 G:/butano-master/butano/include/bn_optional.h:
 G:/butano-master/butano/include/bn_sprite_ptr.h:

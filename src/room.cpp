@@ -115,6 +115,7 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
     // Allocate object based on type
     // NOTE: All object types should be represented here. When adding object types 
     //       this list must be updated.
+    
     switch(object.object_type)
     {
         case PLAYER:
@@ -125,8 +126,20 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             temp_object_ptr = new TestEnemy();
         break;
 
-        case PHASE_ORB:
-            temp_object_ptr = new PhaseOrb();
+        case PHASE_ORB_UP:
+            temp_object_ptr = new PhaseOrbUp();
+        break;
+
+        case PHASE_ORB_DOWN:
+            temp_object_ptr = new PhaseOrbDown();
+        break;
+
+        case PHASE_ORB_LEFT:
+            temp_object_ptr = new PhaseOrbLeft();
+        break;
+
+        case PHASE_ORB_RIGHT:
+            temp_object_ptr = new PhaseOrbRight();
         break;
 
         case TILE_PASSAGE:
@@ -226,7 +239,7 @@ void Room::load(RoomName room_name, const bn::camera_ptr& camera_ptr)
             addUnloadedObject(UnloadedObject(bn::point(-4624, -2280), TILE_PASSAGE), false);
             addUnloadedObject(UnloadedObject(bn::point(-4960, -1944), TILE_PASSAGE), false);
 
-            addUnloadedObject(UnloadedObject(bn::point(-4400, -2128), PHASE_ORB), true);
+            addUnloadedObject(UnloadedObject(bn::point(-4400, -2128), PHASE_ORB_UP), true);
             
         break;
 

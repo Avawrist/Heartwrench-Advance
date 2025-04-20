@@ -1551,10 +1551,14 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				
 			break;
 
-			case PHASE_ORB:
+			case PHASE_ORB_UP:
+			case PHASE_ORB_DOWN:
+			case PHASE_ORB_LEFT:
+			case PHASE_ORB_RIGHT:
 
 				if(collider.isCollision(other_collider))
 				{
+
 				}
 
 			break;
@@ -2325,10 +2329,10 @@ void Player::setState(PlayerState new_state)
 			air_frames_elapsed = 0;
 			
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								  								  1,
-								  								  bn::sprite_items::player.tiles_item(),
-								  								  0,
-								  								  0);
+								  								  		  1,
+								  								  		  bn::sprite_items::player.tiles_item(),
+								  								  		  0,
+								  								  		  0);
 
 		break;
 
@@ -2388,11 +2392,11 @@ void Player::setState(PlayerState new_state)
 
 		case STATE_PHASE_STEP:
 
-			air_frames_elapsed = 0;
+			air_frames_elapsed               = 0;
 			remaining_jump_input_frames      = 0;
 			remaining_x_drift_lockout_frames = 0;
-			scythe_ground_2_buffered  = false;
-			scythe_ground_3_buffered  = false;
+			scythe_ground_2_buffered         = false;
+			scythe_ground_3_buffered         = false;
 
 		break;
 
