@@ -14,6 +14,7 @@
 // My Libs
 #include "hitbox.h"
 #include "tile_passage.h"
+#include "phase_orb.h"
 
 ///////////////////
 // Struct Player //
@@ -178,7 +179,6 @@ struct Player : GameObject {
 	bool right_wj_eligible;
 	bool scythe_ground_2_buffered;
 	bool scythe_ground_3_buffered;
-	bool first_frame_phase;
 	bool kill_player;
 
 	Collider test_collider;

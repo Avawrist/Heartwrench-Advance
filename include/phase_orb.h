@@ -27,19 +27,19 @@
 
 #define PHASE_DISTANCE 128
 
-///////////////////////
-// Struct PhaseOrbUp //
-///////////////////////
+/////////////////////
+// Struct PhaseOrb //
+/////////////////////
 
-struct PhaseOrbUp : GameObject {
+struct PhaseOrb : GameObject {
 
 	bn::fixed_point phase_destination;
 
-    PhaseOrbUp();
-	PhaseOrbUp(const PhaseOrbUp& other);
-	~PhaseOrbUp();
+    PhaseOrb();
+	PhaseOrb(const PhaseOrb& other);
+	~PhaseOrb();
 
-	PhaseOrbUp& operator =(const PhaseOrbUp& other);
+	PhaseOrb& operator =(const PhaseOrb& other);
 
 	void update(const RoomBounds&                              room_bounds,
 				bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
@@ -47,76 +47,18 @@ struct PhaseOrbUp : GameObject {
                 const bn::span<const bn::regular_bg_map_cell>& cells,
                 const bn::regular_bg_item&                     bg_item,
 				const bn::camera_ptr&                          camera) override;
-
 };
 
-/////////////////////////
-// Struct PhaseOrbDown //
-/////////////////////////
+//////////////////////////////
+// Struct PhaseOrb Children //
+//////////////////////////////
 
-struct PhaseOrbDown : GameObject {
+struct PhaseOrbUp : PhaseOrb {PhaseOrbUp();};
 
-	bn::fixed_point phase_destination;
+struct PhaseOrbDown : PhaseOrb {PhaseOrbDown();};
 
-    PhaseOrbDown();
-	PhaseOrbDown(const PhaseOrbDown& other);
-	~PhaseOrbDown();
+struct PhaseOrbLeft : PhaseOrb {PhaseOrbLeft();};
 
-	PhaseOrbDown& operator =(const PhaseOrbDown& other);
-
-	void update(const RoomBounds&                              room_bounds,
-				bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
-				const bn::regular_bg_ptr&                      bg_ptr, 
-                const bn::span<const bn::regular_bg_map_cell>& cells,
-                const bn::regular_bg_item&                     bg_item,
-				const bn::camera_ptr&                          camera) override;
-
-};
-
-/////////////////////////
-// Struct PhaseOrbLeft //
-/////////////////////////
-
-struct PhaseOrbLeft : GameObject {
-
-	bn::fixed_point phase_destination;
-
-    PhaseOrbLeft();
-	PhaseOrbLeft(const PhaseOrbLeft& other);
-	~PhaseOrbLeft();
-
-	PhaseOrbLeft& operator =(const PhaseOrbLeft& other);
-
-	void update(const RoomBounds&                              room_bounds,
-				bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
-				const bn::regular_bg_ptr&                      bg_ptr, 
-                const bn::span<const bn::regular_bg_map_cell>& cells,
-                const bn::regular_bg_item&                     bg_item,
-				const bn::camera_ptr&                          camera) override;
-
-};
-
-//////////////////////////
-// Struct PhaseOrbRight //
-//////////////////////////
-
-struct PhaseOrbRight : GameObject {
-
-	bn::fixed_point phase_destination;
-
-    PhaseOrbRight();
-	PhaseOrbRight(const PhaseOrbRight& other);
-	~PhaseOrbRight();
-
-	PhaseOrbRight& operator =(const PhaseOrbRight& other);
-
-	void update(const RoomBounds&                              room_bounds,
-				bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
-				const bn::regular_bg_ptr&                      bg_ptr, 
-                const bn::span<const bn::regular_bg_map_cell>& cells,
-                const bn::regular_bg_item&                     bg_item,
-				const bn::camera_ptr&                          camera) override;
-
-};
+struct PhaseOrbRight : PhaseOrb {PhaseOrbRight();};
 
 #endif

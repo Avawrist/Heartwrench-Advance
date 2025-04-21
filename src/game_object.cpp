@@ -6,7 +6,8 @@
 
 GameObject::GameObject()
 {
-    object_id = 0;
+    object_type = NO_TYPE;
+    object_id   = 0;
 
     sprite_ptr         = bn::sprite_items::game_object.create_sprite(0, 0);
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
