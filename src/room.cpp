@@ -239,7 +239,7 @@ void Room::load(RoomName room_name, const bn::camera_ptr& camera_ptr)
             addUnloadedObject(UnloadedObject(bn::point(-4624, -2280), TILE_PASSAGE), false);
             addUnloadedObject(UnloadedObject(bn::point(-4960, -1944), TILE_PASSAGE), false);
 
-            addUnloadedObject(UnloadedObject(bn::point(-4400, -2128), PHASE_ORB_UP), true);
+            addUnloadedObject(UnloadedObject(bn::point(-4400, -2128), PHASE_ORB_RIGHT), false);
             
         break;
 

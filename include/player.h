@@ -65,7 +65,7 @@
 #define PLAYER_MAX_AIR_FRAMES         180
 
 #define PLAYER_PHASE_STEP_MAX_DISTANCE PLAYER_COLLIDER_WIDTH * 6
-#define PLAYER_PHASE_STEP_SPEED        3
+#define PLAYER_PHASE_STEP_SPEED        4
 #define PLAYER_PHASE_STEP_EXIT_X_FORCE 6
 #define PLAYER_PHASE_STEP_EXIT_DECAY   0.05
 
@@ -151,6 +151,14 @@ enum PlayerState {
 	STATE_DYING,
 };
 
+enum PhaseDir
+{
+	PHASE_UP = 0,
+	PHASE_DOWN,
+	PHASE_LEFT,
+	PHASE_RIGHT
+};
+
 struct Player : GameObject {
 	
 	PlayerState 	state;
@@ -188,6 +196,8 @@ struct Player : GameObject {
 	Hitbox* hitbox_1_ptr;
 	Hitbox* hitbox_2_ptr;
 	Hitbox* hitbox_3_ptr;
+
+	PhaseDir phase_dir;
 	
 	Player();
 	Player(const Player& other);

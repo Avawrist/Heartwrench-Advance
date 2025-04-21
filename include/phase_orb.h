@@ -25,7 +25,7 @@
 #define PHASE_ORB_COLLIDER_OFFSET_X 0
 #define PHASE_ORB_COLLIDER_OFFSET_Y 0
 
-#define PHASE_DISTANCE 128
+#define PHASE_DISTANCE 256
 
 /////////////////////
 // Struct PhaseOrb //
@@ -47,18 +47,36 @@ struct PhaseOrb : GameObject {
                 const bn::span<const bn::regular_bg_map_cell>& cells,
                 const bn::regular_bg_item&                     bg_item,
 				const bn::camera_ptr&                          camera) override;
+
+	virtual void setDestination() = 0;
 };
 
 //////////////////////////////
 // Struct PhaseOrb Children //
 //////////////////////////////
 
-struct PhaseOrbUp : PhaseOrb {PhaseOrbUp();};
+struct PhaseOrbUp : PhaseOrb 
+{
+	PhaseOrbUp();
+	void setDestination() override {phase_destination = bn::fixed_point(x(), y() - PHASE_DISTANCE);};
+};
 
-struct PhaseOrbDown : PhaseOrb {PhaseOrbDown();};
+struct PhaseOrbDown : PhaseOrb 
+{
+	PhaseOrbDown();
+	void setDestination() override {phase_destination = bn::fixed_point(x(), y() + PHASE_DISTANCE);};
+};
 
-struct PhaseOrbLeft : PhaseOrb {PhaseOrbLeft();};
+struct PhaseOrbLeft : PhaseOrb 
+{
+	PhaseOrbLeft();
+	void setDestination() override {phase_destination = bn::fixed_point(x() - PHASE_DISTANCE, y());};
+};
 
-struct PhaseOrbRight : PhaseOrb {PhaseOrbRight();};
+struct PhaseOrbRight : PhaseOrb 
+{
+	PhaseOrbRight();
+	void setDestination() override {phase_destination = bn::fixed_point(x() + PHASE_DISTANCE, y());};
+};
 
 #endif

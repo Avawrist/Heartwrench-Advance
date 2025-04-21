@@ -40,6 +40,12 @@ void PhaseOrb::update(const RoomBounds&                              room_bounds
                       const bn::regular_bg_item&                     bg_item,
                       const bn::camera_ptr&                          camera)
 {
+    ///////////////////
+    // State Machine //
+    ///////////////////
+
+    setDestination();
+
     //////////////////////////////
     // Monitor unloading bounds //
     //////////////////////////////
@@ -68,8 +74,6 @@ PhaseOrbUp::PhaseOrbUp()
 								  								  0,
 								  								  0);
 
-    phase_destination = bn::fixed_point(x(), y() - PHASE_DISTANCE);
-
 }
 
 PhaseOrbDown::PhaseOrbDown()
@@ -88,8 +92,6 @@ PhaseOrbDown::PhaseOrbDown()
 								  								  bn::sprite_items::phase_orb_down.tiles_item(),
 								  								  0,
 								  								  0);
-
-    phase_destination = bn::fixed_point(x(), y() + PHASE_DISTANCE);
 
 }
 
@@ -110,8 +112,6 @@ PhaseOrbLeft::PhaseOrbLeft()
 								  								  0,
 								  								  0);
 
-    phase_destination = bn::fixed_point(x() - PHASE_DISTANCE, y());
-
 }
 
 PhaseOrbRight::PhaseOrbRight()
@@ -130,7 +130,5 @@ PhaseOrbRight::PhaseOrbRight()
 								  								  bn::sprite_items::phase_orb_right.tiles_item(),
 								  								  0,
 								  								  0);
-
-    phase_destination = bn::fixed_point(x(), y() + PHASE_DISTANCE);
 
 }
