@@ -9,9 +9,17 @@ Room::Room()
 
 }
 
-Room::Room(RoomName room_name, bn::camera_ptr camera_ptr)
+Room::Room(RoomName                                       room_name, 
+           bn::camera_ptr                                 camera_ptr,                
+           const bn::regular_bg_ptr&                      object_bg_ptr, 
+           const bn::regular_bg_item&                     object_bg_item,
+           const bn::span<const bn::regular_bg_map_cell>& object_cells)
 {
-    load(room_name, camera_ptr);
+    load(room_name, 
+         camera_ptr,
+         object_bg_ptr,
+         object_bg_item,
+         object_cells);
 }
 
 Room::Room(const Room& other)
@@ -209,7 +217,11 @@ void Room::clear()
 
 }
 
-void Room::load(RoomName room_name, const bn::camera_ptr& camera_ptr)
+void Room::load(RoomName                                       room_name, 
+                const bn::camera_ptr&                          camera_ptr, 
+                const bn::regular_bg_ptr&                      object_bg_ptr, 
+                const bn::regular_bg_item&                     object_bg_item,
+                const bn::span<const bn::regular_bg_map_cell>& object_cells)
 {
     if(room_name == NO_ROOM) {return;}
 
@@ -234,12 +246,7 @@ void Room::load(RoomName room_name, const bn::camera_ptr& camera_ptr)
             room_bounds.bottom_bound = -1600;
             room_bounds.left_bound   = -5120;
 
-            // Add UnloadedObjects //
-            addUnloadedObject(UnloadedObject(bn::point(-4800, -2248), TILE_PASSAGE), false);
-            addUnloadedObject(UnloadedObject(bn::point(-4624, -2280), TILE_PASSAGE), false);
-            addUnloadedObject(UnloadedObject(bn::point(-4960, -1944), TILE_PASSAGE), false);
-
-            addUnloadedObject(UnloadedObject(bn::point(-4400, -2128), PHASE_ORB_RIGHT), false);
+            // Add any special objects //
             
         break;
 
@@ -247,7 +254,7 @@ void Room::load(RoomName room_name, const bn::camera_ptr& camera_ptr)
 
             // Init Variables //
 
-            // Add UnloadedObjects //
+            // Add any special objects //
     
         break;
 
@@ -259,6 +266,45 @@ void Room::load(RoomName room_name, const bn::camera_ptr& camera_ptr)
         break;
     }
 
+    prepObjects(object_bg_ptr, 
+                object_bg_item, 
+                object_cells);
+
+}
+
+void Room::prepObjects(const bn::regular_bg_ptr&                      object_bg_ptr, 
+                       const bn::regular_bg_item&                     object_bg_item,
+                       const bn::span<const bn::regular_bg_map_cell>& object_cells)
+{
+    
+    int32 half_level_width_pixels  = object_bg_ptr.dimensions().width()  / 2;
+	int32 half_level_height_pixels = object_bg_ptr.dimensions().height() / 2;
+    
+    for(int32 x = room_bounds.left_bound   + half_level_width_pixels + (TILE_WIDTH / 2); 
+              x <= room_bounds.right_bound + half_level_width_pixels - (TILE_WIDTH / 2); 
+              x += TILE_WIDTH)
+    {
+        for(int32 y = room_bounds.top_bound     + half_level_height_pixels + (TILE_HEIGHT / 2); 
+                  y <= room_bounds.bottom_bound + half_level_height_pixels - (TILE_HEIGHT / 2);
+                  y += TILE_HEIGHT)
+        {
+            bn::point cell_index = bn::point((x / TILE_WIDTH), (y / TILE_HEIGHT));
+            ObjectType type = (ObjectType)getTileAtBGIndex(cell_index.x(), 
+                                                           cell_index.y(), 
+                                                           object_bg_ptr,
+                                                           object_cells,
+                                                           object_bg_item);
+
+            if(type > NO_TYPE && type < DEVIL_PLATFORM)
+            {
+                addUnloadedObject(UnloadedObject(bn::point(x - half_level_width_pixels  + (TILE_WIDTH / 2), 
+                                                           y - half_level_height_pixels + (TILE_HEIGHT / 2) - 1), 
+                                                           type), 
+                                  false);
+            }
+        }
+    }
+    
 }
 
 void Room::monitorUnloadedObjects(const bn::camera_ptr& camera_ptr)

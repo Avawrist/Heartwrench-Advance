@@ -40,11 +40,13 @@
 
 #define GAME_OBJECT_IGNORE_OWP_FRAMES 3
 
+// The index order here needs to align with the object tile index order in 
+// Aseprite.
+
 enum ObjectType 
 {
 	NO_TYPE = 0,
-	PLAYER,
-	TEST_ENEMY,
+	TILE_PASSAGE,
 	PHASE_ORB_UP,
 	PHASE_ORB_DOWN,
 	PHASE_ORB_LEFT,
@@ -55,7 +57,8 @@ enum ObjectType
 	HITBOX_SCYTHE_1,
 	HITBOX_SCYTHE_2,
 	HITBOX_SCYTHE_3,
-	TILE_PASSAGE
+	PLAYER,
+	TEST_ENEMY,
 };
 
 struct GameObject {

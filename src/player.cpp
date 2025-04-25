@@ -183,7 +183,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 {
     
 	bool clear_to_jump = true;
-	bool clear_to_drop = true;
 
 	//////////////////////////
     // Player State Machine //
@@ -486,10 +485,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT);
 
 							if(collider.isCollision(other_collider))
-							{
-								clear_to_jump = false;
-								clear_to_drop = false;
-							}
+							{clear_to_jump = false;}
 
 						}		
 						
@@ -502,10 +498,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT / 4);
 
 							if(collider.isCollision(other_collider))
-							{
-								clear_to_jump = false;
-								clear_to_drop = false;
-							}
+							{clear_to_jump = false;}
 
 						}
 							
@@ -517,10 +510,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT / 2);
 
 							if(collider.isCollision(other_collider))
-							{
-								clear_to_jump = false;
-								clear_to_drop = false;
-							}
+							{clear_to_jump = false;}
+
 						}
 
 						else if(tile_index == LEFT_SHALLOW_SLOPE_3_INDEX)
@@ -532,10 +523,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT - 2);
 
 							if(collider.isCollision(other_collider))
-							{
-								clear_to_jump = false;
-								clear_to_drop = false;
-							}
+							{clear_to_jump = false;}
 
 						}
 
@@ -548,10 +536,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT);
 
 							if(collider.isCollision(other_collider))
-							{
-								clear_to_jump = false;
-								clear_to_drop = false;
-							}
+							{clear_to_jump = false;}
 
 						}
 
@@ -564,10 +549,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT / 2);
 
 							if(collider.isCollision(other_collider))
-							{
-								clear_to_jump = false;
-								clear_to_drop = false;
-							}
+							{clear_to_jump = false;}
 
 						}
 
@@ -580,10 +562,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT);
 
 							if(collider.isCollision(other_collider))
-							{
-								clear_to_jump = false;
-								clear_to_drop = false;
-							}
+							{clear_to_jump = false;}
 
 						}
 
@@ -596,10 +575,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT / 4);
 
 							if(collider.isCollision(other_collider))
-							{
-								clear_to_jump = false;
-								clear_to_drop = false;
-							}
+							{clear_to_jump = false;}
 
 						}
 
@@ -612,10 +588,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT / 2);
 
 							if(collider.isCollision(other_collider))
-							{
-								clear_to_jump = false;
-								clear_to_drop = false;
-							}
+							{clear_to_jump = false;}
 
 						}
 
@@ -628,10 +601,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT - 2);
 
 							if(collider.isCollision(other_collider))
-							{
-								clear_to_jump = false;
-								clear_to_drop = false;
-							}
+							{clear_to_jump = false;}
 
 						}
 						
@@ -644,10 +614,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT);
 
 							if(collider.isCollision(other_collider))
-							{
-								clear_to_jump = false;
-								clear_to_drop = false;
-							}
+							{clear_to_jump = false;}
 
 						}
 						
@@ -660,10 +627,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT / 2);
 
 							if(collider.isCollision(other_collider))
-							{
-								clear_to_jump = false;
-								clear_to_drop = false;
-							}
+							{clear_to_jump = false;}
 
 						}
 						
@@ -676,10 +640,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 														TILE_HEIGHT);
 
 							if(collider.isCollision(other_collider))
-							{
-								clear_to_jump = false;
-								clear_to_drop = false;
-							}
+							{clear_to_jump = false;}
 
 						}
 						
@@ -734,13 +695,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				// Set State
 				setState(STATE_NO_STATE);
 			}
-
-			// Early drop breakout
-			else if(bn::keypad::down_held() && clear_to_drop)
-			{
-				// Set State
-				//setState(STATE_NO_STATE);
-			}	
 
 			// Keep moving towards phase destination until reached
 			else
@@ -1089,8 +1043,11 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				int32 world_x = ((check_index_x * TILE_WIDTH)  - half_level_width_pixels)  + (TILE_WIDTH / 2);
 				int32 world_y = ((check_index_y * TILE_HEIGHT) - half_level_height_pixels) + (TILE_HEIGHT / 2);
 
-				uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y, 
-													bg_ptr, cells, bg_item);
+				uint32 tile_index = getTileAtBGIndex(check_index_x, 
+													 check_index_y, 
+													 bg_ptr, 
+													 cells, 
+													 bg_item);
 
 				bn::fixed col_x_offset;
 				bn::fixed col_y_offset;
@@ -1453,679 +1410,688 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	// Get State Info from GameObjects //
 	/////////////////////////////////////
 
-	for(int32 i = 0; i < game_objects.size(); i++)
+	if(state != STATE_PHASE_STEP)
 	{
-		other_collider = game_objects.at(i)->collider;
-
-		switch(game_objects.at(i)->object_type)
+		for(int32 i = 0; i < game_objects.size(); i++)
 		{
-			case DEVIL_PLATFORM:
+			other_collider = game_objects.at(i)->collider;
 
-				// Test for, and log grounded collision
-				if(test_collider.isCollision(other_collider) && 
-				rigidbody.normalized_dir.y() >= 0)
-				{
-					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED) 
-					{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
-					sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
-					grounded_detected = true;
-				}
+			switch(game_objects.at(i)->object_type)
+			{
+				case DEVIL_PLATFORM:
 
-				// Test for wall riding on right side
-				if(test_collider_right.isCollision(other_collider) && 
-				rigidbody.final_dir.y() >= 0)
-				{wall_right_detected = true;}
-				
-				// Test for wall riding on left side
-				if(test_collider_left.isCollision(other_collider) && 
-				rigidbody.final_dir.y() >= 0)
-				{wall_left_detected = true;}
-
-			break;
-
-			case ANGEL_PLATFORM:
-			case SCYTHE_PLATFORM:
-				
-				if(collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
-				{
 					// Test for, and log grounded collision
 					if(test_collider.isCollision(other_collider) && 
 					rigidbody.normalized_dir.y() >= 0)
-					{ 
-						if(!bn::keypad::down_held()) 
-						{
-							grounded_detected     = true;
-							grounded_owp_detected = true;
-							if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED)
-							{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
-							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED) 
+						{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
+						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
+						grounded_detected = true;
+					}
+
+					// Test for wall riding on right side
+					if(test_collider_right.isCollision(other_collider) && 
+					rigidbody.final_dir.y() >= 0)
+					{wall_right_detected = true;}
+					
+					// Test for wall riding on left side
+					if(test_collider_left.isCollision(other_collider) && 
+					rigidbody.final_dir.y() >= 0)
+					{wall_left_detected = true;}
+
+				break;
+
+				case ANGEL_PLATFORM:
+				case SCYTHE_PLATFORM:
+					
+					if(collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
+					{
+						// Test for, and log grounded collision
+						if(test_collider.isCollision(other_collider) && 
+						rigidbody.normalized_dir.y() >= 0)
+						{ 
+							if(!bn::keypad::down_held()) 
+							{
+								grounded_detected     = true;
+								grounded_owp_detected = true;
+								if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED)
+								{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
+								sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
+							}
 						}
 					}
-				}
-				
-			break;
-
-			case PHASE_ORB_UP:
-			
-				if(state != STATE_PHASE_STEP && collider.isCollision(other_collider))
-				{
-					setState(STATE_PHASE_STEP);
-					phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-					phase_dir = PHASE_UP;
-				}
-
-			break;
-
-			case PHASE_ORB_DOWN:
-			
-				if(state != STATE_PHASE_STEP && collider.isCollision(other_collider))
-				{
-					setState(STATE_PHASE_STEP);
-					phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-					phase_dir = PHASE_DOWN;
-				}
-
-			break;
-
-			case PHASE_ORB_LEFT:
-
-				if(state != STATE_PHASE_STEP && collider.isCollision(other_collider))
-				{
-					setState(STATE_PHASE_STEP);
-					phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-					phase_dir = PHASE_LEFT;
-				}
-
-			break;
-
-			case PHASE_ORB_RIGHT:
-
-				if(state != STATE_PHASE_STEP && collider.isCollision(other_collider))
-				{
-					setState(STATE_PHASE_STEP);
-					phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-					phase_dir = PHASE_RIGHT;
-				}
-
-			break;
-
-			case TILE_PASSAGE:
-
-				// Test for, and log grounded collision
-				if(((TilePassage*)(game_objects.at(i)))->state == TILE_PASSAGE_STATE_SHUT &&
-				test_collider.isCollision(other_collider) && 
-				rigidbody.normalized_dir.y() >= 0)
-				{
 					
-					if(rigidbody.final_dir.y() >= PLAYER_MIN_PASSAGE_SPEED)
-					{((TilePassage*)(game_objects.at(i)))->setState(TILE_PASSAGE_STATE_OPEN);}
+				break;
 
-					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED)
+				case PHASE_ORB_UP:
+				
+					if(state != STATE_PHASE_STEP && collider.isCollision(other_collider))
 					{
-						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
-						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+						setState(STATE_PHASE_STEP);
+						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
+						phase_dir = PHASE_UP;
+						setPos(game_objects.at(i)->pos());
 					}
 
-					grounded_detected = true;
-				}
+				break;
 
-			break;
+				case PHASE_ORB_DOWN:
+				
+					if(state != STATE_PHASE_STEP && collider.isCollision(other_collider))
+					{
+						setState(STATE_PHASE_STEP);
+						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
+						phase_dir = PHASE_DOWN;
+						setPos(game_objects.at(i)->pos());
+					}
 
-			default:
-			break;
+				break;
+
+				case PHASE_ORB_LEFT:
+
+					if(state != STATE_PHASE_STEP && collider.isCollision(other_collider))
+					{
+						setState(STATE_PHASE_STEP);
+						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
+						phase_dir = PHASE_LEFT;
+						setPos(game_objects.at(i)->pos());
+					}
+
+				break;
+
+				case PHASE_ORB_RIGHT:
+
+					if(state != STATE_PHASE_STEP && collider.isCollision(other_collider))
+					{
+						setState(STATE_PHASE_STEP);
+						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
+						phase_dir = PHASE_RIGHT;
+						setPos(game_objects.at(i)->pos());
+					}
+
+				break;
+
+				case TILE_PASSAGE:
+
+					// Test for, and log grounded collision
+					if(((TilePassage*)(game_objects.at(i)))->state == TILE_PASSAGE_STATE_SHUT &&
+					test_collider.isCollision(other_collider) && 
+					rigidbody.normalized_dir.y() >= 0)
+					{
+						
+						if(rigidbody.final_dir.y() >= PLAYER_MIN_PASSAGE_SPEED)
+						{((TilePassage*)(game_objects.at(i)))->setState(TILE_PASSAGE_STATE_OPEN);}
+
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+						}
+
+						grounded_detected = true;
+					}
+
+				break;
+
+				default:
+				break;
+			}
 		}
 	}
 
 	///////////////////////////////
     // Get State Info from Tiles //
     ///////////////////////////////							   
-
-	for(int32 y = -2; y < 3; y++)
+	if(state != STATE_PHASE_STEP)
 	{
-		for(int32 x = -2; x < 3; x++)
+		for(int32 y = -2; y < 3; y++)
 		{
-			
-			// 1. Get tile type at index //
-			int32 check_index_x = cell_index.x() + x;
-			int32 check_index_y = cell_index.y() + y;
-
-			// Clamp index values so we don't crash by going out of bounds.
-			while(check_index_x < 0) {check_index_x++;}
-			while(check_index_x > (bg_ptr.dimensions().width() / 8) - 1)  {check_index_x--;}
-
-			while(check_index_y < 0) {check_index_y++;}
-			while(check_index_y > (bg_ptr.dimensions().height() / 8) - 1) {check_index_y--;}
-
-			// Determine world coords in case we need to make a collider.
-			int32 world_x = ((check_index_x * TILE_WIDTH)  - half_level_width_pixels)  + (TILE_WIDTH / 2);
-			int32 world_y = ((check_index_y * TILE_HEIGHT) - half_level_height_pixels) + (TILE_HEIGHT / 2);
-
-			uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y, 
-												bg_ptr, cells, bg_item);
-
-			// 2. Check Tile Type and update state accordingly //
-			if(tile_index >= HARD_BLOCK_MIN_INDEX &&
-			tile_index <= HARD_BLOCK_MAX_INDEX)
+			for(int32 x = -2; x < 3; x++)
 			{
-
-				other_collider = Collider(world_x,
-										world_y, 
-										TILE_WIDTH,
-										TILE_HEIGHT);
-
-				// Test for, and log grounded collision
-				if(test_collider.isCollision(other_collider) && 
-				rigidbody.normalized_dir.y() >= 0)
-				{
-					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-					rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-					{
-						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
-						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-					}
-
-					grounded_detected = true;
-				}
-
-				// Test for wall riding on right side
-				if(test_collider_right.isCollision(other_collider)) 
-				{
-					right_wj_eligible = true;
-
-					if(rigidbody.normalized_dir.y() >= 0 &&
-					bn::keypad::right_held()) 
-					{
-						wall_right_detected = true;
-					}
-				}
 				
-				// Test for wall riding on left side
-				if(test_collider_left.isCollision(other_collider))
+				// 1. Get tile type at index //
+				int32 check_index_x = cell_index.x() + x;
+				int32 check_index_y = cell_index.y() + y;
+
+				// Clamp index values so we don't crash by going out of bounds.
+				while(check_index_x < 0) {check_index_x++;}
+				while(check_index_x > (bg_ptr.dimensions().width() / 8) - 1)  {check_index_x--;}
+
+				while(check_index_y < 0) {check_index_y++;}
+				while(check_index_y > (bg_ptr.dimensions().height() / 8) - 1) {check_index_y--;}
+
+				// Determine world coords in case we need to make a collider.
+				int32 world_x = ((check_index_x * TILE_WIDTH)  - half_level_width_pixels)  + (TILE_WIDTH / 2);
+				int32 world_y = ((check_index_y * TILE_HEIGHT) - half_level_height_pixels) + (TILE_HEIGHT / 2);
+
+				uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y, 
+													bg_ptr, cells, bg_item);
+
+				// 2. Check Tile Type and update state accordingly //
+				if(tile_index >= HARD_BLOCK_MIN_INDEX &&
+				tile_index <= HARD_BLOCK_MAX_INDEX)
 				{
-					left_wj_eligible = true;
 
-					if(rigidbody.normalized_dir.y() >= 0 &&
-					bn::keypad::left_held()) 
-					{
-						wall_left_detected = true;
-					}
-				}
-
-			}
-					
-			else if(tile_index >= ONEWAY_BLOCK_MIN_INDEX &&
-					tile_index <= ONEWAY_BLOCK_MAX_INDEX)
-			{
-			
-				other_collider = Collider(world_x, 
-											world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
-											TILE_WIDTH, 
-											ONEWAYBLOCK_COLLIDER_HEIGHT);
-
-				if(collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
-				{
-					// Test for, and log grounded collision
-					if(test_collider.isCollision(other_collider) && 
-						rigidbody.normalized_dir.y() >= 0)
-					{
-						grounded_detected = true;
-
-						if(!bn::keypad::down_held()) 
-						{
-							if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-							{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
-							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
-						}
-					}
-				}
-			}
-
-			else if(tile_index == UP_SPIKE_BLOCK_1_INDEX ||
-					tile_index == UP_SPIKE_BLOCK_2_INDEX)
-			{
-				other_collider = Collider(world_x,
-											world_y, 
-											TILE_WIDTH, 
-											TILE_HEIGHT);
-				
-				if(collider.isCollision(other_collider) && !kill_player)
-				{
-					rigidbody.removeForces();
-					rigidbody.addForce(Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * 0, 
-																	PLAYER_DEATH_Y_FORCE * UP),
-																	PLAYER_DEATH_DECAY));
-					kill_player = true;
-				}
-			}
-
-			else if(tile_index == DOWN_SPIKE_BLOCK_1_INDEX ||
-					tile_index == DOWN_SPIKE_BLOCK_2_INDEX)
-			{
-				other_collider = Collider(world_x,
-										world_y, 
-										TILE_WIDTH, 
-										TILE_HEIGHT);
-				
-				if(collider.isCollision(other_collider) && !kill_player)
-				{
-					rigidbody.removeForces();
-					rigidbody.addForce(Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * 0, 
-																	PLAYER_DEATH_Y_FORCE * DOWN), 
-																	PLAYER_DEATH_DECAY));
-					kill_player = true;
-				}
-			}
-
-			else if(tile_index == LEFT_SPIKE_BLOCK_1_INDEX ||
-					tile_index == LEFT_SPIKE_BLOCK_2_INDEX)
-			{
-				other_collider = Collider(world_x,
-											world_y, 
-											TILE_WIDTH, 
-											TILE_HEIGHT);
-				
-				if(collider.isCollision(other_collider) && !kill_player)
-				{
-					rigidbody.removeForces();
-					rigidbody.addForce(Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * LEFT,
-																	PLAYER_DEATH_Y_FORCE * 0), 
-																	PLAYER_DEATH_DECAY));
-					kill_player = true;
-				}
-			}
-
-			else if(tile_index == RIGHT_SPIKE_BLOCK_1_INDEX || 
-					tile_index == RIGHT_SPIKE_BLOCK_2_INDEX)
-			{
-				other_collider = Collider(world_x,
+					other_collider = Collider(world_x,
 											world_y, 
 											TILE_WIDTH,
 											TILE_HEIGHT);
+
+					// Test for, and log grounded collision
+					if(test_collider.isCollision(other_collider) && 
+					rigidbody.normalized_dir.y() >= 0)
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+						}
+
+						grounded_detected = true;
+					}
+
+					// Test for wall riding on right side
+					if(test_collider_right.isCollision(other_collider)) 
+					{
+						right_wj_eligible = true;
+
+						if(rigidbody.normalized_dir.y() >= 0 &&
+						bn::keypad::right_held()) 
+						{
+							wall_right_detected = true;
+						}
+					}
+					
+					// Test for wall riding on left side
+					if(test_collider_left.isCollision(other_collider))
+					{
+						left_wj_eligible = true;
+
+						if(rigidbody.normalized_dir.y() >= 0 &&
+						bn::keypad::left_held()) 
+						{
+							wall_left_detected = true;
+						}
+					}
+
+				}
+						
+				else if(tile_index >= ONEWAY_BLOCK_MIN_INDEX &&
+						tile_index <= ONEWAY_BLOCK_MAX_INDEX)
+				{
 				
-				if(collider.isCollision(other_collider) && !kill_player)
-				{
-					rigidbody.removeForces();
-					rigidbody.addForce(Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * RIGHT,
-																	PLAYER_DEATH_Y_FORCE * 0), 
-																	PLAYER_DEATH_DECAY));
-					kill_player = true;
-				}
-			}
+					other_collider = Collider(world_x, 
+												world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
+												TILE_WIDTH, 
+												ONEWAYBLOCK_COLLIDER_HEIGHT);
 
-			else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
-			{
-				other_collider = Collider(world_x,
-										world_y + 3, 
-										TILE_WIDTH, 
-										TILE_HEIGHT / 4);
-
-				index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-				index = clamp(0, 7, index);
-				local_height  = left_shallow_slope_1_arr[index];
-				global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-				// Test for, and log grounded collision
-				if(test_collider.isCollision(other_collider) &&
-					test_collider.p4.y() >= global_height)
-				{
-					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+					if(collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
 					{
-						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
-						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+						// Test for, and log grounded collision
+						if(test_collider.isCollision(other_collider) && 
+							rigidbody.normalized_dir.y() >= 0)
+						{
+							grounded_detected = true;
+
+							if(!bn::keypad::down_held()) 
+							{
+								if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+								rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+								{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
+								sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);}
+							}
+						}
 					}
-
-					grounded_detected = true;
-
-					// Offset the decline of the slope if player is moving with it.
-					// This avoids a frame in air state when descending slopes.
-					if(rigidbody.normalized_dir.x() == -1)
-					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 				}
-			}
 
-			else if(tile_index == LEFT_SHALLOW_SLOPE_2_INDEX)
-			{					
-				other_collider = Collider(world_x,
-											world_y + 2, 
-											TILE_WIDTH, 
-											TILE_HEIGHT / 2);
-
-				index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-				index = clamp(0, 7, index);
-				local_height  = left_shallow_slope_2_arr[index];
-				global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-				// Test for, and log grounded collision
-				if(test_collider.isCollision(other_collider) &&
-					test_collider.p4.y() >= global_height)
+				else if(tile_index == UP_SPIKE_BLOCK_1_INDEX ||
+						tile_index == UP_SPIKE_BLOCK_2_INDEX)
 				{
-					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+					other_collider = Collider(world_x,
+												world_y, 
+												TILE_WIDTH, 
+												TILE_HEIGHT);
+					
+					if(collider.isCollision(other_collider) && !kill_player)
 					{
-						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
-						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+						rigidbody.removeForces();
+						rigidbody.addForce(Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * 0, 
+																		PLAYER_DEATH_Y_FORCE * UP),
+																		PLAYER_DEATH_DECAY));
+						kill_player = true;
 					}
-
-					grounded_detected = true;
-
-					// Offset the decline of the slope if player is moving with it.
-					// This avoids a frame in air state when descending slopes.
-					if(rigidbody.normalized_dir.x() == -1)
-					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 				}
-			}
 
-			else if(tile_index == LEFT_SHALLOW_SLOPE_3_INDEX)
-			{
-				other_collider = Collider(world_x,
-											world_y + 1, 
-											TILE_WIDTH, 
-											TILE_HEIGHT - 2);
-
-				index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-				index = clamp(0, 7, index);
-				local_height  = left_shallow_slope_3_arr[index];
-				global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-				// Test for, and log grounded collision
-				if(test_collider.isCollision(other_collider) &&
-					test_collider.p4.y() >= global_height)
+				else if(tile_index == DOWN_SPIKE_BLOCK_1_INDEX ||
+						tile_index == DOWN_SPIKE_BLOCK_2_INDEX)
 				{
-					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-					{
-						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
-						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-					}
-
-					grounded_detected = true;
-
-					// Offset the decline of the slope if player is moving with it.
-					// This avoids a frame in air state when descending slopes.
-					if(rigidbody.normalized_dir.x() == -1)
-					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
-				}
-			}
-
-			else if(tile_index == LEFT_SHALLOW_SLOPE_4_INDEX)
-			{					
-				other_collider = Collider(world_x,
+					other_collider = Collider(world_x,
 											world_y, 
 											TILE_WIDTH, 
 											TILE_HEIGHT);
-
-				index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-				index = clamp(0, 7, index);
-				local_height  = left_shallow_slope_4_arr[index];
-				global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-				// Test for, and log grounded collision
-				if(test_collider.isCollision(other_collider) &&
-					test_collider.p4.y() >= global_height)
-				{
-					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+					
+					if(collider.isCollision(other_collider) && !kill_player)
 					{
-						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
-						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+						rigidbody.removeForces();
+						rigidbody.addForce(Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * 0, 
+																		PLAYER_DEATH_Y_FORCE * DOWN), 
+																		PLAYER_DEATH_DECAY));
+						kill_player = true;
 					}
-
-					grounded_detected = true;
-
-					// Offset the decline of the slope if player is moving with it.
-					// This avoids a frame in air state when descending slopes.
-					if(rigidbody.normalized_dir.x() == -1)
-					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 				}
-			}
-			
-			else if(tile_index == LEFT_STEEP_SLOPE_1_INDEX)
-			{
-				other_collider = Collider(world_x,
-											world_y + 2, 
-											TILE_WIDTH, 
-											TILE_HEIGHT / 2);
 
-				index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-				index = clamp(0, 7, index);
-				local_height  = left_steep_slope_1_arr[index];
-				global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-				// Test for, and log grounded collision
-				if(test_collider.isCollision(other_collider) &&
-					test_collider.p4.y() >= global_height)
+				else if(tile_index == LEFT_SPIKE_BLOCK_1_INDEX ||
+						tile_index == LEFT_SPIKE_BLOCK_2_INDEX)
 				{
-					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+					other_collider = Collider(world_x,
+												world_y, 
+												TILE_WIDTH, 
+												TILE_HEIGHT);
+					
+					if(collider.isCollision(other_collider) && !kill_player)
 					{
-						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
-						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+						rigidbody.removeForces();
+						rigidbody.addForce(Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * LEFT,
+																		PLAYER_DEATH_Y_FORCE * 0), 
+																		PLAYER_DEATH_DECAY));
+						kill_player = true;
 					}
-
-					grounded_detected = true;
-
-					// Offset the decline of the slope if player is moving with it.
-					// This avoids a frame in air state when descending slopes.
-					if(rigidbody.normalized_dir.x() == -1)
-					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 				}
-			}
-			
-			else if(tile_index == LEFT_STEEP_SLOPE_2_INDEX)
-			{	
-				other_collider = Collider(world_x,
-											world_y, 
-											TILE_WIDTH, 
-											TILE_HEIGHT);
 
-				index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-				index = clamp(0, 7, index);
-				local_height  = left_steep_slope_2_arr[index];
-				global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-				// Test for, and log grounded collision
-				if(test_collider.isCollision(other_collider) &&
-					test_collider.p4.y() >= global_height)
+				else if(tile_index == RIGHT_SPIKE_BLOCK_1_INDEX || 
+						tile_index == RIGHT_SPIKE_BLOCK_2_INDEX)
 				{
-					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+					other_collider = Collider(world_x,
+												world_y, 
+												TILE_WIDTH,
+												TILE_HEIGHT);
+					
+					if(collider.isCollision(other_collider) && !kill_player)
 					{
-						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
-						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+						rigidbody.removeForces();
+						rigidbody.addForce(Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * RIGHT,
+																		PLAYER_DEATH_Y_FORCE * 0), 
+																		PLAYER_DEATH_DECAY));
+						kill_player = true;
 					}
-
-					grounded_detected = true;
-
-					// Offset the decline of the slope if player is moving with it.
-					// This avoids a frame in air state when descending slopes.
-					if(rigidbody.normalized_dir.x() == -1)
-					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 				}
-			}				
 
-			else if(tile_index == RIGHT_SHALLOW_SLOPE_1_INDEX)
-			{
-				other_collider = Collider(world_x,
+				else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
+				{
+					other_collider = Collider(world_x,
 											world_y + 3, 
 											TILE_WIDTH, 
 											TILE_HEIGHT / 4);
 
-				index = (collider.p1.x() - other_collider.p1.x()).integer();
-				index = clamp(0, 7, index);
-				local_height  = right_shallow_slope_1_arr[index];
-				global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = left_shallow_slope_1_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
 
-				// Test for, and log grounded collision
-				if(test_collider.isCollision(other_collider) &&
-					collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
-				{
-					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+					// Test for, and log grounded collision
+					if(test_collider.isCollision(other_collider) &&
+						test_collider.p4.y() >= global_height)
 					{
-						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
-						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+						}
+
+						grounded_detected = true;
+
+						// Offset the decline of the slope if player is moving with it.
+						// This avoids a frame in air state when descending slopes.
+						if(rigidbody.normalized_dir.x() == -1)
+						{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 					}
-
-					grounded_detected = true;
-
-					if(rigidbody.normalized_dir.x() == 1)
-					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 				}
+
+				else if(tile_index == LEFT_SHALLOW_SLOPE_2_INDEX)
+				{					
+					other_collider = Collider(world_x,
+												world_y + 2, 
+												TILE_WIDTH, 
+												TILE_HEIGHT / 2);
+
+					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = left_shallow_slope_2_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Test for, and log grounded collision
+					if(test_collider.isCollision(other_collider) &&
+						test_collider.p4.y() >= global_height)
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+						}
+
+						grounded_detected = true;
+
+						// Offset the decline of the slope if player is moving with it.
+						// This avoids a frame in air state when descending slopes.
+						if(rigidbody.normalized_dir.x() == -1)
+						{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
+					}
+				}
+
+				else if(tile_index == LEFT_SHALLOW_SLOPE_3_INDEX)
+				{
+					other_collider = Collider(world_x,
+												world_y + 1, 
+												TILE_WIDTH, 
+												TILE_HEIGHT - 2);
+
+					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = left_shallow_slope_3_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Test for, and log grounded collision
+					if(test_collider.isCollision(other_collider) &&
+						test_collider.p4.y() >= global_height)
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+						}
+
+						grounded_detected = true;
+
+						// Offset the decline of the slope if player is moving with it.
+						// This avoids a frame in air state when descending slopes.
+						if(rigidbody.normalized_dir.x() == -1)
+						{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
+					}
+				}
+
+				else if(tile_index == LEFT_SHALLOW_SLOPE_4_INDEX)
+				{					
+					other_collider = Collider(world_x,
+												world_y, 
+												TILE_WIDTH, 
+												TILE_HEIGHT);
+
+					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = left_shallow_slope_4_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Test for, and log grounded collision
+					if(test_collider.isCollision(other_collider) &&
+						test_collider.p4.y() >= global_height)
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+						}
+
+						grounded_detected = true;
+
+						// Offset the decline of the slope if player is moving with it.
+						// This avoids a frame in air state when descending slopes.
+						if(rigidbody.normalized_dir.x() == -1)
+						{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
+					}
+				}
+				
+				else if(tile_index == LEFT_STEEP_SLOPE_1_INDEX)
+				{
+					other_collider = Collider(world_x,
+												world_y + 2, 
+												TILE_WIDTH, 
+												TILE_HEIGHT / 2);
+
+					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = left_steep_slope_1_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Test for, and log grounded collision
+					if(test_collider.isCollision(other_collider) &&
+						test_collider.p4.y() >= global_height)
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+						}
+
+						grounded_detected = true;
+
+						// Offset the decline of the slope if player is moving with it.
+						// This avoids a frame in air state when descending slopes.
+						if(rigidbody.normalized_dir.x() == -1)
+						{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
+					}
+				}
+				
+				else if(tile_index == LEFT_STEEP_SLOPE_2_INDEX)
+				{	
+					other_collider = Collider(world_x,
+												world_y, 
+												TILE_WIDTH, 
+												TILE_HEIGHT);
+
+					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = left_steep_slope_2_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Test for, and log grounded collision
+					if(test_collider.isCollision(other_collider) &&
+						test_collider.p4.y() >= global_height)
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+						}
+
+						grounded_detected = true;
+
+						// Offset the decline of the slope if player is moving with it.
+						// This avoids a frame in air state when descending slopes.
+						if(rigidbody.normalized_dir.x() == -1)
+						{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
+					}
+				}				
+
+				else if(tile_index == RIGHT_SHALLOW_SLOPE_1_INDEX)
+				{
+					other_collider = Collider(world_x,
+												world_y + 3, 
+												TILE_WIDTH, 
+												TILE_HEIGHT / 4);
+
+					index = (collider.p1.x() - other_collider.p1.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = right_shallow_slope_1_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Test for, and log grounded collision
+					if(test_collider.isCollision(other_collider) &&
+						collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+						}
+
+						grounded_detected = true;
+
+						if(rigidbody.normalized_dir.x() == 1)
+						{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
+					}
+				}
+
+				else if(tile_index == RIGHT_SHALLOW_SLOPE_2_INDEX)
+				{
+					other_collider = Collider(world_x,
+												world_y + 2, 
+												TILE_WIDTH, 
+												TILE_HEIGHT / 2);
+
+					index = (collider.p1.x() - other_collider.p1.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = right_shallow_slope_2_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Test for, and log grounded collision
+					if(test_collider.isCollision(other_collider) &&
+						collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+						}
+
+						grounded_detected = true;
+
+						if(rigidbody.normalized_dir.x() == 1)
+						{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
+					}
+				}
+
+				else if(tile_index == RIGHT_SHALLOW_SLOPE_3_INDEX)
+				{
+					other_collider = Collider(world_x,
+												world_y + 1, 
+												TILE_WIDTH, 
+												TILE_HEIGHT - 2);
+
+					index = (collider.p1.x() - other_collider.p1.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = right_shallow_slope_3_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Test for, and log grounded collision
+					if(test_collider.isCollision(other_collider) &&
+						collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+						}
+
+						grounded_detected = true;
+
+						if(rigidbody.normalized_dir.x() == 1)
+						{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
+					}
+				}
+
+				else if(tile_index == RIGHT_SHALLOW_SLOPE_4_INDEX)
+				{
+					other_collider = Collider(world_x,
+												world_y, 
+												TILE_WIDTH, 
+												TILE_HEIGHT);
+
+					index = (collider.p1.x() - other_collider.p1.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = right_shallow_slope_4_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Test for, and log grounded collision
+					if(test_collider.isCollision(other_collider) &&
+						collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+						}
+
+						grounded_detected = true;
+
+						if(rigidbody.normalized_dir.x() == 1)
+						{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
+					}
+				}
+
+				else if(tile_index == RIGHT_STEEP_SLOPE_1_INDEX)
+				{
+					other_collider = Collider(world_x,
+												world_y + 2, 
+												TILE_WIDTH, 
+												TILE_HEIGHT / 2);
+
+					index = (collider.p1.x() - other_collider.p1.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = right_steep_slope_1_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Test for, and log grounded collision
+					if(test_collider.isCollision(other_collider) &&
+						collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+						}
+
+						grounded_detected = true;
+
+						if(rigidbody.normalized_dir.x() == 1)
+						{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
+					}
+				}
+
+				else if(tile_index == RIGHT_STEEP_SLOPE_2_INDEX)
+				{
+					other_collider = Collider(world_x,
+												world_y, 
+												TILE_WIDTH, 
+												TILE_HEIGHT);
+
+					index = (collider.p1.x() - other_collider.p1.x()).integer();
+					index = clamp(0, 7, index);
+					local_height  = right_steep_slope_2_arr[index];
+					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+					// Test for, and log grounded collision
+					if(test_collider.isCollision(other_collider) &&
+						collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+						{
+							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
+							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+						}
+
+						grounded_detected = true;
+
+						// Offset the decline of the slope if player is moving with it.
+						// This avoids a frame in air state when descending slopes.
+						if(rigidbody.normalized_dir.x() == 1)
+						{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
+					}
+				}	
 			}
-
-			else if(tile_index == RIGHT_SHALLOW_SLOPE_2_INDEX)
-			{
-				other_collider = Collider(world_x,
-											world_y + 2, 
-											TILE_WIDTH, 
-											TILE_HEIGHT / 2);
-
-				index = (collider.p1.x() - other_collider.p1.x()).integer();
-				index = clamp(0, 7, index);
-				local_height  = right_shallow_slope_2_arr[index];
-				global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-				// Test for, and log grounded collision
-				if(test_collider.isCollision(other_collider) &&
-					collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
-				{
-					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-					{
-						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
-						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-					}
-
-					grounded_detected = true;
-
-					if(rigidbody.normalized_dir.x() == 1)
-					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
-				}
-			}
-
-			else if(tile_index == RIGHT_SHALLOW_SLOPE_3_INDEX)
-			{
-				other_collider = Collider(world_x,
-											world_y + 1, 
-											TILE_WIDTH, 
-											TILE_HEIGHT - 2);
-
-				index = (collider.p1.x() - other_collider.p1.x()).integer();
-				index = clamp(0, 7, index);
-				local_height  = right_shallow_slope_3_arr[index];
-				global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-				// Test for, and log grounded collision
-				if(test_collider.isCollision(other_collider) &&
-					collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
-				{
-					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-					{
-						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
-						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-					}
-
-					grounded_detected = true;
-
-					if(rigidbody.normalized_dir.x() == 1)
-					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
-				}
-			}
-
-			else if(tile_index == RIGHT_SHALLOW_SLOPE_4_INDEX)
-			{
-				other_collider = Collider(world_x,
-											world_y, 
-											TILE_WIDTH, 
-											TILE_HEIGHT);
-
-				index = (collider.p1.x() - other_collider.p1.x()).integer();
-				index = clamp(0, 7, index);
-				local_height  = right_shallow_slope_4_arr[index];
-				global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-				// Test for, and log grounded collision
-				if(test_collider.isCollision(other_collider) &&
-					collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
-				{
-					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-					{
-						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
-						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-					}
-
-					grounded_detected = true;
-
-					if(rigidbody.normalized_dir.x() == 1)
-					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
-				}
-			}
-
-			else if(tile_index == RIGHT_STEEP_SLOPE_1_INDEX)
-			{
-				other_collider = Collider(world_x,
-											world_y + 2, 
-											TILE_WIDTH, 
-											TILE_HEIGHT / 2);
-
-				index = (collider.p1.x() - other_collider.p1.x()).integer();
-				index = clamp(0, 7, index);
-				local_height  = right_steep_slope_1_arr[index];
-				global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-				// Test for, and log grounded collision
-				if(test_collider.isCollision(other_collider) &&
-					collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
-				{
-					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-					{
-						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
-						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-					}
-
-					grounded_detected = true;
-
-					if(rigidbody.normalized_dir.x() == 1)
-					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
-				}
-			}
-
-			else if(tile_index == RIGHT_STEEP_SLOPE_2_INDEX)
-			{
-				other_collider = Collider(world_x,
-											world_y, 
-											TILE_WIDTH, 
-											TILE_HEIGHT);
-
-				index = (collider.p1.x() - other_collider.p1.x()).integer();
-				index = clamp(0, 7, index);
-				local_height  = right_steep_slope_2_arr[index];
-				global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-				// Test for, and log grounded collision
-				if(test_collider.isCollision(other_collider) &&
-					collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
-				{
-					if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-					{
-						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);				
-						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
-					}
-
-					grounded_detected = true;
-
-					// Offset the decline of the slope if player is moving with it.
-					// This avoids a frame in air state when descending slopes.
-					if(rigidbody.normalized_dir.x() == 1)
-					{rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
-				}
-			}	
 		}
 	}
 
@@ -2378,6 +2344,8 @@ void Player::setState(PlayerState new_state)
 		break;
 
 		case STATE_PHASE_STEP:
+
+			rigidbody.removeForces();
 
 			air_frames_elapsed               = 0;
 			remaining_jump_input_frames      = 0;

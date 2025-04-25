@@ -18,9 +18,11 @@ Level::Level(const Level& other)
     main_bg_ptr    = other.main_bg_ptr;
     backdrop_ptr   = other.backdrop_ptr;
     painted_bg_ptr = other.painted_bg_ptr;
-    foreground_ptr = other.foreground_ptr;
+    object_bg_ptr  = other.object_bg_ptr;
     bg_item        = other.bg_item;
     cells          = other.cells;
+    object_bg_item = other.object_bg_item;
+    object_cells   = other.object_cells;
 
     tile_width  = other.tile_width;
     tile_height = other.tile_height;
@@ -45,9 +47,11 @@ void Level::operator =(const Level& other)
     main_bg_ptr    = other.main_bg_ptr;
     backdrop_ptr   = other.backdrop_ptr;
     painted_bg_ptr = other.painted_bg_ptr;
-    foreground_ptr = other.foreground_ptr;
+    object_bg_ptr  = other.object_bg_ptr;
     bg_item        = other.bg_item;
     cells          = other.cells;
+    object_bg_item = other.object_bg_item;
+    object_cells   = other.object_cells;
 
     tile_width  = other.tile_width;
     tile_height = other.tile_height;
@@ -67,8 +71,10 @@ void Level::clear()
     main_bg_ptr.reset();
     backdrop_ptr.reset();
     painted_bg_ptr.reset();
-    foreground_ptr.reset();
+    object_bg_ptr.reset();
+
     bg_item.reset();
+    object_bg_item.reset();
 
     BN_LOG("=== Level cleared ===");
     BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
@@ -89,20 +95,30 @@ void Level::load(LevelName level_name)
     // Record current level & pos
     current_level_name = level_name;
 
+    // Store room name before constructing
+    RoomName temp_room_name = NO_ROOM;
+
     // Initialize Variables
     switch(level_name)
     {
         case LEVEL_TEST:
+            
+            // Load BGs //
+            backdrop_ptr   = bn::regular_bg_items::test_bg.create_bg(0, 0);
+            painted_bg_ptr = bn::regular_bg_items::test_painted_bg.create_bg(0, 0);
+
+            main_bg_ptr    = bn::regular_bg_items::test_level.create_bg(0, 0);
+            bg_item        = bn::regular_bg_items::test_level;
+
+            object_bg_ptr  = bn::regular_bg_items::test_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::test_object_bg;
+
+            // Update cells
+            cells        = main_bg_ptr->map().cells_ref().value();
+            object_cells = object_bg_ptr->map().cells_ref().value();
 
             // Set Room //
-            current_room = Room(ROOM_TEST_1, camera.value());
-            
-            // Load BG //
-            backdrop_ptr   = bn::regular_bg_items::test_bg.create_bg(0, 0);
-            main_bg_ptr    = bn::regular_bg_items::test_level.create_bg(0, 0);
-            painted_bg_ptr = bn::regular_bg_items::test_painted_bg.create_bg(0, 0);
-            foreground_ptr = bn::regular_bg_items::test_foreground.create_bg(0, 0);
-            bg_item        = bn::regular_bg_items::test_level;
+            temp_room_name = ROOM_TEST_1;
 
         break;
 
@@ -114,20 +130,24 @@ void Level::load(LevelName level_name)
         break;
     }
 
-    // Update cells
-    cells = main_bg_ptr->map().cells_ref().value();
+    current_room = Room(temp_room_name, 
+                        camera.value(), 
+                        object_bg_ptr.value(), 
+                        object_bg_item.value(), 
+                        object_cells);
     
     // Set draw priority for BGs
     painted_bg_ptr->set_z_order(PAINTED_BG_ORDER);
     backdrop_ptr->set_z_order(BACKDROP_ORDER);
     main_bg_ptr->set_z_order(MAIN_BG_ORDER);
-    foreground_ptr->set_z_order(FOREGROUND_ORDER);
+    object_bg_ptr->set_z_order(OBJECT_BG_ORDER);
 
     // Set Camera
     backdrop_ptr->set_camera(camera.value());
     main_bg_ptr->set_camera(camera.value());
     painted_bg_ptr->set_camera(camera.value());
-    foreground_ptr->set_camera(camera.value());
+    object_bg_ptr->set_camera(camera.value());
+    object_bg_ptr->set_visible(false);
 
     BN_LOG("=== Level loaded ===");
     BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
@@ -291,7 +311,11 @@ void Level::transitionRoom()
         if(current_room.right_neighbor != NO_ROOM)
         {
             // Create the neighbor room
-            current_room = Room(current_room.right_neighbor, camera.value());
+            current_room = Room(current_room.right_neighbor, 
+                                camera.value(),
+                                object_bg_ptr.value(), 
+                                object_bg_item.value(), 
+                                object_cells);
 
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room
@@ -313,7 +337,11 @@ void Level::transitionRoom()
         {
 
             // Create the neighbor room
-            current_room = Room(current_room.left_neighbor, camera.value());
+            current_room = Room(current_room.left_neighbor, 
+                                camera.value(),
+                                object_bg_ptr.value(), 
+                                object_bg_item.value(), 
+                                object_cells);
 
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room
@@ -334,7 +362,11 @@ void Level::transitionRoom()
         if(current_room.top_neighbor != NO_ROOM)
         {
             // Create the neighbor room
-            current_room = Room(current_room.top_neighbor, camera.value());
+            current_room = Room(current_room.top_neighbor, 
+                                camera.value(),
+                                object_bg_ptr.value(), 
+                                object_bg_item.value(), 
+                                object_cells);
 
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room
@@ -355,7 +387,11 @@ void Level::transitionRoom()
         if(current_room.bottom_neighbor != NO_ROOM)
         {
             // Create the neighbor room
-            current_room = Room(current_room.bottom_neighbor, camera.value());
+            current_room = Room(current_room.bottom_neighbor, 
+                                camera.value(),
+                                object_bg_ptr.value(), 
+                                object_bg_item.value(),
+                                object_cells);
 
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room

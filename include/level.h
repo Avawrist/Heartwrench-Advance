@@ -18,7 +18,7 @@
 #include "bn_regular_bg_items_test_bg.h"
 #include "bn_regular_bg_items_test_level.h"
 #include "bn_regular_bg_items_test_painted_bg.h"
-#include "bn_regular_bg_items_test_foreground.h"
+#include "bn_regular_bg_items_test_object_bg.h"
 
 // My Libs
 #include "room.h"
@@ -36,7 +36,7 @@
 #define PAINTED_BG_ORDER 4
 #define BACKDROP_ORDER   3
 #define MAIN_BG_ORDER    2
-#define FOREGROUND_ORDER 1
+#define OBJECT_BG_ORDER  1
 
 enum LevelName 
 {
@@ -52,9 +52,13 @@ struct Level
     bn::optional<bn::regular_bg_ptr>        main_bg_ptr;
     bn::optional<bn::regular_bg_ptr>        backdrop_ptr;
     bn::optional<bn::regular_bg_ptr>        painted_bg_ptr;
-    bn::optional<bn::regular_bg_ptr>        foreground_ptr;
+    bn::optional<bn::regular_bg_ptr>        object_bg_ptr;
+    
     bn::optional<bn::regular_bg_item>       bg_item;
     bn::span<const bn::regular_bg_map_cell> cells;
+    
+    bn::optional<bn::regular_bg_item>       object_bg_item;
+    bn::span<const bn::regular_bg_map_cell> object_cells;
 
     uint32 tile_width;
     uint32 tile_height;

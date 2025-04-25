@@ -20,7 +20,7 @@ typedef int   int32;
 #define MAX_GAME_OBJECTS     10
 #define MAX_UNLOADED_OBJECTS 25
 
-#define LOAD_RANGE_HALF_W 180
+#define LOAD_RANGE_HALF_W 240
 #define LOAD_RANGE_HALF_H 160
 
 #define ROOM_MAX_COLLIDERS 1800

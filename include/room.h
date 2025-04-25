@@ -51,7 +51,11 @@ struct Room
     RoomName left_neighbor;
 
     Room();
-    Room(RoomName room_name, bn::camera_ptr camera_ptr);
+    Room(RoomName                                       room_name, 
+         bn::camera_ptr                                 camera_ptr,                
+         const bn::regular_bg_ptr&                      object_bg_ptr, 
+         const bn::regular_bg_item&                     object_bg_item,
+         const bn::span<const bn::regular_bg_map_cell>& object_cells);
     Room(const Room& other);
     ~Room();
 
@@ -62,7 +66,14 @@ struct Room
     int32 addUnloadedObject(const UnloadedObject& new_object, bool is_persistent); // This will be called when the room is loaded.
     int32 findUnloadedObjectIndex(int32 object_id);
     void  clear();
-    void  load(RoomName room_name, const bn::camera_ptr& camera_ptr);
+    void  load(RoomName                                       room_name, 
+               const bn::camera_ptr&                          camera_ptr, 
+               const bn::regular_bg_ptr&                      object_bg_ptr, 
+               const bn::regular_bg_item&                     object_bg_item,
+               const bn::span<const bn::regular_bg_map_cell>& object_cells);
+    void  prepObjects(const bn::regular_bg_ptr&                      object_bg_ptr, 
+                      const bn::regular_bg_item&                     object_bg_item,
+                      const bn::span<const bn::regular_bg_map_cell>& object_cells);
     void  monitorUnloadedObjects(const bn::camera_ptr& camera_ptr); // This will be called every frame to 
                                                                     // test for objects that should be loaded.
                                  
