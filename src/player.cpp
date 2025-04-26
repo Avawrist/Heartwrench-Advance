@@ -379,12 +379,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Wall Jump
 			if(bn::keypad::a_pressed())
 			{
-				//if(bn::keypad::r_held())
-				//{rigidbody.addForce(PLAYER_P_WALL_JUMP_LEFT_FORCE);}
-				//else
-				//{
+				rigidbody.removeForces();
 				rigidbody.addForce(PLAYER_WALL_JUMP_LEFT_FORCE);
-				//}
 
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
@@ -423,12 +419,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Wall Jump
 			if(bn::keypad::a_pressed())
 			{
-				//if(bn::keypad::r_held())
-				//{rigidbody.addForce(PLAYER_P_WALL_JUMP_RIGHT_FORCE);}
-				//else
-				//{
+				rigidbody.removeForces();
 				rigidbody.addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);
-				//}
 
 				sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
 				sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H);
@@ -1531,14 +1523,15 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{
 						if(rigidbody.final_dir.y() >= PLAYER_MIN_PASSAGE_SPEED)
 						{((TilePassage*)(game_objects.at(i)))->setState(TILE_PASSAGE_STATE_OPEN);}
-
-						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED)
+						else 
 						{
-							sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
-							sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+							grounded_detected = true;
+							if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED)
+							{
+								sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
+								sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+							}
 						}
-
-						grounded_detected = true;
 					}
 
 				break;
@@ -2302,8 +2295,9 @@ void Player::setState(PlayerState new_state)
 			remaining_x_drift_lockout_frames = 0;
 			remaining_jump_input_frames      = 0;
 			air_frames_elapsed               = 0;
-			scythe_ground_2_buffered                = false;
-			scythe_ground_3_buffered                = false;
+			late_jump_grace_frames           = 0;
+			scythe_ground_2_buffered         = false;
+			scythe_ground_3_buffered         = false;
 			dir                              = LEFT;
 
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
@@ -2320,8 +2314,9 @@ void Player::setState(PlayerState new_state)
 			remaining_x_drift_lockout_frames = 0;
 			remaining_jump_input_frames      = 0;
 			air_frames_elapsed               = 0;
-			scythe_ground_2_buffered                = false;
-			scythe_ground_3_buffered                = false;
+			late_jump_grace_frames           = 0;
+			scythe_ground_2_buffered         = false;
+			scythe_ground_3_buffered         = false;
 			dir                              = RIGHT;
 
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
