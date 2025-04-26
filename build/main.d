@@ -96,7 +96,8 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_log.h \
  G:/butano-master/butano/include/bn_sin_lut.h \
  G:/butano-master/butano/include/bn_reciprocal_lut.h \
  G:/butano-master/butano/include/bn_rule_of_three_approximation.h \
- G:/game/build/bn_sprite_items_player.h G:/game/include/hitbox.h \
+ G:/game/build/bn_sprite_items_player.h \
+ G:/game/build/bn_sprite_items_phase_marker.h G:/game/include/hitbox.h \
  G:/game/build/bn_sprite_items_hitbox.h G:/game/include/tile_passage.h \
  G:/game/build/bn_sprite_items_tile_passage.h G:/game/include/phase_orb.h \
  G:/game/build/bn_sprite_items_phase_orb_up.h \
@@ -213,6 +214,7 @@ G:/butano-master/butano/include/bn_sin_lut.h:
 G:/butano-master/butano/include/bn_reciprocal_lut.h:
 G:/butano-master/butano/include/bn_rule_of_three_approximation.h:
 G:/game/build/bn_sprite_items_player.h:
+G:/game/build/bn_sprite_items_phase_marker.h:
 G:/game/include/hitbox.h:
 G:/game/build/bn_sprite_items_hitbox.h:
 G:/game/include/tile_passage.h:

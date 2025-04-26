@@ -46,7 +46,9 @@ Player::Player()
 	air_frames_elapsed               = 0;
 	v_collision_grace_frames         = 0;
 	late_jump_grace_frames           = 0;
+	current_scythe_frame             = 0;
 	current_death_frame              = 0;
+	current_phase_frame              = 0;
 	
 	wall_right_detected      = false;
     wall_left_detected       = false;
@@ -64,6 +66,9 @@ Player::Player()
 	hitbox_3_ptr = NULL;
 
 	phase_dir = PHASE_RIGHT;
+	pm_sprite_ptr = bn::sprite_items::phase_marker.create_sprite(0, 0);
+	pm_sprite_ptr->set_z_order(PLAYER_Z_ORDER);
+	pm_sprite_ptr->set_visible(false);
 	
 }
 
@@ -87,6 +92,8 @@ Player::Player(const Player& other) : GameObject(other)
 	air_frames_elapsed               = other.air_frames_elapsed;
 	v_collision_grace_frames         = other.v_collision_grace_frames;
 	late_jump_grace_frames           = other.late_jump_grace_frames;
+	current_scythe_frame             = other.current_scythe_frame;
+	current_phase_frame              = other.current_phase_frame;
 	current_death_frame              = other.current_death_frame;
 
 	wall_right_detected      = other.wall_right_detected;
@@ -113,7 +120,8 @@ Player::Player(const Player& other) : GameObject(other)
 	if(other.hitbox_3_ptr == NULL) {hitbox_3_ptr = NULL;}
 	else {hitbox_3_ptr = new Hitbox(*(other.hitbox_3_ptr));}
 
-	phase_dir = other.phase_dir;
+	phase_dir     = other.phase_dir;
+	pm_sprite_ptr = other.pm_sprite_ptr;
 	
 }
 
@@ -122,6 +130,9 @@ Player::~Player()
 	delete hitbox_1_ptr;
 	delete hitbox_2_ptr;
 	delete hitbox_3_ptr;	
+
+	// Free the phase marker sprite
+	pm_sprite_ptr.reset();
 }
 
 Player& Player::operator =(const Player& other)
@@ -143,6 +154,8 @@ Player& Player::operator =(const Player& other)
 	air_frames_elapsed               = other.air_frames_elapsed;
 	v_collision_grace_frames         = other.v_collision_grace_frames;
 	late_jump_grace_frames           = other.late_jump_grace_frames;
+	current_scythe_frame             = other.current_scythe_frame;
+	current_phase_frame              = other.current_phase_frame;
 	current_death_frame              = other.current_death_frame;
 
 	wall_right_detected      = other.wall_right_detected;
@@ -169,7 +182,8 @@ Player& Player::operator =(const Player& other)
 	if(other.hitbox_3_ptr == NULL) {hitbox_3_ptr = NULL;}
 	else {hitbox_3_ptr = new Hitbox(*(other.hitbox_3_ptr));}
 
-	phase_dir = other.phase_dir;
+	phase_dir     = other.phase_dir;
+	pm_sprite_ptr = other.pm_sprite_ptr;
 
 	return *this;
 }
@@ -471,7 +485,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						// 2. If the tile is collidable make a temporary collider based on type//
 
 						if(tile_index >= HARD_BLOCK_MIN_INDEX && 
-							tile_index <= HARD_BLOCK_MAX_INDEX)
+						   tile_index <= HARD_BLOCK_MAX_INDEX)
 						{
 							
 							other_collider = Collider(world_x, 
@@ -676,7 +690,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			}
 
 			// Early jump breakout
-			if(bn::keypad::a_pressed() && clear_to_jump)
+			if(bn::keypad::a_pressed() &&
+			   current_phase_frame >= PLAYER_PHASE_JUMP_LOCKOUT_FRAMES && 
+			   clear_to_jump)
 			{
 				// Jump
 				jump();
@@ -689,6 +705,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 				// Set State
 				setState(STATE_NO_STATE);
+
+				// Hide Marker
+				pm_sprite_ptr->set_visible(false);
 			}
 
 			// Keep moving towards phase destination until reached
@@ -704,6 +723,13 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						setState(STATE_NO_STATE);
 						rigidbody.addForce(PLAYER_PHASE_STEP_EXIT_FORCE_UP);
 						late_jump_grace_frames = 0;
+
+						// Stretch
+						sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H); 				
+						sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
+
+						// Hide Marker
+						pm_sprite_ptr->set_visible(false);
 					}
 				}
 
@@ -716,6 +742,13 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						setY(phase_destination.y());
 						setState(STATE_NO_STATE);
 						rigidbody.addForce(PLAYER_PHASE_STEP_EXIT_FORCE_DOWN);
+
+						// Stretch
+						sprite_ptr->set_horizontal_scale(PLAYER_MIN_STRETCH_H); 				
+						sprite_ptr->set_vertical_scale(PLAYER_MAX_STRETCH_V);
+
+						// Hide Marker
+						pm_sprite_ptr->set_visible(false);
 					}
 				}
 
@@ -729,6 +762,13 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						setState(STATE_NO_STATE);
 						rigidbody.addForce(PLAYER_PHASE_STEP_EXIT_FORCE_LEFT);
 						dir = LEFT;
+
+						// Stretch
+						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
+						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+
+						// Hide Marker
+						pm_sprite_ptr->set_visible(false);
 					}
 				}
 
@@ -742,9 +782,22 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						setState(STATE_NO_STATE);
 						rigidbody.addForce(PLAYER_PHASE_STEP_EXIT_FORCE_RIGHT);
 						dir = RIGHT;
+
+						// Stretch
+						sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
+						sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+
+						// Hide Marker
+						pm_sprite_ptr->set_visible(false);
 					}
 				}
 			}
+
+			// Increment phase frame counter
+			current_phase_frame++;
+			current_phase_frame = clamp(0, 
+				                        PLAYER_PHASE_JUMP_LOCKOUT_FRAMES, 
+										current_phase_frame);
 			
 		break;
 
@@ -1470,10 +1523,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				
 					if(state != STATE_PHASE_STEP && collider.isCollision(other_collider))
 					{
-						setState(STATE_PHASE_STEP);
 						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
 						phase_dir = PHASE_UP;
 						setPos(game_objects.at(i)->pos());
+						setState(STATE_PHASE_STEP);
 					}
 
 				break;
@@ -1482,10 +1535,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				
 					if(state != STATE_PHASE_STEP && collider.isCollision(other_collider))
 					{
-						setState(STATE_PHASE_STEP);
 						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
 						phase_dir = PHASE_DOWN;
 						setPos(game_objects.at(i)->pos());
+						setState(STATE_PHASE_STEP);
 					}
 
 				break;
@@ -1494,10 +1547,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 					if(state != STATE_PHASE_STEP && collider.isCollision(other_collider))
 					{
-						setState(STATE_PHASE_STEP);
 						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
 						phase_dir = PHASE_LEFT;
 						setPos(game_objects.at(i)->pos());
+						setState(STATE_PHASE_STEP);
 					}
 
 				break;
@@ -1506,10 +1559,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 					if(state != STATE_PHASE_STEP && collider.isCollision(other_collider))
 					{
-						setState(STATE_PHASE_STEP);
 						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
 						phase_dir = PHASE_RIGHT;
 						setPos(game_objects.at(i)->pos());
+						setState(STATE_PHASE_STEP);
 					}
 
 				break;
@@ -2247,6 +2300,12 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	
 }
 
+void Player::setCamera(const bn::camera_ptr& camera)
+{
+	GameObject::setCamera(camera);
+	pm_sprite_ptr->set_camera(camera);
+}
+
 void Player::jump()
 {
 	remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
@@ -2341,14 +2400,17 @@ void Player::setState(PlayerState new_state)
 		break;
 
 		case STATE_DYING:
+
 			scythe_ground_2_buffered = false;
 			scythe_ground_3_buffered = false;
+
 		break;
 
 		case STATE_PHASE_STEP:
 
 			rigidbody.removeForces();
 
+			current_phase_frame              = 0;
 			air_frames_elapsed               = 0;
 			remaining_jump_input_frames      = 0;
 			remaining_x_drift_lockout_frames = 0;
@@ -2361,6 +2423,9 @@ void Player::setState(PlayerState new_state)
 																		  4);
 			sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
 			sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
+
+			pm_sprite_ptr->set_position(phase_destination.x(), phase_destination.y());
+			pm_sprite_ptr->set_visible(true);
 
 		break;
 

@@ -7,6 +7,7 @@
 
 // Assets
 #include "bn_sprite_items_player.h"
+#include "bn_sprite_items_phase_marker.h"
 
 // Base Class
 #include "game_object.h"
@@ -69,6 +70,7 @@
 #define PLAYER_PHASE_STEP_EXIT_X_FORCE 6
 #define PLAYER_PHASE_STEP_EXIT_Y_FORCE 8
 #define PLAYER_PHASE_STEP_EXIT_DECAY   0.05
+#define PLAYER_PHASE_JUMP_LOCKOUT_FRAMES 5
 
 #define PLAYER_SCYTHE_GROUND_1_TOTAL_FRAMES      30
 #define PLAYER_SCYTHE_GROUND_2_TOTAL_FRAMES      30
@@ -181,6 +183,7 @@ struct Player : GameObject {
 	int32 late_jump_grace_frames;
 	int32 current_death_frame;
 	int32 current_scythe_frame;
+	int32 current_phase_frame;
 	
 	bool wall_right_detected;
     bool wall_left_detected;
@@ -200,6 +203,7 @@ struct Player : GameObject {
 	Hitbox* hitbox_2_ptr;
 	Hitbox* hitbox_3_ptr;
 
+	bn::optional<bn::sprite_ptr> pm_sprite_ptr;
 	PhaseDir phase_dir;
 	
 	Player();
@@ -214,6 +218,7 @@ struct Player : GameObject {
                 const bn::span<const bn::regular_bg_map_cell>&   cells,
                 const bn::regular_bg_item&                       bg_item,
 				const bn::camera_ptr&                            camera) override;
+	void setCamera(const bn::camera_ptr& camera) override;
 	void jump();
 	void fastFall();
 	void setState(PlayerState new_state);

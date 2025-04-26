@@ -101,8 +101,8 @@ struct GameObject {
                         const bn::regular_bg_item&                     bg_item,
 						const bn::camera_ptr&                          camera) = 0;
 	
-	void draw();
-	void setCamera(const bn::camera_ptr& camera);
+	virtual void draw();
+	virtual void setCamera(const bn::camera_ptr& camera);
 	bn::fixed x() const;
 	bn::fixed y() const;
 	bn::fixed_point pos() const;
