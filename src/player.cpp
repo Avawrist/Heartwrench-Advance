@@ -196,9 +196,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Player Grounded Neutral State //
 			///////////////////////////////////
 
-			// Set Jump Grace frames to full
-			late_jump_grace_frames = PLAYER_LATE_JUMP_GRACE_FRAMES;
-
 			// Update walk speed //
 			if(bn::keypad::left_released())        
 			{
@@ -353,6 +350,12 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			air_frames_elapsed = clamp(0, 
 									   PLAYER_MAX_AIR_FRAMES, 
 									   air_frames_elapsed);
+
+			// Update grace frames for a late jump //
+			late_jump_grace_frames--;
+			late_jump_grace_frames = clamp(0, 
+										PLAYER_LATE_JUMP_GRACE_FRAMES, 
+										late_jump_grace_frames);
 
 		break;
 
@@ -707,6 +710,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{
 						setY(phase_destination.y());
 						setState(STATE_NO_STATE);
+						rigidbody.addForce(PLAYER_PHASE_STEP_EXIT_FORCE_UP);
+						late_jump_grace_frames = 0;
 					}
 				}
 
@@ -718,6 +723,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{
 						setY(phase_destination.y());
 						setState(STATE_NO_STATE);
+						rigidbody.addForce(PLAYER_PHASE_STEP_EXIT_FORCE_DOWN);
 					}
 				}
 
@@ -729,6 +735,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{
 						setX(phase_destination.x());
 						setState(STATE_NO_STATE);
+						rigidbody.addForce(PLAYER_PHASE_STEP_EXIT_FORCE_LEFT);
+						dir = LEFT;
 					}
 				}
 
@@ -740,6 +748,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					{
 						setX(phase_destination.x());
 						setState(STATE_NO_STATE);
+						rigidbody.addForce(PLAYER_PHASE_STEP_EXIT_FORCE_RIGHT);
+						dir = RIGHT;
 					}
 				}
 			}
@@ -1519,7 +1529,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					test_collider.isCollision(other_collider) && 
 					rigidbody.normalized_dir.y() >= 0)
 					{
-						
 						if(rigidbody.final_dir.y() >= PLAYER_MIN_PASSAGE_SPEED)
 						{((TilePassage*)(game_objects.at(i)))->setState(TILE_PASSAGE_STATE_OPEN);}
 
@@ -1542,7 +1551,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 	///////////////////////////////
     // Get State Info from Tiles //
-    ///////////////////////////////							   
+    ///////////////////////////////	
+
 	if(state != STATE_PHASE_STEP)
 	{
 		for(int32 y = -2; y < 3; y++)
@@ -1633,10 +1643,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						if(test_collider.isCollision(other_collider) && 
 							rigidbody.normalized_dir.y() >= 0)
 						{
-							grounded_detected = true;
-
 							if(!bn::keypad::down_held()) 
 							{
+								grounded_detected = true;
 								if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
 								rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
 								{sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H);
@@ -2196,7 +2205,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 		if(kill_player) {new_state = STATE_DYING;}
 
 		// Set the state
-		setState(new_state);
+		if(new_state != state) {setState(new_state);}
 	}
 
 	///////////////////
@@ -2207,11 +2216,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	v_collision_grace_frames = clamp(0, 
 									 PLAYER_V_COLLISION_MAX_GRACE_FRAMES,
 									 v_collision_grace_frames);
-
-	late_jump_grace_frames--;
-	late_jump_grace_frames = clamp(0, 
-								   PLAYER_LATE_JUMP_GRACE_FRAMES, 
-								   late_jump_grace_frames);
 
 	received_platform_force = false;
 
@@ -2279,7 +2283,8 @@ void Player::setState(PlayerState new_state)
 		case STATE_GROUNDED_NEUTRAL:
 
 			remaining_x_drift_lockout_frames = 0;
-			air_frames_elapsed = 0;
+			air_frames_elapsed               = 0;
+			late_jump_grace_frames           = PLAYER_LATE_JUMP_GRACE_FRAMES;
 			
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  		  1,
@@ -2350,6 +2355,7 @@ void Player::setState(PlayerState new_state)
 			air_frames_elapsed               = 0;
 			remaining_jump_input_frames      = 0;
 			remaining_x_drift_lockout_frames = 0;
+			late_jump_grace_frames           = PLAYER_LATE_JUMP_GRACE_FRAMES;
 
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 																		  1,
