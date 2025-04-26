@@ -1603,12 +1603,13 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					}
 
 					// Test for wall riding on right side
-					if(test_collider_right.isCollision(other_collider)) 
+					if(test_collider_right.isCollision(other_collider))
 					{
 						right_wj_eligible = true;
 
 						if(rigidbody.normalized_dir.y() >= 0 &&
-						bn::keypad::right_held()) 
+						   bn::keypad::right_held() && 
+						  !bn::keypad::down_held()) 
 						{
 							wall_right_detected = true;
 						}
@@ -1620,7 +1621,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						left_wj_eligible = true;
 
 						if(rigidbody.normalized_dir.y() >= 0 &&
-						bn::keypad::left_held()) 
+						   bn::keypad::left_held() &&
+						  !bn::keypad::down_held()) 
 						{
 							wall_left_detected = true;
 						}
