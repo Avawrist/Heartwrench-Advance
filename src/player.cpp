@@ -2362,8 +2362,8 @@ void Player::setState(PlayerState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  1,
 								  								  bn::sprite_items::player.tiles_item(),
-								  								  3,
-								  								  3);
+								  								  5,
+								  								  5);
 
 		break;
 
@@ -2381,8 +2381,8 @@ void Player::setState(PlayerState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  1,
 								  								  bn::sprite_items::player.tiles_item(),
-								  								  3,
-								  								  3);
+								  								  5,
+								  								  5);
 
 		break;
 
@@ -2394,8 +2394,8 @@ void Player::setState(PlayerState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  1,
 								  								  bn::sprite_items::player.tiles_item(),
-								  								  2,
-								  								  2);
+								  								  4,
+								  								  4);
 
 		break;
 
@@ -2419,8 +2419,8 @@ void Player::setState(PlayerState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 																		  1,
 																		  bn::sprite_items::player.tiles_item(),
-																		  4,
-																		  4);
+																		  6,
+																		  6);
 			sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
 			sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
 
@@ -2443,13 +2443,29 @@ void Player::setState(PlayerState new_state)
 		break;
 
 		case STATE_SCYTHE_GROUND_2:
+
 			remaining_x_drift_lockout_frames = 0;
 			air_frames_elapsed = 0;
+
+			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+								  								  1,
+								  								  bn::sprite_items::player.tiles_item(),
+								  								  2,
+								  								  2);
+
 		break;
 
 		case STATE_SCYTHE_GROUND_3:
+
 			remaining_x_drift_lockout_frames = 0;
 			air_frames_elapsed = 0;
+
+			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+								  								  1,
+								  								  bn::sprite_items::player.tiles_item(),
+								  								  3,
+								  								  3);
+
 		break;
 
 		default:
