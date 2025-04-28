@@ -810,27 +810,30 @@ void Player::update(const RoomBounds& 								  room_bounds,
 										 current_scythe_frame);
 
 			// Create Hitboxes
-			if(current_scythe_frame == PLAYER_SCYTHE_GROUND_1_CREATE_HB_FRAME &&
-			   game_objects.size() < MAX_GAME_OBJECTS)
+			if(current_scythe_frame == PLAYER_SCYTHE_GROUND_1_CREATE_HB_FRAME)
 			{
-				createGroundedScythe1Hitboxes(camera);
+				createGroundedScythe1Hitboxes(game_objects, camera);
 			}
 
 			// Take Buffer Input
+			/*
 			if(bn::keypad::b_pressed() && 
 			   current_scythe_frame >= PLAYER_MIN_SCYTHE_GROUND_1_BUFFER_FRAMES)
 			{scythe_ground_2_buffered = true;} 
+			*/
 
 			if(current_scythe_frame >= PLAYER_SCYTHE_GROUND_1_TOTAL_FRAMES)
 			{
 				current_scythe_frame = 0;
-
+				/*
 				if(scythe_ground_2_buffered) 
 				{
 					scythe_ground_2_buffered = false;
 					setState(STATE_SCYTHE_GROUND_2);
 				}
 				else {setState(STATE_NO_STATE);}
+				*/
+				setState(STATE_NO_STATE);
 			}
 
 		break;
@@ -2362,8 +2365,8 @@ void Player::setState(PlayerState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  1,
 								  								  bn::sprite_items::player.tiles_item(),
-								  								  5,
-								  								  5);
+								  								  4,
+								  								  4);
 
 		break;
 
@@ -2381,8 +2384,8 @@ void Player::setState(PlayerState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  1,
 								  								  bn::sprite_items::player.tiles_item(),
-								  								  5,
-								  								  5);
+								  								  4,
+								  								  4);
 
 		break;
 
@@ -2394,8 +2397,8 @@ void Player::setState(PlayerState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  1,
 								  								  bn::sprite_items::player.tiles_item(),
-								  								  4,
-								  								  4);
+								  								  2,
+								  								  2);
 
 		break;
 
@@ -2419,8 +2422,8 @@ void Player::setState(PlayerState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 																		  1,
 																		  bn::sprite_items::player.tiles_item(),
-																		  6,
-																		  6);
+																		  5,
+																		  5);
 			sprite_ptr->set_horizontal_scale(PLAYER_MAX_STRETCH_H); 				
 			sprite_ptr->set_vertical_scale(PLAYER_MIN_STRETCH_V);
 
@@ -2450,8 +2453,8 @@ void Player::setState(PlayerState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  1,
 								  								  bn::sprite_items::player.tiles_item(),
-								  								  2,
-								  								  2);
+								  								  1,
+								  								  1);
 
 		break;
 
@@ -2463,8 +2466,8 @@ void Player::setState(PlayerState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  1,
 								  								  bn::sprite_items::player.tiles_item(),
-								  								  3,
-								  								  3);
+								  								  1,
+								  								  1);
 
 		break;
 
@@ -2474,8 +2477,11 @@ void Player::setState(PlayerState new_state)
 
 }
 
-void Player::createGroundedScythe1Hitboxes(const bn::camera_ptr& camera)
+void Player::createGroundedScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
+	                                       const bn::camera_ptr&                      camera)
 {
+	if(game_objects.size() >= MAX_GAME_OBJECTS) {return;}
+
 	delete hitbox_1_ptr;
 	hitbox_1_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_GROUND_1_X_OFFSET * dir),
 								  y().integer() + PLAYER_SCYTHE_GROUND_1_Y_OFFSET),

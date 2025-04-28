@@ -72,9 +72,9 @@
 #define PLAYER_PHASE_STEP_EXIT_DECAY   0.05
 #define PLAYER_PHASE_JUMP_LOCKOUT_FRAMES 5
 
-#define PLAYER_SCYTHE_GROUND_1_TOTAL_FRAMES      30
-#define PLAYER_SCYTHE_GROUND_2_TOTAL_FRAMES      30
-#define PLAYER_SCYTHE_GROUND_3_TOTAL_FRAMES      40
+#define PLAYER_SCYTHE_GROUND_1_TOTAL_FRAMES      20
+#define PLAYER_SCYTHE_GROUND_2_TOTAL_FRAMES      20
+#define PLAYER_SCYTHE_GROUND_3_TOTAL_FRAMES      20
 #define PLAYER_MIN_SCYTHE_GROUND_1_BUFFER_FRAMES 11 // Must be greater than PLAYER_SCYTHE_1_CREATE_HB_FRAME
 #define PLAYER_MIN_SCYTHE_GROUND_2_BUFFER_FRAMES 11 // Must be greater than PLAYER_SCYTHE_2_CREATE_HB_FRAME
 #define PLAYER_MIN_SCYTHE_GROUND_3_BUFFER_FRAMES 11 // Must be greater than PLAYER_SCYTHE_2_CREATE_HB_FRAME
@@ -222,7 +222,8 @@ struct Player : GameObject {
 	void jump();
 	void fastFall();
 	void setState(PlayerState new_state);
-	void createGroundedScythe1Hitboxes(const bn::camera_ptr& camera);
+	void createGroundedScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
+		                               const bn::camera_ptr&                      camera);
 	
 };
 
