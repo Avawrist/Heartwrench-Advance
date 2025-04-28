@@ -157,9 +157,10 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
         case DEVIL_PLATFORM:
         case ANGEL_PLATFORM:
         case SCYTHE_PLATFORM:
-        case HITBOX_SCYTHE_1:
-        case HITBOX_SCYTHE_2:
-        case HITBOX_SCYTHE_3:
+        case HITBOX_SCYTHE_GROUND_1:
+        case HITBOX_SCYTHE_GROUND_2:
+        case HITBOX_SCYTHE_GROUND_3:
+        case HITBOX_SCYTHE_AIR_1:
             BN_LOG("Loading object of type ", object.object_type);
             BN_LOG("is not supported by function Room::addObject");
         break;

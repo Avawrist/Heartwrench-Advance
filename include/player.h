@@ -75,6 +75,7 @@
 #define PLAYER_SCYTHE_GROUND_1_TOTAL_FRAMES      20
 #define PLAYER_SCYTHE_GROUND_2_TOTAL_FRAMES      20
 #define PLAYER_SCYTHE_GROUND_3_TOTAL_FRAMES      20
+#define PLAYER_SCYTHE_AIR_1_TOTAL_FRAMES         20
 #define PLAYER_MIN_SCYTHE_GROUND_1_BUFFER_FRAMES 11 // Must be greater than PLAYER_SCYTHE_1_CREATE_HB_FRAME
 #define PLAYER_MIN_SCYTHE_GROUND_2_BUFFER_FRAMES 11 // Must be greater than PLAYER_SCYTHE_2_CREATE_HB_FRAME
 #define PLAYER_MIN_SCYTHE_GROUND_3_BUFFER_FRAMES 11 // Must be greater than PLAYER_SCYTHE_2_CREATE_HB_FRAME
@@ -83,7 +84,7 @@
 #define PLAYER_SCYTHE_GROUND_1_Y_OFFSET           0
 #define PLAYER_SCYTHE_GROUND_1_HB_WIDTH           16
 #define PLAYER_SCYTHE_GROUND_1_HB_HEIGHT          16
-#define PLAYER_SCYTHE_GROUND_1_CREATE_HB_FRAME    10
+#define PLAYER_SCYTHE_GROUND_1_CREATE_HB_FRAME    3
 #define PLAYER_SCYTHE_GROUND_1_HB_LIFESPAN_FRAMES 10
 #define PLAYER_SCYTHE_GROUND_1_HITSTUN_FRAMES     10
 #define PLAYER_SCYTHE_GROUND_1_X_KNOCKBACK        5
@@ -111,6 +112,17 @@
 #define PLAYER_SCYTHE_GROUND_3_X_KNOCKBACK        5
 #define PLAYER_SCYTHE_GROUND_3_Y_KNOCKBACK        0
 #define PLAYER_SCYTHE_GROUND_3_KNOCKBACK_DECAY    0.2
+
+#define PLAYER_SCYTHE_AIR_1_X_OFFSET           32
+#define PLAYER_SCYTHE_AIR_1_Y_OFFSET           0
+#define PLAYER_SCYTHE_AIR_1_HB_WIDTH           16
+#define PLAYER_SCYTHE_AIR_1_HB_HEIGHT          16
+#define PLAYER_SCYTHE_AIR_1_CREATE_HB_FRAME    3
+#define PLAYER_SCYTHE_AIR_1_HB_LIFESPAN_FRAMES 10
+#define PLAYER_SCYTHE_AIR_1_HITSTUN_FRAMES     10
+#define PLAYER_SCYTHE_AIR_1_X_KNOCKBACK        5
+#define PLAYER_SCYTHE_AIR_1_Y_KNOCKBACK        0
+#define PLAYER_SCYTHE_AIR_1_KNOCKBACK_DECAY    0.2
 
 #define PLAYER_V_COLLISION_MAX_GRACE_FRAMES 4
 #define PLAYER_LATE_JUMP_GRACE_FRAMES       6
@@ -153,6 +165,7 @@ enum PlayerState {
 	STATE_SCYTHE_GROUND_1,
 	STATE_SCYTHE_GROUND_2,
 	STATE_SCYTHE_GROUND_3,
+	STATE_SCYTHE_AIR_1,
 	STATE_DYING,
 };
 
@@ -224,6 +237,8 @@ struct Player : GameObject {
 	void setState(PlayerState new_state);
 	void createGroundedScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
 		                               const bn::camera_ptr&                      camera);
+	void createAirScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
+								  const bn::camera_ptr&                      camera);
 	
 };
 
