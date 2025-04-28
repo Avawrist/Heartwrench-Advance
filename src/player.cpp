@@ -941,10 +941,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			// Drift
 			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames)       
-			{rigidbody.addForce(PLAYER_X_LEFT_FORCE);} //dir = LEFT;
+			{rigidbody.addForce(PLAYER_X_LEFT_FORCE);}
 
 			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames)
-			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE);} //dir = RIGHT;
+			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE);}
 			
 			// High Jump
 			if(bn::keypad::a_held() && remaining_jump_input_frames > 0)
