@@ -1668,6 +1668,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				break;
 
 				case GROUND_GHOUL:
+				case CEILING_GHOUL:
 				
 					if(collider.isCollision(other_collider))	
 					{
@@ -2308,6 +2309,15 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				
 				break;
 
+				case CEILING_GHOUL:
+					
+					if(hitbox_1_ptr->collider.isCollision(other_collider))
+					{
+						((CeilingGhoul*)(game_objects.at(i)))->setState(CEILING_GHOUL_DEATH_STATE);
+					}
+			
+				break;
+
 				case PHASE_ORB_UP:
 				case PHASE_ORB_DOWN:
 				case PHASE_ORB_LEFT:
@@ -2351,11 +2361,20 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			{
 				case GROUND_GHOUL:
 					
-					if(hitbox_1_ptr->collider.isCollision(other_collider))
+					if(hitbox_2_ptr->collider.isCollision(other_collider))
 					{
 						((GroundGhoul*)(game_objects.at(i)))->setState(GROUND_GHOUL_DEATH_STATE);
 					}
 				
+				break;
+
+				case CEILING_GHOUL:
+					
+					if(hitbox_2_ptr->collider.isCollision(other_collider))
+					{
+						((CeilingGhoul*)(game_objects.at(i)))->setState(CEILING_GHOUL_DEATH_STATE);
+					}
+		
 				break;
 
 				case PHASE_ORB_UP:
@@ -2400,11 +2419,20 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			{
 				case GROUND_GHOUL:
 					
-					if(hitbox_1_ptr->collider.isCollision(other_collider))
+					if(hitbox_3_ptr->collider.isCollision(other_collider))
 					{
 						((GroundGhoul*)(game_objects.at(i)))->setState(GROUND_GHOUL_DEATH_STATE);
 					}
 				
+				break;
+
+				case CEILING_GHOUL:
+					
+					if(hitbox_3_ptr->collider.isCollision(other_collider))
+					{
+						((CeilingGhoul*)(game_objects.at(i)))->setState(CEILING_GHOUL_DEATH_STATE);
+					}
+		
 				break;
 
 				case PHASE_ORB_UP:

@@ -17,6 +17,7 @@
 #include "tile_passage.h"
 #include "phase_orb.h"
 #include "ground_ghoul.h"
+#include "ceiling_ghoul.h"
 
 ///////////////////
 // Struct Player //
