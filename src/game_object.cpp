@@ -183,10 +183,12 @@ void GameObject::updateInactiveState(const bn::camera_ptr& camera)
 {
     if(is_persistent) {return;}
 
-    if(pos().x() < camera.position().x() - LOAD_RANGE_HALF_W || 
-       pos().x() > camera.position().x() + LOAD_RANGE_HALF_W ||
-       pos().y() < camera.position().y() - LOAD_RANGE_HALF_H ||
-       pos().y() > camera.position().y() + LOAD_RANGE_HALF_H)
+    Collider load_range_collider(camera.position().x(), 
+                                 camera.position().y(), 
+                                 LOAD_RANGE_W, 
+                                 LOAD_RANGE_H);
+
+    if(!load_range_collider.isCollision(pos()))
     {is_inactive = true;}
 }
 

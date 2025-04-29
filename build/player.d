@@ -83,7 +83,9 @@ player.o: G:/game/src/player.cpp G:/game/include/player.h \
  G:/game/build/bn_sprite_items_phase_orb_up.h \
  G:/game/build/bn_sprite_items_phase_orb_down.h \
  G:/game/build/bn_sprite_items_phase_orb_left.h \
- G:/game/build/bn_sprite_items_phase_orb_right.h
+ G:/game/build/bn_sprite_items_phase_orb_right.h \
+ G:/game/include/ground_ghoul.h \
+ G:/game/build/bn_sprite_items_ground_ghoul.h
 G:/game/include/player.h:
 G:/butano-master/butano/include/bn_keypad.h:
 G:/butano-master/butano/include/bn_common.h:
@@ -175,3 +177,5 @@ G:/game/build/bn_sprite_items_phase_orb_up.h:
 G:/game/build/bn_sprite_items_phase_orb_down.h:
 G:/game/build/bn_sprite_items_phase_orb_left.h:
 G:/game/build/bn_sprite_items_phase_orb_right.h:
+G:/game/include/ground_ghoul.h:
+G:/game/build/bn_sprite_items_ground_ghoul.h:

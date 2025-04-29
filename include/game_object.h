@@ -35,6 +35,8 @@
 // Struct GameObject //
 ///////////////////////
 
+#define GAME_OBJECT_Z_ORDER 0
+
 #define GAME_OBJECT_COLLIDER_WIDTH  8
 #define GAME_OBJECT_COLLIDER_HEIGHT 8
 
@@ -46,11 +48,16 @@
 enum ObjectType 
 {
 	NO_TYPE = 0,
+	// Level Objects
 	TILE_PASSAGE,
 	PHASE_ORB_UP,
 	PHASE_ORB_DOWN,
 	PHASE_ORB_LEFT,
 	PHASE_ORB_RIGHT,
+	// Level Enemies
+	GROUND_GHOUL,
+	TEST_ENEMY,
+	// Special Objects
 	DEVIL_PLATFORM,
 	ANGEL_PLATFORM,
 	SCYTHE_PLATFORM,
@@ -59,7 +66,6 @@ enum ObjectType
 	HITBOX_SCYTHE_GROUND_3,
 	HITBOX_SCYTHE_AIR_1,
 	PLAYER,
-	TEST_ENEMY,
 };
 
 struct GameObject {

@@ -1214,7 +1214,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				// 2. If the tile is collidable make a temporary collider based on type//
 
 				if(tile_index >= HARD_BLOCK_MIN_INDEX && 
-				tile_index <= HARD_BLOCK_MAX_INDEX)
+				   tile_index <= HARD_BLOCK_MAX_INDEX)
 				{
 					// Prepare offsets in case they are needed for Block collision.
 					int32 block_w_offset = 0;
@@ -1263,9 +1263,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
 				{
 					other_collider = Collider(world_x, 
-											world_y + 3, 
-											TILE_WIDTH, 
-											TILE_HEIGHT / 4);
+											  world_y + 3, 
+											  TILE_WIDTH, 
+											  TILE_HEIGHT / 4);
 
 					if(collider.isCollision(other_collider))
 					{
@@ -1619,7 +1619,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					
 				break;
 
-				/*
 				case PHASE_ORB_UP:
 				
 					if(state != STATE_PHASE_STEP && collider.isCollision(other_collider))
@@ -1667,7 +1666,16 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					}
 
 				break;
-				*/
+
+				case GROUND_GHOUL:
+				
+					if(collider.isCollision(other_collider))	
+					{
+						rigidbody.removeForces();
+						kill_player = true;
+					}
+
+				break;
 
 				case TILE_PASSAGE:
 
@@ -1728,7 +1736,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 				// 2. Check Tile Type and update state accordingly //
 				if(tile_index >= HARD_BLOCK_MIN_INDEX &&
-				tile_index <= HARD_BLOCK_MAX_INDEX)
+				   tile_index <= HARD_BLOCK_MAX_INDEX)
 				{
 
 					other_collider = Collider(world_x,
@@ -1738,7 +1746,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 					// Test for, and log grounded collision
 					if(test_collider.isCollision(other_collider) && 
-					rigidbody.normalized_dir.y() >= 0)
+					   rigidbody.normalized_dir.y() >= 0)
 					{
 						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
 						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
@@ -2291,62 +2299,19 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			switch(game_objects.at(i)->object_type)
 			{
+				case GROUND_GHOUL:
+					
+					if(hitbox_1_ptr->collider.isCollision(other_collider))
+					{
+						((GroundGhoul*)(game_objects.at(i)))->setState(GROUND_GHOUL_DEATH_STATE);
+					}
+				
+				break;
+
 				case PHASE_ORB_UP:
-				
-					if(hitbox_1_ptr->collider.isCollision(other_collider) &&
-					   state != STATE_PHASE_STEP)
-					{
-						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-						phase_dir = PHASE_UP;
-						setPos(game_objects.at(i)->pos());
-						setState(STATE_PHASE_STEP);
-						hitbox_1_ptr->is_inactive = true;
-					}
-
-				break;
-
 				case PHASE_ORB_DOWN:
-				
-					if(hitbox_1_ptr->collider.isCollision(other_collider) &&
-					   state != STATE_PHASE_STEP)
-					{
-						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-						phase_dir = PHASE_DOWN;
-						setPos(game_objects.at(i)->pos());
-						setState(STATE_PHASE_STEP);
-						hitbox_1_ptr->is_inactive = true;
-					}
-
-				break;
-
 				case PHASE_ORB_LEFT:
-
-					if(hitbox_1_ptr->collider.isCollision(other_collider) &&
-					   state != STATE_PHASE_STEP)
-					{
-						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-						phase_dir = PHASE_LEFT;
-						setPos(game_objects.at(i)->pos());
-						setState(STATE_PHASE_STEP);
-						hitbox_1_ptr->is_inactive = true;
-					}
-
-				break;
-
 				case PHASE_ORB_RIGHT:
-
-					if(hitbox_1_ptr->collider.isCollision(other_collider) &&
-					   state != STATE_PHASE_STEP)
-					{
-						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-						phase_dir = PHASE_RIGHT;
-						setPos(game_objects.at(i)->pos());
-						setState(STATE_PHASE_STEP);
-						hitbox_1_ptr->is_inactive = true;
-					}
-
-				break;
-
 				case TILE_PASSAGE:
 				case DEVIL_PLATFORM:
 				case ANGEL_PLATFORM:
@@ -2384,62 +2349,19 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			switch(game_objects.at(i)->object_type)
 			{
+				case GROUND_GHOUL:
+					
+					if(hitbox_1_ptr->collider.isCollision(other_collider))
+					{
+						((GroundGhoul*)(game_objects.at(i)))->setState(GROUND_GHOUL_DEATH_STATE);
+					}
+				
+				break;
+
 				case PHASE_ORB_UP:
-				
-					if(hitbox_2_ptr->collider.isCollision(other_collider) &&
-					   state != STATE_PHASE_STEP)
-					{
-						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-						phase_dir = PHASE_UP;
-						setPos(game_objects.at(i)->pos());
-						setState(STATE_PHASE_STEP);
-						hitbox_2_ptr->is_inactive = true;
-					}
-
-				break;
-
 				case PHASE_ORB_DOWN:
-				
-					if(hitbox_2_ptr->collider.isCollision(other_collider) &&
-					   state != STATE_PHASE_STEP)
-					{
-						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-						phase_dir = PHASE_DOWN;
-						setPos(game_objects.at(i)->pos());
-						setState(STATE_PHASE_STEP);
-						hitbox_2_ptr->is_inactive = true;
-					}
-
-				break;
-
 				case PHASE_ORB_LEFT:
-
-					if(hitbox_2_ptr->collider.isCollision(other_collider) &&
-					   state != STATE_PHASE_STEP)
-					{
-						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-						phase_dir = PHASE_LEFT;
-						setPos(game_objects.at(i)->pos());
-						setState(STATE_PHASE_STEP);
-						hitbox_2_ptr->is_inactive = true;
-					}
-
-				break;
-
 				case PHASE_ORB_RIGHT:
-
-					if(hitbox_2_ptr->collider.isCollision(other_collider) &&
-					   state != STATE_PHASE_STEP)
-					{
-						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-						phase_dir = PHASE_RIGHT;
-						setPos(game_objects.at(i)->pos());
-						setState(STATE_PHASE_STEP);
-						hitbox_2_ptr->is_inactive = true;
-					}
-
-				break;
-
 				case TILE_PASSAGE:
 				case DEVIL_PLATFORM:
 				case ANGEL_PLATFORM:
@@ -2476,62 +2398,19 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			switch(game_objects.at(i)->object_type)
 			{
+				case GROUND_GHOUL:
+					
+					if(hitbox_1_ptr->collider.isCollision(other_collider))
+					{
+						((GroundGhoul*)(game_objects.at(i)))->setState(GROUND_GHOUL_DEATH_STATE);
+					}
+				
+				break;
+
 				case PHASE_ORB_UP:
-				
-					if(hitbox_3_ptr->collider.isCollision(other_collider) &&
-					   state != STATE_PHASE_STEP)
-					{
-						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-						phase_dir = PHASE_UP;
-						setPos(game_objects.at(i)->pos());
-						setState(STATE_PHASE_STEP);
-						hitbox_3_ptr->is_inactive = true;
-					}
-
-				break;
-
 				case PHASE_ORB_DOWN:
-				
-					if(hitbox_3_ptr->collider.isCollision(other_collider) &&
-					   state != STATE_PHASE_STEP)
-					{
-						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-						phase_dir = PHASE_DOWN;
-						setPos(game_objects.at(i)->pos());
-						setState(STATE_PHASE_STEP);
-						hitbox_3_ptr->is_inactive = true;
-					}
-
-				break;
-
 				case PHASE_ORB_LEFT:
-
-					if(hitbox_3_ptr->collider.isCollision(other_collider) && 
-					   state != STATE_PHASE_STEP)
-					{
-						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-						phase_dir = PHASE_LEFT;
-						setPos(game_objects.at(i)->pos());
-						setState(STATE_PHASE_STEP);
-						hitbox_3_ptr->is_inactive = true;
-					}
-
-				break;
-
 				case PHASE_ORB_RIGHT:
-
-					if(hitbox_3_ptr->collider.isCollision(other_collider) &&
-				       state != STATE_PHASE_STEP)
-					{
-						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-						phase_dir = PHASE_RIGHT;
-						setPos(game_objects.at(i)->pos());
-						setState(STATE_PHASE_STEP);
-						hitbox_3_ptr->is_inactive = true;
-					}
-
-				break;
-
 				case TILE_PASSAGE:
 				case DEVIL_PLATFORM:
 				case ANGEL_PLATFORM:

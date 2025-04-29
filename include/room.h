@@ -20,11 +20,12 @@
 #include "collider.h"
 #include "game_object.h"
 #include "player.h"
+#include "tile_passage.h"
 #include "phase_orb.h"
+#include "ground_ghoul.h"
+#include "test_enemy.h"
 #include "devil_platform.h"
 #include "angel_platform.h"
-#include "test_enemy.h"
-#include "tile_passage.h"
 
 /////////////////
 // Struct Room //

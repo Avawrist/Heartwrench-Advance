@@ -20,15 +20,17 @@ typedef int   int32;
 #define MAX_GAME_OBJECTS     10
 #define MAX_UNLOADED_OBJECTS 25
 
-#define LOAD_RANGE_HALF_W 240
-#define LOAD_RANGE_HALF_H 160
+#define LOAD_RANGE_W  480
+#define LOAD_RANGE_H  320
+#define SCREEN_W 240
+#define SCREEN_H 160
 
 #define ROOM_MAX_COLLIDERS 1800
 #define ROOM_MAX_WIDTH     128
 #define ROOM_MAX_HEIGHT    64
 
 // === Object Indexes === //
-#define PLAYER_OBJECT_LIST_INDEX  0
+#define PLAYER_OBJECT_LIST_INDEX 0
 
 // === Tile Indexes === //
 #define NO_BLOCK_INDEX              0

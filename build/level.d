@@ -94,11 +94,13 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/build/bn_sprite_items_phase_orb_down.h \
  G:/game/build/bn_sprite_items_phase_orb_left.h \
  G:/game/build/bn_sprite_items_phase_orb_right.h \
+ G:/game/include/ground_ghoul.h \
+ G:/game/build/bn_sprite_items_ground_ghoul.h \
+ G:/game/include/test_enemy.h G:/game/build/bn_sprite_items_test_enemy.h \
  G:/game/include/devil_platform.h \
  G:/game/build/bn_sprite_items_devil_platform.h \
  G:/game/include/angel_platform.h \
- G:/game/build/bn_sprite_items_angel_platform.h \
- G:/game/include/test_enemy.h G:/game/build/bn_sprite_items_test_enemy.h
+ G:/game/build/bn_sprite_items_angel_platform.h
 G:/game/include/level.h:
 G:/butano-master/butano/include/bn_log.h:
 G:/butano-master/butano/include/bn_config_log.h:
@@ -203,9 +205,11 @@ G:/game/build/bn_sprite_items_phase_orb_up.h:
 G:/game/build/bn_sprite_items_phase_orb_down.h:
 G:/game/build/bn_sprite_items_phase_orb_left.h:
 G:/game/build/bn_sprite_items_phase_orb_right.h:
+G:/game/include/ground_ghoul.h:
+G:/game/build/bn_sprite_items_ground_ghoul.h:
+G:/game/include/test_enemy.h:
+G:/game/build/bn_sprite_items_test_enemy.h:
 G:/game/include/devil_platform.h:
 G:/game/build/bn_sprite_items_devil_platform.h:
 G:/game/include/angel_platform.h:
 G:/game/build/bn_sprite_items_angel_platform.h:
-G:/game/include/test_enemy.h:
-G:/game/build/bn_sprite_items_test_enemy.h:
