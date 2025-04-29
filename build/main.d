@@ -106,6 +106,8 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_log.h \
  G:/game/build/bn_sprite_items_phase_orb_right.h \
  G:/game/include/ground_ghoul.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h \
+ G:/game/include/ceiling_ghoul.h \
+ G:/game/build/bn_sprite_items_ceiling_ghoul.h \
  G:/game/include/test_enemy.h G:/game/build/bn_sprite_items_test_enemy.h \
  G:/game/include/devil_platform.h \
  G:/game/build/bn_sprite_items_devil_platform.h \
@@ -228,6 +230,8 @@ G:/game/build/bn_sprite_items_phase_orb_left.h:
 G:/game/build/bn_sprite_items_phase_orb_right.h:
 G:/game/include/ground_ghoul.h:
 G:/game/build/bn_sprite_items_ground_ghoul.h:
+G:/game/include/ceiling_ghoul.h:
+G:/game/build/bn_sprite_items_ceiling_ghoul.h:
 G:/game/include/test_enemy.h:
 G:/game/build/bn_sprite_items_test_enemy.h:
 G:/game/include/devil_platform.h:

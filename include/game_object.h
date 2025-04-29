@@ -56,6 +56,7 @@ enum ObjectType
 	PHASE_ORB_RIGHT,
 	// Level Enemies
 	GROUND_GHOUL,
+	CEILING_GHOUL,
 	TEST_ENEMY,
 	// Special Objects
 	DEVIL_PLATFORM,

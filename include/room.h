@@ -23,6 +23,7 @@
 #include "tile_passage.h"
 #include "phase_orb.h"
 #include "ground_ghoul.h"
+#include "ceiling_ghoul.h"
 #include "test_enemy.h"
 #include "devil_platform.h"
 #include "angel_platform.h"

@@ -138,6 +138,10 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             temp_object_ptr = new GroundGhoul();
         break;
 
+        case CEILING_GHOUL:
+            temp_object_ptr = new CeilingGhoul();
+        break;
+
         case PHASE_ORB_UP:
             temp_object_ptr = new PhaseOrbUp();
         break;
