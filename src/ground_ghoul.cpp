@@ -566,6 +566,9 @@ void GroundGhoul::update(const RoomBounds&                              room_bou
                 break;
     
                 case GROUND_GHOUL:
+                case CEILING_GHOUL:
+                case WALL_LEFT_GHOUL:
+                case WALL_RIGHT_GHOUL:
                     
                     if(collider.isCollision(other_collider))
                     {

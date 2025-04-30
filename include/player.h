@@ -18,6 +18,8 @@
 #include "phase_orb.h"
 #include "ground_ghoul.h"
 #include "ceiling_ghoul.h"
+#include "wall_left_ghoul.h"
+#include "wall_right_ghoul.h"
 
 ///////////////////
 // Struct Player //

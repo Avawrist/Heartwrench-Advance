@@ -224,8 +224,10 @@ void CeilingGhoul::update(const RoomBounds&                              room_bo
                 case SCYTHE_PLATFORM:
                 break;
     
-                case CEILING_GHOUL:
                 case GROUND_GHOUL:
+                case CEILING_GHOUL:
+                case WALL_LEFT_GHOUL:
+                case WALL_RIGHT_GHOUL:
                     
                     if(collider.isCollision(other_collider))
                     {

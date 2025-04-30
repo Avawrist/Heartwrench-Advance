@@ -87,7 +87,11 @@ devil_platform.o: G:/game/src/devil_platform.cpp \
  G:/game/include/ground_ghoul.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h \
  G:/game/include/ceiling_ghoul.h \
- G:/game/build/bn_sprite_items_ceiling_ghoul.h
+ G:/game/build/bn_sprite_items_ceiling_ghoul.h \
+ G:/game/include/wall_left_ghoul.h \
+ G:/game/build/bn_sprite_items_wall_left_ghoul.h \
+ G:/game/include/wall_right_ghoul.h \
+ G:/game/build/bn_sprite_items_wall_right_ghoul.h
 G:/game/include/devil_platform.h:
 G:/butano-master/butano/include/bn_math.h:
 G:/butano-master/butano/include/bn_array.h:
@@ -185,3 +189,7 @@ G:/game/include/ground_ghoul.h:
 G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/include/ceiling_ghoul.h:
 G:/game/build/bn_sprite_items_ceiling_ghoul.h:
+G:/game/include/wall_left_ghoul.h:
+G:/game/build/bn_sprite_items_wall_left_ghoul.h:
+G:/game/include/wall_right_ghoul.h:
+G:/game/build/bn_sprite_items_wall_right_ghoul.h:

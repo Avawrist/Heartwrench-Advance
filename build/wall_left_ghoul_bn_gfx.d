@@ -1,0 +1,1 @@
+wall_left_ghoul_bn_gfx.o: wall_left_ghoul_bn_gfx.s

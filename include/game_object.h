@@ -57,6 +57,8 @@ enum ObjectType
 	// Level Enemies
 	GROUND_GHOUL,
 	CEILING_GHOUL,
+	WALL_LEFT_GHOUL,
+	WALL_RIGHT_GHOUL,
 	TEST_ENEMY,
 	// Special Objects
 	DEVIL_PLATFORM,
