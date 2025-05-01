@@ -1004,24 +1004,16 @@ void GroundGhoul::update(const RoomBounds&                              room_bou
     if(grounded_detected) {setState(GROUND_GHOUL_CRAWL_STATE);}
     else                  {setState(GROUND_GHOUL_AIR_STATE);}
 
-    /////////////////////////////
-	// Update Sprite Direction //
-	/////////////////////////////
+    /////////////////////////////////
+	// Generic Object Update stuff //
+	/////////////////////////////////
 	
-	if      (dir == LEFT)  {sprite_ptr->set_horizontal_flip(true);}
-	else if (dir == RIGHT) {sprite_ptr->set_horizontal_flip(false);}
-
-    //////////////////////
-	// Update Hit Flash //
-	//////////////////////
-
-	updateHitFlash();
-
-	//////////////////////////////
-    // Monitor unloading bounds //
-    //////////////////////////////
-    
-	updateInactiveState(camera);
+	GameObject::update(room_bounds,
+                       game_objects,
+                       bg_ptr,
+                       cells,
+                       bg_item,
+                       camera);
 
 }
 

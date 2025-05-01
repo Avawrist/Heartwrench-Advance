@@ -156,35 +156,15 @@ void ScythePlatform::update(const RoomBounds& 								  room_bounds,
 	update_counter++;
     if(update_counter >= 60) {update_counter = 0;}
 
-    //////////////////////
-	// Update Direction //
-	//////////////////////
-
-    if(dir == LEFT)        {sprite_ptr->set_horizontal_flip(true);}
-	else if (dir == RIGHT) {sprite_ptr->set_horizontal_flip(false);}
-
-	////////////////////////////
-    // Correct Sprite Offsets //
-    ////////////////////////////
+	/////////////////////////////////
+	// Generic Object Update stuff //
+	/////////////////////////////////
 	
-    bn::fixed h_scale   = sprite_ptr->horizontal_scale();
-    bn::fixed v_scale   = sprite_ptr->vertical_scale();
-    bn::fixed increment = 0.1;
-
-    // Correct H Scale
-    if(h_scale > 1) {sprite_ptr->set_horizontal_scale(h_scale - increment);}
-    else if (h_scale < 1) {sprite_ptr->set_horizontal_scale(h_scale + increment);}
-    if(abs(1 - sprite_ptr->horizontal_scale()) < increment) {sprite_ptr->set_horizontal_scale(1);}
-    
-    // Correct V Scale
-    if(v_scale > 1) {sprite_ptr->set_vertical_scale(v_scale - increment);}
-    else if (v_scale < 1) {sprite_ptr->set_vertical_scale(v_scale + increment);}
-    if(abs(1 - sprite_ptr->vertical_scale()) < increment) {sprite_ptr->set_vertical_scale(1);}
-
-	//////////////////////////////
-    // Monitor unloading bounds //
-    //////////////////////////////
-    
-	updateInactiveState(camera);
+	GameObject::update(room_bounds,
+					   game_objects,
+					   bg_ptr,
+					   cells,
+					   bg_item,
+					   camera);
 
 }

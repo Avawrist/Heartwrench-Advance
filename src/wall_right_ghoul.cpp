@@ -247,24 +247,16 @@ void WallRightGhoul::update(const RoomBounds&                              room_
     // Update State //
     //////////////////
 
-    /////////////////////////////
-	// Update Sprite Direction //
-	/////////////////////////////
+    /////////////////////////////////
+	// Generic Object Update stuff //
+	/////////////////////////////////
 	
-	if      (dir == DOWN)  {sprite_ptr->set_vertical_flip(true);}
-	else if (dir == UP)    {sprite_ptr->set_vertical_flip(false);}
-
-    //////////////////////
-	// Update Hit Flash //
-	//////////////////////
-
-	updateHitFlash();
-
-	//////////////////////////////
-    // Monitor unloading bounds //
-    //////////////////////////////
-    
-	updateInactiveState(camera);
+	GameObject::update(room_bounds,
+                       game_objects,
+                       bg_ptr,
+                       cells,
+                       bg_item,
+                       camera);
 
 }
 

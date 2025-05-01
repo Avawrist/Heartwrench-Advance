@@ -46,11 +46,16 @@ void PhaseOrb::update(const RoomBounds&                              room_bounds
 
     setDestination();
 
-    //////////////////////////////
-    // Monitor unloading bounds //
-    //////////////////////////////
-    
-	updateInactiveState(camera);
+    /////////////////////////////////
+	// Generic Object Update stuff //
+	/////////////////////////////////
+	
+	GameObject::update(room_bounds,
+                       game_objects,
+                       bg_ptr,
+                       cells,
+                       bg_item,
+                       camera);
 }
 
 //////////////////////////////

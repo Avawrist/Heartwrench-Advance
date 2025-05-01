@@ -7,12 +7,12 @@
 
 //======================================================================
 //
-//	phase_orb_right_bn_gfx, 32x32@8, 
+//	phase_orb_right_bn_gfx, 32x32@4, 
 //	+ palette 16 entries, not compressed
 //	+ 16 tiles not compressed
-//	Total size: 32 + 1024 = 1056
+//	Total size: 32 + 512 = 544
 //
-//	Time-stamp: 2025-04-30, 18:33:29
+//	Time-stamp: 2025-05-01, 13:32:15
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -21,8 +21,8 @@
 #ifndef GRIT_PHASE_ORB_RIGHT_BN_GFX_H
 #define GRIT_PHASE_ORB_RIGHT_BN_GFX_H
 
-#define phase_orb_right_bn_gfxTilesLen 1024
-extern const bn::tile phase_orb_right_bn_gfxTiles[32];
+#define phase_orb_right_bn_gfxTilesLen 512
+extern const bn::tile phase_orb_right_bn_gfxTiles[16];
 
 #define phase_orb_right_bn_gfxPalLen 32
 extern const bn::color phase_orb_right_bn_gfxPal[16];
@@ -34,8 +34,8 @@ extern const bn::color phase_orb_right_bn_gfxPal[16];
 namespace bn::sprite_items
 {
     constexpr inline sprite_item phase_orb_right(sprite_shape_size(sprite_shape::SQUARE, sprite_size::BIG), 
-            sprite_tiles_item(span<const tile>(phase_orb_right_bn_gfxTiles, 32), bpp_mode::BPP_8, compression_type::NONE, 1), 
-            sprite_palette_item(span<const color>(phase_orb_right_bn_gfxPal, 16), bpp_mode::BPP_8, compression_type::NONE));
+            sprite_tiles_item(span<const tile>(phase_orb_right_bn_gfxTiles, 16), bpp_mode::BPP_4, compression_type::NONE, 1), 
+            sprite_palette_item(span<const color>(phase_orb_right_bn_gfxPal, 16), bpp_mode::BPP_4, compression_type::NONE));
 }
 
 #endif

@@ -50,11 +50,17 @@ void TilePassage::update(const RoomBounds&                              room_bou
                          const bn::camera_ptr&                          camera)
 {
 
-    //////////////////////////////
-    // Monitor unloading bounds //
-    //////////////////////////////
-    
-	updateInactiveState(camera);
+    /////////////////////////////////
+	// Generic Object Update stuff //
+	/////////////////////////////////
+	
+	GameObject::update(room_bounds,
+                       game_objects,
+                       bg_ptr,
+                       cells,
+                       bg_item,
+                       camera);
+                       
 }
 
 void TilePassage::setState(TilePassageState new_state)

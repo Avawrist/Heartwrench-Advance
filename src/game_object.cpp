@@ -65,6 +65,38 @@ GameObject::~GameObject()
     }
 }
 
+void GameObject::update(const RoomBounds& 							   room_bounds,
+                        bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                        const bn::regular_bg_ptr&                      bg_ptr, 
+                        const bn::span<const bn::regular_bg_map_cell>& cells,
+                        const bn::regular_bg_item&                     bg_item,
+                        const bn::camera_ptr&                          camera)
+{
+    /////////////////////////////
+	// Update Sprite Direction //
+	/////////////////////////////
+	
+    updateSpriteDirection();
+    
+    ////////////////////////////
+    // Correct Sprite Offsets //
+    ////////////////////////////
+	
+    updateSpriteOffsets();
+
+	//////////////////////
+	// Update Hit Flash //
+	//////////////////////
+
+	updateHitFlash();
+
+	//////////////////////////////
+    // Monitor unloading bounds //
+    //////////////////////////////
+    
+	updateInactiveState(camera);
+}
+
 GameObject& GameObject::operator =(const GameObject& other)
 {
     object_type = other.object_type;
@@ -180,6 +212,31 @@ void GameObject::setPos(bn::fixed_point new_pos)
 	collider.setY(new_pos.y().integer() + collider_offset_y);
 }
 
+void GameObject::updateSpriteDirection()
+{
+    if      (dir == LEFT)  {sprite_ptr->set_horizontal_flip(true);}
+	else if (dir == RIGHT) {sprite_ptr->set_horizontal_flip(false);}
+    else if (dir == DOWN)  {sprite_ptr->set_vertical_flip(true);}
+	else if (dir == UP)    {sprite_ptr->set_vertical_flip(false);}
+}
+
+void GameObject::updateSpriteOffsets()
+{
+    bn::fixed h_scale   = sprite_ptr->horizontal_scale();
+    bn::fixed v_scale   = sprite_ptr->vertical_scale();
+    bn::fixed increment = 0.1;
+
+    // Correct H Scale
+    if(h_scale > 1) {sprite_ptr->set_horizontal_scale(h_scale - increment);}
+    else if (h_scale < 1) {sprite_ptr->set_horizontal_scale(h_scale + increment);}
+    if(abs(1 - sprite_ptr->horizontal_scale()) < increment) {sprite_ptr->set_horizontal_scale(1);}
+    
+    // Correct V Scale
+    if(v_scale > 1) {sprite_ptr->set_vertical_scale(v_scale - increment);}
+    else if (v_scale < 1) {sprite_ptr->set_vertical_scale(v_scale + increment);}
+    if(abs(1 - sprite_ptr->vertical_scale()) < increment) {sprite_ptr->set_vertical_scale(1);}
+}
+
 void GameObject::updateInactiveState(const bn::camera_ptr& camera)
 {
     if(is_persistent) {return;}
@@ -191,6 +248,11 @@ void GameObject::updateInactiveState(const bn::camera_ptr& camera)
 
     if(!load_range_collider.isCollision(pos()))
     {is_inactive = true;}
+}
+
+void GameObject::setHitFlash()
+{
+    hit_flash_frames = GAME_OBJECT_MAX_HIT_FLASH_FRAMES;
 }
 
 void GameObject::setHitFlash(int32 frames)

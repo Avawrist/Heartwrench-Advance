@@ -9,10 +9,6 @@
 #include "bn_memory.h"
 #include "bn_vector.h"
 
-// Common
-#include "common_info.h"
-#include "common_variable_8x16_sprite_font.h"
-
 // My Libs
 #include "utility.h"
 #include "level.h"

@@ -4,21 +4,24 @@
 // Butano
 #include "bn_optional.h"
 #include "bn_colors.h"
+#include "bn_camera_ptr.h"
+#include "bn_math.h"
+#include "bn_keypad.h"
+#include "bn_profiler.h"
+
 #include "bn_sprite_ptr.h"
 #include "bn_sprite_animate_actions.h"
 #include "bn_sprite_palette_ptr.h"
 #include "bn_sprite_palette_actions.h"
-#include "bn_camera_ptr.h"
+
 #include "bn_fixed.h"
 #include "bn_fixed_point.h"
+
 #include "bn_regular_bg_ptr.h"
 #include "bn_regular_bg_item.h"
 #include "bn_regular_bg_map_ptr.h"
 #include "bn_regular_bg_map_cell.h"
 #include "bn_regular_bg_map_cell_info.h"
-
-#include "bn_keypad.h"
-#include "bn_profiler.h"
 
 // My Libs
 #include "room_bounds.h"
@@ -44,6 +47,8 @@
 
 #define GAME_OBJECT_MAX_HIT_FLASH_FRAMES 10
 #define GAME_OBJECT_HIT_FLASH_COLOR bn::colors::white
+
+#define GAME_OBJECT_SPRITE_OFFSET_INCREMENT 0.1
 
 // The index order here needs to align with the object tile index order in 
 // Aseprite.
@@ -112,7 +117,7 @@ struct GameObject {
 						const bn::regular_bg_ptr&                      bg_ptr, 
                         const bn::span<const bn::regular_bg_map_cell>& cells,
                         const bn::regular_bg_item&                     bg_item,
-						const bn::camera_ptr&                          camera) = 0;
+						const bn::camera_ptr&                          camera);
 	
 	virtual void draw();
 	virtual void setCamera(const bn::camera_ptr& camera);
@@ -123,7 +128,10 @@ struct GameObject {
 	void setY(bn::fixed new_y);
 	void setPos(bn::fixed new_x, bn::fixed new_y);
 	void setPos(bn::fixed_point new_pos);
+	void updateSpriteDirection();
+	void updateSpriteOffsets();
 	void updateInactiveState(const bn::camera_ptr& camera);
+	void setHitFlash();
 	void setHitFlash(int32 frames);
 	void updateHitFlash();
 

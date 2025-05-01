@@ -91,10 +91,15 @@ void Hitbox::update(const RoomBounds&                              room_bounds,
     
     if(current_lifespan_frame <= 0) {is_inactive = true;}
 
-    //////////////////////////////
-    // Monitor unloading bounds //
-    //////////////////////////////
-    
-	updateInactiveState(camera);
+    /////////////////////////////////
+	// Generic Object Update stuff //
+	/////////////////////////////////
+	
+	GameObject::update(room_bounds,
+                       game_objects,
+                       bg_ptr,
+                       cells,
+                       bg_item,
+                       camera);
 
 }

@@ -420,10 +420,15 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 		}
 	}
 
-	//////////////////////////////
-    // Monitor unloading bounds //
-    //////////////////////////////
-    
-	updateInactiveState(camera);
+	/////////////////////////////////
+	// Generic Object Update stuff //
+	/////////////////////////////////
+	
+	GameObject::update(room_bounds,
+					   game_objects,
+					   bg_ptr,
+					   cells,
+					   bg_item,
+					   camera);
 
 }

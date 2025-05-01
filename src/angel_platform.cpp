@@ -136,10 +136,15 @@ void AngelPlatform::update(const RoomBounds&                              room_b
     update_counter++;
     if(update_counter >= 60) {update_counter = 0;}
 
-    //////////////////////////////
-    // Monitor unloading bounds //
-    //////////////////////////////
-    
-	updateInactiveState(camera);
-    
+    /////////////////////////////////
+	// Generic Object Update stuff //
+	/////////////////////////////////
+	
+	GameObject::update(room_bounds,
+                       game_objects,
+                       bg_ptr,
+                       cells,
+                       bg_item,
+                       camera);
+                    
 }

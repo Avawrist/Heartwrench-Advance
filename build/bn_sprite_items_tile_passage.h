@@ -7,12 +7,12 @@
 
 //======================================================================
 //
-//	tile_passage_bn_gfx, 32x64@8, 
-//	+ palette 80 entries, not compressed
+//	tile_passage_bn_gfx, 32x64@4, 
+//	+ palette 16 entries, not compressed
 //	+ 32 tiles not compressed
-//	Total size: 160 + 2048 = 2208
+//	Total size: 32 + 1024 = 1056
 //
-//	Time-stamp: 2025-04-30, 18:33:29
+//	Time-stamp: 2025-05-01, 13:32:15
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -21,11 +21,11 @@
 #ifndef GRIT_TILE_PASSAGE_BN_GFX_H
 #define GRIT_TILE_PASSAGE_BN_GFX_H
 
-#define tile_passage_bn_gfxTilesLen 2048
-extern const bn::tile tile_passage_bn_gfxTiles[64];
+#define tile_passage_bn_gfxTilesLen 1024
+extern const bn::tile tile_passage_bn_gfxTiles[32];
 
-#define tile_passage_bn_gfxPalLen 160
-extern const bn::color tile_passage_bn_gfxPal[80];
+#define tile_passage_bn_gfxPalLen 32
+extern const bn::color tile_passage_bn_gfxPal[16];
 
 #endif // GRIT_TILE_PASSAGE_BN_GFX_H
 
@@ -34,8 +34,8 @@ extern const bn::color tile_passage_bn_gfxPal[80];
 namespace bn::sprite_items
 {
     constexpr inline sprite_item tile_passage(sprite_shape_size(sprite_shape::SQUARE, sprite_size::BIG), 
-            sprite_tiles_item(span<const tile>(tile_passage_bn_gfxTiles, 64), bpp_mode::BPP_8, compression_type::NONE, 2), 
-            sprite_palette_item(span<const color>(tile_passage_bn_gfxPal, 80), bpp_mode::BPP_8, compression_type::NONE));
+            sprite_tiles_item(span<const tile>(tile_passage_bn_gfxTiles, 32), bpp_mode::BPP_4, compression_type::NONE, 2), 
+            sprite_palette_item(span<const color>(tile_passage_bn_gfxPal, 16), bpp_mode::BPP_4, compression_type::NONE));
 }
 
 #endif
