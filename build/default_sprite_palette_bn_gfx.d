@@ -1,1 +1,0 @@
-default_sprite_palette_bn_gfx.o: default_sprite_palette_bn_gfx.s

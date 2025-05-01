@@ -11,3 +11,5 @@
 -Smash some environmental objects may reward player with currency but cause area to
  be more difficult.
 -Levels must have secrets!!
+
+sprite_ptr.set_palette(sprite_palette_ptr)

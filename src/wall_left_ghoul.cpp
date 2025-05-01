@@ -3,28 +3,28 @@
 WallLeftGhoul::WallLeftGhoul()
 {
 
-        // Reset Variables //
-        sprite_ptr.reset();
-        animate_action_ptr.reset();
-    
-        // Init Variables //
-        object_type = WALL_LEFT_GHOUL;
-        sprite_ptr  = bn::sprite_items::wall_left_ghoul.create_sprite(0, 0);
-        sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
-        animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-                                                                      2,
-                                                                      bn::sprite_items::wall_left_ghoul.tiles_item(),
-                                                                      0,
-                                                                      0);
-    
-        collider          = Collider(x(), y(), WALL_LEFT_GHOUL_COLLIDER_WIDTH, WALL_LEFT_GHOUL_COLLIDER_HEIGHT);
-        collider_x_axis   = collider;
-        collider_y_axis   = collider;
-        collider_offset_x = WALL_LEFT_GHOUL_COLLIDER_OFFSET_X;
-        collider_offset_y = WALL_LEFT_GHOUL_COLLIDER_OFFSET_Y;
+    // Reset Variables //
+    sprite_ptr.reset();
+    animate_action_ptr.reset();
 
-        state = WALL_LEFT_GHOUL_CRAWL_STATE;
-        dir   = UP;
+    // Init Variables //
+    object_type = WALL_LEFT_GHOUL;
+    sprite_ptr  = bn::sprite_items::wall_left_ghoul.create_sprite(0, 0);
+    sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
+    animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+                                                                    2,
+                                                                    bn::sprite_items::wall_left_ghoul.tiles_item(),
+                                                                    0,
+                                                                    0);
+
+    collider          = Collider(x(), y(), WALL_LEFT_GHOUL_COLLIDER_WIDTH, WALL_LEFT_GHOUL_COLLIDER_HEIGHT);
+    collider_x_axis   = collider;
+    collider_y_axis   = collider;
+    collider_offset_x = WALL_LEFT_GHOUL_COLLIDER_OFFSET_X;
+    collider_offset_y = WALL_LEFT_GHOUL_COLLIDER_OFFSET_Y;
+
+    state = WALL_LEFT_GHOUL_CRAWL_STATE;
+    dir   = UP;
 }
 
 WallLeftGhoul::WallLeftGhoul(const WallLeftGhoul& other) : GameObject(other)
@@ -253,6 +253,12 @@ void WallLeftGhoul::update(const RoomBounds&                              room_b
 	
 	if      (dir == DOWN)  {sprite_ptr->set_vertical_flip(true);}
 	else if (dir == UP)    {sprite_ptr->set_vertical_flip(false);}
+
+    //////////////////////
+	// Update Hit Flash //
+	//////////////////////
+
+	updateHitFlash();
 
 	//////////////////////////////
     // Monitor unloading bounds //

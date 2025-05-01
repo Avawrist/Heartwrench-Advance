@@ -41,6 +41,7 @@ wall_right_ghoul.o: G:/game/src/wall_right_ghoul.cpp \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/butano-master/butano/include/bn_color.h G:/game/include/game_object.h \
  G:/butano-master/butano/include/bn_optional.h \
+ G:/butano-master/butano/include/bn_colors.h \
  G:/butano-master/butano/include/bn_sprite_ptr.h \
  G:/butano-master/butano/include/bn_sprite_animate_actions.h \
  G:/butano-master/butano/include/bn_vector.h \
@@ -49,6 +50,10 @@ wall_right_ghoul.o: G:/game/src/wall_right_ghoul.cpp \
  G:/butano-master/butano/include/bn_sprite_tiles_ptr.h \
  G:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h \
  G:/butano-master/butano/include/bn_sprite_palette_ptr.h \
+ G:/butano-master/butano/include/bn_sprite_palette_actions.h \
+ G:/butano-master/butano/include/bn_sprite_palette_ptr.h \
+ G:/butano-master/butano/include/bn_value_template_actions.h \
+ G:/butano-master/butano/include/bn_limits.h \
  G:/butano-master/butano/include/bn_camera_ptr.h \
  G:/butano-master/butano/include/bn_fixed.h \
  G:/butano-master/butano/include/bn_fixed_point.h \
@@ -72,10 +77,7 @@ wall_right_ghoul.o: G:/game/src/wall_right_ghoul.cpp \
  G:/butano-master/butano/include/bn_log_backend.h \
  G:/game/include/physics.h G:/butano-master/butano/include/bn_vector.h \
  G:/game/include/math.h G:/game/include/collider.h \
- G:/game/build/bn_sprite_items_game_object.h \
- G:/game/build/bn_sprite_palette_items_default_sprite_palette.h \
- G:/butano-master/butano/include/bn_sprite_palette_item.h \
- G:/game/build/bn_sprite_palette_items_white_sprite_palette.h
+ G:/game/build/bn_sprite_items_game_object.h
 G:/game/include/wall_right_ghoul.h:
 G:/butano-master/butano/include/bn_math.h:
 G:/butano-master/butano/include/bn_array.h:
@@ -119,6 +121,7 @@ G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/butano-master/butano/include/bn_color.h:
 G:/game/include/game_object.h:
 G:/butano-master/butano/include/bn_optional.h:
+G:/butano-master/butano/include/bn_colors.h:
 G:/butano-master/butano/include/bn_sprite_ptr.h:
 G:/butano-master/butano/include/bn_sprite_animate_actions.h:
 G:/butano-master/butano/include/bn_vector.h:
@@ -127,6 +130,10 @@ G:/butano-master/butano/include/bn_sprite_ptr.h:
 G:/butano-master/butano/include/bn_sprite_tiles_ptr.h:
 G:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h:
 G:/butano-master/butano/include/bn_sprite_palette_ptr.h:
+G:/butano-master/butano/include/bn_sprite_palette_actions.h:
+G:/butano-master/butano/include/bn_sprite_palette_ptr.h:
+G:/butano-master/butano/include/bn_value_template_actions.h:
+G:/butano-master/butano/include/bn_limits.h:
 G:/butano-master/butano/include/bn_camera_ptr.h:
 G:/butano-master/butano/include/bn_fixed.h:
 G:/butano-master/butano/include/bn_fixed_point.h:
@@ -154,6 +161,3 @@ G:/butano-master/butano/include/bn_vector.h:
 G:/game/include/math.h:
 G:/game/include/collider.h:
 G:/game/build/bn_sprite_items_game_object.h:
-G:/game/build/bn_sprite_palette_items_default_sprite_palette.h:
-G:/butano-master/butano/include/bn_sprite_palette_item.h:
-G:/game/build/bn_sprite_palette_items_white_sprite_palette.h:

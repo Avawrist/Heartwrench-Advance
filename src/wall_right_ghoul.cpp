@@ -254,6 +254,12 @@ void WallRightGhoul::update(const RoomBounds&                              room_
 	if      (dir == DOWN)  {sprite_ptr->set_vertical_flip(true);}
 	else if (dir == UP)    {sprite_ptr->set_vertical_flip(false);}
 
+    //////////////////////
+	// Update Hit Flash //
+	//////////////////////
+
+	updateHitFlash();
+
 	//////////////////////////////
     // Monitor unloading bounds //
     //////////////////////////////

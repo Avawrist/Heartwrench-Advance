@@ -6,23 +6,23 @@
 
 GameObject::GameObject()
 {
-    object_type = NO_TYPE;
-    object_id   = 0;
-
     sprite_ptr         = bn::sprite_items::game_object.create_sprite(0, 0);
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  2,
 								  								  bn::sprite_items::game_object.tiles_item(),
 								  								  0,
 								  								  0);
-    sprite_palette_ptr = bn::sprite_palette_items::default_sprite_palette.create_palette();
 	
     collider = Collider(x() + collider_offset_x, 
                         y() + collider_offset_y, 
                         GAME_OBJECT_COLLIDER_WIDTH, 
                         GAME_OBJECT_COLLIDER_HEIGHT);
 
-    dir = RIGHT;
+    object_type = NO_TYPE;
+    dir         = RIGHT;
+
+    object_id   = 0;
+    hit_flash_frames = 0;
 }
 
 GameObject::GameObject(const GameObject& other)
@@ -31,9 +31,8 @@ GameObject::GameObject(const GameObject& other)
     object_type = other.object_type;
     object_id   = other.object_id;
 
-    sprite_ptr         = other.sprite_ptr;
-    animate_action_ptr = other.animate_action_ptr;
-    sprite_palette_ptr = other.sprite_palette_ptr;
+    sprite_ptr                 = other.sprite_ptr;
+    animate_action_ptr         = other.animate_action_ptr;
 
     rigidbody = other.rigidbody;
 
@@ -51,13 +50,14 @@ GameObject::GameObject(const GameObject& other)
 
 	received_platform_force = other.received_platform_force;
 
+    hit_flash_frames = other.hit_flash_frames;
+
 }
 
 GameObject::~GameObject()
 {
     sprite_ptr.reset();
     animate_action_ptr.reset();
-    sprite_palette_ptr.reset();
     
     if(object_type != PLAYER)
     {
@@ -70,9 +70,8 @@ GameObject& GameObject::operator =(const GameObject& other)
     object_type = other.object_type;
     object_id   = other.object_id;
 
-    sprite_ptr         = other.sprite_ptr;
-    animate_action_ptr = other.animate_action_ptr;
-    sprite_palette_ptr = other.sprite_palette_ptr;
+    sprite_ptr                 = other.sprite_ptr;
+    animate_action_ptr         = other.animate_action_ptr;
 
     rigidbody = other.rigidbody;
 
@@ -89,6 +88,8 @@ GameObject& GameObject::operator =(const GameObject& other)
     is_persistent = other.is_persistent;
 
 	received_platform_force = other.received_platform_force;
+
+    hit_flash_frames = other.hit_flash_frames;
 
     return *this;
 }
@@ -190,6 +191,34 @@ void GameObject::updateInactiveState(const bn::camera_ptr& camera)
 
     if(!load_range_collider.isCollision(pos()))
     {is_inactive = true;}
+}
+
+void GameObject::setHitFlash(int32 frames)
+{
+    if(frames > GAME_OBJECT_MAX_HIT_FLASH_FRAMES) 
+    {frames = GAME_OBJECT_MAX_HIT_FLASH_FRAMES;}
+
+    hit_flash_frames = frames;
+}
+
+void GameObject::updateHitFlash()
+{
+    bn::sprite_palette_ptr sprite_palette = sprite_ptr->palette();
+    sprite_palette.set_fade_color(GAME_OBJECT_HIT_FLASH_COLOR);
+
+    if(hit_flash_frames)
+    {
+        bn::sprite_palette_fade_loop_action fade_action(sprite_palette, 1, 1);
+        fade_action.update();
+    }
+    else
+    {
+        bn::sprite_palette_fade_loop_action fade_action(sprite_palette, 1, 0);
+        fade_action.update();
+    }
+
+    hit_flash_frames--;
+    hit_flash_frames = clamp(0, GAME_OBJECT_MAX_HIT_FLASH_FRAMES, hit_flash_frames);
 }
 
 ///////////////////////////

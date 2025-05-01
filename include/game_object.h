@@ -3,9 +3,11 @@
 
 // Butano
 #include "bn_optional.h"
+#include "bn_colors.h"
 #include "bn_sprite_ptr.h"
 #include "bn_sprite_animate_actions.h"
 #include "bn_sprite_palette_ptr.h"
+#include "bn_sprite_palette_actions.h"
 #include "bn_camera_ptr.h"
 #include "bn_fixed.h"
 #include "bn_fixed_point.h"
@@ -26,8 +28,6 @@
 
 // Assets
 #include "bn_sprite_items_game_object.h"
-#include "bn_sprite_palette_items_default_sprite_palette.h"
-#include "bn_sprite_palette_items_white_sprite_palette.h"
 
 #define MAX_ANIM_FRAMES 16
 
@@ -41,6 +41,9 @@
 #define GAME_OBJECT_COLLIDER_HEIGHT 8
 
 #define GAME_OBJECT_IGNORE_OWP_FRAMES 3
+
+#define GAME_OBJECT_MAX_HIT_FLASH_FRAMES 10
+#define GAME_OBJECT_HIT_FLASH_COLOR bn::colors::white
 
 // The index order here needs to align with the object tile index order in 
 // Aseprite.
@@ -73,27 +76,27 @@ enum ObjectType
 
 struct GameObject {
 
-	ObjectType object_type;
-	int32      object_id;
-
 	bn::optional<bn::sprite_ptr>                             sprite_ptr;
 	bn::optional<bn::sprite_animate_action<MAX_ANIM_FRAMES>> animate_action_ptr;
-	bn::optional<bn::sprite_palette_ptr>                     sprite_palette_ptr;
+
+	ObjectType object_type;
 
 	RigidBody rigidbody;
+
+	Direction dir;
 
 	Collider collider;
 	Collider collider_x_axis;
 	Collider collider_y_axis;
+
+	int32 object_id;
 	int32 collider_offset_x = 0;
 	int32 collider_offset_y = 0;
-
-	Direction dir;
+	int32 hit_flash_frames  = 0;
 
 	bool is_inactive   = false;
 	bool is_dead       = false;
 	bool is_persistent = false;
-
 	bool received_platform_force = false;
 
 	void applyForces();
@@ -121,6 +124,8 @@ struct GameObject {
 	void setPos(bn::fixed new_x, bn::fixed new_y);
 	void setPos(bn::fixed_point new_pos);
 	void updateInactiveState(const bn::camera_ptr& camera);
+	void setHitFlash(int32 frames);
+	void updateHitFlash();
 
 };
 

@@ -254,6 +254,12 @@ void CeilingGhoul::update(const RoomBounds&                              room_bo
 	if      (dir == LEFT)  {sprite_ptr->set_horizontal_flip(true);}
 	else if (dir == RIGHT) {sprite_ptr->set_horizontal_flip(false);}
 
+    //////////////////////
+	// Update Hit Flash //
+	//////////////////////
+
+	updateHitFlash();
+
 	//////////////////////////////
     // Monitor unloading bounds //
     //////////////////////////////

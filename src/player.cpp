@@ -2306,7 +2306,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					
 					if(hitbox_1_ptr->collider.isCollision(other_collider))
 					{
-						((GroundGhoul*)(game_objects.at(i)))->setState(GROUND_GHOUL_DEATH_STATE);
+						//((GroundGhoul*)(game_objects.at(i)))->setState(GROUND_GHOUL_DEATH_STATE);
+						game_objects.at(i)->setHitFlash(GAME_OBJECT_MAX_HIT_FLASH_FRAMES);
 					}
 				
 				break;
@@ -2315,7 +2316,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					
 					if(hitbox_1_ptr->collider.isCollision(other_collider))
 					{
-						((CeilingGhoul*)(game_objects.at(i)))->setState(CEILING_GHOUL_DEATH_STATE);
+						//((CeilingGhoul*)(game_objects.at(i)))->setState(CEILING_GHOUL_DEATH_STATE);
+						game_objects.at(i)->setHitFlash(GAME_OBJECT_MAX_HIT_FLASH_FRAMES);
 					}
 			
 				break;
@@ -2324,7 +2326,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					
 					if(hitbox_1_ptr->collider.isCollision(other_collider))
 					{
-						((WallLeftGhoul*)(game_objects.at(i)))->setState(WALL_LEFT_GHOUL_DEATH_STATE);
+						//((WallLeftGhoul*)(game_objects.at(i)))->setState(WALL_LEFT_GHOUL_DEATH_STATE);
+						game_objects.at(i)->setHitFlash(GAME_OBJECT_MAX_HIT_FLASH_FRAMES);
 					}
 		
 				break;
@@ -2333,7 +2336,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						
 					if(hitbox_1_ptr->collider.isCollision(other_collider))
 					{
-						((WallRightGhoul*)(game_objects.at(i)))->setState(WALL_RIGHT_GHOUL_DEATH_STATE);
+						//((WallRightGhoul*)(game_objects.at(i)))->setState(WALL_RIGHT_GHOUL_DEATH_STATE);
+						game_objects.at(i)->setHitFlash(GAME_OBJECT_MAX_HIT_FLASH_FRAMES);
 					}
 	
 				break;
@@ -2586,6 +2590,12 @@ void Player::update(const RoomBounds& 								  room_bounds,
     if(v_scale > 1) {sprite_ptr->set_vertical_scale(v_scale - increment);}
     else if (v_scale < 1) {sprite_ptr->set_vertical_scale(v_scale + increment);}
     if(abs(1 - sprite_ptr->vertical_scale()) < increment) {sprite_ptr->set_vertical_scale(1);}
+
+	//////////////////////
+	// Update Hit Flash //
+	//////////////////////
+
+	updateHitFlash();
 
 	//////////////////////////////
     // Monitor unloading bounds //

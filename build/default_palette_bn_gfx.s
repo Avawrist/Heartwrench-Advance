@@ -1,13 +1,13 @@
 
-@{{BLOCK(palette_bn_gfx)
+@{{BLOCK(default_palette_bn_gfx)
 
 @=======================================================================
 @
-@	palette_bn_gfx, 8x8@8, 
+@	default_palette_bn_gfx, 16x16@8, 
 @	+ palette 64 entries, not compressed
 @	Total size: 128 = 128
 @
-@	Time-stamp: 2025-04-25, 11:31:38
+@	Time-stamp: 2025-04-30, 18:28:43
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -15,9 +15,9 @@
 
 	.section .rodata
 	.align	2
-	.global palette_bn_gfxPal		@ 128 unsigned chars
-	.hidden palette_bn_gfxPal
-palette_bn_gfxPal:
+	.global default_palette_bn_gfxPal		@ 128 unsigned chars
+	.hidden default_palette_bn_gfxPal
+default_palette_bn_gfxPal:
 	.hword 0x1485,0x20C7,0x314C,0x35B2,0x3E55,0x312D,0x45CF,0x5AB3
 	.hword 0x6B78,0x7FFF,0x108D,0x18F6,0x193D,0x25FE,0x1895,0x1CFD
 	.hword 0x0DBF,0x0A5E,0x171F,0x20CF,0x1D13,0x1DB9,0x265C,0x2AFF
@@ -27,4 +27,4 @@ palette_bn_gfxPal:
 	.hword 0x7F51,0x1CA8,0x38ED,0x5572,0x7A15,0x76BD,0x28EE,0x3534
 	.hword 0x3D99,0x4E1D,0x2C70,0x2898,0x3D3E,0x421E,0x4A9F,0x5B3F
 
-@}}BLOCK(palette_bn_gfx)
+@}}BLOCK(default_palette_bn_gfx)
