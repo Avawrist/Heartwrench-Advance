@@ -27,8 +27,6 @@ wall_right_ghoul.o: G:/game/src/wall_right_ghoul.cpp \
  G:/game/include/game_object.h \
  G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_memory_alias.h \
- G:/butano-master/butano/include/bn_colors.h \
- G:/butano-master/butano/include/bn_color.h \
  G:/butano-master/butano/include/bn_camera_ptr.h \
  G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_fixed_point.h \
@@ -61,6 +59,7 @@ wall_right_ghoul.o: G:/game/src/wall_right_ghoul.cpp \
  G:/butano-master/butano/include/bn_regular_bg_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_item.h \
  G:/butano-master/butano/include/bn_bg_palette_item.h \
+ G:/butano-master/butano/include/bn_color.h \
  G:/butano-master/butano/include/bn_regular_bg_map_item.h \
  G:/butano-master/butano/include/bn_size.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell.h \
@@ -74,6 +73,8 @@ wall_right_ghoul.o: G:/game/src/wall_right_ghoul.cpp \
  G:/butano-master/butano/include/bn_log_backend.h \
  G:/game/include/physics.h G:/butano-master/butano/include/bn_vector.h \
  G:/game/include/math.h G:/game/include/collider.h \
+ G:/game/build/bn_sprite_palette_items_flash_palette.h \
+ G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/game/build/bn_sprite_items_game_object.h \
  G:/butano-master/butano/include/bn_sprite_item.h \
  G:/butano-master/butano/include/bn_sprite_shape_size.h \
@@ -122,8 +123,6 @@ G:/butano-master/butano/include/bn_rule_of_three_approximation.h:
 G:/game/include/game_object.h:
 G:/butano-master/butano/include/bn_optional.h:
 G:/butano-master/butano/include/bn_memory_alias.h:
-G:/butano-master/butano/include/bn_colors.h:
-G:/butano-master/butano/include/bn_color.h:
 G:/butano-master/butano/include/bn_camera_ptr.h:
 G:/butano-master/butano/include/bn_optional.h:
 G:/butano-master/butano/include/bn_fixed_point.h:
@@ -156,6 +155,7 @@ G:/butano-master/butano/include/bn_fixed_point.h:
 G:/butano-master/butano/include/bn_regular_bg_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_item.h:
 G:/butano-master/butano/include/bn_bg_palette_item.h:
+G:/butano-master/butano/include/bn_color.h:
 G:/butano-master/butano/include/bn_regular_bg_map_item.h:
 G:/butano-master/butano/include/bn_size.h:
 G:/butano-master/butano/include/bn_regular_bg_map_cell.h:
@@ -172,6 +172,8 @@ G:/game/include/physics.h:
 G:/butano-master/butano/include/bn_vector.h:
 G:/game/include/math.h:
 G:/game/include/collider.h:
+G:/game/build/bn_sprite_palette_items_flash_palette.h:
+G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/game/build/bn_sprite_items_game_object.h:
 G:/butano-master/butano/include/bn_sprite_item.h:
 G:/butano-master/butano/include/bn_sprite_shape_size.h:

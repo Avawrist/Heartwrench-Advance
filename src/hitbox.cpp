@@ -17,6 +17,7 @@ Hitbox::Hitbox(bn::point pos,
 
     // Reset Variables //
     sprite_ptr.reset();
+    default_palette_ptr.reset();
     animate_action_ptr.reset();
 
     // Init Variables //
@@ -24,6 +25,7 @@ Hitbox::Hitbox(bn::point pos,
     
     sprite_ptr         = bn::sprite_items::hitbox.create_sprite(pos.x(), pos.y());
     sprite_ptr->set_visible(false);
+    default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  2,
 								  								  bn::sprite_items::hitbox.tiles_item(),

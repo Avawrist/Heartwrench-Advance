@@ -67,12 +67,14 @@ PhaseOrbUp::PhaseOrbUp()
 
     // Reset Variables //
     sprite_ptr.reset();
+    default_palette_ptr.reset();
     animate_action_ptr.reset();
 
     // Init Variables //
     object_type = PHASE_ORB_UP;
     sprite_ptr = bn::sprite_items::phase_orb_up.create_sprite(0, 0);
 	sprite_ptr->set_z_order(PHASE_ORB_Z_ORDER);
+    default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  2,
 								  								  bn::sprite_items::phase_orb_up.tiles_item(),
@@ -86,12 +88,14 @@ PhaseOrbDown::PhaseOrbDown()
 
     // Reset Variables //
     sprite_ptr.reset();
+    default_palette_ptr.reset();
     animate_action_ptr.reset();
 
     // Init Variables //
     object_type = PHASE_ORB_DOWN;
     sprite_ptr = bn::sprite_items::phase_orb_down.create_sprite(0, 0);
 	sprite_ptr->set_z_order(PHASE_ORB_Z_ORDER);
+    default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  2,
 								  								  bn::sprite_items::phase_orb_down.tiles_item(),
@@ -105,12 +109,14 @@ PhaseOrbLeft::PhaseOrbLeft()
 
     // Reset Variables //
     sprite_ptr.reset();
+    default_palette_ptr.reset();
     animate_action_ptr.reset();
 
     // Init Variables //
     object_type = PHASE_ORB_LEFT;
     sprite_ptr = bn::sprite_items::phase_orb_left.create_sprite(0, 0);
 	sprite_ptr->set_z_order(PHASE_ORB_Z_ORDER);
+    default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  2,
 								  								  bn::sprite_items::phase_orb_left.tiles_item(),
@@ -124,12 +130,14 @@ PhaseOrbRight::PhaseOrbRight()
 
     // Reset Variables //
     sprite_ptr.reset();
+    default_palette_ptr.reset();
     animate_action_ptr.reset();
 
     // Init Variables //
     object_type = PHASE_ORB_RIGHT;
     sprite_ptr = bn::sprite_items::phase_orb_right.create_sprite(0, 0);
 	sprite_ptr->set_z_order(PHASE_ORB_Z_ORDER);
+    default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  2,
 								  								  bn::sprite_items::phase_orb_right.tiles_item(),

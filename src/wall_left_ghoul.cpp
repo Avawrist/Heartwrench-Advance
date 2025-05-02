@@ -5,12 +5,14 @@ WallLeftGhoul::WallLeftGhoul()
 
     // Reset Variables //
     sprite_ptr.reset();
+    default_palette_ptr.reset();
     animate_action_ptr.reset();
 
     // Init Variables //
     object_type = WALL_LEFT_GHOUL;
     sprite_ptr  = bn::sprite_items::wall_left_ghoul.create_sprite(0, 0);
     sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
+    default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
                                                                     2,
                                                                     bn::sprite_items::wall_left_ghoul.tiles_item(),

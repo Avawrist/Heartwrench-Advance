@@ -3,7 +3,6 @@
 
 // Butano
 #include "bn_optional.h"
-#include "bn_colors.h"
 #include "bn_camera_ptr.h"
 #include "bn_math.h"
 #include "bn_keypad.h"
@@ -28,6 +27,9 @@
 #include "utility.h"
 #include "physics.h"
 #include "collider.h"
+
+// Flash Palette
+#include "bn_sprite_palette_items_flash_palette.h"
 
 // Object Assets
 #include "bn_sprite_items_game_object.h"
@@ -165,6 +167,7 @@ struct GameObject
 
 	bn::optional<bn::sprite_ptr>                             sprite_ptr;
 	bn::optional<bn::sprite_animate_action<MAX_ANIM_FRAMES>> animate_action_ptr;
+	bn::optional<bn::sprite_palette_ptr>                     default_palette_ptr;
 
 	ObjectType  object_type;
 	ObjectState state;

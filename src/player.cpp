@@ -9,6 +9,7 @@ Player::Player()
 
     // Reset Variables //
     sprite_ptr.reset();
+	default_palette_ptr.reset();
     animate_action_ptr.reset();
 
     // Init Variables //
@@ -17,6 +18,7 @@ Player::Player()
 	y_dir       = UP;
     sprite_ptr  = bn::sprite_items::player.create_sprite(0, 0);
 	sprite_ptr->set_z_order(PLAYER_Z_ORDER);
+	default_palette_ptr = sprite_ptr->palette();
 	animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  1,
 								  								  bn::sprite_items::player.tiles_item(),

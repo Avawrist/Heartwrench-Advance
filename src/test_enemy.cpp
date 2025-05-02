@@ -5,12 +5,14 @@ TestEnemy::TestEnemy()
 
     // Reset Variables //
     sprite_ptr.reset();
+	default_palette_ptr.reset();
     animate_action_ptr.reset();
 
     // Init Variables //
 	object_type = TEST_ENEMY;
     sprite_ptr  = bn::sprite_items::test_enemy.create_sprite(0, 0);
 	sprite_ptr->set_z_order(TEST_ENEMY_Z_ORDER);
+	default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  2,
 								  								  bn::sprite_items::test_enemy.tiles_item(),

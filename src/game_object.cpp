@@ -6,12 +6,13 @@
 
 GameObject::GameObject()
 {
-    sprite_ptr         = bn::sprite_items::game_object.create_sprite(0, 0);
-    animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								  								  2,
-								  								  bn::sprite_items::game_object.tiles_item(),
-								  								  0,
-								  								  0);
+    sprite_ptr          = bn::sprite_items::game_object.create_sprite(0, 0);
+    default_palette_ptr = sprite_ptr->palette();
+    animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+						 		  								   2,
+							  								       bn::sprite_items::game_object.tiles_item(),
+								  								   0,
+								  								   0);
 	
     collider = Collider(x() + collider_offset_x, 
                         y() + collider_offset_y, 
@@ -35,8 +36,9 @@ GameObject::GameObject(const GameObject& other)
     object_type = other.object_type;
     object_id   = other.object_id;
 
-    sprite_ptr                 = other.sprite_ptr;
-    animate_action_ptr         = other.animate_action_ptr;
+    sprite_ptr          = other.sprite_ptr;
+    default_palette_ptr = other.default_palette_ptr;
+    animate_action_ptr  = other.animate_action_ptr;
 
     rigidbody = other.rigidbody;
 
@@ -64,6 +66,7 @@ GameObject::GameObject(const GameObject& other)
 GameObject::~GameObject()
 {
     sprite_ptr.reset();
+    default_palette_ptr.reset();
     animate_action_ptr.reset();
     
     if(object_type != PLAYER)
@@ -78,8 +81,9 @@ GameObject& GameObject::operator =(const GameObject& other)
     object_type = other.object_type;
     object_id   = other.object_id;
 
-    sprite_ptr                 = other.sprite_ptr;
-    animate_action_ptr         = other.animate_action_ptr;
+    sprite_ptr          = other.sprite_ptr;
+    default_palette_ptr = other.default_palette_ptr;
+    animate_action_ptr  = other.animate_action_ptr;
 
     rigidbody = other.rigidbody;
 
@@ -112,9 +116,11 @@ void GameObject::update(const RoomBounds& 							   room_bounds,
                         const bn::regular_bg_item&                     bg_item,
                         const bn::camera_ptr&                          camera)
 {
+
     ///////////////////////////////////
     // Update Invulnerability frames //
     ///////////////////////////////////
+
     invulnerability_frames -= 1;
     if(invulnerability_frames < 0) {invulnerability_frames = 0;}
 
@@ -147,6 +153,7 @@ void GameObject::update(const RoomBounds& 							   room_bounds,
     //////////////////////////////
     
 	updateInactiveState(camera);
+
 }
 
 void GameObject::applyForces()
@@ -308,11 +315,8 @@ void GameObject::setHitFlash()
 {
     hit_flash_frames = GAME_OBJECT_MAX_HIT_FLASH_FRAMES;
 
-    bn::sprite_palette_ptr sprite_palette = sprite_ptr->palette();
-    sprite_palette.set_fade_color(GAME_OBJECT_HIT_FLASH_COLOR);
-    bn::sprite_palette_fade_loop_action fade_action(sprite_palette, 1, 1);
-
-    fade_action.update();
+    bn::sprite_palette_ptr sprite_palette = bn::sprite_palette_items::flash_palette.create_palette();
+    sprite_ptr->set_palette(sprite_palette);
 }
 
 void GameObject::setHitFlash(int32 frames)
@@ -322,27 +326,21 @@ void GameObject::setHitFlash(int32 frames)
 
     hit_flash_frames = frames;
 
-    bn::sprite_palette_ptr sprite_palette = sprite_ptr->palette();
-    sprite_palette.set_fade_color(GAME_OBJECT_HIT_FLASH_COLOR);
-    bn::sprite_palette_fade_loop_action fade_action(sprite_palette, 1, 1);
-    
-    fade_action.update();
+    bn::sprite_palette_ptr sprite_palette = bn::sprite_palette_items::flash_palette.create_palette();
+    sprite_ptr->set_palette(sprite_palette);
 }
 
 void GameObject::updateHitFlash()
 {
-    bn::sprite_palette_ptr sprite_palette = sprite_ptr->palette();
-    sprite_palette.set_fade_color(GAME_OBJECT_HIT_FLASH_COLOR);
-
+    
     if(hit_flash_frames)
     {
-        bn::sprite_palette_fade_loop_action fade_action(sprite_palette, 1, 1);
-        fade_action.update();
+        bn::sprite_palette_ptr sprite_palette = bn::sprite_palette_items::flash_palette.create_palette();
+        sprite_ptr->set_palette(sprite_palette);
     }
     else
     {
-        bn::sprite_palette_fade_loop_action fade_action(sprite_palette, 1, 0);
-        fade_action.update();
+        sprite_ptr->set_palette(default_palette_ptr.value());
     }
 
     hit_flash_frames--;
