@@ -18,6 +18,7 @@ struct Hitbox : GameObject
 
     int32 hitstun_frames;
     int32 hitstop_frames;
+    int32 screenshake_frames;
     int32 lifespan_frames;
     int32 current_lifespan_frame;
     int32 x_knockback;
@@ -27,9 +28,12 @@ struct Hitbox : GameObject
     int32 height;
     int32 damage;
 
+    ScreenShakeSeverity screenshake_severity;
+
     Hitbox(bn::point  pos,
            int32      _hitstun_frames,
            int32      _hitstop_frames,
+           int32      _screenshake_frames,
            int32      _lifespan_frames,
            int32      _x_knockback,
            int32      _y_knockback,
@@ -39,7 +43,8 @@ struct Hitbox : GameObject
            int32      _damage,
            XDirection _x_dir,
            YDirection _y_dir,
-           ObjectType _type);
+           ObjectType _type,
+           ScreenShakeSeverity _screenshake_severity);
     Hitbox(const Hitbox& other);
     ~Hitbox();
 

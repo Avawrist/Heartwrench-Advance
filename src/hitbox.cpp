@@ -3,6 +3,7 @@
 Hitbox::Hitbox(bn::point pos,
        int32      _hitstun_frames,
        int32      _hitstop_frames,
+       int32      _screenshake_frames,
        int32      _lifespan_frames,
        int32      _x_knockback,
        int32      _y_knockback,
@@ -12,7 +13,8 @@ Hitbox::Hitbox(bn::point pos,
        int32      _damage,
        XDirection _x_dir,
        YDirection _y_dir,
-       ObjectType _type)
+       ObjectType _type,
+       ScreenShakeSeverity _screenshake_severity)
 {
 
     // Reset Variables //
@@ -38,6 +40,7 @@ Hitbox::Hitbox(bn::point pos,
 
     hitstun_frames         = _hitstun_frames;
     hitstop_frames         = _hitstop_frames;
+    screenshake_frames     = _screenshake_frames;
     lifespan_frames        = _lifespan_frames;
     current_lifespan_frame = lifespan_frames;
     x_knockback            = _x_knockback;
@@ -50,12 +53,15 @@ Hitbox::Hitbox(bn::point pos,
     x_dir                  = _x_dir;
     y_dir                  = _y_dir;
 
+    screenshake_severity = _screenshake_severity;
+
 }
 
 Hitbox::Hitbox(const Hitbox& other) : GameObject(other)
 {
     hitstun_frames         = other.hitstun_frames;
     hitstop_frames         = other.hitstop_frames;
+    screenshake_frames     = other.screenshake_frames;
     lifespan_frames        = other.lifespan_frames;
     current_lifespan_frame = other.current_lifespan_frame;
     x_knockback            = other.x_knockback;
@@ -64,6 +70,7 @@ Hitbox::Hitbox(const Hitbox& other) : GameObject(other)
     width                  = other.width;
     height                 = other.height;
     damage                 = other.damage;
+    screenshake_severity   = other.screenshake_severity;
 }
 
 Hitbox::~Hitbox()
@@ -75,6 +82,7 @@ Hitbox& Hitbox::operator =(const Hitbox& other)
 {
     hitstun_frames         = other.hitstun_frames;
     hitstop_frames         = other.hitstop_frames;
+    screenshake_frames     = other.screenshake_frames;
     lifespan_frames        = other.lifespan_frames;
     current_lifespan_frame = other.current_lifespan_frame;
     x_knockback            = other.x_knockback;
@@ -83,6 +91,7 @@ Hitbox& Hitbox::operator =(const Hitbox& other)
     width                  = other.width;
     height                 = other.height;
     damage                 = other.damage;
+    screenshake_severity   = screenshake_severity;
 
     return *this;
 }
@@ -114,7 +123,10 @@ void Hitbox::update(const RoomBounds&                              room_bounds,
             case WALL_RIGHT_GHOUL:
                     
                 if(collider.isCollision(other_collider))
-                {game_objects.at(i)->applyHit(damage, hitstop_frames);}
+                {game_objects.at(i)->applyHit(damage, 
+                                              hitstop_frames,
+                                              screenshake_frames,
+                                              screenshake_severity);}
 
             break;
 

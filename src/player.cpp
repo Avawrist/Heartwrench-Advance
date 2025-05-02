@@ -2427,6 +2427,7 @@ void Player::createGroundedScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJE
 								  y().integer() + PLAYER_SCYTHE_GROUND_1_Y_OFFSET),
 								  PLAYER_SCYTHE_GROUND_1_HITSTUN_FRAMES,
 								  GAME_OBJECT_WEAK_HITSTOP_FRAMES,
+								  PLAYER_SCYTHE_GROUND_1_SCREENSHAKE_FRAMES,
 								  PLAYER_SCYTHE_GROUND_1_HB_LIFESPAN_FRAMES,
 								  PLAYER_SCYTHE_GROUND_1_X_KNOCKBACK,
 								  PLAYER_SCYTHE_GROUND_1_Y_KNOCKBACK,	
@@ -2436,7 +2437,8 @@ void Player::createGroundedScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJE
 								  PLAYER_SCYTHE_GROUND_1_DAMAGE,
 								  x_dir,
 								  y_dir,
-								  HITBOX_SCYTHE_GROUND_1);
+								  HITBOX_SCYTHE_GROUND_1,
+								  PLAYER_SCYTHE_GROUND_1_SCREENSHAKE_SEVERITY);
 
 	hitbox_1_ptr->setCamera(camera);
 
@@ -2453,6 +2455,7 @@ void Player::createAirScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>&
 								  y().integer() + PLAYER_SCYTHE_AIR_1_Y_OFFSET),
 								  PLAYER_SCYTHE_AIR_1_HITSTUN_FRAMES,
 								  GAME_OBJECT_WEAK_HITSTOP_FRAMES,
+								  PLAYER_SCYTHE_AIR_1_SCREENSHAKE_FRAMES,
 								  PLAYER_SCYTHE_AIR_1_HB_LIFESPAN_FRAMES,
 								  PLAYER_SCYTHE_AIR_1_X_KNOCKBACK,
 								  PLAYER_SCYTHE_AIR_1_Y_KNOCKBACK,	
@@ -2462,7 +2465,8 @@ void Player::createAirScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>&
 								  PLAYER_SCYTHE_AIR_1_DAMAGE,
 								  x_dir,
 								  y_dir,
-								  HITBOX_SCYTHE_AIR_1);
+								  HITBOX_SCYTHE_AIR_1,
+								  PLAYER_SCYTHE_AIR_1_SCREENSHAKE_SEVERITY);
 
 	hitbox_1_ptr->setCamera(camera);
 

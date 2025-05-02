@@ -32,6 +32,8 @@ Level::Level(const Level& other)
     cam_is_scrolling   = other.cam_is_scrolling;
     cam_x_offset       = other.cam_x_offset;
     cam_y_offset       = other.cam_y_offset;
+
+    random_engine = other.random_engine;
 }
 
 Level::~Level()
@@ -61,6 +63,8 @@ void Level::operator =(const Level& other)
     cam_is_scrolling   = other.cam_is_scrolling;
     cam_x_offset       = other.cam_x_offset;
     cam_y_offset       = other.cam_y_offset;
+
+    random_engine = other.random_engine;
 }
 
 void Level::clear()
@@ -228,6 +232,24 @@ void Level::updateCamera()
                           new_cam_y);
         camera.value().set_position(new_cam_x, new_cam_y);
 
+        // Apply screenshake
+        if(screenshake_frames > 0)
+        {
+            int32 x_shake_offset = random_engine.get_int(MIN_X_SHAKE_RANGE, MAX_X_SHAKE_RANGE);
+            int32 y_shake_offset = random_engine.get_int(MIN_Y_SHAKE_RANGE, MAX_Y_SHAKE_RANGE);
+
+            camera.value().set_position(camera.value().x() + (x_shake_offset * screenshake_severity), 
+                                        camera.value().y() + (y_shake_offset * screenshake_severity));
+        }
+
+    }
+
+    // Update screenshake frame counter
+    screenshake_frames--;
+    if(screenshake_frames <= 0) 
+    {
+        screenshake_frames   = 0;
+        screenshake_severity = WEAK;
     }
 
 }

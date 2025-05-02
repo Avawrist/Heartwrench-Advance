@@ -4,7 +4,8 @@
 // Butano
 #include "bn_log.h"
 #include "bn_core.h"
-
+#include "bn_random.h"
+#include "bn_math.h"
 #include "bn_vector.h"
 #include "bn_camera_ptr.h"
 #include "bn_span.h"
@@ -31,6 +32,11 @@
 
 // 240 and 160 MUST be divisible by SCROLL_SPEED.
 #define SCROLL_SPEED 8
+
+#define MIN_X_SHAKE_RANGE -3
+#define MAX_X_SHAKE_RANGE  3
+#define MIN_Y_SHAKE_RANGE -3
+#define MAX_Y_SHAKE_RANGE  3
 
 // BG Z orders (Higher orders are drawn first)
 #define PAINTED_BG_ORDER 4
@@ -70,6 +76,8 @@ struct Level
     bool  cam_is_scrolling;
     int32 cam_x_offset;
     int32 cam_y_offset;
+
+    bn::random random_engine;
 
     Level();
     Level(LevelName level_name);

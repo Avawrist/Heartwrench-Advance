@@ -65,12 +65,9 @@ typedef int   int32;
 #define RIGHT_STEEP_SLOPE_1_INDEX 181
 #define RIGHT_STEEP_SLOPE_2_INDEX 182
 
-//#define SLOW_BLOCK_INDEX 158
-
 #define TILE_TOTAL_COUNT 183
 
 // Tile Dimensions //
-
 #define TILE_WIDTH  8
 #define TILE_HEIGHT 8
 
@@ -78,10 +75,28 @@ typedef int   int32;
 #define WORLD_Y_OFFSET 4
 
 // Collider Dimensions //
-
 #define ONEWAYBLOCK_COLLIDER_WIDTH     8
 #define ONEWAYBLOCK_COLLIDER_HEIGHT    1
 #define ONEWAYBLOCK_COLLIDER_Y_OFFSET -4
+
+// Enums
+enum XDirection
+{
+    LEFT  = -1,
+    RIGHT =  1
+};
+
+enum YDirection
+{
+    UP    = -1,
+    DOWN  =  1,
+};
+
+enum ScreenShakeSeverity
+{
+    WEAK   = 1,
+    STRONG = 2,
+};
 
 // Global Arrays
 extern int32 left_shallow_slope_1_arr[TILE_WIDTH];
@@ -101,24 +116,12 @@ extern int32 right_steep_slope_1_arr[TILE_WIDTH];
 extern int32 right_steep_slope_2_arr[TILE_WIDTH];
 
 // Global Variables
-extern int32 hitstop_frames;
+extern int32               hitstop_frames;
+extern int32               screenshake_frames;
+extern ScreenShakeSeverity screenshake_severity;
 
 // Debug Mode
 #define DEBUG_BUILD false
-
-// Enums
-
-enum XDirection
-{
-    LEFT  = -1,
-    RIGHT =  1
-};
-
-enum YDirection
-{
-    UP    = -1,
-    DOWN  =  1,
-};
 
 // Functions
 
