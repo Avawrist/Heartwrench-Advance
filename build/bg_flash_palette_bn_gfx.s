@@ -1,13 +1,13 @@
 
-@{{BLOCK(flash_palette_bn_gfx)
+@{{BLOCK(bg_flash_palette_bn_gfx)
 
 @=======================================================================
 @
-@	flash_palette_bn_gfx, 8x8@4, 
+@	bg_flash_palette_bn_gfx, 8x8@4, 
 @	+ palette 16 entries, not compressed
 @	Total size: 32 = 32
 @
-@	Time-stamp: 2025-05-02, 14:40:34
+@	Time-stamp: 2025-05-02, 15:26:25
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -15,10 +15,10 @@
 
 	.section .rodata
 	.align	2
-	.global flash_palette_bn_gfxPal		@ 32 unsigned chars
-	.hidden flash_palette_bn_gfxPal
-flash_palette_bn_gfxPal:
+	.global bg_flash_palette_bn_gfxPal		@ 32 unsigned chars
+	.hidden bg_flash_palette_bn_gfxPal
+bg_flash_palette_bn_gfxPal:
 	.hword 0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF
-	.hword 0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x0000,0x0000
+	.hword 0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF,0x7FFF
 
-@}}BLOCK(flash_palette_bn_gfx)
+@}}BLOCK(bg_flash_palette_bn_gfx)

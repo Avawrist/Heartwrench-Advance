@@ -14,6 +14,10 @@
 #include "bn_regular_bg_map_ptr.h"
 #include "bn_regular_bg_map_cell.h"
 #include "bn_regular_bg_map_cell_info.h"
+#include "bn_bg_palette_ptr.h"
+
+// Flash Palette
+#include "bn_bg_palette_items_bg_flash_palette.h"
 
 // Assets
 #include "bn_regular_bg_items_test_bg.h"
@@ -59,6 +63,8 @@ struct Level
     bn::optional<bn::regular_bg_ptr>        backdrop_ptr;
     bn::optional<bn::regular_bg_ptr>        painted_bg_ptr;
     bn::optional<bn::regular_bg_ptr>        object_bg_ptr;
+
+    bn::optional<bn::bg_palette_ptr>        default_painted_palette_ptr;
     
     bn::optional<bn::regular_bg_item>       bg_item;
     bn::span<const bn::regular_bg_map_cell> cells;
@@ -92,6 +98,7 @@ struct Level
 
     void updateAndDraw();
     void updateCamera();
+    void updateBGFlash();
     void reloadOnDeath();
     void freeObjects();
     void updateIndexes();

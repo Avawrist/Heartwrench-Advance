@@ -117,6 +117,7 @@ extern int32 right_steep_slope_1_arr[TILE_WIDTH];
 extern int32 right_steep_slope_2_arr[TILE_WIDTH];
 
 // Global Variables
+extern int32               bg_hitflash_frames;
 extern int32               hitstop_frames;
 extern int32               screenshake_frames;
 extern ScreenShakeSeverity screenshake_severity;

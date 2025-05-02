@@ -41,6 +41,7 @@ int main()
         {
             current_level.updateAndDraw();
             current_level.updateCamera();
+            current_level.updateBGFlash();
             current_level.freeObjects();
             current_level.reloadOnDeath();
             current_level.transitionRoom();

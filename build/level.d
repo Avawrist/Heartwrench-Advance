@@ -56,6 +56,9 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/butano-master/butano/include/bn_regular_bg_map_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h \
+ G:/butano-master/butano/include/bn_bg_palette_ptr.h \
+ G:/game/build/bn_bg_palette_items_bg_flash_palette.h \
+ G:/butano-master/butano/include/bn_bg_palette_item.h \
  G:/game/build/bn_regular_bg_items_test_bg.h \
  G:/game/build/bn_regular_bg_items_test_level.h \
  G:/game/build/bn_regular_bg_items_test_painted_bg.h \
@@ -84,7 +87,7 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/butano-master/butano/include/bn_sprite_palette_ptr.h \
  G:/butano-master/butano/include/bn_value_template_actions.h \
  G:/game/include/physics.h G:/game/include/math.h \
- G:/game/build/bn_sprite_palette_items_flash_palette.h \
+ G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/game/build/bn_sprite_items_game_object.h \
  G:/butano-master/butano/include/bn_sprite_item.h \
@@ -169,6 +172,9 @@ G:/butano-master/butano/include/bn_tile.h:
 G:/butano-master/butano/include/bn_regular_bg_map_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_map_cell.h:
 G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h:
+G:/butano-master/butano/include/bn_bg_palette_ptr.h:
+G:/game/build/bn_bg_palette_items_bg_flash_palette.h:
+G:/butano-master/butano/include/bn_bg_palette_item.h:
 G:/game/build/bn_regular_bg_items_test_bg.h:
 G:/game/build/bn_regular_bg_items_test_level.h:
 G:/game/build/bn_regular_bg_items_test_painted_bg.h:
@@ -201,7 +207,7 @@ G:/butano-master/butano/include/bn_sprite_palette_ptr.h:
 G:/butano-master/butano/include/bn_value_template_actions.h:
 G:/game/include/physics.h:
 G:/game/include/math.h:
-G:/game/build/bn_sprite_palette_items_flash_palette.h:
+G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/game/build/bn_sprite_items_game_object.h:
 G:/butano-master/butano/include/bn_sprite_item.h:

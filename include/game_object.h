@@ -29,7 +29,7 @@
 #include "collider.h"
 
 // Flash Palette
-#include "bn_sprite_palette_items_flash_palette.h"
+#include "bn_sprite_palette_items_sprite_flash_palette.h"
 
 // Object Assets
 #include "bn_sprite_items_game_object.h"

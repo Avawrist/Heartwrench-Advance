@@ -72,7 +72,7 @@ scythe_platform.o: G:/game/src/scythe_platform.cpp \
  G:/butano-master/butano/include/bn_limits.h \
  G:/game/include/room_bounds.h G:/game/include/physics.h \
  G:/butano-master/butano/include/bn_vector.h G:/game/include/collider.h \
- G:/game/build/bn_sprite_palette_items_flash_palette.h \
+ G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/game/build/bn_sprite_items_game_object.h \
  G:/butano-master/butano/include/bn_sprite_item.h \
@@ -171,7 +171,7 @@ G:/game/include/room_bounds.h:
 G:/game/include/physics.h:
 G:/butano-master/butano/include/bn_vector.h:
 G:/game/include/collider.h:
-G:/game/build/bn_sprite_palette_items_flash_palette.h:
+G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/game/build/bn_sprite_items_game_object.h:
 G:/butano-master/butano/include/bn_sprite_item.h:

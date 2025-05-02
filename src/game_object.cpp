@@ -315,7 +315,7 @@ void GameObject::setHitFlash()
 {
     hit_flash_frames = GAME_OBJECT_MAX_HIT_FLASH_FRAMES;
 
-    bn::sprite_palette_ptr sprite_palette = bn::sprite_palette_items::flash_palette.create_palette();
+    bn::sprite_palette_ptr sprite_palette = bn::sprite_palette_items::sprite_flash_palette.create_palette();
     sprite_ptr->set_palette(sprite_palette);
 }
 
@@ -326,7 +326,7 @@ void GameObject::setHitFlash(int32 frames)
 
     hit_flash_frames = frames;
 
-    bn::sprite_palette_ptr sprite_palette = bn::sprite_palette_items::flash_palette.create_palette();
+    bn::sprite_palette_ptr sprite_palette = bn::sprite_palette_items::sprite_flash_palette.create_palette();
     sprite_ptr->set_palette(sprite_palette);
 }
 
@@ -335,7 +335,7 @@ void GameObject::updateHitFlash()
     
     if(hit_flash_frames)
     {
-        bn::sprite_palette_ptr sprite_palette = bn::sprite_palette_items::flash_palette.create_palette();
+        bn::sprite_palette_ptr sprite_palette = bn::sprite_palette_items::sprite_flash_palette.create_palette();
         sprite_ptr->set_palette(sprite_palette);
     }
     else
@@ -344,7 +344,8 @@ void GameObject::updateHitFlash()
     }
 
     hit_flash_frames--;
-    hit_flash_frames = clamp(0, GAME_OBJECT_MAX_HIT_FLASH_FRAMES, hit_flash_frames);
+    if(hit_flash_frames < 0)
+    {hit_flash_frames = 0;}
 }
 
 void GameObject::applyDamage(int32 damage)
@@ -364,6 +365,7 @@ void GameObject::applyHit(int32 damage,
         setHitStretch();
         applyDamage(damage);
         
+        bg_hitflash_frames     = _hitstop_frames;
         hitstop_frames         = _hitstop_frames;
         screenshake_frames     = _screenshake_frames;
         screenshake_severity   = _screenshake_severity;

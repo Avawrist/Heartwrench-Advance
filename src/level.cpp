@@ -24,6 +24,8 @@ Level::Level(const Level& other)
     object_bg_item = other.object_bg_item;
     object_cells   = other.object_cells;
 
+    default_painted_palette_ptr = other.default_painted_palette_ptr;
+
     tile_width  = other.tile_width;
     tile_height = other.tile_height;
 
@@ -54,6 +56,8 @@ void Level::operator =(const Level& other)
     cells          = other.cells;
     object_bg_item = other.object_bg_item;
     object_cells   = other.object_cells;
+
+    default_painted_palette_ptr = other.default_painted_palette_ptr;
 
     tile_width  = other.tile_width;
     tile_height = other.tile_height;
@@ -139,6 +143,9 @@ void Level::load(LevelName level_name)
                         object_bg_ptr.value(), 
                         object_bg_item.value(), 
                         object_cells);
+
+    // Store default painted bg palette
+    default_painted_palette_ptr = painted_bg_ptr->palette();
     
     // Set draw priority for BGs
     painted_bg_ptr->set_z_order(PAINTED_BG_ORDER);
@@ -252,6 +259,26 @@ void Level::updateCamera()
         screenshake_severity = NO_SHAKE;
     }
 
+}
+
+void Level::updateBGFlash()
+{
+    if(bg_hitflash_frames)
+    {
+        // Set flash palette
+        bn::bg_palette_ptr flash_palette = bn::bg_palette_items::bg_flash_palette.create_palette();
+        painted_bg_ptr->set_palette(flash_palette);
+    }
+    else
+    {
+        // Set default palette
+        painted_bg_ptr->set_palette(default_painted_palette_ptr.value());
+    }
+
+    // Update bg hitflash frames
+    bg_hitflash_frames--;
+    if(bg_hitflash_frames < 0)
+    {bg_hitflash_frames = 0;}
 }
 
 void Level::reloadOnDeath()
