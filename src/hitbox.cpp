@@ -1,7 +1,6 @@
 #include "hitbox.h"
 
 Hitbox::Hitbox(bn::point pos,
-       int32      _hitstun_frames,
        int32      _hitstop_frames,
        int32      _screenshake_frames,
        int32      _lifespan_frames,
@@ -38,7 +37,6 @@ Hitbox::Hitbox(bn::point pos,
     collider_offset_x = 0;
 	collider_offset_y = 0;
 
-    hitstun_frames         = _hitstun_frames;
     hitstop_frames         = _hitstop_frames;
     screenshake_frames     = _screenshake_frames;
     lifespan_frames        = _lifespan_frames;
@@ -59,7 +57,6 @@ Hitbox::Hitbox(bn::point pos,
 
 Hitbox::Hitbox(const Hitbox& other) : GameObject(other)
 {
-    hitstun_frames         = other.hitstun_frames;
     hitstop_frames         = other.hitstop_frames;
     screenshake_frames     = other.screenshake_frames;
     lifespan_frames        = other.lifespan_frames;
@@ -80,7 +77,6 @@ Hitbox::~Hitbox()
 
 Hitbox& Hitbox::operator =(const Hitbox& other)
 {
-    hitstun_frames         = other.hitstun_frames;
     hitstop_frames         = other.hitstop_frames;
     screenshake_frames     = other.screenshake_frames;
     lifespan_frames        = other.lifespan_frames;

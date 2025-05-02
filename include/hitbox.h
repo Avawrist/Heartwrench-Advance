@@ -16,7 +16,6 @@
 struct Hitbox : GameObject
 {
 
-    int32 hitstun_frames;
     int32 hitstop_frames;
     int32 screenshake_frames;
     int32 lifespan_frames;
@@ -31,7 +30,6 @@ struct Hitbox : GameObject
     ScreenShakeSeverity screenshake_severity;
 
     Hitbox(bn::point  pos,
-           int32      _hitstun_frames,
            int32      _hitstop_frames,
            int32      _screenshake_frames,
            int32      _lifespan_frames,
