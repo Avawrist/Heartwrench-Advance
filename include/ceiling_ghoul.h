@@ -4,9 +4,6 @@
 // Butano
 #include "bn_math.h"
 
-// Assets
-#include "bn_sprite_items_ceiling_ghoul.h"
-
 // Base Class
 #include "game_object.h"
 
@@ -23,19 +20,11 @@
 #define CEILING_GHOUL_CRAWL_SPEED 1
 #define CEILING_GHOUL_CRAWL_DECAY 1
 
-#define CEILING_GHOUL_CRAWL_FORCE   Force(bn::fixed_point_t<12>(CEILING_GHOUL_CRAWL_SPEED * dir, 0), CEILING_GHOUL_CRAWL_DECAY)
+#define CEILING_GHOUL_CRAWL_FORCE   Force(bn::fixed_point_t<12>(CEILING_GHOUL_CRAWL_SPEED * x_dir, 0), CEILING_GHOUL_CRAWL_DECAY)
 
-enum CeilingGhoulState
-{
-	CEILING_GHOUL_IDLE_STATE,
-	CEILING_GHOUL_CRAWL_STATE,
-	CEILING_GHOUL_HITSTUN_STATE,
-	CEILING_GHOUL_DEATH_STATE,
-};
+#define CEILING_GHOUL_HITPOINTS 1
 
 struct CeilingGhoul : GameObject {
-
-	CeilingGhoulState state;
 
     CeilingGhoul();
 	CeilingGhoul(const CeilingGhoul& other);
@@ -49,7 +38,7 @@ struct CeilingGhoul : GameObject {
                 const bn::span<const bn::regular_bg_map_cell>& cells,
                 const bn::regular_bg_item&                     bg_item,
 				const bn::camera_ptr&                          camera) override;
-	void setState(CeilingGhoulState new_state);
+	void setState(ObjectState new_state);
 
 };
 

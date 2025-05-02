@@ -16,6 +16,8 @@ int32 right_shallow_slope_4_arr[TILE_WIDTH] = {8, 8, 8, 8, 7, 7, 7, 7};
 int32 right_steep_slope_1_arr[TILE_WIDTH] = {4, 4, 3, 3, 2, 2, 1, 1};
 int32 right_steep_slope_2_arr[TILE_WIDTH] = {8, 8, 7, 7, 6, 6, 5, 5};
 
+int32 hitstop_frames = 0;
+
 // Functions
 
 int32 getTileAtBGIndex(uint32 x, uint32 y, 

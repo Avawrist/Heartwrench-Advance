@@ -62,10 +62,6 @@ angel_platform.o: G:/game/src/angel_platform.cpp \
  G:/butano-master/butano/include/bn_sprite_tiles_item.h \
  G:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h \
  G:/butano-master/butano/include/bn_camera_ptr.h \
- G:/game/build/bn_sprite_items_angel_platform.h \
- G:/butano-master/butano/include/bn_sprite_item.h \
- G:/butano-master/butano/include/bn_sprite_shape_size.h \
- G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/game/include/game_object.h \
  G:/butano-master/butano/include/bn_colors.h \
  G:/butano-master/butano/include/bn_keypad.h \
@@ -78,7 +74,26 @@ angel_platform.o: G:/game/src/angel_platform.cpp \
  G:/butano-master/butano/include/bn_value_template_actions.h \
  G:/butano-master/butano/include/bn_limits.h \
  G:/game/include/room_bounds.h \
- G:/game/build/bn_sprite_items_game_object.h
+ G:/game/build/bn_sprite_items_game_object.h \
+ G:/butano-master/butano/include/bn_sprite_item.h \
+ G:/butano-master/butano/include/bn_sprite_shape_size.h \
+ G:/butano-master/butano/include/bn_sprite_palette_item.h \
+ G:/game/build/bn_sprite_items_tile_passage.h \
+ G:/game/build/bn_sprite_items_phase_orb_up.h \
+ G:/game/build/bn_sprite_items_phase_orb_down.h \
+ G:/game/build/bn_sprite_items_phase_orb_left.h \
+ G:/game/build/bn_sprite_items_phase_orb_right.h \
+ G:/game/build/bn_sprite_items_ceiling_ghoul.h \
+ G:/game/build/bn_sprite_items_ground_ghoul.h \
+ G:/game/build/bn_sprite_items_wall_left_ghoul.h \
+ G:/game/build/bn_sprite_items_wall_right_ghoul.h \
+ G:/game/build/bn_sprite_items_test_enemy.h \
+ G:/game/build/bn_sprite_items_devil_platform.h \
+ G:/game/build/bn_sprite_items_angel_platform.h \
+ G:/game/build/bn_sprite_items_scythe_platform.h \
+ G:/game/build/bn_sprite_items_hitbox.h \
+ G:/game/build/bn_sprite_items_player.h \
+ G:/game/build/bn_sprite_items_phase_marker.h
 G:/game/include/angel_platform.h:
 G:/butano-master/butano/include/bn_optional.h:
 G:/butano-master/butano/include/bn_assert.h:
@@ -145,10 +160,6 @@ G:/butano-master/butano/include/bn_sprite_tiles_ptr.h:
 G:/butano-master/butano/include/bn_sprite_tiles_item.h:
 G:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h:
 G:/butano-master/butano/include/bn_camera_ptr.h:
-G:/game/build/bn_sprite_items_angel_platform.h:
-G:/butano-master/butano/include/bn_sprite_item.h:
-G:/butano-master/butano/include/bn_sprite_shape_size.h:
-G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/game/include/game_object.h:
 G:/butano-master/butano/include/bn_colors.h:
 G:/butano-master/butano/include/bn_keypad.h:
@@ -162,3 +173,22 @@ G:/butano-master/butano/include/bn_value_template_actions.h:
 G:/butano-master/butano/include/bn_limits.h:
 G:/game/include/room_bounds.h:
 G:/game/build/bn_sprite_items_game_object.h:
+G:/butano-master/butano/include/bn_sprite_item.h:
+G:/butano-master/butano/include/bn_sprite_shape_size.h:
+G:/butano-master/butano/include/bn_sprite_palette_item.h:
+G:/game/build/bn_sprite_items_tile_passage.h:
+G:/game/build/bn_sprite_items_phase_orb_up.h:
+G:/game/build/bn_sprite_items_phase_orb_down.h:
+G:/game/build/bn_sprite_items_phase_orb_left.h:
+G:/game/build/bn_sprite_items_phase_orb_right.h:
+G:/game/build/bn_sprite_items_ceiling_ghoul.h:
+G:/game/build/bn_sprite_items_ground_ghoul.h:
+G:/game/build/bn_sprite_items_wall_left_ghoul.h:
+G:/game/build/bn_sprite_items_wall_right_ghoul.h:
+G:/game/build/bn_sprite_items_test_enemy.h:
+G:/game/build/bn_sprite_items_devil_platform.h:
+G:/game/build/bn_sprite_items_angel_platform.h:
+G:/game/build/bn_sprite_items_scythe_platform.h:
+G:/game/build/bn_sprite_items_hitbox.h:
+G:/game/build/bn_sprite_items_player.h:
+G:/game/build/bn_sprite_items_phase_marker.h:

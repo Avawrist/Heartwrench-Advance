@@ -1,6 +1,6 @@
 #include "scythe_platform.h"
 
-ScythePlatform::ScythePlatform(Direction _dir, bn::fixed_point _p)
+ScythePlatform::ScythePlatform(XDirection _x_dir, bn::fixed_point _p)
 {
     // Reset Variables //
     sprite_ptr.reset();
@@ -26,10 +26,10 @@ ScythePlatform::ScythePlatform(Direction _dir, bn::fixed_point _p)
 	collider_offset_x = 0;
 	collider_offset_y = 0;
 
-    state             = STATE_THROWN;
+    state             = SCYTHE_PLATFORM_THROWN;
 	player_was_riding = false;
 	update_counter    = 0;
-    dir               = _dir;
+    x_dir             = _x_dir;
 
 	// Apply throw force
 	rigidbody.addForce(SCYTHE_PLATFORM_THROW_FORCE);
@@ -60,7 +60,7 @@ void ScythePlatform::update(const RoomBounds& 								  room_bounds,
 
     switch(state)
     {
-        case STATE_THROWN:
+        case SCYTHE_PLATFORM_THROWN:
 
 			// Make visible
 			sprite_ptr->set_visible(true);

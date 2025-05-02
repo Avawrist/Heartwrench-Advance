@@ -5,10 +5,6 @@
 #include "bn_keypad.h"
 #include "bn_math.h"
 
-// Assets
-#include "bn_sprite_items_player.h"
-#include "bn_sprite_items_phase_marker.h"
-
 // Base Class
 #include "game_object.h"
 
@@ -33,11 +29,7 @@
 #define PLAYER_COLLIDER_OFFSET_X 0
 #define PLAYER_COLLIDER_OFFSET_Y 2
 
-#define PLAYER_MIN_STRETCH_V  0.7
-#define PLAYER_MAX_STRETCH_V  1.8
 #define PLAYER_FALL_STRETCH_V 1.5
-#define PLAYER_MIN_STRETCH_H  0.7
-#define PLAYER_MAX_STRETCH_H  1.8
 #define PLAYER_FALL_STRETCH_H 0.75
 
 #define PLAYER_MIN_X_SPEED     0
@@ -94,28 +86,7 @@
 #define PLAYER_SCYTHE_GROUND_1_X_KNOCKBACK        5
 #define PLAYER_SCYTHE_GROUND_1_Y_KNOCKBACK        0
 #define PLAYER_SCYTHE_GROUND_1_KNOCKBACK_DECAY    0.2
-
-#define PLAYER_SCYTHE_GROUND_2_X_OFFSET           32
-#define PLAYER_SCYTHE_GROUND_2_Y_OFFSET           0
-#define PLAYER_SCYTHE_GROUND_2_HB_WIDTH           16
-#define PLAYER_SCYTHE_GROUND_2_HB_HEIGHT          16
-#define PLAYER_SCYTHE_GROUND_2_CREATE_HB_FRAME    10
-#define PLAYER_SCYTHE_GROUND_2_HB_LIFESPAN_FRAMES 10
-#define PLAYER_SCYTHE_GROUND_2_HITSTUN_FRAMES     10
-#define PLAYER_SCYTHE_GROUND_2_X_KNOCKBACK        5
-#define PLAYER_SCYTHE_GROUND_2_Y_KNOCKBACK        0
-#define PLAYER_SCYTHE_GROUND_2_KNOCKBACK_DECAY    0.2
-
-#define PLAYER_SCYTHE_GROUND_3_X_OFFSET           32
-#define PLAYER_SCYTHE_GROUND_3_Y_OFFSET           0
-#define PLAYER_SCYTHE_GROUND_3_HB_WIDTH           16
-#define PLAYER_SCYTHE_GROUND_3_HB_HEIGHT          16
-#define PLAYER_SCYTHE_GROUND_3_CREATE_HB_FRAME    10
-#define PLAYER_SCYTHE_GROUND_3_HB_LIFESPAN_FRAMES 10
-#define PLAYER_SCYTHE_GROUND_3_HITSTUN_FRAMES     10
-#define PLAYER_SCYTHE_GROUND_3_X_KNOCKBACK        5
-#define PLAYER_SCYTHE_GROUND_3_Y_KNOCKBACK        0
-#define PLAYER_SCYTHE_GROUND_3_KNOCKBACK_DECAY    0.2
+#define PLAYER_SCYTHE_GROUND_1_DAMAGE             1
 
 #define PLAYER_SCYTHE_AIR_1_X_OFFSET           32
 #define PLAYER_SCYTHE_AIR_1_Y_OFFSET           0
@@ -127,6 +98,7 @@
 #define PLAYER_SCYTHE_AIR_1_X_KNOCKBACK        5
 #define PLAYER_SCYTHE_AIR_1_Y_KNOCKBACK        0
 #define PLAYER_SCYTHE_AIR_1_KNOCKBACK_DECAY    0.2
+#define PLAYER_SCYTHE_AIR_1_DAMAGE             1
 
 #define PLAYER_V_COLLISION_MAX_GRACE_FRAMES 4
 #define PLAYER_LATE_JUMP_GRACE_FRAMES       6
@@ -159,20 +131,6 @@
 #define PLAYER_PHASE_STEP_EXIT_FORCE_LEFT  Force(bn::fixed_point_t<12>(-PLAYER_PHASE_STEP_EXIT_X_FORCE, 0), PLAYER_PHASE_STEP_EXIT_DECAY)
 #define PLAYER_PHASE_STEP_EXIT_FORCE_RIGHT Force(bn::fixed_point_t<12>(PLAYER_PHASE_STEP_EXIT_X_FORCE,  0), PLAYER_PHASE_STEP_EXIT_DECAY)
 
-enum PlayerState {
-	STATE_NO_STATE,
-	STATE_GROUNDED_NEUTRAL,
-	STATE_AIR_NEUTRAL,
-	STATE_WALL_SLIDE_RIGHT,
-	STATE_WALL_SLIDE_LEFT,
-	STATE_PHASE_STEP,
-	STATE_SCYTHE_GROUND_1,
-	STATE_SCYTHE_GROUND_2,
-	STATE_SCYTHE_GROUND_3,
-	STATE_SCYTHE_AIR_1,
-	STATE_DYING,
-};
-
 enum PhaseDir
 {
 	PHASE_UP = 0,
@@ -183,8 +141,6 @@ enum PhaseDir
 
 struct Player : GameObject {
 	
-	PlayerState 	state;
-
 	bn::fixed       x_speed;
 	bn::fixed       jump_force;
 	bn::fixed       secondary_jump_force;
@@ -201,6 +157,7 @@ struct Player : GameObject {
 	int32 current_death_frame;
 	int32 current_scythe_frame;
 	int32 current_phase_frame;
+	int32 hitstop_frames;
 	
 	bool wall_right_detected;
     bool wall_left_detected;
@@ -238,7 +195,7 @@ struct Player : GameObject {
 	void setCamera(const bn::camera_ptr& camera) override;
 	void jump();
 	void fastFall();
-	void setState(PlayerState new_state);
+	void setState(ObjectState new_state);
 	void createGroundedScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
 		                               const bn::camera_ptr&                      camera);
 	void createAirScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 

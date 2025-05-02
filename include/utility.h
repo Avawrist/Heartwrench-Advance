@@ -100,15 +100,22 @@ extern int32 right_shallow_slope_4_arr[TILE_WIDTH];
 extern int32 right_steep_slope_1_arr[TILE_WIDTH];
 extern int32 right_steep_slope_2_arr[TILE_WIDTH];
 
+// Global Variables
+extern int32 hitstop_frames;
+
 // Debug Mode
 #define DEBUG_BUILD false
 
 // Enums
 
-enum Direction
+enum XDirection
 {
     LEFT  = -1,
-    RIGHT =  1,
+    RIGHT =  1
+};
+
+enum YDirection
+{
     UP    = -1,
     DOWN  =  1,
 };

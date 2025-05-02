@@ -23,8 +23,9 @@ GroundGhoul::GroundGhoul()
         collider_offset_x = GROUND_GHOUL_COLLIDER_OFFSET_X;
         collider_offset_y = GROUND_GHOUL_COLLIDER_OFFSET_Y;
 
-        state = GROUND_GHOUL_CRAWL_STATE;
-        dir   = RIGHT;
+        state = GROUND_GHOUL_CRAWL;
+        x_dir = RIGHT;
+        y_dir = UP;
 
         grounded_detected = false;
 
@@ -32,11 +33,11 @@ GroundGhoul::GroundGhoul()
         test_collider_right = collider;
         test_collider_left  = collider;
 
+        hitpoints = GROUND_GHOUL_HITPOINTS;
 }
 
 GroundGhoul::GroundGhoul(const GroundGhoul& other) : GameObject(other)
 {
-    state = other.state;
     grounded_detected = other.grounded_detected;
 
     test_collider       = other.test_collider;
@@ -51,7 +52,6 @@ GroundGhoul::~GroundGhoul()
 
 GroundGhoul& GroundGhoul::operator =(const GroundGhoul& other)
 {
-    state = other.state;
     grounded_detected = other.grounded_detected;
 
     test_collider       = other.test_collider;
@@ -75,26 +75,26 @@ void GroundGhoul::update(const RoomBounds&                              room_bou
 
     switch(state)
     {
-        case GROUND_GHOUL_IDLE_STATE:
+        case GROUND_GHOUL_IDLE:
         break;
 
-        case GROUND_GHOUL_CRAWL_STATE:
+        case GROUND_GHOUL_CRAWL:
 
             rigidbody.addForce(GROUND_GHOUL_CRAWL_FORCE);
 
         break;
 
-        case GROUND_GHOUL_AIR_STATE:
+        case GROUND_GHOUL_AIR:
 
             rigidbody.addForce(GROUND_GHOUL_CRAWL_FORCE);
             rigidbody.addForce(GROUND_GHOUL_GRAVITY_FORCE);
 
         break;
 
-        case GROUND_GHOUL_HITSTUN_STATE:
+        case GROUND_GHOUL_HITSTUN:
         break;
 
-        case GROUND_GHOUL_DEATH_STATE:
+        case ENEMY_DEATH:
 
             is_dead = true;
 
@@ -147,7 +147,7 @@ void GroundGhoul::update(const RoomBounds&                              room_bou
         {
             case TILE_PASSAGE:
                 
-                if(((TilePassage*)(game_objects.at(i)))->state == TILE_PASSAGE_STATE_SHUT &&
+                if(((TilePassage*)(game_objects.at(i)))->state == TILE_PASSAGE_SHUT &&
                     collider.isCollision(other_collider))
                 {
                     // Resolve X Axis Collision //
@@ -235,8 +235,8 @@ void GroundGhoul::update(const RoomBounds&                              room_bou
 					col_x_offset = collider_x_axis.getCollisionXOffset(other_collider, rigidbody.normalized_dir.x());
 					collider_x_axis.setX(collider_x_axis.x() + col_x_offset);
 					setX(this->x() + col_x_offset);
-                    if(col_x_offset < 0)      {dir = LEFT;}
-                    else if(col_x_offset > 0) {dir = RIGHT;}
+                    if(col_x_offset < 0)      {x_dir = LEFT;}
+                    else if(col_x_offset > 0) {x_dir = RIGHT;}
 
 					// Resolve Y Axis Collision //
 					col_y_offset = collider_y_axis.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y());
@@ -550,7 +550,7 @@ void GroundGhoul::update(const RoomBounds&                              room_bou
                 case TILE_PASSAGE:
 
                     // Test for, and log grounded collision
-					if(((TilePassage*)(game_objects.at(i)))->state == TILE_PASSAGE_STATE_SHUT &&
+					if(((TilePassage*)(game_objects.at(i)))->state == TILE_PASSAGE_SHUT &&
 					    test_collider.isCollision(other_collider))
 					{grounded_detected = true;}
 
@@ -572,8 +572,8 @@ void GroundGhoul::update(const RoomBounds&                              room_bou
                     
                     if(collider.isCollision(other_collider))
                     {
-                        if(dir == RIGHT) {dir = LEFT;}
-                        else             {dir = RIGHT;}
+                        if(x_dir == RIGHT) {x_dir = LEFT;}
+                        else               {x_dir = RIGHT;}
                     }
                     
                 break;
@@ -1001,8 +1001,8 @@ void GroundGhoul::update(const RoomBounds&                              room_bou
     // Update State //
     //////////////////
 
-    if(grounded_detected) {setState(GROUND_GHOUL_CRAWL_STATE);}
-    else                  {setState(GROUND_GHOUL_AIR_STATE);}
+    if(grounded_detected) {setState(GROUND_GHOUL_CRAWL);}
+    else                  {setState(GROUND_GHOUL_AIR);}
 
     /////////////////////////////////
 	// Generic Object Update stuff //
@@ -1017,25 +1017,25 @@ void GroundGhoul::update(const RoomBounds&                              room_bou
 
 }
 
-void GroundGhoul::setState(GroundGhoulState new_state)
+void GroundGhoul::setState(ObjectState new_state)
 {
     state = new_state;
 
     switch(new_state)
     {
-        case GROUND_GHOUL_IDLE_STATE:
+        case GROUND_GHOUL_IDLE:
         break;
 
-        case GROUND_GHOUL_CRAWL_STATE:
+        case GROUND_GHOUL_CRAWL:
         break;
 
-        case GROUND_GHOUL_AIR_STATE:
+        case GROUND_GHOUL_AIR:
         break;
 
-        case GROUND_GHOUL_HITSTUN_STATE:
+        case GROUND_GHOUL_HITSTUN:
         break;
 
-        case GROUND_GHOUL_DEATH_STATE:
+        case ENEMY_DEATH:
         break;
 
         default:

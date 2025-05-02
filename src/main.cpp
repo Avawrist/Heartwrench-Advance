@@ -29,6 +29,9 @@ int main()
         //if(bn::keypad::l_held()) {profile = true;}
         //if(profile) {BN_PROFILER_START("game update");}
 
+        // Update Hitstop
+        hitstop_frames = 0;
+
         // Update Levels
         if(current_level.cam_is_scrolling)
         {
@@ -62,8 +65,11 @@ int main()
         //    bn::profiler::show();
         //}
 
-        // Update Core
-        bn::core::update();
-        //BN_LOG(bn::core::last_missed_frames());
+        for(int i = 0; i <= hitstop_frames; i++)
+        {
+            // Update Core
+            bn::core::update();
+            //BN_LOG(bn::core::last_missed_frames());
+        }
     }
 }

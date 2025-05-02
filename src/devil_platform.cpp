@@ -151,7 +151,7 @@ void DevilPlatform::update(const RoomBounds&                              room_b
 
                     // Check for a wall slide to improve feel of wall sliding physics.
                     if(test_collider_slide_ptr->isCollision(*object_collider_ptr) && 
-                    ((Player*)object_ptr)->state != STATE_GROUNDED_NEUTRAL)
+                    ((Player*)object_ptr)->state != PLAYER_GROUNDED_NEUTRAL)
                     {
                         object_ptr->rigidbody.addForce(Force(bn::fixed_point_t<12>(0, rigidbody.final_dir.y()),
                                                              DEVIL_PLATFORM_DECAY));

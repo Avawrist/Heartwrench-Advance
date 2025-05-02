@@ -23,6 +23,7 @@ TestEnemy::TestEnemy()
 	collider_offset_x = TEST_ENEMY_COLLIDER_OFFSET_X;
 	collider_offset_y = TEST_ENEMY_COLLIDER_OFFSET_Y;
     
+	hitpoints = TEST_ENEMY_HITPOINTS;
 }
 
 TestEnemy::TestEnemy(const TestEnemy& other) : GameObject(other)

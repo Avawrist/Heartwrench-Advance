@@ -4,9 +4,6 @@
 // Butano
 #include "bn_math.h"
 
-// Assets
-#include "bn_sprite_items_test_enemy.h"
-
 // Base Class
 #include "game_object.h"
 
@@ -26,6 +23,8 @@
 #define TEST_ENEMY_GRAVITY_DECAY   1
 
 #define TEST_ENEMY_GRAVITY_FORCE Force(bn::fixed_point_t<12>(0, TEST_ENEMY_GRAVITY), TEST_ENEMY_GRAVITY_DECAY)
+
+#define TEST_ENEMY_HITPOINTS 2
 
 struct TestEnemy : GameObject {
 

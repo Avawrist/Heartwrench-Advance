@@ -12,9 +12,6 @@
 #include "physics.h"
 #include "collider.h"
 
-// Assets
-#include "bn_sprite_items_angel_platform.h"
-
 // Base Class
 #include "game_object.h"
 

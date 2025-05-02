@@ -4,9 +4,6 @@
 // Butano
 #include "bn_math.h"
 
-// Assets
-#include "bn_sprite_items_devil_platform.h"
-
 // Base Class
 #include "game_object.h"
 #include "player.h"

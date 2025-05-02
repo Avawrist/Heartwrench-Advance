@@ -9,7 +9,7 @@ TilePassage::TilePassage()
 
     // Init Variables //
 	object_type        = TILE_PASSAGE;
-    state              = TILE_PASSAGE_STATE_SHUT;
+    state              = TILE_PASSAGE_SHUT;
     sprite_ptr         = bn::sprite_items::tile_passage.create_sprite(0, 0);
     sprite_ptr->set_z_order(TILE_PASSAGE_Z_ORDER);
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
@@ -27,7 +27,7 @@ TilePassage::TilePassage()
 
 TilePassage::TilePassage(const TilePassage& other) : GameObject(other)
 {
-    state = other.state;
+
 }
 
 TilePassage::~TilePassage()
@@ -37,8 +37,6 @@ TilePassage::~TilePassage()
 
 TilePassage& TilePassage::operator =(const TilePassage& other)
 {
-    state = other.state;
-
     return *this;
 }
 
@@ -63,7 +61,7 @@ void TilePassage::update(const RoomBounds&                              room_bou
                        
 }
 
-void TilePassage::setState(TilePassageState new_state)
+void TilePassage::setState(ObjectState new_state)
 {
     // Set State
 	state = new_state;
@@ -71,14 +69,16 @@ void TilePassage::setState(TilePassageState new_state)
 	// Set animations & other state specific variables
     switch(new_state)
 	{
-        case TILE_PASSAGE_STATE_OPEN:
+        case TILE_PASSAGE_OPEN:
+
             animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
                                                                           2,
                                                                           bn::sprite_items::tile_passage.tiles_item(),
                                                                           1, 1);
         break;
 
-        case TILE_PASSAGE_STATE_SHUT:
+        case TILE_PASSAGE_SHUT:
+
             animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
                                                                           2,
                                                                           bn::sprite_items::tile_passage.tiles_item(),

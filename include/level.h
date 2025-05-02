@@ -88,7 +88,6 @@ struct Level
     void freeObjects();
     void updateIndexes();
     void transitionRoom();
-
 };
 
 #endif

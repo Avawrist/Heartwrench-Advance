@@ -4,9 +4,6 @@
 // Butano
 #include "bn_math.h"
 
-// Assets
-#include "bn_sprite_items_hitbox.h"
-
 // Base Class
 #include "game_object.h"
 
@@ -14,12 +11,13 @@
 // Struct Hitbox //
 ///////////////////
 
-#define HITBOX_KNOCKBACK_FORCE Force(bn::fixed_point_t<12>(x_knockback * dir, y_knockback), knockback_decay)
+#define HITBOX_KNOCKBACK_FORCE Force(bn::fixed_point_t<12>(x_knockback * x_dir, y_knockback * y_dir), knockback_decay)
 
 struct Hitbox : GameObject
 {
 
     int32 hitstun_frames;
+    int32 hitstop_frames;
     int32 lifespan_frames;
     int32 current_lifespan_frame;
     int32 x_knockback;
@@ -27,16 +25,20 @@ struct Hitbox : GameObject
     int32 knockback_decay;
     int32 width;
     int32 height;
+    int32 damage;
 
     Hitbox(bn::point  pos,
            int32      _hitstun_frames,
+           int32      _hitstop_frames,
            int32      _lifespan_frames,
            int32      _x_knockback,
            int32      _y_knockback,
            int32      _knockback_decay,
            int32      _width,
            int32      _height,
-           Direction  _dir,
+           int32      _damage,
+           XDirection _x_dir,
+           YDirection _y_dir,
            ObjectType _type);
     Hitbox(const Hitbox& other);
     ~Hitbox();

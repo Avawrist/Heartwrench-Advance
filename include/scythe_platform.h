@@ -8,9 +8,6 @@
 // My Libs
 #include "math.h"
 
-// Assets
-#include "bn_sprite_items_scythe_platform.h"
-
 // Base Class
 #include "game_object.h"
 
@@ -28,9 +25,11 @@
 
 // -Scythe movement is 2 directional.
 
+/*
 enum ScytheState {
-	STATE_THROWN = 0,
+	SCYTHE_PLATFORM_THROWN = 0,
 };
+*/
 
 #define SCYTHE_PLATFORM_COLLIDER_WIDTH  24
 #define SCYTHE_PLATFORM_COLLIDER_HEIGHT 2
@@ -53,18 +52,17 @@ enum ScytheState {
 #define SCYTHE_PLATFORM_GRAVITY 1
 #define SCYTHE_PLATFORM_GRAVITY_DECAY 1
 
-#define SCYTHE_PLATFORM_THROW_FORCE      Force(bn::fixed_point_t<12>(SCYTHE_PLATFORM_THROW_X_FORCE * dir, 0), SCYTHE_PLATFORM_DECAY)
+#define SCYTHE_PLATFORM_THROW_FORCE      Force(bn::fixed_point_t<12>(SCYTHE_PLATFORM_THROW_X_FORCE * x_dir, 0), SCYTHE_PLATFORM_DECAY)
 #define SCYTHE_PLATFORM_DRIFT_DOWN_FORCE Force(bn::fixed_point_t<12>(0, SCYTHE_PLATFORM_DRIFT_DOWN_Y), SCYTHE_PLATFORM_DRIFT_DECAY)
 #define SCYTHE_PLATFORM_DRIFT_UP_FORCE   Force(bn::fixed_point_t<12>(0, SCYTHE_PLATFORM_DRIFT_UP_Y), SCYTHE_PLATFORM_DRIFT_DECAY)
 #define SCYTHE_PLATFORM_GRAVITY_FORCE    Force(bn::fixed_point_t<12>(0, SCYTHE_PLATFORM_GRAVITY), SCYTHE_PLATFORM_GRAVITY_DECAY)
 
 struct ScythePlatform : GameObject {
 
-	ScytheState state;
 	bool  player_was_riding;
     int32 update_counter;
 
-    ScythePlatform(Direction _dir, bn::fixed_point _p);
+    ScythePlatform(XDirection _x_dir, bn::fixed_point _p);
     ~ScythePlatform();
 
     void update(const RoomBounds&                              room_bounds,

@@ -18,16 +18,20 @@ GameObject::GameObject()
                         GAME_OBJECT_COLLIDER_WIDTH, 
                         GAME_OBJECT_COLLIDER_HEIGHT);
 
+    state       = NONE;
     object_type = NO_TYPE;
-    dir         = RIGHT;
+    x_dir       = RIGHT;
+    y_dir       = UP;
 
-    object_id   = 0;
-    hit_flash_frames = 0;
+    object_id              = 0;
+    hit_flash_frames       = 0;
+    invulnerability_frames = 0;
 }
 
 GameObject::GameObject(const GameObject& other)
 {
 
+    state       = other.state;
     object_type = other.object_type;
     object_id   = other.object_id;
 
@@ -42,7 +46,8 @@ GameObject::GameObject(const GameObject& other)
     collider_offset_x = other.collider_offset_x;
 	collider_offset_y = other.collider_offset_y;
 
-	dir = other.dir;
+	x_dir = other.x_dir;
+    y_dir = other.y_dir;
 
 	is_inactive   = other.is_inactive;
     is_dead       = other.is_dead;
@@ -50,7 +55,9 @@ GameObject::GameObject(const GameObject& other)
 
 	received_platform_force = other.received_platform_force;
 
-    hit_flash_frames = other.hit_flash_frames;
+    hit_flash_frames       = other.hit_flash_frames;
+    invulnerability_frames = other.invulnerability_frames;
+    hitpoints              = other.hitpoints;
 
 }
 
@@ -65,6 +72,39 @@ GameObject::~GameObject()
     }
 }
 
+GameObject& GameObject::operator =(const GameObject& other)
+{
+    state       = other.state;
+    object_type = other.object_type;
+    object_id   = other.object_id;
+
+    sprite_ptr                 = other.sprite_ptr;
+    animate_action_ptr         = other.animate_action_ptr;
+
+    rigidbody = other.rigidbody;
+
+    collider          = other.collider;
+    collider_x_axis   = other.collider_x_axis;
+    collider_y_axis   = other.collider_y_axis;
+    collider_offset_x = other.collider_offset_x;
+	collider_offset_y = other.collider_offset_y;
+
+	x_dir = other.x_dir;
+    y_dir = other.y_dir;
+
+	is_inactive   = other.is_inactive;
+    is_dead       = other.is_dead;
+    is_persistent = other.is_persistent;
+
+	received_platform_force = other.received_platform_force;
+
+    hit_flash_frames       = other.hit_flash_frames;
+    invulnerability_frames = other.invulnerability_frames;
+    hitpoints              = other.hitpoints;
+
+    return *this;
+}
+
 void GameObject::update(const RoomBounds& 							   room_bounds,
                         bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
                         const bn::regular_bg_ptr&                      bg_ptr, 
@@ -72,6 +112,12 @@ void GameObject::update(const RoomBounds& 							   room_bounds,
                         const bn::regular_bg_item&                     bg_item,
                         const bn::camera_ptr&                          camera)
 {
+    ///////////////////////////////////
+    // Update Invulnerability frames //
+    ///////////////////////////////////
+    invulnerability_frames -= 1;
+    if(invulnerability_frames < 0) {invulnerability_frames = 0;}
+
     /////////////////////////////
 	// Update Sprite Direction //
 	/////////////////////////////
@@ -90,40 +136,17 @@ void GameObject::update(const RoomBounds& 							   room_bounds,
 
 	updateHitFlash();
 
+    ////////////////////
+    // Clamp Position //
+    ////////////////////
+
+    clampPosition(bg_ptr);
+
 	//////////////////////////////
     // Monitor unloading bounds //
     //////////////////////////////
     
 	updateInactiveState(camera);
-}
-
-GameObject& GameObject::operator =(const GameObject& other)
-{
-    object_type = other.object_type;
-    object_id   = other.object_id;
-
-    sprite_ptr                 = other.sprite_ptr;
-    animate_action_ptr         = other.animate_action_ptr;
-
-    rigidbody = other.rigidbody;
-
-    collider          = other.collider;
-    collider_x_axis   = other.collider_x_axis;
-    collider_y_axis   = other.collider_y_axis;
-    collider_offset_x = other.collider_offset_x;
-	collider_offset_y = other.collider_offset_y;
-
-	dir = other.dir;
-
-	is_inactive   = other.is_inactive;
-    is_dead       = other.is_dead;
-    is_persistent = other.is_persistent;
-
-	received_platform_force = other.received_platform_force;
-
-    hit_flash_frames = other.hit_flash_frames;
-
-    return *this;
 }
 
 void GameObject::applyForces()
@@ -212,12 +235,31 @@ void GameObject::setPos(bn::fixed_point new_pos)
 	collider.setY(new_pos.y().integer() + collider_offset_y);
 }
 
+void GameObject::setHitStretch()
+{
+    sprite_ptr->set_horizontal_scale(GAME_OBJECT_MAX_STRETCH_H);				
+    sprite_ptr->set_vertical_scale(GAME_OBJECT_MAX_STRETCH_V);
+}
+
+void GameObject::setVerticalStretch()
+{
+    sprite_ptr->set_horizontal_scale(GAME_OBJECT_MIN_STRETCH_H);
+    sprite_ptr->set_vertical_scale(GAME_OBJECT_MAX_STRETCH_V);
+}
+
+void GameObject::setHorizontalStretch()
+{
+    sprite_ptr->set_horizontal_scale(GAME_OBJECT_MAX_STRETCH_H);				
+    sprite_ptr->set_vertical_scale(GAME_OBJECT_MIN_STRETCH_V);
+}
+
 void GameObject::updateSpriteDirection()
 {
-    if      (dir == LEFT)  {sprite_ptr->set_horizontal_flip(true);}
-	else if (dir == RIGHT) {sprite_ptr->set_horizontal_flip(false);}
-    else if (dir == DOWN)  {sprite_ptr->set_vertical_flip(true);}
-	else if (dir == UP)    {sprite_ptr->set_vertical_flip(false);}
+    if      (x_dir == LEFT)  {sprite_ptr->set_horizontal_flip(true);}
+	else if (x_dir == RIGHT) {sprite_ptr->set_horizontal_flip(false);}
+    
+    if      (y_dir == DOWN)  {sprite_ptr->set_vertical_flip(true);}
+	else if (y_dir == UP)    {sprite_ptr->set_vertical_flip(false);}
 }
 
 void GameObject::updateSpriteOffsets()
@@ -250,9 +292,27 @@ void GameObject::updateInactiveState(const bn::camera_ptr& camera)
     {is_inactive = true;}
 }
 
+void GameObject::clampPosition(const bn::regular_bg_ptr& bg_ptr)
+{
+    int32 half_level_width_pixels  = bg_ptr.dimensions().width() / 2;
+	int32 half_level_height_pixels = bg_ptr.dimensions().height() / 2;
+    bn::fixed new_x = x();
+	bn::fixed new_y = y();
+	new_x = clamp(-half_level_width_pixels,  half_level_width_pixels,  new_x);
+	new_y = clamp(-half_level_height_pixels, half_level_height_pixels, new_y);
+
+	setPos(new_x, new_y);
+}
+
 void GameObject::setHitFlash()
 {
     hit_flash_frames = GAME_OBJECT_MAX_HIT_FLASH_FRAMES;
+
+    bn::sprite_palette_ptr sprite_palette = sprite_ptr->palette();
+    sprite_palette.set_fade_color(GAME_OBJECT_HIT_FLASH_COLOR);
+    bn::sprite_palette_fade_loop_action fade_action(sprite_palette, 1, 1);
+
+    fade_action.update();
 }
 
 void GameObject::setHitFlash(int32 frames)
@@ -261,6 +321,12 @@ void GameObject::setHitFlash(int32 frames)
     {frames = GAME_OBJECT_MAX_HIT_FLASH_FRAMES;}
 
     hit_flash_frames = frames;
+
+    bn::sprite_palette_ptr sprite_palette = sprite_ptr->palette();
+    sprite_palette.set_fade_color(GAME_OBJECT_HIT_FLASH_COLOR);
+    bn::sprite_palette_fade_loop_action fade_action(sprite_palette, 1, 1);
+    
+    fade_action.update();
 }
 
 void GameObject::updateHitFlash()
@@ -281,6 +347,24 @@ void GameObject::updateHitFlash()
 
     hit_flash_frames--;
     hit_flash_frames = clamp(0, GAME_OBJECT_MAX_HIT_FLASH_FRAMES, hit_flash_frames);
+}
+
+void GameObject::applyDamage(int32 damage)
+{
+    hitpoints -= damage;
+    if(hitpoints < 0) {hitpoints = 0;}
+}
+
+void GameObject::applyHit(int32 damage, int32 _hitstop_frames)
+{
+    if(invulnerability_frames <= 0)
+    {
+        setHitFlash();
+        setHitStretch();
+        applyDamage(damage);
+        hitstop_frames         = _hitstop_frames;
+        invulnerability_frames = GAME_OBJECT_HIT_INVULNERABILITY_FRAMES;
+    }
 }
 
 ///////////////////////////

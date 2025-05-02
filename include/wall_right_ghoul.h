@@ -4,9 +4,6 @@
 // Butano
 #include "bn_math.h"
 
-// Assets
-#include "bn_sprite_items_wall_right_ghoul.h"
-
 // Base Class
 #include "game_object.h"
 
@@ -23,19 +20,11 @@
 #define WALL_RIGHT_GHOUL_CRAWL_SPEED 1
 #define WALL_RIGHT_GHOUL_CRAWL_DECAY 1
 
-#define WALL_RIGHT_GHOUL_CRAWL_FORCE   Force(bn::fixed_point_t<12>(0, WALL_RIGHT_GHOUL_CRAWL_SPEED * dir), WALL_RIGHT_GHOUL_CRAWL_DECAY)
+#define WALL_RIGHT_GHOUL_CRAWL_FORCE   Force(bn::fixed_point_t<12>(0, WALL_RIGHT_GHOUL_CRAWL_SPEED * y_dir), WALL_RIGHT_GHOUL_CRAWL_DECAY)
 
-enum WallRightGhoulState
-{
-	WALL_RIGHT_GHOUL_IDLE_STATE,
-	WALL_RIGHT_GHOUL_CRAWL_STATE,
-	WALL_RIGHT_GHOUL_HITSTUN_STATE,
-	WALL_RIGHT_GHOUL_DEATH_STATE,
-};
+#define WALL_RIGHT_GHOUL_HITPOINTS 1
 
 struct WallRightGhoul : GameObject {
-
-	WallRightGhoulState state;
 
     WallRightGhoul();
 	WallRightGhoul(const WallRightGhoul& other);
@@ -49,7 +38,7 @@ struct WallRightGhoul : GameObject {
                 const bn::span<const bn::regular_bg_map_cell>& cells,
                 const bn::regular_bg_item&                     bg_item,
 				const bn::camera_ptr&                          camera) override;
-	void setState(WallRightGhoulState new_state);
+	void setState(ObjectState new_state);
 
 };
 

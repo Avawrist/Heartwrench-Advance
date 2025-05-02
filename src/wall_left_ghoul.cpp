@@ -23,13 +23,16 @@ WallLeftGhoul::WallLeftGhoul()
     collider_offset_x = WALL_LEFT_GHOUL_COLLIDER_OFFSET_X;
     collider_offset_y = WALL_LEFT_GHOUL_COLLIDER_OFFSET_Y;
 
-    state = WALL_LEFT_GHOUL_CRAWL_STATE;
-    dir   = UP;
+    state = WALL_LEFT_GHOUL_CRAWL;
+    x_dir = RIGHT;
+    y_dir = UP;
+
+    hitpoints = WALL_LEFT_GHOUL_HITPOINTS;
 }
 
 WallLeftGhoul::WallLeftGhoul(const WallLeftGhoul& other) : GameObject(other)
 {
-    state = other.state;
+
 }
 
 WallLeftGhoul::~WallLeftGhoul()
@@ -39,8 +42,6 @@ WallLeftGhoul::~WallLeftGhoul()
 
 WallLeftGhoul& WallLeftGhoul::operator =(const WallLeftGhoul& other)
 {
-    state = other.state;
-
     return *this;
 }
 
@@ -58,19 +59,19 @@ void WallLeftGhoul::update(const RoomBounds&                              room_b
 
     switch(state)
     {
-        case WALL_LEFT_GHOUL_IDLE_STATE:
+        case WALL_LEFT_GHOUL_IDLE:
         break;
 
-        case WALL_LEFT_GHOUL_CRAWL_STATE:
+        case WALL_LEFT_GHOUL_CRAWL:
 
             rigidbody.addForce(WALL_LEFT_GHOUL_CRAWL_FORCE);
 
         break;
 
-        case WALL_LEFT_GHOUL_HITSTUN_STATE:
+        case WALL_LEFT_GHOUL_HITSTUN:
         break;
 
-        case WALL_LEFT_GHOUL_DEATH_STATE:
+        case ENEMY_DEATH:
 
             is_dead = true;
 
@@ -187,8 +188,8 @@ void WallLeftGhoul::update(const RoomBounds&                              room_b
 					col_y_offset = collider_y_axis.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y());
 					collider_y_axis.setY(collider_y_axis.y() + col_y_offset);
 					setY(this->y() + col_y_offset);
-                    if(col_y_offset < 0)      {dir = UP;}
-                    else if(col_y_offset > 0) {dir = DOWN;}
+                    if(col_y_offset < 0)      {y_dir = UP;}
+                    else if(col_y_offset > 0) {y_dir = DOWN;}
 
 					// If there is still collision somehow, must be corner case //
 					while(collider.isCollision(other_collider))
@@ -231,8 +232,8 @@ void WallLeftGhoul::update(const RoomBounds&                              room_b
                     
                     if(collider.isCollision(other_collider))
                     {
-                        if(dir == UP) {dir = DOWN;}
-                        else          {dir = UP;}
+                        if(y_dir == UP) {y_dir = DOWN;}
+                        else            {y_dir = UP;}
                     }
                     
                 break;
@@ -260,22 +261,22 @@ void WallLeftGhoul::update(const RoomBounds&                              room_b
 
 }
 
-void WallLeftGhoul::setState(WallLeftGhoulState new_state)
+void WallLeftGhoul::setState(ObjectState new_state)
 {
     state = new_state;
 
     switch(new_state)
     {
-        case WALL_LEFT_GHOUL_IDLE_STATE:
+        case WALL_LEFT_GHOUL_IDLE:
         break;
 
-        case WALL_LEFT_GHOUL_CRAWL_STATE:
+        case WALL_LEFT_GHOUL_CRAWL:
         break;
 
-        case WALL_LEFT_GHOUL_HITSTUN_STATE:
+        case WALL_LEFT_GHOUL_HITSTUN:
         break;
 
-        case WALL_LEFT_GHOUL_DEATH_STATE:
+        case ENEMY_DEATH:
         break;
 
         default:

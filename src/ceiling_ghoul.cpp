@@ -23,13 +23,16 @@ CeilingGhoul::CeilingGhoul()
         collider_offset_x = CEILING_GHOUL_COLLIDER_OFFSET_X;
         collider_offset_y = CEILING_GHOUL_COLLIDER_OFFSET_Y;
 
-        state = CEILING_GHOUL_CRAWL_STATE;
-        dir   = RIGHT;
+        state = CEILING_GHOUL_CRAWL;
+        x_dir = RIGHT;
+        y_dir = UP;
+
+        hitpoints = CEILING_GHOUL_HITPOINTS;
 }
 
 CeilingGhoul::CeilingGhoul(const CeilingGhoul& other) : GameObject(other)
 {
-    state = other.state;
+
 }
 
 CeilingGhoul::~CeilingGhoul()
@@ -39,8 +42,6 @@ CeilingGhoul::~CeilingGhoul()
 
 CeilingGhoul& CeilingGhoul::operator =(const CeilingGhoul& other)
 {
-    state = other.state;
-
     return *this;
 }
 
@@ -58,19 +59,19 @@ void CeilingGhoul::update(const RoomBounds&                              room_bo
 
     switch(state)
     {
-        case CEILING_GHOUL_IDLE_STATE:
+        case CEILING_GHOUL_IDLE:
         break;
 
-        case CEILING_GHOUL_CRAWL_STATE:
+        case CEILING_GHOUL_CRAWL:
 
             rigidbody.addForce(CEILING_GHOUL_CRAWL_FORCE);
 
         break;
 
-        case CEILING_GHOUL_HITSTUN_STATE:
+        case CEILING_GHOUL_HITSTUN:
         break;
 
-        case CEILING_GHOUL_DEATH_STATE:
+        case ENEMY_DEATH:
 
             is_dead = true;
 
@@ -182,8 +183,8 @@ void CeilingGhoul::update(const RoomBounds&                              room_bo
 					col_x_offset = collider_x_axis.getCollisionXOffset(other_collider, rigidbody.normalized_dir.x());
 					collider_x_axis.setX(collider_x_axis.x() + col_x_offset);
 					setX(this->x() + col_x_offset);
-                    if(col_x_offset < 0)      {dir = LEFT;}
-                    else if(col_x_offset > 0) {dir = RIGHT;}
+                    if(col_x_offset < 0)      {x_dir = LEFT;}
+                    else if(col_x_offset > 0) {x_dir = RIGHT;}
 
 					// Resolve Y Axis Collision //
 					col_y_offset = collider_y_axis.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y());
@@ -231,8 +232,8 @@ void CeilingGhoul::update(const RoomBounds&                              room_bo
                     
                     if(collider.isCollision(other_collider))
                     {
-                        if(dir == RIGHT) {dir = LEFT;}
-                        else             {dir = RIGHT;}
+                        if(x_dir == RIGHT) {x_dir = LEFT;}
+                        else             {x_dir = RIGHT;}
                     }
                     
                 break;
@@ -260,22 +261,22 @@ void CeilingGhoul::update(const RoomBounds&                              room_bo
 
 }
 
-void CeilingGhoul::setState(CeilingGhoulState new_state)
+void CeilingGhoul::setState(ObjectState new_state)
 {
     state = new_state;
 
     switch(new_state)
     {
-        case CEILING_GHOUL_IDLE_STATE:
+        case CEILING_GHOUL_IDLE:
         break;
 
-        case CEILING_GHOUL_CRAWL_STATE:
+        case CEILING_GHOUL_CRAWL:
         break;
 
-        case CEILING_GHOUL_HITSTUN_STATE:
+        case CEILING_GHOUL_HITSTUN:
         break;
 
-        case CEILING_GHOUL_DEATH_STATE:
+        case ENEMY_DEATH:
         break;
 
         default:
