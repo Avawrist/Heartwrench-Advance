@@ -361,7 +361,7 @@ void GameObject::applyHit(int32 damage,
     if(invulnerability_frames <= 0)
     {
         setHitFlash();
-        setHitStretch();
+        //setHitStretch();
         applyDamage(damage);
         
         hitstop_frames         = _hitstop_frames;

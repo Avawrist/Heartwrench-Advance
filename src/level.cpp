@@ -249,7 +249,7 @@ void Level::updateCamera()
     if(screenshake_frames <= 0) 
     {
         screenshake_frames   = 0;
-        screenshake_severity = WEAK;
+        screenshake_severity = NO_SHAKE;
     }
 
 }

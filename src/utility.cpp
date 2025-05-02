@@ -18,7 +18,7 @@ int32 right_steep_slope_2_arr[TILE_WIDTH] = {8, 8, 7, 7, 6, 6, 5, 5};
 
 int32 hitstop_frames                     = 0;
 int32 screenshake_frames                 = 0;
-ScreenShakeSeverity screenshake_severity = WEAK;
+ScreenShakeSeverity screenshake_severity = NO_SHAKE;
 
 // Functions
 

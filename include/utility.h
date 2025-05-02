@@ -94,8 +94,9 @@ enum YDirection
 
 enum ScreenShakeSeverity
 {
-    WEAK   = 1,
-    STRONG = 2,
+    NO_SHAKE     = 0,
+    WEAK_SHAKE   = 1,
+    STRONG_SHAKE = 2,
 };
 
 // Global Arrays
