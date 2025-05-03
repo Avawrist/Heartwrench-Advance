@@ -240,30 +240,30 @@ void Level::updateCamera()
         camera.value().set_position(new_cam_x, new_cam_y);
 
         // Apply screenshake
-        if(screenshake_frames > 0)
+        if(global_screenshake_frames > 0)
         {
             int32 x_shake_offset = random_engine.get_int(MIN_X_SHAKE_RANGE, MAX_X_SHAKE_RANGE);
             int32 y_shake_offset = random_engine.get_int(MIN_Y_SHAKE_RANGE, MAX_Y_SHAKE_RANGE);
 
-            camera.value().set_position(camera.value().x() + (x_shake_offset * screenshake_severity), 
-                                        camera.value().y() + (y_shake_offset * screenshake_severity));
+            camera.value().set_position(camera.value().x() + (x_shake_offset * global_screenshake_severity), 
+                                        camera.value().y() + (y_shake_offset * global_screenshake_severity));
         }
 
     }
 
     // Update screenshake frame counter
-    screenshake_frames--;
-    if(screenshake_frames <= 0) 
+    global_screenshake_frames--;
+    if(global_screenshake_frames <= 0) 
     {
-        screenshake_frames   = 0;
-        screenshake_severity = NO_SHAKE;
+        global_screenshake_frames   = 0;
+        global_screenshake_severity = NO_SHAKE;
     }
 
 }
 
 void Level::updateBGFlash()
 {
-    if(bg_hitflash_frames)
+    if(global_bg_hitflash_frames)
     {
         // Set flash palette
         bn::bg_palette_ptr flash_palette = bn::bg_palette_items::bg_flash_palette.create_palette();
@@ -276,9 +276,9 @@ void Level::updateBGFlash()
     }
 
     // Update bg hitflash frames
-    bg_hitflash_frames--;
-    if(bg_hitflash_frames < 0)
-    {bg_hitflash_frames = 0;}
+    global_bg_hitflash_frames--;
+    if(global_bg_hitflash_frames < 0)
+    {global_bg_hitflash_frames = 0;}
 }
 
 void Level::reloadOnDeath()

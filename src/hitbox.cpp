@@ -168,9 +168,10 @@ void Hitbox::applyHit(GameObject& object)
         object.rigidbody.addForce(HITBOX_KNOCKBACK_FORCE);
         object.invulnerability_frames = GAME_OBJECT_HIT_INVULNERABILITY_FRAMES;
         
-        bg_hitflash_frames     = hitstop_frames;
-        hitstop_frames         = hitstop_frames;
-        screenshake_frames     = screenshake_frames;
-        screenshake_severity   = screenshake_severity;
+        // Set global variables
+        global_bg_hitflash_frames   = hitstop_frames;
+        global_hitstop_frames       = hitstop_frames;
+        global_screenshake_frames   = screenshake_frames;
+        global_screenshake_severity = screenshake_severity;
     }
 }

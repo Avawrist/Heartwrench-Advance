@@ -30,7 +30,7 @@ int main()
         //if(profile) {BN_PROFILER_START("game update");}
 
         // Update Hitstop
-        hitstop_frames = 0;
+        global_hitstop_frames = 0;
 
         // Update Levels
         if(current_level.cam_is_scrolling)
@@ -66,7 +66,7 @@ int main()
         //    bn::profiler::show();
         //}
 
-        for(int i = 0; i <= hitstop_frames; i++)
+        for(int i = 0; i <= global_hitstop_frames; i++)
         {
             // Update Core
             bn::core::update();

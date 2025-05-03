@@ -16,10 +16,10 @@ int32 right_shallow_slope_4_arr[TILE_WIDTH] = {8, 8, 8, 8, 7, 7, 7, 7};
 int32 right_steep_slope_1_arr[TILE_WIDTH] = {4, 4, 3, 3, 2, 2, 1, 1};
 int32 right_steep_slope_2_arr[TILE_WIDTH] = {8, 8, 7, 7, 6, 6, 5, 5};
 
-int32 bg_hitflash_frames                 = 0;
-int32 hitstop_frames                     = 0;
-int32 screenshake_frames                 = 0;
-ScreenShakeSeverity screenshake_severity = NO_SHAKE;
+int32 global_bg_hitflash_frames                 = 0;
+int32 global_hitstop_frames                     = 0;
+int32 global_screenshake_frames                 = 0;
+ScreenShakeSeverity global_screenshake_severity = NO_SHAKE;
 
 // Functions
 
