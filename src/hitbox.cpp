@@ -122,6 +122,7 @@ void Hitbox::update(const RoomBounds&                              room_bounds,
                 {game_objects.at(i)->applyHit(damage, 
                                               hitstop_frames,
                                               screenshake_frames,
+                                              HITBOX_KNOCKBACK_FORCE,
                                               screenshake_severity);}
 
             break;
