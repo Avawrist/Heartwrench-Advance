@@ -44,13 +44,13 @@ Player::Player()
 	wall_ride_gravity 	 = PLAYER_WALL_RIDE_GRAVITY;
 	phase_destination    = bn::fixed_point(0, 0);
 	
+	hitpoints                        = PLAYER_MAX_HITPOINTS;
 	remaining_jump_input_frames      = 0;
 	remaining_x_drift_lockout_frames = 0;
 	air_frames_elapsed               = 0;
 	v_collision_grace_frames         = 0;
 	late_jump_grace_frames           = 0;
 	current_scythe_frame             = 0;
-	current_death_frame              = 0;
 	current_phase_frame              = 0;
 	hitstop_frames                   = 0;
 	
@@ -62,7 +62,6 @@ Player::Player()
 	right_wj_eligible        = false;
 	scythe_ground_2_buffered = false;
 	scythe_ground_3_buffered = false;
-	kill_player              = false;
 	is_dead                  = false;
 
 	hitbox_1_ptr = NULL;
@@ -96,7 +95,6 @@ Player::Player(const Player& other) : GameObject(other)
 	late_jump_grace_frames           = other.late_jump_grace_frames;
 	current_scythe_frame             = other.current_scythe_frame;
 	current_phase_frame              = other.current_phase_frame;
-	current_death_frame              = other.current_death_frame;
 	hitstop_frames                   = other.hitstop_frames;
 
 	wall_right_detected      = other.wall_right_detected;
@@ -107,7 +105,6 @@ Player::Player(const Player& other) : GameObject(other)
 	right_wj_eligible        = other.right_wj_eligible;
 	scythe_ground_2_buffered = other.scythe_ground_2_buffered;
 	scythe_ground_3_buffered = other.scythe_ground_3_buffered;
-	kill_player              = other.kill_player;
 	is_dead                  = other.is_dead;
 
 	test_collider         = other.test_collider;
@@ -157,7 +154,6 @@ Player& Player::operator =(const Player& other)
 	late_jump_grace_frames           = other.late_jump_grace_frames;
 	current_scythe_frame             = other.current_scythe_frame;
 	current_phase_frame              = other.current_phase_frame;
-	current_death_frame              = other.current_death_frame;
 	hitstop_frames                   = other.hitstop_frames;
 
 	wall_right_detected      = other.wall_right_detected;
@@ -168,7 +164,6 @@ Player& Player::operator =(const Player& other)
 	right_wj_eligible        = other.right_wj_eligible;
 	scythe_ground_2_buffered = other.scythe_ground_2_buffered;
 	scythe_ground_3_buffered = other.scythe_ground_3_buffered;
-	kill_player              = other.kill_player;
 	is_dead                  = other.is_dead;
 
 	test_collider         = other.test_collider;
@@ -873,14 +868,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 		break;
 
-		case PLAYER_DYING:
+		case OBJECT_DEATH:
 
-			current_death_frame++;
-			current_death_frame = clamp(0, 
-										PLAYER_DEATH_FRAMES,
-										current_death_frame);
-
-			if(current_death_frame >= PLAYER_DEATH_FRAMES)
+			if(animate_action_ptr->done())
 			{is_dead = true;}
 
 		break;
@@ -943,14 +933,14 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						// Handle Default Collision Cases //
 						while(collider_x_axis.isCollision(other_collider))
 						{
-							if(rigidbody.normalized_dir.x() == 0) {kill_player = true; break;}
+							if(rigidbody.normalized_dir.x() == 0) {hitpoints = 0; break;}
 							collider_x_axis.setX(collider_x_axis.x() - rigidbody.normalized_dir.x());
 							setX(this->x() - rigidbody.normalized_dir.x());
 						}
 
 						while(collider_y_axis.isCollision(other_collider))
 						{
-							if(rigidbody.normalized_dir.y() == 0) {kill_player = true; break;}
+							if(rigidbody.normalized_dir.y() == 0) {hitpoints = 0; break;}
 							collider_y_axis.setY(collider_y_axis.y() - rigidbody.normalized_dir.y());
 							setY(this->y() - rigidbody.normalized_dir.y());
 						}
@@ -958,7 +948,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						// If there is still collision somehow, must be corner case //
 						while(collider.isCollision(other_collider))
 						{
-							if(rigidbody.normalized_dir.x() == 0) {kill_player = true; break;}
+							if(rigidbody.normalized_dir.x() == 0) {hitpoints = 0; break;}
 							// We always resolve diagonal corner collisions with a horizontal shift. 
 							setX(this->x() - rigidbody.normalized_dir.x());
 						}	
@@ -1040,7 +1030,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						// If there is still collision somehow, must be corner case //
 						while(collider.isCollision(other_collider))
 						{
-							if(rigidbody.normalized_dir.x() == 0) {kill_player = true; break;}
+							if(rigidbody.normalized_dir.x() == 0) {hitpoints = 0; break;}
 							// We always resolve diagonal corner collisions with a horizontal shift. 
 							setX(this->x() - rigidbody.normalized_dir.x());
 						}
@@ -1133,7 +1123,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						// If there is still collision somehow, must be corner case //
 						while(collider.isCollision(other_collider))
 						{
-							if(rigidbody.normalized_dir.x() == 0) {kill_player = true; break;}
+							if(rigidbody.normalized_dir.x() == 0) {hitpoints = 0; break;}
 							// We always resolve diagonal corner collisions with a horizontal shift. 
 							setX(this->x() - rigidbody.normalized_dir.x());
 						}
@@ -1689,13 +1679,13 @@ void Player::update(const RoomBounds& 								  room_bounds,
 												TILE_WIDTH, 
 												TILE_HEIGHT);
 					
-					if(collider.isCollision(other_collider) && !kill_player)
+					if(collider.isCollision(other_collider) && hitpoints > 0)
 					{
 						rigidbody.removeForces();
 						rigidbody.addForce(Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * 0, 
 																		PLAYER_DEATH_Y_FORCE * UP),
 																		PLAYER_DEATH_DECAY));
-						kill_player = true;
+						hitpoints = 0;
 					}
 				}
 
@@ -1707,13 +1697,13 @@ void Player::update(const RoomBounds& 								  room_bounds,
 											TILE_WIDTH, 
 											TILE_HEIGHT);
 					
-					if(collider.isCollision(other_collider) && !kill_player)
+					if(collider.isCollision(other_collider) && hitpoints > 0)
 					{
 						rigidbody.removeForces();
 						rigidbody.addForce(Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * 0, 
 																		PLAYER_DEATH_Y_FORCE * DOWN), 
 																		PLAYER_DEATH_DECAY));
-						kill_player = true;
+						hitpoints = 0;
 					}
 				}
 
@@ -1725,13 +1715,13 @@ void Player::update(const RoomBounds& 								  room_bounds,
 												TILE_WIDTH, 
 												TILE_HEIGHT);
 					
-					if(collider.isCollision(other_collider) && !kill_player)
+					if(collider.isCollision(other_collider) && hitpoints > 0)
 					{
 						rigidbody.removeForces();
 						rigidbody.addForce(Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * LEFT,
 																		PLAYER_DEATH_Y_FORCE * 0), 
 																		PLAYER_DEATH_DECAY));
-						kill_player = true;
+						hitpoints = 0;
 					}
 				}
 
@@ -1743,13 +1733,13 @@ void Player::update(const RoomBounds& 								  room_bounds,
 												TILE_WIDTH,
 												TILE_HEIGHT);
 					
-					if(collider.isCollision(other_collider) && !kill_player)
+					if(collider.isCollision(other_collider) && hitpoints > 0)
 					{
 						rigidbody.removeForces();
 						rigidbody.addForce(Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * RIGHT,
 																		PLAYER_DEATH_Y_FORCE * 0), 
 																		PLAYER_DEATH_DECAY));
-						kill_player = true;
+						hitpoints = 0;
 					}
 				}
 
@@ -2169,7 +2159,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	if(state != PLAYER_SCYTHE_GROUND_1 && 
 	   state != PLAYER_SCYTHE_GROUND_2 && 
 	   state != PLAYER_SCYTHE_GROUND_3 &&
-	   state != PLAYER_PHASE_STEP)
+	   state != PLAYER_PHASE_STEP      &&
+	   state != OBJECT_DEATH)
 	{
 		ObjectState new_state = NONE;
 
@@ -2185,8 +2176,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 		else 
 		{new_state = PLAYER_AIR_NEUTRAL;}
 	
-		if(kill_player) {new_state = PLAYER_DYING;}
-
 		// Set the state
 
 		// Special case for air scythe, let landing end
@@ -2265,7 +2254,7 @@ void Player::setState(ObjectState new_state)
 			late_jump_grace_frames           = PLAYER_LATE_JUMP_GRACE_FRAMES;
 			
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								  								  		  1,
+								  								  		  0,
 								  								  		  bn::sprite_items::player.tiles_item(),
 								  								  		  0,
 								  								  		  0);
@@ -2284,7 +2273,7 @@ void Player::setState(ObjectState new_state)
 			x_dir                            = LEFT;
 
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								  								  1,
+								  								  0,
 								  								  bn::sprite_items::player.tiles_item(),
 								  								  4,
 								  								  4);
@@ -2303,7 +2292,7 @@ void Player::setState(ObjectState new_state)
 			x_dir                            = RIGHT;
 
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								  								  1,
+								  								  0,
 								  								  bn::sprite_items::player.tiles_item(),
 								  								  4,
 								  								  4);
@@ -2316,17 +2305,10 @@ void Player::setState(ObjectState new_state)
 			scythe_ground_3_buffered = false;
 
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								  								  1,
+								  								  0,
 								  								  bn::sprite_items::player.tiles_item(),
 								  								  2,
 								  								  2);
-
-		break;
-
-		case PLAYER_DYING:
-
-			scythe_ground_2_buffered = false;
-			scythe_ground_3_buffered = false;
 
 		break;
 
@@ -2402,6 +2384,18 @@ void Player::setState(ObjectState new_state)
 																		bn::sprite_items::player.tiles_item(),
 																		3,
 																		3);
+
+		break;
+
+		case OBJECT_DEATH:
+
+			scythe_ground_2_buffered = false;
+			scythe_ground_3_buffered = false;
+
+			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+								 0,
+								 bn::sprite_items::player.tiles_item(),
+								 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22);
 
 		break;
 

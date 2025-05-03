@@ -56,11 +56,11 @@
 #include "bn_sprite_items_player.h"
 #include "bn_sprite_items_phase_marker.h"
 
-#define MAX_ANIM_FRAMES 16
-
 ///////////////////////
 // Struct GameObject //
 ///////////////////////
+
+#define GAME_OBJECT_MAX_ANIM_FRAMES 30
 
 #define GAME_OBJECT_Z_ORDER 0
 
@@ -125,7 +125,6 @@ enum ObjectState
 	PLAYER_SCYTHE_GROUND_2,
 	PLAYER_SCYTHE_GROUND_3,
 	PLAYER_SCYTHE_AIR_1,
-	PLAYER_DYING,
 
 	// Ceiling Ghoul
 	CEILING_GHOUL_IDLE,
@@ -156,15 +155,15 @@ enum ObjectState
     TILE_PASSAGE_OPEN,
 
 	// Generic
-	ENEMY_DEATH,
+	OBJECT_DEATH,
 };
 
 struct GameObject 
 {
 
-	bn::optional<bn::sprite_ptr>                             sprite_ptr;
-	bn::optional<bn::sprite_animate_action<MAX_ANIM_FRAMES>> animate_action_ptr;
-	bn::optional<bn::sprite_palette_ptr>                     default_palette_ptr;
+	bn::optional<bn::sprite_ptr>                                         sprite_ptr;
+	bn::optional<bn::sprite_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> animate_action_ptr;
+	bn::optional<bn::sprite_palette_ptr>                                 default_palette_ptr;
 
 	ObjectType  object_type;
 	ObjectState state;
@@ -207,6 +206,7 @@ struct GameObject
 	
 	virtual void draw();
 	virtual void setCamera(const bn::camera_ptr& camera);
+	virtual void setState(ObjectState new_state);
 	bn::fixed x() const;
 	bn::fixed y() const;
 	bn::fixed_point pos() const;

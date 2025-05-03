@@ -73,9 +73,10 @@ void WallLeftGhoul::update(const RoomBounds&                              room_b
         case WALL_LEFT_GHOUL_HITSTUN:
         break;
 
-        case ENEMY_DEATH:
+        case OBJECT_DEATH:
 
-            is_dead = true;
+            if(animate_action_ptr->done())
+            {is_dead = true;}
 
         break;
 
@@ -278,7 +279,13 @@ void WallLeftGhoul::setState(ObjectState new_state)
         case WALL_LEFT_GHOUL_HITSTUN:
         break;
 
-        case ENEMY_DEATH:
+        case OBJECT_DEATH:
+
+            animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+                                 0,
+                                 bn::sprite_items::wall_left_ghoul.tiles_item(),
+                                 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17);
+
         break;
 
         default:

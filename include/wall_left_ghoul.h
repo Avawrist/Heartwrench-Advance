@@ -38,7 +38,7 @@ struct WallLeftGhoul : GameObject {
                 const bn::span<const bn::regular_bg_map_cell>& cells,
                 const bn::regular_bg_item&                     bg_item,
 				const bn::camera_ptr&                          camera) override;
-	void setState(ObjectState new_state);
+	void setState(ObjectState new_state) override;
 
 };
 

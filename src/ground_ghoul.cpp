@@ -14,7 +14,7 @@ GroundGhoul::GroundGhoul()
         sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
         default_palette_ptr = sprite_ptr->palette();
         animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-                                                                      2,
+                                                                      0,
                                                                       bn::sprite_items::ground_ghoul.tiles_item(),
                                                                       0,
                                                                       0);
@@ -96,9 +96,10 @@ void GroundGhoul::update(const RoomBounds&                              room_bou
         case GROUND_GHOUL_HITSTUN:
         break;
 
-        case ENEMY_DEATH:
+        case OBJECT_DEATH:
 
-            is_dead = true;
+            if(animate_action_ptr->done())
+            {is_dead = true;}
 
         break;
 
@@ -1003,8 +1004,11 @@ void GroundGhoul::update(const RoomBounds&                              room_bou
     // Update State //
     //////////////////
 
-    if(grounded_detected) {setState(GROUND_GHOUL_CRAWL);}
-    else                  {setState(GROUND_GHOUL_AIR);}
+    if(state != OBJECT_DEATH)
+    {
+        if(grounded_detected) {setState(GROUND_GHOUL_CRAWL);}
+        else                  {setState(GROUND_GHOUL_AIR);}
+    }
 
     /////////////////////////////////
 	// Generic Object Update stuff //
@@ -1037,7 +1041,13 @@ void GroundGhoul::setState(ObjectState new_state)
         case GROUND_GHOUL_HITSTUN:
         break;
 
-        case ENEMY_DEATH:
+        case OBJECT_DEATH:
+
+            animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+                                 0,
+                                 bn::sprite_items::ground_ghoul.tiles_item(),
+                                 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17);
+
         break;
 
         default:

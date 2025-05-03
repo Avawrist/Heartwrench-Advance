@@ -124,6 +124,13 @@ void GameObject::update(const RoomBounds& 							   room_bounds,
     invulnerability_frames -= 1;
     if(invulnerability_frames < 0) {invulnerability_frames = 0;}
 
+    ///////////////////
+    // Check if dead //
+    ///////////////////
+
+    if(hitpoints <= 0 && state != OBJECT_DEATH)
+    {setState(OBJECT_DEATH);}
+
     /////////////////////////////
 	// Update Sprite Direction //
 	/////////////////////////////
@@ -188,13 +195,21 @@ void GameObject::applyForces()
 
 void GameObject::draw()
 {
-    animate_action_ptr->update();
+    if(!animate_action_ptr->done())
+    {
+        animate_action_ptr->update();
+    }
 }
 
 void GameObject::setCamera(const bn::camera_ptr& camera)
 {
     sprite_ptr->set_camera(camera);
     collider.setCamera(camera);
+}
+
+void GameObject::setState(ObjectState new_state)
+{
+    state = new_state;
 }
 
 bn::fixed GameObject::x() const

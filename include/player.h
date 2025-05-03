@@ -32,6 +32,8 @@
 #define PLAYER_FALL_STRETCH_V 1.5
 #define PLAYER_FALL_STRETCH_H 0.75
 
+#define PLAYER_MAX_HITPOINTS 3
+
 #define PLAYER_MIN_X_SPEED     0
 #define PLAYER_MAX_X_SPEED     2
 #define PLAYER_X_DECAY         1
@@ -107,7 +109,6 @@
 #define PLAYER_V_COLLISION_MAX_GRACE_FRAMES 4
 #define PLAYER_LATE_JUMP_GRACE_FRAMES       6
  
-#define PLAYER_DEATH_FRAMES       20
 #define PLAYER_DEATH_X_FORCE      5
 #define PLAYER_DEATH_Y_FORCE      5
 #define PLAYER_DEATH_DECAY        0.2
@@ -158,7 +159,6 @@ struct Player : GameObject {
 	int32 air_frames_elapsed;
 	int32 v_collision_grace_frames;
 	int32 late_jump_grace_frames;
-	int32 current_death_frame;
 	int32 current_scythe_frame;
 	int32 current_phase_frame;
 	int32 hitstop_frames;
@@ -171,7 +171,6 @@ struct Player : GameObject {
 	bool right_wj_eligible;
 	bool scythe_ground_2_buffered;
 	bool scythe_ground_3_buffered;
-	bool kill_player;
 
 	Collider test_collider;
 	Collider test_collider_right;
@@ -199,7 +198,7 @@ struct Player : GameObject {
 	void setCamera(const bn::camera_ptr& camera) override;
 	void jump();
 	void fastFall();
-	void setState(ObjectState new_state);
+	void setState(ObjectState new_state) override;
 	void createGroundedScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
 		                               const bn::camera_ptr&                      camera);
 	void createAirScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
