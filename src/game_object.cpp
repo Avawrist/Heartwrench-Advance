@@ -354,28 +354,6 @@ void GameObject::applyDamage(int32 damage)
     if(hitpoints < 0) {hitpoints = 0;}
 }
 
-void GameObject::applyHit(int32 damage, 
-                          int32 _hitstop_frames, 
-                          int32 _screenshake_frames,
-                          const Force& knockback_force,
-                          ScreenShakeSeverity _screenshake_severity)
-{
-    if(invulnerability_frames <= 0)
-    {
-        setHitFlash();
-        setHitStretch();
-        applyDamage(damage);
-
-        rigidbody.addForce(knockback_force);
-        
-        bg_hitflash_frames     = _hitstop_frames;
-        hitstop_frames         = _hitstop_frames;
-        screenshake_frames     = _screenshake_frames;
-        screenshake_severity   = _screenshake_severity;
-        invulnerability_frames = GAME_OBJECT_HIT_INVULNERABILITY_FRAMES;
-    }
-}
-
 ///////////////////////////
 // Struct UnloadedObject //
 ///////////////////////////

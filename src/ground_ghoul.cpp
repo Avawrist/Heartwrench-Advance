@@ -119,7 +119,7 @@ void GroundGhoul::update(const RoomBounds&                              room_bou
     //////////////////////////////
 	// Init Collision Variables //
 	//////////////////////////////
-
+    
 	// Get current cell index that enemy resides in:
 	int32 half_level_width_pixels  = (bg_ptr.dimensions().width() / 2);
 	int32 half_level_height_pixels = (bg_ptr.dimensions().height() / 2);
@@ -998,7 +998,7 @@ void GroundGhoul::update(const RoomBounds&                              room_bou
             }	
         }
     }
-
+    
     //////////////////
     // Update State //
     //////////////////

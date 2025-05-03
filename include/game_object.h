@@ -225,11 +225,6 @@ struct GameObject
 	void setHitFlash(int32 frames);
 	void updateHitFlash();
 	void applyDamage(int32 damage);
-	virtual void applyHit(int32 damage, 
-		                  int32 _hitstop_frames, 
-						  int32 _screenshake_frames, 
-						  const Force& knockback_force,
-						  ScreenShakeSeverity _screenshake_severity);
 
 };
 

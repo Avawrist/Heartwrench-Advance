@@ -7,11 +7,14 @@
 // Base Class
 #include "game_object.h"
 
+// My libs
+#include "utility.h"
+
 ///////////////////
 // Struct Hitbox //
 ///////////////////
 
-#define HITBOX_KNOCKBACK_FORCE Force(bn::fixed_point_t<12>(x_knockback * x_dir, y_knockback * y_dir), knockback_decay)
+#define HITBOX_KNOCKBACK_FORCE Force(bn::fixed_point_t<12>(x_knockback * x_dir, y_knockback * y_dir), 0.2)
 
 struct Hitbox : GameObject
 {
@@ -54,6 +57,7 @@ struct Hitbox : GameObject
                 const bn::span<const bn::regular_bg_map_cell>& cells,
                 const bn::regular_bg_item&                     bg_item,
                 const bn::camera_ptr&                          camera) override;
+    void applyHit(GameObject& object);
 
 };
 

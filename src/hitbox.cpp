@@ -119,11 +119,7 @@ void Hitbox::update(const RoomBounds&                              room_bounds,
             case WALL_RIGHT_GHOUL:
                     
                 if(collider.isCollision(other_collider))
-                {game_objects.at(i)->applyHit(damage, 
-                                              hitstop_frames,
-                                              screenshake_frames,
-                                              HITBOX_KNOCKBACK_FORCE,
-                                              screenshake_severity);}
+                {applyHit(*(game_objects.at(i)));}
 
             break;
 
@@ -160,4 +156,21 @@ void Hitbox::update(const RoomBounds&                              room_bounds,
                        bg_item,
                        camera);
 
+}
+
+void Hitbox::applyHit(GameObject& object)
+{
+    if(object.invulnerability_frames <= 0)
+    {
+        object.setHitFlash();
+        object.setHitStretch();
+        object.applyDamage(damage);
+        object.rigidbody.addForce(HITBOX_KNOCKBACK_FORCE);
+        object.invulnerability_frames = GAME_OBJECT_HIT_INVULNERABILITY_FRAMES;
+        
+        bg_hitflash_frames     = hitstop_frames;
+        hitstop_frames         = hitstop_frames;
+        screenshake_frames     = screenshake_frames;
+        screenshake_severity   = screenshake_severity;
+    }
 }
