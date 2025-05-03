@@ -2395,7 +2395,7 @@ void Player::setState(ObjectState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 								 0,
 								 bn::sprite_items::player.tiles_item(),
-								 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22);
+								 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23);
 
 		break;
 

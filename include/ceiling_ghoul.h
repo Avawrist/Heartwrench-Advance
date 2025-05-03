@@ -22,7 +22,7 @@
 
 #define CEILING_GHOUL_CRAWL_FORCE   Force(bn::fixed_point_t<12>(CEILING_GHOUL_CRAWL_SPEED * x_dir, 0), CEILING_GHOUL_CRAWL_DECAY)
 
-#define CEILING_GHOUL_HITPOINTS 1
+#define CEILING_GHOUL_HITPOINTS 3
 
 struct CeilingGhoul : GameObject {
 
