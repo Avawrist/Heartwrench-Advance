@@ -64,12 +64,6 @@ void PhaseOrb::update(const RoomBounds&                              room_bounds
 
 PhaseOrbUp::PhaseOrbUp()
 {
-
-    // Reset Variables //
-    sprite_ptr.reset();
-    default_palette_ptr.reset();
-    animate_action_ptr.reset();
-
     // Init Variables //
     object_type = PHASE_ORB_UP;
     sprite_ptr = bn::sprite_items::phase_orb_up.create_sprite(0, 0);
@@ -85,12 +79,6 @@ PhaseOrbUp::PhaseOrbUp()
 
 PhaseOrbDown::PhaseOrbDown()
 {
-
-    // Reset Variables //
-    sprite_ptr.reset();
-    default_palette_ptr.reset();
-    animate_action_ptr.reset();
-
     // Init Variables //
     object_type = PHASE_ORB_DOWN;
     sprite_ptr = bn::sprite_items::phase_orb_down.create_sprite(0, 0);
@@ -106,12 +94,6 @@ PhaseOrbDown::PhaseOrbDown()
 
 PhaseOrbLeft::PhaseOrbLeft()
 {
-
-    // Reset Variables //
-    sprite_ptr.reset();
-    default_palette_ptr.reset();
-    animate_action_ptr.reset();
-
     // Init Variables //
     object_type = PHASE_ORB_LEFT;
     sprite_ptr = bn::sprite_items::phase_orb_left.create_sprite(0, 0);
@@ -127,12 +109,6 @@ PhaseOrbLeft::PhaseOrbLeft()
 
 PhaseOrbRight::PhaseOrbRight()
 {
-
-    // Reset Variables //
-    sprite_ptr.reset();
-    default_palette_ptr.reset();
-    animate_action_ptr.reset();
-
     // Init Variables //
     object_type = PHASE_ORB_RIGHT;
     sprite_ptr = bn::sprite_items::phase_orb_right.create_sprite(0, 0);

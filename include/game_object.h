@@ -31,9 +31,6 @@
 // Flash Palette
 #include "bn_sprite_palette_items_sprite_flash_palette.h"
 
-// Object Assets
-#include "bn_sprite_items_game_object.h"
-
 // Level Object Assets
 #include "bn_sprite_items_tile_passage.h"
 #include "bn_sprite_items_phase_orb_up.h"
@@ -56,6 +53,9 @@
 #include "bn_sprite_items_player.h"
 #include "bn_sprite_items_phase_marker.h"
 
+// Effect Assets
+#include "bn_sprite_items_hit_effect.h"
+
 ///////////////////////
 // Struct GameObject //
 ///////////////////////
@@ -63,6 +63,7 @@
 #define GAME_OBJECT_MAX_ANIM_FRAMES 30
 
 #define GAME_OBJECT_Z_ORDER 0
+#define HIT_EFFECT_Z_ORDER -1
 
 #define GAME_OBJECT_COLLIDER_WIDTH  8
 #define GAME_OBJECT_COLLIDER_HEIGHT 8
@@ -164,6 +165,8 @@ struct GameObject
 	bn::optional<bn::sprite_ptr>                                         sprite_ptr;
 	bn::optional<bn::sprite_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> animate_action_ptr;
 	bn::optional<bn::sprite_palette_ptr>                                 default_palette_ptr;
+	bn::optional<bn::sprite_ptr>                                         effect_sprite_ptr;
+	bn::optional<bn::sprite_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> effect_animate_action_ptr;
 
 	ObjectType  object_type;
 	ObjectState state;
@@ -184,9 +187,9 @@ struct GameObject
 	int32 invulnerability_frames = 0;
 	int32 hitpoints              = 1;
 
-	bool is_inactive   = false;
-	bool is_dead       = false;
-	bool is_persistent = false;
+	bool is_inactive             = false;
+	bool is_dead                 = false;
+	bool is_persistent           = false;
 	bool received_platform_force = false;
 
 	void applyForces();
@@ -225,6 +228,7 @@ struct GameObject
 	void setHitFlash(int32 frames);
 	void updateHitFlash();
 	void applyDamage(int32 damage);
+	void applyHitEffect(int32 x, int32 y);
 
 };
 

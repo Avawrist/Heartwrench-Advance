@@ -1,13 +1,7 @@
 #include "ground_ghoul.h"
 
 GroundGhoul::GroundGhoul()
-{
-
-        // Reset Variables //
-        sprite_ptr.reset();
-        default_palette_ptr.reset();
-        animate_action_ptr.reset();
-    
+{    
         // Init Variables //
         object_type = GROUND_GHOUL;
         sprite_ptr  = bn::sprite_items::ground_ghoul.create_sprite(0, 0);

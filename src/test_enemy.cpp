@@ -2,12 +2,6 @@
 
 TestEnemy::TestEnemy()
 {
-
-    // Reset Variables //
-    sprite_ptr.reset();
-	default_palette_ptr.reset();
-    animate_action_ptr.reset();
-
     // Init Variables //
 	object_type = TEST_ENEMY;
     sprite_ptr  = bn::sprite_items::test_enemy.create_sprite(0, 0);

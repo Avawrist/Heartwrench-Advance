@@ -2,11 +2,6 @@
 
 DevilPlatform::DevilPlatform(bn::point _p1, bn::point _p2)
 {
-    // Reset Variables //
-    sprite_ptr.reset();
-    default_palette_ptr.reset();
-    animate_action_ptr.reset();
-
     // Init Variables //
     object_type = DEVIL_PLATFORM;
     sprite_ptr  = bn::sprite_items::devil_platform.create_sprite(0, 0);

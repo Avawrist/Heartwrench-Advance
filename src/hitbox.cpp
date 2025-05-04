@@ -15,12 +15,6 @@ Hitbox::Hitbox(bn::point pos,
        ObjectType _type,
        ScreenShakeSeverity _screenshake_severity)
 {
-
-    // Reset Variables //
-    sprite_ptr.reset();
-    default_palette_ptr.reset();
-    animate_action_ptr.reset();
-
     // Init Variables //
 	object_type        = _type;
     
@@ -28,7 +22,7 @@ Hitbox::Hitbox(bn::point pos,
     sprite_ptr->set_visible(false);
     default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								  								  2,
+								  								  0,
 								  								  bn::sprite_items::hitbox.tiles_item(),
 								  								  0,
 								  								  0);
@@ -174,6 +168,7 @@ void Hitbox::applyHit(GameObject& object)
         object.setHitFlash();
         object.setHitStretch();
         object.applyDamage(damage);
+        object.applyHitEffect(object.x().integer(), object.y().integer());
         object.rigidbody.addForce(HITBOX_KNOCKBACK_FORCE);
         object.invulnerability_frames = GAME_OBJECT_HIT_INVULNERABILITY_FRAMES;
     }

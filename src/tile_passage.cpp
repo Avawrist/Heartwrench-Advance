@@ -2,12 +2,6 @@
 
 TilePassage::TilePassage()
 {
-
-    // Reset Variables //
-    sprite_ptr.reset();
-    default_palette_ptr.reset();
-    animate_action_ptr.reset();
-
     // Init Variables //
 	object_type        = TILE_PASSAGE;
     state              = TILE_PASSAGE_SHUT;

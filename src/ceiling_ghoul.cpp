@@ -1,13 +1,7 @@
 #include "ceiling_ghoul.h"
 
 CeilingGhoul::CeilingGhoul()
-{
-
-        // Reset Variables //
-        sprite_ptr.reset();
-        default_palette_ptr.reset();
-        animate_action_ptr.reset();
-    
+{   
         // Init Variables //
         object_type = CEILING_GHOUL;
         sprite_ptr  = bn::sprite_items::ceiling_ghoul.create_sprite(0, 0);

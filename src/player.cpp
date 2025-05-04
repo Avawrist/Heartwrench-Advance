@@ -6,12 +6,6 @@
 
 Player::Player()
 {
-
-    // Reset Variables //
-    sprite_ptr.reset();
-	default_palette_ptr.reset();
-    animate_action_ptr.reset();
-
     // Init Variables //
 	object_type = PLAYER;
 	x_dir       = RIGHT;
