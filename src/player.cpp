@@ -14,7 +14,7 @@ Player::Player()
 	sprite_ptr->set_z_order(PLAYER_Z_ORDER);
 	default_palette_ptr = sprite_ptr->palette();
 	animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								  								  1,
+								  								  0,
 								  								  bn::sprite_items::player.tiles_item(),
 								  								  0,
 								  								  0);
