@@ -2,7 +2,7 @@
 
 AngelPlatform::AngelPlatform(bn::point _p1, bn::point _p2)
 {
-    // Init Variables //
+    // Init Assets //
     object_type = ANGEL_PLATFORM;
     sprite_ptr  = bn::sprite_items::angel_platform.create_sprite(0, 0);
     default_palette_ptr = sprite_ptr->palette();
@@ -12,6 +12,7 @@ AngelPlatform::AngelPlatform(bn::point _p1, bn::point _p2)
 								                                  0,
 								                                  0);
 
+    // Init Variables //
 	collider = Collider(x() + collider_offset_x, 
                         y() + collider_offset_y, 
                         ANGEL_PLATFORM_COLLIDER_WIDTH, 

@@ -534,6 +534,14 @@ void Level::updateFade()
             bn::sprite_palette_ptr object_palette = object_ptr->sprite_ptr->palette();
 
             object_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+
+            // If fully faded out, stop drawing it and restore the palette.
+            // This method assumes a fully faded out GameObject will be deleted. 
+            if(object_palette.fade_intensity() == 1) 
+            {
+                object_palette.set_fade(bn::colors::black, 0);
+                object_ptr->sprite_ptr->set_visible(false);
+            }
         }
 
 
