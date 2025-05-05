@@ -31,6 +31,9 @@
 // Flash Palette
 #include "bn_sprite_palette_items_sprite_flash_palette.h"
 
+// Effect Assets
+#include "bn_sprite_items_hit_effect.h"
+
 // Level Object Assets
 #include "bn_sprite_items_tile_passage.h"
 #include "bn_sprite_items_phase_orb_up.h"
@@ -53,9 +56,6 @@
 #include "bn_sprite_items_player.h"
 #include "bn_sprite_items_phase_marker.h"
 
-// Effect Assets
-#include "bn_sprite_items_hit_effect.h"
-
 ///////////////////////
 // Struct GameObject //
 ///////////////////////
@@ -63,7 +63,7 @@
 #define GAME_OBJECT_MAX_ANIM_FRAMES 30
 
 #define GAME_OBJECT_Z_ORDER 0
-#define HIT_EFFECT_Z_ORDER -1
+#define HIT_EFFECT_Z_ORDER  -1
 
 #define GAME_OBJECT_COLLIDER_WIDTH  8
 #define GAME_OBJECT_COLLIDER_HEIGHT 8

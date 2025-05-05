@@ -6,6 +6,10 @@
 
 GameObject::GameObject()
 {
+    effect_sprite_ptr = bn::sprite_items::hit_effect.create_sprite(0, 0);
+    effect_sprite_ptr->set_z_order(HIT_EFFECT_Z_ORDER);
+    effect_sprite_ptr->set_visible(false);
+
     collider = Collider(x() + collider_offset_x, 
                         y() + collider_offset_y, 
                         GAME_OBJECT_COLLIDER_WIDTH, 
@@ -208,6 +212,11 @@ void GameObject::draw()
         if(!effect_animate_action_ptr->done())
         {
             effect_animate_action_ptr->update();
+            effect_sprite_ptr->set_visible(true);
+        }
+        else
+        {
+            effect_sprite_ptr->set_visible(false);
         }
     }
 }
@@ -216,6 +225,9 @@ void GameObject::setCamera(const bn::camera_ptr& camera)
 {
     if(sprite_ptr.has_value())
     {sprite_ptr->set_camera(camera);}
+
+    if(effect_sprite_ptr.has_value())
+    {effect_sprite_ptr->set_camera(camera);}
     
     collider.setCamera(camera);
 }
@@ -422,16 +434,11 @@ void GameObject::applyDamage(int32 damage)
 
 void GameObject::applyHitEffect(int32 x, int32 y)
 {   
-    effect_sprite_ptr.reset();
-    effect_animate_action_ptr.reset();
-
-    effect_sprite_ptr = bn::sprite_items::hit_effect.create_sprite(x, y);
-    effect_sprite_ptr->set_z_order(HIT_EFFECT_Z_ORDER);
-
+    effect_sprite_ptr->set_position(x, y);
     effect_animate_action_ptr = bn::create_sprite_animate_action_once(effect_sprite_ptr.value(), 
                                 0, 
                                 bn::sprite_items::hit_effect.tiles_item(),
-                                0, 1, 2, 3);
+                                0, 1, 2, 3, 4, 5, 6);
 }
 
 ///////////////////////////

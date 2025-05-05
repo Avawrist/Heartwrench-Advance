@@ -159,7 +159,7 @@ void Hitbox::applyHit(GameObject& object)
         // Set global variables
         if(object.hitpoints - damage <= 0)
         {
-            global_bg_hitflash_frames   = hitstop_frames;
+            global_bg_hitflash_frames = hitstop_frames;
         }
         global_hitstop_frames       = hitstop_frames;
         global_screenshake_frames   = screenshake_frames;

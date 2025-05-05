@@ -89,10 +89,11 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/include/physics.h G:/game/include/math.h \
  G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
- G:/game/build/bn_sprite_items_tile_passage.h \
+ G:/game/build/bn_sprite_items_hit_effect.h \
  G:/butano-master/butano/include/bn_sprite_item.h \
  G:/butano-master/butano/include/bn_sprite_shape_size.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
+ G:/game/build/bn_sprite_items_tile_passage.h \
  G:/game/build/bn_sprite_items_phase_orb_up.h \
  G:/game/build/bn_sprite_items_phase_orb_down.h \
  G:/game/build/bn_sprite_items_phase_orb_left.h \
@@ -107,8 +108,7 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/build/bn_sprite_items_scythe_platform.h \
  G:/game/build/bn_sprite_items_hitbox.h \
  G:/game/build/bn_sprite_items_player.h \
- G:/game/build/bn_sprite_items_phase_marker.h \
- G:/game/build/bn_sprite_items_hit_effect.h G:/game/include/player.h \
+ G:/game/build/bn_sprite_items_phase_marker.h G:/game/include/player.h \
  G:/game/include/hitbox.h G:/game/include/tile_passage.h \
  G:/game/include/phase_orb.h G:/game/include/ground_ghoul.h \
  G:/game/include/ceiling_ghoul.h G:/game/include/wall_left_ghoul.h \
@@ -209,10 +209,11 @@ G:/game/include/physics.h:
 G:/game/include/math.h:
 G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
-G:/game/build/bn_sprite_items_tile_passage.h:
+G:/game/build/bn_sprite_items_hit_effect.h:
 G:/butano-master/butano/include/bn_sprite_item.h:
 G:/butano-master/butano/include/bn_sprite_shape_size.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
+G:/game/build/bn_sprite_items_tile_passage.h:
 G:/game/build/bn_sprite_items_phase_orb_up.h:
 G:/game/build/bn_sprite_items_phase_orb_down.h:
 G:/game/build/bn_sprite_items_phase_orb_left.h:
@@ -228,7 +229,6 @@ G:/game/build/bn_sprite_items_scythe_platform.h:
 G:/game/build/bn_sprite_items_hitbox.h:
 G:/game/build/bn_sprite_items_player.h:
 G:/game/build/bn_sprite_items_phase_marker.h:
-G:/game/build/bn_sprite_items_hit_effect.h:
 G:/game/include/player.h:
 G:/game/include/hitbox.h:
 G:/game/include/tile_passage.h:
