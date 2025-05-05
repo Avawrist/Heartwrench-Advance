@@ -96,13 +96,14 @@ struct Level
     void clear();
     void reload();
 
-    void updateAndDraw();
+    void updateObjects();
     void updateCamera();
     void updateBGFlash();
     void reloadOnDeath();
     void freeObjects();
     void updateIndexes();
     void transitionRoom();
+    void drawObjects();
 };
 
 #endif

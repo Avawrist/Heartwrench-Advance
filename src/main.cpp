@@ -39,12 +39,13 @@ int main()
         }
         else
         {
-            current_level.updateAndDraw();
+            current_level.updateObjects();
             current_level.updateCamera();
             current_level.updateBGFlash();
             current_level.freeObjects();
             current_level.reloadOnDeath();
             current_level.transitionRoom();
+            current_level.drawObjects();
         }
 
         //BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
