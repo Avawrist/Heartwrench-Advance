@@ -27,4 +27,18 @@ inline int32 clamp(int32 min, int32 max, int32 target)
 	return target;
 }
 
+inline bn::fixed min(bn::fixed a, bn::fixed b)
+{
+	if(b < a) {return b;}
+
+	return a;
+}
+
+inline bn::fixed max(bn::fixed a, bn::fixed b)
+{
+	if(b > a) {return b;}
+
+	return a;
+}
+
 #endif

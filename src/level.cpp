@@ -30,6 +30,8 @@ Level::Level(const Level& other)
     tile_height = other.tile_height;
 
     current_level_name = other.current_level_name;
+    fade_in            = other.fade_in;
+    fade_out           = other.fade_out;
     player_spawn       = other.player_spawn;
     cam_is_scrolling   = other.cam_is_scrolling;
     cam_x_offset       = other.cam_x_offset;
@@ -64,6 +66,8 @@ void Level::operator =(const Level& other)
 
     current_level_name = other.current_level_name;
     player_spawn       = other.player_spawn;
+    fade_in            = other.fade_in;
+    fade_out           = other.fade_out;
     cam_is_scrolling   = other.cam_is_scrolling;
     cam_x_offset       = other.cam_x_offset;
     cam_y_offset       = other.cam_y_offset;
@@ -86,7 +90,7 @@ void Level::clear()
 
     BN_LOG("=== Level cleared ===");
     BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
-
+    
 }
 
 void Level::load(LevelName level_name)
@@ -96,6 +100,8 @@ void Level::load(LevelName level_name)
     camera       = bn::camera_ptr::create(0, 0);
     player_spawn = bn::point(0, 0);
 
+    fade_in          = false;
+    fade_out         = false;
     cam_is_scrolling = false;
     cam_x_offset     = 0;
     cam_y_offset     = 0;
@@ -160,6 +166,14 @@ void Level::load(LevelName level_name)
     object_bg_ptr->set_camera(camera.value());
     object_bg_ptr->set_visible(false);
 
+    // Set black screen
+    bn::bg_palette_ptr main_bg_palette = main_bg_ptr->palette();
+    main_bg_palette.set_fade(bn::colors::black, 1);
+    default_painted_palette_ptr->set_fade(bn::colors::black, 1);
+
+    // Trigger fade in
+    fade_in = true;
+
     BN_LOG("=== Level loaded ===");
     BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
     
@@ -173,11 +187,12 @@ void Level::reload()
 
 void Level::updateAll()
 {
+    reloadOnDeath();
     updateObjects();
     updateCamera();
     updateBGFlash();
+    updateFade();
     freeObjects();
-    reloadOnDeath();
     transitionRoom();
     drawObjects();
 }
@@ -297,7 +312,12 @@ void Level::reloadOnDeath()
     // If player died, reload the level
     if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->is_dead)
     {
-        reload();
+        // Trigger the fade out
+        fade_out = true;
+
+        // If fade out is done, we can reload.
+        if(default_painted_palette_ptr->fade_intensity() == 1)
+        {reload();}
     }
 }
 
@@ -480,12 +500,50 @@ void Level::drawObjects()
     } 
 }
 
-void Level::fadeOut()
+void Level::updateFade()
 {
+    bn::bg_palette_ptr main_bg_palette = main_bg_ptr->palette();
+    bn::fixed fade_intensity = main_bg_palette.fade_intensity();
 
-}
+    if(fade_in)
+    {
+        // Fade objects in
+        for(int32 i = 0; i < current_room.game_objects.size(); i++)
+        {
+            GameObject* object_ptr = current_room.game_objects.at(i);
+            bn::sprite_palette_ptr object_palette = object_ptr->sprite_ptr->palette();
 
-void Level::fadeIn()
-{
+            object_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+        }
 
+        // Fade BGs in
+        main_bg_palette.set_fade(bn::colors::black, 
+            max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+
+        default_painted_palette_ptr->set_fade(bn::colors::black, 
+            max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+
+        if(main_bg_palette.fade_intensity() == 0) {fade_in = false;}
+    }
+    else if(fade_out)
+    {
+        // Fade objects out
+        for(int32 i = 0; i < current_room.game_objects.size(); i++)
+        {
+            GameObject* object_ptr = current_room.game_objects.at(i);
+            bn::sprite_palette_ptr object_palette = object_ptr->sprite_ptr->palette();
+
+            object_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+        }
+
+
+        // Fade BGs out
+        main_bg_palette.set_fade(bn::colors::black, 
+            min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+
+        default_painted_palette_ptr->set_fade(bn::colors::black, 
+            min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+
+        if(main_bg_palette.fade_intensity() == 1) {fade_out = false;}
+    }
 }

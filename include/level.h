@@ -15,6 +15,7 @@
 #include "bn_regular_bg_map_cell.h"
 #include "bn_regular_bg_map_cell_info.h"
 #include "bn_bg_palette_ptr.h"
+#include "bn_colors.h"
 
 // Flash Palette
 #include "bn_bg_palette_items_bg_flash_palette.h"
@@ -26,6 +27,7 @@
 #include "bn_regular_bg_items_test_object_bg.h"
 
 // My Libs
+#include "math.h"
 #include "room.h"
 #include "utility.h"
 #include "player.h"
@@ -47,6 +49,9 @@
 #define BACKDROP_ORDER   3
 #define MAIN_BG_ORDER    2
 #define OBJECT_BG_ORDER  1
+
+// Fade 
+#define LEVEL_FADE_INCREMENT 0.05
 
 enum LevelName 
 {
@@ -78,7 +83,8 @@ struct Level
     LevelName current_level_name;
 
     bn::point player_spawn;
-
+    bool  fade_in;
+    bool  fade_out;
     bool  cam_is_scrolling;
     int32 cam_x_offset;
     int32 cam_y_offset;
@@ -105,8 +111,7 @@ struct Level
     void updateIndexes();
     void transitionRoom();
     void drawObjects();
-    void fadeOut();
-    void fadeIn();
+    void updateFade();
 };
 
 #endif
