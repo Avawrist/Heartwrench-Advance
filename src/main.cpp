@@ -23,55 +23,41 @@ int main()
     // Game Loop
     while(true)
     {
-        // Update Game
-        //bool profile = false;
-
-        //if(bn::keypad::l_held()) {profile = true;}
-        //if(profile) {BN_PROFILER_START("game update");}
-
         // Update Hitstop
         global_hitstop_frames = 0;
 
         // Update Levels
-        if(current_level.cam_is_scrolling)
-        {
-            current_level.updateCamera();
-        }
-        else
-        {
-            current_level.updateObjects();
-            current_level.updateCamera();
-            current_level.updateBGFlash();
-            current_level.freeObjects();
-            current_level.reloadOnDeath();
-            current_level.transitionRoom();
-            current_level.drawObjects();
-        }
+        if(current_level.cam_is_scrolling) {current_level.updateCamera();}
+        else                               {current_level.updateAll();}
 
-        //BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
-        //BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
-
-        /*
-        BN_LOG("Game Object IDs: ");
-        for(int32 i = 0; i < current_level.current_room.game_objects.size(); i++)
-        {BN_LOG(current_level.current_room.game_objects.at(i)->object_id);}
-
-        BN_LOG("Unloaded Object IDs: ");
-        for(int32 j = 0; j < current_level.current_room.unloaded_objects.size(); j++)
-        {BN_LOG(current_level.current_room.unloaded_objects.at(j).loaded_instance_id);}
-        */
-
-        //if(profile)
-        //{
-        //    BN_PROFILER_STOP();
-        //    bn::profiler::show();
-        //}
-
+        // Update Core
         for(int i = 0; i <= global_hitstop_frames; i++)
-        {
-            // Update Core
-            bn::core::update();
-            //BN_LOG(bn::core::last_missed_frames());
-        }
+        {bn::core::update();}
     }
 }
+
+/* 
+//bool profile = false;
+
+if(bn::keypad::l_held()) {profile = true;}
+if(profile) {BN_PROFILER_START("game update");}
+
+BN_LOG("Bytes allocated in IWRAM: ", bn::memory::used_stack_iwram());
+BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
+
+BN_LOG("Game Object IDs: ");
+for(int32 i = 0; i < current_level.current_room.game_objects.size(); i++)
+{BN_LOG(current_level.current_room.game_objects.at(i)->object_id);}
+
+BN_LOG("Unloaded Object IDs: ");
+for(int32 j = 0; j < current_level.current_room.unloaded_objects.size(); j++)
+{BN_LOG(current_level.current_room.unloaded_objects.at(j).loaded_instance_id);}
+
+if(profile)
+{
+    BN_PROFILER_STOP();
+    bn::profiler::show();
+}
+
+//BN_LOG(bn::core::last_missed_frames());
+*/

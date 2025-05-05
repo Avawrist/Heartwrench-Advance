@@ -171,6 +171,17 @@ void Level::reload()
     load(current_level_name);
 }
 
+void Level::updateAll()
+{
+    updateObjects();
+    updateCamera();
+    updateBGFlash();
+    freeObjects();
+    reloadOnDeath();
+    transitionRoom();
+    drawObjects();
+}
+
 void Level::updateObjects()
 {
 
@@ -459,12 +470,22 @@ void Level::transitionRoom()
 
 void Level::drawObjects()
 {
-        // Update & draw all objects
-        for(int32 i = current_room.game_objects.size() - 1; i >= 0; i--)
+    // Update & draw all objects
+    for(int32 i = current_room.game_objects.size() - 1; i >= 0; i--)
+    {
+        if(current_room.game_objects.data()[i] != NULL)
         {
-            if(current_room.game_objects.data()[i] != NULL)
-            {
-                current_room.game_objects.data()[i]->draw();
-            }   
-        } 
+            current_room.game_objects.data()[i]->draw();
+        }   
+    } 
+}
+
+void Level::fadeOut()
+{
+
+}
+
+void Level::fadeIn()
+{
+
 }

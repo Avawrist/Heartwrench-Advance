@@ -76,9 +76,9 @@
 #define GAME_OBJECT_SPRITE_OFFSET_INCREMENT 0.1
 
 #define GAME_OBJECT_MIN_STRETCH_V  0.7
-#define GAME_OBJECT_MAX_STRETCH_V  1.8
+#define GAME_OBJECT_MAX_STRETCH_V  1.4
 #define GAME_OBJECT_MIN_STRETCH_H  0.7
-#define GAME_OBJECT_MAX_STRETCH_H  1.8
+#define GAME_OBJECT_MAX_STRETCH_H  1.4
 
 // The index order here needs to align with the object tile index order in 
 // Aseprite.

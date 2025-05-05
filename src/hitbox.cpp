@@ -156,7 +156,17 @@ void Hitbox::applyHit(GameObject& object)
 {
     if(object.invulnerability_frames <= 0)
     {
-        // Set global variables
+        // Determine hit effect location
+        int32 x_offset_multiplier = object.x().integer() - x().integer(); 
+        if(x_offset_multiplier != 0) {x_offset_multiplier /= abs(x_offset_multiplier);}
+
+        int32 y_offset_multiplier = object.y().integer() - y().integer(); 
+        if(y_offset_multiplier != 0) {y_offset_multiplier /= abs(y_offset_multiplier);}
+
+        int32 x_offset = (width / 2)  * x_offset_multiplier;
+        int32 y_offset = (height / 2) * y_offset_multiplier;
+
+        // Global juice
         if(object.hitpoints - damage <= 0)
         {
             global_bg_hitflash_frames = hitstop_frames;
@@ -165,11 +175,13 @@ void Hitbox::applyHit(GameObject& object)
         global_screenshake_frames   = screenshake_frames;
         global_screenshake_severity = screenshake_severity;
 
+        // Object juice
+        object.invulnerability_frames = GAME_OBJECT_HIT_INVULNERABILITY_FRAMES;
+        object.rigidbody.addForce(HITBOX_KNOCKBACK_FORCE);
+        object.applyDamage(damage);
         object.setHitFlash();
         object.setHitStretch();
-        object.applyDamage(damage);
-        object.applyHitEffect(object.x().integer(), object.y().integer());
-        object.rigidbody.addForce(HITBOX_KNOCKBACK_FORCE);
-        object.invulnerability_frames = GAME_OBJECT_HIT_INVULNERABILITY_FRAMES;
+        object.applyHitEffect(x().integer() + x_offset,
+                              y().integer() + y_offset);
     }
 }

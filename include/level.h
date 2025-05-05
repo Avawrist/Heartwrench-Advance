@@ -96,6 +96,7 @@ struct Level
     void clear();
     void reload();
 
+    void updateAll();
     void updateObjects();
     void updateCamera();
     void updateBGFlash();
@@ -104,6 +105,8 @@ struct Level
     void updateIndexes();
     void transitionRoom();
     void drawObjects();
+    void fadeOut();
+    void fadeIn();
 };
 
 #endif
