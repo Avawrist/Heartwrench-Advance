@@ -13,8 +13,19 @@ Flood/plague/disaster as devices of the gods to maintain control over humans
 = Platforming =
 
 = Enemies/Combat =
--Basic RPS with Dash/Slash/Jump
+-Basic RPS with Roll/Slash/Jump
 -Build on RPS difficulty with enemy and terrain based mixups
+
+Slash:
+-Hammer attacks with lots of knockback
+-Grounded hammer: 1 regular, but mighty swing. The bread and butter.
+-Aerial hammer: 2 swings, first swing has low knockback and can lead 
+                into the second or into a grounded hammer.
+-Roll hammer: a spin along the ground, hitting on both sides of the player.
+              Most useful for attacking after rolling through an enemy 
+              without turning around.
+
+-Enemies take wall splat damage?
 
 -Enemy types?
 -Enemies that are exclusively combat
