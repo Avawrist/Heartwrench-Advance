@@ -55,6 +55,7 @@ GameObject::GameObject(const GameObject& other)
 
 	received_platform_force = other.received_platform_force;
 
+    hitstun_frames         = other.hitstun_frames;
     hit_flash_frames       = other.hit_flash_frames;
     invulnerability_frames = other.invulnerability_frames;
     hitpoints              = other.hitpoints;
@@ -106,6 +107,7 @@ GameObject& GameObject::operator =(const GameObject& other)
 
 	received_platform_force = other.received_platform_force;
 
+    hitstun_frames         = other.hitstun_frames;
     hit_flash_frames       = other.hit_flash_frames;
     invulnerability_frames = other.invulnerability_frames;
     hitpoints              = other.hitpoints;
@@ -369,6 +371,21 @@ void GameObject::updateInactiveState(const bn::camera_ptr& camera)
 
     if(!load_range_collider.isCollision(pos()))
     {is_inactive = true;}
+}
+
+void GameObject::updateHitstunState()
+{
+    hitstun_frames--;
+    hitstun_frames = max(0, hitstun_frames);
+
+    if(!hitstun_frames)
+    {setState(NONE);}
+}
+
+void GameObject::udpateDeathState()
+{
+    if(animate_action_ptr->done())
+    {is_dead = true;}
 }
 
 void GameObject::clampPosition(const bn::regular_bg_ptr& bg_ptr)

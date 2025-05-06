@@ -34,7 +34,21 @@ inline bn::fixed min(bn::fixed a, bn::fixed b)
 	return a;
 }
 
+inline int32 min(int32 a, int32 b)
+{
+	if(b < a) {return b;}
+
+	return a;
+}
+
 inline bn::fixed max(bn::fixed a, bn::fixed b)
+{
+	if(b > a) {return b;}
+
+	return a;
+}
+
+inline int32 max(int32 a, int32 b)
 {
 	if(b > a) {return b;}
 

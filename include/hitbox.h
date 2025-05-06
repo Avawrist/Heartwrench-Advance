@@ -14,18 +14,19 @@
 // Struct Hitbox //
 ///////////////////
 
-#define HITBOX_KNOCKBACK_FORCE Force(bn::fixed_point_t<12>(x_knockback * x_dir, y_knockback * y_dir), 0.2)
+#define HITBOX_KNOCKBACK_FORCE Force(bn::fixed_point_t<12>(x_knockback * x_dir, y_knockback * y_dir), knockback_decay)
 
 struct Hitbox : GameObject
 {
 
     int32 hitstop_frames;
+    int32 hitstun_frames;
     int32 screenshake_frames;
     int32 lifespan_frames;
     int32 current_lifespan_frame;
     int32 x_knockback;
     int32 y_knockback;
-    int32 knockback_decay;
+    bn::fixed knockback_decay;
     int32 width;
     int32 height;
     int32 damage;
@@ -34,11 +35,12 @@ struct Hitbox : GameObject
 
     Hitbox(bn::point  pos,
            int32      _hitstop_frames,
+           int32      _hitstun_frames,
            int32      _screenshake_frames,
            int32      _lifespan_frames,
            int32      _x_knockback,
            int32      _y_knockback,
-           int32      _knockback_decay,
+           bn::fixed  _knockback_decay,
            int32      _width,
            int32      _height,
            int32      _damage,

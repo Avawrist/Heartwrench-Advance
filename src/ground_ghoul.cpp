@@ -87,13 +87,15 @@ void GroundGhoul::update(const RoomBounds&                              room_bou
 
         break;
 
-        case GROUND_GHOUL_HITSTUN:
+        case OBJECT_HITSTUN:
+
+            updateHitstunState();
+
         break;
 
         case OBJECT_DEATH:
 
-            if(animate_action_ptr->done())
-            {is_dead = true;}
+            udpateDeathState();
 
         break;
 
@@ -566,13 +568,6 @@ void GroundGhoul::update(const RoomBounds&                              room_bou
                 case CEILING_GHOUL:
                 case WALL_LEFT_GHOUL:
                 case WALL_RIGHT_GHOUL:
-                    
-                    if(collider.isCollision(other_collider))
-                    {
-                        if(x_dir == RIGHT) {x_dir = LEFT;}
-                        else               {x_dir = RIGHT;}
-                    }
-                    
                 break;
     
                 default:
@@ -998,7 +993,8 @@ void GroundGhoul::update(const RoomBounds&                              room_bou
     // Update State //
     //////////////////
 
-    if(state != OBJECT_DEATH)
+    if(state != OBJECT_DEATH &&
+       state != OBJECT_HITSTUN)
     {
         if(grounded_detected) {setState(GROUND_GHOUL_CRAWL);}
         else                  {setState(GROUND_GHOUL_AIR);}
@@ -1027,12 +1023,24 @@ void GroundGhoul::setState(ObjectState new_state)
         break;
 
         case GROUND_GHOUL_CRAWL:
+
+            animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+                                 0,
+                                 bn::sprite_items::ground_ghoul.tiles_item(),
+                                 0, 0);
+
         break;
 
         case GROUND_GHOUL_AIR:
         break;
 
-        case GROUND_GHOUL_HITSTUN:
+        case OBJECT_HITSTUN:
+
+            animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+                                 0,
+                                 bn::sprite_items::ground_ghoul.tiles_item(),
+                                 18, 18);
+
         break;
 
         case OBJECT_DEATH:

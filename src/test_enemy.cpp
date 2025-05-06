@@ -49,7 +49,23 @@ void TestEnemy::update(const RoomBounds&                              room_bound
     // State Machine //
     ///////////////////
 
-    rigidbody.addForce(TEST_ENEMY_GRAVITY_FORCE);
+	switch(state)
+    {
+        case OBJECT_HITSTUN:
+
+            updateHitstunState();
+
+        break;
+
+        case OBJECT_DEATH:
+
+            udpateDeathState();
+
+        break;
+
+        default:
+        break;
+    }
 
     ////////////////////
     // Update Physics //

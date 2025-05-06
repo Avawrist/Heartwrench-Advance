@@ -864,8 +864,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 		case OBJECT_DEATH:
 
-			if(animate_action_ptr->done())
-			{is_dead = true;}
+			udpateDeathState();
 
 		break;
 		
@@ -2409,6 +2408,7 @@ void Player::createGroundedScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJE
 	hitbox_1_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_GROUND_1_X_OFFSET * x_dir),
 								  y().integer() + PLAYER_SCYTHE_GROUND_1_Y_OFFSET),
 								  PLAYER_SCYTHE_GROUND_1_HITSTOP_FRAMES,
+								  PLAYER_SCYTHE_GROUND_1_HITSTUN_FRAMES,
 								  PLAYER_SCYTHE_GROUND_1_SCREENSHAKE_FRAMES,
 								  PLAYER_SCYTHE_GROUND_1_HB_LIFESPAN_FRAMES,
 								  PLAYER_SCYTHE_GROUND_1_X_KNOCKBACK,
@@ -2436,6 +2436,7 @@ void Player::createAirScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>&
 	hitbox_1_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_AIR_1_X_OFFSET * x_dir),
 								  y().integer() + PLAYER_SCYTHE_AIR_1_Y_OFFSET),
 								  PLAYER_SCYTHE_AIR_1_HITSTOP_FRAMES,
+								  PLAYER_SCYTHE_AIR_1_HITSTUN_FRAMES,
 								  PLAYER_SCYTHE_AIR_1_SCREENSHAKE_FRAMES,
 								  PLAYER_SCYTHE_AIR_1_HB_LIFESPAN_FRAMES,
 								  PLAYER_SCYTHE_AIR_1_X_KNOCKBACK,

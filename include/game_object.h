@@ -130,23 +130,19 @@ enum ObjectState
 	// Ceiling Ghoul
 	CEILING_GHOUL_IDLE,
 	CEILING_GHOUL_CRAWL,
-	CEILING_GHOUL_HITSTUN,
 
 	// Ground Ghoul
 	GROUND_GHOUL_IDLE,
 	GROUND_GHOUL_CRAWL,
 	GROUND_GHOUL_AIR,
-	GROUND_GHOUL_HITSTUN,
 
 	// Wall Left Ghoul
 	WALL_LEFT_GHOUL_IDLE,
 	WALL_LEFT_GHOUL_CRAWL,
-	WALL_LEFT_GHOUL_HITSTUN,
 
 	// Wall Right Ghoul
 	WALL_RIGHT_GHOUL_IDLE,
 	WALL_RIGHT_GHOUL_CRAWL,
-	WALL_RIGHT_GHOUL_HITSTUN,
 
 	// Scythe Platform
 	SCYTHE_PLATFORM_THROWN,
@@ -156,6 +152,7 @@ enum ObjectState
     TILE_PASSAGE_OPEN,
 
 	// Generic
+	OBJECT_HITSTUN,
 	OBJECT_DEATH,
 };
 
@@ -185,6 +182,7 @@ struct GameObject
 	int32 collider_offset_y      = 0;
 	int32 hit_flash_frames       = 0;
 	int32 invulnerability_frames = 0;
+	int32 hitstun_frames         = 0;
 	int32 hitpoints              = 1;
 
 	bool is_inactive             = false;
@@ -223,6 +221,8 @@ struct GameObject
 	void updateSpriteDirection();
 	void updateSpriteOffsets();
 	void updateInactiveState(const bn::camera_ptr& camera);
+	virtual void updateHitstunState();
+	virtual void udpateDeathState();
 	void clampPosition(const bn::regular_bg_ptr& bg_ptr);
 	void setHitFlash();
 	void setHitFlash(int32 frames);

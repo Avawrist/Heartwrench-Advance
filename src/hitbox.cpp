@@ -2,11 +2,12 @@
 
 Hitbox::Hitbox(bn::point pos,
        int32      _hitstop_frames,
+       int32      _hitstun_frames,
        int32      _screenshake_frames,
        int32      _lifespan_frames,
        int32      _x_knockback,
        int32      _y_knockback,
-       int32      _knockback_decay,
+       bn::fixed  _knockback_decay,
        int32      _width,
        int32      _height,
        int32      _damage,
@@ -16,9 +17,9 @@ Hitbox::Hitbox(bn::point pos,
        ScreenShakeSeverity _screenshake_severity)
 {
     // Init Variables //
-	object_type        = _type;
+	object_type = _type;
     
-    sprite_ptr         = bn::sprite_items::hitbox.create_sprite(pos.x(), pos.y());
+    sprite_ptr  = bn::sprite_items::hitbox.create_sprite(pos.x(), pos.y());
     sprite_ptr->set_visible(false);
     default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
@@ -32,6 +33,7 @@ Hitbox::Hitbox(bn::point pos,
 	collider_offset_y = 0;
 
     hitstop_frames         = _hitstop_frames;
+    hitstun_frames         = _hitstun_frames;
     screenshake_frames     = _screenshake_frames;
     lifespan_frames        = _lifespan_frames;
     current_lifespan_frame = lifespan_frames;
@@ -52,6 +54,7 @@ Hitbox::Hitbox(bn::point pos,
 Hitbox::Hitbox(const Hitbox& other) : GameObject(other)
 {
     hitstop_frames         = other.hitstop_frames;
+    hitstun_frames         = other.hitstun_frames;
     screenshake_frames     = other.screenshake_frames;
     lifespan_frames        = other.lifespan_frames;
     current_lifespan_frame = other.current_lifespan_frame;
@@ -72,6 +75,7 @@ Hitbox::~Hitbox()
 Hitbox& Hitbox::operator =(const Hitbox& other)
 {
     hitstop_frames         = other.hitstop_frames;
+    hitstun_frames         = other.hitstun_frames;
     screenshake_frames     = other.screenshake_frames;
     lifespan_frames        = other.lifespan_frames;
     current_lifespan_frame = other.current_lifespan_frame;
@@ -175,10 +179,21 @@ void Hitbox::applyHit(GameObject& object)
         global_screenshake_frames   = screenshake_frames;
         global_screenshake_severity = screenshake_severity;
 
-        // Object juice
+        // Object invuln:
         object.invulnerability_frames = GAME_OBJECT_HIT_INVULNERABILITY_FRAMES;
+
+        // Object physics:
+        object.rigidbody.removeForces();
         object.rigidbody.addForce(HITBOX_KNOCKBACK_FORCE);
+
+        // Object damage:
         object.applyDamage(damage);
+
+        // Object hitstun state:
+        object.hitstun_frames = hitstun_frames;
+        object.setState(OBJECT_HITSTUN);
+
+        // Object juice:
         object.setHitFlash();
         object.setHitStretch();
         object.applyHitEffect(x().integer() + x_offset,
