@@ -156,6 +156,29 @@ void TestEnemy::update(const RoomBounds&                              room_bound
 					collider_x_axis.setX(collider_x_axis.x() + col_x_offset);
 					setX(this->x() + col_x_offset);
 
+					// Wall Splat check
+					if(col_x_offset != 0 &&
+						state == OBJECT_HITSTUN &&
+						abs(rigidbody.final_dir.x().integer()) >= GAME_OBJECT_REQUIRED_SPLAT_SPEED)
+					{
+						Hitbox temp_hitbox(bn::point(0, 0),
+											WALL_SPLAT_HITSTOP_FRAMES,
+											WALL_SPLAT_HITSTUN_FRAMES,
+											WALL_SPLAT_SCREENSHAKE_FRAMES,
+											WALL_SPLAT_HB_LIFESPAN_FRAMES,
+											WALL_SPLAT_X_KNOCKBACK,
+											WALL_SPLAT_Y_KNOCKBACK,	
+											WALL_SPLAT_KNOCKBACK_DECAY,
+											WALL_SPLAT_HB_WIDTH,
+											WALL_SPLAT_HB_HEIGHT,
+											WALL_SPLAT_DAMAGE,
+											x_dir,
+											y_dir,
+											HITBOX_WALL_SPLAT,
+											WALL_SPLAT_SCREENSHAKE_SEVERITY);
+						temp_hitbox.applyWallHit(*this);
+					}
+
 					// Resolve Y Axis Collision //
 					col_y_offset = collider_y_axis.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y());
 					collider_y_axis.setY(collider_y_axis.y() + col_y_offset);

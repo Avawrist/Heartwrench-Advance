@@ -6,6 +6,7 @@
 
 // Base Class
 #include "game_object.h"
+#include "hitbox.h"
 
 //////////////////////
 // Struct TestEnemy //
@@ -20,7 +21,7 @@
 #define CEILING_GHOUL_CRAWL_SPEED 1
 #define CEILING_GHOUL_CRAWL_DECAY 1
 
-#define CEILING_GHOUL_CRAWL_FORCE   Force(bn::fixed_point_t<12>(CEILING_GHOUL_CRAWL_SPEED * x_dir, 0), CEILING_GHOUL_CRAWL_DECAY)
+#define CEILING_GHOUL_CRAWL_FORCE Force(bn::fixed_point_t<12>(CEILING_GHOUL_CRAWL_SPEED * x_dir, 0), CEILING_GHOUL_CRAWL_DECAY)
 
 #define CEILING_GHOUL_HITPOINTS 2
 

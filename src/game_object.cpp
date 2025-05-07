@@ -306,7 +306,7 @@ void GameObject::setHitStretch()
     if(sprite_ptr.has_value())
     {
         sprite_ptr->set_horizontal_scale(GAME_OBJECT_MAX_STRETCH_H);				
-        sprite_ptr->set_vertical_scale(GAME_OBJECT_MAX_STRETCH_V);
+        sprite_ptr->set_vertical_scale(GAME_OBJECT_MIN_STRETCH_V);
     }
 }
 

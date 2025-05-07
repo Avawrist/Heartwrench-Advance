@@ -60,6 +60,7 @@ struct Hitbox : GameObject
                 const bn::regular_bg_item&                     bg_item,
                 const bn::camera_ptr&                          camera) override;
     void applyHit(GameObject& object);
+    void applyWallHit(GameObject& object);
 
 };
 

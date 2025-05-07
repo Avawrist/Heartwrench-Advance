@@ -201,7 +201,7 @@ void GroundGhoul::update(const RoomBounds&                              room_bou
 			int32 local_height;
 			int32 global_height;
 
-			// 2. If the tile is collidable make a temporary collider based on type//
+			// 2. If the tile is collidable make a temporary collider based on type //
 
 			if(tile_index >= HARD_BLOCK_MIN_INDEX && 
 			   tile_index <= HARD_BLOCK_MAX_INDEX)
@@ -236,6 +236,29 @@ void GroundGhoul::update(const RoomBounds&                              room_bou
 					setX(this->x() + col_x_offset);
                     if(col_x_offset < 0)      {x_dir = LEFT;}
                     else if(col_x_offset > 0) {x_dir = RIGHT;}
+
+                    // Wall Splat check
+                    if(col_x_offset != 0 &&
+                       state == OBJECT_HITSTUN &&
+                       abs(rigidbody.final_dir.x().integer()) >= GAME_OBJECT_REQUIRED_SPLAT_SPEED)
+                    {
+                        Hitbox temp_hitbox(bn::point(0, 0),
+                                           WALL_SPLAT_HITSTOP_FRAMES,
+                                           WALL_SPLAT_HITSTUN_FRAMES,
+                                           WALL_SPLAT_SCREENSHAKE_FRAMES,
+                                           WALL_SPLAT_HB_LIFESPAN_FRAMES,
+                                           WALL_SPLAT_X_KNOCKBACK,
+                                           WALL_SPLAT_Y_KNOCKBACK,	
+                                           WALL_SPLAT_KNOCKBACK_DECAY,
+                                           WALL_SPLAT_HB_WIDTH,
+                                           WALL_SPLAT_HB_HEIGHT,
+                                           WALL_SPLAT_DAMAGE,
+                                           x_dir,
+                                           y_dir,
+                                           HITBOX_WALL_SPLAT,
+                                           WALL_SPLAT_SCREENSHAKE_SEVERITY);
+                        temp_hitbox.applyWallHit(*this);
+                    }
 
 					// Resolve Y Axis Collision //
 					col_y_offset = collider_y_axis.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y());

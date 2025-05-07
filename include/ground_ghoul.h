@@ -6,6 +6,7 @@
 
 // Base Class
 #include "game_object.h"
+#include "hitbox.h"
 #include "tile_passage.h"
 
 //////////////////////
@@ -27,7 +28,7 @@
 #define GROUND_GHOUL_GRAVITY_FORCE Force(bn::fixed_point_t<12>(0, GROUND_GHOUL_GRAVITY), GROUND_GHOUL_GRAVITY_DECAY)
 #define GROUND_GHOUL_CRAWL_FORCE   Force(bn::fixed_point_t<12>(GROUND_GHOUL_CRAWL_SPEED * x_dir, 0), GROUND_GHOUL_CRAWL_DECAY)
 
-#define GROUND_GHOUL_HITPOINTS 2
+#define GROUND_GHOUL_HITPOINTS 4
 
 struct GroundGhoul : GameObject {
 

@@ -6,6 +6,7 @@
 
 // Base Class
 #include "game_object.h"
+#include "hitbox.h"
 
 //////////////////////
 // Struct TestEnemy //

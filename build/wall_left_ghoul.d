@@ -94,7 +94,7 @@ wall_left_ghoul.o: G:/game/src/wall_left_ghoul.cpp \
  G:/game/build/bn_sprite_items_scythe_platform.h \
  G:/game/build/bn_sprite_items_hitbox.h \
  G:/game/build/bn_sprite_items_player.h \
- G:/game/build/bn_sprite_items_phase_marker.h
+ G:/game/build/bn_sprite_items_phase_marker.h G:/game/include/hitbox.h
 G:/game/include/wall_left_ghoul.h:
 G:/butano-master/butano/include/bn_math.h:
 G:/butano-master/butano/include/bn_array.h:
@@ -194,3 +194,4 @@ G:/game/build/bn_sprite_items_scythe_platform.h:
 G:/game/build/bn_sprite_items_hitbox.h:
 G:/game/build/bn_sprite_items_player.h:
 G:/game/build/bn_sprite_items_phase_marker.h:
+G:/game/include/hitbox.h:
