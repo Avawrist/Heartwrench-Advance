@@ -23,7 +23,7 @@
 
 #define WALL_RIGHT_GHOUL_CRAWL_FORCE   Force(bn::fixed_point_t<12>(0, WALL_RIGHT_GHOUL_CRAWL_SPEED * y_dir), WALL_RIGHT_GHOUL_CRAWL_DECAY)
 
-#define WALL_RIGHT_GHOUL_HITPOINTS 4
+#define WALL_RIGHT_GHOUL_HITPOINTS 2
 
 struct WallRightGhoul : GameObject {
 
