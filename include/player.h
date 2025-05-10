@@ -34,21 +34,22 @@
 
 #define PLAYER_MAX_HITPOINTS 3
 
-#define PLAYER_MIN_X_SPEED     0
-#define PLAYER_MAX_X_SPEED     2
-#define PLAYER_X_DECAY         1
-#define X_SPEED_ACC_RATE       0.2
-#define X_SPEED_DECAY_RATE     0.1
+#define PLAYER_MIN_X_SPEED 0
+#define PLAYER_MAX_X_SPEED 2
+#define PLAYER_X_DECAY     1
+#define X_SPEED_ACC_RATE   0.2
+#define X_SPEED_DECAY_RATE 0.1
 
-#define PLAYER_BASE_JUMP_FORCE       -6
-#define PLAYER_SECOND_JUMP_FORCE     -4
-#define PLAYER_WALL_JUMP_X_FORCE      4
-#define PLAYER_WALL_JUMP_Y_FORCE     -6
-#define PLAYER_JUMP_DECAY             0.1
-#define PLAYER_SECONDARY_JUMP_DECAY   1
-#define PLAYER_X_DRIFT_LOCKOUT_FRAMES 6
-#define PLAYER_MAX_JUMP_INPUT_FRAMES  24
-#define PLAYER_WALL_JUMP_DECAY        0.05
+#define PLAYER_BASE_JUMP_FORCE            -6
+#define PLAYER_SECOND_JUMP_FORCE          -4
+#define PLAYER_WALL_JUMP_X_FORCE           4
+#define PLAYER_WALL_JUMP_Y_FORCE          -5
+#define PLAYER_JUMP_DECAY                  0.1
+#define PLAYER_SECONDARY_JUMP_DECAY        1
+#define PLAYER_X_DRIFT_LOCKOUT_FRAMES      10
+#define PLAYER_MAX_JUMP_INPUT_FRAMES       24
+#define PLAYER_MAX_WALL_JUMP_INPUT_FRAMES  12
+#define PLAYER_WALL_JUMP_DECAY             0.05
 
 #define PLAYER_GRAVITY       	             3
 #define PLAYER_PROLONGED_GRAVITY             1
@@ -71,12 +72,7 @@
 #define PLAYER_PHASE_JUMP_LOCKOUT_FRAMES 5
 
 #define PLAYER_SCYTHE_GROUND_1_TOTAL_FRAMES      20
-#define PLAYER_SCYTHE_GROUND_2_TOTAL_FRAMES      20
-#define PLAYER_SCYTHE_GROUND_3_TOTAL_FRAMES      20
 #define PLAYER_SCYTHE_AIR_1_TOTAL_FRAMES         20
-#define PLAYER_MIN_SCYTHE_GROUND_1_BUFFER_FRAMES 11 // Must be greater than PLAYER_SCYTHE_1_CREATE_HB_FRAME
-#define PLAYER_MIN_SCYTHE_GROUND_2_BUFFER_FRAMES 11 // Must be greater than PLAYER_SCYTHE_2_CREATE_HB_FRAME
-#define PLAYER_MIN_SCYTHE_GROUND_3_BUFFER_FRAMES 11 // Must be greater than PLAYER_SCYTHE_2_CREATE_HB_FRAME
 
 #define PLAYER_SCYTHE_GROUND_1_X_OFFSET           32
 #define PLAYER_SCYTHE_GROUND_1_Y_OFFSET           0
@@ -124,8 +120,7 @@
 
 #define PLAYER_JUMP_FORCE              Force(bn::fixed_point_t<12>(0, jump_force), PLAYER_JUMP_DECAY)
 #define PLAYER_SECONDARY_JUMP_FORCE    Force(bn::fixed_point_t<12>(0, secondary_jump_force), PLAYER_SECONDARY_JUMP_DECAY)
-#define PLAYER_WALL_JUMP_RIGHT_FORCE   Force(bn::fixed_point_t<12>( wall_jump_force.x(), wall_jump_force.y()), PLAYER_WALL_JUMP_DECAY)
-#define PLAYER_WALL_JUMP_LEFT_FORCE    Force(bn::fixed_point_t<12>(-wall_jump_force.x(), wall_jump_force.y()), PLAYER_WALL_JUMP_DECAY)
+#define PLAYER_WALL_JUMP_FORCE         Force(bn::fixed_point_t<12>( wall_jump_force.x() * (int32)x_dir, wall_jump_force.y()), PLAYER_WALL_JUMP_DECAY)
 
 #define PLAYER_GRAVITY_FORCE           Force(bn::fixed_point_t<12>(0, gravity), 			     PLAYER_GRAVITY_DECAY)
 #define PLAYER_PROLONGED_GRAVITY_FORCE Force(bn::fixed_point_t<12>(0, PLAYER_PROLONGED_GRAVITY), PLAYER_GRAVITY_DECAY)
@@ -199,6 +194,7 @@ struct Player : GameObject {
 				const bn::camera_ptr&                            camera) override;
 	void setCamera(const bn::camera_ptr& camera) override;
 	void jump();
+	void wallJump();
 	void fastFall();
 	void setState(ObjectState new_state) override;
 	void createGroundedScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 

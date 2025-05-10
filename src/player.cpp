@@ -292,19 +292,13 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			{
 				if(right_wj_eligible)
 				{
-					rigidbody.addForce(PLAYER_WALL_JUMP_LEFT_FORCE);
-					
-					setVerticalStretch();
-					remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
 					x_dir = LEFT;
+					wallJump();
 				}
 				else if(left_wj_eligible)
 				{
-					rigidbody.addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);
-					
-					setVerticalStretch();
-					remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
 					x_dir = RIGHT;
+					wallJump();
 				}
 			}
 
@@ -320,12 +314,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			{remaining_jump_input_frames = 0;}
 
 			// Add Gravity //
-			if(!remaining_x_drift_lockout_frames)
-			{
-				rigidbody.addForce(PLAYER_GRAVITY_FORCE);
-				if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
-				{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
-			}
+			rigidbody.addForce(PLAYER_GRAVITY_FORCE);
+			if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
+			{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
 
 			// Update Remaining Jump Input Frames //
 			remaining_jump_input_frames--;
@@ -373,12 +364,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Wall Jump
 			if(bn::keypad::a_pressed())
 			{
-				rigidbody.removeForces();
-				rigidbody.addForce(PLAYER_WALL_JUMP_LEFT_FORCE);
-
-				setVerticalStretch();
-				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
 				x_dir = LEFT;
+				wallJump();
 			}
 			
 			// Add Gravity //
@@ -412,12 +399,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Wall Jump
 			if(bn::keypad::a_pressed())
 			{
-				rigidbody.removeForces();
-				rigidbody.addForce(PLAYER_WALL_JUMP_RIGHT_FORCE);
-
-				setVerticalStretch();
-				remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
 				x_dir = RIGHT;
+				wallJump();
 			}
 			
 			// Add Gravity //
@@ -2218,6 +2201,15 @@ void Player::jump()
 	remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
 	late_jump_grace_frames      = 0;
 	rigidbody.addForce(PLAYER_JUMP_FORCE);
+	setVerticalStretch();
+}
+
+void Player::wallJump()
+{
+	rigidbody.removeForces();
+	rigidbody.addForce(PLAYER_WALL_JUMP_FORCE);
+	remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
+	remaining_jump_input_frames      = PLAYER_MAX_WALL_JUMP_INPUT_FRAMES;
 	setVerticalStretch();
 }
 
