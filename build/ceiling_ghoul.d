@@ -24,7 +24,7 @@ ceiling_ghoul.o: G:/game/src/ceiling_ghoul.cpp \
  G:/butano-master/butano/include/bn_sin_lut.h \
  G:/butano-master/butano/include/bn_reciprocal_lut.h \
  G:/butano-master/butano/include/bn_rule_of_three_approximation.h \
- G:/game/include/game_object.h \
+ G:/game/include/enemy.h G:/game/include/game_object.h \
  G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_memory_alias.h \
  G:/butano-master/butano/include/bn_camera_ptr.h \
@@ -120,6 +120,7 @@ G:/butano-master/butano/include/bn_compare.h:
 G:/butano-master/butano/include/bn_sin_lut.h:
 G:/butano-master/butano/include/bn_reciprocal_lut.h:
 G:/butano-master/butano/include/bn_rule_of_three_approximation.h:
+G:/game/include/enemy.h:
 G:/game/include/game_object.h:
 G:/butano-master/butano/include/bn_optional.h:
 G:/butano-master/butano/include/bn_memory_alias.h:

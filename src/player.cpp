@@ -897,9 +897,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 		{
 			other_collider = game_objects.at(i)->collider;
 			
-			bn::fixed col_x_offset;
-			bn::fixed col_y_offset;
-
 			switch(game_objects.at(i)->object_type)
 			{
 				case DEVIL_PLATFORM:
@@ -1050,9 +1047,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 													 cells, 
 													 bg_item);
 
-				bn::fixed col_x_offset;
-				bn::fixed col_y_offset;
-
+				
 				int32 index;
 				int32 local_height;
 				int32 global_height;

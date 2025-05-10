@@ -97,8 +97,8 @@ devil_platform.o: G:/game/src/devil_platform.cpp \
  G:/game/build/bn_sprite_items_phase_marker.h G:/game/include/player.h \
  G:/game/include/hitbox.h G:/game/include/tile_passage.h \
  G:/game/include/phase_orb.h G:/game/include/ground_ghoul.h \
- G:/game/include/ceiling_ghoul.h G:/game/include/wall_left_ghoul.h \
- G:/game/include/wall_right_ghoul.h
+ G:/game/include/enemy.h G:/game/include/ceiling_ghoul.h \
+ G:/game/include/wall_left_ghoul.h G:/game/include/wall_right_ghoul.h
 G:/game/include/devil_platform.h:
 G:/butano-master/butano/include/bn_math.h:
 G:/butano-master/butano/include/bn_array.h:
@@ -203,6 +203,7 @@ G:/game/include/hitbox.h:
 G:/game/include/tile_passage.h:
 G:/game/include/phase_orb.h:
 G:/game/include/ground_ghoul.h:
+G:/game/include/enemy.h:
 G:/game/include/ceiling_ghoul.h:
 G:/game/include/wall_left_ghoul.h:
 G:/game/include/wall_right_ghoul.h:

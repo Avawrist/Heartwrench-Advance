@@ -95,8 +95,9 @@ player.o: G:/game/src/player.cpp G:/game/include/player.h \
  G:/game/build/bn_sprite_items_player.h \
  G:/game/build/bn_sprite_items_phase_marker.h G:/game/include/hitbox.h \
  G:/game/include/tile_passage.h G:/game/include/phase_orb.h \
- G:/game/include/ground_ghoul.h G:/game/include/ceiling_ghoul.h \
- G:/game/include/wall_left_ghoul.h G:/game/include/wall_right_ghoul.h
+ G:/game/include/ground_ghoul.h G:/game/include/enemy.h \
+ G:/game/include/ceiling_ghoul.h G:/game/include/wall_left_ghoul.h \
+ G:/game/include/wall_right_ghoul.h
 G:/game/include/player.h:
 G:/butano-master/butano/include/bn_keypad.h:
 G:/butano-master/butano/include/bn_common.h:
@@ -200,6 +201,7 @@ G:/game/include/hitbox.h:
 G:/game/include/tile_passage.h:
 G:/game/include/phase_orb.h:
 G:/game/include/ground_ghoul.h:
+G:/game/include/enemy.h:
 G:/game/include/ceiling_ghoul.h:
 G:/game/include/wall_left_ghoul.h:
 G:/game/include/wall_right_ghoul.h:

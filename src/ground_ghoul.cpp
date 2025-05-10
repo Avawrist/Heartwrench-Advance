@@ -32,7 +32,7 @@ GroundGhoul::GroundGhoul()
         hitpoints = GROUND_GHOUL_HITPOINTS;
 }
 
-GroundGhoul::GroundGhoul(const GroundGhoul& other) : GameObject(other)
+GroundGhoul::GroundGhoul(const GroundGhoul& other) : Enemy(other)
 {
     grounded_detected = other.grounded_detected;
 
@@ -113,427 +113,11 @@ void GroundGhoul::update(const RoomBounds&                              room_bou
 	// Apply forces to enemy
 	applyForces();
 
-    //////////////////////////////
-	// Init Collision Variables //
-	//////////////////////////////
-    
-	// Get current cell index that enemy resides in:
-	int32 half_level_width_pixels  = (bg_ptr.dimensions().width() / 2);
-	int32 half_level_height_pixels = (bg_ptr.dimensions().height() / 2);
-	bn::fixed index_x = (x() + half_level_width_pixels  + collider_offset_x)  / TILE_WIDTH;
-	bn::fixed index_y = (y() + half_level_height_pixels + collider_offset_y)  / TILE_HEIGHT;
-	bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
+    ///////////////////////
+    // Resolve Collision //
+    ///////////////////////
 
-	// Update colliders for each axis. 
-	collider_x_axis.setPos(collider.x(), collider.y() - rigidbody.final_dir.y());
-	collider_y_axis.setPos(collider.x() - rigidbody.final_dir.x(), collider.y());
-
-	// Placeholder for other objects
-	Collider other_collider;
-
-    //////////////////////////////////
-    // Resolve GameObject Collision //
-    //////////////////////////////////
-
-    for(int32 i = 0; i < game_objects.size(); i++)
-    {
-        other_collider = game_objects.at(i)->collider;
-        
-        bn::fixed col_x_offset;
-        bn::fixed col_y_offset;
-
-        switch(game_objects.at(i)->object_type)
-        {
-            case TILE_PASSAGE:
-                
-                if(((TilePassage*)(game_objects.at(i)))->state == TILE_PASSAGE_SHUT &&
-                    collider.isCollision(other_collider))
-                {
-                    // Resolve X Axis Collision //
-                    col_x_offset = collider_x_axis.getCollisionXOffset(other_collider, rigidbody.normalized_dir.x());
-                    collider_x_axis.setX(collider_x_axis.x() + col_x_offset);
-                    setX(this->x() + col_x_offset);
-
-                    // Resolve Y Axis Collision //
-                    col_y_offset = collider_y_axis.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y());
-                    collider_y_axis.setY(collider_y_axis.y() + col_y_offset);
-                    setY(this->y() + col_y_offset);
-
-                    // If there is still collision somehow, must be corner case //
-                    while(collider.isCollision(other_collider))
-                    {
-                        // We always resolve diagonal corner collisions with a horizontal shift. 
-                        setX(this->x() - rigidbody.normalized_dir.x());
-                    }
-                }
-
-            break;
-
-            default:
-            break;
-        }
-    }
-
-	////////////////////////////
-    // Resolve Tile Collision //
-    ////////////////////////////
-	
-	for(int32 y = -1; y < 2; y++)
-	{
-		for(int32 x = -1; x < 2; x++)
-		{
-			
-			// 1. Get tile type at index //
-			int32 check_index_x = cell_index.x() + x;
-			int32 check_index_y = cell_index.y() + y;
-
-			// Determine world coords in case we need to make a collider.
-			int32 world_x = ((check_index_x * TILE_WIDTH)  - half_level_width_pixels)  + (TILE_WIDTH / 2);
-			int32 world_y = ((check_index_y * TILE_HEIGHT) - half_level_height_pixels) + (TILE_HEIGHT / 2);
-
-			uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y, 
-			                                     bg_ptr, cells, bg_item);
-
-			bn::fixed col_x_offset;
-			bn::fixed col_y_offset;
-
-			int32 index;
-			int32 local_height;
-			int32 global_height;
-
-			// 2. If the tile is collidable make a temporary collider based on type //
-
-			if(tile_index >= HARD_BLOCK_MIN_INDEX && 
-			   tile_index <= HARD_BLOCK_MAX_INDEX)
-			{
-				// Prepare offsets in case they are needed for Block collision.
-				int32 block_w_offset = 0;
-				int32 block_x_offset = 0;
-
-				// If the neighbor to the right is also a BLOCK, smooth over the corner.
-				// This is a hack to resolve collision since checks are always made from
-				// left to right. 
-				if(getTileAtBGIndex(check_index_x + 1, check_index_y, 
-									 bg_ptr, cells, bg_item) >= HARD_BLOCK_MIN_INDEX && 
-					getTileAtBGIndex(check_index_x + 1, check_index_y, 
-									 bg_ptr, cells, bg_item) <= HARD_BLOCK_MAX_INDEX)
-				{
-					block_w_offset = TILE_WIDTH;
-					block_x_offset = TILE_WIDTH / 2;
-					x++;
-				}
-
-				other_collider = Collider(world_x + block_x_offset, 
-										  world_y, 
-										  TILE_WIDTH + block_w_offset,
-										  TILE_HEIGHT);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Resolve X Axis Collision //
-					col_x_offset = collider_x_axis.getCollisionXOffset(other_collider, rigidbody.normalized_dir.x());
-					collider_x_axis.setX(collider_x_axis.x() + col_x_offset);
-					setX(this->x() + col_x_offset);
-                    if(col_x_offset < 0)      {x_dir = LEFT;}
-                    else if(col_x_offset > 0) {x_dir = RIGHT;}
-
-                    // Wall Splat check
-                    if(col_x_offset != 0 &&
-                       state == OBJECT_HITSTUN &&
-                       abs(rigidbody.final_dir.x().integer()) >= GAME_OBJECT_REQUIRED_SPLAT_SPEED)
-                    {
-                        Hitbox temp_hitbox(bn::point(0, 0),
-                                           WALL_SPLAT_HITSTOP_FRAMES,
-                                           WALL_SPLAT_HITSTUN_FRAMES,
-                                           WALL_SPLAT_SCREENSHAKE_FRAMES,
-                                           WALL_SPLAT_HB_LIFESPAN_FRAMES,
-                                           WALL_SPLAT_X_KNOCKBACK,
-                                           WALL_SPLAT_Y_KNOCKBACK,	
-                                           WALL_SPLAT_KNOCKBACK_DECAY,
-                                           WALL_SPLAT_HB_WIDTH,
-                                           WALL_SPLAT_HB_HEIGHT,
-                                           WALL_SPLAT_DAMAGE,
-                                           x_dir,
-                                           y_dir,
-                                           HITBOX_WALL_SPLAT,
-                                           WALL_SPLAT_SCREENSHAKE_SEVERITY);
-                        temp_hitbox.applyWallHit(*this);
-                    }
-
-					// Resolve Y Axis Collision //
-					col_y_offset = collider_y_axis.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y());
-					collider_y_axis.setY(collider_y_axis.y() + col_y_offset);
-					setY(this->y() + col_y_offset);
-
-					// If there is still collision somehow, must be corner case //
-					while(collider.isCollision(other_collider))
-					{
-						// We always resolve diagonal corner collisions with a horizontal shift. 
-						setX(this->x() - rigidbody.normalized_dir.x());
-					}
-				}
-			}	
-			
-			else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
-			{
-				other_collider = Collider(world_x, 
-										  world_y + 3, 
-										  TILE_WIDTH, 
-										  TILE_HEIGHT / 4);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = left_shallow_slope_1_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Manually set player position:
-					setY(global_height - (collider.height / 2) - collider_offset_y);
-				}
-			}
-				
-			else if(tile_index == LEFT_SHALLOW_SLOPE_2_INDEX)
-			{
-				other_collider = Collider(world_x, 
-										  world_y + 2, 
-										  TILE_WIDTH, 
-										  TILE_HEIGHT / 2);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = left_shallow_slope_2_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Manually set player position:
-					setY(global_height - (collider.height / 2) - collider_offset_y);
-				}
-			}
-
-			else if(tile_index == LEFT_SHALLOW_SLOPE_3_INDEX)
-			{
-				other_collider = Collider(world_x, 
-										  world_y + 1, 
-										  TILE_WIDTH, 
-										  TILE_HEIGHT - 2);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = left_shallow_slope_3_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Manually set player position:
-					setY(global_height - (collider.height / 2) - collider_offset_y);
-				}
-			}
-
-			else if(tile_index == LEFT_SHALLOW_SLOPE_4_INDEX)
-			{
-				other_collider = Collider(world_x, 
-										  world_y, 
-										  TILE_WIDTH, 
-										  TILE_HEIGHT);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = left_shallow_slope_4_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Manually set player position:
-					setY(global_height - (collider.height / 2) - collider_offset_y);
-				}
-			}
-
-			else if(tile_index == LEFT_STEEP_SLOPE_1_INDEX)
-			{
-				
-				other_collider = Collider(world_x, 
-										  world_y + 2, 
-										  TILE_WIDTH, 
-										  TILE_HEIGHT / 2);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = left_steep_slope_1_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Manually set player position:
-					setY(global_height - (collider.height / 2) - collider_offset_y);
-				}
-			}
-
-			else if(tile_index == LEFT_STEEP_SLOPE_2_INDEX)
-			{
-				other_collider = Collider(world_x, 
-										  world_y, 
-										  TILE_WIDTH, 
-										  TILE_HEIGHT);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = left_steep_slope_2_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Manually set player position:
-					setY(global_height - (collider.height / 2) - collider_offset_y);
-				}
-			}
-
-			else if(tile_index == RIGHT_SHALLOW_SLOPE_1_INDEX)
-			{
-				other_collider = Collider(world_x, 
-										  world_y + 3, 
-										  TILE_WIDTH, 
-										  TILE_HEIGHT / 4);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = (collider.p1.x() - other_collider.p1.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = right_shallow_slope_1_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Manually set player position:
-					setY(global_height - (collider.height / 2) - collider_offset_y);
-				}
-			}
-
-			else if(tile_index == RIGHT_SHALLOW_SLOPE_2_INDEX)
-			{
-				other_collider = Collider(world_x, 
-										  world_y + 2, 
-										  TILE_WIDTH, 
-										  TILE_HEIGHT / 2);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = (collider.p1.x() - other_collider.p1.x()).integer();
-					index = clamp(0, 7, index);
-					local_height = right_shallow_slope_2_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Manually set player position:
-					setY(global_height - (collider.height / 2) - collider_offset_y);
-				}
-			}
-
-			else if(tile_index == RIGHT_SHALLOW_SLOPE_3_INDEX)
-			{
-				other_collider = Collider(world_x, 
-										  world_y + 1,
-										  TILE_WIDTH, 
-										  TILE_HEIGHT - 2);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = (collider.p1.x() - other_collider.p1.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = right_shallow_slope_3_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Manually set player position:
-					setY(global_height - (GROUND_GHOUL_COLLIDER_HEIGHT / 2) - GROUND_GHOUL_COLLIDER_OFFSET_Y);
-				}
-			}
-			
-			else if(tile_index == RIGHT_SHALLOW_SLOPE_4_INDEX)
-			{
-				other_collider = Collider(world_x, 
-										  world_y,
-										  TILE_WIDTH, 
-										  TILE_HEIGHT);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = (collider.p1.x() - other_collider.p1.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = right_shallow_slope_4_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Manually set player position:
-					setY(global_height - (collider.height / 2) - collider_offset_y);
-				}
-			}
-			
-			else if(tile_index == RIGHT_STEEP_SLOPE_1_INDEX)
-			{
-				other_collider = Collider(world_x, 
-										  world_y + 2,
-										  TILE_WIDTH, 
-										  TILE_HEIGHT / 2);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = (collider.p1.x() - other_collider.p1.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = right_steep_slope_1_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Manually set player position:
-					setY(global_height - (collider.height / 2) - collider_offset_y);
-				}
-			}
-			
-			else if(tile_index == RIGHT_STEEP_SLOPE_2_INDEX)
-			{
-				other_collider = Collider(world_x, 
-											world_y,
-											TILE_WIDTH, 
-											TILE_HEIGHT);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Derive slope height at player position:
-					index = (collider.p1.x() - other_collider.p1.x()).integer();
-					index = clamp(0, 7, index);
-					local_height  = right_steep_slope_2_arr[index];
-					global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-					// Manually set player position:
-					setY(global_height - (collider.height / 2) - collider_offset_y);
-				}
-			}
-			
-			else if(tile_index >= ONEWAY_BLOCK_MIN_INDEX &&
-			        tile_index <= ONEWAY_BLOCK_MAX_INDEX)
-			{
-
-				other_collider = Collider(world_x, 
-										  world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
-										  TILE_WIDTH, 
-										  ONEWAYBLOCK_COLLIDER_HEIGHT);
-
-                // Handle Remaining Collision Cases //
-                while(collider_y_axis.isCollision(other_collider))
-                {
-                    collider_y_axis.setY(collider_y_axis.y() - 1);
-                    setY(this->y() - 1);
-                }
-
-			}
-		}
-	}
+    resolveCollision(game_objects, bg_ptr, cells, bg_item);
 
     ////////////////////////////////////////
 	// Initialize State Testing Variables //
@@ -556,6 +140,16 @@ void GroundGhoul::update(const RoomBounds&                              room_bou
 	int32 index;
 	int32 local_height;
 	int32 global_height;
+
+	// Get current cell index that enemy resides in:
+	int32 half_level_width_pixels  = (bg_ptr.dimensions().width() / 2);
+	int32 half_level_height_pixels = (bg_ptr.dimensions().height() / 2);
+	bn::fixed index_x = (x() + half_level_width_pixels  + collider_offset_x)  / TILE_WIDTH;
+	bn::fixed index_y = (y() + half_level_height_pixels + collider_offset_y)  / TILE_HEIGHT;
+	bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
+
+	// Placeholder for other objects
+	Collider other_collider;
 
     ////////////////////////////////
     // Get State from GameObjects //
@@ -1078,4 +672,13 @@ void GroundGhoul::setState(ObjectState new_state)
         default:
         break;
     }
+}
+
+void GroundGhoul::resolveXAxisCollision(const Collider& other_collider)
+{
+    Enemy::resolveXAxisCollision(other_collider);
+
+    // Update direction
+	if(col_x_offset < 0)      {x_dir = LEFT;}
+	else if(col_x_offset > 0) {x_dir = RIGHT;}
 }

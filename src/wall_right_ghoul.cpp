@@ -26,7 +26,7 @@ WallRightGhoul::WallRightGhoul()
         hitpoints = WALL_RIGHT_GHOUL_HITPOINTS;
 }
 
-WallRightGhoul::WallRightGhoul(const WallRightGhoul& other) : GameObject(other)
+WallRightGhoul::WallRightGhoul(const WallRightGhoul& other) : Enemy(other)
 {
 
 }
@@ -90,146 +90,17 @@ void WallRightGhoul::update(const RoomBounds&                              room_
 	// Apply forces to enemy
 	applyForces();
 
-    //////////////////////////////
-	// Init Collision Variables //
-	//////////////////////////////
+    ///////////////////////
+    // Resolve Collision //
+    ///////////////////////
 
-	// Get current cell index that enemy resides in:
-	int32 half_level_width_pixels  = (bg_ptr.dimensions().width() / 2);
-	int32 half_level_height_pixels = (bg_ptr.dimensions().height() / 2);
-	bn::fixed index_x = (x() + half_level_width_pixels  + collider_offset_x)  / TILE_WIDTH;
-	bn::fixed index_y = (y() + half_level_height_pixels + collider_offset_y)  / TILE_HEIGHT;
-	bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
-
-	// Update colliders for each axis. 
-	collider_x_axis.setPos(collider.x(), collider.y() - rigidbody.final_dir.y());
-	collider_y_axis.setPos(collider.x() - rigidbody.final_dir.x(), collider.y());
-
-	// Placeholder for other objects
-	Collider other_collider;
-
-    //////////////////////////////////
-    // Resolve GameObject Collision //
-    //////////////////////////////////
-
-    for(int32 i = 0; i < game_objects.size(); i++)
-    {
-        other_collider = game_objects.at(i)->collider;
-        
-        bn::fixed col_x_offset;
-        bn::fixed col_y_offset;
-
-        switch(game_objects.at(i)->object_type)
-        {
-            default:
-            break;
-        }
-    }
-
-	////////////////////////////
-    // Resolve Tile Collision //
-    ////////////////////////////
-	
-	for(int32 y = -1; y < 2; y++)
-	{
-		for(int32 x = -1; x < 2; x++)
-		{
-			
-			// 1. Get tile type at index //
-			int32 check_index_x = cell_index.x() + x;
-			int32 check_index_y = cell_index.y() + y;
-
-			// Determine world coords in case we need to make a collider.
-			int32 world_x = ((check_index_x * TILE_WIDTH)  - half_level_width_pixels)  + (TILE_WIDTH / 2);
-			int32 world_y = ((check_index_y * TILE_HEIGHT) - half_level_height_pixels) + (TILE_HEIGHT / 2);
-
-			uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y, 
-			                                     bg_ptr, cells, bg_item);
-
-			bn::fixed col_x_offset;
-			bn::fixed col_y_offset;
-
-			// 2. If the tile is collidable make a temporary collider based on type//
-
-			if(tile_index >= HARD_BLOCK_MIN_INDEX && 
-			   tile_index <= HARD_BLOCK_MAX_INDEX)
-			{
-				// Prepare offsets in case they are needed for Block collision.
-				int32 block_w_offset = 0;
-				int32 block_x_offset = 0;
-
-				// If the neighbor to the right is also a BLOCK, smooth over the corner.
-				// This is a hack to resolve collision since checks are always made from
-				// left to right. 
-				if(getTileAtBGIndex(check_index_x + 1, check_index_y, 
-									 bg_ptr, cells, bg_item) >= HARD_BLOCK_MIN_INDEX && 
-					getTileAtBGIndex(check_index_x + 1, check_index_y, 
-									 bg_ptr, cells, bg_item) <= HARD_BLOCK_MAX_INDEX)
-				{
-					block_w_offset = TILE_WIDTH;
-					block_x_offset = TILE_WIDTH / 2;
-					x++;
-				}
-
-				other_collider = Collider(world_x + block_x_offset, 
-										  world_y, 
-										  TILE_WIDTH + block_w_offset,
-										  TILE_HEIGHT);
-
-				if(collider.isCollision(other_collider))
-				{
-					// Resolve X Axis Collision //
-					col_x_offset = collider_x_axis.getCollisionXOffset(other_collider, rigidbody.normalized_dir.x());
-					collider_x_axis.setX(collider_x_axis.x() + col_x_offset);
-					setX(this->x() + col_x_offset);
-                    if(col_x_offset < 0)      {x_dir = LEFT;}
-                    else if(col_x_offset > 0) {x_dir = RIGHT;}
-
-                    // Wall Splat check
-                    if(col_x_offset != 0 &&
-                       state == OBJECT_HITSTUN &&
-                       abs(rigidbody.final_dir.x().integer()) >= GAME_OBJECT_REQUIRED_SPLAT_SPEED)
-                    {
-                        Hitbox temp_hitbox(bn::point(0, 0),
-                                            WALL_SPLAT_HITSTOP_FRAMES,
-                                            WALL_SPLAT_HITSTUN_FRAMES,
-                                            WALL_SPLAT_SCREENSHAKE_FRAMES,
-                                            WALL_SPLAT_HB_LIFESPAN_FRAMES,
-                                            WALL_SPLAT_X_KNOCKBACK,
-                                            WALL_SPLAT_Y_KNOCKBACK,	
-                                            WALL_SPLAT_KNOCKBACK_DECAY,
-                                            WALL_SPLAT_HB_WIDTH,
-                                            WALL_SPLAT_HB_HEIGHT,
-                                            WALL_SPLAT_DAMAGE,
-                                            x_dir,
-                                            y_dir,
-                                            HITBOX_WALL_SPLAT,
-                                            WALL_SPLAT_SCREENSHAKE_SEVERITY);
-                        temp_hitbox.applyWallHit(*this);
-                    }
-
-					// Resolve Y Axis Collision //
-					col_y_offset = collider_y_axis.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y());
-					collider_y_axis.setY(collider_y_axis.y() + col_y_offset);
-					setY(this->y() + col_y_offset);
-                    if(col_y_offset < 0)      {y_dir = UP;}
-                    else if(col_y_offset > 0) {y_dir = DOWN;}
-
-					// If there is still collision somehow, must be corner case //
-					while(collider.isCollision(other_collider))
-					{
-						// We always resolve diagonal corner collisions with a horizontal shift. 
-						setX(this->x() - rigidbody.normalized_dir.x());
-					}
-				}
-			}	
-
-		}
-	}
+    resolveCollision(game_objects, bg_ptr, cells, bg_item);
 
     ////////////////////////////////
     // Get State from GameObjects //
     ////////////////////////////////
+
+    Collider other_collider;
 
     for(int32 i = 0; i < game_objects.size(); i++)
     {
@@ -323,4 +194,13 @@ void WallRightGhoul::setState(ObjectState new_state)
         default:
         break;
     }
+}
+
+void WallRightGhoul::resolveYAxisCollision(const Collider& other_collider)
+{
+    GameObject::resolveYAxisCollision(other_collider);
+
+    // Update direction
+	if(col_y_offset < 0)      {y_dir = UP;}
+	else if(col_y_offset > 0) {y_dir = DOWN;}
 }

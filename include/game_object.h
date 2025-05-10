@@ -194,6 +194,9 @@ struct GameObject
 	Collider collider_x_axis;
 	Collider collider_y_axis;
 
+	bn::fixed col_x_offset;
+	bn::fixed col_y_offset;
+
 	int32 object_id;
 	int32 collider_offset_x      = 0;
 	int32 collider_offset_y      = 0;
@@ -246,6 +249,14 @@ struct GameObject
 	void updateHitFlash();
 	void applyDamage(int32 damage);
 	void applyHitEffect(int32 x, int32 y);
+
+	virtual void resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+						          const bn::regular_bg_ptr&                      bg_ptr, 
+                                  const bn::span<const bn::regular_bg_map_cell>& cells,
+                                  const bn::regular_bg_item&                     bg_item);
+	virtual void resolveXAxisCollision(const Collider& other_collider);
+    virtual void resolveYAxisCollision(const Collider& other_collider);
+    virtual void resolveCornerCollision(const Collider& other_collider);
 
 };
 

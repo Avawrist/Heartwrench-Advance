@@ -5,8 +5,7 @@
 #include "bn_math.h"
 
 // Base Class
-#include "game_object.h"
-#include "hitbox.h"
+#include "enemy.h"
 
 //////////////////////
 // Struct TestEnemy //
@@ -27,7 +26,7 @@
 
 #define TEST_ENEMY_HITPOINTS 2
 
-struct TestEnemy : GameObject {
+struct TestEnemy : Enemy {
 
     TestEnemy();
 	TestEnemy(const TestEnemy& other);

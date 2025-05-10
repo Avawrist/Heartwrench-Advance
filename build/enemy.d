@@ -1,7 +1,6 @@
-wall_left_ghoul.o: G:/game/src/wall_left_ghoul.cpp \
- G:/game/include/wall_left_ghoul.h \
- G:/butano-master/butano/include/bn_math.h \
- G:/butano-master/butano/include/bn_array.h \
+enemy.o: G:/game/src/enemy.cpp G:/game/include/enemy.h \
+ G:/game/include/game_object.h \
+ G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_assert.h \
  G:/butano-master/butano/include/bn_config_assert.h \
  G:/butano-master/butano/include/bn_common.h \
@@ -17,21 +16,21 @@ wall_left_ghoul.o: G:/game/src/wall_left_ghoul.cpp \
  G:/butano-master/butano/include/bn_type_traits.h \
  G:/butano-master/butano/include/bn_assert_callback_type.h \
  G:/butano-master/butano/include/bn_utility.h \
- G:/butano-master/butano/include/bn_iterator.h \
- G:/butano-master/butano/include/bn_array_fwd.h \
- G:/butano-master/butano/include/bn_fixed.h \
- G:/butano-master/butano/include/bn_compare.h \
- G:/butano-master/butano/include/bn_sin_lut.h \
- G:/butano-master/butano/include/bn_reciprocal_lut.h \
- G:/butano-master/butano/include/bn_rule_of_three_approximation.h \
- G:/game/include/enemy.h G:/game/include/game_object.h \
- G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_memory_alias.h \
  G:/butano-master/butano/include/bn_camera_ptr.h \
  G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_fixed_point.h \
+ G:/butano-master/butano/include/bn_fixed.h \
+ G:/butano-master/butano/include/bn_compare.h \
  G:/butano-master/butano/include/bn_point.h \
  G:/butano-master/butano/include/bn_fixed_point_fwd.h \
+ G:/butano-master/butano/include/bn_math.h \
+ G:/butano-master/butano/include/bn_array.h \
+ G:/butano-master/butano/include/bn_iterator.h \
+ G:/butano-master/butano/include/bn_array_fwd.h \
+ G:/butano-master/butano/include/bn_sin_lut.h \
+ G:/butano-master/butano/include/bn_reciprocal_lut.h \
+ G:/butano-master/butano/include/bn_rule_of_three_approximation.h \
  G:/butano-master/butano/include/bn_keypad.h \
  G:/butano-master/butano/include/bn_profiler.h \
  G:/butano-master/butano/include/bn_config_profiler.h \
@@ -95,9 +94,9 @@ wall_left_ghoul.o: G:/game/src/wall_left_ghoul.cpp \
  G:/game/build/bn_sprite_items_hitbox.h \
  G:/game/build/bn_sprite_items_player.h \
  G:/game/build/bn_sprite_items_phase_marker.h G:/game/include/hitbox.h
-G:/game/include/wall_left_ghoul.h:
-G:/butano-master/butano/include/bn_math.h:
-G:/butano-master/butano/include/bn_array.h:
+G:/game/include/enemy.h:
+G:/game/include/game_object.h:
+G:/butano-master/butano/include/bn_optional.h:
 G:/butano-master/butano/include/bn_assert.h:
 G:/butano-master/butano/include/bn_config_assert.h:
 G:/butano-master/butano/include/bn_common.h:
@@ -113,22 +112,21 @@ G:/butano-master/butano/include/bn_alignment.h:
 G:/butano-master/butano/include/bn_type_traits.h:
 G:/butano-master/butano/include/bn_assert_callback_type.h:
 G:/butano-master/butano/include/bn_utility.h:
-G:/butano-master/butano/include/bn_iterator.h:
-G:/butano-master/butano/include/bn_array_fwd.h:
-G:/butano-master/butano/include/bn_fixed.h:
-G:/butano-master/butano/include/bn_compare.h:
-G:/butano-master/butano/include/bn_sin_lut.h:
-G:/butano-master/butano/include/bn_reciprocal_lut.h:
-G:/butano-master/butano/include/bn_rule_of_three_approximation.h:
-G:/game/include/enemy.h:
-G:/game/include/game_object.h:
-G:/butano-master/butano/include/bn_optional.h:
 G:/butano-master/butano/include/bn_memory_alias.h:
 G:/butano-master/butano/include/bn_camera_ptr.h:
 G:/butano-master/butano/include/bn_optional.h:
 G:/butano-master/butano/include/bn_fixed_point.h:
+G:/butano-master/butano/include/bn_fixed.h:
+G:/butano-master/butano/include/bn_compare.h:
 G:/butano-master/butano/include/bn_point.h:
 G:/butano-master/butano/include/bn_fixed_point_fwd.h:
+G:/butano-master/butano/include/bn_math.h:
+G:/butano-master/butano/include/bn_array.h:
+G:/butano-master/butano/include/bn_iterator.h:
+G:/butano-master/butano/include/bn_array_fwd.h:
+G:/butano-master/butano/include/bn_sin_lut.h:
+G:/butano-master/butano/include/bn_reciprocal_lut.h:
+G:/butano-master/butano/include/bn_rule_of_three_approximation.h:
 G:/butano-master/butano/include/bn_keypad.h:
 G:/butano-master/butano/include/bn_profiler.h:
 G:/butano-master/butano/include/bn_config_profiler.h:

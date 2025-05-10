@@ -101,9 +101,10 @@ room.o: G:/game/src/room.cpp G:/game/include/room.h \
  G:/game/build/bn_sprite_items_phase_marker.h G:/game/include/player.h \
  G:/game/include/hitbox.h G:/game/include/tile_passage.h \
  G:/game/include/phase_orb.h G:/game/include/ground_ghoul.h \
- G:/game/include/ceiling_ghoul.h G:/game/include/wall_left_ghoul.h \
- G:/game/include/wall_right_ghoul.h G:/game/include/test_enemy.h \
- G:/game/include/devil_platform.h G:/game/include/angel_platform.h
+ G:/game/include/enemy.h G:/game/include/ceiling_ghoul.h \
+ G:/game/include/wall_left_ghoul.h G:/game/include/wall_right_ghoul.h \
+ G:/game/include/test_enemy.h G:/game/include/devil_platform.h \
+ G:/game/include/angel_platform.h
 G:/game/include/room.h:
 G:/butano-master/butano/include/bn_log.h:
 G:/butano-master/butano/include/bn_config_log.h:
@@ -214,6 +215,7 @@ G:/game/include/hitbox.h:
 G:/game/include/tile_passage.h:
 G:/game/include/phase_orb.h:
 G:/game/include/ground_ghoul.h:
+G:/game/include/enemy.h:
 G:/game/include/ceiling_ghoul.h:
 G:/game/include/wall_left_ghoul.h:
 G:/game/include/wall_right_ghoul.h:

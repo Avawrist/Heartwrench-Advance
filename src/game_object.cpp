@@ -15,6 +15,9 @@ GameObject::GameObject()
                         GAME_OBJECT_COLLIDER_WIDTH, 
                         GAME_OBJECT_COLLIDER_HEIGHT);
 
+    col_x_offset = 0;
+	col_y_offset = 0;
+
     state       = NONE;
     object_type = NO_TYPE;
     x_dir       = RIGHT;
@@ -45,6 +48,9 @@ GameObject::GameObject(const GameObject& other)
     collider_y_axis   = other.collider_y_axis;
     collider_offset_x = other.collider_offset_x;
 	collider_offset_y = other.collider_offset_y;
+
+    col_x_offset = other.col_x_offset;
+    col_y_offset = other.col_y_offset;
 
 	x_dir = other.x_dir;
     y_dir = other.y_dir;
@@ -97,6 +103,9 @@ GameObject& GameObject::operator =(const GameObject& other)
     collider_y_axis   = other.collider_y_axis;
     collider_offset_x = other.collider_offset_x;
 	collider_offset_y = other.collider_offset_y;
+
+    col_x_offset = other.col_x_offset;
+    col_y_offset = other.col_y_offset;
 
 	x_dir = other.x_dir;
     y_dir = other.y_dir;
@@ -456,6 +465,129 @@ void GameObject::applyHitEffect(int32 x, int32 y)
                                 0, 
                                 bn::sprite_items::hit_effect.tiles_item(),
                                 0, 1, 2, 3, 4, 5, 6, 7, 8);
+}
+
+void GameObject::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                                const bn::regular_bg_ptr&                      bg_ptr, 
+                                const bn::span<const bn::regular_bg_map_cell>& cells,
+                                const bn::regular_bg_item&                     bg_item)
+{
+    //////////////////////////////
+	// Init Collision Variables //
+	//////////////////////////////
+
+	// Get current cell index that enemy resides in:
+	int32 half_level_width_pixels  = (bg_ptr.dimensions().width() / 2);
+	int32 half_level_height_pixels = (bg_ptr.dimensions().height() / 2);
+	bn::fixed index_x = (x() + half_level_width_pixels  + collider_offset_x)  / TILE_WIDTH;
+	bn::fixed index_y = (y() + half_level_height_pixels + collider_offset_y)  / TILE_HEIGHT;
+	bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
+
+	// Update colliders for each axis. 
+	collider_x_axis.setPos(collider.x(), collider.y() - rigidbody.final_dir.y());
+	collider_y_axis.setPos(collider.x() - rigidbody.final_dir.x(), collider.y());
+
+	// Placeholder for other objects
+	Collider other_collider;
+
+    //////////////////////////////////
+    // Resolve GameObject Collision //
+    //////////////////////////////////
+
+    for(int32 i = 0; i < game_objects.size(); i++)
+    {
+        other_collider = game_objects.at(i)->collider;
+        
+        switch(game_objects.at(i)->object_type)
+        {
+            default:
+            break;
+        }
+    }
+
+	////////////////////////////
+    // Resolve Tile Collision //
+    ////////////////////////////
+	
+	for(int32 y = -1; y < 2; y++)
+	{
+		for(int32 x = -1; x < 2; x++)
+		{
+			
+			// 1. Get tile type at index //
+			int32 check_index_x = cell_index.x() + x;
+			int32 check_index_y = cell_index.y() + y;
+
+			// Determine world coords in case we need to make a collider.
+			int32 world_x = ((check_index_x * TILE_WIDTH)  - half_level_width_pixels)  + (TILE_WIDTH / 2);
+			int32 world_y = ((check_index_y * TILE_HEIGHT) - half_level_height_pixels) + (TILE_HEIGHT / 2);
+
+			uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y, 
+			                                     bg_ptr, cells, bg_item);
+
+			// 2. If the tile is collidable make a temporary collider based on type //
+
+			if(tile_index >= HARD_BLOCK_MIN_INDEX && 
+			   tile_index <= HARD_BLOCK_MAX_INDEX)
+			{
+				// Prepare offsets in case they are needed for Block collision.
+				int32 block_w_offset = 0;
+				int32 block_x_offset = 0;
+
+				// If the neighbor to the right is also a BLOCK, smooth over the corner.
+				// This is a hack to resolve collision since checks are always made from
+				// left to right. 
+				if(getTileAtBGIndex(check_index_x + 1, check_index_y, 
+									 bg_ptr, cells, bg_item) >= HARD_BLOCK_MIN_INDEX && 
+					getTileAtBGIndex(check_index_x + 1, check_index_y, 
+									 bg_ptr, cells, bg_item) <= HARD_BLOCK_MAX_INDEX)
+				{
+					block_w_offset = TILE_WIDTH;
+					block_x_offset = TILE_WIDTH / 2;
+					x++;
+				}
+
+				other_collider = Collider(world_x + block_x_offset, 
+										  world_y, 
+										  TILE_WIDTH + block_w_offset,
+										  TILE_HEIGHT);
+
+				if(collider.isCollision(other_collider))
+				{
+					// Resolve Axis Collision
+					resolveXAxisCollision(other_collider);
+					resolveYAxisCollision(other_collider);
+
+					// If there is still collision somehow, must be corner case
+					resolveCornerCollision(other_collider);
+				}
+			}	
+
+		}
+	}
+}
+
+void GameObject::resolveXAxisCollision(const Collider& other_collider)
+{
+	col_x_offset = collider_x_axis.getCollisionXOffset(other_collider, rigidbody.normalized_dir.x());
+	collider_x_axis.setX(collider_x_axis.x() + col_x_offset);
+	setX(this->x() + col_x_offset);
+}
+
+void GameObject::resolveYAxisCollision(const Collider& other_collider)
+{
+    col_y_offset = collider_y_axis.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y());
+	collider_y_axis.setY(collider_y_axis.y() + col_y_offset);
+	setY(this->y() + col_y_offset);
+}
+
+void GameObject::resolveCornerCollision(const Collider& other_collider)
+{
+    while(collider.isCollision(other_collider))
+	{
+		// We always resolve diagonal corner collisions with a horizontal shift. 
+		setX(this->x() - rigidbody.normalized_dir.x());
+	}
 }
 
 ///////////////////////////

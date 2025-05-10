@@ -5,8 +5,7 @@
 #include "bn_math.h"
 
 // Base Class
-#include "game_object.h"
-#include "hitbox.h"
+#include "enemy.h"
 
 //////////////////////
 // Struct TestEnemy //
@@ -25,7 +24,7 @@
 
 #define WALL_RIGHT_GHOUL_HITPOINTS 2
 
-struct WallRightGhoul : GameObject {
+struct WallRightGhoul : Enemy {
 
     WallRightGhoul();
 	WallRightGhoul(const WallRightGhoul& other);
@@ -40,6 +39,7 @@ struct WallRightGhoul : GameObject {
                 const bn::regular_bg_item&                     bg_item,
 				const bn::camera_ptr&                          camera) override;
 	void setState(ObjectState new_state) override;
+	void resolveYAxisCollision(const Collider& other_collider) override;
 
 };
 
