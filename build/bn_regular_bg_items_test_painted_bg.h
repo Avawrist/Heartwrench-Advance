@@ -7,13 +7,13 @@
 
 //======================================================================
 //
-//	test_painted_bg_bn_gfx, 1024x512@4, 
+//	test_painted_bg_bn_gfx, 10240x5120@4, 
 //	+ palette 16 entries, not compressed
 //	+ 2 tiles (t|p reduced) not compressed
-//	+ regular map (flat), not compressed, 128x64 
-//	Total size: 32 + 64 + 16384 = 16480
+//	+ regular map (flat), not compressed, 1280x640 
+//	Total size: 32 + 64 + 1638400 = 1638496
 //
-//	Time-stamp: 2025-05-04, 23:03:58
+//	Time-stamp: 2025-05-12, 18:42:31
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -25,8 +25,8 @@
 #define test_painted_bg_bn_gfxTilesLen 64
 extern const bn::tile test_painted_bg_bn_gfxTiles[2];
 
-#define test_painted_bg_bn_gfxMapLen 16384
-extern const bn::regular_bg_map_cell test_painted_bg_bn_gfxMap[8192];
+#define test_painted_bg_bn_gfxMapLen 1638400
+extern const bn::regular_bg_map_cell test_painted_bg_bn_gfxMap[819200];
 
 #define test_painted_bg_bn_gfxPalLen 32
 extern const bn::color test_painted_bg_bn_gfxPal[16];
@@ -40,7 +40,7 @@ namespace bn::regular_bg_items
     constexpr inline regular_bg_item test_painted_bg(
             regular_bg_tiles_item(span<const tile>(test_painted_bg_bn_gfxTiles, 2), bpp_mode::BPP_4, compression_type::NONE), 
             bg_palette_item(span<const color>(test_painted_bg_bn_gfxPal, 16), bpp_mode::BPP_4, compression_type::NONE),
-            regular_bg_map_item(test_painted_bg_bn_gfxMap[0], size(128, 64), compression_type::NONE, 1, true));
+            regular_bg_map_item(test_painted_bg_bn_gfxMap[0], size(1280, 640), compression_type::NONE, 1, true));
 }
 
 #endif

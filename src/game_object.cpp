@@ -6,9 +6,13 @@
 
 GameObject::GameObject()
 {
-    effect_sprite_ptr = bn::sprite_items::hit_effect.create_sprite(0, 0);
-    effect_sprite_ptr->set_z_order(HIT_EFFECT_Z_ORDER);
-    effect_sprite_ptr->set_visible(false);
+    hit_effect_sprite_ptr = bn::sprite_items::hit_effect.create_sprite(0, 0);
+    hit_effect_sprite_ptr->set_z_order(HIT_EFFECT_Z_ORDER);
+    hit_effect_sprite_ptr->set_visible(false);
+
+    splat_effect_sprite_ptr = bn::sprite_items::wall_splat_effect.create_sprite(0, 0);
+    splat_effect_sprite_ptr->set_z_order(SPLAT_EFFECT_Z_ORDER);
+    splat_effect_sprite_ptr->set_visible(false);
 
     collider = Collider(x() + collider_offset_x, 
                         y() + collider_offset_y, 
@@ -38,8 +42,11 @@ GameObject::GameObject(const GameObject& other)
     default_palette_ptr = other.default_palette_ptr;
     animate_action_ptr  = other.animate_action_ptr;
 
-    effect_sprite_ptr         = other.effect_sprite_ptr;
-    effect_animate_action_ptr = other.effect_animate_action_ptr;
+    hit_effect_sprite_ptr         = other.hit_effect_sprite_ptr;
+    hit_effect_animate_action_ptr = other.hit_effect_animate_action_ptr;
+
+    splat_effect_sprite_ptr         = other.splat_effect_sprite_ptr;
+    splat_effect_animate_action_ptr = other.splat_effect_animate_action_ptr;
 
     rigidbody = other.rigidbody;
 
@@ -74,13 +81,14 @@ GameObject::~GameObject()
     default_palette_ptr.reset();
     animate_action_ptr.reset();
 
-    effect_sprite_ptr.reset();
-    effect_animate_action_ptr.reset();
+    hit_effect_sprite_ptr.reset();
+    hit_effect_animate_action_ptr.reset();
+
+    splat_effect_sprite_ptr.reset();
+    splat_effect_animate_action_ptr.reset();
     
     if(object_type != PLAYER)
-    {
-        rigidbody.removeForces();
-    }
+    {rigidbody.removeForces();}
 }
 
 GameObject& GameObject::operator =(const GameObject& other)
@@ -93,8 +101,11 @@ GameObject& GameObject::operator =(const GameObject& other)
     default_palette_ptr = other.default_palette_ptr;
     animate_action_ptr  = other.animate_action_ptr;
 
-    effect_sprite_ptr         = other.effect_sprite_ptr;
-    effect_animate_action_ptr = other.effect_animate_action_ptr;
+    hit_effect_sprite_ptr         = other.hit_effect_sprite_ptr;
+    hit_effect_animate_action_ptr = other.hit_effect_animate_action_ptr;
+
+    splat_effect_sprite_ptr         = other.splat_effect_sprite_ptr;
+    splat_effect_animate_action_ptr = other.splat_effect_animate_action_ptr;
 
     rigidbody = other.rigidbody;
 
@@ -218,16 +229,29 @@ void GameObject::draw()
         }
     }
 
-    if(effect_animate_action_ptr.has_value())
+    if(hit_effect_animate_action_ptr.has_value())
     {
-        if(!effect_animate_action_ptr->done())
+        if(!hit_effect_animate_action_ptr->done())
         {
-            effect_animate_action_ptr->update();
-            effect_sprite_ptr->set_visible(true);
+            hit_effect_animate_action_ptr->update();
+            hit_effect_sprite_ptr->set_visible(true);
         }
         else
         {
-            effect_sprite_ptr->set_visible(false);
+            hit_effect_sprite_ptr->set_visible(false);
+        }
+    }
+
+    if(splat_effect_animate_action_ptr.has_value())
+    {
+        if(!splat_effect_animate_action_ptr->done())
+        {
+            splat_effect_animate_action_ptr->update();
+            splat_effect_sprite_ptr->set_visible(true);
+        }
+        else
+        {
+            splat_effect_sprite_ptr->set_visible(false);
         }
     }
 }
@@ -237,8 +261,11 @@ void GameObject::setCamera(const bn::camera_ptr& camera)
     if(sprite_ptr.has_value())
     {sprite_ptr->set_camera(camera);}
 
-    if(effect_sprite_ptr.has_value())
-    {effect_sprite_ptr->set_camera(camera);}
+    if(hit_effect_sprite_ptr.has_value())
+    {hit_effect_sprite_ptr->set_camera(camera);}
+
+    if(splat_effect_sprite_ptr.has_value())
+    {splat_effect_sprite_ptr->set_camera(camera);}
     
     collider.setCamera(camera);
 }
@@ -460,11 +487,23 @@ void GameObject::applyDamage(int32 damage)
 
 void GameObject::applyHitEffect(int32 x, int32 y)
 {   
-    effect_sprite_ptr->set_position(x, y);
-    effect_animate_action_ptr = bn::create_sprite_animate_action_once(effect_sprite_ptr.value(), 
+    hit_effect_sprite_ptr->set_position(x, y);
+    hit_effect_animate_action_ptr = bn::create_sprite_animate_action_once(hit_effect_sprite_ptr.value(), 
                                 0, 
                                 bn::sprite_items::hit_effect.tiles_item(),
                                 0, 1, 2, 3, 4, 5, 6, 7, 8);
+}
+
+void GameObject::applySplatEffect(int32 x, int32 y)
+{
+    splat_effect_sprite_ptr->set_position(x, y);
+    splat_effect_animate_action_ptr = bn::create_sprite_animate_action_once(splat_effect_sprite_ptr.value(), 
+                                0, 
+                                bn::sprite_items::wall_splat_effect.tiles_item(),
+                                0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+    if(col_x_offset < 0) {splat_effect_sprite_ptr->set_horizontal_flip(true);}
+    else                 {splat_effect_sprite_ptr->set_horizontal_flip(false);}
 }
 
 void GameObject::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,

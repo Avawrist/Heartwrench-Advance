@@ -201,6 +201,11 @@ void Hitbox::applyHit(GameObject& object)
 
 void Hitbox::applyWallHit(GameObject& object)
 {
+    // Determine splat effect offset
+    int32 splat_x_offset = 0;
+    if     (x_dir == LEFT)  {splat_x_offset =  object.collider.width / 2;}
+    else if(x_dir == RIGHT) {splat_x_offset = -object.collider.width / 2;}
+
     // Global juice
     if(object.hitpoints - damage <= 0)
     {global_bg_hitflash_frames  = hitstop_frames;}
@@ -225,4 +230,6 @@ void Hitbox::applyWallHit(GameObject& object)
     // Object juice:
     object.setHitFlash();
     object.setVerticalStretch();
+    object.applySplatEffect(object.x().integer() + splat_x_offset, 
+                            object.y().integer());
 }

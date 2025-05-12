@@ -33,6 +33,7 @@
 
 // Effect Assets
 #include "bn_sprite_items_hit_effect.h"
+#include "bn_sprite_items_wall_splat_effect.h"
 
 // Level Object Assets
 #include "bn_sprite_items_tile_passage.h"
@@ -62,8 +63,9 @@
 
 #define GAME_OBJECT_MAX_ANIM_FRAMES 30
 
-#define GAME_OBJECT_Z_ORDER 0
-#define HIT_EFFECT_Z_ORDER  -1
+#define GAME_OBJECT_Z_ORDER   0
+#define HIT_EFFECT_Z_ORDER   -1
+#define SPLAT_EFFECT_Z_ORDER -2
 
 #define GAME_OBJECT_COLLIDER_WIDTH  8
 #define GAME_OBJECT_COLLIDER_HEIGHT 8
@@ -177,10 +179,15 @@ struct GameObject
 {
 
 	bn::optional<bn::sprite_ptr>                                         sprite_ptr;
+
 	bn::optional<bn::sprite_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> animate_action_ptr;
 	bn::optional<bn::sprite_palette_ptr>                                 default_palette_ptr;
-	bn::optional<bn::sprite_ptr>                                         effect_sprite_ptr;
-	bn::optional<bn::sprite_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> effect_animate_action_ptr;
+
+	bn::optional<bn::sprite_ptr>                                         hit_effect_sprite_ptr;
+	bn::optional<bn::sprite_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> hit_effect_animate_action_ptr;
+
+	bn::optional<bn::sprite_ptr>                                         splat_effect_sprite_ptr;
+	bn::optional<bn::sprite_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> splat_effect_animate_action_ptr;
 
 	ObjectType  object_type;
 	ObjectState state;
@@ -249,6 +256,7 @@ struct GameObject
 	void updateHitFlash();
 	void applyDamage(int32 damage);
 	void applyHitEffect(int32 x, int32 y);
+	void applySplatEffect(int32 x, int32 y);
 
 	virtual void resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
 						          const bn::regular_bg_ptr&                      bg_ptr, 

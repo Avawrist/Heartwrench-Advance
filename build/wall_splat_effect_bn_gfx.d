@@ -1,0 +1,1 @@
+wall_splat_effect_bn_gfx.o: wall_splat_effect_bn_gfx.s
