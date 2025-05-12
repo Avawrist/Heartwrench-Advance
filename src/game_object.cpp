@@ -500,7 +500,7 @@ void GameObject::applySplatEffect(int32 x, int32 y)
     splat_effect_animate_action_ptr = bn::create_sprite_animate_action_once(splat_effect_sprite_ptr.value(), 
                                 0, 
                                 bn::sprite_items::wall_splat_effect.tiles_item(),
-                                0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+                                0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
 
     if(col_x_offset < 0) {splat_effect_sprite_ptr->set_horizontal_flip(true);}
     else                 {splat_effect_sprite_ptr->set_horizontal_flip(false);}
