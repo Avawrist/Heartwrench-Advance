@@ -1,0 +1,2 @@
+world coordinate.x = aseprite coordinate.x - (bg width  / 2)
+world coordinate.y = aseprite coordinate.y - (bg height / 2) 
