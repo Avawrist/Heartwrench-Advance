@@ -54,6 +54,8 @@ struct Room
     RoomName bottom_neighbor;
     RoomName left_neighbor;
 
+    bool first_frame = true;
+
     Room();
     Room(RoomName                                       room_name, 
          bn::camera_ptr                                 camera_ptr,                

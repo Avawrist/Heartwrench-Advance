@@ -200,7 +200,7 @@ void Level::updateAll()
 void Level::updateObjects()
 {
 
-    // Update & draw all objects
+    // Update all objects
     for(int32 i = current_room.game_objects.size() - 1; i >= 0; i--)
     {
         if(current_room.game_objects.data()[i] != NULL)
@@ -211,7 +211,6 @@ void Level::updateObjects()
                                                         cells,
                                                         bg_item.value(),
                                                         camera.value());
-            //current_room.game_objects.data()[i]->draw();
         }   
     } 
 

@@ -58,6 +58,8 @@ Room::Room(const Room& other)
     bottom_neighbor = other.bottom_neighbor;
     left_neighbor   = other.left_neighbor;
 
+    first_frame = other.first_frame;
+
 }
 
 Room::~Room()
@@ -100,6 +102,8 @@ void Room::operator =(const Room& other)
     right_neighbor  = other.right_neighbor;
     bottom_neighbor = other.bottom_neighbor;
     left_neighbor   = other.left_neighbor;
+
+    first_frame = other.first_frame;
     
 }
 
@@ -283,6 +287,7 @@ void Room::load(RoomName                                       room_name,
         break;
     }
 
+    // Add all object stubs 
     prepObjects(object_bg_ptr, 
                 object_bg_item, 
                 object_cells);
@@ -340,15 +345,16 @@ void Room::monitorUnloadedObjects(const bn::camera_ptr& camera_ptr)
                                    SCREEN_W + SCREEN_LOAD_PADDING, 
                                    SCREEN_H + SCREEN_LOAD_PADDING);
 
-    // Look at all unloaded objects in the list. If the position is within the defined
-    // camera boundaries, actually load the object.
-    for(int i = 0; i < unloaded_objects.size(); i++)
+    if(first_frame)
     {
-        // If object is within the load window:
-        if(load_range_collider.isCollision(unloaded_objects.at(i).room_pos))
+        first_frame = false;
+
+        // Look at all unloaded objects in the list. If the position is within the defined
+        // camera boundaries, actually load the object.
+        for(int i = 0; i < unloaded_objects.size(); i++)
         {
-            // If object is outside of camera window (don't load stuff on screen):
-            if(!screen_range_collider.isCollision(unloaded_objects.at(i).room_pos))
+            // If object is within the load window:
+            if(load_range_collider.isCollision(unloaded_objects.at(i).room_pos))
             {
                 // If there is not already a loaded instance, load one in:
                 if(unloaded_objects.at(i).loaded_instance_id == UNLOADED_OBJECT_STATE_UNLOADED)
@@ -359,4 +365,27 @@ void Room::monitorUnloadedObjects(const bn::camera_ptr& camera_ptr)
             }
         }
     }
+    else
+    {
+        // Look at all unloaded objects in the list. If the position is within the defined
+        // camera boundaries, actually load the object.
+        for(int i = 0; i < unloaded_objects.size(); i++)
+        {
+            // If object is within the load window:
+            if(load_range_collider.isCollision(unloaded_objects.at(i).room_pos))
+            {
+                // If object is outside of camera window (don't load stuff on screen):
+                if(!screen_range_collider.isCollision(unloaded_objects.at(i).room_pos))
+                {
+                    // If there is not already a loaded instance, load one in:
+                    if(unloaded_objects.at(i).loaded_instance_id == UNLOADED_OBJECT_STATE_UNLOADED)
+                    {
+                        unloaded_objects.at(i).loaded_instance_id = addObject(unloaded_objects.at(i),
+                                                                              camera_ptr);
+                    }
+                }
+            }
+        }
+    }
+
 }
