@@ -506,7 +506,7 @@ void GameObject::applySplatEffect(int32 x, int32 y)
     else                 {splat_effect_sprite_ptr->set_horizontal_flip(false);}
 }
 
-void GameObject::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+void GameObject::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   game_objects,
                                 const bn::regular_bg_ptr&                      bg_ptr, 
                                 const bn::span<const bn::regular_bg_map_cell>& cells,
                                 const bn::regular_bg_item&                     bg_item)
