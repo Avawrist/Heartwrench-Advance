@@ -200,17 +200,83 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			///////////////////////////////////
 			// Player Grounded Neutral State //
 			///////////////////////////////////
+			/*
+			// Update walk speed //
+			if(bn::keypad::left_released())        
+			{
+				rigidbody.addForce(PLAYER_X_LEFT_DECAY_FORCE);
+				x_speed = PLAYER_MIN_X_SPEED;
+
+				animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+																0,
+																bn::sprite_items::player.tiles_item(),
+																0,
+																0);
+			}
+			else if (bn::keypad::right_released()) 
+			{
+				rigidbody.addForce(PLAYER_X_RIGHT_DECAY_FORCE);
+				x_speed = PLAYER_MIN_X_SPEED;
+
+				animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+																0,
+																bn::sprite_items::player.tiles_item(),
+																0,
+																0);
+			}
+
+			// Simulate friction/momentum
+			if((bn::keypad::left_held() || bn::keypad::right_held()))  
+			{
+				x_speed += X_SPEED_ACC_RATE;
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
+				set_state(PLAYER_WALK);
+			}
+
+			// Get Input //
+			
+			// Walk
+			if(bn::keypad::left_held())       
+			{rigidbody.addForce(PLAYER_X_LEFT_FORCE); x_dir = LEFT;}
+
+			else if(bn::keypad::right_held()) 
+			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE); x_dir = RIGHT;}
+			*/
+
+			// Walk
+			//if(bn::keypad::left_pressed() || bn::keypad::right_pressed())
+			//{setState(PLAYER_WALK);}
+
+			// Scythe Ground 1
+			if(bn::keypad::b_pressed())
+			{setState(PLAYER_SCYTHE_GROUND_1);}
+
+			// Jump
+			else if(bn::keypad::a_pressed()) {jump();}
+
+			// Add Gravity if Grounded on OWP
+			if(grounded_owp_detected) {rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
+
+		break;
+	
+		case PLAYER_WALK:
+
+			///////////////////////
+			// Player Walk State //
+			///////////////////////
 
 			// Update walk speed //
 			if(bn::keypad::left_released())        
 			{
 				rigidbody.addForce(PLAYER_X_LEFT_DECAY_FORCE);
 				x_speed = PLAYER_MIN_X_SPEED;
+				setState(PLAYER_GROUNDED_NEUTRAL);
 			}
 			else if (bn::keypad::right_released()) 
 			{
 				rigidbody.addForce(PLAYER_X_RIGHT_DECAY_FORCE);
 				x_speed = PLAYER_MIN_X_SPEED;
+				setState(PLAYER_GROUNDED_NEUTRAL);
 			}
 
 			// Simulate friction/momentum
@@ -240,7 +306,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			if(grounded_owp_detected) {rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 
 		break;
-	
+
 		case PLAYER_AIR_NEUTRAL:
 
 			//////////////////////////////
@@ -2136,7 +2202,13 @@ void Player::update(const RoomBounds& 								  room_bounds,
 		ObjectState new_state = NONE;
 
 		if(grounded_detected)        
-		{new_state = PLAYER_GROUNDED_NEUTRAL;}
+		{
+			new_state = PLAYER_GROUNDED_NEUTRAL;
+
+			if(bn::keypad::right_held() || 
+			   bn::keypad::left_held()) 
+			{new_state = PLAYER_WALK;}
+		}
 	
 		else if(wall_right_detected) 
 		{new_state = PLAYER_WALL_SLIDE_RIGHT;}
@@ -2238,6 +2310,20 @@ void Player::setState(ObjectState new_state)
 								  								  		  bn::sprite_items::player.tiles_item(),
 								  								  		  0,
 								  								  		  0);
+
+		break;
+
+		case PLAYER_WALK:
+
+			remaining_x_drift_lockout_frames = 0;
+			air_frames_elapsed               = 0;
+			late_jump_grace_frames           = PLAYER_LATE_JUMP_GRACE_FRAMES;
+
+			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+																	      1,
+																	      bn::sprite_items::player.tiles_item(),
+																	      1, 2, 3, 4, 5, 6, 7, 8, 9, 
+																	      10, 11, 12, 13, 14, 15, 16, 17, 18);
 
 		break;
 
