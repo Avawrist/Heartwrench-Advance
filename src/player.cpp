@@ -2389,10 +2389,9 @@ void Player::setState(ObjectState new_state)
 			late_jump_grace_frames           = PLAYER_LATE_JUMP_GRACE_FRAMES;
 
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-																		  1,
+																		  3,
 																		  bn::sprite_items::player.tiles_item(),
-																		  5,
-																		  5);
+																		  21, 22, 23, 24);
 			setHorizontalStretch();
 
 			pm_sprite_ptr->set_position(phase_destination.x(), phase_destination.y());
