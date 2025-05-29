@@ -66,6 +66,10 @@ Player::Player()
 	pm_sprite_ptr = bn::sprite_items::phase_marker.create_sprite(0, 0);
 	pm_sprite_ptr->set_z_order(PLAYER_Z_ORDER);
 	pm_sprite_ptr->set_visible(false);
+
+	jump_effect_sprite_ptr = bn::sprite_items::jump_effect.create_sprite(0, 0);
+	jump_effect_sprite_ptr->set_z_order(PLAYER_Z_ORDER);
+	jump_effect_sprite_ptr->set_visible(false);
 	
 }
 
@@ -114,8 +118,10 @@ Player::Player(const Player& other) : GameObject(other)
 	if(other.hitbox_3_ptr == NULL) {hitbox_3_ptr = NULL;}
 	else {hitbox_3_ptr = new Hitbox(*(other.hitbox_3_ptr));}
 
-	phase_dir     = other.phase_dir;
-	pm_sprite_ptr = other.pm_sprite_ptr;
+	phase_dir              = other.phase_dir;
+	pm_sprite_ptr          = other.pm_sprite_ptr;
+	jump_effect_sprite_ptr = other.jump_effect_sprite_ptr;
+	jump_effect_anim_ptr  = other.jump_effect_anim_ptr;
 	
 }
 
@@ -127,6 +133,9 @@ Player::~Player()
 
 	// Free the phase marker sprite
 	pm_sprite_ptr.reset();
+	jump_effect_sprite_ptr.reset();
+	jump_effect_anim_ptr.reset();
+
 }
 
 Player& Player::operator =(const Player& other)
@@ -173,8 +182,10 @@ Player& Player::operator =(const Player& other)
 	if(other.hitbox_3_ptr == NULL) {hitbox_3_ptr = NULL;}
 	else {hitbox_3_ptr = new Hitbox(*(other.hitbox_3_ptr));}
 
-	phase_dir     = other.phase_dir;
-	pm_sprite_ptr = other.pm_sprite_ptr;
+	phase_dir              = other.phase_dir;
+	pm_sprite_ptr          = other.pm_sprite_ptr;
+	jump_effect_sprite_ptr = other.jump_effect_sprite_ptr;
+	jump_effect_anim_ptr   = other.jump_effect_anim_ptr;
 
 	return *this;
 }
@@ -1369,10 +1380,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 											  ONEWAYBLOCK_COLLIDER_HEIGHT);
 
 					if(rigidbody.normalized_dir.y() >= 0 &&
-						collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
+					   collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
 					{
 						if(bn::keypad::down_held() && 
-						(state == PLAYER_AIR_NEUTRAL || state == PLAYER_GROUNDED_NEUTRAL)) 
+						   (state == PLAYER_AIR_NEUTRAL || state == PLAYER_GROUNDED_NEUTRAL)) 
 						{
 							rigidbody.addForce(PLAYER_GRAVITY_FORCE);
 						}
@@ -1642,7 +1653,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 											  TILE_WIDTH, 
 											  ONEWAYBLOCK_COLLIDER_HEIGHT);
 
-					if(collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
+					if(rigidbody.normalized_dir.y() >= 0 &&
+					   collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
 					{
 						// Test for, and log grounded collision
 						if(test_collider.isCollision(other_collider) &&
@@ -1651,6 +1663,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 							if(!bn::keypad::down_held()) 
 							{
 								grounded_detected = true;
+								rigidbody.removeYForces();
 								if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
 								rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
 								{setHorizontalStretch();}
@@ -2195,6 +2208,16 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 	received_platform_force = false;
 
+	///////////////////////////
+	// Update Effect Sprites //
+	///////////////////////////
+
+	if(jump_effect_anim_ptr.has_value())
+	{
+		if(jump_effect_anim_ptr->done())
+		{jump_effect_sprite_ptr->set_visible(false);}
+	}
+
 	/////////////////////////////////
 	// Generic Object Update stuff //
 	/////////////////////////////////
@@ -2208,10 +2231,25 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	
 }
 
+void Player::draw()
+{
+	GameObject::draw();
+
+	// Jump effect
+	if(jump_effect_anim_ptr.has_value())
+	{
+		if(!jump_effect_anim_ptr->done())
+		{jump_effect_anim_ptr->update();}
+	}
+
+
+}
+
 void Player::setCamera(const bn::camera_ptr& camera)
 {
 	GameObject::setCamera(camera);
 	pm_sprite_ptr->set_camera(camera);
+	jump_effect_sprite_ptr->set_camera(camera);
 }
 
 void Player::jump()
@@ -2220,6 +2258,14 @@ void Player::jump()
 	late_jump_grace_frames      = 0;
 	rigidbody.addForce(PLAYER_JUMP_FORCE);
 	setVerticalStretch();
+
+	// Jump Effect
+	jump_effect_sprite_ptr->set_visible(true);
+	jump_effect_sprite_ptr->set_position(x(), y());
+	jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
+								  							     1,
+								  								 bn::sprite_items::jump_effect.tiles_item(),
+								  								 0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 }
 
 void Player::wallJump()

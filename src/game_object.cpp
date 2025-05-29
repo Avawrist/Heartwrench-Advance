@@ -489,9 +489,9 @@ void GameObject::applyHitEffect(int32 x, int32 y)
 {   
     hit_effect_sprite_ptr->set_position(x, y);
     hit_effect_animate_action_ptr = bn::create_sprite_animate_action_once(hit_effect_sprite_ptr.value(), 
-                                0, 
-                                bn::sprite_items::hit_effect.tiles_item(),
-                                0, 1, 2, 3, 4, 5, 6, 7, 8);
+                                    0, 
+                                    bn::sprite_items::hit_effect.tiles_item(),
+                                    0, 1, 2, 3, 4, 5, 6, 7, 8);
 }
 
 void GameObject::applySplatEffect(int32 x, int32 y)

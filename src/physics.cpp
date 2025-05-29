@@ -120,6 +120,7 @@ void RigidBody::removeXForces()
     bn::ivector<Force>::iterator last    = forces.end();
     while(current != last)
     {
+        current->force.set_x(0);
         current->decayed_force.set_x(0);
         current++;
     }
@@ -132,6 +133,7 @@ void RigidBody::removeYForces()
     bn::ivector<Force>::iterator last    = forces.end();
     while(current != last)
     {
+        current->force.set_y(0);
         current->decayed_force.set_y(0);
         current++;
     }

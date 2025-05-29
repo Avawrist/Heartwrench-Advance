@@ -32,6 +32,7 @@
 #include "bn_sprite_palette_items_sprite_flash_palette.h"
 
 // Effect Assets
+#include "bn_sprite_items_jump_effect.h"
 #include "bn_sprite_items_hit_effect.h"
 #include "bn_sprite_items_wall_splat_effect.h"
 
@@ -80,7 +81,7 @@
 #define GAME_OBJECT_MIN_STRETCH_V  0.7
 #define GAME_OBJECT_MAX_STRETCH_V  1.5
 #define GAME_OBJECT_MIN_STRETCH_H  0.7
-#define GAME_OBJECT_MAX_STRETCH_H  1.5
+#define GAME_OBJECT_MAX_STRETCH_H  1.25
 
 #define GAME_OBJECT_REQUIRED_SPLAT_SPEED 3
 
