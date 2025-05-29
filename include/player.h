@@ -37,17 +37,17 @@
 #define PLAYER_MIN_X_SPEED 0
 #define PLAYER_MAX_X_SPEED 2
 #define PLAYER_X_DECAY     1
-#define X_SPEED_ACC_RATE   0.2
-#define X_SPEED_DECAY_RATE 0.1
+#define X_SPEED_ACC_RATE   0.08
+#define X_SPEED_DECAY_RATE 0.04
 
-#define PLAYER_BASE_JUMP_FORCE            -9
-#define PLAYER_SECOND_JUMP_FORCE          -4
-#define PLAYER_WALL_JUMP_X_FORCE           4
+#define PLAYER_BASE_JUMP_FORCE            -8
+#define PLAYER_SECOND_JUMP_FORCE          -3
+#define PLAYER_WALL_JUMP_X_FORCE           6
 #define PLAYER_WALL_JUMP_Y_FORCE          -6
-#define PLAYER_JUMP_DECAY                  0.15
+#define PLAYER_JUMP_DECAY                  0.04
 #define PLAYER_SECONDARY_JUMP_DECAY        1
 #define PLAYER_X_DRIFT_LOCKOUT_FRAMES      10
-#define PLAYER_MAX_JUMP_INPUT_FRAMES       24
+#define PLAYER_MAX_JUMP_INPUT_FRAMES       0
 #define PLAYER_MAX_WALL_JUMP_INPUT_FRAMES  10
 #define PLAYER_WALL_JUMP_DECAY             0.05
 

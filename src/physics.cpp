@@ -79,7 +79,7 @@ RigidBody& RigidBody::operator =(const RigidBody& other)
 
 void RigidBody::applyDecay()
 {
-        // Update all of the forces in the RigidBody
+    // Update all of the forces in the RigidBody
     bn::ivector<Force>::iterator current = forces.begin();
     bn::ivector<Force>::iterator last    = forces.end();
     while(current != last)
@@ -111,4 +111,28 @@ void RigidBody::removeForces()
 {
     // Clear vector
     forces.clear();
+}
+
+void RigidBody::removeXForces()
+{
+    // Set all x forces to 0
+    bn::ivector<Force>::iterator current = forces.begin();
+    bn::ivector<Force>::iterator last    = forces.end();
+    while(current != last)
+    {
+        current->decayed_force.set_x(0);
+        current++;
+    }
+}
+
+void RigidBody::removeYForces()
+{
+    // Set all x forces to 0
+    bn::ivector<Force>::iterator current = forces.begin();
+    bn::ivector<Force>::iterator last    = forces.end();
+    while(current != last)
+    {
+        current->decayed_force.set_y(0);
+        current++;
+    }
 }

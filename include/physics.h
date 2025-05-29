@@ -54,6 +54,8 @@ struct RigidBody {
 	void   applyDecay();
     uint32 addForce(const Force& force);
 	void   removeForces();
+	void   removeXForces();
+	void   removeYForces();
 };
 
 #endif
