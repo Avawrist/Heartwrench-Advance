@@ -2283,8 +2283,6 @@ void Player::wallJump()
 void Player::fastFall()
 {
 	rigidbody.addForce(PLAYER_FAST_GRAVITY_FORCE);
-	sprite_ptr->set_vertical_scale(PLAYER_FALL_STRETCH_V);
-	sprite_ptr->set_horizontal_scale(PLAYER_FALL_STRETCH_H);
 }
 
 void Player::setState(ObjectState new_state)
@@ -2391,7 +2389,7 @@ void Player::setState(ObjectState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 																		  3,
 																		  bn::sprite_items::player.tiles_item(),
-																		  21, 22, 23, 24);
+																		  20, 21, 22, 23);
 			setHorizontalStretch();
 
 			pm_sprite_ptr->set_position(phase_destination.x(), phase_destination.y());
