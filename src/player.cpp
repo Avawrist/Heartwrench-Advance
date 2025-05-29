@@ -2373,8 +2373,8 @@ void Player::setState(ObjectState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  0,
 								  								  bn::sprite_items::player.tiles_item(),
-								  								  2,
-								  								  2);
+								  								  19,
+								  								  19);
 
 		break;
 
