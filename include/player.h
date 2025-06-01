@@ -38,7 +38,7 @@
 #define PLAYER_MAX_X_SPEED 2
 #define PLAYER_X_DECAY     1
 #define X_SPEED_ACC_RATE   0.1
-#define X_SPEED_DECAY_RATE 0.04
+#define X_SPEED_DECAY_RATE 0.08
 
 #define PLAYER_BASE_JUMP_FORCE            -8
 #define PLAYER_SECOND_JUMP_FORCE          -1
