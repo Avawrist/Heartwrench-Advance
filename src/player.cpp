@@ -44,7 +44,7 @@ Player::Player()
 	air_frames_elapsed               = 0;
 	v_collision_grace_frames         = 0;
 	late_jump_grace_frames           = 0;
-	current_scythe_frame             = 0;
+	current_attack_frame             = 0;
 	current_phase_frame              = 0;
 	hitstop_frames                   = 0;
 	
@@ -91,7 +91,7 @@ Player::Player(const Player& other) : GameObject(other)
 	air_frames_elapsed               = other.air_frames_elapsed;
 	v_collision_grace_frames         = other.v_collision_grace_frames;
 	late_jump_grace_frames           = other.late_jump_grace_frames;
-	current_scythe_frame             = other.current_scythe_frame;
+	current_attack_frame             = other.current_attack_frame;
 	current_phase_frame              = other.current_phase_frame;
 	hitstop_frames                   = other.hitstop_frames;
 
@@ -155,7 +155,7 @@ Player& Player::operator =(const Player& other)
 	air_frames_elapsed               = other.air_frames_elapsed;
 	v_collision_grace_frames         = other.v_collision_grace_frames;
 	late_jump_grace_frames           = other.late_jump_grace_frames;
-	current_scythe_frame             = other.current_scythe_frame;
+	current_attack_frame             = other.current_attack_frame;
 	current_phase_frame              = other.current_phase_frame;
 	hitstop_frames                   = other.hitstop_frames;
 
@@ -214,7 +214,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			
 			// Scythe Ground 1
 			if(bn::keypad::b_pressed())
-			{setState(PLAYER_SCYTHE_GROUND_1);}
+			{setState(PLAYER_ATTACK_GROUND_1);}
 
 			// Jump
 			else if(bn::keypad::a_pressed()) {jump();}
@@ -260,7 +260,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			// Scythe Ground 1
 			if(bn::keypad::b_pressed())
-			{setState(PLAYER_SCYTHE_GROUND_1);}
+			{setState(PLAYER_ATTACK_GROUND_1);}
 
 			// Jump
 			else if(bn::keypad::a_pressed()) {jump();}
@@ -308,7 +308,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			// Scythe Air 1
 			if(bn::keypad::b_pressed())
-			{setState(PLAYER_SCYTHE_AIR_1);}
+			{setState(PLAYER_ATTACK_AIR_1);}
 
 			// Fast Fall
 			if(bn::keypad::down_held() && 
@@ -755,26 +755,26 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			
 		break;
 
-		case PLAYER_SCYTHE_GROUND_1:
+		case PLAYER_ATTACK_GROUND_1:
 
 			// Increment Frame Counter
-			current_scythe_frame++;
-			current_scythe_frame = clamp(0, 
-										 PLAYER_SCYTHE_GROUND_1_TOTAL_FRAMES,
-										 current_scythe_frame);
+			current_attack_frame++;
+			current_attack_frame = clamp(0, 
+										 PLAYER_ATTACK_GROUND_1_TOTAL_FRAMES,
+										 current_attack_frame);
 
 			// Create Hitboxes
-			if(current_scythe_frame == PLAYER_SCYTHE_GROUND_1_CREATE_HB_FRAME)
+			if(current_attack_frame == PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME)
 			{
 				createGroundedScythe1Hitboxes(game_objects, camera);
 			}
 
-			if(current_scythe_frame >= PLAYER_SCYTHE_GROUND_1_TOTAL_FRAMES)
+			if(current_attack_frame >= PLAYER_ATTACK_GROUND_1_TOTAL_FRAMES)
 			{setState(NONE);}
 
 		break;
 
-		case PLAYER_SCYTHE_AIR_1:
+		case PLAYER_ATTACK_AIR_1:
 
 			///////////////////////////////
 			// Player Scythe Air 1 State //
@@ -785,12 +785,12 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			//////////////////
 
 			// Create Hitboxes
-			if(current_scythe_frame == PLAYER_SCYTHE_AIR_1_CREATE_HB_FRAME)
+			if(current_attack_frame == PLAYER_ATTACK_AIR_1_CREATE_HB_FRAME)
 			{
 				createAirScythe1Hitboxes(game_objects, camera);
 			}
 
-			if(current_scythe_frame >= PLAYER_SCYTHE_AIR_1_TOTAL_FRAMES)
+			if(current_attack_frame >= PLAYER_ATTACK_AIR_1_TOTAL_FRAMES)
 			{setState(NONE);}
 
 			///////////////
@@ -867,10 +867,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 										late_jump_grace_frames);
 
 			// Increment Frame Counter
-			current_scythe_frame++;
-			current_scythe_frame = clamp(0, 
-											PLAYER_SCYTHE_AIR_1_TOTAL_FRAMES,
-											current_scythe_frame);
+			current_attack_frame++;
+			current_attack_frame = clamp(0, 
+											PLAYER_ATTACK_AIR_1_TOTAL_FRAMES,
+											current_attack_frame);
 
 		break;
 
@@ -2094,8 +2094,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	if(hitbox_1_ptr != NULL)
 	{
 
-		hitbox_1_ptr->setPos(bn::point(x().integer() + (PLAYER_SCYTHE_GROUND_1_X_OFFSET * x_dir),
-									   y().integer() + (PLAYER_SCYTHE_GROUND_1_Y_OFFSET * y_dir)));
+		hitbox_1_ptr->setPos(bn::point(x().integer() + (PLAYER_ATTACK_GROUND_1_X_OFFSET * x_dir),
+									   y().integer() + (PLAYER_ATTACK_GROUND_1_Y_OFFSET * y_dir)));
 		hitbox_1_ptr->update(room_bounds,
 						     game_objects,
 							 bg_ptr, 
@@ -2115,8 +2115,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	if(hitbox_2_ptr != NULL) 
 	{
 
-		hitbox_2_ptr->setPos(bn::point(x().integer() + (PLAYER_SCYTHE_GROUND_1_X_OFFSET * x_dir),
-									   y().integer() + (PLAYER_SCYTHE_GROUND_1_Y_OFFSET * y_dir)));
+		hitbox_2_ptr->setPos(bn::point(x().integer() + (PLAYER_ATTACK_GROUND_1_X_OFFSET * x_dir),
+									   y().integer() + (PLAYER_ATTACK_GROUND_1_Y_OFFSET * y_dir)));
 		hitbox_2_ptr->update(room_bounds,
 							 game_objects,
 							 bg_ptr, 
@@ -2135,8 +2135,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	
 	if(hitbox_3_ptr != NULL)
 	{
-		hitbox_3_ptr->setPos(bn::point(x().integer() + (PLAYER_SCYTHE_GROUND_1_X_OFFSET * x_dir),
-									   y().integer() + (PLAYER_SCYTHE_GROUND_1_Y_OFFSET * y_dir)));
+		hitbox_3_ptr->setPos(bn::point(x().integer() + (PLAYER_ATTACK_GROUND_1_X_OFFSET * x_dir),
+									   y().integer() + (PLAYER_ATTACK_GROUND_1_Y_OFFSET * y_dir)));
 
 		hitbox_3_ptr->update(room_bounds,
 							 game_objects,
@@ -2157,9 +2157,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
     // Update States //
     ///////////////////
 
-	if(state != PLAYER_SCYTHE_GROUND_1 && 
-	   state != PLAYER_SCYTHE_GROUND_2 && 
-	   state != PLAYER_SCYTHE_GROUND_3 &&
+	if(state != PLAYER_ATTACK_GROUND_1 &&
 	   state != PLAYER_PHASE_STEP      &&
 	   state != OBJECT_DEATH)
 	{
@@ -2187,7 +2185,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 		// Special case for air scythe, let landing end
 		// the attack state.
-		if(state == PLAYER_SCYTHE_AIR_1)
+		if(state == PLAYER_ATTACK_AIR_1)
 		{
 			if(new_state == PLAYER_GROUNDED_NEUTRAL) 
 			{setState(new_state);}
@@ -2401,51 +2399,22 @@ void Player::setState(ObjectState new_state)
 
 		break;
 
-		case PLAYER_SCYTHE_GROUND_1:
+		case PLAYER_ATTACK_GROUND_1:
 
-			current_scythe_frame = 0;
+			current_attack_frame = 0;
 			remaining_x_drift_lockout_frames = 0;
 			air_frames_elapsed = 0;
 
-			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								  								  1,
+			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+								  								  0,
 								  								  bn::sprite_items::player.tiles_item(),
-								  								  1,
-								  								  1);
+								  								  43, 44, 45, 46, 47, 48, 49, 50);
 
 		break;
 
-		case PLAYER_SCYTHE_GROUND_2:
+		case PLAYER_ATTACK_AIR_1:
 
-			current_scythe_frame = 0;
-			remaining_x_drift_lockout_frames = 0;
-			air_frames_elapsed = 0;
-
-			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								  								  1,
-								  								  bn::sprite_items::player.tiles_item(),
-								  								  1,
-								  								  1);
-
-		break;
-
-		case PLAYER_SCYTHE_GROUND_3:
-
-			current_scythe_frame             = 0;
-			remaining_x_drift_lockout_frames = 0;
-			air_frames_elapsed = 0;
-
-			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-																		  1,
-																		  bn::sprite_items::player.tiles_item(),
-																		  1,
-																		  1);
-
-		break;
-
-		case PLAYER_SCYTHE_AIR_1:
-
-			current_scythe_frame = 0;
+			current_attack_frame = 0;
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 																		1,
 																		bn::sprite_items::player.tiles_item(),
@@ -2479,22 +2448,22 @@ void Player::createGroundedScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJE
 	if(game_objects.size() >= MAX_GAME_OBJECTS) {return;}
 
 	delete hitbox_1_ptr;
-	hitbox_1_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_GROUND_1_X_OFFSET * x_dir),
-								  y().integer() + PLAYER_SCYTHE_GROUND_1_Y_OFFSET),
-								  PLAYER_SCYTHE_GROUND_1_HITSTOP_FRAMES,
-								  PLAYER_SCYTHE_GROUND_1_HITSTUN_FRAMES,
-								  PLAYER_SCYTHE_GROUND_1_SCREENSHAKE_FRAMES,
-								  PLAYER_SCYTHE_GROUND_1_HB_LIFESPAN_FRAMES,
-								  PLAYER_SCYTHE_GROUND_1_X_KNOCKBACK,
-								  PLAYER_SCYTHE_GROUND_1_Y_KNOCKBACK,	
-								  PLAYER_SCYTHE_GROUND_1_KNOCKBACK_DECAY,
-								  PLAYER_SCYTHE_GROUND_1_HB_WIDTH,
-								  PLAYER_SCYTHE_GROUND_1_HB_HEIGHT,
-								  PLAYER_SCYTHE_GROUND_1_DAMAGE,
+	hitbox_1_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_ATTACK_GROUND_1_X_OFFSET * x_dir),
+								  y().integer() + PLAYER_ATTACK_GROUND_1_Y_OFFSET),
+								  PLAYER_ATTACK_GROUND_1_HITSTOP_FRAMES,
+								  PLAYER_ATTACK_GROUND_1_HITSTUN_FRAMES,
+								  PLAYER_ATTACK_GROUND_1_SCREENSHAKE_FRAMES,
+								  PLAYER_ATTACK_GROUND_1_HB_LIFESPAN_FRAMES,
+								  PLAYER_ATTACK_GROUND_1_X_KNOCKBACK,
+								  PLAYER_ATTACK_GROUND_1_Y_KNOCKBACK,	
+								  PLAYER_ATTACK_GROUND_1_KNOCKBACK_DECAY,
+								  PLAYER_ATTACK_GROUND_1_HB_WIDTH,
+								  PLAYER_ATTACK_GROUND_1_HB_HEIGHT,
+								  PLAYER_ATTACK_GROUND_1_DAMAGE,
 								  x_dir,
 								  y_dir,
 								  HITBOX_SCYTHE_GROUND_1,
-								  PLAYER_SCYTHE_GROUND_1_SCREENSHAKE_SEVERITY);
+								  PLAYER_ATTACK_GROUND_1_SCREENSHAKE_SEVERITY);
 
 	hitbox_1_ptr->setCamera(camera);
 
@@ -2507,22 +2476,22 @@ void Player::createAirScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>&
 	if(game_objects.size() >= MAX_GAME_OBJECTS) {return;}
 
 	delete hitbox_1_ptr;
-	hitbox_1_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SCYTHE_AIR_1_X_OFFSET * x_dir),
-								  y().integer() + PLAYER_SCYTHE_AIR_1_Y_OFFSET),
-								  PLAYER_SCYTHE_AIR_1_HITSTOP_FRAMES,
-								  PLAYER_SCYTHE_AIR_1_HITSTUN_FRAMES,
-								  PLAYER_SCYTHE_AIR_1_SCREENSHAKE_FRAMES,
-								  PLAYER_SCYTHE_AIR_1_HB_LIFESPAN_FRAMES,
-								  PLAYER_SCYTHE_AIR_1_X_KNOCKBACK,
-								  PLAYER_SCYTHE_AIR_1_Y_KNOCKBACK,	
-								  PLAYER_SCYTHE_AIR_1_KNOCKBACK_DECAY,
-								  PLAYER_SCYTHE_AIR_1_HB_WIDTH,
-								  PLAYER_SCYTHE_AIR_1_HB_HEIGHT,
-								  PLAYER_SCYTHE_AIR_1_DAMAGE,
+	hitbox_1_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_ATTACK_AIR_1_X_OFFSET * x_dir),
+								  y().integer() + PLAYER_ATTACK_AIR_1_Y_OFFSET),
+								  PLAYER_ATTACK_AIR_1_HITSTOP_FRAMES,
+								  PLAYER_ATTACK_AIR_1_HITSTUN_FRAMES,
+								  PLAYER_ATTACK_AIR_1_SCREENSHAKE_FRAMES,
+								  PLAYER_ATTACK_AIR_1_HB_LIFESPAN_FRAMES,
+								  PLAYER_ATTACK_AIR_1_X_KNOCKBACK,
+								  PLAYER_ATTACK_AIR_1_Y_KNOCKBACK,	
+								  PLAYER_ATTACK_AIR_1_KNOCKBACK_DECAY,
+								  PLAYER_ATTACK_AIR_1_HB_WIDTH,
+								  PLAYER_ATTACK_AIR_1_HB_HEIGHT,
+								  PLAYER_ATTACK_AIR_1_DAMAGE,
 								  x_dir,
 								  y_dir,
 								  HITBOX_SCYTHE_AIR_1,
-								  PLAYER_SCYTHE_AIR_1_SCREENSHAKE_SEVERITY);
+								  PLAYER_ATTACK_AIR_1_SCREENSHAKE_SEVERITY);
 
 	hitbox_1_ptr->setCamera(camera);
 
