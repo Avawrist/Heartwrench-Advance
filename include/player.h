@@ -41,13 +41,13 @@
 #define X_SPEED_DECAY_RATE 0.08
 
 #define PLAYER_BASE_JUMP_FORCE            -8
-#define PLAYER_SECOND_JUMP_FORCE          -1
+#define PLAYER_SECOND_JUMP_FORCE          -2
 #define PLAYER_WALL_JUMP_X_FORCE           6
 #define PLAYER_WALL_JUMP_Y_FORCE          -6
 #define PLAYER_JUMP_DECAY                  0.04
 #define PLAYER_SECONDARY_JUMP_DECAY        1
 #define PLAYER_X_DRIFT_LOCKOUT_FRAMES      10
-#define PLAYER_MAX_JUMP_INPUT_FRAMES       12
+#define PLAYER_MAX_JUMP_INPUT_FRAMES       15
 #define PLAYER_MAX_WALL_JUMP_INPUT_FRAMES  10
 #define PLAYER_WALL_JUMP_DECAY             0.05
 
@@ -103,6 +103,13 @@
 
 #define PLAYER_V_COLLISION_MAX_GRACE_FRAMES 4
 #define PLAYER_LATE_JUMP_GRACE_FRAMES       6
+
+#define PLAYER_ROLL_X_FORCE 2
+#define PLAYER_ROLL_DECAY   0.5
+
+#define PLAYER_ROLL_JUMP_X_FORCE  8
+#define PLAYER_ROLL_JUMP_Y_FORCE -6
+#define PLAYER_ROLL_JUMP_DECAY   0.04
  
 #define PLAYER_DEATH_X_FORCE      5
 #define PLAYER_DEATH_Y_FORCE      5
@@ -118,6 +125,9 @@
 #define PLAYER_JUMP_FORCE              Force(bn::fixed_point_t<12>(0, jump_force), PLAYER_JUMP_DECAY)
 #define PLAYER_SECONDARY_JUMP_FORCE    Force(bn::fixed_point_t<12>(0, secondary_jump_force), PLAYER_SECONDARY_JUMP_DECAY)
 #define PLAYER_WALL_JUMP_FORCE         Force(bn::fixed_point_t<12>( wall_jump_force.x() * (int32)x_dir, wall_jump_force.y()), PLAYER_WALL_JUMP_DECAY)
+
+#define PLAYER_ROLL_FORCE              Force(bn::fixed_point_t<12>(PLAYER_ROLL_X_FORCE * (int32)x_dir, 0), PLAYER_ROLL_DECAY)
+#define PLAYER_ROLL_JUMP_FORCE         Force(bn::fixed_point_t<12>(PLAYER_ROLL_JUMP_X_FORCE * (int32)x_dir, PLAYER_ROLL_JUMP_Y_FORCE), PLAYER_ROLL_JUMP_DECAY)
 
 #define PLAYER_GRAVITY_FORCE           Force(bn::fixed_point_t<12>(0, gravity), 			     PLAYER_GRAVITY_DECAY)
 #define PLAYER_PROLONGED_GRAVITY_FORCE Force(bn::fixed_point_t<12>(0, PLAYER_PROLONGED_GRAVITY), PLAYER_GRAVITY_DECAY)
@@ -192,6 +202,7 @@ struct Player : GameObject {
 	void draw() override;
 	void setCamera(const bn::camera_ptr& camera) override;
 	void jump();
+	void rollJump();
 	void wallJump();
 	void fastFall();
 	void setState(ObjectState new_state) override;

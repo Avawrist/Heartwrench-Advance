@@ -214,6 +214,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Jump
 			else if(bn::keypad::a_pressed()) {jump();}
 
+			// Roll
+			else if(bn::keypad::r_pressed()) {setState(PLAYER_ROLL);}
+
 			// Add Gravity if Grounded on OWP
 			if(grounded_owp_detected) {rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 
@@ -261,6 +264,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			// Jump
 			else if(bn::keypad::a_pressed()) {jump();}
+
+			// Roll
+			else if(bn::keypad::r_pressed()) {setState(PLAYER_ROLL);}
 
 			// Add Gravity if Grounded on OWP
 			if(grounded_owp_detected) {rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
@@ -896,6 +902,45 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			late_jump_grace_frames = clamp(0, 
 										PLAYER_LATE_JUMP_GRACE_FRAMES, 
 										late_jump_grace_frames);
+
+		break;
+
+		case PLAYER_ROLL:
+
+			// Add Roll Force
+			rigidbody.addForce(PLAYER_ROLL_FORCE);
+
+			// End condition
+			if(animate_action_ptr->done())
+			{
+				setState(NONE);
+
+				// Exit Momentum
+				x_speed = PLAYER_MAX_X_SPEED;
+
+				if((bn::keypad::left_held()  && x_dir == RIGHT) || 
+			       (bn::keypad::right_held() && x_dir == LEFT))
+				{x_speed = 0;}  
+			}
+
+			///////////////
+			// Get Input //
+			///////////////
+
+			// Roll Jump
+			if(bn::keypad::a_pressed()) 
+			{
+				x_speed = 0;
+				rigidbody.removeXForces();
+				setState(NONE);
+
+				rollJump();
+			}
+
+			// Add Gravity //
+			rigidbody.addForce(PLAYER_GRAVITY_FORCE);
+			if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
+			{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
 
 		break;
 
@@ -2125,6 +2170,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 	if(state != PLAYER_ATTACK_GROUND_1 &&
 	   state != PLAYER_PHASE_STEP      &&
+	   state != PLAYER_ROLL            &&
 	   state != OBJECT_DEATH)
 	{
 		ObjectState new_state = NONE;
@@ -2221,6 +2267,25 @@ void Player::jump()
 	remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
 	late_jump_grace_frames      = 0;
 	rigidbody.addForce(PLAYER_JUMP_FORCE);
+	setVerticalStretch();
+
+	// Jump Effect
+	if(grounded_detected)
+	{
+		jump_effect_sprite_ptr->set_visible(true);
+		jump_effect_sprite_ptr->set_position(x(), y());
+		jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
+																	 1,
+																	 bn::sprite_items::jump_effect.tiles_item(),
+																	 0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+	}
+}
+
+void Player::rollJump()
+{
+	remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
+	late_jump_grace_frames      = 0;
+	rigidbody.addForce(PLAYER_ROLL_JUMP_FORCE);
 	setVerticalStretch();
 
 	// Jump Effect
@@ -2376,6 +2441,15 @@ void Player::setState(ObjectState new_state)
 								  								  bn::sprite_items::player.tiles_item(),
 								  								  43, 44, 45, 46, 47, 48, 49, 50, 51, 
 																  52, 53, 54, 55, 56, 57, 58, 59);
+
+		break;
+
+		case PLAYER_ROLL: 
+
+			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+																	   4,
+																	   bn::sprite_items::player.tiles_item(),
+																	   20, 21, 22, 23, 20, 21);
 
 		break;
 
