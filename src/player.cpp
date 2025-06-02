@@ -44,7 +44,6 @@ Player::Player()
 	air_frames_elapsed               = 0;
 	v_collision_grace_frames         = 0;
 	late_jump_grace_frames           = 0;
-	current_attack_frame             = 0;
 	current_phase_frame              = 0;
 	hitstop_frames                   = 0;
 	
@@ -54,8 +53,6 @@ Player::Player()
 	grounded_owp_detected    = false;
 	left_wj_eligible         = false;
 	right_wj_eligible        = false;
-	scythe_ground_2_buffered = false;
-	scythe_ground_3_buffered = false;
 	is_dead                  = false;
 
 	hitbox_1_ptr = NULL;
@@ -91,7 +88,6 @@ Player::Player(const Player& other) : GameObject(other)
 	air_frames_elapsed               = other.air_frames_elapsed;
 	v_collision_grace_frames         = other.v_collision_grace_frames;
 	late_jump_grace_frames           = other.late_jump_grace_frames;
-	current_attack_frame             = other.current_attack_frame;
 	current_phase_frame              = other.current_phase_frame;
 	hitstop_frames                   = other.hitstop_frames;
 
@@ -101,8 +97,6 @@ Player::Player(const Player& other) : GameObject(other)
 	grounded_owp_detected    = other.grounded_owp_detected;
 	left_wj_eligible         = other.left_wj_eligible;
 	right_wj_eligible        = other.right_wj_eligible;
-	scythe_ground_2_buffered = other.scythe_ground_2_buffered;
-	scythe_ground_3_buffered = other.scythe_ground_3_buffered;
 	is_dead                  = other.is_dead;
 
 	test_collider         = other.test_collider;
@@ -155,7 +149,6 @@ Player& Player::operator =(const Player& other)
 	air_frames_elapsed               = other.air_frames_elapsed;
 	v_collision_grace_frames         = other.v_collision_grace_frames;
 	late_jump_grace_frames           = other.late_jump_grace_frames;
-	current_attack_frame             = other.current_attack_frame;
 	current_phase_frame              = other.current_phase_frame;
 	hitstop_frames                   = other.hitstop_frames;
 
@@ -165,8 +158,6 @@ Player& Player::operator =(const Player& other)
 	grounded_owp_detected    = other.grounded_owp_detected;
 	left_wj_eligible         = other.left_wj_eligible;
 	right_wj_eligible        = other.right_wj_eligible;
-	scythe_ground_2_buffered = other.scythe_ground_2_buffered;
-	scythe_ground_3_buffered = other.scythe_ground_3_buffered;
 	is_dead                  = other.is_dead;
 
 	test_collider         = other.test_collider;
@@ -212,7 +203,11 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Player Grounded Neutral State //
 			///////////////////////////////////
 			
-			// Scythe Ground 1
+			///////////////
+			// Get Input //
+			///////////////
+
+			// Attack Ground 1
 			if(bn::keypad::b_pressed())
 			{setState(PLAYER_ATTACK_GROUND_1);}
 
@@ -229,6 +224,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			///////////////////////
 			// Player Walk State //
 			///////////////////////
+
+			///////////////
+			// Get Input //
+			///////////////
 
 			// Update walk speed //
 			if(bn::keypad::left_released())        
@@ -248,8 +247,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				x_speed += X_SPEED_ACC_RATE;
 				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
 			}
-
-			// Get Input //
 			
 			// Walk
 			if(bn::keypad::left_held())       
@@ -258,7 +255,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			else if(bn::keypad::right_held()) 
 			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE); x_dir = RIGHT;}
 
-			// Scythe Ground 1
+			// Attack Ground 1
 			if(bn::keypad::b_pressed())
 			{setState(PLAYER_ATTACK_GROUND_1);}
 
@@ -276,8 +273,11 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Player Air Neutral State //
 			//////////////////////////////
 
-			// Update drift speed //
+			///////////////
+			// Get Input //
+			///////////////
 
+			// Update drift speed //
 			// Simulate friction/momentum
 			if((bn::keypad::left_held() || bn::keypad::right_held()) && !remaining_x_drift_lockout_frames)  
 			{
@@ -297,8 +297,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				x_speed = PLAYER_MIN_X_SPEED;
 			}
 
-			// Get Input //
-
 			// Drift
 			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames)       
 			{rigidbody.addForce(PLAYER_X_LEFT_FORCE); x_dir = LEFT;}
@@ -306,7 +304,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames)
 			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE); x_dir = RIGHT;}
 
-			// Scythe Air 1
+			// Attack Air 1
 			if(bn::keypad::b_pressed())
 			{setState(PLAYER_ATTACK_AIR_1);}
 
@@ -379,6 +377,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Player Wall Slide Right State //
 			///////////////////////////////////
 
+			///////////////
+			// Get Input //
+			///////////////
+
 			// Simulate friction/momentum
 			if(bn::keypad::left_held())  
 			{
@@ -414,6 +416,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Player Wall Slide Left State //
 			//////////////////////////////////
 
+			///////////////
+			// Get Input //
+			///////////////
+
 			// Simulate friction/momentum
 			if(bn::keypad::right_held())  
 			{
@@ -439,7 +445,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			air_frames_elapsed++;
 			air_frames_elapsed = clamp(0, 
 									   PLAYER_MAX_AIR_FRAMES, 
-									   air_frames_elapsed);
+									   air_frames_elapsed);		   
 		
 		break;
 
@@ -647,6 +653,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				}
 			}
 
+			///////////////
+			// Get Input //
+			///////////////
+
 			// Early jump breakout
 			if(bn::keypad::a_pressed() &&
 			   current_phase_frame >= PLAYER_PHASE_JUMP_LOCKOUT_FRAMES && 
@@ -757,48 +767,71 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 		case PLAYER_ATTACK_GROUND_1:
 
-			// Increment Frame Counter
-			current_attack_frame++;
-			current_attack_frame = clamp(0, 
-										 PLAYER_ATTACK_GROUND_1_TOTAL_FRAMES,
-										 current_attack_frame);
-
 			// Create Hitboxes
-			if(current_attack_frame == PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME)
+			if(animate_action_ptr->current_index() == PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME)
+			{createGroundedAttackHitboxes(game_objects, camera);}
+
+			// End condition
+			if(animate_action_ptr->done())
+			{setState(NONE);}
+
+			///////////////
+			// Get Input //
+			///////////////
+
+			// Update walk speed //
+			if(bn::keypad::left_released())        
 			{
-				createGroundedScythe1Hitboxes(game_objects, camera);
+				rigidbody.addForce(PLAYER_X_LEFT_DECAY_FORCE);
+				x_speed = PLAYER_MIN_X_SPEED;
+			}
+			else if (bn::keypad::right_released()) 
+			{
+				rigidbody.addForce(PLAYER_X_RIGHT_DECAY_FORCE);
+				x_speed = PLAYER_MIN_X_SPEED;
 			}
 
-			if(current_attack_frame >= PLAYER_ATTACK_GROUND_1_TOTAL_FRAMES)
-			{setState(NONE);}
+			// Simulate friction/momentum
+			if((bn::keypad::left_held() || bn::keypad::right_held()))  
+			{
+				x_speed += X_SPEED_ACC_RATE;
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
+			}
+			
+			// Walk
+			if(bn::keypad::left_held())       
+			{rigidbody.addForce(PLAYER_X_LEFT_FORCE); x_dir = LEFT;}
+
+			else if(bn::keypad::right_held()) 
+			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE); x_dir = RIGHT;}
+
+			// Add Gravity if Grounded on OWP
+			if(grounded_owp_detected) {rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
 
 		break;
 
 		case PLAYER_ATTACK_AIR_1:
 
 			///////////////////////////////
-			// Player Scythe Air 1 State //
+			// Player Attack Air 1 State //
 			///////////////////////////////
 
 			//////////////////
-			// Scythe stuff //
+			// Attack stuff //
 			//////////////////
 
 			// Create Hitboxes
-			if(current_attack_frame == PLAYER_ATTACK_AIR_1_CREATE_HB_FRAME)
-			{
-				createAirScythe1Hitboxes(game_objects, camera);
-			}
+			if(animate_action_ptr->current_index() == PLAYER_ATTACK_AIR_1_CREATE_HB_FRAME)
+			{createAirAttack1Hitboxes(game_objects, camera);}
 
-			if(current_attack_frame >= PLAYER_ATTACK_AIR_1_TOTAL_FRAMES)
+			if(animate_action_ptr->done())
 			{setState(NONE);}
 
 			///////////////
-			// Air stuff //
+			// Get Input //
 			///////////////
 
 			// Update drift speed //
-
 			// Simulate friction/momentum
 			if((bn::keypad::left_held() || bn::keypad::right_held()) && !remaining_x_drift_lockout_frames)  
 			{
@@ -817,8 +850,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				rigidbody.addForce(PLAYER_X_RIGHT_DECAY_FORCE);
 				x_speed = PLAYER_MIN_X_SPEED;
 			}
-
-			// Get Input //
 
 			// Drift
 			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames)       
@@ -865,12 +896,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			late_jump_grace_frames = clamp(0, 
 										PLAYER_LATE_JUMP_GRACE_FRAMES, 
 										late_jump_grace_frames);
-
-			// Increment Frame Counter
-			current_attack_frame++;
-			current_attack_frame = clamp(0, 
-											PLAYER_ATTACK_AIR_1_TOTAL_FRAMES,
-											current_attack_frame);
 
 		break;
 
@@ -1608,13 +1633,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					// Test for, and log grounded collision
 					if(test_collider.isCollision(other_collider) && 
 					   rigidbody.normalized_dir.y() >= 0)
-					{
-						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-						{setHorizontalStretch();}
-
-						grounded_detected = true;
-					}
+					{grounded_detected = true;}
 
 					// Test for wall riding on right side
 					if(test_collider_right.isCollision(other_collider))
@@ -1664,9 +1683,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 							{
 								grounded_detected = true;
 								rigidbody.removeYForces();
-								if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-								rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-								{setHorizontalStretch();}
 							}
 						}
 					}
@@ -1760,10 +1776,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					if(test_collider.isCollision(other_collider) &&
 						test_collider.p4.y() >= global_height)
 					{
-						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-						{setHorizontalStretch();}
-
 						grounded_detected = true;
 
 						// Offset the decline of the slope if player is moving with it.
@@ -1789,10 +1801,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					if(test_collider.isCollision(other_collider) &&
 						test_collider.p4.y() >= global_height)
 					{
-						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-						{setHorizontalStretch();}
-
 						grounded_detected = true;
 
 						// Offset the decline of the slope if player is moving with it.
@@ -1818,10 +1826,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					if(test_collider.isCollision(other_collider) &&
 						test_collider.p4.y() >= global_height)
 					{
-						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-						{setHorizontalStretch();}
-
 						grounded_detected = true;
 
 						// Offset the decline of the slope if player is moving with it.
@@ -1847,10 +1851,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					if(test_collider.isCollision(other_collider) &&
 						test_collider.p4.y() >= global_height)
 					{
-						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-						{setHorizontalStretch();}
-
 						grounded_detected = true;
 
 						// Offset the decline of the slope if player is moving with it.
@@ -1876,10 +1876,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					if(test_collider.isCollision(other_collider) &&
 						test_collider.p4.y() >= global_height)
 					{
-						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-						{setHorizontalStretch();}
-
 						grounded_detected = true;
 
 						// Offset the decline of the slope if player is moving with it.
@@ -1905,10 +1901,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					if(test_collider.isCollision(other_collider) &&
 						test_collider.p4.y() >= global_height)
 					{
-						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-						{setHorizontalStretch();}
-
 						grounded_detected = true;
 
 						// Offset the decline of the slope if player is moving with it.
@@ -1934,10 +1926,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					if(test_collider.isCollision(other_collider) &&
 						collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
 					{
-						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-						{setHorizontalStretch();}
-
 						grounded_detected = true;
 
 						if(rigidbody.normalized_dir.x() == 1)
@@ -1961,10 +1949,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					if(test_collider.isCollision(other_collider) &&
 						collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
 					{
-						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-						{setHorizontalStretch();}
-
 						grounded_detected = true;
 
 						if(rigidbody.normalized_dir.x() == 1)
@@ -1988,10 +1972,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					if(test_collider.isCollision(other_collider) &&
 						collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
 					{
-						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-						{setHorizontalStretch();}
-
 						grounded_detected = true;
 
 						if(rigidbody.normalized_dir.x() == 1)
@@ -2015,10 +1995,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					if(test_collider.isCollision(other_collider) &&
 						collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
 					{
-						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-						{setHorizontalStretch();}
-
 						grounded_detected = true;
 
 						if(rigidbody.normalized_dir.x() == 1)
@@ -2042,10 +2018,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					if(test_collider.isCollision(other_collider) &&
 						collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
 					{
-						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-						{setHorizontalStretch();}
-
 						grounded_detected = true;
 
 						if(rigidbody.normalized_dir.x() == 1)
@@ -2069,12 +2041,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					if(test_collider.isCollision(other_collider) &&
 						collider.p1.y() + PLAYER_COLLIDER_HEIGHT > global_height)
 					{
-						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-							rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-						{
-							setHorizontalStretch();
-						}
-
 						grounded_detected = true;
 
 						// Offset the decline of the slope if player is moving with it.
@@ -2183,7 +2149,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	
 		// Set the state
 
-		// Special case for air scythe, let landing end
+		// Special case for air attack, let landing end
 		// the attack state.
 		if(state == PLAYER_ATTACK_AIR_1)
 		{
@@ -2269,8 +2235,6 @@ void Player::jump()
 	}
 }
 
-
-
 void Player::wallJump()
 {
 	rigidbody.removeForces();
@@ -2334,8 +2298,6 @@ void Player::setState(ObjectState new_state)
 			remaining_jump_input_frames      = 0;
 			air_frames_elapsed               = 0;
 			late_jump_grace_frames           = 0;
-			scythe_ground_2_buffered         = false;
-			scythe_ground_3_buffered         = false;
 			x_dir                            = LEFT;
 
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
@@ -2353,8 +2315,6 @@ void Player::setState(ObjectState new_state)
 			remaining_jump_input_frames      = 0;
 			air_frames_elapsed               = 0;
 			late_jump_grace_frames           = 0;
-			scythe_ground_2_buffered         = false;
-			scythe_ground_3_buffered         = false;
 			x_dir                            = RIGHT;
 
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
@@ -2366,9 +2326,6 @@ void Player::setState(ObjectState new_state)
 		break;
 
 		case PLAYER_AIR_NEUTRAL:
-
-			scythe_ground_2_buffered = false;
-			scythe_ground_3_buffered = false;
 
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  0,
@@ -2401,38 +2358,35 @@ void Player::setState(ObjectState new_state)
 
 		case PLAYER_ATTACK_GROUND_1:
 
-			current_attack_frame = 0;
 			remaining_x_drift_lockout_frames = 0;
 			air_frames_elapsed = 0;
 
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 								  								  0,
 								  								  bn::sprite_items::player.tiles_item(),
-								  								  43, 44, 45, 46, 47, 48, 49, 50);
+								  								  43, 44, 45, 46, 47, 48, 49, 50, 51, 
+																  52, 53, 54, 55, 56, 57, 58, 59);
 
 		break;
 
 		case PLAYER_ATTACK_AIR_1:
 
-			current_attack_frame = 0;
-			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-																		1,
-																		bn::sprite_items::player.tiles_item(),
-																		3,
-																		3);
+			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+								  								  0,
+								  								  bn::sprite_items::player.tiles_item(),
+								  								  43, 44, 45, 46, 47, 48, 49, 50, 51, 
+																  52, 53, 54, 55, 56, 57, 58, 59);
 
 		break;
 
 		case OBJECT_DEATH:
-
-			scythe_ground_2_buffered = false;
-			scythe_ground_3_buffered = false;
 
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 								 0,
 								 bn::sprite_items::player.tiles_item(),
 								 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 
 								 18, 19, 20, 21, 22, 23);
+
 
 		break;
 
@@ -2442,7 +2396,7 @@ void Player::setState(ObjectState new_state)
 
 }
 
-void Player::createGroundedScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
+void Player::createGroundedAttackHitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
 	                                       const bn::camera_ptr&                      camera)
 {
 	if(game_objects.size() >= MAX_GAME_OBJECTS) {return;}
@@ -2462,7 +2416,7 @@ void Player::createGroundedScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJE
 								  PLAYER_ATTACK_GROUND_1_DAMAGE,
 								  x_dir,
 								  y_dir,
-								  HITBOX_SCYTHE_GROUND_1,
+								  HITBOX_ATTACK_GROUND_1,
 								  PLAYER_ATTACK_GROUND_1_SCREENSHAKE_SEVERITY);
 
 	hitbox_1_ptr->setCamera(camera);
@@ -2470,7 +2424,7 @@ void Player::createGroundedScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJE
 	// Add more hitboxes...
 }
 
-void Player::createAirScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
+void Player::createAirAttack1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
 							  		  const bn::camera_ptr&                      camera)
 {
 	if(game_objects.size() >= MAX_GAME_OBJECTS) {return;}
@@ -2490,7 +2444,7 @@ void Player::createAirScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>&
 								  PLAYER_ATTACK_AIR_1_DAMAGE,
 								  x_dir,
 								  y_dir,
-								  HITBOX_SCYTHE_AIR_1,
+								  HITBOX_ATTACK_AIR_1,
 								  PLAYER_ATTACK_AIR_1_SCREENSHAKE_SEVERITY);
 
 	hitbox_1_ptr->setCamera(camera);

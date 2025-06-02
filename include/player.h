@@ -71,9 +71,6 @@
 #define PLAYER_PHASE_STEP_EXIT_DECAY   0.05
 #define PLAYER_PHASE_JUMP_LOCKOUT_FRAMES 5
 
-#define PLAYER_ATTACK_GROUND_1_TOTAL_FRAMES      17
-#define PLAYER_ATTACK_AIR_1_TOTAL_FRAMES         20
-
 #define PLAYER_ATTACK_GROUND_1_X_OFFSET           32
 #define PLAYER_ATTACK_GROUND_1_Y_OFFSET           0
 #define PLAYER_ATTACK_GROUND_1_HB_WIDTH           16
@@ -93,15 +90,15 @@
 #define PLAYER_ATTACK_AIR_1_Y_OFFSET           0
 #define PLAYER_ATTACK_AIR_1_HB_WIDTH           16
 #define PLAYER_ATTACK_AIR_1_HB_HEIGHT          16
-#define PLAYER_ATTACK_AIR_1_CREATE_HB_FRAME    3
+#define PLAYER_ATTACK_AIR_1_CREATE_HB_FRAME    6
 #define PLAYER_ATTACK_AIR_1_HB_LIFESPAN_FRAMES 10
 #define PLAYER_ATTACK_AIR_1_X_KNOCKBACK        8
 #define PLAYER_ATTACK_AIR_1_Y_KNOCKBACK        0
 #define PLAYER_ATTACK_AIR_1_KNOCKBACK_DECAY    0.05
 #define PLAYER_ATTACK_AIR_1_DAMAGE             1
-#define PLAYER_ATTACK_AIR_1_HITSTOP_FRAMES     8
+#define PLAYER_ATTACK_AIR_1_HITSTOP_FRAMES     15
 #define PLAYER_ATTACK_AIR_1_HITSTUN_FRAMES     30
-#define PLAYER_ATTACK_AIR_1_SCREENSHAKE_FRAMES 8
+#define PLAYER_ATTACK_AIR_1_SCREENSHAKE_FRAMES 15
 #define PLAYER_ATTACK_AIR_1_SCREENSHAKE_SEVERITY STRONG_SHAKE
 
 #define PLAYER_V_COLLISION_MAX_GRACE_FRAMES 4
@@ -156,7 +153,6 @@ struct Player : GameObject {
 	int32 air_frames_elapsed;
 	int32 v_collision_grace_frames;
 	int32 late_jump_grace_frames;
-	int32 current_attack_frame;
 	int32 current_phase_frame;
 	int32 hitstop_frames;
 	
@@ -166,8 +162,6 @@ struct Player : GameObject {
 	bool grounded_owp_detected;
 	bool left_wj_eligible;
 	bool right_wj_eligible;
-	bool scythe_ground_2_buffered;
-	bool scythe_ground_3_buffered;
 
 	Collider test_collider;
 	Collider test_collider_right;
@@ -201,9 +195,9 @@ struct Player : GameObject {
 	void wallJump();
 	void fastFall();
 	void setState(ObjectState new_state) override;
-	void createGroundedScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
+	void createGroundedAttackHitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
 		                               const bn::camera_ptr&                      camera);
-	void createAirScythe1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
+	void createAirAttack1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
 								  const bn::camera_ptr&                      camera);
 	
 };
