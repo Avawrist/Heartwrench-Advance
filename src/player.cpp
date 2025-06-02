@@ -1455,6 +1455,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						if(bn::keypad::down_held() && 
 						   (state == PLAYER_AIR_NEUTRAL || state == PLAYER_GROUNDED_NEUTRAL)) 
 						{
+							late_jump_grace_frames = 0;
 							rigidbody.addForce(PLAYER_GRAVITY_FORCE);
 						}
 						else
@@ -2302,6 +2303,11 @@ void Player::rollJump()
 
 void Player::wallJump()
 {
+	x_speed = PLAYER_MAX_X_SPEED;
+	if((bn::keypad::left_held()  && x_dir == RIGHT) ||
+	   (bn::keypad::right_held() && x_dir == LEFT))
+	{x_speed = 0;}
+
 	rigidbody.removeForces();
 	rigidbody.addForce(PLAYER_WALL_JUMP_FORCE);
 	remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
