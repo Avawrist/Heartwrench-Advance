@@ -44,6 +44,7 @@ Player::Player()
 	air_frames_elapsed               = 0;
 	v_collision_grace_frames         = 0;
 	late_jump_grace_frames           = 0;
+	late_roll_jump_grace_frames      = 0;
 	current_phase_frame              = 0;
 	hitstop_frames                   = 0;
 	
@@ -88,6 +89,7 @@ Player::Player(const Player& other) : GameObject(other)
 	air_frames_elapsed               = other.air_frames_elapsed;
 	v_collision_grace_frames         = other.v_collision_grace_frames;
 	late_jump_grace_frames           = other.late_jump_grace_frames;
+	late_roll_jump_grace_frames      = other.late_roll_jump_grace_frames;
 	current_phase_frame              = other.current_phase_frame;
 	hitstop_frames                   = other.hitstop_frames;
 
@@ -149,6 +151,7 @@ Player& Player::operator =(const Player& other)
 	air_frames_elapsed               = other.air_frames_elapsed;
 	v_collision_grace_frames         = other.v_collision_grace_frames;
 	late_jump_grace_frames           = other.late_jump_grace_frames;
+	late_roll_jump_grace_frames      = other.late_roll_jump_grace_frames;
 	current_phase_frame              = other.current_phase_frame;
 	hitstop_frames                   = other.hitstop_frames;
 
@@ -212,7 +215,11 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			{setState(PLAYER_ATTACK_GROUND_1);}
 
 			// Jump
-			else if(bn::keypad::a_pressed()) {jump();}
+			else if(bn::keypad::a_pressed()) 
+			{
+				if(late_roll_jump_grace_frames) {rollJump();}
+				else {jump();}
+			}
 
 			// Roll
 			else if(bn::keypad::r_pressed()) {setState(PLAYER_ROLL);}
@@ -263,7 +270,11 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			{setState(PLAYER_ATTACK_GROUND_1);}
 
 			// Jump
-			else if(bn::keypad::a_pressed()) {jump();}
+			else if(bn::keypad::a_pressed()) 
+			{
+				if(late_roll_jump_grace_frames) {rollJump();}
+				else {jump();}
+			}
 
 			// Roll
 			else if(bn::keypad::r_pressed()) {setState(PLAYER_ROLL);}
@@ -335,9 +346,12 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				}
 			}
 
-			// Late Jump
-			if(bn::keypad::a_pressed() && late_jump_grace_frames) 
-			{jump();}
+			// Late Jump/Jump Roll
+			if(bn::keypad::a_pressed()) 
+			{
+				if(late_roll_jump_grace_frames) {rollJump();}
+				else if(late_jump_grace_frames) {jump();}
+			}
 
 			// High Jump
 			if(bn::keypad::a_held() && remaining_jump_input_frames > 0)
@@ -913,7 +927,11 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// End condition
 			if(animate_action_ptr->done())
 			{
+				// Reset state
 				setState(NONE);
+
+				// Set roll jump grace frames
+				late_roll_jump_grace_frames = PLAYER_LATE_ROLL_JUMP_GRACE_FRAMES;
 
 				// Exit Momentum
 				x_speed = PLAYER_MAX_X_SPEED;
@@ -929,13 +947,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 			// Roll Jump
 			if(bn::keypad::a_pressed()) 
-			{
-				x_speed = 0;
-				rigidbody.removeXForces();
-				setState(NONE);
-
-				rollJump();
-			}
+			{rollJump();}
 
 			// Add Gravity //
 			rigidbody.addForce(PLAYER_GRAVITY_FORCE);
@@ -2217,6 +2229,11 @@ void Player::update(const RoomBounds& 								  room_bounds,
 									 PLAYER_V_COLLISION_MAX_GRACE_FRAMES,
 									 v_collision_grace_frames);
 
+	late_roll_jump_grace_frames--;
+	late_roll_jump_grace_frames = clamp(0, 
+		                                PLAYER_LATE_ROLL_JUMP_GRACE_FRAMES, 
+										late_roll_jump_grace_frames);
+
 	received_platform_force = false;
 
 	///////////////////////////
@@ -2284,6 +2301,10 @@ void Player::jump()
 
 void Player::rollJump()
 {
+	x_speed = 0;
+	rigidbody.removeXForces();
+	setState(NONE);
+
 	remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
 	late_jump_grace_frames      = 0;
 	rigidbody.addForce(PLAYER_ROLL_JUMP_FORCE);

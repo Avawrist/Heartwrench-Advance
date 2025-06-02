@@ -54,7 +54,7 @@
 #define PLAYER_GRAVITY       	             3
 #define PLAYER_PROLONGED_GRAVITY             1
 #define PLAYER_PROLONGED_AIR_FRAMES_REQUIRED 16
-#define PLAYER_FAST_FALL_GRAVITY             1
+#define PLAYER_FAST_FALL_GRAVITY             2
 #define PLAYER_MIN_FAST_FALL_FRAMES          3
 #define PLAYER_WALL_RIDE_GRAVITY             1
 #define PLAYER_ATTACK_GRAVITY                1
@@ -103,6 +103,7 @@
 
 #define PLAYER_V_COLLISION_MAX_GRACE_FRAMES 4
 #define PLAYER_LATE_JUMP_GRACE_FRAMES       6
+#define PLAYER_LATE_ROLL_JUMP_GRACE_FRAMES  8
 
 #define PLAYER_ROLL_X_FORCE 2
 #define PLAYER_ROLL_DECAY   0.5
@@ -163,6 +164,7 @@ struct Player : GameObject {
 	int32 air_frames_elapsed;
 	int32 v_collision_grace_frames;
 	int32 late_jump_grace_frames;
+	int32 late_roll_jump_grace_frames;
 	int32 current_phase_frame;
 	int32 hitstop_frames;
 	
