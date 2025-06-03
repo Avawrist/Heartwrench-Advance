@@ -825,8 +825,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			else if(bn::keypad::right_held()) 
 			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE); x_dir = RIGHT;}
 
-			// Add Gravity if Grounded on OWP
-			if(grounded_owp_detected) {rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
+			// Add Gravity //
+			rigidbody.addForce(PLAYER_GRAVITY_FORCE);
+			if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
+			{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
 
 		break;
 
@@ -1691,7 +1693,14 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					// Test for, and log grounded collision
 					if(test_collider.isCollision(other_collider) && 
 					   rigidbody.normalized_dir.y() >= 0)
-					{grounded_detected = true;}
+					{
+						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+						   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+						{createLandEffect();}
+
+						grounded_detected = true;
+					 	rigidbody.removeYForces();
+					}
 
 					// Test for wall riding on right side
 					if(test_collider_right.isCollision(other_collider))
@@ -2288,15 +2297,8 @@ void Player::jump()
 	setVerticalStretch();
 
 	// Jump Effect
-	if(grounded_detected)
-	{
-		jump_effect_sprite_ptr->set_visible(true);
-		jump_effect_sprite_ptr->set_position(x(), y());
-		jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
-																	 1,
-																	 bn::sprite_items::jump_effect.tiles_item(),
-																	 0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-	}
+	if(grounded_detected) {createJumpEffect();}
+	else                  {createAirJumpEffect();}
 }
 
 void Player::rollJump()
@@ -2311,15 +2313,8 @@ void Player::rollJump()
 	setVerticalStretch();
 
 	// Jump Effect
-	if(grounded_detected)
-	{
-		jump_effect_sprite_ptr->set_visible(true);
-		jump_effect_sprite_ptr->set_position(x(), y());
-		jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
-																	 1,
-																	 bn::sprite_items::jump_effect.tiles_item(),
-																	 0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-	}
+	if(grounded_detected) {createJumpEffect();}
+	else                  {createAirJumpEffect();}
 }
 
 void Player::wallJump()
@@ -2333,7 +2328,9 @@ void Player::wallJump()
 	rigidbody.addForce(PLAYER_WALL_JUMP_FORCE);
 	remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
 	remaining_jump_input_frames      = PLAYER_MAX_WALL_JUMP_INPUT_FRAMES;
+	
 	setVerticalStretch();
+	createWallJumpEffect();
 }
 
 void Player::fastFall()
@@ -2473,6 +2470,8 @@ void Player::setState(ObjectState new_state)
 
 		case PLAYER_ROLL: 
 
+			air_frames_elapsed = 0;
+
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 																	   4,
 																	   bn::sprite_items::player.tiles_item(),
@@ -2551,4 +2550,51 @@ void Player::createAirAttack1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>&
 	hitbox_1_ptr->setCamera(camera);
 
 	// Add more hitboxes...
+}
+
+void Player::createJumpEffect()
+{
+	jump_effect_sprite_ptr->set_visible(true);
+	jump_effect_sprite_ptr->set_position(x(), y());
+	jump_effect_sprite_ptr->set_rotation_angle(0);
+	jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
+																1,
+																bn::sprite_items::jump_effect.tiles_item(),
+																0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+}
+
+void Player::createAirJumpEffect()
+{
+	jump_effect_sprite_ptr->set_visible(true);
+	jump_effect_sprite_ptr->set_position(x(), y());
+	jump_effect_sprite_ptr->set_rotation_angle(0);
+	jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
+																1,
+																bn::sprite_items::air_jump_effect.tiles_item(),
+																0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+}
+
+void Player::createWallJumpEffect()
+{
+	#define WALL_JUMP_EFFECT_OFFSET 8
+
+	jump_effect_sprite_ptr->set_visible(true);
+	jump_effect_sprite_ptr->set_position(x() + ((int32)x_dir * WALL_JUMP_EFFECT_OFFSET), y());
+	if(x_dir == LEFT) {jump_effect_sprite_ptr->set_rotation_angle(90);}
+	else              {jump_effect_sprite_ptr->set_rotation_angle(270);}
+	jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
+																1,
+																bn::sprite_items::jump_effect.tiles_item(),
+																0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+}
+
+void Player::createLandEffect()
+{
+	jump_effect_sprite_ptr->set_visible(true);
+	jump_effect_sprite_ptr->set_position(x(), y());
+	jump_effect_sprite_ptr->set_rotation_angle(0);
+	jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
+																1,
+																bn::sprite_items::land_effect.tiles_item(),
+																0, 1, 2, 3, 4, 5, 6);
 }

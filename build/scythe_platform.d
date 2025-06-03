@@ -78,6 +78,8 @@ scythe_platform.o: G:/game/src/scythe_platform.cpp \
  G:/butano-master/butano/include/bn_sprite_item.h \
  G:/butano-master/butano/include/bn_sprite_shape_size.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
+ G:/game/build/bn_sprite_items_air_jump_effect.h \
+ G:/game/build/bn_sprite_items_land_effect.h \
  G:/game/build/bn_sprite_items_hit_effect.h \
  G:/game/build/bn_sprite_items_wall_splat_effect.h \
  G:/game/build/bn_sprite_items_tile_passage.h \
@@ -179,6 +181,8 @@ G:/game/build/bn_sprite_items_jump_effect.h:
 G:/butano-master/butano/include/bn_sprite_item.h:
 G:/butano-master/butano/include/bn_sprite_shape_size.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
+G:/game/build/bn_sprite_items_air_jump_effect.h:
+G:/game/build/bn_sprite_items_land_effect.h:
 G:/game/build/bn_sprite_items_hit_effect.h:
 G:/game/build/bn_sprite_items_wall_splat_effect.h:
 G:/game/build/bn_sprite_items_tile_passage.h:

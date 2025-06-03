@@ -33,6 +33,8 @@
 
 // Effect Assets
 #include "bn_sprite_items_jump_effect.h"
+#include "bn_sprite_items_air_jump_effect.h"
+#include "bn_sprite_items_land_effect.h"
 #include "bn_sprite_items_hit_effect.h"
 #include "bn_sprite_items_wall_splat_effect.h"
 

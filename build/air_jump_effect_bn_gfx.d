@@ -1,0 +1,1 @@
+air_jump_effect_bn_gfx.o: air_jump_effect_bn_gfx.s

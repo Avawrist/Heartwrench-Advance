@@ -47,7 +47,7 @@
 #define PLAYER_JUMP_DECAY                  0.04
 #define PLAYER_SECONDARY_JUMP_DECAY        1
 #define PLAYER_X_DRIFT_LOCKOUT_FRAMES      10
-#define PLAYER_MAX_JUMP_INPUT_FRAMES       15
+#define PLAYER_MAX_JUMP_INPUT_FRAMES       14
 #define PLAYER_MAX_WALL_JUMP_INPUT_FRAMES  10
 #define PLAYER_WALL_JUMP_DECAY             0.05
 
@@ -60,7 +60,7 @@
 #define PLAYER_ATTACK_GRAVITY                1
 #define PLAYER_GRAVITY_DECAY 	             1
 
-#define PLAYER_SQUISH_SPEED_REQUIRED  PLAYER_GRAVITY + PLAYER_PROLONGED_GRAVITY
+#define PLAYER_SQUISH_SPEED_REQUIRED  PLAYER_GRAVITY
 #define PLAYER_SQUISH_FRAMES_REQUIRED 4
 #define PLAYER_MAX_AIR_FRAMES         180
 
@@ -212,7 +212,10 @@ struct Player : GameObject {
 		                               const bn::camera_ptr&                      camera);
 	void createAirAttack1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
 								  const bn::camera_ptr&                      camera);
-	
+	void createJumpEffect();
+	void createAirJumpEffect();
+	void createWallJumpEffect();
+	void createLandEffect();
 };
 
 #endif

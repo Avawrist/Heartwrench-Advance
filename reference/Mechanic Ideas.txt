@@ -12,6 +12,10 @@ Flood/plague/disaster as devices of the gods to maintain control over humans
 
 = Platforming =
 
+-Player doesn't have a strong drift speed like in Mario, which is largely necessary
+ on the GBA. Consider including level mechanics that bounce, launch, propel, or otherwise
+ move the player horizontally to compensate for low inherent drift.
+
 = Enemies/Combat =
 -Basic RPS with Roll/Slash/Jump
 -Build on RPS difficulty with enemy and terrain based mixups
