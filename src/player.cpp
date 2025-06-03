@@ -210,6 +210,31 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Get Input //
 			///////////////
 
+			// Crouch
+			if(bn::keypad::down_held())
+			{
+				animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+																		   0,
+																		   bn::sprite_items::player.tiles_item(),
+																		   PLAYER_CROUCH_FRAME, PLAYER_CROUCH_FRAME);
+			}
+			// Look Up
+			else if(bn::keypad::up_held())
+			{
+				animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+																		   0,
+																		   bn::sprite_items::player.tiles_item(),
+																		   PLAYER_UP_FRAME, PLAYER_UP_FRAME);
+			}
+			// Neutral Pose
+			else
+			{
+				animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+																		   0,
+																		   bn::sprite_items::player.tiles_item(),
+																		   0, 0);
+			}
+
 			// Attack Ground 1
 			if(bn::keypad::b_pressed())
 			{setState(PLAYER_ATTACK_GROUND_1);}
@@ -377,12 +402,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 													PLAYER_X_DRIFT_LOCKOUT_FRAMES, 
 													remaining_x_drift_lockout_frames);
 
-			// Update Squish frames for squish eligibility // 
-			air_frames_elapsed++;
-			air_frames_elapsed = clamp(0, 
-									   PLAYER_MAX_AIR_FRAMES, 
-									   air_frames_elapsed);
-
 			// Update grace frames for a late jump //
 			late_jump_grace_frames--;
 			late_jump_grace_frames = clamp(0, 
@@ -421,12 +440,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			
 			// Add Gravity //
 			rigidbody.addForce(PLAYER_WALL_GRAVITY_FORCE);
-
-			// Update Squish frames for squish eligibility // 
-			air_frames_elapsed++;
-			air_frames_elapsed = clamp(0, 
-									   PLAYER_MAX_AIR_FRAMES, 
-									   air_frames_elapsed);
 			
 		break;
 		
@@ -460,13 +473,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			
 			// Add Gravity //
 			rigidbody.addForce(PLAYER_WALL_GRAVITY_FORCE);
-			
-			// Update Squish frames for squish eligibility // 
-			air_frames_elapsed++;
-			air_frames_elapsed = clamp(0, 
-									   PLAYER_MAX_AIR_FRAMES, 
-									   air_frames_elapsed);		   
-		
+					
 		break;
 
 		case PLAYER_PHASE_STEP:
@@ -906,12 +913,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			remaining_x_drift_lockout_frames = clamp(0, 
 													PLAYER_X_DRIFT_LOCKOUT_FRAMES, 
 													remaining_x_drift_lockout_frames);
-
-			// Update Squish frames for squish eligibility // 
-			air_frames_elapsed++;
-			air_frames_elapsed = clamp(0, 
-									   PLAYER_MAX_AIR_FRAMES, 
-									   air_frames_elapsed);
 
 			// Update grace frames for a late jump //
 			late_jump_grace_frames--;
@@ -1748,6 +1749,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						{
 							if(!bn::keypad::down_held()) 
 							{
+								if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+						  		   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+								{createLandEffect();}
+
 								grounded_detected = true;
 								rigidbody.removeYForces();
 							}
@@ -2243,6 +2248,12 @@ void Player::update(const RoomBounds& 								  room_bounds,
 		                                PLAYER_LATE_ROLL_JUMP_GRACE_FRAMES, 
 										late_roll_jump_grace_frames);
 
+	air_frames_elapsed++;
+	air_frames_elapsed = clamp(0, 
+							   PLAYER_MAX_AIR_FRAMES, 
+							   air_frames_elapsed);
+	if(grounded_detected) {air_frames_elapsed = 0;}
+
 	received_platform_force = false;
 
 	///////////////////////////
@@ -2355,7 +2366,6 @@ void Player::setState(ObjectState new_state)
 		case PLAYER_GROUNDED_NEUTRAL:
 
 			remaining_x_drift_lockout_frames = 0;
-			air_frames_elapsed               = 0;
 			late_jump_grace_frames           = PLAYER_LATE_JUMP_GRACE_FRAMES;
 			
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
@@ -2369,7 +2379,6 @@ void Player::setState(ObjectState new_state)
 		case PLAYER_WALK:
 
 			remaining_x_drift_lockout_frames = 0;
-			air_frames_elapsed               = 0;
 			late_jump_grace_frames           = PLAYER_LATE_JUMP_GRACE_FRAMES;
 
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
@@ -2385,7 +2394,6 @@ void Player::setState(ObjectState new_state)
 			rigidbody.removeForces();
 			remaining_x_drift_lockout_frames = 0;
 			remaining_jump_input_frames      = 0;
-			air_frames_elapsed               = 0;
 			late_jump_grace_frames           = 0;
 			x_dir                            = LEFT;
 
@@ -2402,7 +2410,6 @@ void Player::setState(ObjectState new_state)
 			rigidbody.removeForces();
 			remaining_x_drift_lockout_frames = 0;
 			remaining_jump_input_frames      = 0;
-			air_frames_elapsed               = 0;
 			late_jump_grace_frames           = 0;
 			x_dir                            = RIGHT;
 
@@ -2429,7 +2436,6 @@ void Player::setState(ObjectState new_state)
 			rigidbody.removeForces();
 
 			current_phase_frame              = 0;
-			air_frames_elapsed               = 0;
 			remaining_jump_input_frames      = 0;
 			remaining_x_drift_lockout_frames = 0;
 			late_jump_grace_frames           = PLAYER_LATE_JUMP_GRACE_FRAMES;
@@ -2448,7 +2454,6 @@ void Player::setState(ObjectState new_state)
 		case PLAYER_ATTACK_GROUND_1:
 
 			remaining_x_drift_lockout_frames = 0;
-			air_frames_elapsed = 0;
 
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 								  								  0,
@@ -2469,8 +2474,6 @@ void Player::setState(ObjectState new_state)
 		break;
 
 		case PLAYER_ROLL: 
-
-			air_frames_elapsed = 0;
 
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 																	   4,
