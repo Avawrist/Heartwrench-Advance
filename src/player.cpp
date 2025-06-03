@@ -232,7 +232,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 																		   0,
 																		   bn::sprite_items::player.tiles_item(),
-																		   0, 0);
+																		   PLAYER_NEUTRAL_FRAME, PLAYER_NEUTRAL_FRAME);
 			}
 
 			// Attack Ground 1
@@ -2371,8 +2371,8 @@ void Player::setState(ObjectState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  		  0,
 								  								  		  bn::sprite_items::player.tiles_item(),
-								  								  		  0,
-								  								  		  0);
+								  								  		  PLAYER_NEUTRAL_FRAME,
+								  								  		  PLAYER_NEUTRAL_FRAME);
 
 		break;
 
@@ -2400,8 +2400,8 @@ void Player::setState(ObjectState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  0,
 								  								  bn::sprite_items::player.tiles_item(),
-								  								  4,
-								  								  4);
+								  								  PLAYER_SLIDE_FRAME,
+								  								  PLAYER_SLIDE_FRAME);
 
 		break;
 
@@ -2416,8 +2416,8 @@ void Player::setState(ObjectState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  0,
 								  								  bn::sprite_items::player.tiles_item(),
-								  								  4,
-								  								  4);
+								  								  PLAYER_SLIDE_FRAME,
+								  								  PLAYER_SLIDE_FRAME);
 
 		break;
 
@@ -2426,8 +2426,8 @@ void Player::setState(ObjectState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  0,
 								  								  bn::sprite_items::player.tiles_item(),
-								  								  19,
-								  								  19);
+								  								  PLAYER_AIR_FRAME,
+								  								  PLAYER_AIR_FRAME);
 
 		break;
 
