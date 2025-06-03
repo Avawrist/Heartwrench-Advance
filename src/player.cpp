@@ -285,10 +285,16 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			
 			// Walk
 			if(bn::keypad::left_held())       
-			{rigidbody.addForce(PLAYER_X_LEFT_FORCE); x_dir = LEFT;}
+			{
+				rigidbody.addForce(PLAYER_X_LEFT_FORCE);
+				if(!late_roll_jump_grace_frames) {x_dir = LEFT;}
+			}
 
 			else if(bn::keypad::right_held()) 
-			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE); x_dir = RIGHT;}
+			{
+				rigidbody.addForce(PLAYER_X_RIGHT_FORCE); 
+				if(!late_roll_jump_grace_frames) {x_dir = RIGHT;}
+			}
 
 			// Attack Ground 1
 			if(bn::keypad::b_pressed())
@@ -2476,9 +2482,9 @@ void Player::setState(ObjectState new_state)
 		case PLAYER_ROLL: 
 
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-																	   4,
+																	   2,
 																	   bn::sprite_items::player.tiles_item(),
-																	   20, 21, 22, 23, 20, 21);
+																	   63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74);
 
 		break;
 
