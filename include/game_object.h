@@ -64,7 +64,7 @@
 // Struct GameObject //
 ///////////////////////
 
-#define GAME_OBJECT_MAX_ANIM_FRAMES 30
+#define GAME_OBJECT_MAX_ANIM_FRAMES 40
 
 #define GAME_OBJECT_Z_ORDER   0
 #define HIT_EFFECT_Z_ORDER   -1

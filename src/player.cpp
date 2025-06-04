@@ -2462,20 +2462,28 @@ void Player::setState(ObjectState new_state)
 			remaining_x_drift_lockout_frames = 0;
 
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-								  								  0,
-								  								  bn::sprite_items::player.tiles_item(),
-								  								  43, 44, 45, 46, 47, 48, 49, 50, 51, 
-																  52, 53, 54, 55, 56, 57, 58, 59);
+																		0,
+																		bn::sprite_items::player.tiles_item(),
+																		57, 57, 57, 57, 57, 57,
+																	    58, 58, 58, 58, 58, 58,
+																	    59, 59, 59, 59, 59, 59,
+																	    60, 60, 60, 60,
+																	    61, 61, 61,
+																	    62, 62, 62, 62, 62, 62, 62, 62);
 
 		break;
 
 		case PLAYER_ATTACK_AIR_1:
 
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-								  								  0,
-								  								  bn::sprite_items::player.tiles_item(),
-								  								  43, 44, 45, 46, 47, 48, 49, 50, 51, 
-																  52, 53, 54, 55, 56, 57, 58, 59);
+																		0,
+																		bn::sprite_items::player.tiles_item(),
+																		57, 57, 57, 57, 57, 57,
+																	    58, 58, 58, 58, 58, 58,
+																	    59, 59, 59, 59, 59, 59,
+																	    60, 60, 60, 60,
+																	    61, 61, 61,
+																	    62, 62, 62, 62, 62, 62, 62, 62);
 
 		break;
 
@@ -2484,7 +2492,7 @@ void Player::setState(ObjectState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 																	   2,
 																	   bn::sprite_items::player.tiles_item(),
-																	   63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74);
+																	   46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56);
 
 		break;
 
