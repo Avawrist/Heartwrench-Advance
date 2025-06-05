@@ -256,13 +256,13 @@ void Room::load(RoomName                                       room_name,
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
-            right_neighbor  = NO_ROOM;
+            right_neighbor  = ROOM_TEST_2;
             bottom_neighbor = NO_ROOM;
             left_neighbor   = NO_ROOM;
 
             room_bounds.top_bound    = -2428;
-            room_bounds.right_bound  = -4762;
-            room_bounds.bottom_bound = -2048;
+            room_bounds.right_bound  = -4784;
+            room_bounds.bottom_bound = -2064;
             room_bounds.left_bound   = -5120;
 
             // Add any special objects //
@@ -272,6 +272,15 @@ void Room::load(RoomName                                       room_name,
         case ROOM_TEST_2:
 
             // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = ROOM_TEST_1;
+
+            room_bounds.top_bound    = -2428;
+            room_bounds.right_bound  = -4256;
+            room_bounds.bottom_bound = -2064;
+            room_bounds.left_bound   = -4784;
 
             // Add any special objects //
     

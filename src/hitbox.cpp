@@ -171,8 +171,9 @@ void Hitbox::applyHit(GameObject& object)
         int32 y_offset = (height / 2) * y_offset_multiplier;
 
         // Global juice
-        if(object.hitpoints - damage <= 0)
-        {global_bg_hitflash_frames  = hitstop_frames;}
+        //if(object.hitpoints - damage <= 0)
+        //{global_bg_hitflash_frames  = hitstop_frames;}
+        global_bg_hitflash_frames   = hitstop_frames;
         global_hitstop_frames       = hitstop_frames;
         global_screenshake_frames   = screenshake_frames;
         global_screenshake_severity = screenshake_severity;
