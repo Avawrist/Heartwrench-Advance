@@ -36,6 +36,7 @@
 
 #define PLAYER_ATTACK_BUFFER_FRAMES 12
 #define PLAYER_ROLL_BUFFER_FRAMES   12
+#define PLAYER_JUMP_BUFFER_FRAMES   8
 
 #define PLAYER_MIN_X_SPEED 0
 #define PLAYER_MAX_X_SPEED 2
@@ -170,6 +171,7 @@ struct Player : GameObject {
 
 	int32 attack_buffered_frames;
 	int32 roll_buffered_frames;
+	int32 jump_buffered_frames;
 	int32 remaining_jump_input_frames;
 	int32 remaining_x_drift_lockout_frames;
 	int32 air_frames_elapsed;

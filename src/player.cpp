@@ -246,7 +246,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			{setState(PLAYER_ATTACK_GROUND_1);}
 
 			// Jump
-			else if(bn::keypad::a_pressed()) 
+			else if(bn::keypad::a_pressed() || jump_buffered_frames) 
 			{
 				if(late_roll_jump_grace_frames) {rollJump();}
 				else {jump();}
@@ -308,7 +308,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			{setState(PLAYER_ATTACK_GROUND_1);}
 
 			// Jump
-			else if(bn::keypad::a_pressed()) 
+			else if(bn::keypad::a_pressed() || jump_buffered_frames) 
 			{
 				if(late_roll_jump_grace_frames) {rollJump();}
 				else {jump();}
@@ -368,10 +368,11 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			   rigidbody.normalized_dir.y() > 0 && 
 			   air_frames_elapsed >= PLAYER_MIN_FAST_FALL_FRAMES)
 			{fastFall();}
-			
-			// Wall Jump
-			if(bn::keypad::a_pressed())
+	
+			// Jumps
+			if(bn::keypad::a_pressed()) 
 			{
+				// Wall Jump
 				if(right_wj_eligible)
 				{
 					x_dir = LEFT;
@@ -382,14 +383,14 @@ void Player::update(const RoomBounds& 								  room_bounds,
 					x_dir = RIGHT;
 					wallJump();
 				}
+				// Late Roll Jump
+				else if(late_roll_jump_grace_frames) {rollJump();}
+				// Late Jump
+				else if(late_jump_grace_frames) {jump();}
+				// Buffer Jump
+				else {jump_buffered_frames = PLAYER_JUMP_BUFFER_FRAMES;}
 			}
 
-			// Late Jump/Jump Roll
-			if(bn::keypad::a_pressed()) 
-			{
-				if(late_roll_jump_grace_frames) {rollJump();}
-				else if(late_jump_grace_frames) {jump();}
-			}
 
 			// Buffer Roll
 			if(bn::keypad::r_pressed())
@@ -2260,8 +2261,13 @@ void Player::update(const RoomBounds& 								  room_bounds,
 
 	roll_buffered_frames--;
 	roll_buffered_frames = clamp(0, 
-		 						   PLAYER_ROLL_BUFFER_FRAMES, 
-								   roll_buffered_frames);
+		 						 PLAYER_ROLL_BUFFER_FRAMES, 
+								 roll_buffered_frames);
+
+	jump_buffered_frames--;
+	jump_buffered_frames = clamp(0, 
+		 						   PLAYER_JUMP_BUFFER_FRAMES, 
+								   jump_buffered_frames);
 
 	v_collision_grace_frames--;
 	v_collision_grace_frames = clamp(0, 
