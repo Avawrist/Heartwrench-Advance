@@ -34,6 +34,9 @@
 
 #define PLAYER_MAX_HITPOINTS 3
 
+#define PLAYER_ATTACK_BUFFER_FRAMES 12
+#define PLAYER_ROLL_BUFFER_FRAMES   12
+
 #define PLAYER_MIN_X_SPEED 0
 #define PLAYER_MAX_X_SPEED 2
 #define PLAYER_X_DECAY     1
@@ -46,7 +49,7 @@
 #define PLAYER_WALL_JUMP_Y_FORCE          -6
 #define PLAYER_JUMP_DECAY                  0.04
 #define PLAYER_SECONDARY_JUMP_DECAY        1
-#define PLAYER_X_DRIFT_LOCKOUT_FRAMES      10
+#define PLAYER_X_DRIFT_LOCKOUT_FRAMES      0
 #define PLAYER_MAX_JUMP_INPUT_FRAMES       14
 #define PLAYER_MAX_WALL_JUMP_INPUT_FRAMES  10
 #define PLAYER_WALL_JUMP_DECAY             0.05
@@ -71,10 +74,10 @@
 #define PLAYER_PHASE_STEP_EXIT_DECAY   0.05
 #define PLAYER_PHASE_JUMP_LOCKOUT_FRAMES 5
 
-#define PLAYER_ATTACK_GROUND_1_X_OFFSET           32
+#define PLAYER_ATTACK_GROUND_1_X_OFFSET           24
 #define PLAYER_ATTACK_GROUND_1_Y_OFFSET           0
-#define PLAYER_ATTACK_GROUND_1_HB_WIDTH           16
-#define PLAYER_ATTACK_GROUND_1_HB_HEIGHT          16
+#define PLAYER_ATTACK_GROUND_1_HB_WIDTH           32
+#define PLAYER_ATTACK_GROUND_1_HB_HEIGHT          32
 #define PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME    18
 #define PLAYER_ATTACK_GROUND_1_HB_LIFESPAN_FRAMES 8
 #define PLAYER_ATTACK_GROUND_1_X_KNOCKBACK        12
@@ -86,10 +89,10 @@
 #define PLAYER_ATTACK_GROUND_1_SCREENSHAKE_FRAMES 15
 #define PLAYER_ATTACK_GROUND_1_SCREENSHAKE_SEVERITY STRONG_SHAKE
 
-#define PLAYER_ATTACK_AIR_1_X_OFFSET           32
+#define PLAYER_ATTACK_AIR_1_X_OFFSET           24
 #define PLAYER_ATTACK_AIR_1_Y_OFFSET           0
-#define PLAYER_ATTACK_AIR_1_HB_WIDTH           16
-#define PLAYER_ATTACK_AIR_1_HB_HEIGHT          16
+#define PLAYER_ATTACK_AIR_1_HB_WIDTH           32
+#define PLAYER_ATTACK_AIR_1_HB_HEIGHT          32
 #define PLAYER_ATTACK_AIR_1_CREATE_HB_FRAME    18
 #define PLAYER_ATTACK_AIR_1_HB_LIFESPAN_FRAMES 8
 #define PLAYER_ATTACK_AIR_1_X_KNOCKBACK        8
@@ -165,6 +168,8 @@ struct Player : GameObject {
 	bn::fixed       wall_ride_gravity;
 	bn::fixed_point phase_destination;
 
+	int32 attack_buffered_frames;
+	int32 roll_buffered_frames;
 	int32 remaining_jump_input_frames;
 	int32 remaining_x_drift_lockout_frames;
 	int32 air_frames_elapsed;

@@ -39,6 +39,8 @@ Player::Player()
 	phase_destination    = bn::fixed_point(0, 0);
 	
 	hitpoints                        = PLAYER_MAX_HITPOINTS;
+	attack_buffered_frames           = 0;
+	roll_buffered_frames             = 0;
 	remaining_jump_input_frames      = 0;
 	remaining_x_drift_lockout_frames = 0;
 	air_frames_elapsed               = 0;
@@ -84,6 +86,8 @@ Player::Player(const Player& other) : GameObject(other)
 
 	phase_destination    = other.phase_destination;
 	
+	attack_buffered_frames           = other.attack_buffered_frames;
+	roll_buffered_frames             = other.roll_buffered_frames;
 	remaining_jump_input_frames      = other.remaining_jump_input_frames;
 	remaining_x_drift_lockout_frames = other.remaining_x_drift_lockout_frames;
 	air_frames_elapsed               = other.air_frames_elapsed;
@@ -146,6 +150,8 @@ Player& Player::operator =(const Player& other)
 
 	phase_destination    = other.phase_destination;
 	
+	attack_buffered_frames           = other.attack_buffered_frames;
+	roll_buffered_frames             = other.roll_buffered_frames;
 	remaining_jump_input_frames      = other.remaining_jump_input_frames;
 	remaining_x_drift_lockout_frames = other.remaining_x_drift_lockout_frames;
 	air_frames_elapsed               = other.air_frames_elapsed;
@@ -236,7 +242,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			}
 
 			// Attack Ground 1
-			if(bn::keypad::b_pressed())
+			if(bn::keypad::b_pressed() || attack_buffered_frames)
 			{setState(PLAYER_ATTACK_GROUND_1);}
 
 			// Jump
@@ -247,7 +253,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			}
 
 			// Roll
-			else if(bn::keypad::r_pressed()) {setState(PLAYER_ROLL);}
+			else if(bn::keypad::r_pressed() || roll_buffered_frames) 
+			{setState(PLAYER_ROLL);}
 
 			// Add Gravity if Grounded on OWP
 			if(grounded_owp_detected) {rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
@@ -297,7 +304,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			}
 
 			// Attack Ground 1
-			if(bn::keypad::b_pressed())
+			if(bn::keypad::b_pressed() || attack_buffered_frames)
 			{setState(PLAYER_ATTACK_GROUND_1);}
 
 			// Jump
@@ -308,7 +315,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			}
 
 			// Roll
-			else if(bn::keypad::r_pressed()) {setState(PLAYER_ROLL);}
+			else if(bn::keypad::r_pressed() || roll_buffered_frames) {setState(PLAYER_ROLL);}
 
 			// Add Gravity if Grounded on OWP
 			if(grounded_owp_detected) {rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
@@ -353,7 +360,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE); x_dir = RIGHT;}
 
 			// Attack Air 1
-			if(bn::keypad::b_pressed())
+			if(bn::keypad::b_pressed() || attack_buffered_frames)
 			{setState(PLAYER_ATTACK_AIR_1);}
 
 			// Fast Fall
@@ -383,6 +390,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				if(late_roll_jump_grace_frames) {rollJump();}
 				else if(late_jump_grace_frames) {jump();}
 			}
+
+			// Buffer Roll
+			if(bn::keypad::r_pressed())
+			{roll_buffered_frames = PLAYER_ROLL_BUFFER_FRAMES;}
 
 			// High Jump
 			if(bn::keypad::a_held() && remaining_jump_input_frames > 0)
@@ -957,6 +968,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Roll Jump
 			if(bn::keypad::a_pressed()) 
 			{rollJump();}
+
+			// Buffer Attack
+			if(bn::keypad::b_pressed())
+			{attack_buffered_frames = PLAYER_ATTACK_BUFFER_FRAMES;}
 
 			// Add Gravity //
 			rigidbody.addForce(PLAYER_GRAVITY_FORCE);
@@ -2202,6 +2217,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
     ///////////////////
 
 	if(state != PLAYER_ATTACK_GROUND_1 &&
+	   state != PLAYER_ATTACK_AIR_1    &&
 	   state != PLAYER_PHASE_STEP      &&
 	   state != PLAYER_ROLL            &&
 	   state != OBJECT_DEATH)
@@ -2228,21 +2244,24 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	
 		// Set the state
 
-		// Special case for air attack, let landing end
-		// the attack state.
-		if(state == PLAYER_ATTACK_AIR_1)
-		{
-			if(new_state == PLAYER_GROUNDED_NEUTRAL) 
-			{setState(new_state);}
-		}
-		// Otherwise, if the new state is new and not current state,
+		// If the new state is new and not current state,
 		// set the new state.
-		else if(new_state != state) {setState(new_state);}
+		if(new_state != state) {setState(new_state);}
 	}
 
 	///////////////////
 	// Update Timers //
 	///////////////////
+
+	attack_buffered_frames--;
+	attack_buffered_frames = clamp(0, 
+		 						   PLAYER_ATTACK_BUFFER_FRAMES, 
+								   attack_buffered_frames);
+
+	roll_buffered_frames--;
+	roll_buffered_frames = clamp(0, 
+		 						   PLAYER_ROLL_BUFFER_FRAMES, 
+								   roll_buffered_frames);
 
 	v_collision_grace_frames--;
 	v_collision_grace_frames = clamp(0, 
@@ -2501,8 +2520,8 @@ void Player::setState(ObjectState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 								 0,
 								 bn::sprite_items::player.tiles_item(),
-								 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 
-								 18, 19, 20, 21, 22, 23);
+								 24, 25, 26, 27, 28, 29, 30, 31, 32, 
+								 33, 34, 35, 36, 37, 38, 39, 40, 41);
 
 
 		break;
