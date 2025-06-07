@@ -847,11 +847,14 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			}
 			
 			// Walk
-			if(bn::keypad::left_held())       
-			{rigidbody.addForce(PLAYER_X_LEFT_FORCE); x_dir = LEFT;}
+			if(animate_action_ptr->current_index() < PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME)
+			{
+				if(bn::keypad::left_held())       
+				{rigidbody.addForce(PLAYER_X_LEFT_FORCE); x_dir = LEFT;}
 
-			else if(bn::keypad::right_held()) 
-			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE); x_dir = RIGHT;}
+				else if(bn::keypad::right_held()) 
+				{rigidbody.addForce(PLAYER_X_RIGHT_FORCE); x_dir = RIGHT;}
+			}
 
 			// Buffer Jump
 			if(bn::keypad::a_pressed())
@@ -906,11 +909,14 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			}
 
 			// Drift
-			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames)       
-			{rigidbody.addForce(PLAYER_X_LEFT_FORCE);}
+			if(animate_action_ptr->current_index() < PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME)
+			{
+				if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames)       
+				{rigidbody.addForce(PLAYER_X_LEFT_FORCE);}
 
-			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames)
-			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE);}
+				else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames)
+				{rigidbody.addForce(PLAYER_X_RIGHT_FORCE);}
+			}
 			
 			// High Jump
 			if(bn::keypad::a_held() && remaining_jump_input_frames > 0)
