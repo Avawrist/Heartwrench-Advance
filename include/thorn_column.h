@@ -18,7 +18,7 @@
 // Struct ThornColumn //
 ////////////////////////
 
-#define THORN_COLUMN_COLLIDER_WIDTH    18
+#define THORN_COLUMN_COLLIDER_WIDTH    22
 #define THORN_COLUMN_COLLIDER_HEIGHT   64
 #define THORN_COLUMN_COLLIDER_OFFSET_X 0
 #define THORN_COLUMN_COLLIDER_OFFSET_Y 0
