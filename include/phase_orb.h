@@ -19,7 +19,7 @@
 #define PHASE_ORB_COLLIDER_OFFSET_X 0
 #define PHASE_ORB_COLLIDER_OFFSET_Y 0
 
-#define PHASE_DISTANCE 160
+#define PHASE_DISTANCE 192
 
 /////////////////////
 // Struct PhaseOrb //

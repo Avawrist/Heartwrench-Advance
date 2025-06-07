@@ -110,7 +110,9 @@ void Hitbox::update(const RoomBounds&                              room_bounds,
 
         switch(game_objects.at(i)->object_type)
         {
-                
+            // Level Enemies
+            case THORN_COLUMN:
+            case THORN_BAR:
             case CEILING_GHOUL:
             case GROUND_GHOUL:
             case WALL_LEFT_GHOUL:
@@ -194,7 +196,7 @@ void Hitbox::applyHit(GameObject& object)
 
         // Object juice:
         object.setHitFlash();
-        object.setHorizontalStretch();
+        //object.setHorizontalStretch();
         object.applyHitEffect(x().integer() + x_offset,
                               y().integer() + y_offset);
     }

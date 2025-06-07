@@ -18,15 +18,21 @@
 #include "room_bounds.h"
 #include "utility.h"
 #include "collider.h"
+
 #include "game_object.h"
+
 #include "player.h"
 #include "tile_passage.h"
 #include "phase_orb.h"
+#include "thorn_column.h"
+#include "thorn_bar.h"
+
+#include "test_enemy.h"
 #include "ground_ghoul.h"
 #include "ceiling_ghoul.h"
 #include "wall_left_ghoul.h"
 #include "wall_right_ghoul.h"
-#include "test_enemy.h"
+
 #include "devil_platform.h"
 #include "angel_platform.h"
 
@@ -39,6 +45,8 @@ enum RoomName
     NO_ROOM = 0,
     ROOM_TEST_1,
     ROOM_TEST_2,
+    ROOM_TEST_3,
+    ROOM_TEST_4,
 };
 
 struct Room

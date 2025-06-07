@@ -250,6 +250,9 @@ void Level::updateCamera()
             cam_is_scrolling = false;
         }
 
+        // Do an unloaded object sweep since it won't happen otherwise if the cam is moving!
+        current_room.monitorUnloadedObjects(camera.value());
+
     }
     else
     {

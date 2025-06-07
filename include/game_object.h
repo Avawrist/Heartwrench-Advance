@@ -44,6 +44,8 @@
 #include "bn_sprite_items_phase_orb_down.h"
 #include "bn_sprite_items_phase_orb_left.h"
 #include "bn_sprite_items_phase_orb_right.h"
+#include "bn_sprite_items_thorn_column.h"
+#include "bn_sprite_items_thorn_bar.h"
 
 // Enemy Object Assets
 #include "bn_sprite_items_ceiling_ghoul.h"
@@ -75,7 +77,7 @@
 
 #define GAME_OBJECT_IGNORE_OWP_FRAMES 3
 
-#define GAME_OBJECT_HIT_INVULNERABILITY_FRAMES 60
+#define GAME_OBJECT_HIT_INVULNERABILITY_FRAMES 30
 #define GAME_OBJECT_MAX_HIT_FLASH_FRAMES       8
 
 #define GAME_OBJECT_SPRITE_OFFSET_INCREMENT 0.1
@@ -116,6 +118,8 @@ enum ObjectType
 	PHASE_ORB_RIGHT,
 
 	// Level Enemies
+	THORN_COLUMN,
+	THORN_BAR,
 	GROUND_GHOUL,
 	CEILING_GHOUL,
 	WALL_LEFT_GHOUL,

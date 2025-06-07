@@ -41,6 +41,7 @@ Player::Player()
 	hitpoints                        = PLAYER_MAX_HITPOINTS;
 	attack_buffered_frames           = 0;
 	roll_buffered_frames             = 0;
+	jump_buffered_frames             = 0;
 	remaining_jump_input_frames      = 0;
 	remaining_x_drift_lockout_frames = 0;
 	air_frames_elapsed               = 0;
@@ -88,6 +89,7 @@ Player::Player(const Player& other) : GameObject(other)
 	
 	attack_buffered_frames           = other.attack_buffered_frames;
 	roll_buffered_frames             = other.roll_buffered_frames;
+	jump_buffered_frames             = other.jump_buffered_frames;
 	remaining_jump_input_frames      = other.remaining_jump_input_frames;
 	remaining_x_drift_lockout_frames = other.remaining_x_drift_lockout_frames;
 	air_frames_elapsed               = other.air_frames_elapsed;
@@ -152,6 +154,7 @@ Player& Player::operator =(const Player& other)
 	
 	attack_buffered_frames           = other.attack_buffered_frames;
 	roll_buffered_frames             = other.roll_buffered_frames;
+	jump_buffered_frames             = other.jump_buffered_frames;
 	remaining_jump_input_frames      = other.remaining_jump_input_frames;
 	remaining_x_drift_lockout_frames = other.remaining_x_drift_lockout_frames;
 	air_frames_elapsed               = other.air_frames_elapsed;
@@ -850,6 +853,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			else if(bn::keypad::right_held()) 
 			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE); x_dir = RIGHT;}
 
+			// Buffer Jump
+			if(bn::keypad::a_pressed())
+			{jump_buffered_frames = PLAYER_JUMP_BUFFER_FRAMES;}
+
 			// Add Gravity //
 			rigidbody.addForce(PLAYER_GRAVITY_FORCE);
 			if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
@@ -969,6 +976,10 @@ void Player::update(const RoomBounds& 								  room_bounds,
 			// Roll Jump
 			if(bn::keypad::a_pressed()) 
 			{rollJump();}
+
+			// Buffer Roll
+			if(bn::keypad::r_pressed())
+			{roll_buffered_frames = PLAYER_ROLL_BUFFER_FRAMES;}
 
 			// Buffer Attack
 			if(bn::keypad::b_pressed())
@@ -1547,6 +1558,8 @@ void Player::update(const RoomBounds& 								  room_bounds,
 		for(int32 i = 0; i < game_objects.size(); i++)
 		{
 			other_collider = game_objects.at(i)->collider;
+			int32 thorn_collision_x_offset;
+			int32 thorn_collision_y_offset;
 
 			switch(game_objects.at(i)->object_type)
 			{
@@ -1638,6 +1651,44 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						phase_dir = PHASE_RIGHT;
 						setPos(game_objects.at(i)->pos());
 						setState(PLAYER_PHASE_STEP);
+					}
+
+				break;
+
+				case THORN_COLUMN:
+
+					thorn_collision_x_offset = collider.getCollisionXOffset(other_collider, rigidbody.normalized_dir.x()).integer();
+					
+					if(state != PLAYER_ROLL && 
+					   thorn_collision_x_offset != 0 && 
+					   hitpoints > 0)
+					{
+						int32 knockback_x_dir = abs(thorn_collision_x_offset) / thorn_collision_x_offset;
+
+						rigidbody.removeForces();
+						rigidbody.addForce(Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * knockback_x_dir, 
+																	   PLAYER_DEATH_Y_FORCE * 0),
+																	   PLAYER_DEATH_DECAY));
+						hitpoints = 0;
+					}
+
+				break;
+
+				case THORN_BAR:
+
+					thorn_collision_y_offset = collider.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y()).integer();
+					
+					if(state != PLAYER_ROLL && 
+					   thorn_collision_y_offset != 0 && 
+					   hitpoints > 0)
+					{
+						int32 knockback_y_dir = abs(thorn_collision_y_offset) / thorn_collision_y_offset;
+
+						rigidbody.removeForces();
+						rigidbody.addForce(Force(bn::fixed_point_t<12>(PLAYER_DEATH_X_FORCE * 0, 
+																	   PLAYER_DEATH_Y_FORCE * knockback_y_dir),
+																	   PLAYER_DEATH_DECAY));
+						hitpoints = 0;
 					}
 
 				break;
@@ -1786,9 +1837,9 @@ void Player::update(const RoomBounds& 								  room_bounds,
 						tile_index == UP_SPIKE_BLOCK_2_INDEX)
 				{
 					other_collider = Collider(world_x,
-												world_y, 
-												TILE_WIDTH, 
-												TILE_HEIGHT);
+											  world_y, 
+											  TILE_WIDTH, 
+											  TILE_HEIGHT);
 					
 					if(collider.isCollision(other_collider) && hitpoints > 0)
 					{

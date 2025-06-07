@@ -174,6 +174,14 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             temp_object_ptr = new TilePassage();
         break;
 
+        case THORN_COLUMN:
+            temp_object_ptr = new ThornColumn();
+        break;
+
+        case THORN_BAR:
+            temp_object_ptr = new ThornBar();
+        break;
+
         case DEVIL_PLATFORM:
         case ANGEL_PLATFORM:
         case SCYTHE_PLATFORM:
@@ -272,14 +280,48 @@ void Room::load(RoomName                                       room_name,
         case ROOM_TEST_2:
 
             // Init Variables //
-            top_neighbor    = NO_ROOM;
-            right_neighbor  = NO_ROOM;
+            top_neighbor    = ROOM_TEST_4;
+            right_neighbor  = ROOM_TEST_3;
             bottom_neighbor = NO_ROOM;
             left_neighbor   = ROOM_TEST_1;
 
-            room_bounds.top_bound    = -2428;
-            room_bounds.right_bound  = -4256;
+            room_bounds.top_bound    = -2256;
+            room_bounds.right_bound  = -4368;
             room_bounds.bottom_bound = -2064;
+            room_bounds.left_bound   = -4784;
+
+            // Add any special objects //
+    
+        break;
+
+        case ROOM_TEST_3:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = ROOM_TEST_2;
+
+            room_bounds.top_bound    = -2428;
+            room_bounds.right_bound  = -4000;
+            room_bounds.bottom_bound = -2064;
+            room_bounds.left_bound   = -4368;
+
+            // Add any special objects //
+    
+        break;
+
+        case ROOM_TEST_4:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = ROOM_TEST_2;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.top_bound    = -2432;
+            room_bounds.right_bound  = -4368;
+            room_bounds.bottom_bound = -2256;
             room_bounds.left_bound   = -4784;
 
             // Add any special objects //

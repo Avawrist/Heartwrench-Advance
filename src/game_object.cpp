@@ -642,7 +642,8 @@ UnloadedObject::UnloadedObject()
 
 UnloadedObject::UnloadedObject(bn::point _room_pos, ObjectType _object_type)
 {
-    room_pos           = _room_pos;
+    #define Y_PIXEL_OFFSET 1
+    room_pos           = bn::point(_room_pos.x(), _room_pos.y() + Y_PIXEL_OFFSET);
     object_type        = _object_type;
     loaded_instance_id = UNLOADED_OBJECT_STATE_UNLOADED;
 }
