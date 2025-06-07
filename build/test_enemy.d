@@ -87,6 +87,8 @@ test_enemy.o: G:/game/src/test_enemy.cpp G:/game/include/test_enemy.h \
  G:/game/build/bn_sprite_items_phase_orb_down.h \
  G:/game/build/bn_sprite_items_phase_orb_left.h \
  G:/game/build/bn_sprite_items_phase_orb_right.h \
+ G:/game/build/bn_sprite_items_thorn_column.h \
+ G:/game/build/bn_sprite_items_thorn_bar.h \
  G:/game/build/bn_sprite_items_ceiling_ghoul.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h \
  G:/game/build/bn_sprite_items_wall_left_ghoul.h \
@@ -191,6 +193,8 @@ G:/game/build/bn_sprite_items_phase_orb_up.h:
 G:/game/build/bn_sprite_items_phase_orb_down.h:
 G:/game/build/bn_sprite_items_phase_orb_left.h:
 G:/game/build/bn_sprite_items_phase_orb_right.h:
+G:/game/build/bn_sprite_items_thorn_column.h:
+G:/game/build/bn_sprite_items_thorn_bar.h:
 G:/game/build/bn_sprite_items_ceiling_ghoul.h:
 G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/build/bn_sprite_items_wall_left_ghoul.h:
