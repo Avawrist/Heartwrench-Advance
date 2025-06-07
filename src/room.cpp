@@ -182,6 +182,10 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             temp_object_ptr = new ThornBar();
         break;
 
+        case FALLING_PLATFORM_WIDE:
+            temp_object_ptr = new FallingPlatformWide();
+        break;
+
         case DEVIL_PLATFORM:
         case ANGEL_PLATFORM:
         case SCYTHE_PLATFORM:

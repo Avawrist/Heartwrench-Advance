@@ -35,6 +35,7 @@
 
 #include "devil_platform.h"
 #include "angel_platform.h"
+#include "falling_platform_wide.h"
 
 /////////////////
 // Struct Room //

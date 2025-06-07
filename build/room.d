@@ -111,7 +111,7 @@ room.o: G:/game/src/room.cpp G:/game/include/room.h \
  G:/game/include/wall_left_ghoul.h G:/game/include/wall_right_ghoul.h \
  G:/game/include/thorn_column.h G:/game/include/thorn_bar.h \
  G:/game/include/test_enemy.h G:/game/include/devil_platform.h \
- G:/game/include/angel_platform.h
+ G:/game/include/angel_platform.h G:/game/include/falling_platform_wide.h
 G:/game/include/room.h:
 G:/butano-master/butano/include/bn_log.h:
 G:/butano-master/butano/include/bn_config_log.h:
@@ -237,3 +237,4 @@ G:/game/include/thorn_bar.h:
 G:/game/include/test_enemy.h:
 G:/game/include/devil_platform.h:
 G:/game/include/angel_platform.h:
+G:/game/include/falling_platform_wide.h:
