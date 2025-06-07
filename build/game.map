@@ -6761,18 +6761,18 @@ Linker script and memory map
  .text._ZN6Player16createLandEffectEv
                 0x080071ec      0x2b0 player.o
                 0x080071ec                Player::createLandEffect()
- .text._ZN6Player16createJumpEffectEv
-                0x0800749c      0x2c8 player.o
-                0x0800749c                Player::createJumpEffect()
  .text._ZN6Player19createAirJumpEffectEv
-                0x08007764      0x2c8 player.o
-                0x08007764                Player::createAirJumpEffect()
+                0x0800749c      0x2c8 player.o
+                0x0800749c                Player::createAirJumpEffect()
+ .text._ZN6Player16createJumpEffectEv
+                0x08007764      0x2d0 player.o
+                0x08007764                Player::createJumpEffect()
  .text._ZN6Player4jumpEv
-                0x08007a2c       0x54 player.o
-                0x08007a2c                Player::jump()
+                0x08007a34       0x50 player.o
+                0x08007a34                Player::jump()
  .text._ZN6Player8rollJumpEv
-                0x08007a80       0x7c player.o
-                0x08007a80                Player::rollJump()
+                0x08007a84       0x78 player.o
+                0x08007a84                Player::rollJump()
  .text._ZN6Player20createWallJumpEffectEv
                 0x08007afc      0x2e8 player.o
                 0x08007afc                Player::createWallJumpEffect()
@@ -10007,7 +10007,7 @@ Linker script and memory map
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000   0x4606da
+.debug_info     0x00000000   0x460737
  *(.debug_info)
  .debug_info    0x00000000    0x1330b angel_platform.o
  .debug_info    0x0001330b    0x15946 ceiling_ghoul.o
@@ -10020,86 +10020,86 @@ Linker script and memory map
  .debug_info    0x0009c078     0xbe22 main.o
  .debug_info    0x000a7e9a    0x149b3 phase_orb.o
  .debug_info    0x000bc84d     0x8781 physics.o
- .debug_info    0x000c4fce    0x31de2 player.o
- .debug_info    0x000f6db0     0xfb1b room.o
- .debug_info    0x001068cb     0x44be room_bounds.o
- .debug_info    0x0010ad89    0x11a4b test_enemy.o
- .debug_info    0x0011c7d4    0x111fd thorn_bar.o
- .debug_info    0x0012d9d1    0x111fd thorn_column.o
- .debug_info    0x0013ebce    0x12698 tile_passage.o
- .debug_info    0x00151266     0x96d1 utility.o
- .debug_info    0x0015a937    0x15948 wall_left_ghoul.o
- .debug_info    0x0017027f    0x1597d wall_right_ghoul.o
- .debug_info    0x00185bfc     0xdd4d bn_affine_bg_animate_actions.o
- .debug_info    0x00193949    0x1bb5e bn_audio_manager.o
- .debug_info    0x001af4a7     0x78df bn_best_fit_allocator.o
- .debug_info    0x001b6d86    0x4c106 bn_bg_blocks_manager.o
- .debug_info    0x00202e8c    0x57014 bn_bgs_manager.o
- .debug_info    0x00259ea0     0x7d52 bn_cameras_manager.o
- .debug_info    0x00261bf2     0xade3 bn_core.o
- .debug_info    0x0026c9d5    0x24eb8 bn_display_manager.o
- .debug_info    0x0029188d     0x7ec9 bn_gpio_manager.o
- .debug_info    0x00299756    0x64173 bn_hblank_effects_manager.o
- .debug_info    0x002fd8c9     0x5380 bn_hdma_manager.o
- .debug_info    0x00302c49     0x5dad bn_keypad_manager.o
- .debug_info    0x003089f6     0x76ed bn_link_manager.o
- .debug_info    0x003100e3     0x8868 bn_memory_manager.o
- .debug_info    0x0031894b    0x21bcd bn_palettes_manager.o
- .debug_info    0x0033a518     0x81ae bn_profiler.o
- .debug_info    0x003426c6    0x1a5e5 bn_sprite_affine_mats_manager.o
- .debug_info    0x0035ccab     0xd5db bn_sprite_animate_actions.o
- .debug_info    0x0036a286    0x2913d bn_sprite_text_generator.o
- .debug_info    0x003933c3    0x1bc48 bn_sprite_tiles_manager.o
- .debug_info    0x003af00b     0xc3c4 bn_sprites_manager.bn_iwram.o
- .debug_info    0x003bb3cf    0x44ee3 bn_sprites_manager.o
- .debug_info    0x004002b2     0xb1c4 bn_sstream.o
- .debug_info    0x0040b476    0x18a02 bn_translation_unit.o
- .debug_info    0x00423e78     0x7e30 bn_hw_audio.o
- .debug_info    0x0042bca8     0x1c57 bn_hw_common.bn_noflto.o
- .debug_info    0x0042d8ff     0x19bc bn_hw_cstdlib.o
- .debug_info    0x0042f2bb      0x614 bn_hw_game_pak.bn_ewram.o
- .debug_info    0x0042f8cf     0x4067 bn_hw_gpio.bn_noflto.o
- .debug_info    0x00433936     0x7dba bn_hw_link.o
- .debug_info    0x0043b6f0      0x4c2 bn_hw_memory.o
- .debug_info    0x0043bbb2     0x1378 bn_hw_palettes.bn_iwram.o
- .debug_info    0x0043cf2a     0x5473 bn_hw_palettes.o
- .debug_info    0x0044239d    0x1206f bn_hw_show.o
- .debug_info    0x0045440c      0x55b bn_hw_sram.bn_noflto.o
- .debug_info    0x00454967      0x751 bn_hw_system_font.o
- .debug_info    0x004550b8     0x5532 bn_hw_text.o
- .debug_info    0x0045a5ea      0x778 vgm.o
- .debug_info    0x0045ad62      0xc2e tonc_color.o
- .debug_info    0x0045b990      0x994 tonc_sbmp16.o
- .debug_info    0x0045c324      0x6ab bmp16_drawg_b1cs.o
- .debug_info    0x0045c9cf      0x578 tte_init_bmp.o
- .debug_info    0x0045cf47      0xe1a tte_main.o
- .debug_info    0x0045dd61      0x241 interrupts_gba.o
- .debug_info    0x0045dfa2     0x2203 gbt_player.o
- .debug_info    0x004601a5       0x23 bn_hw_bg_blocks.o
- .debug_info    0x004601c8       0x24 bn_hw_hblank_effects.o
- .debug_info    0x004601ec       0x23 bn_hw_palettes_asm.o
- .debug_info    0x0046020f       0x30 clr_blend_fast.o
- .debug_info    0x0046023f       0x23 clr_fade_fast.o
- .debug_info    0x00460262      0x1c8 tonc_bios.o
- .debug_info    0x0046042a       0x3a tonc_memset.o
- .debug_info    0x00460464       0x24 irq_handler.o
- .debug_info    0x00460488       0x24 posprintf.o
- .debug_info    0x004604ac       0x22 lmul.o
- .debug_info    0x004604ce       0x22 memcpy.o
- .debug_info    0x004604f0       0x22 memmove.o
- .debug_info    0x00460512       0x22 memset.o
- .debug_info    0x00460534       0x22 rmemcpy.o
- .debug_info    0x00460556       0x23 sdiv32.o
- .debug_info    0x00460579       0x24 udiv32.o
- .debug_info    0x0046059d       0x24 huffman.o
- .debug_info    0x004605c1       0x24 lz77.o
- .debug_info    0x004605e5       0x24 running_length.o
- .debug_info    0x00460609       0x24 mm_effect.o
- .debug_info    0x0046062d       0x23 mm_main.o
- .debug_info    0x00460650       0x22 mm_mas.o
- .debug_info    0x00460672       0x24 mm_mas_arm.o
- .debug_info    0x00460696       0x22 mm_main_gba.o
- .debug_info    0x004606b8       0x22 mm_mixer_gba.o
+ .debug_info    0x000c4fce    0x31e3f player.o
+ .debug_info    0x000f6e0d     0xfb1b room.o
+ .debug_info    0x00106928     0x44be room_bounds.o
+ .debug_info    0x0010ade6    0x11a4b test_enemy.o
+ .debug_info    0x0011c831    0x111fd thorn_bar.o
+ .debug_info    0x0012da2e    0x111fd thorn_column.o
+ .debug_info    0x0013ec2b    0x12698 tile_passage.o
+ .debug_info    0x001512c3     0x96d1 utility.o
+ .debug_info    0x0015a994    0x15948 wall_left_ghoul.o
+ .debug_info    0x001702dc    0x1597d wall_right_ghoul.o
+ .debug_info    0x00185c59     0xdd4d bn_affine_bg_animate_actions.o
+ .debug_info    0x001939a6    0x1bb5e bn_audio_manager.o
+ .debug_info    0x001af504     0x78df bn_best_fit_allocator.o
+ .debug_info    0x001b6de3    0x4c106 bn_bg_blocks_manager.o
+ .debug_info    0x00202ee9    0x57014 bn_bgs_manager.o
+ .debug_info    0x00259efd     0x7d52 bn_cameras_manager.o
+ .debug_info    0x00261c4f     0xade3 bn_core.o
+ .debug_info    0x0026ca32    0x24eb8 bn_display_manager.o
+ .debug_info    0x002918ea     0x7ec9 bn_gpio_manager.o
+ .debug_info    0x002997b3    0x64173 bn_hblank_effects_manager.o
+ .debug_info    0x002fd926     0x5380 bn_hdma_manager.o
+ .debug_info    0x00302ca6     0x5dad bn_keypad_manager.o
+ .debug_info    0x00308a53     0x76ed bn_link_manager.o
+ .debug_info    0x00310140     0x8868 bn_memory_manager.o
+ .debug_info    0x003189a8    0x21bcd bn_palettes_manager.o
+ .debug_info    0x0033a575     0x81ae bn_profiler.o
+ .debug_info    0x00342723    0x1a5e5 bn_sprite_affine_mats_manager.o
+ .debug_info    0x0035cd08     0xd5db bn_sprite_animate_actions.o
+ .debug_info    0x0036a2e3    0x2913d bn_sprite_text_generator.o
+ .debug_info    0x00393420    0x1bc48 bn_sprite_tiles_manager.o
+ .debug_info    0x003af068     0xc3c4 bn_sprites_manager.bn_iwram.o
+ .debug_info    0x003bb42c    0x44ee3 bn_sprites_manager.o
+ .debug_info    0x0040030f     0xb1c4 bn_sstream.o
+ .debug_info    0x0040b4d3    0x18a02 bn_translation_unit.o
+ .debug_info    0x00423ed5     0x7e30 bn_hw_audio.o
+ .debug_info    0x0042bd05     0x1c57 bn_hw_common.bn_noflto.o
+ .debug_info    0x0042d95c     0x19bc bn_hw_cstdlib.o
+ .debug_info    0x0042f318      0x614 bn_hw_game_pak.bn_ewram.o
+ .debug_info    0x0042f92c     0x4067 bn_hw_gpio.bn_noflto.o
+ .debug_info    0x00433993     0x7dba bn_hw_link.o
+ .debug_info    0x0043b74d      0x4c2 bn_hw_memory.o
+ .debug_info    0x0043bc0f     0x1378 bn_hw_palettes.bn_iwram.o
+ .debug_info    0x0043cf87     0x5473 bn_hw_palettes.o
+ .debug_info    0x004423fa    0x1206f bn_hw_show.o
+ .debug_info    0x00454469      0x55b bn_hw_sram.bn_noflto.o
+ .debug_info    0x004549c4      0x751 bn_hw_system_font.o
+ .debug_info    0x00455115     0x5532 bn_hw_text.o
+ .debug_info    0x0045a647      0x778 vgm.o
+ .debug_info    0x0045adbf      0xc2e tonc_color.o
+ .debug_info    0x0045b9ed      0x994 tonc_sbmp16.o
+ .debug_info    0x0045c381      0x6ab bmp16_drawg_b1cs.o
+ .debug_info    0x0045ca2c      0x578 tte_init_bmp.o
+ .debug_info    0x0045cfa4      0xe1a tte_main.o
+ .debug_info    0x0045ddbe      0x241 interrupts_gba.o
+ .debug_info    0x0045dfff     0x2203 gbt_player.o
+ .debug_info    0x00460202       0x23 bn_hw_bg_blocks.o
+ .debug_info    0x00460225       0x24 bn_hw_hblank_effects.o
+ .debug_info    0x00460249       0x23 bn_hw_palettes_asm.o
+ .debug_info    0x0046026c       0x30 clr_blend_fast.o
+ .debug_info    0x0046029c       0x23 clr_fade_fast.o
+ .debug_info    0x004602bf      0x1c8 tonc_bios.o
+ .debug_info    0x00460487       0x3a tonc_memset.o
+ .debug_info    0x004604c1       0x24 irq_handler.o
+ .debug_info    0x004604e5       0x24 posprintf.o
+ .debug_info    0x00460509       0x22 lmul.o
+ .debug_info    0x0046052b       0x22 memcpy.o
+ .debug_info    0x0046054d       0x22 memmove.o
+ .debug_info    0x0046056f       0x22 memset.o
+ .debug_info    0x00460591       0x22 rmemcpy.o
+ .debug_info    0x004605b3       0x23 sdiv32.o
+ .debug_info    0x004605d6       0x24 udiv32.o
+ .debug_info    0x004605fa       0x24 huffman.o
+ .debug_info    0x0046061e       0x24 lz77.o
+ .debug_info    0x00460642       0x24 running_length.o
+ .debug_info    0x00460666       0x24 mm_effect.o
+ .debug_info    0x0046068a       0x23 mm_main.o
+ .debug_info    0x004606ad       0x22 mm_mas.o
+ .debug_info    0x004606cf       0x24 mm_mas_arm.o
+ .debug_info    0x004606f3       0x22 mm_main_gba.o
+ .debug_info    0x00460715       0x22 mm_mixer_gba.o
 
 .debug_abbrev   0x00000000    0x31126
  *(.debug_abbrev)
@@ -10195,7 +10195,7 @@ Linker script and memory map
  .debug_abbrev  0x00031102       0x12 mm_main_gba.o
  .debug_abbrev  0x00031114       0x12 mm_mixer_gba.o
 
-.debug_line     0x00000000    0xede73
+.debug_line     0x00000000    0xede8d
  *(.debug_line)
  .debug_line    0x00000000     0x170a angel_platform.o
  .debug_line    0x0000170a     0x2145 ceiling_ghoul.o
@@ -10208,86 +10208,86 @@ Linker script and memory map
  .debug_line    0x000141ec      0x99a main.o
  .debug_line    0x00014b86     0x29c3 phase_orb.o
  .debug_line    0x00017549     0x11f0 physics.o
- .debug_line    0x00018739     0xcf9c player.o
- .debug_line    0x000256d5     0x23f1 room.o
- .debug_line    0x00027ac6      0x6e0 room_bounds.o
- .debug_line    0x000281a6     0x11d8 test_enemy.o
- .debug_line    0x0002937e     0x1224 thorn_bar.o
- .debug_line    0x0002a5a2     0x122d thorn_column.o
- .debug_line    0x0002b7cf     0x1af7 tile_passage.o
- .debug_line    0x0002d2c6      0xb47 utility.o
- .debug_line    0x0002de0d     0x2152 wall_left_ghoul.o
- .debug_line    0x0002ff5f     0x2176 wall_right_ghoul.o
- .debug_line    0x000320d5     0x1f84 bn_affine_bg_animate_actions.o
- .debug_line    0x00034059     0x7cf5 bn_audio_manager.o
- .debug_line    0x0003bd4e     0x162a bn_best_fit_allocator.o
- .debug_line    0x0003d378    0x18240 bn_bg_blocks_manager.o
- .debug_line    0x000555b8    0x1e0ef bn_bgs_manager.o
- .debug_line    0x000736a7     0x13fb bn_cameras_manager.o
- .debug_line    0x00074aa2     0x2233 bn_core.o
- .debug_line    0x00076cd5     0x9338 bn_display_manager.o
- .debug_line    0x0008000d     0x137b bn_gpio_manager.o
- .debug_line    0x00081388    0x17025 bn_hblank_effects_manager.o
- .debug_line    0x000983ad     0x1427 bn_hdma_manager.o
- .debug_line    0x000997d4     0x1541 bn_keypad_manager.o
- .debug_line    0x0009ad15      0xe59 bn_link_manager.o
- .debug_line    0x0009bb6e     0x1978 bn_memory_manager.o
- .debug_line    0x0009d4e6     0xa691 bn_palettes_manager.o
- .debug_line    0x000a7b77      0xfe4 bn_profiler.o
- .debug_line    0x000a8b5b     0x5e76 bn_sprite_affine_mats_manager.o
- .debug_line    0x000ae9d1     0x1f6b bn_sprite_animate_actions.o
- .debug_line    0x000b093c     0x8cc8 bn_sprite_text_generator.o
- .debug_line    0x000b9604     0x680e bn_sprite_tiles_manager.o
- .debug_line    0x000bfe12      0xf84 bn_sprites_manager.bn_iwram.o
- .debug_line    0x000c0d96    0x15d27 bn_sprites_manager.o
- .debug_line    0x000d6abd     0x27c8 bn_sstream.o
- .debug_line    0x000d9285     0x3b98 bn_translation_unit.o
- .debug_line    0x000dce1d     0x1c8f bn_hw_audio.o
- .debug_line    0x000deaac      0x642 bn_hw_common.bn_noflto.o
- .debug_line    0x000df0ee      0x52d bn_hw_cstdlib.o
- .debug_line    0x000df61b      0x464 bn_hw_game_pak.bn_ewram.o
- .debug_line    0x000dfa7f      0x630 bn_hw_gpio.bn_noflto.o
- .debug_line    0x000e00af     0x1e39 bn_hw_link.o
- .debug_line    0x000e1ee8      0x27f bn_hw_memory.o
- .debug_line    0x000e2167      0x6b2 bn_hw_palettes.bn_iwram.o
- .debug_line    0x000e2819      0xa42 bn_hw_palettes.o
- .debug_line    0x000e325b     0x318b bn_hw_show.o
- .debug_line    0x000e63e6      0x2ee bn_hw_sram.bn_noflto.o
- .debug_line    0x000e66d4      0x31b bn_hw_system_font.o
- .debug_line    0x000e69ef      0xdab bn_hw_text.o
- .debug_line    0x000e779a      0x528 vgm.o
- .debug_line    0x000e7cc2      0x87a tonc_color.o
- .debug_line    0x000e853c      0x6a6 tonc_sbmp16.o
- .debug_line    0x000e8be2      0x3fb bmp16_drawg_b1cs.o
- .debug_line    0x000e8fdd      0x175 tte_init_bmp.o
- .debug_line    0x000e9152      0x99e tte_main.o
- .debug_line    0x000e9af0      0x2c5 interrupts_gba.o
- .debug_line    0x000e9db5     0x1e66 gbt_player.o
- .debug_line    0x000ebc1b       0x7f bn_hw_bg_blocks.o
- .debug_line    0x000ebc9a       0x98 bn_hw_hblank_effects.o
- .debug_line    0x000ebd32       0x6f bn_hw_palettes_asm.o
- .debug_line    0x000ebda1       0x8f clr_blend_fast.o
- .debug_line    0x000ebe30       0x8e clr_fade_fast.o
- .debug_line    0x000ebebe      0x2aa tonc_bios.o
- .debug_line    0x000ec168       0xad tonc_memset.o
- .debug_line    0x000ec215       0xca irq_handler.o
- .debug_line    0x000ec2df      0x1a4 posprintf.o
- .debug_line    0x000ec483       0xaa lmul.o
- .debug_line    0x000ec52d       0xc0 memcpy.o
- .debug_line    0x000ec5ed       0xa0 memmove.o
- .debug_line    0x000ec68d       0xca memset.o
- .debug_line    0x000ec757       0xad rmemcpy.o
- .debug_line    0x000ec804       0x7b sdiv32.o
- .debug_line    0x000ec87f       0xe4 udiv32.o
- .debug_line    0x000ec963       0x97 huffman.o
- .debug_line    0x000ec9fa       0xdd lz77.o
- .debug_line    0x000ecad7       0xb5 running_length.o
- .debug_line    0x000ecb8c      0x206 mm_effect.o
- .debug_line    0x000ecd92       0x77 mm_main.o
- .debug_line    0x000ece09      0xa66 mm_mas.o
- .debug_line    0x000ed86f      0x1ec mm_mas_arm.o
- .debug_line    0x000eda5b      0x10a mm_main_gba.o
- .debug_line    0x000edb65      0x30e mm_mixer_gba.o
+ .debug_line    0x00018739     0xcfb6 player.o
+ .debug_line    0x000256ef     0x23f1 room.o
+ .debug_line    0x00027ae0      0x6e0 room_bounds.o
+ .debug_line    0x000281c0     0x11d8 test_enemy.o
+ .debug_line    0x00029398     0x1224 thorn_bar.o
+ .debug_line    0x0002a5bc     0x122d thorn_column.o
+ .debug_line    0x0002b7e9     0x1af7 tile_passage.o
+ .debug_line    0x0002d2e0      0xb47 utility.o
+ .debug_line    0x0002de27     0x2152 wall_left_ghoul.o
+ .debug_line    0x0002ff79     0x2176 wall_right_ghoul.o
+ .debug_line    0x000320ef     0x1f84 bn_affine_bg_animate_actions.o
+ .debug_line    0x00034073     0x7cf5 bn_audio_manager.o
+ .debug_line    0x0003bd68     0x162a bn_best_fit_allocator.o
+ .debug_line    0x0003d392    0x18240 bn_bg_blocks_manager.o
+ .debug_line    0x000555d2    0x1e0ef bn_bgs_manager.o
+ .debug_line    0x000736c1     0x13fb bn_cameras_manager.o
+ .debug_line    0x00074abc     0x2233 bn_core.o
+ .debug_line    0x00076cef     0x9338 bn_display_manager.o
+ .debug_line    0x00080027     0x137b bn_gpio_manager.o
+ .debug_line    0x000813a2    0x17025 bn_hblank_effects_manager.o
+ .debug_line    0x000983c7     0x1427 bn_hdma_manager.o
+ .debug_line    0x000997ee     0x1541 bn_keypad_manager.o
+ .debug_line    0x0009ad2f      0xe59 bn_link_manager.o
+ .debug_line    0x0009bb88     0x1978 bn_memory_manager.o
+ .debug_line    0x0009d500     0xa691 bn_palettes_manager.o
+ .debug_line    0x000a7b91      0xfe4 bn_profiler.o
+ .debug_line    0x000a8b75     0x5e76 bn_sprite_affine_mats_manager.o
+ .debug_line    0x000ae9eb     0x1f6b bn_sprite_animate_actions.o
+ .debug_line    0x000b0956     0x8cc8 bn_sprite_text_generator.o
+ .debug_line    0x000b961e     0x680e bn_sprite_tiles_manager.o
+ .debug_line    0x000bfe2c      0xf84 bn_sprites_manager.bn_iwram.o
+ .debug_line    0x000c0db0    0x15d27 bn_sprites_manager.o
+ .debug_line    0x000d6ad7     0x27c8 bn_sstream.o
+ .debug_line    0x000d929f     0x3b98 bn_translation_unit.o
+ .debug_line    0x000dce37     0x1c8f bn_hw_audio.o
+ .debug_line    0x000deac6      0x642 bn_hw_common.bn_noflto.o
+ .debug_line    0x000df108      0x52d bn_hw_cstdlib.o
+ .debug_line    0x000df635      0x464 bn_hw_game_pak.bn_ewram.o
+ .debug_line    0x000dfa99      0x630 bn_hw_gpio.bn_noflto.o
+ .debug_line    0x000e00c9     0x1e39 bn_hw_link.o
+ .debug_line    0x000e1f02      0x27f bn_hw_memory.o
+ .debug_line    0x000e2181      0x6b2 bn_hw_palettes.bn_iwram.o
+ .debug_line    0x000e2833      0xa42 bn_hw_palettes.o
+ .debug_line    0x000e3275     0x318b bn_hw_show.o
+ .debug_line    0x000e6400      0x2ee bn_hw_sram.bn_noflto.o
+ .debug_line    0x000e66ee      0x31b bn_hw_system_font.o
+ .debug_line    0x000e6a09      0xdab bn_hw_text.o
+ .debug_line    0x000e77b4      0x528 vgm.o
+ .debug_line    0x000e7cdc      0x87a tonc_color.o
+ .debug_line    0x000e8556      0x6a6 tonc_sbmp16.o
+ .debug_line    0x000e8bfc      0x3fb bmp16_drawg_b1cs.o
+ .debug_line    0x000e8ff7      0x175 tte_init_bmp.o
+ .debug_line    0x000e916c      0x99e tte_main.o
+ .debug_line    0x000e9b0a      0x2c5 interrupts_gba.o
+ .debug_line    0x000e9dcf     0x1e66 gbt_player.o
+ .debug_line    0x000ebc35       0x7f bn_hw_bg_blocks.o
+ .debug_line    0x000ebcb4       0x98 bn_hw_hblank_effects.o
+ .debug_line    0x000ebd4c       0x6f bn_hw_palettes_asm.o
+ .debug_line    0x000ebdbb       0x8f clr_blend_fast.o
+ .debug_line    0x000ebe4a       0x8e clr_fade_fast.o
+ .debug_line    0x000ebed8      0x2aa tonc_bios.o
+ .debug_line    0x000ec182       0xad tonc_memset.o
+ .debug_line    0x000ec22f       0xca irq_handler.o
+ .debug_line    0x000ec2f9      0x1a4 posprintf.o
+ .debug_line    0x000ec49d       0xaa lmul.o
+ .debug_line    0x000ec547       0xc0 memcpy.o
+ .debug_line    0x000ec607       0xa0 memmove.o
+ .debug_line    0x000ec6a7       0xca memset.o
+ .debug_line    0x000ec771       0xad rmemcpy.o
+ .debug_line    0x000ec81e       0x7b sdiv32.o
+ .debug_line    0x000ec899       0xe4 udiv32.o
+ .debug_line    0x000ec97d       0x97 huffman.o
+ .debug_line    0x000eca14       0xdd lz77.o
+ .debug_line    0x000ecaf1       0xb5 running_length.o
+ .debug_line    0x000ecba6      0x206 mm_effect.o
+ .debug_line    0x000ecdac       0x77 mm_main.o
+ .debug_line    0x000ece23      0xa66 mm_mas.o
+ .debug_line    0x000ed889      0x1ec mm_mas_arm.o
+ .debug_line    0x000eda75      0x10a mm_main_gba.o
+ .debug_line    0x000edb7f      0x30e mm_mixer_gba.o
 
 .debug_frame    0x00000000    0x14f30
  *(.debug_frame)
@@ -10453,7 +10453,7 @@ Linker script and memory map
  .debug_str     0x000a9d59       0x61 mm_main_gba.o
  .debug_str     0x000a9d59       0x62 mm_mixer_gba.o
 
-.debug_loc      0x00000000   0x1ab79e
+.debug_loc      0x00000000   0x1ab7ed
  *(.debug_loc)
  .debug_loc     0x00000000     0x1b34 angel_platform.o
  .debug_loc     0x00001b34     0x341d ceiling_ghoul.o
@@ -10466,58 +10466,58 @@ Linker script and memory map
  .debug_loc     0x0001b472       0x23 main.o
  .debug_loc     0x0001b495     0x403d phase_orb.o
  .debug_loc     0x0001f4d2     0x1442 physics.o
- .debug_loc     0x00020914    0x168e9 player.o
- .debug_loc     0x000371fd     0x2e99 room.o
- .debug_loc     0x0003a096       0x81 room_bounds.o
- .debug_loc     0x0003a117     0x12c7 test_enemy.o
- .debug_loc     0x0003b3de     0x12e9 thorn_bar.o
- .debug_loc     0x0003c6c7     0x12e9 thorn_column.o
- .debug_loc     0x0003d9b0     0x29dd tile_passage.o
- .debug_loc     0x0004038d      0xa1f utility.o
- .debug_loc     0x00040dac     0x342a wall_left_ghoul.o
- .debug_loc     0x000441d6     0x342a wall_right_ghoul.o
- .debug_loc     0x00047600     0x2abd bn_affine_bg_animate_actions.o
- .debug_loc     0x0004a0bd     0xbdee bn_audio_manager.o
- .debug_loc     0x00055eab     0x20b8 bn_best_fit_allocator.o
- .debug_loc     0x00057f63    0x3f97b bn_bg_blocks_manager.o
- .debug_loc     0x000978de    0x38a08 bn_bgs_manager.o
- .debug_loc     0x000d02e6     0x15dc bn_cameras_manager.o
- .debug_loc     0x000d18c2     0x1c2a bn_core.o
- .debug_loc     0x000d34ec     0xe22f bn_display_manager.o
- .debug_loc     0x000e171b     0x1d21 bn_gpio_manager.o
- .debug_loc     0x000e343c    0x2d9f9 bn_hblank_effects_manager.o
- .debug_loc     0x00110e35     0x1995 bn_hdma_manager.o
- .debug_loc     0x001127ca     0x1073 bn_keypad_manager.o
- .debug_loc     0x0011383d      0xf6f bn_link_manager.o
- .debug_loc     0x001147ac     0x264d bn_memory_manager.o
- .debug_loc     0x00116df9    0x14b3c bn_palettes_manager.o
- .debug_loc     0x0012b935      0xf45 bn_profiler.o
- .debug_loc     0x0012c87a     0xaf6a bn_sprite_affine_mats_manager.o
- .debug_loc     0x001377e4     0x2bb9 bn_sprite_animate_actions.o
- .debug_loc     0x0013a39d    0x1557d bn_sprite_text_generator.o
- .debug_loc     0x0014f91a    0x100a5 bn_sprite_tiles_manager.o
- .debug_loc     0x0015f9bf      0xbc1 bn_sprites_manager.bn_iwram.o
- .debug_loc     0x00160580    0x29dc0 bn_sprites_manager.o
- .debug_loc     0x0018a340     0x6ed5 bn_sstream.o
- .debug_loc     0x00191215     0x5df6 bn_translation_unit.o
- .debug_loc     0x0019700b     0x2214 bn_hw_audio.o
- .debug_loc     0x0019921f      0x309 bn_hw_common.bn_noflto.o
- .debug_loc     0x00199528      0x1d4 bn_hw_cstdlib.o
- .debug_loc     0x001996fc      0x102 bn_hw_game_pak.bn_ewram.o
- .debug_loc     0x001997fe     0x1db2 bn_hw_link.o
- .debug_loc     0x0019b5b0      0x371 bn_hw_palettes.bn_iwram.o
- .debug_loc     0x0019b921     0x1228 bn_hw_palettes.o
- .debug_loc     0x0019cb49     0x7278 bn_hw_show.o
- .debug_loc     0x001a3dc1       0x72 bn_hw_system_font.o
- .debug_loc     0x001a3e33     0x10bd bn_hw_text.o
- .debug_loc     0x001a4ef0      0x129 vgm.o
- .debug_loc     0x001a5019     0x156c tonc_color.o
- .debug_loc     0x001a6585     0x1126 tonc_sbmp16.o
- .debug_loc     0x001a76ab      0x5f8 bmp16_drawg_b1cs.o
- .debug_loc     0x001a7ca3      0x1a8 tte_init_bmp.o
- .debug_loc     0x001a7e4b      0xe54 tte_main.o
- .debug_loc     0x001a8c9f       0xa1 interrupts_gba.o
- .debug_loc     0x001a8d40     0x2a5e gbt_player.o
+ .debug_loc     0x00020914    0x16938 player.o
+ .debug_loc     0x0003724c     0x2e99 room.o
+ .debug_loc     0x0003a0e5       0x81 room_bounds.o
+ .debug_loc     0x0003a166     0x12c7 test_enemy.o
+ .debug_loc     0x0003b42d     0x12e9 thorn_bar.o
+ .debug_loc     0x0003c716     0x12e9 thorn_column.o
+ .debug_loc     0x0003d9ff     0x29dd tile_passage.o
+ .debug_loc     0x000403dc      0xa1f utility.o
+ .debug_loc     0x00040dfb     0x342a wall_left_ghoul.o
+ .debug_loc     0x00044225     0x342a wall_right_ghoul.o
+ .debug_loc     0x0004764f     0x2abd bn_affine_bg_animate_actions.o
+ .debug_loc     0x0004a10c     0xbdee bn_audio_manager.o
+ .debug_loc     0x00055efa     0x20b8 bn_best_fit_allocator.o
+ .debug_loc     0x00057fb2    0x3f97b bn_bg_blocks_manager.o
+ .debug_loc     0x0009792d    0x38a08 bn_bgs_manager.o
+ .debug_loc     0x000d0335     0x15dc bn_cameras_manager.o
+ .debug_loc     0x000d1911     0x1c2a bn_core.o
+ .debug_loc     0x000d353b     0xe22f bn_display_manager.o
+ .debug_loc     0x000e176a     0x1d21 bn_gpio_manager.o
+ .debug_loc     0x000e348b    0x2d9f9 bn_hblank_effects_manager.o
+ .debug_loc     0x00110e84     0x1995 bn_hdma_manager.o
+ .debug_loc     0x00112819     0x1073 bn_keypad_manager.o
+ .debug_loc     0x0011388c      0xf6f bn_link_manager.o
+ .debug_loc     0x001147fb     0x264d bn_memory_manager.o
+ .debug_loc     0x00116e48    0x14b3c bn_palettes_manager.o
+ .debug_loc     0x0012b984      0xf45 bn_profiler.o
+ .debug_loc     0x0012c8c9     0xaf6a bn_sprite_affine_mats_manager.o
+ .debug_loc     0x00137833     0x2bb9 bn_sprite_animate_actions.o
+ .debug_loc     0x0013a3ec    0x1557d bn_sprite_text_generator.o
+ .debug_loc     0x0014f969    0x100a5 bn_sprite_tiles_manager.o
+ .debug_loc     0x0015fa0e      0xbc1 bn_sprites_manager.bn_iwram.o
+ .debug_loc     0x001605cf    0x29dc0 bn_sprites_manager.o
+ .debug_loc     0x0018a38f     0x6ed5 bn_sstream.o
+ .debug_loc     0x00191264     0x5df6 bn_translation_unit.o
+ .debug_loc     0x0019705a     0x2214 bn_hw_audio.o
+ .debug_loc     0x0019926e      0x309 bn_hw_common.bn_noflto.o
+ .debug_loc     0x00199577      0x1d4 bn_hw_cstdlib.o
+ .debug_loc     0x0019974b      0x102 bn_hw_game_pak.bn_ewram.o
+ .debug_loc     0x0019984d     0x1db2 bn_hw_link.o
+ .debug_loc     0x0019b5ff      0x371 bn_hw_palettes.bn_iwram.o
+ .debug_loc     0x0019b970     0x1228 bn_hw_palettes.o
+ .debug_loc     0x0019cb98     0x7278 bn_hw_show.o
+ .debug_loc     0x001a3e10       0x72 bn_hw_system_font.o
+ .debug_loc     0x001a3e82     0x10bd bn_hw_text.o
+ .debug_loc     0x001a4f3f      0x129 vgm.o
+ .debug_loc     0x001a5068     0x156c tonc_color.o
+ .debug_loc     0x001a65d4     0x1126 tonc_sbmp16.o
+ .debug_loc     0x001a76fa      0x5f8 bmp16_drawg_b1cs.o
+ .debug_loc     0x001a7cf2      0x1a8 tte_init_bmp.o
+ .debug_loc     0x001a7e9a      0xe54 tte_main.o
+ .debug_loc     0x001a8cee       0xa1 interrupts_gba.o
+ .debug_loc     0x001a8d8f     0x2a5e gbt_player.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -11011,7 +11011,7 @@ LOAD C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb/crtn.o
 OUTPUT(G:/game/game.elf elf32-littlearm)
 LOAD linker stubs
 
-.debug_ranges   0x00000000    0x64d00
+.debug_ranges   0x00000000    0x64d18
  .debug_ranges  0x00000000      0x740 angel_platform.o
  .debug_ranges  0x00000740      0xda8 ceiling_ghoul.o
  .debug_ranges  0x000014e8      0x998 collider.o
@@ -11023,68 +11023,68 @@ LOAD linker stubs
  .debug_ranges  0x00007690       0x10 main.o
  .debug_ranges  0x000076a0     0x1338 phase_orb.o
  .debug_ranges  0x000089d8      0x590 physics.o
- .debug_ranges  0x00008f68     0x57e8 player.o
- .debug_ranges  0x0000e750      0xa60 room.o
- .debug_ranges  0x0000f1b0       0x28 room_bounds.o
- .debug_ranges  0x0000f1d8      0x420 test_enemy.o
- .debug_ranges  0x0000f5f8      0x490 thorn_bar.o
- .debug_ranges  0x0000fa88      0x490 thorn_column.o
- .debug_ranges  0x0000ff18      0x9b0 tile_passage.o
- .debug_ranges  0x000108c8      0x148 utility.o
- .debug_ranges  0x00010a10      0xda8 wall_left_ghoul.o
- .debug_ranges  0x000117b8      0xda8 wall_right_ghoul.o
- .debug_ranges  0x00012560      0x708 bn_affine_bg_animate_actions.o
- .debug_ranges  0x00012c68     0x2338 bn_audio_manager.o
- .debug_ranges  0x00014fa0      0x5e0 bn_best_fit_allocator.o
- .debug_ranges  0x00015580     0xb348 bn_bg_blocks_manager.o
- .debug_ranges  0x000208c8    0x10c88 bn_bgs_manager.o
- .debug_ranges  0x00031550      0x520 bn_cameras_manager.o
- .debug_ranges  0x00031a70      0x6a8 bn_core.o
- .debug_ranges  0x00032118     0x4648 bn_display_manager.o
- .debug_ranges  0x00036760      0x3f8 bn_gpio_manager.o
- .debug_ranges  0x00036b58     0xaf88 bn_hblank_effects_manager.o
- .debug_ranges  0x00041ae0      0x620 bn_hdma_manager.o
- .debug_ranges  0x00042100      0x650 bn_keypad_manager.o
- .debug_ranges  0x00042750      0x390 bn_link_manager.o
- .debug_ranges  0x00042ae0      0x520 bn_memory_manager.o
- .debug_ranges  0x00043000     0x3d70 bn_palettes_manager.o
- .debug_ranges  0x00046d70      0x448 bn_profiler.o
- .debug_ranges  0x000471b8     0x26b8 bn_sprite_affine_mats_manager.o
- .debug_ranges  0x00049870      0x6b8 bn_sprite_animate_actions.o
- .debug_ranges  0x00049f28     0x6730 bn_sprite_text_generator.o
- .debug_ranges  0x00050658     0x27e0 bn_sprite_tiles_manager.o
- .debug_ranges  0x00052e38      0x490 bn_sprites_manager.bn_iwram.o
- .debug_ranges  0x000532c8     0xb498 bn_sprites_manager.o
- .debug_ranges  0x0005e760     0x11d0 bn_sstream.o
- .debug_ranges  0x0005f930      0xe70 bn_translation_unit.o
- .debug_ranges  0x000607a0      0x8f0 bn_hw_audio.o
- .debug_ranges  0x00061090       0x98 bn_hw_common.bn_noflto.o
- .debug_ranges  0x00061128       0x60 bn_hw_cstdlib.o
- .debug_ranges  0x00061188       0x48 bn_hw_game_pak.bn_ewram.o
- .debug_ranges  0x000611d0       0x10 bn_hw_gpio.bn_noflto.o
- .debug_ranges  0x000611e0      0xb58 bn_hw_link.o
- .debug_ranges  0x00061d38       0x10 bn_hw_memory.o
- .debug_ranges  0x00061d48      0x148 bn_hw_palettes.bn_iwram.o
- .debug_ranges  0x00061e90      0x5e0 bn_hw_palettes.o
- .debug_ranges  0x00062470     0x1638 bn_hw_show.o
- .debug_ranges  0x00063aa8       0x10 bn_hw_sram.bn_noflto.o
- .debug_ranges  0x00063ab8       0x80 bn_hw_system_font.o
- .debug_ranges  0x00063b38      0x3b0 bn_hw_text.o
- .debug_ranges  0x00063ee8       0xd8 vgm.o
- .debug_ranges  0x00063fc0      0x138 tonc_color.o
- .debug_ranges  0x000640f8       0x50 tonc_sbmp16.o
- .debug_ranges  0x00064148       0x18 bmp16_drawg_b1cs.o
- .debug_ranges  0x00064160       0x18 tte_init_bmp.o
- .debug_ranges  0x00064178      0x108 tte_main.o
- .debug_ranges  0x00064280       0x40 interrupts_gba.o
- .debug_ranges  0x000642c0      0x7c0 gbt_player.o
- .debug_ranges  0x00064a80      0x128 tonc_bios.o
- .debug_ranges  0x00064ba8       0x20 tonc_memset.o
- .debug_ranges  0x00064bc8       0x30 lmul.o
- .debug_ranges  0x00064bf8       0x28 memcpy.o
- .debug_ranges  0x00064c20       0x30 memmove.o
- .debug_ranges  0x00064c50       0x30 memset.o
- .debug_ranges  0x00064c80       0x20 rmemcpy.o
- .debug_ranges  0x00064ca0       0x20 mm_mas.o
- .debug_ranges  0x00064cc0       0x20 mm_main_gba.o
- .debug_ranges  0x00064ce0       0x20 mm_mixer_gba.o
+ .debug_ranges  0x00008f68     0x5800 player.o
+ .debug_ranges  0x0000e768      0xa60 room.o
+ .debug_ranges  0x0000f1c8       0x28 room_bounds.o
+ .debug_ranges  0x0000f1f0      0x420 test_enemy.o
+ .debug_ranges  0x0000f610      0x490 thorn_bar.o
+ .debug_ranges  0x0000faa0      0x490 thorn_column.o
+ .debug_ranges  0x0000ff30      0x9b0 tile_passage.o
+ .debug_ranges  0x000108e0      0x148 utility.o
+ .debug_ranges  0x00010a28      0xda8 wall_left_ghoul.o
+ .debug_ranges  0x000117d0      0xda8 wall_right_ghoul.o
+ .debug_ranges  0x00012578      0x708 bn_affine_bg_animate_actions.o
+ .debug_ranges  0x00012c80     0x2338 bn_audio_manager.o
+ .debug_ranges  0x00014fb8      0x5e0 bn_best_fit_allocator.o
+ .debug_ranges  0x00015598     0xb348 bn_bg_blocks_manager.o
+ .debug_ranges  0x000208e0    0x10c88 bn_bgs_manager.o
+ .debug_ranges  0x00031568      0x520 bn_cameras_manager.o
+ .debug_ranges  0x00031a88      0x6a8 bn_core.o
+ .debug_ranges  0x00032130     0x4648 bn_display_manager.o
+ .debug_ranges  0x00036778      0x3f8 bn_gpio_manager.o
+ .debug_ranges  0x00036b70     0xaf88 bn_hblank_effects_manager.o
+ .debug_ranges  0x00041af8      0x620 bn_hdma_manager.o
+ .debug_ranges  0x00042118      0x650 bn_keypad_manager.o
+ .debug_ranges  0x00042768      0x390 bn_link_manager.o
+ .debug_ranges  0x00042af8      0x520 bn_memory_manager.o
+ .debug_ranges  0x00043018     0x3d70 bn_palettes_manager.o
+ .debug_ranges  0x00046d88      0x448 bn_profiler.o
+ .debug_ranges  0x000471d0     0x26b8 bn_sprite_affine_mats_manager.o
+ .debug_ranges  0x00049888      0x6b8 bn_sprite_animate_actions.o
+ .debug_ranges  0x00049f40     0x6730 bn_sprite_text_generator.o
+ .debug_ranges  0x00050670     0x27e0 bn_sprite_tiles_manager.o
+ .debug_ranges  0x00052e50      0x490 bn_sprites_manager.bn_iwram.o
+ .debug_ranges  0x000532e0     0xb498 bn_sprites_manager.o
+ .debug_ranges  0x0005e778     0x11d0 bn_sstream.o
+ .debug_ranges  0x0005f948      0xe70 bn_translation_unit.o
+ .debug_ranges  0x000607b8      0x8f0 bn_hw_audio.o
+ .debug_ranges  0x000610a8       0x98 bn_hw_common.bn_noflto.o
+ .debug_ranges  0x00061140       0x60 bn_hw_cstdlib.o
+ .debug_ranges  0x000611a0       0x48 bn_hw_game_pak.bn_ewram.o
+ .debug_ranges  0x000611e8       0x10 bn_hw_gpio.bn_noflto.o
+ .debug_ranges  0x000611f8      0xb58 bn_hw_link.o
+ .debug_ranges  0x00061d50       0x10 bn_hw_memory.o
+ .debug_ranges  0x00061d60      0x148 bn_hw_palettes.bn_iwram.o
+ .debug_ranges  0x00061ea8      0x5e0 bn_hw_palettes.o
+ .debug_ranges  0x00062488     0x1638 bn_hw_show.o
+ .debug_ranges  0x00063ac0       0x10 bn_hw_sram.bn_noflto.o
+ .debug_ranges  0x00063ad0       0x80 bn_hw_system_font.o
+ .debug_ranges  0x00063b50      0x3b0 bn_hw_text.o
+ .debug_ranges  0x00063f00       0xd8 vgm.o
+ .debug_ranges  0x00063fd8      0x138 tonc_color.o
+ .debug_ranges  0x00064110       0x50 tonc_sbmp16.o
+ .debug_ranges  0x00064160       0x18 bmp16_drawg_b1cs.o
+ .debug_ranges  0x00064178       0x18 tte_init_bmp.o
+ .debug_ranges  0x00064190      0x108 tte_main.o
+ .debug_ranges  0x00064298       0x40 interrupts_gba.o
+ .debug_ranges  0x000642d8      0x7c0 gbt_player.o
+ .debug_ranges  0x00064a98      0x128 tonc_bios.o
+ .debug_ranges  0x00064bc0       0x20 tonc_memset.o
+ .debug_ranges  0x00064be0       0x30 lmul.o
+ .debug_ranges  0x00064c10       0x28 memcpy.o
+ .debug_ranges  0x00064c38       0x30 memmove.o
+ .debug_ranges  0x00064c68       0x30 memset.o
+ .debug_ranges  0x00064c98       0x20 rmemcpy.o
+ .debug_ranges  0x00064cb8       0x20 mm_mas.o
+ .debug_ranges  0x00064cd8       0x20 mm_main_gba.o
+ .debug_ranges  0x00064cf8       0x20 mm_mixer_gba.o

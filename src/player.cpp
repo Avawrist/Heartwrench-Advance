@@ -2393,7 +2393,7 @@ void Player::jump()
 	remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
 	late_jump_grace_frames      = 0;
 	rigidbody.addForce(PLAYER_JUMP_FORCE);
-	setVerticalStretch();
+	//setVerticalStretch();
 
 	// Jump Effect
 	if(grounded_detected) {createJumpEffect();}
@@ -2409,7 +2409,7 @@ void Player::rollJump()
 	remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
 	late_jump_grace_frames      = 0;
 	rigidbody.addForce(PLAYER_ROLL_JUMP_FORCE);
-	setVerticalStretch();
+	//setVerticalStretch();
 
 	// Jump Effect
 	if(grounded_detected) {createJumpEffect();}
@@ -2653,8 +2653,9 @@ void Player::createAirAttack1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>&
 
 void Player::createJumpEffect()
 {
+	#define POOF_Y_OFFSET 1 
 	jump_effect_sprite_ptr->set_visible(true);
-	jump_effect_sprite_ptr->set_position(x(), y());
+	jump_effect_sprite_ptr->set_position(x(), y() - POOF_Y_OFFSET); 
 	jump_effect_sprite_ptr->set_rotation_angle(0);
 	jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
 																1,
