@@ -15,7 +15,14 @@ struct Enemy : GameObject
 	virtual ~Enemy();
 
     void wallSplatCheck();
-    void resolveXAxisCollision(const Collider& other_collider) override;
+
+    /////////////////////////
+    // Collision Overrides //
+    /////////////////////////
+
+    void resolveThornColumnCollision(const Collider& other_collider) override;
+    void resolveThornBarCollision(const Collider& other_collider)    override;
+    void resolveXAxisCollision(const Collider& other_collider)       override;
 };
 
 #endif

@@ -103,6 +103,10 @@
 #define WALL_SPLAT_SCREENSHAKE_FRAMES 8
 #define WALL_SPLAT_SCREENSHAKE_SEVERITY STRONG_SHAKE
 
+#define OBJECT_DEATH_X_FORCE      8
+#define OBJECT_DEATH_Y_FORCE      8
+#define OBJECT_DEATH_DECAY        0.2
+
 // The index order here needs to align with the object tile index order in 
 // Aseprite.
 
@@ -292,31 +296,31 @@ struct GameObject
 	////////////////////////////////
 
 	virtual void resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects);
-	
+
 	// Level Objects
-	virtual void resolveTilePassageCollision();
-	virtual void resolvePhaseOrbUpCollision();
-	virtual void resolvePhaseOrbDownCollision();
-	virtual void resolvePhaseOrbLeftCollision();
-	virtual void resolvePhaseOrbRightCollision();
-	virtual void resolveFallingPlatformWideCollision();
+	virtual void resolveTilePassageCollision(const Collider& other_collider);
+	virtual void resolvePhaseOrbUpCollision(const Collider& other_collider);
+	virtual void resolvePhaseOrbDownCollision(const Collider& other_collider);
+	virtual void resolvePhaseOrbLeftCollision(const Collider& other_collider);
+	virtual void resolvePhaseOrbRightCollision(const Collider& other_collider);
+	virtual void resolveFallingPlatformWideCollision(const Collider& other_collider);
 
 	// Level Enemies
-	virtual void resolveThornColumnCollision(); 
-	virtual void resolveThornBarCollision(); 
-	virtual void resolveGroundGhoulCollision();
-	virtual void resolveCeilingGhoulCollision();
-	virtual void resolveWallLeftCollision(); 
-	virtual void resolveWallRightCollision();
+	virtual void resolveThornColumnCollision(const Collider& other_collider); 
+	virtual void resolveThornBarCollision(const Collider& other_collider); 
+	virtual void resolveGroundGhoulCollision(const Collider& other_collider);
+	virtual void resolveCeilingGhoulCollision(const Collider& other_collider);
+	virtual void resolveWallLeftCollision(const Collider& other_collider); 
+	virtual void resolveWallRightCollision(const Collider& other_collider);
 
 	// Special Objects
-	virtual void resolveDevilPlatformCollision();
-	virtual void resolveAngelPlatformCollision();
-	virtual void resolveScythePlatformCollision();
-	virtual void resolveHitboxAttackGround1Collision();
-	virtual void resolveHitboxAir1Collision(); 
-	virtual void resolveHitboxWallSplatCollision();
-	virtual void resolvePlayerCollision();
+	virtual void resolveDevilPlatformCollision(const Collider& other_collider);
+	virtual void resolveAngelPlatformCollision(const Collider& other_collider);
+	virtual void resolveScythePlatformCollision(const Collider& other_collider);
+	virtual void resolveHitboxAttackGround1Collision(const Collider& other_collider);
+	virtual void resolveHitboxAir1Collision(const Collider& other_collider); 
+	virtual void resolveHitboxWallSplatCollision(const Collider& other_collider);
+	virtual void resolvePlayerCollision(const Collider& other_collider);
 
 	//////////////////////////////
 	// Tile Collision functions //

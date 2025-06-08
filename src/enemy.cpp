@@ -49,6 +49,44 @@ void Enemy::wallSplatCheck()
 	}
 }
 
+/////////////////////////
+// Collision Overrides //
+/////////////////////////
+
+void Enemy::resolveThornColumnCollision(const Collider& other_collider)
+{
+	int32 thorn_collision_x_offset = collider.getCollisionXOffset(other_collider, rigidbody.normalized_dir.x()).integer();
+	
+	if(thorn_collision_x_offset != 0 &&
+	   hitpoints > 0)
+	{
+		int32 knockback_x_dir = abs(thorn_collision_x_offset) / thorn_collision_x_offset;
+
+		rigidbody.removeForces();
+		rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_DEATH_X_FORCE * knockback_x_dir, 
+													   OBJECT_DEATH_Y_FORCE * 0),
+													   OBJECT_DEATH_DECAY));
+		hitpoints = 0;
+	}
+}
+
+void Enemy::resolveThornBarCollision(const Collider& other_collider)
+{
+	int32 thorn_collision_y_offset = collider.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y()).integer();
+	
+	if(thorn_collision_y_offset != 0 && 
+	   hitpoints > 0)
+	{
+		int32 knockback_y_dir = abs(thorn_collision_y_offset) / thorn_collision_y_offset;
+
+		rigidbody.removeForces();
+		rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_DEATH_X_FORCE * 0, 
+														OBJECT_DEATH_Y_FORCE * knockback_y_dir),
+														OBJECT_DEATH_DECAY));
+		hitpoints = 0;
+	}
+}
+
 void Enemy::resolveXAxisCollision(const Collider& other_collider)
 {
 	GameObject::resolveXAxisCollision(other_collider);

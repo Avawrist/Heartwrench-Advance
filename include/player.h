@@ -115,10 +115,6 @@
 #define PLAYER_ROLL_JUMP_X_FORCE  6
 #define PLAYER_ROLL_JUMP_Y_FORCE -6
 #define PLAYER_ROLL_JUMP_DECAY   0.04
- 
-#define PLAYER_DEATH_X_FORCE      8
-#define PLAYER_DEATH_Y_FORCE      8
-#define PLAYER_DEATH_DECAY        0.2
 
 #define PLAYER_MIN_PASSAGE_SPEED PLAYER_GRAVITY + PLAYER_PROLONGED_GRAVITY + PLAYER_FAST_FALL_GRAVITY
 
@@ -230,6 +226,35 @@ struct Player : GameObject {
 	void createAirJumpEffect();
 	void createWallJumpEffect();
 	void createLandEffect();
+
+	/////////////////////////
+	// Collision Overrides //
+	/////////////////////////
+
+	// Level Objects
+	void resolveTilePassageCollision(const Collider& other_collider)         override;
+	void resolvePhaseOrbUpCollision(const Collider& other_collider)          override;
+	void resolvePhaseOrbDownCollision(const Collider& other_collider)        override;
+	void resolvePhaseOrbLeftCollision(const Collider& other_collider)        override;
+	void resolvePhaseOrbRightCollision(const Collider& other_collider)       override;
+	void resolveFallingPlatformWideCollision(const Collider& other_collider) override;
+
+	// Level Enemies
+	void resolveThornColumnCollision(const Collider& other_collider)  override; 
+	void resolveThornBarCollision(const Collider& other_collider)     override; 
+	void resolveGroundGhoulCollision(const Collider& other_collider)  override;
+	void resolveCeilingGhoulCollision(const Collider& other_collider) override;
+	void resolveWallLeftCollision(const Collider& other_collider)     override; 
+	void resolveWallRightCollision(const Collider& other_collider)    override;
+
+	// Special Objects
+	void resolveDevilPlatformCollision(const Collider& other_collider)       override;
+	void resolveAngelPlatformCollision(const Collider& other_collider)       override;
+	void resolveScythePlatformCollision(const Collider& other_collider)      override;
+	void resolveHitboxAttackGround1Collision(const Collider& other_collider) override;
+	void resolveHitboxAir1Collision(const Collider& other_collider)          override; 
+	void resolveHitboxWallSplatCollision(const Collider& other_collider)     override;
+	void resolvePlayerCollision(const Collider& other_collider)              override;
 };
 
 #endif
