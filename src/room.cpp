@@ -39,10 +39,6 @@ Room::Room(const Room& other)
                 game_objects.push_back(new Player(*((Player*)(other.game_objects.at(i)))));
             break;
 
-            case TEST_ENEMY:
-                game_objects.push_back(new TestEnemy(*((TestEnemy*)(other.game_objects.at(i)))));
-            break;
-
             default:
             break;
         }
@@ -82,10 +78,6 @@ void Room::operator =(const Room& other)
         {
             case PLAYER:
                 game_objects.push_back(new Player(*((Player*)(other.game_objects.at(i)))));
-            break;
-
-            case TEST_ENEMY:
-                game_objects.push_back(new TestEnemy(*((TestEnemy*)(other.game_objects.at(i)))));
             break;
 
             default:
@@ -132,10 +124,6 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
     {
         case PLAYER:
             temp_object_ptr = new Player();
-        break;
-
-        case TEST_ENEMY:
-            temp_object_ptr = new TestEnemy();
         break;
 
         case GROUND_GHOUL:

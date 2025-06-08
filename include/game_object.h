@@ -44,20 +44,20 @@
 #include "bn_sprite_items_phase_orb_down.h"
 #include "bn_sprite_items_phase_orb_left.h"
 #include "bn_sprite_items_phase_orb_right.h"
-#include "bn_sprite_items_thorn_column.h"
-#include "bn_sprite_items_thorn_bar.h"
 
 // Enemy Object Assets
 #include "bn_sprite_items_ceiling_ghoul.h"
 #include "bn_sprite_items_ground_ghoul.h"
 #include "bn_sprite_items_wall_left_ghoul.h"
 #include "bn_sprite_items_wall_right_ghoul.h"
-#include "bn_sprite_items_test_enemy.h"
+#include "bn_sprite_items_thorn_column.h"
+#include "bn_sprite_items_thorn_bar.h"
 
 // Special Object Assets
 #include "bn_sprite_items_devil_platform.h"
 #include "bn_sprite_items_angel_platform.h"
 #include "bn_sprite_items_scythe_platform.h"
+#include "bn_sprite_items_falling_platform_wide.h"
 #include "bn_sprite_items_hitbox.h"
 #include "bn_sprite_items_player.h"
 #include "bn_sprite_items_phase_marker.h"
@@ -116,6 +116,7 @@ enum ObjectType
 	PHASE_ORB_DOWN,
 	PHASE_ORB_LEFT,
 	PHASE_ORB_RIGHT,
+	FALLING_PLATFORM_WIDE,
 
 	// Level Enemies
 	THORN_COLUMN,
@@ -124,13 +125,11 @@ enum ObjectType
 	CEILING_GHOUL,
 	WALL_LEFT_GHOUL,
 	WALL_RIGHT_GHOUL,
-	TEST_ENEMY,
 
 	// Special Objects
 	DEVIL_PLATFORM,
 	ANGEL_PLATFORM,
 	SCYTHE_PLATFORM,
-	FALLING_PLATFORM_WIDE,
 	HITBOX_ATTACK_GROUND_1,
 	HITBOX_ATTACK_AIR_1,
 	HITBOX_WALL_SPLAT,
@@ -272,6 +271,15 @@ struct GameObject
 						          const bn::regular_bg_ptr&                      bg_ptr, 
                                   const bn::span<const bn::regular_bg_map_cell>& cells,
                                   const bn::regular_bg_item&                     bg_item);
+	
+	// Object Collision functions
+	virtual void resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects);
+	//...
+
+	// Tile Collision functions
+	virtual void resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
+									  const bn::span<const bn::regular_bg_map_cell>& cells,
+									  const bn::regular_bg_item&                     bg_item);
 	virtual void resolveXAxisCollision(const Collider& other_collider);
     virtual void resolveYAxisCollision(const Collider& other_collider);
     virtual void resolveCornerCollision(const Collider& other_collider);

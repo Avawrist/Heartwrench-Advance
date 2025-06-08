@@ -27,7 +27,6 @@
 #include "thorn_column.h"
 #include "thorn_bar.h"
 
-#include "test_enemy.h"
 #include "ground_ghoul.h"
 #include "ceiling_ghoul.h"
 #include "wall_left_ghoul.h"

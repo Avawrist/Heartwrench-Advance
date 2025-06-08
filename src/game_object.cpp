@@ -506,10 +506,29 @@ void GameObject::applySplatEffect(int32 x, int32 y)
     else                 {splat_effect_sprite_ptr->set_horizontal_flip(false);}
 }
 
-void GameObject::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   game_objects,
-                                const bn::regular_bg_ptr&                      bg_ptr, 
-                                const bn::span<const bn::regular_bg_map_cell>& cells,
-                                const bn::regular_bg_item&                     bg_item)
+void GameObject::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                                  const bn::regular_bg_ptr&                      bg_ptr, 
+                                  const bn::span<const bn::regular_bg_map_cell>& cells,
+                                  const bn::regular_bg_item&                     bg_item)
+{
+
+    //////////////////////////////////
+    // Resolve GameObject Collision //
+    //////////////////////////////////
+
+    resolveObjectCollision(game_objects);
+
+	////////////////////////////
+    // Resolve Tile Collision //
+    ////////////////////////////
+
+	resolveTileCollision(bg_ptr, cells, bg_item);
+
+}
+
+void GameObject::resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
+                                      const bn::span<const bn::regular_bg_map_cell>& cells,
+                                      const bn::regular_bg_item&                     bg_item)
 {
     //////////////////////////////
 	// Init Collision Variables //
@@ -526,29 +545,10 @@ void GameObject::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   g
 	collider_x_axis.setPos(collider.x(), collider.y() - rigidbody.final_dir.y());
 	collider_y_axis.setPos(collider.x() - rigidbody.final_dir.x(), collider.y());
 
-	// Placeholder for other objects
+    // Placeholder for other objects
 	Collider other_collider;
 
-    //////////////////////////////////
-    // Resolve GameObject Collision //
-    //////////////////////////////////
-
-    for(int32 i = 0; i < game_objects.size(); i++)
-    {
-        other_collider = game_objects.at(i)->collider;
-        
-        switch(game_objects.at(i)->object_type)
-        {
-            default:
-            break;
-        }
-    }
-
-	////////////////////////////
-    // Resolve Tile Collision //
-    ////////////////////////////
-	
-	for(int32 y = -1; y < 2; y++)
+    for(int32 y = -1; y < 2; y++)
 	{
 		for(int32 x = -1; x < 2; x++)
 		{
@@ -604,6 +604,86 @@ void GameObject::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   g
 
 		}
 	}
+}
+
+void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
+{
+    // Placeholder for other objects
+	Collider other_collider;
+
+    for(int32 i = 0; i < game_objects.size(); i++)
+    {
+        other_collider = game_objects.at(i)->collider;
+        
+        switch(game_objects.at(i)->object_type)
+        {
+            case NO_TYPE:
+            break;
+
+            // Level Objects
+            case TILE_PASSAGE:
+            break;
+
+            case PHASE_ORB_UP:
+            break; 
+
+            case PHASE_ORB_DOWN:
+            break;
+
+            case PHASE_ORB_LEFT:
+            break;
+
+            case PHASE_ORB_RIGHT:
+            break;
+
+            // Level Enemies
+            case THORN_COLUMN:
+            break; 
+            
+            case THORN_BAR:
+            break;
+
+            case GROUND_GHOUL:
+            break; 
+
+            case CEILING_GHOUL:
+            break; 
+
+            case WALL_LEFT_GHOUL:
+            break; 
+
+            case WALL_RIGHT_GHOUL:
+            break;
+
+            // Special Objects
+            case DEVIL_PLATFORM:
+            break; 
+
+            case ANGEL_PLATFORM:
+            break;
+
+            case SCYTHE_PLATFORM:
+            break; 
+
+            case FALLING_PLATFORM_WIDE:
+            break; 
+
+            case HITBOX_ATTACK_GROUND_1:
+            break;
+
+            case HITBOX_ATTACK_AIR_1:
+            break;
+
+            case HITBOX_WALL_SPLAT:
+            break;
+
+            case PLAYER:
+            break;
+
+            default:
+            break;
+        }
+    }
 }
 
 void GameObject::resolveXAxisCollision(const Collider& other_collider)

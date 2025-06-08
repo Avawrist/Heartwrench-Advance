@@ -1712,7 +1712,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				case CEILING_GHOUL:
 				case WALL_LEFT_GHOUL:
 				case WALL_RIGHT_GHOUL:
-				case TEST_ENEMY:
 				break;
 
 				case TILE_PASSAGE:
