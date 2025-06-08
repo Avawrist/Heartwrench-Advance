@@ -117,30 +117,14 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
     GameObject* temp_object_ptr = NULL;
 
     // Allocate object based on type
-    // NOTE: All object types should be represented here. When adding object types 
+    // NOTE: All object types should be represented here. When adding object types
     //       this list must be updated.
     
     switch(object.object_type)
     {
-        case PLAYER:
-            temp_object_ptr = new Player();
-        break;
-
-        case GROUND_GHOUL:
-            temp_object_ptr = new GroundGhoul();
-        break;
-
-        case CEILING_GHOUL:
-            temp_object_ptr = new CeilingGhoul();
-        break;
-
-        case WALL_LEFT_GHOUL:
-            temp_object_ptr = new WallLeftGhoul();
-        break;
-
-        case WALL_RIGHT_GHOUL:
-            temp_object_ptr = new WallRightGhoul();
-        break;
+        ///////////////////
+	    // Level Objects //
+	    ///////////////////
 
         case PHASE_ORB_UP:
             temp_object_ptr = new PhaseOrbUp();
@@ -162,6 +146,30 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             temp_object_ptr = new TilePassage();
         break;
 
+        case FALLING_PLATFORM_WIDE:
+            temp_object_ptr = new FallingPlatformWide();
+        break;
+
+        ///////////////////
+	    // Level Enemies //
+	    ///////////////////
+
+        case GROUND_GHOUL:
+            temp_object_ptr = new GroundGhoul();
+        break;
+
+        case CEILING_GHOUL:
+            temp_object_ptr = new CeilingGhoul();
+        break;
+
+        case WALL_LEFT_GHOUL:
+            temp_object_ptr = new WallLeftGhoul();
+        break;
+
+        case WALL_RIGHT_GHOUL:
+            temp_object_ptr = new WallRightGhoul();
+        break;
+
         case THORN_COLUMN:
             temp_object_ptr = new ThornColumn();
         break;
@@ -170,9 +178,9 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             temp_object_ptr = new ThornBar();
         break;
 
-        case FALLING_PLATFORM_WIDE:
-            temp_object_ptr = new FallingPlatformWide();
-        break;
+        /////////////////////
+	    // Special Objects //
+	    /////////////////////
 
         case DEVIL_PLATFORM:
         case ANGEL_PLATFORM:
@@ -181,6 +189,10 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
         case HITBOX_ATTACK_AIR_1:
             BN_LOG("Loading object of type ", object.object_type);
             BN_LOG("is not supported by function Room::addObject");
+        break;
+
+        case PLAYER:
+            temp_object_ptr = new Player();
         break;
 
         case NO_TYPE:

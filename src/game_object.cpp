@@ -526,6 +526,138 @@ void GameObject::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&    
 
 }
 
+////////////////////////////////
+// Object Collision functions //
+////////////////////////////////
+
+void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
+{
+    // Placeholder for other objects
+	Collider other_collider;
+
+    for(int32 i = 0; i < game_objects.size(); i++)
+    {
+        other_collider = game_objects.at(i)->collider;
+        
+        switch(game_objects.at(i)->object_type)
+        {
+            case NO_TYPE:
+            break;
+
+            // Level Objects
+            case TILE_PASSAGE:
+                resolveTilePassageCollision();
+            break;
+
+            case PHASE_ORB_UP:
+                resolvePhaseOrbUpCollision();
+            break; 
+
+            case PHASE_ORB_DOWN:
+                resolvePhaseOrbDownCollision();
+            break;
+
+            case PHASE_ORB_LEFT:
+                resolvePhaseOrbLeftCollision();
+            break;
+
+            case PHASE_ORB_RIGHT:
+                resolvePhaseOrbRightCollision();
+            break;
+
+            // Level Enemies
+            case THORN_COLUMN:
+                resolveThornColumnCollision();
+            break; 
+            
+            case THORN_BAR:
+                resolveThornBarCollision();
+            break;
+
+            case GROUND_GHOUL:
+                resolveGroundGhoulCollision();
+            break; 
+
+            case CEILING_GHOUL:
+                resolveCeilingGhoulCollision();
+            break; 
+
+            case WALL_LEFT_GHOUL:
+                resolveWallLeftCollision();
+            break; 
+
+            case WALL_RIGHT_GHOUL:
+                resolveWallRightCollision();
+            break;
+
+            // Special Objects
+            case DEVIL_PLATFORM:
+                resolveDevilPlatformCollision();
+            break; 
+
+            case ANGEL_PLATFORM:
+                resolveAngelPlatformCollision();
+            break;
+
+            case SCYTHE_PLATFORM:
+                resolveScythePlatformCollision();
+            break; 
+
+            case FALLING_PLATFORM_WIDE:
+                resolveFallingPlatformWideCollision();
+            break; 
+
+            case HITBOX_ATTACK_GROUND_1:
+                resolveHitboxAttackGround1Collision();
+            break;
+
+            case HITBOX_ATTACK_AIR_1:
+                resolveHitboxAir1Collision();
+            break;
+
+            case HITBOX_WALL_SPLAT:
+                resolveHitboxWallSplatCollision();
+            break;
+
+            case PLAYER:
+                resolvePlayerCollision();
+            break;
+
+            default:
+            break;
+        }
+    }
+}
+
+// Level Objects
+void GameObject::resolveTilePassageCollision()         {}
+void GameObject::resolvePhaseOrbUpCollision()          {}
+void GameObject::resolvePhaseOrbDownCollision()        {}
+void GameObject::resolvePhaseOrbLeftCollision()        {}
+void GameObject::resolvePhaseOrbRightCollision()       {}
+void GameObject::resolveFallingPlatformWideCollision() {}
+
+// Level Enemies
+void GameObject::resolveThornColumnCollision()  {}
+void GameObject::resolveThornBarCollision()     {}
+void GameObject::resolveGroundGhoulCollision()  {}
+void GameObject::resolveCeilingGhoulCollision() {}
+void GameObject::resolveWallLeftCollision()     {}
+void GameObject::resolveWallRightCollision()    {}
+
+// Special Objects
+void GameObject::resolveDevilPlatformCollision()       {}
+void GameObject::resolveAngelPlatformCollision()       {}
+void GameObject::resolveScythePlatformCollision()      {}
+void GameObject::resolveHitboxAttackGround1Collision() {}
+void GameObject::resolveHitboxAir1Collision()          {}
+void GameObject::resolveHitboxWallSplatCollision()     {}
+void GameObject::resolvePlayerCollision()              {}
+
+//////////////////////////////
+// Tile Collision functions //
+//////////////////////////////
+
 void GameObject::resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
                                       const bn::span<const bn::regular_bg_map_cell>& cells,
                                       const bn::regular_bg_item&                     bg_item)
@@ -604,86 +736,6 @@ void GameObject::resolveTileCollision(const bn::regular_bg_ptr&                 
 
 		}
 	}
-}
-
-void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
-{
-    // Placeholder for other objects
-	Collider other_collider;
-
-    for(int32 i = 0; i < game_objects.size(); i++)
-    {
-        other_collider = game_objects.at(i)->collider;
-        
-        switch(game_objects.at(i)->object_type)
-        {
-            case NO_TYPE:
-            break;
-
-            // Level Objects
-            case TILE_PASSAGE:
-            break;
-
-            case PHASE_ORB_UP:
-            break; 
-
-            case PHASE_ORB_DOWN:
-            break;
-
-            case PHASE_ORB_LEFT:
-            break;
-
-            case PHASE_ORB_RIGHT:
-            break;
-
-            // Level Enemies
-            case THORN_COLUMN:
-            break; 
-            
-            case THORN_BAR:
-            break;
-
-            case GROUND_GHOUL:
-            break; 
-
-            case CEILING_GHOUL:
-            break; 
-
-            case WALL_LEFT_GHOUL:
-            break; 
-
-            case WALL_RIGHT_GHOUL:
-            break;
-
-            // Special Objects
-            case DEVIL_PLATFORM:
-            break; 
-
-            case ANGEL_PLATFORM:
-            break;
-
-            case SCYTHE_PLATFORM:
-            break; 
-
-            case FALLING_PLATFORM_WIDE:
-            break; 
-
-            case HITBOX_ATTACK_GROUND_1:
-            break;
-
-            case HITBOX_ATTACK_AIR_1:
-            break;
-
-            case HITBOX_WALL_SPLAT:
-            break;
-
-            case PLAYER:
-            break;
-
-            default:
-            break;
-        }
-    }
 }
 
 void GameObject::resolveXAxisCollision(const Collider& other_collider)

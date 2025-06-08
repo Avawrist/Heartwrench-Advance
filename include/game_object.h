@@ -139,17 +139,22 @@ enum ObjectType
 enum ObjectState
 {
 	NONE,
+	
+	///////////////////
+	// Level Objects //
+	///////////////////
 
-	// Player
-	PLAYER_GROUNDED_NEUTRAL,
-	PLAYER_WALK,
-	PLAYER_AIR_NEUTRAL,
-	PLAYER_WALL_SLIDE_RIGHT,
-	PLAYER_WALL_SLIDE_LEFT,
-	PLAYER_PHASE_STEP,
-	PLAYER_ATTACK_GROUND_1,
-	PLAYER_ATTACK_AIR_1,
-	PLAYER_ROLL,
+	// Tile Passage
+	TILE_PASSAGE_SHUT,
+    TILE_PASSAGE_OPEN,
+
+	// Falling Platform
+	FALLING_PLATFORM_WIDE_NEUTRAL,
+	FALLING_PLATFORM_WIDE_FALLING,
+
+	///////////////////
+	// Level Enemies //
+	///////////////////
 
 	// Ceiling Ghoul
 	CEILING_GHOUL_IDLE,
@@ -168,18 +173,28 @@ enum ObjectState
 	WALL_RIGHT_GHOUL_IDLE,
 	WALL_RIGHT_GHOUL_CRAWL,
 
+	/////////////////////
+	// Special Objects //
+	/////////////////////
+
 	// Scythe Platform
 	SCYTHE_PLATFORM_THROWN,
 
-	// Tile Passage
-	TILE_PASSAGE_SHUT,
-    TILE_PASSAGE_OPEN,
+	// Player
+	PLAYER_GROUNDED_NEUTRAL,
+	PLAYER_WALK,
+	PLAYER_AIR_NEUTRAL,
+	PLAYER_WALL_SLIDE_RIGHT,
+	PLAYER_WALL_SLIDE_LEFT,
+	PLAYER_PHASE_STEP,
+	PLAYER_ATTACK_GROUND_1,
+	PLAYER_ATTACK_AIR_1,
+	PLAYER_ROLL,
 
-	// Falling Platform
-	FALLING_PLATFORM_WIDE_NEUTRAL,
-	FALLING_PLATFORM_WIDE_FALLING,
+	/////////////
+	// Generic //
+	/////////////
 
-	// Generic
 	OBJECT_HITSTUN,
 	OBJECT_DEATH,
 };
@@ -272,11 +287,41 @@ struct GameObject
                                   const bn::span<const bn::regular_bg_map_cell>& cells,
                                   const bn::regular_bg_item&                     bg_item);
 	
-	// Object Collision functions
-	virtual void resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects);
-	//...
+	////////////////////////////////
+	// Object Collision functions //
+	////////////////////////////////
 
-	// Tile Collision functions
+	virtual void resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects);
+	
+	// Level Objects
+	virtual void resolveTilePassageCollision();
+	virtual void resolvePhaseOrbUpCollision();
+	virtual void resolvePhaseOrbDownCollision();
+	virtual void resolvePhaseOrbLeftCollision();
+	virtual void resolvePhaseOrbRightCollision();
+	virtual void resolveFallingPlatformWideCollision();
+
+	// Level Enemies
+	virtual void resolveThornColumnCollision(); 
+	virtual void resolveThornBarCollision(); 
+	virtual void resolveGroundGhoulCollision();
+	virtual void resolveCeilingGhoulCollision();
+	virtual void resolveWallLeftCollision(); 
+	virtual void resolveWallRightCollision();
+
+	// Special Objects
+	virtual void resolveDevilPlatformCollision();
+	virtual void resolveAngelPlatformCollision();
+	virtual void resolveScythePlatformCollision();
+	virtual void resolveHitboxAttackGround1Collision();
+	virtual void resolveHitboxAir1Collision(); 
+	virtual void resolveHitboxWallSplatCollision();
+	virtual void resolvePlayerCollision();
+
+	//////////////////////////////
+	// Tile Collision functions //
+	//////////////////////////////
+
 	virtual void resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
 									  const bn::span<const bn::regular_bg_map_cell>& cells,
 									  const bn::regular_bg_item&                     bg_item);
