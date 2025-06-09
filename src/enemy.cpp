@@ -53,9 +53,9 @@ void Enemy::wallSplatCheck()
 // Collision Overrides //
 /////////////////////////
 
-void Enemy::resolveThornColumnCollision(const Collider& other_collider)
+void Enemy::resolveThornColumnCollision(GameObject& object)
 {
-	int32 thorn_collision_x_offset = collider.getCollisionXOffset(other_collider, rigidbody.normalized_dir.x()).integer();
+	int32 thorn_collision_x_offset = collider.getCollisionXOffset(object.collider, rigidbody.normalized_dir.x()).integer();
 	
 	if(thorn_collision_x_offset != 0 &&
 	   hitpoints > 0)
@@ -70,9 +70,9 @@ void Enemy::resolveThornColumnCollision(const Collider& other_collider)
 	}
 }
 
-void Enemy::resolveThornBarCollision(const Collider& other_collider)
+void Enemy::resolveThornBarCollision(GameObject& object)
 {
-	int32 thorn_collision_y_offset = collider.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y()).integer();
+	int32 thorn_collision_y_offset = collider.getCollisionYOffset(object.collider, rigidbody.normalized_dir.y()).integer();
 	
 	if(thorn_collision_y_offset != 0 && 
 	   hitpoints > 0)
@@ -84,6 +84,23 @@ void Enemy::resolveThornBarCollision(const Collider& other_collider)
 														OBJECT_DEATH_Y_FORCE * knockback_y_dir),
 														OBJECT_DEATH_DECAY));
 		hitpoints = 0;
+	}
+}
+
+void Enemy::resolveTilePassageCollision(GameObject& object)
+{
+	if(object.state == TILE_PASSAGE_SHUT &&
+	   collider.isCollision(object.collider))
+	{
+		// Resolve X Axis Collision //
+		BN_LOG(collider.getCollisionXOffset(object.collider, rigidbody.normalized_dir.x()));
+		resolveXAxisCollision(object.collider);
+
+		// Resolve Y Axis Collision //
+		resolveYAxisCollision(object.collider);
+
+		// If there is still collision somehow, must be corner case //
+		resolveCornerCollision(object.collider);
 	}
 }
 

@@ -19,10 +19,12 @@ struct Enemy : GameObject
     /////////////////////////
     // Collision Overrides //
     /////////////////////////
+    void resolveTilePassageCollision(GameObject& object) override;
 
-    void resolveThornColumnCollision(const Collider& other_collider) override;
-    void resolveThornBarCollision(const Collider& other_collider)    override;
-    void resolveXAxisCollision(const Collider& other_collider)       override;
+    void resolveThornColumnCollision(GameObject& object) override;
+    void resolveThornBarCollision(GameObject& object)    override;
+
+    void resolveXAxisCollision(const Collider& other_collider) override;
 };
 
 #endif

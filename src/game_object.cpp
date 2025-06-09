@@ -143,6 +143,30 @@ void GameObject::update(const RoomBounds& 							   room_bounds,
                         const bn::camera_ptr&                          camera)
 {
 
+    //////////////////
+    // Update State //
+    //////////////////
+
+    updateStateMachine(game_objects, bg_ptr, cells, bg_item, camera);
+
+    ////////////////////
+    // Update Physics //
+    ////////////////////
+
+    updatePhysics();
+
+    ///////////////////////
+    // Resolve Collision //
+    ///////////////////////
+
+    resolveCollision(game_objects, bg_ptr, cells, bg_item);
+
+    //////////////////
+    // Update State //
+    //////////////////
+
+    updateState();
+
     ///////////////////////////////////
     // Update Invulnerability frames //
     ///////////////////////////////////
@@ -188,6 +212,27 @@ void GameObject::update(const RoomBounds& 							   room_bounds,
 	updateInactiveState(camera);
 
 }
+
+void GameObject::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
+                                    const bn::regular_bg_ptr&                         bg_ptr, 
+                                    const bn::span<const bn::regular_bg_map_cell>&    cells,
+                                    const bn::regular_bg_item&                        bg_item,
+                                    const bn::camera_ptr&                             camera) {}
+
+void GameObject::updatePhysics()
+{
+    // Apply Decay to Forces
+	rigidbody.applyDecay();
+
+	// Apply forces to player
+	applyForces();
+
+    // Update colliders for each axis. 
+	collider_x_axis.setPos(collider.x(), collider.y() - rigidbody.final_dir.y());
+	collider_y_axis.setPos(collider.x() - rigidbody.final_dir.x(), collider.y());
+}
+
+void GameObject::updateState() {}
 
 void GameObject::applyForces()
 {
@@ -536,9 +581,7 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
 	Collider other_collider;
 
     for(int32 i = 0; i < game_objects.size(); i++)
-    {
-        other_collider = game_objects.at(i)->collider;
-        
+    {   
         switch(game_objects.at(i)->object_type)
         {
             case NO_TYPE:
@@ -546,81 +589,69 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
 
             // Level Objects
             case TILE_PASSAGE:
-                resolveTilePassageCollision(other_collider);
+                resolveTilePassageCollision(*game_objects.at(i));
             break;
 
             case PHASE_ORB_UP:
-                resolvePhaseOrbUpCollision(other_collider);
+                resolvePhaseOrbUpCollision(*game_objects.at(i));
             break; 
 
             case PHASE_ORB_DOWN:
-                resolvePhaseOrbDownCollision(other_collider);
+                resolvePhaseOrbDownCollision(*game_objects.at(i));
             break;
 
             case PHASE_ORB_LEFT:
-                resolvePhaseOrbLeftCollision(other_collider);
+                resolvePhaseOrbLeftCollision(*game_objects.at(i));
             break;
 
             case PHASE_ORB_RIGHT:
-                resolvePhaseOrbRightCollision(other_collider);
+                resolvePhaseOrbRightCollision(*game_objects.at(i));
             break;
 
             case FALLING_PLATFORM_WIDE:
-                resolveFallingPlatformWideCollision(other_collider);
+                resolveFallingPlatformWideCollision(*game_objects.at(i));
             break;
 
             // Level Enemies
             case THORN_COLUMN:
-                resolveThornColumnCollision(other_collider);
+                resolveThornColumnCollision(*game_objects.at(i));
             break; 
             
             case THORN_BAR:
-                resolveThornBarCollision(other_collider);
+                resolveThornBarCollision(*game_objects.at(i));
             break;
 
             case GROUND_GHOUL:
-                resolveGroundGhoulCollision(other_collider);
+                resolveGroundGhoulCollision(*game_objects.at(i));
             break; 
-
-            case CEILING_GHOUL:
-                resolveCeilingGhoulCollision(other_collider);
-            break; 
-
-            case WALL_LEFT_GHOUL:
-                resolveWallLeftCollision(other_collider);
-            break; 
-
-            case WALL_RIGHT_GHOUL:
-                resolveWallRightCollision(other_collider);
-            break;
 
             // Special Objects
             case DEVIL_PLATFORM:
-                resolveDevilPlatformCollision(other_collider);
+                resolveDevilPlatformCollision(*game_objects.at(i));
             break; 
 
             case ANGEL_PLATFORM:
-                resolveAngelPlatformCollision(other_collider);
+                resolveAngelPlatformCollision(*game_objects.at(i));
             break;
 
             case SCYTHE_PLATFORM:
-                resolveScythePlatformCollision(other_collider);
+                resolveScythePlatformCollision(*game_objects.at(i));
             break; 
 
             case HITBOX_ATTACK_GROUND_1:
-                resolveHitboxAttackGround1Collision(other_collider);
+                resolveHitboxAttackGround1Collision(*game_objects.at(i));
             break;
 
             case HITBOX_ATTACK_AIR_1:
-                resolveHitboxAir1Collision(other_collider);
+                resolveHitboxAir1Collision(*game_objects.at(i));
             break;
 
             case HITBOX_WALL_SPLAT:
-                resolveHitboxWallSplatCollision(other_collider);
+                resolveHitboxWallSplatCollision(*game_objects.at(i));
             break;
 
             case PLAYER:
-                resolvePlayerCollision(other_collider);
+                resolvePlayerCollision(*game_objects.at(i));
             break;
 
             default:
@@ -630,29 +661,26 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
 }
 
 // Level Objects
-void GameObject::resolveTilePassageCollision(const Collider& other_collider)         {}
-void GameObject::resolvePhaseOrbUpCollision(const Collider& other_collider)          {}
-void GameObject::resolvePhaseOrbDownCollision(const Collider& other_collider)        {}
-void GameObject::resolvePhaseOrbLeftCollision(const Collider& other_collider)        {}
-void GameObject::resolvePhaseOrbRightCollision(const Collider& other_collider)       {}
-void GameObject::resolveFallingPlatformWideCollision(const Collider& other_collider) {}
+void GameObject::resolveTilePassageCollision(GameObject& object)         {}
+void GameObject::resolvePhaseOrbUpCollision(GameObject& object)          {}
+void GameObject::resolvePhaseOrbDownCollision(GameObject& object)        {}
+void GameObject::resolvePhaseOrbLeftCollision(GameObject& object)        {}
+void GameObject::resolvePhaseOrbRightCollision(GameObject& object)       {}
+void GameObject::resolveFallingPlatformWideCollision(GameObject& object) {}
 
 // Level Enemies
-void GameObject::resolveThornColumnCollision(const Collider& other_collider)  {}
-void GameObject::resolveThornBarCollision(const Collider& other_collider)     {}
-void GameObject::resolveGroundGhoulCollision(const Collider& other_collider)  {}
-void GameObject::resolveCeilingGhoulCollision(const Collider& other_collider) {}
-void GameObject::resolveWallLeftCollision(const Collider& other_collider)     {}
-void GameObject::resolveWallRightCollision(const Collider& other_collider)    {}
+void GameObject::resolveThornColumnCollision(GameObject& object)    {}
+void GameObject::resolveThornBarCollision(GameObject& object)       {}
+void GameObject::resolveGroundGhoulCollision(GameObject& object)    {}
 
 // Special Objects
-void GameObject::resolveDevilPlatformCollision(const Collider& other_collider)       {}
-void GameObject::resolveAngelPlatformCollision(const Collider& other_collider)       {}
-void GameObject::resolveScythePlatformCollision(const Collider& other_collider)      {}
-void GameObject::resolveHitboxAttackGround1Collision(const Collider& other_collider) {}
-void GameObject::resolveHitboxAir1Collision(const Collider& other_collider)          {}
-void GameObject::resolveHitboxWallSplatCollision(const Collider& other_collider)     {}
-void GameObject::resolvePlayerCollision(const Collider& other_collider)              {}
+void GameObject::resolveDevilPlatformCollision(GameObject& object)       {}
+void GameObject::resolveAngelPlatformCollision(GameObject& object)       {}
+void GameObject::resolveScythePlatformCollision(GameObject& object)      {}
+void GameObject::resolveHitboxAttackGround1Collision(GameObject& object) {}
+void GameObject::resolveHitboxAir1Collision(GameObject& object)          {}
+void GameObject::resolveHitboxWallSplatCollision(GameObject& object)     {}
+void GameObject::resolvePlayerCollision(GameObject& object)              {}
 
 //////////////////////////////
 // Tile Collision functions //

@@ -46,10 +46,7 @@
 #include "bn_sprite_items_phase_orb_right.h"
 
 // Enemy Object Assets
-#include "bn_sprite_items_ceiling_ghoul.h"
 #include "bn_sprite_items_ground_ghoul.h"
-#include "bn_sprite_items_wall_left_ghoul.h"
-#include "bn_sprite_items_wall_right_ghoul.h"
 #include "bn_sprite_items_thorn_column.h"
 #include "bn_sprite_items_thorn_bar.h"
 
@@ -126,9 +123,6 @@ enum ObjectType
 	THORN_COLUMN,
 	THORN_BAR,
 	GROUND_GHOUL,
-	CEILING_GHOUL,
-	WALL_LEFT_GHOUL,
-	WALL_RIGHT_GHOUL,
 
 	// Special Objects
 	DEVIL_PLATFORM,
@@ -160,22 +154,10 @@ enum ObjectState
 	// Level Enemies //
 	///////////////////
 
-	// Ceiling Ghoul
-	CEILING_GHOUL_IDLE,
-	CEILING_GHOUL_CRAWL,
-
 	// Ground Ghoul
 	GROUND_GHOUL_IDLE,
 	GROUND_GHOUL_CRAWL,
 	GROUND_GHOUL_AIR,
-
-	// Wall Left Ghoul
-	WALL_LEFT_GHOUL_IDLE,
-	WALL_LEFT_GHOUL_CRAWL,
-
-	// Wall Right Ghoul
-	WALL_RIGHT_GHOUL_IDLE,
-	WALL_RIGHT_GHOUL_CRAWL,
 
 	/////////////////////
 	// Special Objects //
@@ -259,6 +241,13 @@ struct GameObject
                         const bn::span<const bn::regular_bg_map_cell>& cells,
                         const bn::regular_bg_item&                     bg_item,
 						const bn::camera_ptr&                          camera);
+	virtual void updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
+									const bn::regular_bg_ptr&                         bg_ptr, 
+									const bn::span<const bn::regular_bg_map_cell>&    cells,
+									const bn::regular_bg_item&                        bg_item,
+									const bn::camera_ptr&                             camera);
+	virtual void updatePhysics();
+	virtual void updateState();
 	
 	virtual void draw();
 	virtual void setCamera(const bn::camera_ptr& camera);
@@ -298,29 +287,26 @@ struct GameObject
 	virtual void resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects);
 
 	// Level Objects
-	virtual void resolveTilePassageCollision(const Collider& other_collider);
-	virtual void resolvePhaseOrbUpCollision(const Collider& other_collider);
-	virtual void resolvePhaseOrbDownCollision(const Collider& other_collider);
-	virtual void resolvePhaseOrbLeftCollision(const Collider& other_collider);
-	virtual void resolvePhaseOrbRightCollision(const Collider& other_collider);
-	virtual void resolveFallingPlatformWideCollision(const Collider& other_collider);
+	virtual void resolveTilePassageCollision(GameObject& object);
+	virtual void resolvePhaseOrbUpCollision(GameObject& object);
+	virtual void resolvePhaseOrbDownCollision(GameObject& object);
+	virtual void resolvePhaseOrbLeftCollision(GameObject& object);
+	virtual void resolvePhaseOrbRightCollision(GameObject& object);
+	virtual void resolveFallingPlatformWideCollision(GameObject& object);
 
 	// Level Enemies
-	virtual void resolveThornColumnCollision(const Collider& other_collider); 
-	virtual void resolveThornBarCollision(const Collider& other_collider); 
-	virtual void resolveGroundGhoulCollision(const Collider& other_collider);
-	virtual void resolveCeilingGhoulCollision(const Collider& other_collider);
-	virtual void resolveWallLeftCollision(const Collider& other_collider); 
-	virtual void resolveWallRightCollision(const Collider& other_collider);
+	virtual void resolveThornColumnCollision(GameObject& object); 
+	virtual void resolveThornBarCollision(GameObject& object); 
+	virtual void resolveGroundGhoulCollision(GameObject& object);
 
 	// Special Objects
-	virtual void resolveDevilPlatformCollision(const Collider& other_collider);
-	virtual void resolveAngelPlatformCollision(const Collider& other_collider);
-	virtual void resolveScythePlatformCollision(const Collider& other_collider);
-	virtual void resolveHitboxAttackGround1Collision(const Collider& other_collider);
-	virtual void resolveHitboxAir1Collision(const Collider& other_collider); 
-	virtual void resolveHitboxWallSplatCollision(const Collider& other_collider);
-	virtual void resolvePlayerCollision(const Collider& other_collider);
+	virtual void resolveDevilPlatformCollision(GameObject& object);
+	virtual void resolveAngelPlatformCollision(GameObject& object);
+	virtual void resolveScythePlatformCollision(GameObject& object);
+	virtual void resolveHitboxAttackGround1Collision(GameObject& object);
+	virtual void resolveHitboxAir1Collision(GameObject& object); 
+	virtual void resolveHitboxWallSplatCollision(GameObject& object);
+	virtual void resolvePlayerCollision(GameObject& object);
 
 	//////////////////////////////
 	// Tile Collision functions //

@@ -158,18 +158,6 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             temp_object_ptr = new GroundGhoul();
         break;
 
-        case CEILING_GHOUL:
-            temp_object_ptr = new CeilingGhoul();
-        break;
-
-        case WALL_LEFT_GHOUL:
-            temp_object_ptr = new WallLeftGhoul();
-        break;
-
-        case WALL_RIGHT_GHOUL:
-            temp_object_ptr = new WallRightGhoul();
-        break;
-
         case THORN_COLUMN:
             temp_object_ptr = new ThornColumn();
         break;
@@ -272,7 +260,7 @@ void Room::load(RoomName                                       room_name,
             bottom_neighbor = NO_ROOM;
             left_neighbor   = NO_ROOM;
 
-            room_bounds.top_bound    = -2428;
+            room_bounds.top_bound    = -2432;
             room_bounds.right_bound  = -4784;
             room_bounds.bottom_bound = -2064;
             room_bounds.left_bound   = -5120;
@@ -306,7 +294,7 @@ void Room::load(RoomName                                       room_name,
             bottom_neighbor = NO_ROOM;
             left_neighbor   = ROOM_TEST_2;
 
-            room_bounds.top_bound    = -2428;
+            room_bounds.top_bound    = -2432;
             room_bounds.right_bound  = -4000;
             room_bounds.bottom_bound = -2064;
             room_bounds.left_bound   = -4368;
@@ -355,11 +343,11 @@ void Room::prepObjects(const bn::regular_bg_ptr&                      object_bg_
     int32 half_level_width_pixels  = object_bg_ptr.dimensions().width()  / 2;
 	int32 half_level_height_pixels = object_bg_ptr.dimensions().height() / 2;
     
-    for(int32 x = room_bounds.left_bound   + half_level_width_pixels + (TILE_WIDTH / 2); 
+    for(int32 x  = room_bounds.left_bound  + half_level_width_pixels + (TILE_WIDTH / 2); 
               x <= room_bounds.right_bound + half_level_width_pixels - (TILE_WIDTH / 2); 
               x += TILE_WIDTH)
     {
-        for(int32 y = room_bounds.top_bound     + half_level_height_pixels + (TILE_HEIGHT / 2); 
+        for(int32 y =  room_bounds.top_bound    + half_level_height_pixels + (TILE_HEIGHT / 2); 
                   y <= room_bounds.bottom_bound + half_level_height_pixels - (TILE_HEIGHT / 2);
                   y += TILE_HEIGHT)
         {

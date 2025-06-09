@@ -90,72 +90,17 @@ Hitbox& Hitbox::operator =(const Hitbox& other)
     return *this;
 }
 
-void Hitbox::update(const RoomBounds&                              room_bounds,
-                    bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
-                    const bn::regular_bg_ptr&                      bg_ptr, 
-                    const bn::span<const bn::regular_bg_map_cell>& cells,
-                    const bn::regular_bg_item&                     bg_item,
-                    const bn::camera_ptr&                          camera)
+void Hitbox::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
+                                const bn::regular_bg_ptr&                         bg_ptr, 
+                                const bn::span<const bn::regular_bg_map_cell>&    cells,
+                                const bn::regular_bg_item&                        bg_item,
+                                const bn::camera_ptr&                             camera)
 {
-
-    //////////////////////
-    // Collision Events //
-    //////////////////////
-
-    Collider other_collider;
-
-    for(int32 i = 0; i < game_objects.size(); i++)
-    {
-        other_collider = game_objects.at(i)->collider;
-
-        switch(game_objects.at(i)->object_type)
-        {
-            // Level Enemies
-            case THORN_COLUMN:
-            case THORN_BAR:
-            case CEILING_GHOUL:
-            case GROUND_GHOUL:
-            case WALL_LEFT_GHOUL:
-            case WALL_RIGHT_GHOUL:
-                    
-                if(collider.isCollision(other_collider))
-                {applyHit(*(game_objects.at(i)));}
-
-            break;
-
-            case PHASE_ORB_UP:
-            case PHASE_ORB_DOWN:
-            case PHASE_ORB_LEFT:
-            case PHASE_ORB_RIGHT:
-            case TILE_PASSAGE:
-            case DEVIL_PLATFORM:
-            case ANGEL_PLATFORM:
-            case SCYTHE_PLATFORM:	
-            default:
-            break;
-        }
-    }
-
-    //////////////////////////
     // Udpate Frame Counter //
-    //////////////////////////
-
     current_lifespan_frame--;
     current_lifespan_frame = clamp(0, lifespan_frames, current_lifespan_frame);
     
     if(current_lifespan_frame <= 0) {is_inactive = true;}
-
-    /////////////////////////////////
-	// Generic Object Update stuff //
-	/////////////////////////////////
-	
-	GameObject::update(room_bounds,
-                       game_objects,
-                       bg_ptr,
-                       cells,
-                       bg_item,
-                       camera);
-
 }
 
 void Hitbox::applyHit(GameObject& object)
@@ -235,4 +180,29 @@ void Hitbox::applyWallHit(GameObject& object)
     object.setVerticalStretch();
     object.applySplatEffect(object.x().integer() + splat_x_offset, 
                             object.y().integer());
+}
+
+void Hitbox::resolveThornColumnCollision(GameObject& object)
+{
+    if(collider.isCollision(object.collider))
+    {applyHit(object);}
+}
+
+void Hitbox::resolveThornBarCollision(GameObject& object)
+{
+    if(collider.isCollision(object.collider))
+    {applyHit(object);}
+}
+
+void Hitbox::resolveGroundGhoulCollision(GameObject& object)
+{
+    if(collider.isCollision(object.collider))
+    {applyHit(object);}
+}
+
+void Hitbox::resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
+                                  const bn::span<const bn::regular_bg_map_cell>& cells,
+                                  const bn::regular_bg_item&                     bg_item)
+{
+
 }

@@ -104,10 +104,7 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_log.h \
  G:/game/build/bn_sprite_items_phase_orb_down.h \
  G:/game/build/bn_sprite_items_phase_orb_left.h \
  G:/game/build/bn_sprite_items_phase_orb_right.h \
- G:/game/build/bn_sprite_items_ceiling_ghoul.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h \
- G:/game/build/bn_sprite_items_wall_left_ghoul.h \
- G:/game/build/bn_sprite_items_wall_right_ghoul.h \
  G:/game/build/bn_sprite_items_thorn_column.h \
  G:/game/build/bn_sprite_items_thorn_bar.h \
  G:/game/build/bn_sprite_items_devil_platform.h \
@@ -117,13 +114,11 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_log.h \
  G:/game/build/bn_sprite_items_hitbox.h \
  G:/game/build/bn_sprite_items_player.h \
  G:/game/build/bn_sprite_items_phase_marker.h G:/game/include/player.h \
- G:/game/include/hitbox.h G:/game/include/tile_passage.h \
- G:/game/include/phase_orb.h G:/game/include/ground_ghoul.h \
- G:/game/include/enemy.h G:/game/include/ceiling_ghoul.h \
- G:/game/include/wall_left_ghoul.h G:/game/include/wall_right_ghoul.h \
- G:/game/include/thorn_column.h G:/game/include/thorn_bar.h \
- G:/game/include/devil_platform.h G:/game/include/angel_platform.h \
- G:/game/include/falling_platform_wide.h
+ G:/game/include/hitbox.h G:/game/include/phase_orb.h \
+ G:/game/include/tile_passage.h G:/game/include/thorn_column.h \
+ G:/game/include/enemy.h G:/game/include/thorn_bar.h \
+ G:/game/include/ground_ghoul.h G:/game/include/devil_platform.h \
+ G:/game/include/angel_platform.h G:/game/include/falling_platform_wide.h
 G:/butano-master/butano/include/bn_log.h:
 G:/butano-master/butano/include/bn_config_log.h:
 G:/butano-master/butano/include/bn_log_backend.h:
@@ -234,10 +229,7 @@ G:/game/build/bn_sprite_items_phase_orb_up.h:
 G:/game/build/bn_sprite_items_phase_orb_down.h:
 G:/game/build/bn_sprite_items_phase_orb_left.h:
 G:/game/build/bn_sprite_items_phase_orb_right.h:
-G:/game/build/bn_sprite_items_ceiling_ghoul.h:
 G:/game/build/bn_sprite_items_ground_ghoul.h:
-G:/game/build/bn_sprite_items_wall_left_ghoul.h:
-G:/game/build/bn_sprite_items_wall_right_ghoul.h:
 G:/game/build/bn_sprite_items_thorn_column.h:
 G:/game/build/bn_sprite_items_thorn_bar.h:
 G:/game/build/bn_sprite_items_devil_platform.h:
@@ -249,15 +241,12 @@ G:/game/build/bn_sprite_items_player.h:
 G:/game/build/bn_sprite_items_phase_marker.h:
 G:/game/include/player.h:
 G:/game/include/hitbox.h:
-G:/game/include/tile_passage.h:
 G:/game/include/phase_orb.h:
-G:/game/include/ground_ghoul.h:
-G:/game/include/enemy.h:
-G:/game/include/ceiling_ghoul.h:
-G:/game/include/wall_left_ghoul.h:
-G:/game/include/wall_right_ghoul.h:
+G:/game/include/tile_passage.h:
 G:/game/include/thorn_column.h:
+G:/game/include/enemy.h:
 G:/game/include/thorn_bar.h:
+G:/game/include/ground_ghoul.h:
 G:/game/include/devil_platform.h:
 G:/game/include/angel_platform.h:
 G:/game/include/falling_platform_wide.h:

@@ -41,21 +41,7 @@ ThornBar& ThornBar::operator =(const ThornBar& other)
     return *this;
 }
 
-void ThornBar::update(const RoomBounds&                                 room_bounds,
-                      bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
-                      const bn::regular_bg_ptr&                         bg_ptr, 
-                      const bn::span<const bn::regular_bg_map_cell>&    cells,
-                      const bn::regular_bg_item&                        bg_item,
-                      const bn::camera_ptr&                             camera)
+void ThornBar::updatePhysics()
 {
-    /////////////////////////////////
-	// Generic Object Update stuff //
-	/////////////////////////////////
-	
-	GameObject::update(room_bounds,
-                       game_objects,
-                       bg_ptr,
-                       cells,
-                       bg_item,
-                       camera);
+    
 }

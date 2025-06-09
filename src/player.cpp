@@ -1053,174 +1053,7 @@ void Player::update(const RoomBounds& 								  room_bounds,
 	// Resolve GameObject Collision //
 	//////////////////////////////////
 
-	if(state != PLAYER_PHASE_STEP)
-	{
-		for(int32 i = 0; i < game_objects.size(); i++)
-		{
-			other_collider = game_objects.at(i)->collider;
-			int32 thorn_collision_x_offset;
-			int32 thorn_collision_y_offset;
-			
-			switch(game_objects.at(i)->object_type)
-			{
-				// Level Objects
-				case TILE_PASSAGE:
-					
-					if(((TilePassage*)(game_objects.at(i)))->state == TILE_PASSAGE_SHUT &&
-					collider.isCollision(other_collider))
-					{
-						// Resolve X Axis Collision //
-						col_x_offset = collider_x_axis.getCollisionXOffset(other_collider, rigidbody.normalized_dir.x());
-						collider_x_axis.setX(collider_x_axis.x() + col_x_offset);
-						setX(this->x() + col_x_offset);
-
-						// Resolve Y Axis Collision //
-						col_y_offset = collider_y_axis.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y());
-						collider_y_axis.setY(collider_y_axis.y() + col_y_offset);
-						setY(this->y() + col_y_offset);
-						v_collision_grace_frames = PLAYER_V_COLLISION_MAX_GRACE_FRAMES * col_y_offset.integer();
-
-						// If there is still collision somehow, must be corner case //
-						while(collider.isCollision(other_collider))
-						{
-							if(rigidbody.normalized_dir.x() == 0) {hitpoints = 0; break;}
-							// We always resolve diagonal corner collisions with a horizontal shift. 
-							setX(this->x() - rigidbody.normalized_dir.x());
-						}
-					}
-
-				break;
-
-				// Level Enemies
-				case THORN_COLUMN:
-
-					thorn_collision_x_offset = collider.getCollisionXOffset(other_collider, rigidbody.normalized_dir.x()).integer();
-					
-					if(state != PLAYER_ROLL && 
-					   thorn_collision_x_offset != 0 && 
-					   hitpoints > 0)
-					{
-						int32 knockback_x_dir = abs(thorn_collision_x_offset) / thorn_collision_x_offset;
-
-						rigidbody.removeForces();
-						rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_DEATH_X_FORCE * knockback_x_dir, 
-																	   OBJECT_DEATH_Y_FORCE * 0),
-																	   OBJECT_DEATH_DECAY));
-						hitpoints = 0;
-					}
-
-				break;
-
-				case THORN_BAR:
-
-					thorn_collision_y_offset = collider.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y()).integer();
-					
-					if(state != PLAYER_ROLL && 
-					   thorn_collision_y_offset != 0 && 
-					   hitpoints > 0)
-					{
-						int32 knockback_y_dir = abs(thorn_collision_y_offset) / thorn_collision_y_offset;
-
-						rigidbody.removeForces();
-						rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_DEATH_X_FORCE * 0, 
-																	   OBJECT_DEATH_Y_FORCE * knockback_y_dir),
-																	   OBJECT_DEATH_DECAY));
-						hitpoints = 0;
-					}
-
-				break;
-
-				// Special Objects
-				case DEVIL_PLATFORM:
-					
-					if(collider.isCollision(other_collider))
-					{
-						// Handle Default Collision Cases //
-						while(collider_x_axis.isCollision(other_collider))
-						{
-							if(rigidbody.normalized_dir.x() == 0) {hitpoints = 0; break;}
-							collider_x_axis.setX(collider_x_axis.x() - rigidbody.normalized_dir.x());
-							setX(this->x() - rigidbody.normalized_dir.x());
-						}
-
-						while(collider_y_axis.isCollision(other_collider))
-						{
-							if(rigidbody.normalized_dir.y() == 0) {hitpoints = 0; break;}
-							collider_y_axis.setY(collider_y_axis.y() - rigidbody.normalized_dir.y());
-							setY(this->y() - rigidbody.normalized_dir.y());
-						}
-
-						// If there is still collision somehow, must be corner case //
-						while(collider.isCollision(other_collider))
-						{
-							if(rigidbody.normalized_dir.x() == 0) {hitpoints = 0; break;}
-							// We always resolve diagonal corner collisions with a horizontal shift. 
-							setX(this->x() - rigidbody.normalized_dir.x());
-						}	
-					}
-
-				break;
-
-				case ANGEL_PLATFORM:
-
-					if(collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
-					{
-
-						// Handle Corner Case //
-						if(!collider_x_axis.isCollision(other_collider) &&
-						!collider_y_axis.isCollision(other_collider))
-						{
-							while(collider.isCollision(other_collider))
-							{setY(this->y() - 1);}
-						}
-					
-						// Handle Remaining Collision Cases //
-						else
-						{
-
-							while(collider_y_axis.isCollision(other_collider))
-							{collider_y_axis.setY(collider_y_axis.y() - 1);
-								setY(this->y() - 1);}
-						}
-					}
-					
-				break;
-
-				case SCYTHE_PLATFORM:
-					
-					if(collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
-					{
-						if(bn::keypad::down_held())       {break;}
-						else if(v_collision_grace_frames) {break;}
-
-						// Handle Corner Case //
-						if(!collider_x_axis.isCollision(other_collider) &&
-						!collider_y_axis.isCollision(other_collider))
-						{
-							while(collider.isCollision(other_collider))
-							{
-								setY(this->y() - 1);
-							}
-						} 
-					
-						// Handle Remaining Collision Cases //
-						else
-						{
-							while(collider_y_axis.isCollision(other_collider))
-							{
-								collider_y_axis.setY(collider_y_axis.y() - 1);
-								setY(this->y() - 1);
-							}
-						}
-					}
-					
-				break;
-
-				default:
-				break;
-			}
-		}
-	}
+	resolveObjectCollision(game_objects);
 
 	////////////////////////////
     // Resolve Tile Collision //
@@ -1623,17 +1456,15 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				case TILE_PASSAGE:
 
 					// Test for, and log grounded collision
-					if(((TilePassage*)(game_objects.at(i)))->state == TILE_PASSAGE_SHUT &&
+					if(game_objects.at(i)->state == TILE_PASSAGE_SHUT &&
 					test_collider.isCollision(other_collider) && 
 					rigidbody.normalized_dir.y() >= 0)
 					{
 						if(rigidbody.final_dir.y() >= PLAYER_MIN_PASSAGE_SPEED)
-						{((TilePassage*)(game_objects.at(i)))->setState(TILE_PASSAGE_OPEN);}
+						{game_objects.at(i)->setState(TILE_PASSAGE_OPEN);}
 						else 
 						{
 							grounded_detected = true;
-							if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED)
-							{setHorizontalStretch();}
 						}
 					}
 
@@ -1691,9 +1522,6 @@ void Player::update(const RoomBounds& 								  room_bounds,
 				case THORN_COLUMN:
 				case THORN_BAR:
 				case GROUND_GHOUL:
-				case CEILING_GHOUL:
-				case WALL_LEFT_GHOUL:
-				case WALL_RIGHT_GHOUL:
 				break;
 
 				// Special Objects
@@ -2370,18 +2198,59 @@ void Player::update(const RoomBounds& 								  room_bounds,
 		{jump_effect_sprite_ptr->set_visible(false);}
 	}
 
-	/////////////////////////////////
-	// Generic Object Update stuff //
-	/////////////////////////////////
+	 ///////////////////////////////////
+    // Update Invulnerability frames //
+    ///////////////////////////////////
+
+    invulnerability_frames -= 1;
+    if(invulnerability_frames < 0) {invulnerability_frames = 0;}
+
+    ///////////////////
+    // Check if dead //
+    ///////////////////
+
+    if(hitpoints <= 0 && state != OBJECT_DEATH)
+    {setState(OBJECT_DEATH);}
+
+    /////////////////////////////
+	// Update Sprite Direction //
+	/////////////////////////////
 	
-	GameObject::update(room_bounds,
-					   game_objects,
-					   bg_ptr,
-					   cells,
-					   bg_item,
-					   camera);
+    updateSpriteDirection();
+    
+    ////////////////////////////
+    // Correct Sprite Offsets //
+    ////////////////////////////
+	
+    updateSpriteOffsets();
+
+	//////////////////////
+	// Update Hit Flash //
+	//////////////////////
+
+	updateHitFlash();
+
+    ////////////////////
+    // Clamp Position //
+    ////////////////////
+
+    clampPosition(bg_ptr);
+
+	//////////////////////////////
+    // Monitor unloading bounds //
+    //////////////////////////////
+    
+	updateInactiveState(camera);
 	
 }
+
+void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
+								const bn::regular_bg_ptr&                         bg_ptr, 
+								const bn::span<const bn::regular_bg_map_cell>&    cells,
+								const bn::regular_bg_item&                        bg_item,
+								const bn::camera_ptr&                             camera) {}
+void Player::updatePhysics() {}
+void Player::updateState() {}
 
 void Player::draw()
 {
@@ -2720,26 +2589,133 @@ void Player::createLandEffect()
 /////////////////////////
 
 // Level Objects
-void Player::resolveTilePassageCollision(const Collider& other_collider) {}
-void Player::resolvePhaseOrbUpCollision(const Collider& other_collider)  {}
-void Player::resolvePhaseOrbDownCollision(const Collider& other_collider) {}
-void Player::resolvePhaseOrbLeftCollision(const Collider& other_collider) {}
-void Player::resolvePhaseOrbRightCollision(const Collider& other_collider) {}
-void Player::resolveFallingPlatformWideCollision(const Collider& other_collider) {}
+void Player::resolveTilePassageCollision(GameObject& object)         
+{
+	if(object.state == TILE_PASSAGE_SHUT &&
+	   collider.isCollision(object.collider))
+	{
+		// Resolve X Axis Collision //
+		resolveXAxisCollision(object.collider);
+
+		// Resolve Y Axis Collision //
+		resolveYAxisCollision(object.collider);
+		v_collision_grace_frames = PLAYER_V_COLLISION_MAX_GRACE_FRAMES * col_y_offset.integer();
+
+		// If there is still collision somehow, must be corner case //
+		resolveCornerCollision(object.collider);
+	}
+}
+
+void Player::resolvePhaseOrbUpCollision(GameObject& object)          {}
+void Player::resolvePhaseOrbDownCollision(GameObject& object)        {}
+void Player::resolvePhaseOrbLeftCollision(GameObject& object)        {}
+void Player::resolvePhaseOrbRightCollision(GameObject& object)       {}
+void Player::resolveFallingPlatformWideCollision(GameObject& object) {}
 
 // Level Enemies
-void Player::resolveThornColumnCollision(const Collider& other_collider) {}
-void Player::resolveThornBarCollision(const Collider& other_collider) {} 
-void Player::resolveGroundGhoulCollision(const Collider& other_collider) {}
-void Player::resolveCeilingGhoulCollision(const Collider& other_collider) {}
-void Player::resolveWallLeftCollision(const Collider& other_collider) {} 
-void Player::resolveWallRightCollision(const Collider& other_collider) {}
+void Player::resolveThornColumnCollision(GameObject& object)    
+{
+	int32 thorn_collision_x_offset = collider.getCollisionXOffset(object.collider, rigidbody.normalized_dir.x()).integer();
+	
+	if(state != PLAYER_ROLL && 
+		thorn_collision_x_offset != 0 && 
+		hitpoints > 0)
+	{
+		int32 knockback_x_dir = abs(thorn_collision_x_offset) / thorn_collision_x_offset;
+
+		rigidbody.removeForces();
+		rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_DEATH_X_FORCE * knockback_x_dir, 
+														OBJECT_DEATH_Y_FORCE * 0),
+														OBJECT_DEATH_DECAY));
+		hitpoints = 0;
+	}
+}
+
+void Player::resolveThornBarCollision(GameObject& object)       
+{
+	int32 thorn_collision_y_offset = collider.getCollisionYOffset(object.collider, rigidbody.normalized_dir.y()).integer();
+	
+	if(state != PLAYER_ROLL && 
+	   thorn_collision_y_offset != 0 && 
+	   hitpoints > 0)
+	{
+		int32 knockback_y_dir = abs(thorn_collision_y_offset) / thorn_collision_y_offset;
+
+		rigidbody.removeForces();
+		rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_DEATH_X_FORCE * 0, 
+													   OBJECT_DEATH_Y_FORCE * knockback_y_dir),
+													   OBJECT_DEATH_DECAY));
+		hitpoints = 0;
+	}
+}
+
+void Player::resolveGroundGhoulCollision(GameObject& object)    {}
 
 // Special Objects
-void Player::resolveDevilPlatformCollision(const Collider& other_collider) {}
-void Player::resolveAngelPlatformCollision(const Collider& other_collider) {}
-void Player::resolveScythePlatformCollision(const Collider& other_collider) {}
-void Player::resolveHitboxAttackGround1Collision(const Collider& other_collider) {}
-void Player::resolveHitboxAir1Collision(const Collider& other_collider) {} 
-void Player::resolveHitboxWallSplatCollision(const Collider& other_collider) {}
-void Player::resolvePlayerCollision(const Collider& other_collider) {}
+void Player::resolveDevilPlatformCollision(GameObject& object)       
+{
+	if(collider.isCollision(object.collider))
+	{
+		// Handle Default Collision Cases //
+		resolveXAxisCollision(object.collider);
+
+		resolveYAxisCollision(object.collider);
+
+		// If there is still collision somehow, must be corner case //
+		resolveCornerCollision(object.collider);
+	}
+}
+
+void Player::resolveAngelPlatformCollision(GameObject& object)       
+{
+	if(collider_y_axis.p4.y() <= object.collider.p1.y() + PLAYER_GRAVITY)
+	{
+
+		// Handle Corner Case //
+		if(!collider_x_axis.isCollision(object.collider) &&
+		   !collider_y_axis.isCollision(object.collider))
+		{
+			while(collider.isCollision(object.collider))
+			{setY(this->y() - 1);}
+		}
+	
+		// Handle Remaining Collision Cases //
+		else
+		{
+			while(collider_y_axis.isCollision(object.collider))
+			{collider_y_axis.setY(collider_y_axis.y() - 1);
+			 setY(this->y() - 1);}
+		}
+	}
+}
+
+void Player::resolveScythePlatformCollision(GameObject& object)      
+{
+	if(collider_y_axis.p4.y() <= object.collider.p1.y() + PLAYER_GRAVITY)
+	{
+		// Handle Corner Case //
+		if(!collider_x_axis.isCollision(object.collider) &&
+		!collider_y_axis.isCollision(object.collider))
+		{
+			while(collider.isCollision(object.collider))
+			{
+				setY(this->y() - 1);
+			}
+		} 
+	
+		// Handle Remaining Collision Cases //
+		else
+		{
+			while(collider_y_axis.isCollision(object.collider))
+			{
+				collider_y_axis.setY(collider_y_axis.y() - 1);
+				setY(this->y() - 1);
+			}
+		}
+	}
+}
+
+void Player::resolveHitboxAttackGround1Collision(GameObject& object) {}
+void Player::resolveHitboxAir1Collision(GameObject& object)          {} 
+void Player::resolveHitboxWallSplatCollision(GameObject& object)     {}
+void Player::resolvePlayerCollision(GameObject& object)              {}

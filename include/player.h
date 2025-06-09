@@ -10,12 +10,7 @@
 
 // My Libs
 #include "hitbox.h"
-#include "tile_passage.h"
 #include "phase_orb.h"
-#include "ground_ghoul.h"
-#include "ceiling_ghoul.h"
-#include "wall_left_ghoul.h"
-#include "wall_right_ghoul.h"
 
 ///////////////////
 // Struct Player //
@@ -211,8 +206,17 @@ struct Player : GameObject {
                 const bn::span<const bn::regular_bg_map_cell>&   cells,
                 const bn::regular_bg_item&                       bg_item,
 				const bn::camera_ptr&                            camera) override;
-	void draw() override;
+				
+	void updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
+							const bn::regular_bg_ptr&                         bg_ptr, 
+							const bn::span<const bn::regular_bg_map_cell>&    cells,
+							const bn::regular_bg_item&                        bg_item,
+							const bn::camera_ptr&                             camera) override;
+	void updatePhysics()                         override;
+	void updateState()                           override;
+	void draw()                                  override;
 	void setCamera(const bn::camera_ptr& camera) override;
+
 	void jump();
 	void rollJump();
 	void wallJump();
@@ -232,29 +236,26 @@ struct Player : GameObject {
 	/////////////////////////
 
 	// Level Objects
-	void resolveTilePassageCollision(const Collider& other_collider)         override;
-	void resolvePhaseOrbUpCollision(const Collider& other_collider)          override;
-	void resolvePhaseOrbDownCollision(const Collider& other_collider)        override;
-	void resolvePhaseOrbLeftCollision(const Collider& other_collider)        override;
-	void resolvePhaseOrbRightCollision(const Collider& other_collider)       override;
-	void resolveFallingPlatformWideCollision(const Collider& other_collider) override;
+	void resolveTilePassageCollision(GameObject& object)         override;
+	void resolvePhaseOrbUpCollision(GameObject& object)          override;
+	void resolvePhaseOrbDownCollision(GameObject& object)        override;
+	void resolvePhaseOrbLeftCollision(GameObject& object)        override;
+	void resolvePhaseOrbRightCollision(GameObject& object)       override;
+	void resolveFallingPlatformWideCollision(GameObject& object) override;
 
 	// Level Enemies
-	void resolveThornColumnCollision(const Collider& other_collider)  override; 
-	void resolveThornBarCollision(const Collider& other_collider)     override; 
-	void resolveGroundGhoulCollision(const Collider& other_collider)  override;
-	void resolveCeilingGhoulCollision(const Collider& other_collider) override;
-	void resolveWallLeftCollision(const Collider& other_collider)     override; 
-	void resolveWallRightCollision(const Collider& other_collider)    override;
+	void resolveThornColumnCollision(GameObject& object) override; 
+	void resolveThornBarCollision(GameObject& object)    override; 
+	void resolveGroundGhoulCollision(GameObject& object) override;
 
 	// Special Objects
-	void resolveDevilPlatformCollision(const Collider& other_collider)       override;
-	void resolveAngelPlatformCollision(const Collider& other_collider)       override;
-	void resolveScythePlatformCollision(const Collider& other_collider)      override;
-	void resolveHitboxAttackGround1Collision(const Collider& other_collider) override;
-	void resolveHitboxAir1Collision(const Collider& other_collider)          override; 
-	void resolveHitboxWallSplatCollision(const Collider& other_collider)     override;
-	void resolvePlayerCollision(const Collider& other_collider)              override;
+	void resolveDevilPlatformCollision(GameObject& object)       override;
+	void resolveAngelPlatformCollision(GameObject& object)       override;
+	void resolveScythePlatformCollision(GameObject& object)      override;
+	void resolveHitboxAttackGround1Collision(GameObject& object) override;
+	void resolveHitboxAir1Collision(GameObject& object)          override; 
+	void resolveHitboxWallSplatCollision(GameObject& object)     override;
+	void resolvePlayerCollision(GameObject& object)              override;
 };
 
 #endif
