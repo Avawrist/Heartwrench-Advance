@@ -1301,9 +1301,12 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			{attack_buffered_frames = PLAYER_ATTACK_BUFFER_FRAMES;}
 
 			// Add Gravity //
-			rigidbody.addForce(PLAYER_GRAVITY_FORCE);
-			if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
-			{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
+			if(!grounded_detected)
+			{
+				rigidbody.addForce(PLAYER_GRAVITY_FORCE);
+				if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
+				{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
+			}
 
 		break;
 
