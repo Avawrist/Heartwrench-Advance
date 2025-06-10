@@ -9,12 +9,15 @@ Humans as slaves or servants to the gods
 Immortality
 The Fall
 Flood/plague/disaster as devices of the gods to maintain control over humans
+Add sci-fi elements for a blend of flavors
 
 = Platforming =
 
 -Player doesn't have a strong drift speed like in Mario, which is largely necessary
  on the GBA. Consider including level mechanics that bounce, launch, propel, or otherwise
  move the player horizontally to compensate for low inherent drift.
+
+-Player max jump height is 4 tiles. Don't give the player jumps higher than 3 tiles. 
 
 = Enemies/Combat =
 -Basic RPS with Roll/Slash/Jump

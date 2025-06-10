@@ -121,7 +121,6 @@
 #define PLAYER_AIR_FRAME_2   20
 #define PLAYER_CROUCH_FRAME  44
 #define PLAYER_UP_FRAME      45
-#define PLAYER_SLIDE_FRAME   46
 
 #define PLAYER_X_LEFT_FORCE  	     Force(bn::fixed_point_t<12>(-x_speed, 0), PLAYER_X_DECAY)
 #define PLAYER_X_RIGHT_FORCE 	     Force(bn::fixed_point_t<12>( x_speed, 0), PLAYER_X_DECAY)
