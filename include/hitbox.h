@@ -18,6 +18,9 @@
 
 struct Hitbox : GameObject
 {
+    ///////////////////
+    // Struct Hitbox //
+    ///////////////////
 
     int32 hitstop_frames;
     int32 hitstun_frames;
@@ -53,19 +56,35 @@ struct Hitbox : GameObject
 
     Hitbox& operator =(const Hitbox& other);
 
+    void applyHit(GameObject& object);
+    void applyWallHit(GameObject& object);
+
+    //////////////////////////
+    // GameObject Overrides //
+    //////////////////////////
+
+    // None..
+
+    //////////////////////////////
+    // State Function Overrides //
+    //////////////////////////////
+
     void updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
                             const bn::regular_bg_ptr&                         bg_ptr, 
                             const bn::span<const bn::regular_bg_map_cell>&    cells,
                             const bn::regular_bg_item&                        bg_item,
                             const bn::camera_ptr&                             camera) override;
 
-    void applyHit(GameObject& object);
-    void applyWallHit(GameObject& object);
+    /////////////////////////
+    // Collision Overrides //
+    /////////////////////////
 
+    // Level Enemies
     void resolveThornColumnCollision(GameObject& object) override;
     void resolveThornBarCollision(GameObject& object)    override;
     void resolveGroundGhoulCollision(GameObject& object) override;
 
+    // Tiles
     void resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
                               const bn::span<const bn::regular_bg_map_cell>& cells,
                               const bn::regular_bg_item&                     bg_item) override;

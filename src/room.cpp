@@ -170,9 +170,6 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
 	    // Special Objects //
 	    /////////////////////
 
-        case DEVIL_PLATFORM:
-        case ANGEL_PLATFORM:
-        case SCYTHE_PLATFORM:
         case HITBOX_ATTACK_GROUND_1:
         case HITBOX_ATTACK_AIR_1:
             BN_LOG("Loading object of type ", object.object_type);
@@ -358,7 +355,7 @@ void Room::prepObjects(const bn::regular_bg_ptr&                      object_bg_
                                                            object_cells,
                                                            object_bg_item);
 
-            if(type > NO_TYPE && type < DEVIL_PLATFORM)
+            if(type > NO_TYPE && type < HITBOX_ATTACK_GROUND_1)
             {
                 addUnloadedObject(UnloadedObject(bn::point(x - half_level_width_pixels  + (TILE_WIDTH / 2), 
                                                            y - half_level_height_pixels + (TILE_HEIGHT / 2) - 1), 

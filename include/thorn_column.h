@@ -14,10 +14,6 @@
 // Base Class
 #include "enemy.h"
 
-////////////////////////
-// Struct ThornColumn //
-////////////////////////
-
 #define THORN_COLUMN_COLLIDER_WIDTH    22
 #define THORN_COLUMN_COLLIDER_HEIGHT   64
 #define THORN_COLUMN_COLLIDER_OFFSET_X 0
@@ -27,13 +23,36 @@
 
 struct ThornColumn : Enemy {
 
+    ////////////////////////
+    // Struct ThornColumn //
+    ////////////////////////
+
     ThornColumn();
     ThornColumn(const ThornColumn& other);
     ~ThornColumn();
 
     ThornColumn& operator =(const ThornColumn& other);
 
+    //////////////////////////
+    // GameObject Overrides //
+    //////////////////////////
+
     void updatePhysics() override;
+
+    //////////////////////////////
+	// State Function Overrides //
+	//////////////////////////////
+
+    // None..
+
+    /////////////////////////
+	// Collision Overrides //
+	/////////////////////////
+
+    void resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                          const bn::regular_bg_ptr&                      bg_ptr, 
+                          const bn::span<const bn::regular_bg_map_cell>& cells,
+                          const bn::regular_bg_item&                     bg_item) override;
 
 };
 

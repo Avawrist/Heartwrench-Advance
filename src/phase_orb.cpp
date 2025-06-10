@@ -33,6 +33,10 @@ PhaseOrb& PhaseOrb::operator =(const PhaseOrb& other)
     return *this;
 }
 
+//////////////////////////////
+// State Function Overrides //
+//////////////////////////////
+
 void PhaseOrb::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
                                     const bn::regular_bg_ptr&                         bg_ptr, 
                                     const bn::span<const bn::regular_bg_map_cell>&    cells,
@@ -40,6 +44,18 @@ void PhaseOrb::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&    
                                     const bn::camera_ptr&                             camera)
 {
     setDestination();
+}
+
+/////////////////////////
+// Collision Overrides //
+/////////////////////////
+
+void PhaseOrb::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                                const bn::regular_bg_ptr&                      bg_ptr, 
+                                const bn::span<const bn::regular_bg_map_cell>& cells,
+                                const bn::regular_bg_item&                     bg_item)
+{
+
 }
 
 //////////////////////////////

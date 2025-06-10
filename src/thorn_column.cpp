@@ -1,5 +1,9 @@
 #include "thorn_column.h"
 
+////////////////////////
+// Struct ThornColumn //
+////////////////////////
+
 ThornColumn::ThornColumn()
 {
     // Init Assets //
@@ -41,7 +45,29 @@ ThornColumn& ThornColumn::operator =(const ThornColumn& other)
     return *this;
 }
 
+//////////////////////////
+// GameObject Overrides //
+//////////////////////////
+
 void ThornColumn::updatePhysics()
 {
 
+}
+
+//////////////////////////////
+// State Function Overrides //
+//////////////////////////////
+
+// None..
+
+/////////////////////////
+// Collision Overrides //
+/////////////////////////
+
+void ThornColumn::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                                   const bn::regular_bg_ptr&                      bg_ptr, 
+                                   const bn::span<const bn::regular_bg_map_cell>& cells,
+                                   const bn::regular_bg_item&                     bg_item)
+{
+    
 }

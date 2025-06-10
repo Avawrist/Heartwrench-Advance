@@ -49,10 +49,41 @@ void Enemy::wallSplatCheck()
 	}
 }
 
+//////////////////////////
+// GameObject Overrides //
+//////////////////////////
+
+// None..
+
+//////////////////////////////
+// State Function Overrides //
+//////////////////////////////
+
+// None..
+
 /////////////////////////
 // Collision Overrides //
 /////////////////////////
 
+// Level Objects
+void Enemy::resolveTilePassageCollision(GameObject& object)
+{
+	if(object.state == TILE_PASSAGE_SHUT &&
+	   collider.isCollision(object.collider))
+	{
+		// Resolve X Axis Collision //
+		BN_LOG(collider.getCollisionXOffset(object.collider, rigidbody.normalized_dir.x()));
+		resolveXAxisCollision(object.collider);
+
+		// Resolve Y Axis Collision //
+		resolveYAxisCollision(object.collider);
+
+		// If there is still collision somehow, must be corner case //
+		resolveCornerCollision(object.collider);
+	}
+}
+
+// Level Enemies
 void Enemy::resolveThornColumnCollision(GameObject& object)
 {
 	int32 thorn_collision_x_offset = collider.getCollisionXOffset(object.collider, rigidbody.normalized_dir.x()).integer();
@@ -87,23 +118,7 @@ void Enemy::resolveThornBarCollision(GameObject& object)
 	}
 }
 
-void Enemy::resolveTilePassageCollision(GameObject& object)
-{
-	if(object.state == TILE_PASSAGE_SHUT &&
-	   collider.isCollision(object.collider))
-	{
-		// Resolve X Axis Collision //
-		BN_LOG(collider.getCollisionXOffset(object.collider, rigidbody.normalized_dir.x()));
-		resolveXAxisCollision(object.collider);
-
-		// Resolve Y Axis Collision //
-		resolveYAxisCollision(object.collider);
-
-		// If there is still collision somehow, must be corner case //
-		resolveCornerCollision(object.collider);
-	}
-}
-
+// Tiles
 void Enemy::resolveXAxisCollision(const Collider& other_collider)
 {
 	GameObject::resolveXAxisCollision(other_collider);

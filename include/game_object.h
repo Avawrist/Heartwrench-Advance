@@ -51,9 +51,6 @@
 #include "bn_sprite_items_thorn_bar.h"
 
 // Special Object Assets
-#include "bn_sprite_items_devil_platform.h"
-#include "bn_sprite_items_angel_platform.h"
-#include "bn_sprite_items_scythe_platform.h"
 #include "bn_sprite_items_falling_platform_wide.h"
 #include "bn_sprite_items_hitbox.h"
 #include "bn_sprite_items_player.h"
@@ -125,9 +122,6 @@ enum ObjectType
 	GROUND_GHOUL,
 
 	// Special Objects
-	DEVIL_PLATFORM,
-	ANGEL_PLATFORM,
-	SCYTHE_PLATFORM,
 	HITBOX_ATTACK_GROUND_1,
 	HITBOX_ATTACK_AIR_1,
 	HITBOX_WALL_SPLAT,
@@ -163,9 +157,6 @@ enum ObjectState
 	// Special Objects //
 	/////////////////////
 
-	// Scythe Platform
-	SCYTHE_PLATFORM_THROWN,
-
 	// Player
 	PLAYER_GROUNDED_NEUTRAL,
 	PLAYER_WALK,
@@ -187,6 +178,9 @@ enum ObjectState
 
 struct GameObject 
 {
+	///////////////////////
+	// Struct GameObject //
+	///////////////////////
 
 	bn::optional<bn::sprite_ptr>                                         sprite_ptr;
 
@@ -241,17 +235,36 @@ struct GameObject
                         const bn::span<const bn::regular_bg_map_cell>& cells,
                         const bn::regular_bg_item&                     bg_item,
 						const bn::camera_ptr&                          camera);
-	virtual void updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
-									const bn::regular_bg_ptr&                         bg_ptr, 
-									const bn::span<const bn::regular_bg_map_cell>&    cells,
-									const bn::regular_bg_item&                        bg_item,
-									const bn::camera_ptr&                             camera);
+
 	virtual void updatePhysics();
-	virtual void updateState();
-	
-	virtual void draw();
+
+	virtual void updateHitboxes(const RoomBounds& 							   room_bounds,
+                                bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                                const bn::regular_bg_ptr&                      bg_ptr, 
+                                const bn::span<const bn::regular_bg_map_cell>& cells,
+                                const bn::regular_bg_item&                     bg_item,
+                                const bn::camera_ptr&                          camera);
+
+	virtual void updateTimers();
+
+	void updateHitFlash();
+
+	void updateSpriteDirection();
+
+	void updateSpriteOffsets();
+
+	void updateInactiveState(const bn::camera_ptr& camera);
+
+	virtual void updateHitstunState();
+
+	virtual void udpateDeathState();
+
 	virtual void setCamera(const bn::camera_ptr& camera);
+
 	virtual void setState(ObjectState new_state);
+
+	virtual void draw();
+
 	bn::fixed x() const;
 	bn::fixed y() const;
 	bn::fixed_point pos() const;
@@ -262,27 +275,42 @@ struct GameObject
 	void setHitStretch();
 	void setVerticalStretch();
 	void setHorizontalStretch();
-	void updateSpriteDirection();
-	void updateSpriteOffsets();
-	void updateInactiveState(const bn::camera_ptr& camera);
-	virtual void updateHitstunState();
-	virtual void udpateDeathState();
 	void clampPosition(const bn::regular_bg_ptr& bg_ptr);
 	void setHitFlash();
 	void setHitFlash(int32 frames);
-	void updateHitFlash();
 	void applyDamage(int32 damage);
 	void applyHitEffect(int32 x, int32 y);
 	void applySplatEffect(int32 x, int32 y);
 
-	virtual void resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
-						          const bn::regular_bg_ptr&                      bg_ptr, 
-                                  const bn::span<const bn::regular_bg_map_cell>& cells,
-                                  const bn::regular_bg_item&                     bg_item);
+	/////////////////////
+	// State Functions //
+	/////////////////////
+
+	virtual void updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
+									const bn::regular_bg_ptr&                         bg_ptr, 
+									const bn::span<const bn::regular_bg_map_cell>&    cells,
+									const bn::regular_bg_item&                        bg_item,
+									const bn::camera_ptr&                             camera);
+
+	virtual void updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
+		                     const bn::regular_bg_ptr&                         bg_ptr, 
+							 const bn::span<const bn::regular_bg_map_cell>&    cells,
+							 const bn::regular_bg_item&                        bg_item);
+
+	virtual void getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects);
+
+	virtual void getStateFromTiles(const bn::regular_bg_ptr&                         bg_ptr,
+								   const bn::span<const bn::regular_bg_map_cell>&    cells,
+								   const bn::regular_bg_item&                        bg_item);
 	
-	////////////////////////////////
-	// Object Collision functions //
-	////////////////////////////////
+	/////////////////////////
+	// Collision functions //
+	/////////////////////////
+
+	virtual void resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+								  const bn::regular_bg_ptr&                      bg_ptr, 
+								  const bn::span<const bn::regular_bg_map_cell>& cells,
+								  const bn::regular_bg_item&                     bg_item);
 
 	virtual void resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects);
 
@@ -300,24 +328,39 @@ struct GameObject
 	virtual void resolveGroundGhoulCollision(GameObject& object);
 
 	// Special Objects
-	virtual void resolveDevilPlatformCollision(GameObject& object);
-	virtual void resolveAngelPlatformCollision(GameObject& object);
-	virtual void resolveScythePlatformCollision(GameObject& object);
 	virtual void resolveHitboxAttackGround1Collision(GameObject& object);
 	virtual void resolveHitboxAir1Collision(GameObject& object); 
 	virtual void resolveHitboxWallSplatCollision(GameObject& object);
 	virtual void resolvePlayerCollision(GameObject& object);
 
-	//////////////////////////////
-	// Tile Collision functions //
-	//////////////////////////////
-
+	// Tiles
 	virtual void resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
 									  const bn::span<const bn::regular_bg_map_cell>& cells,
 									  const bn::regular_bg_item&                     bg_item);
+
 	virtual void resolveXAxisCollision(const Collider& other_collider);
     virtual void resolveYAxisCollision(const Collider& other_collider);
     virtual void resolveCornerCollision(const Collider& other_collider);
+
+	virtual void resolveHardBlockCollision(const Collider& other_collider);
+	virtual void resolveUpSpikeCollision(const Collider& other_collider);
+	virtual void resolveDownSpikeCollision(const Collider& other_collider);
+	virtual void resolveLeftSpikeCollision(const Collider& other_collider);
+	virtual void resolveRightSpikeCollision(const Collider& other_collider);
+	virtual void resolveLeftShallowSlope1Collision(const Collider& other_collider, int32 world_y);
+	virtual void resolveLeftShallowSlope2Collision(const Collider& other_collider, int32 world_y);
+	virtual void resolveLeftShallowSlope3Collision(const Collider& other_collider, int32 world_y);
+	virtual void resolveLeftShallowSlope4Collision(const Collider& other_collider, int32 world_y);
+	virtual void resolveLeftSteepSlope1Collision(const Collider& other_collider, int32 world_y);
+	virtual void resolveLeftSteepSlope2Collision(const Collider& other_collider, int32 world_y);
+	virtual void resolveRightShallowSlope1Collision(const Collider& other_collider, int32 world_y);
+	virtual void resolveRightShallowSlope2Collision(const Collider& other_collider, int32 world_y);
+	virtual void resolveRightShallowSlope3Collision(const Collider& other_collider, int32 world_y);
+	virtual void resolveRightShallowSlope4Collision(const Collider& other_collider, int32 world_y);
+	virtual void resolveRightSteepSlope1Collision(const Collider& other_collider, int32 world_y);
+	virtual void resolveRightSteepSlope2Collision(const Collider& other_collider, int32 world_y);
+
+	virtual void resolveOneWayBlockCollision(const Collider& other_collider);
 
 };
 

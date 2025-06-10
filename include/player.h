@@ -153,6 +153,10 @@ enum PhaseDir
 
 struct Player : GameObject {
 	
+	///////////////////
+	// Struct Player //
+	///////////////////
+
 	bn::fixed       x_speed;
 	bn::fixed       jump_force;
 	bn::fixed       secondary_jump_force;
@@ -200,28 +204,10 @@ struct Player : GameObject {
 
 	Player& operator =(const Player& other);
 
-	void update(const RoomBounds& 								 room_bounds,
-				bn::vector<GameObject*, MAX_GAME_OBJECTS>&       game_objects,
-				const bn::regular_bg_ptr&                        bg_ptr, 
-                const bn::span<const bn::regular_bg_map_cell>&   cells,
-                const bn::regular_bg_item&                       bg_item,
-				const bn::camera_ptr&                            camera) override;
-				
-	void updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
-							const bn::regular_bg_ptr&                         bg_ptr, 
-							const bn::span<const bn::regular_bg_map_cell>&    cells,
-							const bn::regular_bg_item&                        bg_item,
-							const bn::camera_ptr&                             camera) override;
-	void updatePhysics()                         override;
-	void updateState()                           override;
-	void draw()                                  override;
-	void setCamera(const bn::camera_ptr& camera) override;
-
 	void jump();
 	void rollJump();
 	void wallJump();
 	void fastFall();
-	void setState(ObjectState new_state) override;
 	void createGroundedAttackHitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
 		                               const bn::camera_ptr&                      camera);
 	void createAirAttack1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
@@ -230,6 +216,46 @@ struct Player : GameObject {
 	void createAirJumpEffect();
 	void createWallJumpEffect();
 	void createLandEffect();
+
+	//////////////////////////
+	// GameObject Overrides //
+	//////////////////////////
+
+	void updateHitboxes(const RoomBounds& 							   room_bounds,
+                        bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                        const bn::regular_bg_ptr&                      bg_ptr, 
+                        const bn::span<const bn::regular_bg_map_cell>& cells,
+                        const bn::regular_bg_item&                     bg_item,
+                        const bn::camera_ptr&                          camera) override;
+
+	void updateTimers() override;
+
+	void draw() override;
+
+	void setCamera(const bn::camera_ptr& camera) override;
+
+	//////////////////////////////
+	// State Function Overrides //
+	//////////////////////////////
+
+	void updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+							const bn::regular_bg_ptr&                      bg_ptr, 
+							const bn::span<const bn::regular_bg_map_cell>& cells,
+							const bn::regular_bg_item&                     bg_item,
+							const bn::camera_ptr&                          camera) override;
+
+	void updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+					 const bn::regular_bg_ptr&                      bg_ptr,
+					 const bn::span<const bn::regular_bg_map_cell>& cells,
+					 const bn::regular_bg_item&                     bg_item) override;
+
+	void getStateFromTiles(const bn::regular_bg_ptr&                      bg_ptr, 
+		                   const bn::span<const bn::regular_bg_map_cell>& cells,
+					       const bn::regular_bg_item&                     bg_item) override;
+
+	void getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects) override;
+
+	void setState(ObjectState new_state) override;
 
 	/////////////////////////
 	// Collision Overrides //
@@ -249,13 +275,18 @@ struct Player : GameObject {
 	void resolveGroundGhoulCollision(GameObject& object) override;
 
 	// Special Objects
-	void resolveDevilPlatformCollision(GameObject& object)       override;
-	void resolveAngelPlatformCollision(GameObject& object)       override;
-	void resolveScythePlatformCollision(GameObject& object)      override;
 	void resolveHitboxAttackGround1Collision(GameObject& object) override;
 	void resolveHitboxAir1Collision(GameObject& object)          override; 
 	void resolveHitboxWallSplatCollision(GameObject& object)     override;
 	void resolvePlayerCollision(GameObject& object)              override;
+
+	// Tiles
+	void resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
+							  const bn::span<const bn::regular_bg_map_cell>& cells,
+							  const bn::regular_bg_item&                     bg_item) override;
+
+	void resolveHardBlockCollision(const Collider& other_collider)   override;
+	void resolveOneWayBlockCollision(const Collider& other_collider) override;
 };
 
 #endif

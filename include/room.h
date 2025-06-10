@@ -21,17 +21,15 @@
 
 #include "game_object.h"
 
-#include "player.h"
 #include "tile_passage.h"
 #include "phase_orb.h"
+#include "falling_platform_wide.h"
+
+#include "ground_ghoul.h"
 #include "thorn_column.h"
 #include "thorn_bar.h"
 
-#include "ground_ghoul.h"
-
-#include "devil_platform.h"
-#include "angel_platform.h"
-#include "falling_platform_wide.h"
+#include "player.h"
 
 /////////////////
 // Struct Room //

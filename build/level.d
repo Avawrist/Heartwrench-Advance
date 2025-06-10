@@ -107,18 +107,15 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h \
  G:/game/build/bn_sprite_items_thorn_column.h \
  G:/game/build/bn_sprite_items_thorn_bar.h \
- G:/game/build/bn_sprite_items_devil_platform.h \
- G:/game/build/bn_sprite_items_angel_platform.h \
- G:/game/build/bn_sprite_items_scythe_platform.h \
  G:/game/build/bn_sprite_items_falling_platform_wide.h \
  G:/game/build/bn_sprite_items_hitbox.h \
  G:/game/build/bn_sprite_items_player.h \
- G:/game/build/bn_sprite_items_phase_marker.h G:/game/include/player.h \
- G:/game/include/hitbox.h G:/game/include/phase_orb.h \
- G:/game/include/tile_passage.h G:/game/include/thorn_column.h \
- G:/game/include/enemy.h G:/game/include/thorn_bar.h \
- G:/game/include/ground_ghoul.h G:/game/include/devil_platform.h \
- G:/game/include/angel_platform.h G:/game/include/falling_platform_wide.h
+ G:/game/build/bn_sprite_items_phase_marker.h \
+ G:/game/include/tile_passage.h G:/game/include/phase_orb.h \
+ G:/game/include/falling_platform_wide.h G:/game/include/ground_ghoul.h \
+ G:/game/include/enemy.h G:/game/include/hitbox.h \
+ G:/game/include/thorn_column.h G:/game/include/thorn_bar.h \
+ G:/game/include/player.h
 G:/game/include/level.h:
 G:/butano-master/butano/include/bn_log.h:
 G:/butano-master/butano/include/bn_config_log.h:
@@ -231,21 +228,16 @@ G:/game/build/bn_sprite_items_phase_orb_right.h:
 G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/build/bn_sprite_items_thorn_column.h:
 G:/game/build/bn_sprite_items_thorn_bar.h:
-G:/game/build/bn_sprite_items_devil_platform.h:
-G:/game/build/bn_sprite_items_angel_platform.h:
-G:/game/build/bn_sprite_items_scythe_platform.h:
 G:/game/build/bn_sprite_items_falling_platform_wide.h:
 G:/game/build/bn_sprite_items_hitbox.h:
 G:/game/build/bn_sprite_items_player.h:
 G:/game/build/bn_sprite_items_phase_marker.h:
-G:/game/include/player.h:
-G:/game/include/hitbox.h:
-G:/game/include/phase_orb.h:
 G:/game/include/tile_passage.h:
-G:/game/include/thorn_column.h:
-G:/game/include/enemy.h:
-G:/game/include/thorn_bar.h:
-G:/game/include/ground_ghoul.h:
-G:/game/include/devil_platform.h:
-G:/game/include/angel_platform.h:
+G:/game/include/phase_orb.h:
 G:/game/include/falling_platform_wide.h:
+G:/game/include/ground_ghoul.h:
+G:/game/include/enemy.h:
+G:/game/include/hitbox.h:
+G:/game/include/thorn_column.h:
+G:/game/include/thorn_bar.h:
+G:/game/include/player.h:

@@ -1,5 +1,9 @@
 #include "thorn_bar.h"
 
+/////////////////////
+// Struct ThornBar //
+/////////////////////
+
 ThornBar::ThornBar()
 {
     // Init Assets //
@@ -41,7 +45,35 @@ ThornBar& ThornBar::operator =(const ThornBar& other)
     return *this;
 }
 
+//////////////////////////
+// GameObject Overrides //
+//////////////////////////
+
 void ThornBar::updatePhysics()
 {
     
+}
+
+//////////////////////////////
+// State Function Overrides //
+//////////////////////////////
+
+void ThornBar::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                           const bn::regular_bg_ptr&                      bg_ptr,
+                           const bn::span<const bn::regular_bg_map_cell>& cells,
+                           const bn::regular_bg_item&                     bg_item)
+{
+
+}
+
+/////////////////////////
+// Collision Overrides //
+/////////////////////////
+
+void ThornBar::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                                const bn::regular_bg_ptr&                      bg_ptr, 
+                                const bn::span<const bn::regular_bg_map_cell>& cells,
+                                const bn::regular_bg_item&                     bg_item)
+{
+
 }

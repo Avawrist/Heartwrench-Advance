@@ -21,11 +21,11 @@
 
 #define PHASE_DISTANCE 192
 
-/////////////////////
-// Struct PhaseOrb //
-/////////////////////
-
 struct PhaseOrb : GameObject {
+
+	/////////////////////
+	// Struct PhaseOrb //
+	/////////////////////
 
 	bn::fixed_point phase_destination;
 
@@ -35,13 +35,28 @@ struct PhaseOrb : GameObject {
 
 	PhaseOrb& operator =(const PhaseOrb& other);
 
+	virtual void setDestination() = 0;
+
+	//////////////////////////////
+	// State Function Overrides //
+	//////////////////////////////
+
 	void updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
 							const bn::regular_bg_ptr&                         bg_ptr, 
 							const bn::span<const bn::regular_bg_map_cell>&    cells,
 							const bn::regular_bg_item&                        bg_item,
 							const bn::camera_ptr&                             camera) override;
 
-	virtual void setDestination() = 0;
+	/////////////////////////
+	// Collision Overrides //
+	/////////////////////////
+
+	void resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                          const bn::regular_bg_ptr&                      bg_ptr, 
+                          const bn::span<const bn::regular_bg_map_cell>& cells,
+                          const bn::regular_bg_item&                     bg_item) override;
+
+
 };
 
 //////////////////////////////

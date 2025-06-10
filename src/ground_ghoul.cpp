@@ -1,5 +1,9 @@
 #include "ground_ghoul.h"
 
+////////////////////////
+// Struct GroundGhoul //
+////////////////////////
+
 GroundGhoul::GroundGhoul()
 {    
         // Init Variables //
@@ -57,11 +61,21 @@ GroundGhoul& GroundGhoul::operator =(const GroundGhoul& other)
     return *this;
 }
 
+//////////////////////////
+// GameObject Overrides //
+//////////////////////////
+
+// None..
+
+//////////////////////////////
+// State Function Overrides //
+//////////////////////////////
+
 void GroundGhoul::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
-                                        const bn::regular_bg_ptr&                         bg_ptr, 
-                                        const bn::span<const bn::regular_bg_map_cell>&    cells,
-                                        const bn::regular_bg_item&                        bg_item,
-                                        const bn::camera_ptr&                             camera)
+                                        const bn::regular_bg_ptr&                      bg_ptr, 
+                                        const bn::span<const bn::regular_bg_map_cell>& cells,
+                                        const bn::regular_bg_item&                     bg_item,
+                                        const bn::camera_ptr&                          camera)
 {
     switch(state)
     {
@@ -98,8 +112,13 @@ void GroundGhoul::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
     }
 }
 
-void GroundGhoul::updateState()
+void GroundGhoul::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+		                      const bn::regular_bg_ptr&                      bg_ptr,
+					          const bn::span<const bn::regular_bg_map_cell>& cells,
+					          const bn::regular_bg_item&                     bg_item)
 {
+    GameObject::updateState(game_objects, bg_ptr, cells, bg_item);
+
     if(state != OBJECT_DEATH &&
        state != OBJECT_HITSTUN) {setState(GROUND_GHOUL_CRAWL);}
 }
@@ -148,6 +167,11 @@ void GroundGhoul::setState(ObjectState new_state)
     }
 }
 
+/////////////////////////
+// Collision Overrides //
+/////////////////////////
+
+// Tiles
 void GroundGhoul::resolveXAxisCollision(const Collider& other_collider)
 {
     Enemy::resolveXAxisCollision(other_collider);

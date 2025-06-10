@@ -31,6 +31,10 @@
 
 struct GroundGhoul : Enemy {
 
+	////////////////////////
+	// Struct GroundGhoul //
+	////////////////////////
+
 	bool grounded_detected;
 
 	Collider test_collider;
@@ -43,14 +47,34 @@ struct GroundGhoul : Enemy {
 
 	GroundGhoul& operator =(const GroundGhoul& other);
 
-	void updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
-							const bn::regular_bg_ptr&                         bg_ptr, 
-							const bn::span<const bn::regular_bg_map_cell>&    cells,
-							const bn::regular_bg_item&                        bg_item,
-							const bn::camera_ptr&                             camera)            override;
-	void updateState()                   override;
+	//////////////////////////
+	// GameObject Overrides //
+	//////////////////////////
+
+	// None..
+
+	//////////////////////////////
+	// State Function Overrides //
+	//////////////////////////////
+
+	void updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+							const bn::regular_bg_ptr&                      bg_ptr, 
+							const bn::span<const bn::regular_bg_map_cell>& cells,
+							const bn::regular_bg_item&                     bg_item,
+							const bn::camera_ptr&                          camera) override;
+
+	void updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+		             const bn::regular_bg_ptr&                      bg_ptr,
+					 const bn::span<const bn::regular_bg_map_cell>& cells,
+					 const bn::regular_bg_item&                     bg_item) override;
+
 	void setState(ObjectState new_state) override;
 
+	/////////////////////////
+	// Collision Overrides //
+	/////////////////////////
+
+	// Tiles
 	void resolveXAxisCollision(const Collider& other_collider) override;
 
 };

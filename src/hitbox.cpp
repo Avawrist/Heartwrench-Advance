@@ -1,5 +1,9 @@
 #include "hitbox.h"
 
+///////////////////
+// Struct Hitbox //
+///////////////////
+
 Hitbox::Hitbox(bn::point pos,
        int32      _hitstop_frames,
        int32      _hitstun_frames,
@@ -90,19 +94,6 @@ Hitbox& Hitbox::operator =(const Hitbox& other)
     return *this;
 }
 
-void Hitbox::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
-                                const bn::regular_bg_ptr&                         bg_ptr, 
-                                const bn::span<const bn::regular_bg_map_cell>&    cells,
-                                const bn::regular_bg_item&                        bg_item,
-                                const bn::camera_ptr&                             camera)
-{
-    // Udpate Frame Counter //
-    current_lifespan_frame--;
-    current_lifespan_frame = clamp(0, lifespan_frames, current_lifespan_frame);
-    
-    if(current_lifespan_frame <= 0) {is_inactive = true;}
-}
-
 void Hitbox::applyHit(GameObject& object)
 {
     if(object.invulnerability_frames <= 0)
@@ -182,6 +173,34 @@ void Hitbox::applyWallHit(GameObject& object)
                             object.y().integer());
 }
 
+//////////////////////////
+// GameObject Overrides //
+//////////////////////////
+
+// None..
+
+//////////////////////////////
+// State Function Overrides //
+//////////////////////////////
+
+void Hitbox::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
+                                const bn::regular_bg_ptr&                         bg_ptr, 
+                                const bn::span<const bn::regular_bg_map_cell>&    cells,
+                                const bn::regular_bg_item&                        bg_item,
+                                const bn::camera_ptr&                             camera)
+{
+    // Udpate Frame Counter //
+    current_lifespan_frame--;
+    current_lifespan_frame = clamp(0, lifespan_frames, current_lifespan_frame);
+    
+    if(current_lifespan_frame <= 0) {is_inactive = true;}
+}
+
+/////////////////////////
+// Collision Overrides //
+/////////////////////////
+
+// Level Enemies
 void Hitbox::resolveThornColumnCollision(GameObject& object)
 {
     if(collider.isCollision(object.collider))
@@ -200,6 +219,7 @@ void Hitbox::resolveGroundGhoulCollision(GameObject& object)
     {applyHit(object);}
 }
 
+// Tiles
 void Hitbox::resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
                                   const bn::span<const bn::regular_bg_map_cell>& cells,
                                   const bn::regular_bg_item&                     bg_item)

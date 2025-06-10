@@ -1,5 +1,9 @@
 #include "falling_platform_wide.h"
 
+////////////////////////////////
+// Struct FallingPlatformWide //
+////////////////////////////////
+
 FallingPlatformWide::FallingPlatformWide()
 {
 
@@ -20,17 +24,15 @@ FallingPlatformWide& FallingPlatformWide::operator =(const FallingPlatformWide& 
     return *this;
 }
 
-void FallingPlatformWide::update(const RoomBounds&                                room_bounds,
-                                bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
-                                const bn::regular_bg_ptr&                         bg_ptr, 
-                                const bn::span<const bn::regular_bg_map_cell>&    cells,
-                                const bn::regular_bg_item&                        bg_item,
-                                const bn::camera_ptr&                             camera)
-{
-
-}
+//////////////////////////////
+// State Function Overrides //
+//////////////////////////////
 
 void FallingPlatformWide::setState(ObjectState new_state)
 {
 
 }
+
+/////////////////////////
+// Collision Overrides //
+/////////////////////////

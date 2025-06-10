@@ -165,14 +165,19 @@ void GameObject::update(const RoomBounds& 							   room_bounds,
     // Update State //
     //////////////////
 
-    updateState();
+    updateState(game_objects, bg_ptr, cells, bg_item);
 
-    ///////////////////////////////////
-    // Update Invulnerability frames //
-    ///////////////////////////////////
+    /////////////////////
+    // Update Hitboxes //
+    /////////////////////
 
-    invulnerability_frames -= 1;
-    if(invulnerability_frames < 0) {invulnerability_frames = 0;}
+    updateHitboxes(room_bounds, game_objects, bg_ptr, cells, bg_item, camera);
+
+    ///////////////////
+    // Update Timers //
+    ///////////////////
+
+    updateTimers();
 
     ///////////////////
     // Check if dead //
@@ -213,12 +218,6 @@ void GameObject::update(const RoomBounds& 							   room_bounds,
 
 }
 
-void GameObject::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
-                                    const bn::regular_bg_ptr&                         bg_ptr, 
-                                    const bn::span<const bn::regular_bg_map_cell>&    cells,
-                                    const bn::regular_bg_item&                        bg_item,
-                                    const bn::camera_ptr&                             camera) {}
-
 void GameObject::updatePhysics()
 {
     // Apply Decay to Forces
@@ -232,7 +231,19 @@ void GameObject::updatePhysics()
 	collider_y_axis.setPos(collider.x() - rigidbody.final_dir.x(), collider.y());
 }
 
-void GameObject::updateState() {}
+void GameObject::updateHitboxes(const RoomBounds& 							   room_bounds,
+                                bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                                const bn::regular_bg_ptr&                      bg_ptr, 
+                                const bn::span<const bn::regular_bg_map_cell>& cells,
+                                const bn::regular_bg_item&                     bg_item,
+                                const bn::camera_ptr&                          camera) {}
+
+void GameObject::updateTimers() 
+{
+    // Invuln frames
+    invulnerability_frames -= 1;
+    if(invulnerability_frames < 0) {invulnerability_frames = 0;}
+}
 
 void GameObject::applyForces()
 {
@@ -551,6 +562,48 @@ void GameObject::applySplatEffect(int32 x, int32 y)
     else                 {splat_effect_sprite_ptr->set_horizontal_flip(false);}
 }
 
+/////////////////////
+// State Functions //
+/////////////////////
+
+void GameObject::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                                    const bn::regular_bg_ptr&                      bg_ptr, 
+                                    const bn::span<const bn::regular_bg_map_cell>& cells,
+                                    const bn::regular_bg_item&                     bg_item,
+                                    const bn::camera_ptr&                          camera) 
+{
+
+}
+
+void GameObject::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+		                     const bn::regular_bg_ptr&                      bg_ptr,
+                             const bn::span<const bn::regular_bg_map_cell>& cells,
+                             const bn::regular_bg_item&                     bg_item)
+{
+    // Update colliders for each axis. 
+	collider_x_axis.setPos(collider.x(), collider.y() - rigidbody.final_dir.y());
+	collider_y_axis.setPos(collider.x() - rigidbody.final_dir.x(), collider.y());
+
+    getStateFromObjects(game_objects);
+    getStateFromTiles(bg_ptr, cells, bg_item);
+}
+
+void GameObject::getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
+{
+    
+}
+
+void GameObject::getStateFromTiles(const bn::regular_bg_ptr&                      bg_ptr,
+                                   const bn::span<const bn::regular_bg_map_cell>& cells,
+                                   const bn::regular_bg_item&                     bg_item)
+{
+
+}
+
+/////////////////////////
+// Collision functions //
+/////////////////////////
+
 void GameObject::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
                                   const bn::regular_bg_ptr&                      bg_ptr, 
                                   const bn::span<const bn::regular_bg_map_cell>& cells,
@@ -570,10 +623,6 @@ void GameObject::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&    
 	resolveTileCollision(bg_ptr, cells, bg_item);
 
 }
-
-////////////////////////////////
-// Object Collision functions //
-////////////////////////////////
 
 void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
 {
@@ -626,18 +675,6 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
             break; 
 
             // Special Objects
-            case DEVIL_PLATFORM:
-                resolveDevilPlatformCollision(*game_objects.at(i));
-            break; 
-
-            case ANGEL_PLATFORM:
-                resolveAngelPlatformCollision(*game_objects.at(i));
-            break;
-
-            case SCYTHE_PLATFORM:
-                resolveScythePlatformCollision(*game_objects.at(i));
-            break; 
-
             case HITBOX_ATTACK_GROUND_1:
                 resolveHitboxAttackGround1Collision(*game_objects.at(i));
             break;
@@ -674,9 +711,6 @@ void GameObject::resolveThornBarCollision(GameObject& object)       {}
 void GameObject::resolveGroundGhoulCollision(GameObject& object)    {}
 
 // Special Objects
-void GameObject::resolveDevilPlatformCollision(GameObject& object)       {}
-void GameObject::resolveAngelPlatformCollision(GameObject& object)       {}
-void GameObject::resolveScythePlatformCollision(GameObject& object)      {}
 void GameObject::resolveHitboxAttackGround1Collision(GameObject& object) {}
 void GameObject::resolveHitboxAir1Collision(GameObject& object)          {}
 void GameObject::resolveHitboxWallSplatCollision(GameObject& object)     {}
@@ -760,7 +794,183 @@ void GameObject::resolveTileCollision(const bn::regular_bg_ptr&                 
 					// If there is still collision somehow, must be corner case
 					resolveCornerCollision(other_collider);
 				}
-			}	
+			}
+
+            else if(tile_index == UP_SPIKE_BLOCK_1_INDEX ||
+                    tile_index == UP_SPIKE_BLOCK_2_INDEX)
+            {
+                other_collider = Collider(world_x,
+                                          world_y, 
+                                          TILE_WIDTH, 
+                                          TILE_HEIGHT);
+                
+                resolveUpSpikeCollision(other_collider);
+            }
+
+            else if(tile_index == DOWN_SPIKE_BLOCK_1_INDEX ||
+                    tile_index == DOWN_SPIKE_BLOCK_2_INDEX)
+            {
+                other_collider = Collider(world_x,
+                                          world_y, 
+                                          TILE_WIDTH, 
+                                          TILE_HEIGHT);
+                
+                resolveDownSpikeCollision(other_collider);
+            }
+
+            else if(tile_index == LEFT_SPIKE_BLOCK_1_INDEX ||
+                    tile_index == LEFT_SPIKE_BLOCK_2_INDEX)
+            {
+                other_collider = Collider(world_x,
+                                          world_y, 
+                                          TILE_WIDTH, 
+                                          TILE_HEIGHT);
+                
+                resolveLeftSpikeCollision(other_collider);
+            }
+
+            else if(tile_index == RIGHT_SPIKE_BLOCK_1_INDEX || 
+                    tile_index == RIGHT_SPIKE_BLOCK_2_INDEX)
+            {
+                other_collider = Collider(world_x,
+                                          world_y, 
+                                          TILE_WIDTH,
+                                          TILE_HEIGHT);
+                
+                resolveRightSpikeCollision(other_collider);
+            }
+    
+            else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
+            {
+                other_collider = Collider(world_x, 
+                                          world_y + 3, 
+                                          TILE_WIDTH, 
+                                          TILE_HEIGHT / 4);
+
+                resolveLeftShallowSlope1Collision(other_collider, world_y);
+            }
+                
+            else if(tile_index == LEFT_SHALLOW_SLOPE_2_INDEX)
+            {
+                other_collider = Collider(world_x, 
+                                          world_y + 2, 
+                                          TILE_WIDTH, 
+                                          TILE_HEIGHT / 2);
+
+                resolveLeftShallowSlope2Collision(other_collider, world_y);
+            }
+
+            else if(tile_index == LEFT_SHALLOW_SLOPE_3_INDEX)
+            {
+                other_collider = Collider(world_x, 
+                                          world_y + 1, 
+                                          TILE_WIDTH, 
+                                          TILE_HEIGHT - 2);
+
+                resolveLeftShallowSlope3Collision(other_collider, world_y);
+            }
+
+            else if(tile_index == LEFT_SHALLOW_SLOPE_4_INDEX)
+            {
+                other_collider = Collider(world_x, 
+                                          world_y, 
+                                          TILE_WIDTH, 
+                                          TILE_HEIGHT);
+
+                resolveLeftShallowSlope4Collision(other_collider, world_y);
+            }
+
+            else if(tile_index == LEFT_STEEP_SLOPE_1_INDEX)
+            {
+                
+                other_collider = Collider(world_x, 
+                                          world_y + 2, 
+                                          TILE_WIDTH, 
+                                          TILE_HEIGHT / 2);
+
+                resolveLeftSteepSlope1Collision(other_collider, world_y);
+            }
+
+            else if(tile_index == LEFT_STEEP_SLOPE_2_INDEX)
+            {
+                other_collider = Collider(world_x, 
+                                          world_y, 
+                                          TILE_WIDTH, 
+                                          TILE_HEIGHT);
+
+                resolveLeftSteepSlope2Collision(other_collider, world_y);
+            }
+
+            else if(tile_index == RIGHT_SHALLOW_SLOPE_1_INDEX)
+            {
+                other_collider = Collider(world_x, 
+                                          world_y + 3, 
+                                          TILE_WIDTH, 
+                                          TILE_HEIGHT / 4);
+
+                resolveRightShallowSlope1Collision(other_collider, world_y);
+            }
+
+            else if(tile_index == RIGHT_SHALLOW_SLOPE_2_INDEX)
+            {
+                other_collider = Collider(world_x, 
+                                          world_y + 2, 
+                                          TILE_WIDTH, 
+                                          TILE_HEIGHT / 2);
+
+                resolveRightShallowSlope2Collision(other_collider, world_y);
+            }
+
+            else if(tile_index == RIGHT_SHALLOW_SLOPE_3_INDEX)
+            {
+                other_collider = Collider(world_x, 
+                                            world_y + 1,
+                                            TILE_WIDTH, 
+                                            TILE_HEIGHT - 2);
+
+                resolveRightShallowSlope3Collision(other_collider, world_y);
+            }
+            
+            else if(tile_index == RIGHT_SHALLOW_SLOPE_4_INDEX)
+            {
+                other_collider = Collider(world_x, 
+                                            world_y,
+                                            TILE_WIDTH, 
+                                            TILE_HEIGHT);
+
+                resolveRightShallowSlope4Collision(other_collider, world_y);
+            }
+            
+            else if(tile_index == RIGHT_STEEP_SLOPE_1_INDEX)
+            {
+                other_collider = Collider(world_x, 
+                                            world_y + 2,
+                                            TILE_WIDTH, 
+                                            TILE_HEIGHT / 2);
+
+                resolveRightSteepSlope1Collision(other_collider, world_y);
+            }
+            
+            else if(tile_index == RIGHT_STEEP_SLOPE_2_INDEX)
+            {
+                other_collider = Collider(world_x, 
+                                            world_y,
+                                            TILE_WIDTH, 
+                                            TILE_HEIGHT);
+
+                resolveRightSteepSlope2Collision(other_collider, world_y);
+            }
+            
+            else if(tile_index >= ONEWAY_BLOCK_MIN_INDEX &&
+                    tile_index <= ONEWAY_BLOCK_MAX_INDEX)
+            {
+                other_collider = Collider(world_x, 
+                                            world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
+                                            TILE_WIDTH, 
+                                            ONEWAYBLOCK_COLLIDER_HEIGHT);
+
+                resolveOneWayBlockCollision(other_collider);
+            }
 
 		}
 	}
@@ -788,6 +998,251 @@ void GameObject::resolveCornerCollision(const Collider& other_collider)
 		setX(this->x() - rigidbody.normalized_dir.x());
 	}
 }
+
+void GameObject::resolveHardBlockCollision(const Collider& other_collider)
+{
+    if(collider.isCollision(other_collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(other_collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(other_collider);
+
+        // If there is still collision somehow, must be corner case //
+        resolveCornerCollision(other_collider);
+    }
+}
+
+void GameObject::resolveUpSpikeCollision(const Collider& other_collider)
+{
+    if(collider.isCollision(other_collider) && hitpoints > 0)
+    {
+        rigidbody.removeForces();
+        rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_DEATH_X_FORCE * 0, 
+                                                       OBJECT_DEATH_Y_FORCE * UP),
+                                                       OBJECT_DEATH_DECAY));
+        hitpoints = 0;
+    }
+}
+
+void GameObject::resolveDownSpikeCollision(const Collider& other_collider)
+{
+    if(collider.isCollision(other_collider) && hitpoints > 0)
+    {
+        rigidbody.removeForces();
+        rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_DEATH_X_FORCE * 0, 
+                                                       OBJECT_DEATH_Y_FORCE * DOWN), 
+                                                       OBJECT_DEATH_DECAY));
+        hitpoints = 0;
+    }
+}
+
+void GameObject::resolveLeftSpikeCollision(const Collider& other_collider)
+{
+    if(collider.isCollision(other_collider) && hitpoints > 0)
+    {
+        rigidbody.removeForces();
+        rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_DEATH_X_FORCE * LEFT,
+                                                       OBJECT_DEATH_Y_FORCE * 0), 
+                                                       OBJECT_DEATH_DECAY));
+        hitpoints = 0;
+    }
+}
+
+void GameObject::resolveRightSpikeCollision(const Collider& other_collider)
+{
+    if(collider.isCollision(other_collider) && hitpoints > 0)
+    {
+        rigidbody.removeForces();
+        rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_DEATH_X_FORCE * RIGHT,
+                                                       OBJECT_DEATH_Y_FORCE * 0), 
+                                                       OBJECT_DEATH_DECAY));
+        hitpoints = 0;
+    }
+}
+
+void GameObject::resolveLeftShallowSlope1Collision(const Collider& other_collider, int32 world_y)
+{
+    if(collider.isCollision(other_collider))
+    {
+        // Derive slope height at player position:
+        int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+        index = clamp(0, 7, index);
+        int32 local_height  = left_shallow_slope_1_arr[index];
+        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+        // Manually set player position:
+        setY(global_height - (collider.height / 2) - collider_offset_y);
+    }
+}
+
+void GameObject::resolveLeftShallowSlope2Collision(const Collider& other_collider, int32 world_y)
+{
+    if(collider.isCollision(other_collider))
+    {
+        // Derive slope height at player position:
+        int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+        index = clamp(0, 7, index);
+        int32 local_height  = left_shallow_slope_2_arr[index];
+        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+        // Manually set player position:
+        setY(global_height - (collider.height / 2) - collider_offset_y);
+    }
+}
+
+void GameObject::resolveLeftShallowSlope3Collision(const Collider& other_collider, int32 world_y)
+{
+    if(collider.isCollision(other_collider))
+    {
+        // Derive slope height at player position:
+        int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+        index = clamp(0, 7, index);
+        int32 local_height  = left_shallow_slope_3_arr[index];
+        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+        // Manually set player position:
+        setY(global_height - (collider.height / 2) - collider_offset_y);
+    }
+}
+
+void GameObject::resolveLeftShallowSlope4Collision(const Collider& other_collider, int32 world_y)
+{
+    if(collider.isCollision(other_collider))
+    {
+        // Derive slope height at player position:
+        int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+        index = clamp(0, 7, index);
+        int32 local_height  = left_shallow_slope_4_arr[index];
+        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+        // Manually set player position:
+        setY(global_height - (collider.height / 2) - collider_offset_y);
+    }
+}
+
+void GameObject::resolveLeftSteepSlope1Collision(const Collider& other_collider, int32 world_y)
+{
+    if(collider.isCollision(other_collider))
+    {
+        // Derive slope height at player position:
+        int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+        index = clamp(0, 7, index);
+        int32 local_height  = left_steep_slope_1_arr[index];
+        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+        // Manually set player position:
+        setY(global_height - (collider.height / 2) - collider_offset_y);
+    }
+}
+
+void GameObject::resolveLeftSteepSlope2Collision(const Collider& other_collider, int32 world_y)
+{
+    if(collider.isCollision(other_collider))
+    {
+        // Derive slope height at player position:
+        int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+        index = clamp(0, 7, index);
+        int32 local_height  = left_steep_slope_2_arr[index];
+        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+        // Manually set player position:
+        setY(global_height - (collider.height / 2) - collider_offset_y);
+    }
+}
+
+void GameObject::resolveRightShallowSlope1Collision(const Collider& other_collider, int32 world_y)
+{
+    if(collider.isCollision(other_collider))
+    {
+        // Derive slope height at player position:
+        int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
+        index = clamp(0, 7, index);
+        int32 local_height  = right_shallow_slope_1_arr[index];
+        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+        // Manually set player position:
+        setY(global_height - (collider.height / 2) - collider_offset_y);
+    }
+}
+
+void GameObject::resolveRightShallowSlope2Collision(const Collider& other_collider, int32 world_y)
+{
+    if(collider.isCollision(other_collider))
+    {
+        // Derive slope height at player position:
+        int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
+        index = clamp(0, 7, index);
+        int32 local_height  = right_shallow_slope_2_arr[index];
+        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+        // Manually set player position:
+        setY(global_height - (collider.height / 2) - collider_offset_y);
+    }
+}
+
+void GameObject::resolveRightShallowSlope3Collision(const Collider& other_collider, int32 world_y)
+{
+    if(collider.isCollision(other_collider))
+    {
+        // Derive slope height at player position:
+        int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
+        index = clamp(0, 7, index);
+        int32 local_height  = right_shallow_slope_3_arr[index];
+        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+        // Manually set player position:
+        setY(global_height - (collider.height / 2) - collider_offset_y);
+    }
+}
+
+void GameObject::resolveRightShallowSlope4Collision(const Collider& other_collider, int32 world_y)
+{
+    if(collider.isCollision(other_collider))
+    {
+        // Derive slope height at player position:
+        int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
+        index = clamp(0, 7, index);
+        int32 local_height  = right_shallow_slope_4_arr[index];
+        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+        // Manually set player position:
+        setY(global_height - (collider.height / 2) - collider_offset_y);
+    }
+}
+
+void GameObject::resolveRightSteepSlope1Collision(const Collider& other_collider, int32 world_y)
+{
+    if(collider.isCollision(other_collider))
+    {
+        // Derive slope height at player position:
+        int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
+        index = clamp(0, 7, index);
+        int32 local_height  = right_steep_slope_1_arr[index];
+        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+        // Manually set player position:
+        setY(global_height - (collider.height / 2) - collider_offset_y);
+    }
+}
+
+void GameObject::resolveRightSteepSlope2Collision(const Collider& other_collider, int32 world_y)
+{
+    if(collider.isCollision(other_collider))
+    {
+        // Derive slope height at player position:
+        int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
+        index = clamp(0, 7, index);
+        int32 local_height  = right_steep_slope_2_arr[index];
+        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+        // Manually set player position:
+        setY(global_height - (collider.height / 2) - collider_offset_y);
+    }
+}
+
+void GameObject::resolveOneWayBlockCollision(const Collider& other_collider) {}
 
 ///////////////////////////
 // Struct UnloadedObject //
