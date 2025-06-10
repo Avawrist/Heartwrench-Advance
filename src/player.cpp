@@ -30,12 +30,6 @@ Player::Player()
     
 	state             	 = PLAYER_AIR_NEUTRAL;
     x_speed        	  	 = PLAYER_MIN_X_SPEED;
-    jump_force           = PLAYER_BASE_JUMP_FORCE;
-	secondary_jump_force = PLAYER_SECOND_JUMP_FORCE;
-    wall_jump_force   	 = bn::fixed_point(PLAYER_WALL_JUMP_X_FORCE,
-										   PLAYER_WALL_JUMP_Y_FORCE);
-	gravity           	 = PLAYER_GRAVITY;
-	wall_ride_gravity 	 = PLAYER_WALL_RIDE_GRAVITY;
 	phase_destination    = bn::fixed_point(0, 0);
 	
 	hitpoints                        = PLAYER_MAX_HITPOINTS;
@@ -78,13 +72,6 @@ Player::Player(const Player& other) : GameObject(other)
 {
 
     x_speed        	  	 = other.x_speed;
-    jump_force           = other.jump_force;
-	secondary_jump_force = other.secondary_jump_force;
-    wall_jump_force   	 = other.wall_jump_force;
-
-    gravity           	 = other.gravity;
-	wall_ride_gravity 	 = other.wall_ride_gravity;
-
 	phase_destination    = other.phase_destination;
 	
 	attack_buffered_frames           = other.attack_buffered_frames;
@@ -143,13 +130,6 @@ Player::~Player()
 Player& Player::operator =(const Player& other)
 {
     x_speed        	  	 = other.x_speed;
-    jump_force           = other.jump_force;
-	secondary_jump_force = other.secondary_jump_force;
-    wall_jump_force   	 = other.wall_jump_force;
-
-    gravity           	 = other.gravity;
-	wall_ride_gravity 	 = other.wall_ride_gravity;
-
 	phase_destination    = other.phase_destination;
 	
 	attack_buffered_frames           = other.attack_buffered_frames;
@@ -712,6 +692,10 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			else if(bn::keypad::a_released()) 
 			{remaining_jump_input_frames = 0;}
 
+			// Tertiary Jump
+			if(bn::keypad::a_held() && !bn::keypad::down_held())
+			{rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);}
+
 			// Add Gravity //
 			rigidbody.addForce(PLAYER_GRAVITY_FORCE);
 			if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
@@ -1166,6 +1150,10 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if(bn::keypad::a_pressed())
 			{jump_buffered_frames = PLAYER_JUMP_BUFFER_FRAMES;}
 
+			// Buffer Roll
+			if(bn::keypad::r_pressed())
+			{roll_buffered_frames = PLAYER_ROLL_BUFFER_FRAMES;}
+
 			// Add Gravity //
 			rigidbody.addForce(PLAYER_GRAVITY_FORCE);
 			if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
@@ -1231,6 +1219,10 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			else if(bn::keypad::a_released()) 
 			{remaining_jump_input_frames = 0;}
 
+			// Buffer Roll
+			if(bn::keypad::r_pressed())
+			{roll_buffered_frames = PLAYER_ROLL_BUFFER_FRAMES;}
+
 			// Add Gravity //
 			if(!remaining_x_drift_lockout_frames)
 			{
@@ -1284,6 +1276,17 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			///////////////
 			// Get Input //
 			///////////////
+			
+			// Distance Influence
+			if(bn::keypad::left_held())       
+			{
+				rigidbody.addForce(PLAYER_X_LEFT_FORCE);
+			}
+
+			else if(bn::keypad::right_held()) 
+			{
+				rigidbody.addForce(PLAYER_X_RIGHT_FORCE); 
+			}
 
 			// Roll Jump
 			if(bn::keypad::a_pressed()) 
@@ -2138,6 +2141,8 @@ void Player::setState(ObjectState new_state)
 		break;
 
 		case PLAYER_ROLL: 
+
+			x_speed = PLAYER_ROLL_X_SPEED;
 
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 																	   2,

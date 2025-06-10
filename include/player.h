@@ -40,14 +40,16 @@
 #define X_SPEED_DECAY_RATE 0.1
 
 #define PLAYER_BASE_JUMP_FORCE            -8
-#define PLAYER_SECOND_JUMP_FORCE          -2
+#define PLAYER_SECOND_JUMP_Y_FORCE        -2
+#define PLAYER_TERTIARY_JUMP_Y_FORCE      -1
 #define PLAYER_WALL_JUMP_X_FORCE           4
 #define PLAYER_WALL_JUMP_Y_FORCE          -6
 #define PLAYER_JUMP_DECAY                  0.04
 #define PLAYER_SECONDARY_JUMP_DECAY        1
+#define PLAYER_TERTIARY_JUMP_DECAY         1
 #define PLAYER_X_DRIFT_LOCKOUT_FRAMES      0
-#define PLAYER_MAX_JUMP_INPUT_FRAMES       14
-#define PLAYER_MAX_WALL_JUMP_INPUT_FRAMES  10
+#define PLAYER_MAX_JUMP_INPUT_FRAMES       6
+#define PLAYER_MAX_WALL_JUMP_INPUT_FRAMES  6
 #define PLAYER_WALL_JUMP_DECAY             0.05
 
 #define PLAYER_GRAVITY       	             3
@@ -105,7 +107,8 @@
 #define PLAYER_LATE_ROLL_JUMP_GRACE_FRAMES  8
 
 #define PLAYER_ROLL_X_FORCE 2
-#define PLAYER_ROLL_DECAY   0.5
+#define PLAYER_ROLL_DECAY   1
+#define PLAYER_ROLL_X_SPEED 1
 
 #define PLAYER_ROLL_JUMP_X_FORCE  6
 #define PLAYER_ROLL_JUMP_Y_FORCE -6
@@ -125,17 +128,18 @@
 #define PLAYER_X_LEFT_DECAY_FORCE    Force(bn::fixed_point_t<12>(-x_speed, 0), X_SPEED_DECAY_RATE)
 #define PLAYER_X_RIGHT_DECAY_FORCE   Force(bn::fixed_point_t<12> (x_speed, 0), X_SPEED_DECAY_RATE)
 
-#define PLAYER_JUMP_FORCE              Force(bn::fixed_point_t<12>(0, jump_force), PLAYER_JUMP_DECAY)
-#define PLAYER_SECONDARY_JUMP_FORCE    Force(bn::fixed_point_t<12>(0, secondary_jump_force), PLAYER_SECONDARY_JUMP_DECAY)
-#define PLAYER_WALL_JUMP_FORCE         Force(bn::fixed_point_t<12>( wall_jump_force.x() * (int32)x_dir, wall_jump_force.y()), PLAYER_WALL_JUMP_DECAY)
+#define PLAYER_JUMP_FORCE              Force(bn::fixed_point_t<12>(0, PLAYER_BASE_JUMP_FORCE), PLAYER_JUMP_DECAY)
+#define PLAYER_SECONDARY_JUMP_FORCE    Force(bn::fixed_point_t<12>(0, PLAYER_SECOND_JUMP_Y_FORCE), PLAYER_SECONDARY_JUMP_DECAY)
+#define PLAYER_TERTIARY_JUMP_FORCE     Force(bn::fixed_point_t<12>(0, PLAYER_TERTIARY_JUMP_Y_FORCE), PLAYER_TERTIARY_JUMP_DECAY)
+#define PLAYER_WALL_JUMP_FORCE         Force(bn::fixed_point_t<12>(PLAYER_WALL_JUMP_X_FORCE * (int32)x_dir, PLAYER_WALL_JUMP_Y_FORCE), PLAYER_WALL_JUMP_DECAY)
 
 #define PLAYER_ROLL_FORCE              Force(bn::fixed_point_t<12>(PLAYER_ROLL_X_FORCE * (int32)x_dir, 0), PLAYER_ROLL_DECAY)
 #define PLAYER_ROLL_JUMP_FORCE         Force(bn::fixed_point_t<12>(PLAYER_ROLL_JUMP_X_FORCE * (int32)x_dir, PLAYER_ROLL_JUMP_Y_FORCE), PLAYER_ROLL_JUMP_DECAY)
 
-#define PLAYER_GRAVITY_FORCE           Force(bn::fixed_point_t<12>(0, gravity), 			     PLAYER_GRAVITY_DECAY)
+#define PLAYER_GRAVITY_FORCE           Force(bn::fixed_point_t<12>(0, PLAYER_GRAVITY), 			 PLAYER_GRAVITY_DECAY)
 #define PLAYER_PROLONGED_GRAVITY_FORCE Force(bn::fixed_point_t<12>(0, PLAYER_PROLONGED_GRAVITY), PLAYER_GRAVITY_DECAY)
 #define PLAYER_FAST_GRAVITY_FORCE      Force(bn::fixed_point_t<12>(0, PLAYER_FAST_FALL_GRAVITY), PLAYER_GRAVITY_DECAY)
-#define PLAYER_WALL_GRAVITY_FORCE      Force(bn::fixed_point_t<12>(0, wall_ride_gravity),        PLAYER_GRAVITY_DECAY)
+#define PLAYER_WALL_GRAVITY_FORCE      Force(bn::fixed_point_t<12>(0, PLAYER_WALL_RIDE_GRAVITY), PLAYER_GRAVITY_DECAY)
 #define PLAYER_ATTACK_GRAVITY_FORCE    Force(bn::fixed_point_t<12>(0, PLAYER_ATTACK_GRAVITY),    PLAYER_GRAVITY_DECAY)
 
 #define PLAYER_PHASE_STEP_EXIT_FORCE_UP    Force(bn::fixed_point_t<12>(0, -PLAYER_PHASE_STEP_EXIT_Y_FORCE), PLAYER_PHASE_STEP_EXIT_DECAY)
@@ -158,11 +162,6 @@ struct Player : GameObject {
 	///////////////////
 
 	bn::fixed       x_speed;
-	bn::fixed       jump_force;
-	bn::fixed       secondary_jump_force;
-	bn::fixed_point wall_jump_force;
-	bn::fixed       gravity;
-	bn::fixed       wall_ride_gravity;
 	bn::fixed_point phase_destination;
 
 	int32 attack_buffered_frames;
