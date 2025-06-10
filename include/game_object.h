@@ -62,7 +62,7 @@
 
 #define GAME_OBJECT_MAX_ANIM_FRAMES 40
 
-#define GAME_OBJECT_Z_ORDER   0
+#define GAME_OBJECT_Z_ORDER   1
 #define HIT_EFFECT_Z_ORDER   -1
 #define SPLAT_EFFECT_Z_ORDER -2
 
@@ -286,22 +286,22 @@ struct GameObject
 	// State Functions //
 	/////////////////////
 
-	virtual void updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
-									const bn::regular_bg_ptr&                         bg_ptr, 
-									const bn::span<const bn::regular_bg_map_cell>&    cells,
-									const bn::regular_bg_item&                        bg_item,
-									const bn::camera_ptr&                             camera);
+	virtual void updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+									const bn::regular_bg_ptr&                      bg_ptr, 
+									const bn::span<const bn::regular_bg_map_cell>& cells,
+									const bn::regular_bg_item&                     bg_item,
+									const bn::camera_ptr&                          camera);
 
-	virtual void updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
-		                     const bn::regular_bg_ptr&                         bg_ptr, 
-							 const bn::span<const bn::regular_bg_map_cell>&    cells,
-							 const bn::regular_bg_item&                        bg_item);
+	virtual void updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+		                     const bn::regular_bg_ptr&                      bg_ptr, 
+							 const bn::span<const bn::regular_bg_map_cell>& cells,
+							 const bn::regular_bg_item&                     bg_item);
 
 	virtual void getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects);
 
-	virtual void getStateFromTiles(const bn::regular_bg_ptr&                         bg_ptr,
-								   const bn::span<const bn::regular_bg_map_cell>&    cells,
-								   const bn::regular_bg_item&                        bg_item);
+	virtual void getStateFromTiles(const bn::regular_bg_ptr&                      bg_ptr,
+								   const bn::span<const bn::regular_bg_map_cell>& cells,
+								   const bn::regular_bg_item&                     bg_item);
 	
 	/////////////////////////
 	// Collision functions //

@@ -19,7 +19,7 @@
 #define THORN_BAR_COLLIDER_OFFSET_X 0
 #define THORN_BAR_COLLIDER_OFFSET_Y 0
 
-#define THORN_BAR_HITPOINTS 0
+#define THORN_BAR_HITPOINTS 1
 
 struct ThornBar : Enemy {
 

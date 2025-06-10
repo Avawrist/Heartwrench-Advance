@@ -203,10 +203,7 @@ void Player::rollJump()
 
 void Player::wallJump()
 {
-	x_speed = PLAYER_MAX_X_SPEED;
-	if((bn::keypad::left_held()  && x_dir == RIGHT) ||
-	   (bn::keypad::right_held() && x_dir == LEFT))
-	{x_speed = 0;}
+	x_speed = 0;
 
 	rigidbody.removeForces();
 	rigidbody.addForce(PLAYER_WALL_JUMP_FORCE);
@@ -743,7 +740,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			{rigidbody.addForce(PLAYER_X_LEFT_FORCE);}
 
 			// Wall Jump
-			if(bn::keypad::a_pressed())
+			if(bn::keypad::a_pressed() || jump_buffered_frames)
 			{
 				x_dir = LEFT;
 				wallJump();
@@ -776,7 +773,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE);}
 
 			// Wall Jump
-			if(bn::keypad::a_pressed())
+			if(bn::keypad::a_pressed() || jump_buffered_frames)
 			{
 				x_dir = RIGHT;
 				wallJump();
@@ -1484,6 +1481,26 @@ void Player::getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game
 
 				break;
 
+				case FALLING_PLATFORM_WIDE:
+					
+					if(rigidbody.normalized_dir.y() >= 0 &&
+					   collider_y_axis.p4.y() <= game_objects.at(i)->collider.p1.y() + rigidbody.final_dir.y())
+					{
+						// Test for, and log grounded collision
+						if(test_collider.isCollision(game_objects.at(i)->collider) &&
+						   rigidbody.normalized_dir.y() >= 0)
+						{
+							if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+							   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+							{createLandEffect();}
+
+							grounded_detected = true;
+							rigidbody.removeYForces();
+						}
+					}	
+
+				break;
+
 				// Level Enemies
 				case THORN_COLUMN:
 				case THORN_BAR:
@@ -1989,7 +2006,7 @@ void Player::getStateFromTiles(const bn::regular_bg_ptr&                      bg
 											  ONEWAYBLOCK_COLLIDER_HEIGHT);
 
 					if(rigidbody.normalized_dir.y() >= 0 &&
-					   collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
+					   collider_y_axis.p4.y() <= other_collider.p1.y() + rigidbody.final_dir.y())
 					{
 						// Test for, and log grounded collision
 						if(test_collider.isCollision(other_collider) &&
@@ -2195,7 +2212,20 @@ void Player::resolvePhaseOrbUpCollision(GameObject& object)          {}
 void Player::resolvePhaseOrbDownCollision(GameObject& object)        {}
 void Player::resolvePhaseOrbLeftCollision(GameObject& object)        {}
 void Player::resolvePhaseOrbRightCollision(GameObject& object)       {}
-void Player::resolveFallingPlatformWideCollision(GameObject& object) {}
+
+void Player::resolveFallingPlatformWideCollision(GameObject& object) 
+{
+	if(rigidbody.normalized_dir.y() >= 0 &&
+	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
+	{
+		// Resolve Collision //
+		while(collider_y_axis.isCollision(object.collider))
+		{
+			collider_y_axis.setY(collider_y_axis.y() - 1);
+			setY(this->y() - 1);
+		}
+	}
+}
 
 // Level Enemies
 void Player::resolveThornColumnCollision(GameObject& object)    
@@ -2537,7 +2567,7 @@ void Player::resolveHardBlockCollision(const Collider& other_collider)
 void Player::resolveOneWayBlockCollision(const Collider& other_collider)
 {
 	if(rigidbody.normalized_dir.y() >= 0 &&
-		collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
+		collider_y_axis.p4.y() <= other_collider.p1.y() + rigidbody.final_dir.y())
 	{
 		if(bn::keypad::down_held() && 
 			(state == PLAYER_AIR_NEUTRAL || state == PLAYER_GROUNDED_NEUTRAL)) 
@@ -2547,7 +2577,7 @@ void Player::resolveOneWayBlockCollision(const Collider& other_collider)
 		}
 		else
 		{
-			// Handle Remaining Collision Cases //
+			// Resolve Collision //
 			while(collider_y_axis.isCollision(other_collider))
 			{
 				collider_y_axis.setY(collider_y_axis.y() - 1);

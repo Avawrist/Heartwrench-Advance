@@ -1242,7 +1242,19 @@ void GameObject::resolveRightSteepSlope2Collision(const Collider& other_collider
     }
 }
 
-void GameObject::resolveOneWayBlockCollision(const Collider& other_collider) {}
+void GameObject::resolveOneWayBlockCollision(const Collider& other_collider) 
+{
+    if(rigidbody.normalized_dir.y() >= 0 &&
+       collider_y_axis.p4.y() <= other_collider.p1.y() + rigidbody.final_dir.y())
+	{
+        // Resolve Collision //
+        while(collider_y_axis.isCollision(other_collider))
+        {
+            collider_y_axis.setY(collider_y_axis.y() - 1);
+            setY(this->y() - 1);
+        }
+	}
+}
 
 ///////////////////////////
 // Struct UnloadedObject //
