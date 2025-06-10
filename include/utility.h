@@ -22,8 +22,8 @@ typedef int   int32;
 
 #define LOAD_RANGE_W  500
 #define LOAD_RANGE_H  360
-#define SCREEN_W 240
-#define SCREEN_H 160
+#define SCREEN_W 400
+#define SCREEN_H 260
 
 #define ROOM_MAX_COLLIDERS 1800
 #define ROOM_MAX_WIDTH     128

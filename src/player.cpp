@@ -1494,8 +1494,15 @@ void Player::getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game
 							   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
 							{createLandEffect();}
 
-							grounded_detected = true;
+							grounded_detected     = true;
+							grounded_owp_detected = true;
 							rigidbody.removeYForces();
+							
+							// Trigger the falling platform
+							if(game_objects.at(i)->state != FALLING_PLATFORM_WIDE_FALLING)
+							{
+								game_objects.at(i)->setState(FALLING_PLATFORM_WIDE_FALLING);
+							}
 						}
 					}	
 

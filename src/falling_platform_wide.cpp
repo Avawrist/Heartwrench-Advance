@@ -112,9 +112,9 @@ void FallingPlatformWide::setState(ObjectState new_state)
             fall_timer = FALLING_PLATFORM_WIDE_FALL_TIMER;
 
             animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-                                                                           0,
-                                                                           bn::sprite_items::falling_platform_wide.tiles_item(),
-                                                                           1, 1);
+                                                                        0,
+                                                                        bn::sprite_items::falling_platform_wide.tiles_item(),
+                                                                        0, 0, 1, 1, 2, 2, 3, 3, 4, 4);
 
         break;
 
@@ -126,3 +126,11 @@ void FallingPlatformWide::setState(ObjectState new_state)
 /////////////////////////
 // Collision Overrides //
 /////////////////////////
+
+void FallingPlatformWide::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                                           const bn::regular_bg_ptr&                      bg_ptr, 
+                                           const bn::span<const bn::regular_bg_map_cell>& cells,
+                                           const bn::regular_bg_item&                     bg_item)
+{
+
+}
