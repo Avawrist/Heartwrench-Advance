@@ -244,7 +244,7 @@ void Room::load(RoomName                                       room_name,
     // Init Player FIRST. Player will always be updated last.
     Player* player_ptr = new Player();
     addObject(player_ptr, camera_ptr);
-    game_objects.back()->setPos(-4960, -2096);
+    game_objects.back()->setPos(-5056, -2000);
 
     // Initialize Objects
     switch(room_name)
@@ -258,8 +258,8 @@ void Room::load(RoomName                                       room_name,
             left_neighbor   = NO_ROOM;
 
             room_bounds.top_bound    = -2432;
-            room_bounds.right_bound  = -4784;
-            room_bounds.bottom_bound = -2064;
+            room_bounds.right_bound  = -4608;
+            room_bounds.bottom_bound = -1936;
             room_bounds.left_bound   = -5120;
 
             // Add any special objects //
@@ -269,52 +269,18 @@ void Room::load(RoomName                                       room_name,
         case ROOM_TEST_2:
 
             // Init Variables //
-            top_neighbor    = ROOM_TEST_4;
-            right_neighbor  = ROOM_TEST_3;
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
             bottom_neighbor = NO_ROOM;
             left_neighbor   = ROOM_TEST_1;
 
-            room_bounds.top_bound    = -2256;
-            room_bounds.right_bound  = -4368;
-            room_bounds.bottom_bound = -2064;
-            room_bounds.left_bound   = -4784;
-
-            // Add any special objects //
-    
-        break;
-
-        case ROOM_TEST_3:
-
-            // Init Variables //
-            top_neighbor    = NO_ROOM;
-            right_neighbor  = NO_ROOM;
-            bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TEST_2;
-
             room_bounds.top_bound    = -2432;
-            room_bounds.right_bound  = -4000;
-            room_bounds.bottom_bound = -2064;
-            room_bounds.left_bound   = -4368;
+            room_bounds.right_bound  = -4272;
+            room_bounds.bottom_bound = -1936;
+            room_bounds.left_bound   = -4608;
 
             // Add any special objects //
-    
-        break;
-
-        case ROOM_TEST_4:
-
-            // Init Variables //
-            top_neighbor    = NO_ROOM;
-            right_neighbor  = NO_ROOM;
-            bottom_neighbor = ROOM_TEST_2;
-            left_neighbor   = NO_ROOM;
-
-            room_bounds.top_bound    = -2432;
-            room_bounds.right_bound  = -4368;
-            room_bounds.bottom_bound = -2256;
-            room_bounds.left_bound   = -4784;
-
-            // Add any special objects //
-    
+            
         break;
 
         default:

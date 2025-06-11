@@ -117,17 +117,13 @@ void Enemy::resolveThornColumnCollision(GameObject& object)
 
 void Enemy::resolveThornBarCollision(GameObject& object)
 {
-	int32 thorn_collision_y_offset = collider.getCollisionYOffset(object.collider, rigidbody.normalized_dir.y()).integer();
-	
-	if(thorn_collision_y_offset != 0 && 
+	if(collider.isCollision(object.collider) &&
 	   hitpoints > 0)
 	{
-		int32 knockback_y_dir = abs(thorn_collision_y_offset) / thorn_collision_y_offset;
-
 		rigidbody.removeForces();
 		rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_DEATH_X_FORCE * 0, 
-														OBJECT_DEATH_Y_FORCE * knockback_y_dir),
-														OBJECT_DEATH_DECAY));
+													   OBJECT_DEATH_Y_FORCE * rigidbody.normalized_dir.y() * -1),
+													   OBJECT_DEATH_DECAY));
 		hitpoints = 0;
 	}
 }

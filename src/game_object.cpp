@@ -610,17 +610,17 @@ void GameObject::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&    
                                   const bn::regular_bg_item&                     bg_item)
 {
 
+    ////////////////////////////
+    // Resolve Tile Collision //
+    ////////////////////////////
+
+	resolveTileCollision(bg_ptr, cells, bg_item);
+
     //////////////////////////////////
     // Resolve GameObject Collision //
     //////////////////////////////////
 
     resolveObjectCollision(game_objects);
-
-	////////////////////////////
-    // Resolve Tile Collision //
-    ////////////////////////////
-
-	resolveTileCollision(bg_ptr, cells, bg_item);
 
 }
 
