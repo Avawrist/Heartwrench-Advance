@@ -10339,7 +10339,7 @@ Linker script and memory map
  .debug_str     0x00000000    0xabbed collider.o
                                0x4cf2 (size before relaxing)
  .debug_str     0x000abbed     0xc58f enemy.o
- .debug_str     0x000abbed    0x1479d falling_platform_thin.o
+ .debug_str     0x000abbed    0x14797 falling_platform_thin.o
  .debug_str     0x000abbed    0x14797 falling_platform_wide.o
  .debug_str     0x000abbed    0x16a09 game_object.o
  .debug_str     0x000abbed    0x148f0 ground_ghoul.o
@@ -10426,68 +10426,68 @@ Linker script and memory map
  .debug_str     0x000abbed       0x61 mm_main_gba.o
  .debug_str     0x000abbed       0x62 mm_mixer_gba.o
 
-.debug_loc      0x00000000   0x1a5f28
+.debug_loc      0x00000000   0x1a5f3e
  *(.debug_loc)
  .debug_loc     0x00000000     0x1d4e collider.o
  .debug_loc     0x00001d4e     0x144d enemy.o
- .debug_loc     0x0000319b     0x2b9d falling_platform_thin.o
- .debug_loc     0x00005d38     0x2bd1 falling_platform_wide.o
- .debug_loc     0x00008909     0xc41c game_object.o
- .debug_loc     0x00014d25     0x37e0 ground_ghoul.o
- .debug_loc     0x00018505     0x1a9b hitbox.o
- .debug_loc     0x00019fa0     0x490a level.o
- .debug_loc     0x0001e8aa       0x23 main.o
- .debug_loc     0x0001e8cd     0x400d phase_orb.o
- .debug_loc     0x000228da     0x1442 physics.o
- .debug_loc     0x00023d1c    0x15a2b player.o
- .debug_loc     0x00039747     0x2ddc room.o
- .debug_loc     0x0003c523       0x81 room_bounds.o
- .debug_loc     0x0003c5a4     0x122d thorn_bar.o
- .debug_loc     0x0003d7d1     0x122d thorn_column.o
- .debug_loc     0x0003e9fe     0x296d tile_passage.o
- .debug_loc     0x0004136b      0xa1f utility.o
- .debug_loc     0x00041d8a     0x2abd bn_affine_bg_animate_actions.o
- .debug_loc     0x00044847     0xbdee bn_audio_manager.o
- .debug_loc     0x00050635     0x20b8 bn_best_fit_allocator.o
- .debug_loc     0x000526ed    0x3f97b bn_bg_blocks_manager.o
- .debug_loc     0x00092068    0x38a08 bn_bgs_manager.o
- .debug_loc     0x000caa70     0x15dc bn_cameras_manager.o
- .debug_loc     0x000cc04c     0x1c2a bn_core.o
- .debug_loc     0x000cdc76     0xe22f bn_display_manager.o
- .debug_loc     0x000dbea5     0x1d21 bn_gpio_manager.o
- .debug_loc     0x000ddbc6    0x2d9f9 bn_hblank_effects_manager.o
- .debug_loc     0x0010b5bf     0x1995 bn_hdma_manager.o
- .debug_loc     0x0010cf54     0x1073 bn_keypad_manager.o
- .debug_loc     0x0010dfc7      0xf6f bn_link_manager.o
- .debug_loc     0x0010ef36     0x264d bn_memory_manager.o
- .debug_loc     0x00111583    0x14b3c bn_palettes_manager.o
- .debug_loc     0x001260bf      0xf45 bn_profiler.o
- .debug_loc     0x00127004     0xaf6a bn_sprite_affine_mats_manager.o
- .debug_loc     0x00131f6e     0x2bb9 bn_sprite_animate_actions.o
- .debug_loc     0x00134b27    0x1557d bn_sprite_text_generator.o
- .debug_loc     0x0014a0a4    0x100a5 bn_sprite_tiles_manager.o
- .debug_loc     0x0015a149      0xbc1 bn_sprites_manager.bn_iwram.o
- .debug_loc     0x0015ad0a    0x29dc0 bn_sprites_manager.o
- .debug_loc     0x00184aca     0x6ed5 bn_sstream.o
- .debug_loc     0x0018b99f     0x5df6 bn_translation_unit.o
- .debug_loc     0x00191795     0x2214 bn_hw_audio.o
- .debug_loc     0x001939a9      0x309 bn_hw_common.bn_noflto.o
- .debug_loc     0x00193cb2      0x1d4 bn_hw_cstdlib.o
- .debug_loc     0x00193e86      0x102 bn_hw_game_pak.bn_ewram.o
- .debug_loc     0x00193f88     0x1db2 bn_hw_link.o
- .debug_loc     0x00195d3a      0x371 bn_hw_palettes.bn_iwram.o
- .debug_loc     0x001960ab     0x1228 bn_hw_palettes.o
- .debug_loc     0x001972d3     0x7278 bn_hw_show.o
- .debug_loc     0x0019e54b       0x72 bn_hw_system_font.o
- .debug_loc     0x0019e5bd     0x10bd bn_hw_text.o
- .debug_loc     0x0019f67a      0x129 vgm.o
- .debug_loc     0x0019f7a3     0x156c tonc_color.o
- .debug_loc     0x001a0d0f     0x1126 tonc_sbmp16.o
- .debug_loc     0x001a1e35      0x5f8 bmp16_drawg_b1cs.o
- .debug_loc     0x001a242d      0x1a8 tte_init_bmp.o
- .debug_loc     0x001a25d5      0xe54 tte_main.o
- .debug_loc     0x001a3429       0xa1 interrupts_gba.o
- .debug_loc     0x001a34ca     0x2a5e gbt_player.o
+ .debug_loc     0x0000319b     0x2bb3 falling_platform_thin.o
+ .debug_loc     0x00005d4e     0x2bd1 falling_platform_wide.o
+ .debug_loc     0x0000891f     0xc41c game_object.o
+ .debug_loc     0x00014d3b     0x37e0 ground_ghoul.o
+ .debug_loc     0x0001851b     0x1a9b hitbox.o
+ .debug_loc     0x00019fb6     0x490a level.o
+ .debug_loc     0x0001e8c0       0x23 main.o
+ .debug_loc     0x0001e8e3     0x400d phase_orb.o
+ .debug_loc     0x000228f0     0x1442 physics.o
+ .debug_loc     0x00023d32    0x15a2b player.o
+ .debug_loc     0x0003975d     0x2ddc room.o
+ .debug_loc     0x0003c539       0x81 room_bounds.o
+ .debug_loc     0x0003c5ba     0x122d thorn_bar.o
+ .debug_loc     0x0003d7e7     0x122d thorn_column.o
+ .debug_loc     0x0003ea14     0x296d tile_passage.o
+ .debug_loc     0x00041381      0xa1f utility.o
+ .debug_loc     0x00041da0     0x2abd bn_affine_bg_animate_actions.o
+ .debug_loc     0x0004485d     0xbdee bn_audio_manager.o
+ .debug_loc     0x0005064b     0x20b8 bn_best_fit_allocator.o
+ .debug_loc     0x00052703    0x3f97b bn_bg_blocks_manager.o
+ .debug_loc     0x0009207e    0x38a08 bn_bgs_manager.o
+ .debug_loc     0x000caa86     0x15dc bn_cameras_manager.o
+ .debug_loc     0x000cc062     0x1c2a bn_core.o
+ .debug_loc     0x000cdc8c     0xe22f bn_display_manager.o
+ .debug_loc     0x000dbebb     0x1d21 bn_gpio_manager.o
+ .debug_loc     0x000ddbdc    0x2d9f9 bn_hblank_effects_manager.o
+ .debug_loc     0x0010b5d5     0x1995 bn_hdma_manager.o
+ .debug_loc     0x0010cf6a     0x1073 bn_keypad_manager.o
+ .debug_loc     0x0010dfdd      0xf6f bn_link_manager.o
+ .debug_loc     0x0010ef4c     0x264d bn_memory_manager.o
+ .debug_loc     0x00111599    0x14b3c bn_palettes_manager.o
+ .debug_loc     0x001260d5      0xf45 bn_profiler.o
+ .debug_loc     0x0012701a     0xaf6a bn_sprite_affine_mats_manager.o
+ .debug_loc     0x00131f84     0x2bb9 bn_sprite_animate_actions.o
+ .debug_loc     0x00134b3d    0x1557d bn_sprite_text_generator.o
+ .debug_loc     0x0014a0ba    0x100a5 bn_sprite_tiles_manager.o
+ .debug_loc     0x0015a15f      0xbc1 bn_sprites_manager.bn_iwram.o
+ .debug_loc     0x0015ad20    0x29dc0 bn_sprites_manager.o
+ .debug_loc     0x00184ae0     0x6ed5 bn_sstream.o
+ .debug_loc     0x0018b9b5     0x5df6 bn_translation_unit.o
+ .debug_loc     0x001917ab     0x2214 bn_hw_audio.o
+ .debug_loc     0x001939bf      0x309 bn_hw_common.bn_noflto.o
+ .debug_loc     0x00193cc8      0x1d4 bn_hw_cstdlib.o
+ .debug_loc     0x00193e9c      0x102 bn_hw_game_pak.bn_ewram.o
+ .debug_loc     0x00193f9e     0x1db2 bn_hw_link.o
+ .debug_loc     0x00195d50      0x371 bn_hw_palettes.bn_iwram.o
+ .debug_loc     0x001960c1     0x1228 bn_hw_palettes.o
+ .debug_loc     0x001972e9     0x7278 bn_hw_show.o
+ .debug_loc     0x0019e561       0x72 bn_hw_system_font.o
+ .debug_loc     0x0019e5d3     0x10bd bn_hw_text.o
+ .debug_loc     0x0019f690      0x129 vgm.o
+ .debug_loc     0x0019f7b9     0x156c tonc_color.o
+ .debug_loc     0x001a0d25     0x1126 tonc_sbmp16.o
+ .debug_loc     0x001a1e4b      0x5f8 bmp16_drawg_b1cs.o
+ .debug_loc     0x001a2443      0x1a8 tte_init_bmp.o
+ .debug_loc     0x001a25eb      0xe54 tte_main.o
+ .debug_loc     0x001a343f       0xa1 interrupts_gba.o
+ .debug_loc     0x001a34e0     0x2a5e gbt_player.o
 
 .debug_macinfo
  *(.debug_macinfo)

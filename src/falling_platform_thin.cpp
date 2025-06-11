@@ -110,7 +110,7 @@ void FallingPlatformThin::setState(ObjectState new_state)
 
             fall_timer = FALLING_PLATFORM_THIN_FALL_TIMER;
 
-            animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+            animate_action_ptr  = bn::create_sprite_animate_action_once(sprite_ptr.value(),
                                                                             1,
                                                                             bn::sprite_items::falling_platform_thin.tiles_item(),
                                                                             4, 5, 6, 7);
