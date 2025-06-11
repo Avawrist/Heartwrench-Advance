@@ -210,7 +210,7 @@ void Player::wallJump()
 	remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
 	remaining_jump_input_frames      = PLAYER_MAX_WALL_JUMP_INPUT_FRAMES;
 	
-	setVerticalStretch();
+	//setVerticalStretch();
 	createWallJumpEffect();
 }
 
@@ -1501,10 +1501,12 @@ void Player::getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game
 							// Trigger the falling platform
 							if(game_objects.at(i)->state != FALLING_PLATFORM_WIDE_FALLING)
 							{
+								setY(this->y() - 1); // One pixel adjustment to deal with 
+								                     // player slipping off platform on frame 1
 								game_objects.at(i)->setState(FALLING_PLATFORM_WIDE_FALLING);
 							}
 						}
-					}	
+					}
 
 				break;
 

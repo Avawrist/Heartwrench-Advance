@@ -99,22 +99,11 @@ void FallingPlatformWide::setState(ObjectState new_state)
 
             fall_timer = 0;
 
-            animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-                                                                        1,
-                                                                        bn::sprite_items::falling_platform_wide.tiles_item(),
-                                                                        0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4);
-
-
         break;
 
         case FALLING_PLATFORM_WIDE_FALLING:
 
             fall_timer = FALLING_PLATFORM_WIDE_FALL_TIMER;
-
-            animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-                                                                        0,
-                                                                        bn::sprite_items::falling_platform_wide.tiles_item(),
-                                                                        0, 0, 1, 1, 2, 2, 3, 3, 4, 4);
 
         break;
 
