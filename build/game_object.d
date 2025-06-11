@@ -86,10 +86,11 @@ game_object.o: G:/game/src/game_object.cpp G:/game/include/game_object.h \
  G:/game/build/bn_sprite_items_phase_orb_down.h \
  G:/game/build/bn_sprite_items_phase_orb_left.h \
  G:/game/build/bn_sprite_items_phase_orb_right.h \
+ G:/game/build/bn_sprite_items_falling_platform_wide.h \
+ G:/game/build/bn_sprite_items_falling_platform_thin.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h \
  G:/game/build/bn_sprite_items_thorn_column.h \
  G:/game/build/bn_sprite_items_thorn_bar.h \
- G:/game/build/bn_sprite_items_falling_platform_wide.h \
  G:/game/build/bn_sprite_items_hitbox.h \
  G:/game/build/bn_sprite_items_player.h \
  G:/game/build/bn_sprite_items_phase_marker.h
@@ -184,10 +185,11 @@ G:/game/build/bn_sprite_items_phase_orb_up.h:
 G:/game/build/bn_sprite_items_phase_orb_down.h:
 G:/game/build/bn_sprite_items_phase_orb_left.h:
 G:/game/build/bn_sprite_items_phase_orb_right.h:
+G:/game/build/bn_sprite_items_falling_platform_wide.h:
+G:/game/build/bn_sprite_items_falling_platform_thin.h:
 G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/build/bn_sprite_items_thorn_column.h:
 G:/game/build/bn_sprite_items_thorn_bar.h:
-G:/game/build/bn_sprite_items_falling_platform_wide.h:
 G:/game/build/bn_sprite_items_hitbox.h:
 G:/game/build/bn_sprite_items_player.h:
 G:/game/build/bn_sprite_items_phase_marker.h:

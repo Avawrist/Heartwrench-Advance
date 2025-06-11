@@ -14,9 +14,9 @@ FallingPlatformWide::FallingPlatformWide()
     sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
     default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								                                   1,
-								                                   bn::sprite_items::falling_platform_wide.tiles_item(),
-								                                   0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4);
+                                                                    2,
+                                                                    bn::sprite_items::falling_platform_wide.tiles_item(),
+                                                                    0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3);
 
     // Init Variables //
     collider_offset_x = FALLING_PLATFORM_WIDE_COLLIDER_OFFSET_X;
@@ -99,11 +99,21 @@ void FallingPlatformWide::setState(ObjectState new_state)
 
             fall_timer = 0;
 
+            animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+                                                                            2,
+                                                                            bn::sprite_items::falling_platform_wide.tiles_item(),
+                                                                            0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3);
+
         break;
 
         case FALLING_PLATFORM_WIDE_FALLING:
 
             fall_timer = FALLING_PLATFORM_WIDE_FALL_TIMER;
+
+            animate_action_ptr  = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+                                                                        1,
+                                                                        bn::sprite_items::falling_platform_wide.tiles_item(),
+                                                                        4, 5, 6, 7);
 
         break;
 

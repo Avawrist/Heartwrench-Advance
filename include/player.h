@@ -266,6 +266,7 @@ struct Player : GameObject {
 	void resolvePhaseOrbLeftCollision(GameObject& object)        override;
 	void resolvePhaseOrbRightCollision(GameObject& object)       override;
 	void resolveFallingPlatformWideCollision(GameObject& object) override;
+	void resolveFallingPlatformThinCollision(GameObject& object) override;
 
 	// Level Enemies
 	void resolveThornColumnCollision(GameObject& object) override; 

@@ -1,0 +1,1 @@
+falling_platform_thin_bn_gfx.o: falling_platform_thin_bn_gfx.s

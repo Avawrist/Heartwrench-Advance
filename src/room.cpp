@@ -150,6 +150,10 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             temp_object_ptr = new FallingPlatformWide();
         break;
 
+        case FALLING_PLATFORM_THIN:
+            temp_object_ptr = new FallingPlatformThin();
+        break;
+
         ///////////////////
 	    // Level Enemies //
 	    ///////////////////
@@ -253,31 +257,14 @@ void Room::load(RoomName                                       room_name,
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
-            right_neighbor  = ROOM_TEST_2;
+            right_neighbor  = NO_ROOM;
             bottom_neighbor = NO_ROOM;
             left_neighbor   = NO_ROOM;
 
             room_bounds.top_bound    = -2432;
-            room_bounds.right_bound  = -4608;
-            room_bounds.bottom_bound = -1936;
+            room_bounds.right_bound  = -2560;
+            room_bounds.bottom_bound = -1280;
             room_bounds.left_bound   = -5120;
-
-            // Add any special objects //
-            
-        break;
-
-        case ROOM_TEST_2:
-
-            // Init Variables //
-            top_neighbor    = NO_ROOM;
-            right_neighbor  = NO_ROOM;
-            bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TEST_1;
-
-            room_bounds.top_bound    = -2432;
-            room_bounds.right_bound  = -4272;
-            room_bounds.bottom_bound = -1936;
-            room_bounds.left_bound   = -4608;
 
             // Add any special objects //
             

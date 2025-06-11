@@ -44,6 +44,8 @@
 #include "bn_sprite_items_phase_orb_down.h"
 #include "bn_sprite_items_phase_orb_left.h"
 #include "bn_sprite_items_phase_orb_right.h"
+#include "bn_sprite_items_falling_platform_wide.h"
+#include "bn_sprite_items_falling_platform_thin.h"
 
 // Enemy Object Assets
 #include "bn_sprite_items_ground_ghoul.h"
@@ -51,7 +53,6 @@
 #include "bn_sprite_items_thorn_bar.h"
 
 // Special Object Assets
-#include "bn_sprite_items_falling_platform_wide.h"
 #include "bn_sprite_items_hitbox.h"
 #include "bn_sprite_items_player.h"
 #include "bn_sprite_items_phase_marker.h"
@@ -115,6 +116,7 @@ enum ObjectType
 	PHASE_ORB_LEFT,
 	PHASE_ORB_RIGHT,
 	FALLING_PLATFORM_WIDE,
+	FALLING_PLATFORM_THIN,
 
 	// Level Enemies
 	THORN_COLUMN,
@@ -143,6 +145,8 @@ enum ObjectState
 	// Falling Platform
 	FALLING_PLATFORM_WIDE_NEUTRAL,
 	FALLING_PLATFORM_WIDE_FALLING,
+	FALLING_PLATFORM_THIN_NEUTRAL,
+	FALLING_PLATFORM_THIN_FALLING,
 
 	///////////////////
 	// Level Enemies //
@@ -321,6 +325,7 @@ struct GameObject
 	virtual void resolvePhaseOrbLeftCollision(GameObject& object);
 	virtual void resolvePhaseOrbRightCollision(GameObject& object);
 	virtual void resolveFallingPlatformWideCollision(GameObject& object);
+	virtual void resolveFallingPlatformThinCollision(GameObject& object);
 
 	// Level Enemies
 	virtual void resolveThornColumnCollision(GameObject& object); 

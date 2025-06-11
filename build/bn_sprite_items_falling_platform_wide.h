@@ -7,12 +7,12 @@
 
 //======================================================================
 //
-//	falling_platform_wide_bn_gfx, 64x320@4, 
+//	falling_platform_wide_bn_gfx, 64x512@4, 
 //	+ palette 16 entries, not compressed
-//	+ 320 tiles not compressed
-//	Total size: 32 + 10240 = 10272
+//	+ 512 tiles not compressed
+//	Total size: 32 + 16384 = 16416
 //
-//	Time-stamp: 2025-06-10, 11:55:26
+//	Time-stamp: 2025-06-11, 14:54:37
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -21,8 +21,8 @@
 #ifndef GRIT_FALLING_PLATFORM_WIDE_BN_GFX_H
 #define GRIT_FALLING_PLATFORM_WIDE_BN_GFX_H
 
-#define falling_platform_wide_bn_gfxTilesLen 10240
-extern const bn::tile falling_platform_wide_bn_gfxTiles[320];
+#define falling_platform_wide_bn_gfxTilesLen 16384
+extern const bn::tile falling_platform_wide_bn_gfxTiles[512];
 
 #define falling_platform_wide_bn_gfxPalLen 32
 extern const bn::color falling_platform_wide_bn_gfxPal[16];
@@ -34,7 +34,7 @@ extern const bn::color falling_platform_wide_bn_gfxPal[16];
 namespace bn::sprite_items
 {
     constexpr inline sprite_item falling_platform_wide(sprite_shape_size(sprite_shape::SQUARE, sprite_size::HUGE), 
-            sprite_tiles_item(span<const tile>(falling_platform_wide_bn_gfxTiles, 320), bpp_mode::BPP_4, compression_type::NONE, 5), 
+            sprite_tiles_item(span<const tile>(falling_platform_wide_bn_gfxTiles, 512), bpp_mode::BPP_4, compression_type::NONE, 8), 
             sprite_palette_item(span<const color>(falling_platform_wide_bn_gfxPal, 16), bpp_mode::BPP_4, compression_type::NONE));
 }
 

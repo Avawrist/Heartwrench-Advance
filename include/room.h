@@ -24,6 +24,7 @@
 #include "tile_passage.h"
 #include "phase_orb.h"
 #include "falling_platform_wide.h"
+#include "falling_platform_thin.h"
 
 #include "ground_ghoul.h"
 #include "thorn_column.h"
