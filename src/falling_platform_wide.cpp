@@ -71,10 +71,14 @@ void FallingPlatformWide::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OB
 
         case FALLING_PLATFORM_WIDE_FALLING:
 
-            fall_timer--;
-            fall_timer = clamp(0, FALLING_PLATFORM_WIDE_FALL_TIMER, fall_timer);
+            fall_timer++;
+            fall_timer = clamp(0, FALLING_PLATFORM_WIDE_SPEEDUP_TIMER, fall_timer);
 
-            if(fall_timer <= 0) {rigidbody.addForce(FALLING_PLATFORM_WIDE_GRAVITY_FORCE);}
+            if(fall_timer >= FALLING_PLATFORM_WIDE_FALL_TIMER) 
+            {rigidbody.addForce(FALLING_PLATFORM_WIDE_GRAVITY_FORCE);}
+
+            if(fall_timer >= FALLING_PLATFORM_WIDE_SPEEDUP_TIMER)
+            {rigidbody.addForce(FALLING_PLATFORM_WIDE_GRAVITY_FORCE);}
 
         break;
 		
@@ -108,7 +112,7 @@ void FallingPlatformWide::setState(ObjectState new_state)
 
         case FALLING_PLATFORM_WIDE_FALLING:
 
-            fall_timer = FALLING_PLATFORM_WIDE_FALL_TIMER;
+            fall_timer = 0;
 
             animate_action_ptr  = bn::create_sprite_animate_action_once(sprite_ptr.value(),
                                                                         1,

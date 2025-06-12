@@ -71,10 +71,14 @@ void FallingPlatformThin::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OB
 
         case FALLING_PLATFORM_THIN_FALLING:
 
-            fall_timer--;
-            fall_timer = clamp(0, FALLING_PLATFORM_THIN_FALL_TIMER, fall_timer);
+            fall_timer++;
+            fall_timer = clamp(0, FALLING_PLATFORM_THIN_SPEEDUP_TIMER, fall_timer);
 
-            if(fall_timer <= 0) {rigidbody.addForce(FALLING_PLATFORM_THIN_GRAVITY_FORCE);}
+            if(fall_timer >= FALLING_PLATFORM_THIN_FALL_TIMER) 
+            {rigidbody.addForce(FALLING_PLATFORM_THIN_GRAVITY_FORCE);}
+
+            if(fall_timer >= FALLING_PLATFORM_THIN_SPEEDUP_TIMER)
+            {rigidbody.addForce(FALLING_PLATFORM_THIN_GRAVITY_FORCE);}
 
         break;
 		
