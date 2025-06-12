@@ -109,7 +109,8 @@ void GroundGhoul::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
             {next_crawl_dir = LEFT;}
 
             // Gravity
-            rigidbody.addForce(GROUND_GHOUL_GRAVITY_FORCE);
+            if(!grounded_detected)
+            {rigidbody.addForce(GROUND_GHOUL_GRAVITY_FORCE);}
 
         break;
 
@@ -120,7 +121,8 @@ void GroundGhoul::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
             {setState(IDLE);}
 
             // Gravity
-            rigidbody.addForce(GROUND_GHOUL_GRAVITY_FORCE);
+            if(!grounded_detected)
+            {rigidbody.addForce(GROUND_GHOUL_GRAVITY_FORCE);}
 
         break;
 
