@@ -96,46 +96,46 @@ Hitbox& Hitbox::operator =(const Hitbox& other)
 
 void Hitbox::applyHit(GameObject& object)
 {
-    if(object.invulnerability_frames <= 0)
-    {
-        // Determine hit effect location
-        int32 x_offset_multiplier = object.x().integer() - x().integer(); 
-        if(x_offset_multiplier != 0) {x_offset_multiplier /= abs(x_offset_multiplier);}
+    if(object.invulnerability_frames) {return;}
+    
+    // Object invuln:
+    object.invulnerability_frames = GAME_OBJECT_HIT_INVULNERABILITY_FRAMES;
 
-        int32 y_offset_multiplier = object.y().integer() - y().integer(); 
-        if(y_offset_multiplier != 0) {y_offset_multiplier /= abs(y_offset_multiplier);}
+    // Determine hit effect location
+    int32 x_offset_multiplier = object.x().integer() - x().integer(); 
+    if(x_offset_multiplier != 0) {x_offset_multiplier /= abs(x_offset_multiplier);}
 
-        int32 x_offset = (width / 2)  * x_offset_multiplier;
-        int32 y_offset = (height / 2) * y_offset_multiplier;
+    int32 y_offset_multiplier = object.y().integer() - y().integer(); 
+    if(y_offset_multiplier != 0) {y_offset_multiplier /= abs(y_offset_multiplier);}
 
-        // Global juice
-        //if(object.hitpoints - damage <= 0)
-        //{global_bg_hitflash_frames  = hitstop_frames;}
-        global_bg_hitflash_frames   = hitstop_frames;
-        global_hitstop_frames       = hitstop_frames;
-        global_screenshake_frames   = screenshake_frames;
-        global_screenshake_severity = screenshake_severity;
+    int32 x_offset = (width / 2)  * x_offset_multiplier;
+    int32 y_offset = (height / 2) * y_offset_multiplier;
 
-        // Object invuln:
-        object.invulnerability_frames = GAME_OBJECT_HIT_INVULNERABILITY_FRAMES;
+    // Global juice
+    //if(object.hitpoints - damage <= 0)
+    //{global_bg_hitflash_frames  = hitstop_frames;}
+    global_bg_hitflash_frames   = hitstop_frames;
+    global_hitstop_frames       = hitstop_frames;
+    global_screenshake_frames   = screenshake_frames;
+    global_screenshake_severity = screenshake_severity;
 
-        // Object physics:
-        object.rigidbody.removeForces();
-        object.rigidbody.addForce(HITBOX_KNOCKBACK_FORCE);
+    // Object physics:
+    object.rigidbody.removeForces();
+    object.rigidbody.addForce(HITBOX_KNOCKBACK_FORCE);
 
-        // Object damage:
-        object.applyDamage(damage);
+    // Object damage:
+    object.applyDamage(damage);
 
-        // Object hitstun state:
-        object.hitstun_frames = hitstun_frames;
-        object.setState(OBJECT_HITSTUN);
+    // Object hitstun state:
+    object.hitstun_frames = hitstun_frames;
+    object.setState(OBJECT_HITSTUN);
 
-        // Object juice:
-        object.setHitFlash();
-        //object.setHorizontalStretch();
-        object.applyHitEffect(x().integer() + x_offset,
-                              y().integer() + y_offset);
-    }
+    // Object juice:
+    object.setHitFlash();
+    //object.setHorizontalStretch();
+    object.applyHitEffect(x().integer() + x_offset,
+                            y().integer() + y_offset);
+    
 }
 
 void Hitbox::applyWallHit(GameObject& object)

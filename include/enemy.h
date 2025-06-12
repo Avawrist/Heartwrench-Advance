@@ -4,6 +4,8 @@
 #include "game_object.h"
 #include "hitbox.h"
 
+#define ENEMY_DAMAGE 1
+
 struct Enemy : GameObject
 {
     //////////////////

@@ -2,22 +2,35 @@
 === Game Mechanics ===
 ======================
 
-=== Level Mechanics ===
-
-Mesopotamian themes:
-Humans as slaves or servants to the gods
-Immortality
-The Fall
-Flood/plague/disaster as devices of the gods to maintain control over humans
-Add sci-fi elements for a blend of flavors
-
 = Platforming =
 
--Player doesn't have a strong drift speed like in Mario, which is largely necessary
- on the GBA. Consider including level mechanics that bounce, launch, propel, or otherwise
- move the player horizontally to compensate for low inherent drift.
-
 -Player max jump height is 4 tiles. Don't give the player jumps higher than 3 tiles. 
+-player max jump width is 5 tiles. Don't give the player jumps wider than 4 tiles.
+
+-Rooms in general will scroll horizontally. 
+-Keep steep climbing to a minimum because of the GBA's low vertical resolution.
+
+-Add mechanics that require the player to attack to move further vertically than their jump allows.
+-Elevator platform?
+
+== Drops & Rewards ==
+
+-It's important to give the player short term rewards for difficult platforming, combat and exploration.
+-Rewards need to feel meaningful to the player.
+
+- Gems - 
+The general currency, used to pay for checkpoints, and player palettes. Brainstorm more.
+
+- HP - 
+HP is nice in a pinch. HP should not drop from enemies or the player may opt to farm. 
+
+- Champion Coins -
+Every level will contain 3 OPTIONAL Champion Coins, each a different color and each 
+"awarded" to the player for completing a special task in level.
+
+The blue coin will be awarded for finding secret areas or solving a simple puzzle.
+The red coin will be awarded for winning a difficult (optional) combat scenario.
+The green coin will be awarded for overcoming a difficult platforming section.
 
 = Enemies/Combat =
 -Basic RPS with Roll/Slash/Jump
@@ -32,9 +45,9 @@ Slash:
               Most useful for attacking after rolling through an enemy 
               without turning around.
 
--Enemies take wall splat damage?
+-Enemies take wall splat damage
 
--Enemy types?
+-Enemy types:
 -Enemies that are exclusively combat
 -Enemies that are platforming mechanics while alive
 -Enemies that create a platforming mechanic when killed
@@ -48,5 +61,14 @@ Slash:
 - Exploration (overworld and in level) pays for checkpoints via currency rewards.
 - Progress is lost on death. Currency is permanent and not lost on death.
 - The more currency held, the higher damage the player does?
+
+=== Themes (Narrative) ===
+
+Mesopotamian themes:
+Humans as slaves or servants to the gods
+Immortality
+The Fall
+Flood/plague/disaster as devices of the gods to maintain control over humans
+Add sci-fi elements for a blend of flavors
 
 === Overworld Mechanics ===

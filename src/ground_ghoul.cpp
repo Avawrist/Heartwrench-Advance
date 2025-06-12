@@ -23,8 +23,8 @@ GroundGhoul::GroundGhoul()
         collider_offset_x = GROUND_GHOUL_COLLIDER_OFFSET_X;
         collider_offset_y = GROUND_GHOUL_COLLIDER_OFFSET_Y;
 
-        state = GROUND_GHOUL_CRAWL;
-        x_dir = RIGHT;
+        state = IDLE;
+        x_dir = LEFT;
         y_dir = UP;
 
         grounded_detected = false;
@@ -34,6 +34,9 @@ GroundGhoul::GroundGhoul()
         test_collider_left  = collider;
 
         hitpoints = GROUND_GHOUL_HITPOINTS;
+
+        action_timer   = GROUND_GHOUL_ACTION_TIMER;
+        next_crawl_dir = LEFT;
 }
 
 GroundGhoul::GroundGhoul(const GroundGhoul& other) : Enemy(other)
@@ -43,6 +46,9 @@ GroundGhoul::GroundGhoul(const GroundGhoul& other) : Enemy(other)
     test_collider       = other.test_collider;
     test_collider_right = other.test_collider_right;
     test_collider_left  = other.test_collider_left;
+
+    action_timer   = other.action_timer;
+    next_crawl_dir = other.next_crawl_dir;
 }
 
 GroundGhoul::~GroundGhoul()
@@ -58,6 +64,9 @@ GroundGhoul& GroundGhoul::operator =(const GroundGhoul& other)
     test_collider_right = other.test_collider_right;
     test_collider_left  = other.test_collider_left;
 
+    action_timer   = other.action_timer;
+    next_crawl_dir = other.next_crawl_dir;
+
     return *this;
 }
 
@@ -65,7 +74,13 @@ GroundGhoul& GroundGhoul::operator =(const GroundGhoul& other)
 // GameObject Overrides //
 //////////////////////////
 
-// None..
+void GroundGhoul::updateTimers()
+{
+    GameObject::updateTimers();
+
+    action_timer--;
+    action_timer = clamp(0, GROUND_GHOUL_ACTION_TIMER, action_timer);
+}
 
 //////////////////////////////
 // State Function Overrides //
@@ -77,20 +92,34 @@ void GroundGhoul::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
                                         const bn::regular_bg_item&                     bg_item,
                                         const bn::camera_ptr&                          camera)
 {
+    BN_LOG(action_timer);
     switch(state)
     {
-        case GROUND_GHOUL_IDLE:
+
+        case IDLE:
+
+            // Crawl timer
+            if(action_timer <= 0) 
+            {setState(GROUND_GHOUL_CRAWL);}
+
+            // Update direction
+            if(game_objects.at(PLAYER_OBJECT_LIST_INDEX)->x() > x())
+            {next_crawl_dir = RIGHT;}
+            else
+            {next_crawl_dir = LEFT;}
+
+            // Gravity
+            rigidbody.addForce(GROUND_GHOUL_GRAVITY_FORCE);
+
         break;
 
         case GROUND_GHOUL_CRAWL:
 
-            rigidbody.addForce(GROUND_GHOUL_CRAWL_FORCE);
+            // Exit state condition
+            if(animate_action_ptr->done())
+            {setState(IDLE);}
 
-        break;
-
-        case GROUND_GHOUL_AIR:
-
-            rigidbody.addForce(GROUND_GHOUL_CRAWL_FORCE);
+            // Gravity
             rigidbody.addForce(GROUND_GHOUL_GRAVITY_FORCE);
 
         break;
@@ -112,36 +141,31 @@ void GroundGhoul::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
     }
 }
 
-void GroundGhoul::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
-		                      const bn::regular_bg_ptr&                      bg_ptr,
-					          const bn::span<const bn::regular_bg_map_cell>& cells,
-					          const bn::regular_bg_item&                     bg_item)
-{
-    GameObject::updateState(game_objects, bg_ptr, cells, bg_item);
-
-    if(state != OBJECT_DEATH &&
-       state != OBJECT_HITSTUN) {setState(GROUND_GHOUL_CRAWL);}
-}
-
 void GroundGhoul::setState(ObjectState new_state)
 {
     state = new_state;
 
     switch(new_state)
     {
-        case GROUND_GHOUL_IDLE:
+        case IDLE:
+
+            action_timer       = GROUND_GHOUL_ACTION_TIMER;
+            animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+                                                                            0,
+                                                                            bn::sprite_items::ground_ghoul.tiles_item(),
+                                                                            0, 0);
+
         break;
 
         case GROUND_GHOUL_CRAWL:
 
-            animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-                                 0,
-                                 bn::sprite_items::ground_ghoul.tiles_item(),
-                                 0, 0);
+            x_dir = next_crawl_dir;
+            rigidbody.addForce(GROUND_GHOUL_CRAWL_FORCE);
+            animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+                                                                          0,
+                                                                          bn::sprite_items::ground_ghoul.tiles_item(),
+                                                                          0, 0);
 
-        break;
-
-        case GROUND_GHOUL_AIR:
         break;
 
         case OBJECT_HITSTUN:

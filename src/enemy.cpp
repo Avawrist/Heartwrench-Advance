@@ -6,7 +6,7 @@
 
 Enemy::Enemy()
 {
-
+	damage = ENEMY_DAMAGE;
 }
 
 Enemy::Enemy(const Enemy& other) : GameObject(other)
@@ -116,29 +116,26 @@ void Enemy::resolveThornColumnCollision(GameObject& object)
 {
 	int32 thorn_collision_x_offset = collider.getCollisionXOffset(object.collider, rigidbody.normalized_dir.x()).integer();
 	
+	resolveXAxisCollision(object.collider);
+	resolveYAxisCollision(object.collider);
+
 	if(thorn_collision_x_offset != 0 &&
 	   hitpoints > 0)
 	{
 		int32 knockback_x_dir = abs(thorn_collision_x_offset) / thorn_collision_x_offset;
-
-		rigidbody.removeForces();
-		rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_DEATH_X_FORCE * knockback_x_dir, 
-													   OBJECT_DEATH_Y_FORCE * 0),
-													   OBJECT_DEATH_DECAY));
-		hitpoints = 0;
+		applyHit(knockback_x_dir, 0, object.damage);
 	}
 }
 
 void Enemy::resolveThornBarCollision(GameObject& object)
 {
+	resolveXAxisCollision(object.collider);
+	resolveYAxisCollision(object.collider);
+
 	if(collider.isCollision(object.collider) &&
 	   hitpoints > 0)
 	{
-		rigidbody.removeForces();
-		rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_DEATH_X_FORCE * 0, 
-													   OBJECT_DEATH_Y_FORCE * rigidbody.normalized_dir.y() * -1),
-													   OBJECT_DEATH_DECAY));
-		hitpoints = 0;
+		applyHit(0, rigidbody.normalized_dir.y().integer() * -1, object.damage);
 	}
 }
 

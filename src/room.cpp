@@ -263,8 +263,8 @@ void Room::load(RoomName                                       room_name,
 
             room_bounds.top_bound    = -2432;
             room_bounds.right_bound  = -2560;
-            room_bounds.bottom_bound = -1280;
-            room_bounds.left_bound   = -5120;
+            room_bounds.bottom_bound = -1936;
+            room_bounds.left_bound   = -5104;
 
             // Add any special objects //
             

@@ -31,7 +31,7 @@
 
 #define PLAYER_ATTACK_BUFFER_FRAMES 12
 #define PLAYER_ROLL_BUFFER_FRAMES   12
-#define PLAYER_JUMP_BUFFER_FRAMES   8
+#define PLAYER_JUMP_BUFFER_FRAMES   12
 
 #define PLAYER_MIN_X_SPEED 0
 #define PLAYER_MAX_X_SPEED 2
@@ -78,8 +78,8 @@
 #define PLAYER_ATTACK_GROUND_1_HB_HEIGHT          32
 #define PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME    18
 #define PLAYER_ATTACK_GROUND_1_HB_LIFESPAN_FRAMES 8
-#define PLAYER_ATTACK_GROUND_1_X_KNOCKBACK        12
-#define PLAYER_ATTACK_GROUND_1_Y_KNOCKBACK        3
+#define PLAYER_ATTACK_GROUND_1_X_KNOCKBACK        10
+#define PLAYER_ATTACK_GROUND_1_Y_KNOCKBACK        0
 #define PLAYER_ATTACK_GROUND_1_KNOCKBACK_DECAY    0.05
 #define PLAYER_ATTACK_GROUND_1_DAMAGE             1
 #define PLAYER_ATTACK_GROUND_1_HITSTOP_FRAMES     10
@@ -93,7 +93,7 @@
 #define PLAYER_ATTACK_AIR_1_HB_HEIGHT          32
 #define PLAYER_ATTACK_AIR_1_CREATE_HB_FRAME    18
 #define PLAYER_ATTACK_AIR_1_HB_LIFESPAN_FRAMES 8
-#define PLAYER_ATTACK_AIR_1_X_KNOCKBACK        8
+#define PLAYER_ATTACK_AIR_1_X_KNOCKBACK        10
 #define PLAYER_ATTACK_AIR_1_Y_KNOCKBACK        0
 #define PLAYER_ATTACK_AIR_1_KNOCKBACK_DECAY    0.05
 #define PLAYER_ATTACK_AIR_1_DAMAGE             1
@@ -110,8 +110,8 @@
 #define PLAYER_ROLL_DECAY   0.75
 #define PLAYER_ROLL_X_SPEED 1
 
-#define PLAYER_ROLL_JUMP_X_FORCE  6
-#define PLAYER_ROLL_JUMP_Y_FORCE -6
+#define PLAYER_ROLL_JUMP_X_FORCE  4
+#define PLAYER_ROLL_JUMP_Y_FORCE -8
 #define PLAYER_ROLL_JUMP_DECAY   0.04
 
 #define PLAYER_MIN_PASSAGE_SPEED PLAYER_GRAVITY + PLAYER_PROLONGED_GRAVITY + PLAYER_FAST_FALL_GRAVITY
@@ -207,7 +207,7 @@ struct Player : GameObject {
 	void wallJump();
 	void fastFall();
 	void createGroundedAttackHitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
-		                               const bn::camera_ptr&                      camera);
+		                              const bn::camera_ptr&                      camera);
 	void createAirAttack1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
 								  const bn::camera_ptr&                      camera);
 	void createJumpEffect();

@@ -35,6 +35,8 @@ phase_orb.o: G:/game/src/phase_orb.cpp G:/game/include/phase_orb.h \
  G:/butano-master/butano/include/bn_profiler.h \
  G:/butano-master/butano/include/bn_config_profiler.h \
  G:/butano-master/butano/include/bn_unordered_map_fwd.h \
+ G:/butano-master/butano/include/bn_random.h \
+ G:/butano-master/butano/include/bn_limits.h \
  G:/butano-master/butano/include/bn_sprite_ptr.h \
  G:/butano-master/butano/include/bn_sprite_animate_actions.h \
  G:/butano-master/butano/include/bn_vector.h \
@@ -52,7 +54,6 @@ phase_orb.o: G:/game/src/phase_orb.cpp G:/game/include/phase_orb.h \
  G:/butano-master/butano/include/bn_sprite_palette_actions.h \
  G:/butano-master/butano/include/bn_sprite_palette_ptr.h \
  G:/butano-master/butano/include/bn_value_template_actions.h \
- G:/butano-master/butano/include/bn_limits.h \
  G:/butano-master/butano/include/bn_fixed.h \
  G:/butano-master/butano/include/bn_fixed_point.h \
  G:/butano-master/butano/include/bn_regular_bg_ptr.h \
@@ -132,6 +133,8 @@ G:/butano-master/butano/include/bn_keypad.h:
 G:/butano-master/butano/include/bn_profiler.h:
 G:/butano-master/butano/include/bn_config_profiler.h:
 G:/butano-master/butano/include/bn_unordered_map_fwd.h:
+G:/butano-master/butano/include/bn_random.h:
+G:/butano-master/butano/include/bn_limits.h:
 G:/butano-master/butano/include/bn_sprite_ptr.h:
 G:/butano-master/butano/include/bn_sprite_animate_actions.h:
 G:/butano-master/butano/include/bn_vector.h:
@@ -149,7 +152,6 @@ G:/butano-master/butano/include/bn_sprite_palette_ptr.h:
 G:/butano-master/butano/include/bn_sprite_palette_actions.h:
 G:/butano-master/butano/include/bn_sprite_palette_ptr.h:
 G:/butano-master/butano/include/bn_value_template_actions.h:
-G:/butano-master/butano/include/bn_limits.h:
 G:/butano-master/butano/include/bn_fixed.h:
 G:/butano-master/butano/include/bn_fixed_point.h:
 G:/butano-master/butano/include/bn_regular_bg_ptr.h:

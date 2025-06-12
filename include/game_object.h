@@ -7,6 +7,7 @@
 #include "bn_math.h"
 #include "bn_keypad.h"
 #include "bn_profiler.h"
+#include "bn_random.h"
 
 #include "bn_sprite_ptr.h"
 #include "bn_sprite_animate_actions.h"
@@ -72,7 +73,7 @@
 
 #define GAME_OBJECT_IGNORE_OWP_FRAMES 3
 
-#define GAME_OBJECT_HIT_INVULNERABILITY_FRAMES 30
+#define GAME_OBJECT_HIT_INVULNERABILITY_FRAMES 60
 #define GAME_OBJECT_MAX_HIT_FLASH_FRAMES       3
 
 #define GAME_OBJECT_SPRITE_OFFSET_INCREMENT 0.1
@@ -98,9 +99,9 @@
 #define WALL_SPLAT_SCREENSHAKE_FRAMES 8
 #define WALL_SPLAT_SCREENSHAKE_SEVERITY STRONG_SHAKE
 
-#define OBJECT_DEATH_X_FORCE      8
-#define OBJECT_DEATH_Y_FORCE      8
-#define OBJECT_DEATH_DECAY        0.2
+#define OBJECT_KNOCKBACK_X_FORCE      25
+#define OBJECT_KNOCKBACK_Y_FORCE      25
+#define OBJECT_KNOCKBACK_DECAY        0.25
 
 // The index order here needs to align with the object tile index order in 
 // Aseprite.
@@ -133,7 +134,8 @@ enum ObjectType
 enum ObjectState
 {
 	NONE,
-	
+	IDLE,
+
 	///////////////////
 	// Level Objects //
 	///////////////////
@@ -153,9 +155,7 @@ enum ObjectState
 	///////////////////
 
 	// Ground Ghoul
-	GROUND_GHOUL_IDLE,
 	GROUND_GHOUL_CRAWL,
-	GROUND_GHOUL_AIR,
 
 	/////////////////////
 	// Special Objects //
@@ -219,6 +219,7 @@ struct GameObject
 	int32 invulnerability_frames = 0;
 	int32 hitstun_frames         = 0;
 	int32 hitpoints              = 1;
+	int32 damage                 = 0;
 
 	bool is_inactive             = false;
 	bool is_dead                 = false;
@@ -282,6 +283,7 @@ struct GameObject
 	void clampPosition(const bn::regular_bg_ptr& bg_ptr);
 	void setHitFlash();
 	void setHitFlash(int32 frames);
+	void applyHit(int32 knockback_x_dir, int32 knockback_y_dir, int32 _damage);
 	void applyDamage(int32 damage);
 	void applyHitEffect(int32 x, int32 y);
 	void applySplatEffect(int32 x, int32 y);

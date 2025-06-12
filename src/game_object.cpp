@@ -72,6 +72,7 @@ GameObject::GameObject(const GameObject& other)
     hit_flash_frames       = other.hit_flash_frames;
     invulnerability_frames = other.invulnerability_frames;
     hitpoints              = other.hitpoints;
+    damage                 = other.damage;
 
 }
 
@@ -131,6 +132,7 @@ GameObject& GameObject::operator =(const GameObject& other)
     hit_flash_frames       = other.hit_flash_frames;
     invulnerability_frames = other.invulnerability_frames;
     hitpoints              = other.hitpoints;
+    damage                 = other.damage;
 
     return *this;
 }
@@ -471,7 +473,7 @@ void GameObject::updateHitstunState()
     hitstun_frames = max(0, hitstun_frames);
 
     if(!hitstun_frames)
-    {setState(NONE);}
+    {setState(IDLE);}
 }
 
 void GameObject::udpateDeathState()
@@ -518,7 +520,7 @@ void GameObject::setHitFlash(int32 frames)
 void GameObject::updateHitFlash()
 {
     
-    if(hit_flash_frames)
+    if(hit_flash_frames || (invulnerability_frames && (invulnerability_frames % 3 == 0)))
     {
         bn::sprite_palette_ptr sprite_palette = bn::sprite_palette_items::sprite_flash_palette.create_palette();
         if(sprite_ptr.has_value())
@@ -535,9 +537,22 @@ void GameObject::updateHitFlash()
     {hit_flash_frames = 0;}
 }
 
-void GameObject::applyDamage(int32 damage)
+void GameObject::applyHit(int32 knockback_x_dir, int32 knockback_y_dir, int32 _damage)
 {
-    hitpoints -= damage;
+    if(invulnerability_frames) {return;}
+
+    invulnerability_frames = GAME_OBJECT_HIT_INVULNERABILITY_FRAMES;
+
+	rigidbody.removeForces();
+	rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_KNOCKBACK_X_FORCE * knockback_x_dir, 
+												   OBJECT_KNOCKBACK_Y_FORCE * knockback_y_dir),
+												   OBJECT_KNOCKBACK_DECAY));
+	applyDamage(_damage);
+}
+
+void GameObject::applyDamage(int32 _damage)
+{
+    hitpoints -= _damage;
     if(hitpoints < 0) {hitpoints = 0;}
 }
 
@@ -1024,9 +1039,9 @@ void GameObject::resolveUpSpikeCollision(const Collider& other_collider)
     if(collider.isCollision(other_collider) && hitpoints > 0)
     {
         rigidbody.removeForces();
-        rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_DEATH_X_FORCE * 0, 
-                                                       OBJECT_DEATH_Y_FORCE * UP),
-                                                       OBJECT_DEATH_DECAY));
+        rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_KNOCKBACK_X_FORCE * 0, 
+                                                       OBJECT_KNOCKBACK_Y_FORCE * UP),
+                                                       OBJECT_KNOCKBACK_DECAY));
         hitpoints = 0;
     }
 }
@@ -1036,9 +1051,9 @@ void GameObject::resolveDownSpikeCollision(const Collider& other_collider)
     if(collider.isCollision(other_collider) && hitpoints > 0)
     {
         rigidbody.removeForces();
-        rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_DEATH_X_FORCE * 0, 
-                                                       OBJECT_DEATH_Y_FORCE * DOWN), 
-                                                       OBJECT_DEATH_DECAY));
+        rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_KNOCKBACK_X_FORCE * 0, 
+                                                       OBJECT_KNOCKBACK_Y_FORCE * DOWN), 
+                                                       OBJECT_KNOCKBACK_DECAY));
         hitpoints = 0;
     }
 }
@@ -1048,9 +1063,9 @@ void GameObject::resolveLeftSpikeCollision(const Collider& other_collider)
     if(collider.isCollision(other_collider) && hitpoints > 0)
     {
         rigidbody.removeForces();
-        rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_DEATH_X_FORCE * LEFT,
-                                                       OBJECT_DEATH_Y_FORCE * 0), 
-                                                       OBJECT_DEATH_DECAY));
+        rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_KNOCKBACK_X_FORCE * LEFT,
+                                                       OBJECT_KNOCKBACK_Y_FORCE * 0), 
+                                                       OBJECT_KNOCKBACK_DECAY));
         hitpoints = 0;
     }
 }
@@ -1060,9 +1075,9 @@ void GameObject::resolveRightSpikeCollision(const Collider& other_collider)
     if(collider.isCollision(other_collider) && hitpoints > 0)
     {
         rigidbody.removeForces();
-        rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_DEATH_X_FORCE * RIGHT,
-                                                       OBJECT_DEATH_Y_FORCE * 0), 
-                                                       OBJECT_DEATH_DECAY));
+        rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_KNOCKBACK_X_FORCE * RIGHT,
+                                                       OBJECT_KNOCKBACK_Y_FORCE * 0), 
+                                                       OBJECT_KNOCKBACK_DECAY));
         hitpoints = 0;
     }
 }

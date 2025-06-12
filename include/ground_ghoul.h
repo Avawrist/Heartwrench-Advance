@@ -18,14 +18,16 @@
 #define GROUND_GHOUL_COLLIDER_OFFSET_X 0
 #define GROUND_GHOUL_COLLIDER_OFFSET_Y 0
 
-#define GROUND_GHOUL_CRAWL_SPEED 1
-#define GROUND_GHOUL_CRAWL_DECAY 1
+#define GROUND_GHOUL_CRAWL_X_FORCE 3
+#define GROUND_GHOUL_CRAWL_DECAY   0.03
+
+#define GROUND_GHOUL_ACTION_TIMER 120
 
 #define GROUND_GHOUL_GRAVITY       2
 #define GROUND_GHOUL_GRAVITY_DECAY 1
 
 #define GROUND_GHOUL_GRAVITY_FORCE Force(bn::fixed_point_t<12>(0, GROUND_GHOUL_GRAVITY), GROUND_GHOUL_GRAVITY_DECAY)
-#define GROUND_GHOUL_CRAWL_FORCE   Force(bn::fixed_point_t<12>(GROUND_GHOUL_CRAWL_SPEED * x_dir, 0), GROUND_GHOUL_CRAWL_DECAY)
+#define GROUND_GHOUL_CRAWL_FORCE   Force(bn::fixed_point_t<12>(GROUND_GHOUL_CRAWL_X_FORCE * x_dir, 0), GROUND_GHOUL_CRAWL_DECAY)
 
 #define GROUND_GHOUL_HITPOINTS 2
 
@@ -34,6 +36,9 @@ struct GroundGhoul : Enemy {
 	////////////////////////
 	// Struct GroundGhoul //
 	////////////////////////
+
+	int32      action_timer;
+	XDirection next_crawl_dir;
 
 	bool grounded_detected;
 
@@ -51,7 +56,7 @@ struct GroundGhoul : Enemy {
 	// GameObject Overrides //
 	//////////////////////////
 
-	// None..
+	void updateTimers() override;
 
 	//////////////////////////////
 	// State Function Overrides //
@@ -62,11 +67,6 @@ struct GroundGhoul : Enemy {
 							const bn::span<const bn::regular_bg_map_cell>& cells,
 							const bn::regular_bg_item&                     bg_item,
 							const bn::camera_ptr&                          camera) override;
-
-	void updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
-		             const bn::regular_bg_ptr&                      bg_ptr,
-					 const bn::span<const bn::regular_bg_map_cell>& cells,
-					 const bn::regular_bg_item&                     bg_item) override;
 
 	void setState(ObjectState new_state) override;
 
