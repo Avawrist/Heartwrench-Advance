@@ -58,7 +58,13 @@ void ThornColumn::updatePhysics()
 // State Function Overrides //
 //////////////////////////////
 
-// None..
+void ThornColumn::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                              const bn::regular_bg_ptr&                      bg_ptr,
+                              const bn::span<const bn::regular_bg_map_cell>& cells,
+                              const bn::regular_bg_item&                     bg_item)
+{
+
+}
 
 /////////////////////////
 // Collision Overrides //

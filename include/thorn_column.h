@@ -43,7 +43,10 @@ struct ThornColumn : Enemy {
 	// State Function Overrides //
 	//////////////////////////////
 
-    // None..
+    void updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                     const bn::regular_bg_ptr&                      bg_ptr,
+                     const bn::span<const bn::regular_bg_map_cell>& cells,
+                     const bn::regular_bg_item&                     bg_item) override;
 
     /////////////////////////
 	// Collision Overrides //

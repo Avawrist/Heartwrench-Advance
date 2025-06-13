@@ -62,9 +62,10 @@ GameObject::GameObject(const GameObject& other)
 	x_dir = other.x_dir;
     y_dir = other.y_dir;
 
-	is_inactive   = other.is_inactive;
-    is_dead       = other.is_dead;
-    is_persistent = other.is_persistent;
+	is_inactive       = other.is_inactive;
+    is_dead           = other.is_dead;
+    is_persistent     = other.is_persistent;
+    grounded_detected = other.grounded_detected;
 
 	received_platform_force = other.received_platform_force;
 
@@ -122,9 +123,10 @@ GameObject& GameObject::operator =(const GameObject& other)
 	x_dir = other.x_dir;
     y_dir = other.y_dir;
 
-	is_inactive   = other.is_inactive;
-    is_dead       = other.is_dead;
-    is_persistent = other.is_persistent;
+	is_inactive       = other.is_inactive;
+    is_dead           = other.is_dead;
+    is_persistent     = other.is_persistent;
+    grounded_detected = other.grounded_detected;
 
 	received_platform_force = other.received_platform_force;
 
@@ -474,6 +476,9 @@ void GameObject::updateHitstunState()
 
     if(!hitstun_frames)
     {setState(IDLE);}
+
+    // Add Gravity
+    rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);
 }
 
 void GameObject::udpateDeathState()

@@ -47,7 +47,6 @@ Player::Player()
 	
 	wall_right_detected      = false;
     wall_left_detected       = false;
-    grounded_detected        = false;
 	grounded_owp_detected    = false;
 	left_wj_eligible         = false;
 	right_wj_eligible        = false;
@@ -88,7 +87,6 @@ Player::Player(const Player& other) : GameObject(other)
 
 	wall_right_detected      = other.wall_right_detected;
     wall_left_detected       = other.wall_left_detected;
-    grounded_detected        = other.grounded_detected;
 	grounded_owp_detected    = other.grounded_owp_detected;
 	left_wj_eligible         = other.left_wj_eligible;
 	right_wj_eligible        = other.right_wj_eligible;
@@ -146,7 +144,6 @@ Player& Player::operator =(const Player& other)
 
 	wall_right_detected      = other.wall_right_detected;
     wall_left_detected       = other.wall_left_detected;
-    grounded_detected        = other.grounded_detected;
 	grounded_owp_detected    = other.grounded_owp_detected;
 	left_wj_eligible         = other.left_wj_eligible;
 	right_wj_eligible        = other.right_wj_eligible;

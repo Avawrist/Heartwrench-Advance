@@ -27,8 +27,6 @@ GroundGhoul::GroundGhoul()
         x_dir = LEFT;
         y_dir = UP;
 
-        grounded_detected = false;
-
         test_collider       = collider;
         test_collider_right = collider;
         test_collider_left  = collider;
@@ -41,8 +39,6 @@ GroundGhoul::GroundGhoul()
 
 GroundGhoul::GroundGhoul(const GroundGhoul& other) : Enemy(other)
 {
-    grounded_detected = other.grounded_detected;
-
     test_collider       = other.test_collider;
     test_collider_right = other.test_collider_right;
     test_collider_left  = other.test_collider_left;
@@ -58,8 +54,6 @@ GroundGhoul::~GroundGhoul()
 
 GroundGhoul& GroundGhoul::operator =(const GroundGhoul& other)
 {
-    grounded_detected = other.grounded_detected;
-
     test_collider       = other.test_collider;
     test_collider_right = other.test_collider_right;
     test_collider_left  = other.test_collider_left;
@@ -92,10 +86,9 @@ void GroundGhoul::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
                                         const bn::regular_bg_item&                     bg_item,
                                         const bn::camera_ptr&                          camera)
 {
-    BN_LOG(action_timer);
+
     switch(state)
     {
-
         case IDLE:
 
             // Crawl timer
@@ -110,7 +103,7 @@ void GroundGhoul::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
 
             // Gravity
             if(!grounded_detected)
-            {rigidbody.addForce(GROUND_GHOUL_GRAVITY_FORCE);}
+            {rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
 
         break;
 
@@ -122,7 +115,7 @@ void GroundGhoul::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
 
             // Gravity
             if(!grounded_detected)
-            {rigidbody.addForce(GROUND_GHOUL_GRAVITY_FORCE);}
+            {rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
 
         break;
 

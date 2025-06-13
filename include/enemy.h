@@ -28,7 +28,9 @@ struct Enemy : GameObject
     // State Function Overrides //
     //////////////////////////////
 
-    // None..
+    void getStateFromTiles(const bn::regular_bg_ptr&                      bg_ptr,
+                           const bn::span<const bn::regular_bg_map_cell>& cells,
+                           const bn::regular_bg_item&                     bg_item) override;
 
     /////////////////////////
     // Collision Overrides //

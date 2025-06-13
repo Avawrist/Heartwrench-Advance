@@ -21,13 +21,9 @@
 #define GROUND_GHOUL_CRAWL_X_FORCE 3
 #define GROUND_GHOUL_CRAWL_DECAY   0.03
 
-#define GROUND_GHOUL_ACTION_TIMER 120
+#define GROUND_GHOUL_ACTION_TIMER 90
 
-#define GROUND_GHOUL_GRAVITY       2
-#define GROUND_GHOUL_GRAVITY_DECAY 1
-
-#define GROUND_GHOUL_GRAVITY_FORCE Force(bn::fixed_point_t<12>(0, GROUND_GHOUL_GRAVITY), GROUND_GHOUL_GRAVITY_DECAY)
-#define GROUND_GHOUL_CRAWL_FORCE   Force(bn::fixed_point_t<12>(GROUND_GHOUL_CRAWL_X_FORCE * x_dir, 0), GROUND_GHOUL_CRAWL_DECAY)
+#define GROUND_GHOUL_CRAWL_FORCE Force(bn::fixed_point_t<12>(GROUND_GHOUL_CRAWL_X_FORCE * x_dir, 0), GROUND_GHOUL_CRAWL_DECAY)
 
 #define GROUND_GHOUL_HITPOINTS 2
 
@@ -39,8 +35,6 @@ struct GroundGhoul : Enemy {
 
 	int32      action_timer;
 	XDirection next_crawl_dir;
-
-	bool grounded_detected;
 
 	Collider test_collider;
 	Collider test_collider_right;

@@ -103,6 +103,11 @@
 #define OBJECT_KNOCKBACK_Y_FORCE      25
 #define OBJECT_KNOCKBACK_DECAY        0.25
 
+#define GAME_OBJECT_GRAVITY       2
+#define GAME_OBJECT_GRAVITY_DECAY 1
+
+#define GAME_OBJECT_GRAVITY_FORCE Force(bn::fixed_point_t<12>(0, GAME_OBJECT_GRAVITY), GAME_OBJECT_GRAVITY_DECAY)
+
 // The index order here needs to align with the object tile index order in 
 // Aseprite.
 
@@ -225,6 +230,7 @@ struct GameObject
 	bool is_dead                 = false;
 	bool is_persistent           = false;
 	bool received_platform_force = false;
+	bool grounded_detected       = false;
 
 	void applyForces();
 
