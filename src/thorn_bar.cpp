@@ -9,7 +9,7 @@ ThornBar::ThornBar()
     // Init Assets //
     object_type = THORN_BAR;
     sprite_ptr  = bn::sprite_items::thorn_bar.create_sprite(0, 0);
-    sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
+    sprite_ptr->set_z_order(ENEMY_Z_ORDER);
     default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								                                   4,

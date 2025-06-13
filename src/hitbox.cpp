@@ -123,6 +123,9 @@ void Hitbox::applyHit(GameObject& object)
     object.rigidbody.removeForces();
     object.rigidbody.addForce(HITBOX_KNOCKBACK_FORCE);
 
+    // Object Dir:
+    object.x_dir = (XDirection)(x_dir * -1);
+
     // Object damage:
     object.applyDamage(damage);
 

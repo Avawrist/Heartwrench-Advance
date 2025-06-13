@@ -9,13 +9,12 @@ GroundGhoul::GroundGhoul()
         // Init Variables //
         object_type = GROUND_GHOUL;
         sprite_ptr  = bn::sprite_items::ground_ghoul.create_sprite(0, 0);
-        sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
+        sprite_ptr->set_z_order(ENEMY_Z_ORDER);
         default_palette_ptr = sprite_ptr->palette();
         animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-                                                                      0,
-                                                                      bn::sprite_items::ground_ghoul.tiles_item(),
-                                                                      0,
-                                                                      0);
+                                                                2,
+                                                                bn::sprite_items::ground_ghoul.tiles_item(),
+                                                                0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3);
     
         collider          = Collider(x(), y(), GROUND_GHOUL_COLLIDER_WIDTH, GROUND_GHOUL_COLLIDER_HEIGHT);
         collider_x_axis   = collider;
@@ -113,6 +112,9 @@ void GroundGhoul::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
             if(animate_action_ptr->done())
             {setState(IDLE);}
 
+            if(animate_action_ptr->current_index() >= GROUND_GHOUL_CRAWL_FRAME)
+            {rigidbody.addForce(GROUND_GHOUL_CRAWL_FORCE);}
+
             // Gravity
             if(!grounded_detected)
             {rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
@@ -146,20 +148,20 @@ void GroundGhoul::setState(ObjectState new_state)
 
             action_timer       = GROUND_GHOUL_ACTION_TIMER;
             animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-                                                                            0,
+                                                                            2,
                                                                             bn::sprite_items::ground_ghoul.tiles_item(),
-                                                                            0, 0);
+                                                                            0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3);
 
         break;
 
         case GROUND_GHOUL_CRAWL:
 
             x_dir = next_crawl_dir;
-            rigidbody.addForce(GROUND_GHOUL_CRAWL_FORCE);
             animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-                                                                          0,
+                                                                          2,
                                                                           bn::sprite_items::ground_ghoul.tiles_item(),
-                                                                          0, 0);
+                                                                          4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 
+                                                                          8, 8, 8, 9, 9, 9, 10, 10, 10, 11, 11, 11);
 
         break;
 
@@ -168,7 +170,7 @@ void GroundGhoul::setState(ObjectState new_state)
             animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
                                  0,
                                  bn::sprite_items::ground_ghoul.tiles_item(),
-                                 18, 18);
+                                 31, 31);
 
         break;
 
@@ -177,7 +179,7 @@ void GroundGhoul::setState(ObjectState new_state)
             animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
                                  0,
                                  bn::sprite_items::ground_ghoul.tiles_item(),
-                                 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17);
+                                 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30);
 
         break;
 
@@ -190,12 +192,4 @@ void GroundGhoul::setState(ObjectState new_state)
 // Collision Overrides //
 /////////////////////////
 
-// Tiles
-void GroundGhoul::resolveXAxisCollision(const Collider& other_collider)
-{
-    Enemy::resolveXAxisCollision(other_collider);
-
-    // Update direction
-    if(col_x_offset < 0)      {x_dir = LEFT;}
-	else if(col_x_offset > 0) {x_dir = RIGHT;}
-}
+// None..

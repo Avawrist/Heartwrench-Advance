@@ -18,10 +18,11 @@
 #define GROUND_GHOUL_COLLIDER_OFFSET_X 0
 #define GROUND_GHOUL_COLLIDER_OFFSET_Y 0
 
-#define GROUND_GHOUL_CRAWL_X_FORCE 3
-#define GROUND_GHOUL_CRAWL_DECAY   0.03
+#define GROUND_GHOUL_CRAWL_X_FORCE 1
+#define GROUND_GHOUL_CRAWL_DECAY   1
 
 #define GROUND_GHOUL_ACTION_TIMER 90
+#define GROUND_GHOUL_CRAWL_FRAME  20
 
 #define GROUND_GHOUL_CRAWL_FORCE Force(bn::fixed_point_t<12>(GROUND_GHOUL_CRAWL_X_FORCE * x_dir, 0), GROUND_GHOUL_CRAWL_DECAY)
 
@@ -68,8 +69,7 @@ struct GroundGhoul : Enemy {
 	// Collision Overrides //
 	/////////////////////////
 
-	// Tiles
-	void resolveXAxisCollision(const Collider& other_collider) override;
+	// None..
 
 };
 

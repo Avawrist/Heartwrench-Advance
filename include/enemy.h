@@ -4,6 +4,8 @@
 #include "game_object.h"
 #include "hitbox.h"
 
+#define ENEMY_Z_ORDER -1
+
 #define ENEMY_DAMAGE 1
 
 struct Enemy : GameObject
