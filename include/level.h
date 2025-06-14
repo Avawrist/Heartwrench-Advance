@@ -21,7 +21,6 @@
 #include "bn_bg_palette_items_bg_flash_palette.h"
 
 // Assets
-#include "bn_regular_bg_items_test_bg.h"
 #include "bn_regular_bg_items_test_level.h"
 #include "bn_regular_bg_items_test_painted_bg.h"
 #include "bn_regular_bg_items_test_object_bg.h"
@@ -65,7 +64,6 @@ struct Level
 
     bn::optional<bn::camera_ptr>            camera;
     bn::optional<bn::regular_bg_ptr>        main_bg_ptr;
-    bn::optional<bn::regular_bg_ptr>        backdrop_ptr;
     bn::optional<bn::regular_bg_ptr>        painted_bg_ptr;
     bn::optional<bn::regular_bg_ptr>        object_bg_ptr;
 

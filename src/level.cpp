@@ -16,7 +16,6 @@ Level::Level(const Level& other)
     
     camera         = other.camera;
     main_bg_ptr    = other.main_bg_ptr;
-    backdrop_ptr   = other.backdrop_ptr;
     painted_bg_ptr = other.painted_bg_ptr;
     object_bg_ptr  = other.object_bg_ptr;
     bg_item        = other.bg_item;
@@ -51,7 +50,6 @@ void Level::operator =(const Level& other)
 
     camera         = other.camera;
     main_bg_ptr    = other.main_bg_ptr;
-    backdrop_ptr   = other.backdrop_ptr;
     painted_bg_ptr = other.painted_bg_ptr;
     object_bg_ptr  = other.object_bg_ptr;
     bg_item        = other.bg_item;
@@ -81,7 +79,6 @@ void Level::clear()
     // Free level pointers
     camera.reset();
     main_bg_ptr.reset();
-    backdrop_ptr.reset();
     painted_bg_ptr.reset();
     object_bg_ptr.reset();
 
@@ -118,7 +115,6 @@ void Level::load(LevelName level_name)
         case LEVEL_TEST:
             
             // Load BGs //
-            backdrop_ptr   = bn::regular_bg_items::test_bg.create_bg(0, 0);
             painted_bg_ptr = bn::regular_bg_items::test_painted_bg.create_bg(0, 0);
 
             main_bg_ptr    = bn::regular_bg_items::test_level.create_bg(0, 0);
@@ -155,12 +151,10 @@ void Level::load(LevelName level_name)
     
     // Set draw priority for BGs
     painted_bg_ptr->set_z_order(PAINTED_BG_ORDER);
-    backdrop_ptr->set_z_order(BACKDROP_ORDER);
     main_bg_ptr->set_z_order(MAIN_BG_ORDER);
     object_bg_ptr->set_z_order(OBJECT_BG_ORDER);
 
     // Set Camera
-    backdrop_ptr->set_camera(camera.value());
     main_bg_ptr->set_camera(camera.value());
     painted_bg_ptr->set_camera(camera.value());
     object_bg_ptr->set_camera(camera.value());
@@ -295,11 +289,13 @@ void Level::updateBGFlash()
     {
         // Set flash palette
         bn::bg_palette_ptr flash_palette = bn::bg_palette_items::bg_flash_palette.create_palette();
+        main_bg_ptr->set_palette(flash_palette);
         painted_bg_ptr->set_palette(flash_palette);
     }
     else
     {
         // Set default palette
+        main_bg_ptr->set_palette(default_painted_palette_ptr.value());
         painted_bg_ptr->set_palette(default_painted_palette_ptr.value());
     }
 

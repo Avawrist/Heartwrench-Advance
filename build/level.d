@@ -60,7 +60,6 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/butano-master/butano/include/bn_colors.h \
  G:/game/build/bn_bg_palette_items_bg_flash_palette.h \
  G:/butano-master/butano/include/bn_bg_palette_item.h \
- G:/game/build/bn_regular_bg_items_test_bg.h \
  G:/game/build/bn_regular_bg_items_test_level.h \
  G:/game/build/bn_regular_bg_items_test_painted_bg.h \
  G:/game/build/bn_regular_bg_items_test_object_bg.h \
@@ -180,7 +179,6 @@ G:/butano-master/butano/include/bn_bg_palette_ptr.h:
 G:/butano-master/butano/include/bn_colors.h:
 G:/game/build/bn_bg_palette_items_bg_flash_palette.h:
 G:/butano-master/butano/include/bn_bg_palette_item.h:
-G:/game/build/bn_regular_bg_items_test_bg.h:
 G:/game/build/bn_regular_bg_items_test_level.h:
 G:/game/build/bn_regular_bg_items_test_painted_bg.h:
 G:/game/build/bn_regular_bg_items_test_object_bg.h:

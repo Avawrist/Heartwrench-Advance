@@ -2311,6 +2311,8 @@ void Player::resolveThornBarCollision(GameObject& object)
 
 void Player::resolveGroundGhoulCollision(GameObject& object)
 {
+	if(object.state == OBJECT_HITSTUN || object.state == OBJECT_DEATH) {return;}
+
 	int32 ghoul_collision_x_offset = 0; 
 	
 	if(rigidbody.normalized_dir.x() == 0)
