@@ -27,7 +27,7 @@
 #include "room_bounds.h"
 #include "utility.h"
 #include "physics.h"
-#include "collider.h"
+#include "collider.h"  
 
 // Flash Palette
 #include "bn_sprite_palette_items_sprite_flash_palette.h"
@@ -99,9 +99,9 @@
 #define WALL_SPLAT_SCREENSHAKE_FRAMES 8
 #define WALL_SPLAT_SCREENSHAKE_SEVERITY STRONG_SHAKE
 
-#define OBJECT_KNOCKBACK_X_FORCE      6
-#define OBJECT_KNOCKBACK_Y_FORCE      6
-#define OBJECT_KNOCKBACK_DECAY        0.04
+#define OBJECT_KNOCKBACK_X_FORCE      8
+#define OBJECT_KNOCKBACK_Y_FORCE      0
+#define OBJECT_KNOCKBACK_DECAY        0.06
 
 #define GAME_OBJECT_GRAVITY       2
 #define GAME_OBJECT_GRAVITY_DECAY 1
