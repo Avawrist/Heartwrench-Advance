@@ -478,7 +478,8 @@ void GameObject::updateHitstunState()
     {setState(IDLE);}
 
     // Add Gravity
-    rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);
+    if(!grounded_detected)
+    {rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
 }
 
 void GameObject::udpateDeathState()
