@@ -53,6 +53,9 @@
 #include "bn_sprite_items_thorn_column.h"
 #include "bn_sprite_items_thorn_bar.h"
 
+// Prop Assets
+#include "bn_sprite_items_candelabra.h"
+
 // Special Object Assets
 #include "bn_sprite_items_hitbox.h"
 #include "bn_sprite_items_player.h"
@@ -128,6 +131,9 @@ enum ObjectType
 	THORN_COLUMN,
 	THORN_BAR,
 	GROUND_GHOUL,
+
+	// Props
+	CANDELABRA,
 
 	// Special Objects
 	HITBOX_ATTACK_GROUND_1,

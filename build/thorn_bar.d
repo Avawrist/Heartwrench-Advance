@@ -93,6 +93,7 @@ thorn_bar.o: G:/game/src/thorn_bar.cpp G:/game/include/thorn_bar.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h \
  G:/game/build/bn_sprite_items_thorn_column.h \
  G:/game/build/bn_sprite_items_thorn_bar.h \
+ G:/game/build/bn_sprite_items_candelabra.h \
  G:/game/build/bn_sprite_items_hitbox.h \
  G:/game/build/bn_sprite_items_player.h \
  G:/game/build/bn_sprite_items_phase_marker.h G:/game/include/hitbox.h
@@ -195,6 +196,7 @@ G:/game/build/bn_sprite_items_falling_platform_thin.h:
 G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/build/bn_sprite_items_thorn_column.h:
 G:/game/build/bn_sprite_items_thorn_bar.h:
+G:/game/build/bn_sprite_items_candelabra.h:
 G:/game/build/bn_sprite_items_hitbox.h:
 G:/game/build/bn_sprite_items_player.h:
 G:/game/build/bn_sprite_items_phase_marker.h:

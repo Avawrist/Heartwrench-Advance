@@ -170,6 +170,14 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             temp_object_ptr = new ThornBar();
         break;
 
+        ///////////
+        // Props //
+        ///////////
+
+        case CANDELABRA:
+            temp_object_ptr = new Candelabra();
+        break;
+
         /////////////////////
 	    // Special Objects //
 	    /////////////////////
