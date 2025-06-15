@@ -8,12 +8,12 @@
 //======================================================================
 //
 //	test_object_bg_bn_gfx, 10240x5120@8, 
-//	+ palette 64 entries, not compressed
+//	+ palette 16 entries, not compressed
 //	+ 11 tiles (t reduced) not compressed
 //	+ regular map (flat), not compressed, 1280x640 
-//	Total size: 128 + 704 + 1638400 = 1639232
+//	Total size: 32 + 704 + 1638400 = 1639136
 //
-//	Time-stamp: 2025-06-14, 14:58:01
+//	Time-stamp: 2025-06-14, 19:49:21
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -28,8 +28,8 @@ extern const bn::tile test_object_bg_bn_gfxTiles[22];
 #define test_object_bg_bn_gfxMapLen 1638400
 extern const bn::regular_bg_map_cell test_object_bg_bn_gfxMap[819200];
 
-#define test_object_bg_bn_gfxPalLen 128
-extern const bn::color test_object_bg_bn_gfxPal[64];
+#define test_object_bg_bn_gfxPalLen 32
+extern const bn::color test_object_bg_bn_gfxPal[16];
 
 #endif // GRIT_TEST_OBJECT_BG_BN_GFX_H
 
@@ -39,7 +39,7 @@ namespace bn::regular_bg_items
 {
     constexpr inline regular_bg_item test_object_bg(
             regular_bg_tiles_item(span<const tile>(test_object_bg_bn_gfxTiles, 22), bpp_mode::BPP_8, compression_type::NONE), 
-            bg_palette_item(span<const color>(test_object_bg_bn_gfxPal, 64), bpp_mode::BPP_8, compression_type::NONE),
+            bg_palette_item(span<const color>(test_object_bg_bn_gfxPal, 16), bpp_mode::BPP_8, compression_type::NONE),
             regular_bg_map_item(test_object_bg_bn_gfxMap[0], size(1280, 640), compression_type::NONE, 1, true));
 }
 

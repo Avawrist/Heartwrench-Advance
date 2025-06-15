@@ -47,10 +47,6 @@ Discarded input sections
  .data          0x00000000        0x0 block_bn_gfx.o
  .bss           0x00000000        0x0 block_bn_gfx.o
  .rodata        0x00000000       0x40 block_bn_gfx.o
- .text          0x00000000        0x0 ceiling_ghoul_bn_gfx.o
- .data          0x00000000        0x0 ceiling_ghoul_bn_gfx.o
- .bss           0x00000000        0x0 ceiling_ghoul_bn_gfx.o
- .rodata        0x00000000     0x2620 ceiling_ghoul_bn_gfx.o
  .text          0x00000000        0x0 devil_platform_bn_gfx.o
  .data          0x00000000        0x0 devil_platform_bn_gfx.o
  .bss           0x00000000        0x0 devil_platform_bn_gfx.o
@@ -131,14 +127,6 @@ Discarded input sections
  .text          0x00000000        0x0 tile_passage_bn_gfx.o
  .data          0x00000000        0x0 tile_passage_bn_gfx.o
  .bss           0x00000000        0x0 tile_passage_bn_gfx.o
- .text          0x00000000        0x0 wall_left_ghoul_bn_gfx.o
- .data          0x00000000        0x0 wall_left_ghoul_bn_gfx.o
- .bss           0x00000000        0x0 wall_left_ghoul_bn_gfx.o
- .rodata        0x00000000     0x2620 wall_left_ghoul_bn_gfx.o
- .text          0x00000000        0x0 wall_right_ghoul_bn_gfx.o
- .data          0x00000000        0x0 wall_right_ghoul_bn_gfx.o
- .bss           0x00000000        0x0 wall_right_ghoul_bn_gfx.o
- .rodata        0x00000000     0x2620 wall_right_ghoul_bn_gfx.o
  .text          0x00000000        0x0 wall_splat_effect_bn_gfx.o
  .data          0x00000000        0x0 wall_splat_effect_bn_gfx.o
  .bss           0x00000000        0x0 wall_splat_effect_bn_gfx.o
@@ -8692,7 +8680,7 @@ Linker script and memory map
  .fini          0x08026514        0x8 C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb/crtn.o
                 0x0802651c                        . = ALIGN (0x4)
 
-.rodata         0x0802651c   0x51758c
+.rodata         0x0802651c   0x51752c
  *(.rodata)
  .rodata        0x0802651c     0x5020 air_jump_effect_bn_gfx.o
                 0x0802651c                air_jump_effect_bn_gfxTiles
@@ -8744,601 +8732,601 @@ Linker script and memory map
                 0x0806f01c                test_level_bn_gfxTiles
                 0x08070c5c                test_level_bn_gfxMap
                 0x08200c5c                test_level_bn_gfxPal
- .rodata        0x08200c7c   0x190340 test_object_bg_bn_gfx.o
+ .rodata        0x08200c7c   0x1902e0 test_object_bg_bn_gfx.o
                 0x08200c7c                test_object_bg_bn_gfxTiles
                 0x08200f3c                test_object_bg_bn_gfxMap
                 0x08390f3c                test_object_bg_bn_gfxPal
- .rodata        0x08390fbc   0x191620 test_painted_bg_bn_gfx.o
-                0x08390fbc                test_painted_bg_bn_gfxTiles
-                0x083925bc                test_painted_bg_bn_gfxMap
-                0x085225bc                test_painted_bg_bn_gfxPal
- .rodata        0x085225dc     0x2820 thorn_bar_bn_gfx.o
-                0x085225dc                thorn_bar_bn_gfxTiles
-                0x08524ddc                thorn_bar_bn_gfxPal
- .rodata        0x08524dfc     0x2820 thorn_column_bn_gfx.o
-                0x08524dfc                thorn_column_bn_gfxTiles
-                0x085275fc                thorn_column_bn_gfxPal
- .rodata        0x0852761c      0x420 tile_passage_bn_gfx.o
-                0x0852761c                tile_passage_bn_gfxTiles
-                0x08527a1c                tile_passage_bn_gfxPal
- .rodata        0x08527a3c     0xf040 wall_splat_effect_bn_gfx.o
-                0x08527a3c                wall_splat_effect_bn_gfxTiles
-                0x08536a3c                wall_splat_effect_bn_gfxPal
- .rodata        0x08536a7c       0x10 bn_sprite_tiles_manager.o
- .rodata        0x08536a8c       0x28 bn_sprites_manager.o
- .rodata        0x08536ab4       0x90 gbt_player.o
- .rodata        0x08536b44      0xef8 verdana9.o
-                0x08536b44                verdana9Font
-                0x08536b5c                verdana9Glyphs
-                0x0853795c                verdana9Widths
+ .rodata        0x08390f5c   0x191620 test_painted_bg_bn_gfx.o
+                0x08390f5c                test_painted_bg_bn_gfxTiles
+                0x0839255c                test_painted_bg_bn_gfxMap
+                0x0852255c                test_painted_bg_bn_gfxPal
+ .rodata        0x0852257c     0x2820 thorn_bar_bn_gfx.o
+                0x0852257c                thorn_bar_bn_gfxTiles
+                0x08524d7c                thorn_bar_bn_gfxPal
+ .rodata        0x08524d9c     0x2820 thorn_column_bn_gfx.o
+                0x08524d9c                thorn_column_bn_gfxTiles
+                0x0852759c                thorn_column_bn_gfxPal
+ .rodata        0x085275bc      0x420 tile_passage_bn_gfx.o
+                0x085275bc                tile_passage_bn_gfxTiles
+                0x085279bc                tile_passage_bn_gfxPal
+ .rodata        0x085279dc     0xf040 wall_splat_effect_bn_gfx.o
+                0x085279dc                wall_splat_effect_bn_gfxTiles
+                0x085369dc                wall_splat_effect_bn_gfxPal
+ .rodata        0x08536a1c       0x10 bn_sprite_tiles_manager.o
+ .rodata        0x08536a2c       0x28 bn_sprites_manager.o
+ .rodata        0x08536a54       0x90 gbt_player.o
+ .rodata        0x08536ae4      0xef8 verdana9.o
+                0x08536ae4                verdana9Font
+                0x08536afc                verdana9Glyphs
+                0x085378fc                verdana9Widths
  *all.rodata*(*)
  *(.roda)
  *(.rodata.*)
  .rodata._bn_audio_soundbank_bin
-                0x08537a3c        0xc _bn_audio_soundbank.bin.o
-                0x08537a3c                _bn_audio_soundbank_bin
-                0x08537a48                _bn_audio_soundbank_bin_end
+                0x085379dc        0xc _bn_audio_soundbank.bin.o
+                0x085379dc                _bn_audio_soundbank_bin
+                0x085379e8                _bn_audio_soundbank_bin_end
  .rodata._ZN5Enemy17getStateFromTilesERKN2bn14regular_bg_ptrERKNS0_4spanIKtEERKNS0_15regular_bg_itemE
-                0x08537a48       0x5c enemy.o
+                0x085379e8       0x5c enemy.o
  .rodata._ZTV5Enemy
-                0x08537aa4       0xdc enemy.o
-                0x08537aa4                vtable for Enemy
+                0x08537a44       0xdc enemy.o
+                0x08537a44                vtable for Enemy
  .rodata._ZN19FallingPlatformThinC2Ev.str1.4
-                0x08537b80     0x25fd falling_platform_thin.o
+                0x08537b20     0x25fd falling_platform_thin.o
                                  0x83 (size before relaxing)
- *fill*         0x0853a17d        0x3 ff
+ *fill*         0x0853a11d        0x3 ff
  .rodata._ZTV19FallingPlatformThin
-                0x0853a180       0xdc falling_platform_thin.o
-                0x0853a180                vtable for FallingPlatformThin
+                0x0853a120       0xdc falling_platform_thin.o
+                0x0853a120                vtable for FallingPlatformThin
  .rodata._ZN2bn12sprite_items21falling_platform_thinE
-                0x0853a25c       0x1c falling_platform_thin.o
-                0x0853a25c                bn::sprite_items::falling_platform_thin
+                0x0853a1fc       0x1c falling_platform_thin.o
+                0x0853a1fc                bn::sprite_items::falling_platform_thin
  .rodata._ZN19FallingPlatformWideC2Ev.str1.4
-                0x0853a278       0x83 falling_platform_wide.o
+                0x0853a218       0x83 falling_platform_wide.o
  .rodata._ZTV19FallingPlatformWide
-                0x0853a278       0xdc falling_platform_wide.o
-                0x0853a278                vtable for FallingPlatformWide
+                0x0853a218       0xdc falling_platform_wide.o
+                0x0853a218                vtable for FallingPlatformWide
  .rodata._ZN2bn12sprite_items21falling_platform_wideE
-                0x0853a354       0x1c falling_platform_wide.o
-                0x0853a354                bn::sprite_items::falling_platform_wide
+                0x0853a2f4       0x1c falling_platform_wide.o
+                0x0853a2f4                bn::sprite_items::falling_platform_wide
  .rodata._ZN10GameObject20resolveTileCollisionERKN2bn14regular_bg_ptrERKNS0_4spanIKtEERKNS0_15regular_bg_itemE
-                0x0853a370       0x5c game_object.o
+                0x0853a310       0x5c game_object.o
  .rodata._ZN10GameObject22resolveObjectCollisionERN2bn6vectorIPS_Li10EEE
-                0x0853a3cc       0x3c game_object.o
+                0x0853a36c       0x3c game_object.o
  .rodata._ZNK10GameObject3posEv.str1.4
-                0x0853a408       0x36 game_object.o
+                0x0853a3a8       0x36 game_object.o
  .rodata._ZN10GameObject14updateHitFlashEv.str1.4
-                0x0853a408        0x6 game_object.o
+                0x0853a3a8        0x6 game_object.o
  .rodata._ZN10GameObject16applySplatEffectEii.str1.4
-                0x0853a408       0x43 game_object.o
+                0x0853a3a8       0x43 game_object.o
  .rodata._ZTV10GameObject
-                0x0853a408       0xdc game_object.o
-                0x0853a408                vtable for GameObject
+                0x0853a3a8       0xdc game_object.o
+                0x0853a3a8                vtable for GameObject
  .rodata._ZN2bn12sprite_items17wall_splat_effectE
-                0x0853a4e4       0x1c game_object.o
-                0x0853a4e4                bn::sprite_items::wall_splat_effect
+                0x0853a484       0x1c game_object.o
+                0x0853a484                bn::sprite_items::wall_splat_effect
  .rodata._ZN2bn12sprite_items10hit_effectE
-                0x0853a500       0x1c game_object.o
-                0x0853a500                bn::sprite_items::hit_effect
+                0x0853a4a0       0x1c game_object.o
+                0x0853a4a0                bn::sprite_items::hit_effect
  .rodata._ZN2bn20sprite_palette_items20sprite_flash_paletteE
-                0x0853a51c        0xc game_object.o
-                0x0853a51c                bn::sprite_palette_items::sprite_flash_palette
+                0x0853a4bc        0xc game_object.o
+                0x0853a4bc                bn::sprite_palette_items::sprite_flash_palette
  .rodata._ZN11GroundGhoul18updateStateMachineERN2bn6vectorIP10GameObjectLi10EEERKNS0_14regular_bg_ptrERKNS0_4spanIKtEERKNS0_15regular_bg_itemERKNS0_10camera_ptrE.str1.4
-                0x0853a528       0x76 ground_ghoul.o
+                0x0853a4c8       0x76 ground_ghoul.o
  .rodata._ZN11GroundGhoulC2Ev.str1.4
-                0x0853a528       0x3b ground_ghoul.o
+                0x0853a4c8       0x3b ground_ghoul.o
  .rodata._ZTV11GroundGhoul
-                0x0853a528       0xdc ground_ghoul.o
-                0x0853a528                vtable for GroundGhoul
+                0x0853a4c8       0xdc ground_ghoul.o
+                0x0853a4c8                vtable for GroundGhoul
  .rodata._ZN2bn12sprite_items12ground_ghoulE
-                0x0853a604       0x1c ground_ghoul.o
-                0x0853a604                bn::sprite_items::ground_ghoul
+                0x0853a5a4       0x1c ground_ghoul.o
+                0x0853a5a4                bn::sprite_items::ground_ghoul
  .rodata._ZN6HitboxC2EN2bn5pointEiiiiiiNS0_7fixed_tILi12EEEiii10XDirection10YDirection10ObjectType19ScreenShakeSeverity.str1.4
-                0x0853a620       0x84 hitbox.o
+                0x0853a5c0       0x84 hitbox.o
  .rodata._ZTV6Hitbox
-                0x0853a620       0xdc hitbox.o
-                0x0853a620                vtable for Hitbox
+                0x0853a5c0       0xdc hitbox.o
+                0x0853a5c0                vtable for Hitbox
  .rodata._ZN2bn12sprite_items6hitboxE
-                0x0853a6fc       0x1c hitbox.o
-                0x0853a6fc                bn::sprite_items::hitbox
+                0x0853a69c       0x1c hitbox.o
+                0x0853a69c                bn::sprite_items::hitbox
  .rodata._ZN5Level5clearEv.str1.4
-                0x0853a718       0x33 level.o
+                0x0853a6b8       0x33 level.o
  .rodata._ZN5Level13updateIndexesEv.str1.4
-                0x0853a718       0x40 level.o
+                0x0853a6b8       0x40 level.o
  .rodata._ZN2bn8optionalINS_4spanIKtEEE5valueEv.part.0.str1.4
-                0x0853a718       0x32 level.o
+                0x0853a6b8       0x32 level.o
  .rodata._ZN5Level13updateBGFlashEv.str1.4
-                0x0853a718        0xb level.o
+                0x0853a6b8        0xb level.o
  .rodata._ZN5Level4loadE9LevelName.str1.4
-                0x0853a718       0x46 level.o
+                0x0853a6b8       0x46 level.o
  .rodata._ZN2bn16regular_bg_items14test_object_bgE
-                0x0853a718       0x28 level.o
-                0x0853a718                bn::regular_bg_items::test_object_bg
+                0x0853a6b8       0x28 level.o
+                0x0853a6b8                bn::regular_bg_items::test_object_bg
  .rodata._ZN2bn16regular_bg_items15test_painted_bgE
-                0x0853a740       0x28 level.o
-                0x0853a740                bn::regular_bg_items::test_painted_bg
+                0x0853a6e0       0x28 level.o
+                0x0853a6e0                bn::regular_bg_items::test_painted_bg
  .rodata._ZN2bn16regular_bg_items10test_levelE
-                0x0853a768       0x28 level.o
-                0x0853a768                bn::regular_bg_items::test_level
+                0x0853a708       0x28 level.o
+                0x0853a708                bn::regular_bg_items::test_level
  .rodata._ZN2bn16bg_palette_items16bg_flash_paletteE
-                0x0853a790        0xc level.o
-                0x0853a790                bn::bg_palette_items::bg_flash_palette
+                0x0853a730        0xc level.o
+                0x0853a730                bn::bg_palette_items::bg_flash_palette
  .rodata._ZN12PhaseOrbLeftC2Ev.str1.4
-                0x0853a79c       0x83 phase_orb.o
+                0x0853a73c       0x83 phase_orb.o
  .rodata._ZTV8PhaseOrb
-                0x0853a79c       0xe0 phase_orb.o
-                0x0853a79c                vtable for PhaseOrb
+                0x0853a73c       0xe0 phase_orb.o
+                0x0853a73c                vtable for PhaseOrb
  .rodata._ZTV10PhaseOrbUp
-                0x0853a87c       0xe0 phase_orb.o
-                0x0853a87c                vtable for PhaseOrbUp
+                0x0853a81c       0xe0 phase_orb.o
+                0x0853a81c                vtable for PhaseOrbUp
  .rodata._ZTV12PhaseOrbDown
-                0x0853a95c       0xe0 phase_orb.o
-                0x0853a95c                vtable for PhaseOrbDown
+                0x0853a8fc       0xe0 phase_orb.o
+                0x0853a8fc                vtable for PhaseOrbDown
  .rodata._ZTV12PhaseOrbLeft
-                0x0853aa3c       0xe0 phase_orb.o
-                0x0853aa3c                vtable for PhaseOrbLeft
+                0x0853a9dc       0xe0 phase_orb.o
+                0x0853a9dc                vtable for PhaseOrbLeft
  .rodata._ZTV13PhaseOrbRight
-                0x0853ab1c       0xe0 phase_orb.o
-                0x0853ab1c                vtable for PhaseOrbRight
+                0x0853aabc       0xe0 phase_orb.o
+                0x0853aabc                vtable for PhaseOrbRight
  .rodata._ZN2bn12sprite_items15phase_orb_rightE
-                0x0853abfc       0x1c phase_orb.o
-                0x0853abfc                bn::sprite_items::phase_orb_right
+                0x0853ab9c       0x1c phase_orb.o
+                0x0853ab9c                bn::sprite_items::phase_orb_right
  .rodata._ZN2bn12sprite_items14phase_orb_leftE
-                0x0853ac18       0x1c phase_orb.o
-                0x0853ac18                bn::sprite_items::phase_orb_left
+                0x0853abb8       0x1c phase_orb.o
+                0x0853abb8                bn::sprite_items::phase_orb_left
  .rodata._ZN2bn12sprite_items14phase_orb_downE
-                0x0853ac34       0x1c phase_orb.o
-                0x0853ac34                bn::sprite_items::phase_orb_down
+                0x0853abd4       0x1c phase_orb.o
+                0x0853abd4                bn::sprite_items::phase_orb_down
  .rodata._ZN2bn12sprite_items12phase_orb_upE
-                0x0853ac50       0x1c phase_orb.o
-                0x0853ac50                bn::sprite_items::phase_orb_up
+                0x0853abf0       0x1c phase_orb.o
+                0x0853abf0                bn::sprite_items::phase_orb_up
  .rodata._ZN9RigidBody10applyDecayEv.str1.4
-                0x0853ac6c       0x61 physics.o
+                0x0853ac0c       0x61 physics.o
  .rodata._ZN6Player20resolveTileCollisionERKN2bn14regular_bg_ptrERKNS0_4spanIKtEERKNS0_15regular_bg_itemE
-                0x0853ac6c       0x30 player.o
+                0x0853ac0c       0x30 player.o
  .rodata._ZN2bn8optionalINS_10sprite_ptrEEptEv.part.0.str1.4
-                0x0853ac9c       0x36 player.o
+                0x0853ac3c       0x36 player.o
  .rodata._ZN6Player16createLandEffectEv.str1.4
-                0x0853ac9c       0x4b player.o
+                0x0853ac3c       0x4b player.o
  .rodata._ZN6Player17getStateFromTilesERKN2bn14regular_bg_ptrERKNS0_4spanIKtEERKNS0_15regular_bg_itemE
-                0x0853ac9c       0x5c player.o
+                0x0853ac3c       0x5c player.o
  .rodata._ZN6Player19getStateFromObjectsERN2bn6vectorIP10GameObjectLi10EEE.str1.4
-                0x0853acf8       0x30 player.o
+                0x0853ac98       0x30 player.o
  .rodata._ZN6Player19getStateFromObjectsERN2bn6vectorIP10GameObjectLi10EEE
-                0x0853acf8       0x20 player.o
+                0x0853ac98       0x20 player.o
  .rodata._ZN6Player8setStateE11ObjectState
-                0x0853ad18       0x2c player.o
+                0x0853acb8       0x2c player.o
  .rodata._ZN6Player18updateStateMachineERN2bn6vectorIP10GameObjectLi10EEERKNS0_14regular_bg_ptrERKNS0_4spanIKtEERKNS0_15regular_bg_itemERKNS0_10camera_ptrE
-                0x0853ad44       0x58 player.o
+                0x0853ace4       0x58 player.o
  .rodata._ZTV6Player
-                0x0853ad9c       0xdc player.o
-                0x0853ad9c                vtable for Player
+                0x0853ad3c       0xdc player.o
+                0x0853ad3c                vtable for Player
  .rodata._ZN2bn12sprite_items12phase_markerE
-                0x0853ae78       0x1c player.o
-                0x0853ae78                bn::sprite_items::phase_marker
+                0x0853ae18       0x1c player.o
+                0x0853ae18                bn::sprite_items::phase_marker
  .rodata._ZN2bn12sprite_items6playerE
-                0x0853ae94       0x1c player.o
-                0x0853ae94                bn::sprite_items::player
+                0x0853ae34       0x1c player.o
+                0x0853ae34                bn::sprite_items::player
  .rodata._ZN2bn12sprite_items11land_effectE
-                0x0853aeb0       0x1c player.o
-                0x0853aeb0                bn::sprite_items::land_effect
+                0x0853ae50       0x1c player.o
+                0x0853ae50                bn::sprite_items::land_effect
  .rodata._ZN2bn12sprite_items15air_jump_effectE
-                0x0853aecc       0x1c player.o
-                0x0853aecc                bn::sprite_items::air_jump_effect
+                0x0853ae6c       0x1c player.o
+                0x0853ae6c                bn::sprite_items::air_jump_effect
  .rodata._ZN2bn12sprite_items11jump_effectE
-                0x0853aee8       0x1c player.o
-                0x0853aee8                bn::sprite_items::jump_effect
+                0x0853ae88       0x1c player.o
+                0x0853ae88                bn::sprite_items::jump_effect
  .rodata._ZN4Room5clearEv.str1.4
-                0x0853af04       0x40 room.o
+                0x0853aea4       0x40 room.o
  .rodata._ZN4RoomC2ERKS_.str1.4
-                0x0853af04       0x1f room.o
+                0x0853aea4       0x1f room.o
  .rodata._ZN4Room17addUnloadedObjectERK14UnloadedObjectb.str1.4
-                0x0853af04       0x18 room.o
+                0x0853aea4       0x18 room.o
  .rodata._ZN4Room4loadE8RoomNameRKN2bn10camera_ptrERKNS1_14regular_bg_ptrERKNS1_15regular_bg_itemERKNS1_4spanIKtEE.part.0.str1.4
-                0x0853af04       0x2b room.o
+                0x0853aea4       0x2b room.o
  .rodata._ZN4Room9addObjectERK14UnloadedObjectRKN2bn10camera_ptrE.str1.4
-                0x0853af04       0x72 room.o
+                0x0853aea4       0x72 room.o
  .rodata._ZN4Room9addObjectERK14UnloadedObjectRKN2bn10camera_ptrE
-                0x0853af04       0x3c room.o
+                0x0853aea4       0x3c room.o
  .rodata._ZN8ThornBarC2Ev.str1.4
-                0x0853af40       0x84 thorn_bar.o
+                0x0853aee0       0x84 thorn_bar.o
  .rodata._ZTV8ThornBar
-                0x0853af40       0xdc thorn_bar.o
-                0x0853af40                vtable for ThornBar
+                0x0853aee0       0xdc thorn_bar.o
+                0x0853aee0                vtable for ThornBar
  .rodata._ZN2bn12sprite_items9thorn_barE
-                0x0853b01c       0x1c thorn_bar.o
-                0x0853b01c                bn::sprite_items::thorn_bar
+                0x0853afbc       0x1c thorn_bar.o
+                0x0853afbc                bn::sprite_items::thorn_bar
  .rodata._ZN11ThornColumnC2Ev.str1.4
-                0x0853b038       0x84 thorn_column.o
+                0x0853afd8       0x84 thorn_column.o
  .rodata._ZTV11ThornColumn
-                0x0853b038       0xdc thorn_column.o
-                0x0853b038                vtable for ThornColumn
+                0x0853afd8       0xdc thorn_column.o
+                0x0853afd8                vtable for ThornColumn
  .rodata._ZN2bn12sprite_items12thorn_columnE
-                0x0853b114       0x1c thorn_column.o
-                0x0853b114                bn::sprite_items::thorn_column
+                0x0853b0b4       0x1c thorn_column.o
+                0x0853b0b4                bn::sprite_items::thorn_column
  .rodata._ZN11TilePassageC2Ev.str1.4
-                0x0853b130       0x83 tile_passage.o
+                0x0853b0d0       0x83 tile_passage.o
  .rodata._ZN11TilePassage8setStateE11ObjectState.str1.4
-                0x0853b130       0x33 tile_passage.o
+                0x0853b0d0       0x33 tile_passage.o
  .rodata._ZTV11TilePassage
-                0x0853b130       0xdc tile_passage.o
-                0x0853b130                vtable for TilePassage
+                0x0853b0d0       0xdc tile_passage.o
+                0x0853b0d0                vtable for TilePassage
  .rodata._ZN2bn12sprite_items12tile_passageE
-                0x0853b20c       0x1c tile_passage.o
-                0x0853b20c                bn::sprite_items::tile_passage
+                0x0853b1ac       0x1c tile_passage.o
+                0x0853b1ac                bn::sprite_items::tile_passage
  .rodata._Z16getTileAtBGIndexjjN2bn14regular_bg_ptrENS_4spanIKtEENS_15regular_bg_itemE.str1.4
-                0x0853b228      0x100 utility.o
+                0x0853b1c8      0x100 utility.o
  .rodata._ZN2bn13audio_manager10play_musicENS_10music_itemENS_7fixed_tILi12EEEb.str1.4
-                0x0853b228       0x49 bn_audio_manager.o
+                0x0853b1c8       0x49 bn_audio_manager.o
  .rodata._ZN2bn9dmg_music8positionEv.str1.4
-                0x0853b228       0x31 bn_audio_manager.o
+                0x0853b1c8       0x31 bn_audio_manager.o
  .rodata._ZN2bn9dmg_music12set_positionEii.str1.4
-                0x0853b228       0x76 bn_audio_manager.o
+                0x0853b1c8       0x76 bn_audio_manager.o
  .rodata._ZN2bn13audio_manager16execute_commandsEv.str1.4
-                0x0853b228       0x5e bn_audio_manager.o
+                0x0853b1c8       0x5e bn_audio_manager.o
  .rodata._ZN2bn13audio_manager16execute_commandsEv
-                0x0853b228       0x64 bn_audio_manager.o
+                0x0853b1c8       0x64 bn_audio_manager.o
  .rodata._ZN2bn18best_fit_allocatorD2Ev.str1.4
-                0x0853b28c       0x4b bn_best_fit_allocator.o
+                0x0853b22c       0x4b bn_best_fit_allocator.o
  .rodata._ZN2bn18best_fit_allocator5allocEi.str1.4
-                0x0853b28c       0x24 bn_best_fit_allocator.o
+                0x0853b22c       0x24 bn_best_fit_allocator.o
  .rodata._ZN2bn18best_fit_allocator5resetEPvi.str1.4
-                0x0853b28c       0x81 bn_best_fit_allocator.o
+                0x0853b22c       0x81 bn_best_fit_allocator.o
  .rodata._ZN2bn17bg_blocks_manager10log_statusEv.str1.4
-                0x0853b28c      0x125 bn_bg_blocks_manager.o
+                0x0853b22c      0x125 bn_bg_blocks_manager.o
  .rodata._ZNK2bn19regular_bg_map_item10decompressENS_4spanItEE.str1.4
-                0x0853b28c      0x107 bn_bg_blocks_manager.o
+                0x0853b22c      0x107 bn_bg_blocks_manager.o
  .rodata._ZN2bn17bg_blocks_manager12_GLOBAL__N_116_find_tiles_implEPKtNS_16compression_typeEib.str1.4
-                0x0853b28c       0x5a bn_bg_blocks_manager.o
+                0x0853b22c       0x5a bn_bg_blocks_manager.o
  .rodata._ZN2bn17bg_blocks_manager17regular_map_tilesEi.str1.4
-                0x0853b28c       0x32 bn_bg_blocks_manager.o
+                0x0853b22c       0x32 bn_bg_blocks_manager.o
  .rodata._ZN2bn17bg_blocks_manager14palette_offsetEi.str1.4
-                0x0853b28c        0xb bn_bg_blocks_manager.o
+                0x0853b22c        0xb bn_bg_blocks_manager.o
  .rodata._ZN2bn17bg_blocks_manager21set_regular_map_tilesEiONS_20regular_bg_tiles_ptrE.str1.4
-                0x0853b28c       0x82 bn_bg_blocks_manager.o
+                0x0853b22c       0x82 bn_bg_blocks_manager.o
  .rodata._ZN2bn17bg_blocks_manager23set_regular_map_paletteEiONS_14bg_palette_ptrE.str1.4
-                0x0853b28c       0x8e bn_bg_blocks_manager.o
+                0x0853b22c       0x8e bn_bg_blocks_manager.o
  .rodata._ZN2bn17bg_blocks_manager12_GLOBAL__N_112_create_itemEiibONS1_11create_dataE.str1.4
-                0x0853b28c       0x31 bn_bg_blocks_manager.o
+                0x0853b22c       0x31 bn_bg_blocks_manager.o
  .rodata._ZN2bn17bg_blocks_manager20create_regular_tilesERKNS_21regular_bg_tiles_itemEb.str1.4
-                0x0853b28c       0x90 bn_bg_blocks_manager.o
+                0x0853b22c       0x90 bn_bg_blocks_manager.o
  .rodata._ZN2bn17affine_bg_map_ptr4findERKNS_18affine_bg_map_itemERKNS_19affine_bg_tiles_ptrERKNS_14bg_palette_ptrEi.str1.4
-                0x0853b28c       0x98 bn_bg_blocks_manager.o
+                0x0853b22c       0x98 bn_bg_blocks_manager.o
  .rodata._ZN2bn17bg_blocks_manager17create_affine_mapERKNS_18affine_bg_map_itemEPKhONS_19affine_bg_tiles_ptrEONS_14bg_palette_ptrEb.str1.4
-                0x0853b28c      0x12b bn_bg_blocks_manager.o
+                0x0853b22c      0x12b bn_bg_blocks_manager.o
  .rodata._ZN2bn17bg_blocks_manager22create_new_regular_mapERKNS_19regular_bg_map_itemEPKtONS_20regular_bg_tiles_ptrEONS_14bg_palette_ptrEb.str1.4
-                0x0853b28c       0x8a bn_bg_blocks_manager.o
+                0x0853b22c       0x8a bn_bg_blocks_manager.o
  .rodata._ZN2bn18regular_bg_map_ptr10create_newERKNS_19regular_bg_map_itemENS_20regular_bg_tiles_ptrENS_14bg_palette_ptrEi.str1.4
-                0x0853b28c       0x19 bn_bg_blocks_manager.o
+                0x0853b22c       0x19 bn_bg_blocks_manager.o
  .rodata._ZN2bn17bg_blocks_manager33set_regular_map_tiles_and_paletteEiONS_20regular_bg_tiles_ptrEONS_14bg_palette_ptrE.str1.4
-                0x0853b28c       0x99 bn_bg_blocks_manager.o
+                0x0853b22c       0x99 bn_bg_blocks_manager.o
  .rodata._ZN2bn17bg_blocks_manager12_GLOBAL__N_122_find_regular_map_implERKNS_19regular_bg_map_itemEPKtRKNS_20regular_bg_tiles_ptrERKNS_14bg_palette_ptrE.str1.4
-                0x0853b28c       0x17 bn_bg_blocks_manager.o
+                0x0853b22c       0x17 bn_bg_blocks_manager.o
  .rodata._ZN2bn17bg_blocks_manager18create_regular_mapERKNS_19regular_bg_map_itemEPKtONS_20regular_bg_tiles_ptrEONS_14bg_palette_ptrEb.str1.4
-                0x0853b28c       0x32 bn_bg_blocks_manager.o
+                0x0853b22c       0x32 bn_bg_blocks_manager.o
  .rodata.str1.4
-                0x0853b28c       0x21 bn_bg_blocks_manager.o
+                0x0853b22c       0x21 bn_bg_blocks_manager.o
  .rodata._ZN2bn17bg_blocks_manager12_GLOBAL__N_1L19_status_log_messageE
-                0x0853b28c        0x8 bn_bg_blocks_manager.o
+                0x0853b22c        0x8 bn_bg_blocks_manager.o
  .rodata._ZN2bn17affine_bg_builder11set_z_orderEi.str1.4
-                0x0853b294       0x7a bn_bgs_manager.o
+                0x0853b234       0x7a bn_bgs_manager.o
  .rodata._ZN2bn11bgs_manager10dimensionsEPv.str1.4
-                0x0853b294       0x4d bn_bgs_manager.o
+                0x0853b234       0x4d bn_bgs_manager.o
  .rodata._ZN2bn17affine_bg_builderC2ERKNS_14affine_bg_itemEi.str1.4
-                0x0853b294       0x68 bn_bgs_manager.o
+                0x0853b234       0x68 bn_bgs_manager.o
  .rodata._ZN2bn11bgs_manager15rebuild_handlesEv.part.0.str1.4
-                0x0853b294       0x67 bn_bgs_manager.o
+                0x0853b234       0x67 bn_bgs_manager.o
  .rodata._ZN2bn18regular_bg_builder11release_mapEv.str1.4
-                0x0853b294       0x32 bn_bgs_manager.o
+                0x0853b234       0x32 bn_bgs_manager.o
  .rodata._ZNK2bn18regular_bg_builder11_dimensionsEv.str1.4
-                0x0853b294        0xb bn_bgs_manager.o
+                0x0853b234        0xb bn_bgs_manager.o
  .rodata._ZN2bn11bgs_manager37fill_hblank_effect_regular_attributesEPvPKNS_21regular_bg_attributesEPt.str1.4
-                0x0853b294       0x41 bn_bgs_manager.o
+                0x0853b234       0x41 bn_bgs_manager.o
  .rodata._ZN2bn11bgs_manager15set_regular_mapEPvRKNS_18regular_bg_map_ptrE.str1.4
-                0x0853b294       0x3e bn_bgs_manager.o
+                0x0853b234       0x3e bn_bgs_manager.o
  .rodata._ZN2bn11bgs_manager36fill_hblank_effect_affine_attributesEPvPKNS_20affine_bg_attributesEPt.str1.4
-                0x0853b294       0x25 bn_bgs_manager.o
+                0x0853b234       0x25 bn_bgs_manager.o
  .rodata._ZN2bn11bgs_manager12_GLOBAL__N_112_insert_itemERNS1_9item_typeE.str1.4
-                0x0853b294       0x6e bn_bgs_manager.o
+                0x0853b234       0x6e bn_bgs_manager.o
  .rodata._ZN2bn11bgs_manager15create_optionalEONS_18regular_bg_builderE.str1.4
-                0x0853b294       0x34 bn_bgs_manager.o
+                0x0853b234       0x34 bn_bgs_manager.o
  .rodata._ZN2bn11bgs_manager6createEONS_17affine_bg_builderE.str1.4
-                0x0853b294       0x1b bn_bgs_manager.o
+                0x0853b234       0x1b bn_bgs_manager.o
  .rodata._ZN2bn5eraseIPNS_11bgs_manager12_GLOBAL__N_19item_typeEEENS_7ivectorIT_E9size_typeERS7_RKS6_.constprop.0.isra.0.str1.4
-                0x0853b294       0x6f bn_bgs_manager.o
+                0x0853b234       0x6f bn_bgs_manager.o
  .rodata._ZN2bn11bgs_manager15decrease_usagesEPv.str1.4
-                0x0853b294       0x29 bn_bgs_manager.o
+                0x0853b234       0x29 bn_bgs_manager.o
  .rodata._ZN2bn15cameras_manager6createERKNS_13fixed_point_tILi12EEE.str1.4
-                0x0853b294       0x3e bn_cameras_manager.o
+                0x0853b234       0x3e bn_cameras_manager.o
  .rodata._ZN2bn4core12_GLOBAL__N_111update_implEv.str1.4
-                0x0853b294      0x1d9 bn_core.o
+                0x0853b234      0x1d9 bn_core.o
  .rodata._ZN2bn4core6updateEv.str1.4
-                0x0853b294        0xb bn_core.o
+                0x0853b234        0xb bn_core.o
  .rodata._ZN2bn4core4initERKNS_8optionalINS_5colorEEERKNS_11string_viewE.str1.4
-                0x0853b294        0xb bn_core.o
+                0x0853b234        0xb bn_core.o
  .rodata._ZN2bn4core9on_vblankEv.str1.4
-                0x0853b294       0x11 bn_core.o
+                0x0853b234       0x11 bn_core.o
  .rodata._ZN2bn11string_viewC2EPKc.str1.4
-                0x0853b294       0x38 bn_core.o
+                0x0853b234       0x38 bn_core.o
  .rodata._ZN2bn22hblank_effects_manager12_GLOBAL__N_110_is_uint32ENS0_12handler_typeE.str1.4
-                0x0853b294       0x42 bn_hblank_effects_manager.o
+                0x0853b234       0x42 bn_hblank_effects_manager.o
  .rodata._ZN2bn22hblank_effects_manager12_GLOBAL__N_19item_type12check_updateEv.str1.4
-                0x0853b294      0x155 bn_hblank_effects_manager.o
+                0x0853b234      0x155 bn_hblank_effects_manager.o
  .rodata._ZN2bn22hblank_effects_manager12_GLOBAL__N_19item_type12check_updateEv
-                0x0853b294       0xa4 bn_hblank_effects_manager.o
+                0x0853b234       0xa4 bn_hblank_effects_manager.o
  .rodata._ZN2bn22hblank_effects_manager6updateEv.str1.4
-                0x0853b338       0x25 bn_hblank_effects_manager.o
+                0x0853b2d8       0x25 bn_hblank_effects_manager.o
  .rodata._ZN2bn22hblank_effects_manager4initEv.str1.4
-                0x0853b338       0x27 bn_hblank_effects_manager.o
+                0x0853b2d8       0x27 bn_hblank_effects_manager.o
  .rodata._ZN2bn14keypad_manager6updateEv.str1.4
-                0x0853b338       0x5b bn_keypad_manager.o
+                0x0853b2d8       0x5b bn_keypad_manager.o
  .rodata._ZN2bn14keypad_manager4initERKNS_11string_viewE.str1.4
-                0x0853b338       0x54 bn_keypad_manager.o
+                0x0853b2d8       0x54 bn_keypad_manager.o
  .rodata._Znwj.str1.4
-                0x0853b338       0x47 bn_memory_manager.o
+                0x0853b2d8       0x47 bn_memory_manager.o
  .rodata._ZNK2bn13palettes_bank10log_statusEv.str1.4
-                0x0853b338       0x60 bn_palettes_manager.o
+                0x0853b2d8       0x60 bn_palettes_manager.o
  .rodata._ZNK2bn13palettes_bank6colorsEi.str1.4
-                0x0853b338       0x33 bn_palettes_manager.o
+                0x0853b2d8       0x33 bn_palettes_manager.o
  .rodata._ZN2bn13palettes_bank11colors_hashERKNS_4spanIKNS_5colorEEE.str1.4
-                0x0853b338       0x53 bn_palettes_manager.o
+                0x0853b2d8       0x53 bn_palettes_manager.o
  .rodata._ZN2bn13palettes_bank12create_bpp_8ERKNS_4spanIKNS_5colorEEENS_16compression_typeEb.str1.4
-                0x0853b338       0xc7 bn_palettes_manager.o
+                0x0853b2d8       0xc7 bn_palettes_manager.o
  .rodata._ZN2bn13palettes_bank16set_rotate_countEii.str1.4
-                0x0853b338       0x4c bn_palettes_manager.o
+                0x0853b2d8       0x4c bn_palettes_manager.o
  .rodata._ZN2bn13palettes_bank23set_grayscale_intensityEiNS_7fixed_tILi12EEE.str1.4
-                0x0853b338       0x50 bn_palettes_manager.o
+                0x0853b2d8       0x50 bn_palettes_manager.o
  .rodata._ZN2bn13palettes_bank8set_fadeEiNS_5colorENS_7fixed_tILi12EEE.str1.4
-                0x0853b338        0x9 bn_palettes_manager.o
+                0x0853b2d8        0x9 bn_palettes_manager.o
  .rodata._ZNK2bn19sprite_palette_item10decompressENS_4spanINS_5colorEEE.str1.4
-                0x0853b338      0x107 bn_palettes_manager.o
+                0x0853b2d8      0x107 bn_palettes_manager.o
  .rodata._ZNK2bn15bg_palette_item10decompressENS_4spanINS_5colorEEE.str1.4
-                0x0853b338       0x19 bn_palettes_manager.o
+                0x0853b2d8       0x19 bn_palettes_manager.o
  .rodata._ZN2bn14iunordered_mapItsNS_15identity_hasherENS_8equal_toItEEE21insert_or_assign_hashEjOSt4pairIKtsE.isra.0.str1.4
-                0x0853b338       0x66 bn_palettes_manager.o
+                0x0853b2d8       0x66 bn_palettes_manager.o
  .rodata._ZN2bn13palettes_bank12create_bpp_4ERKNS_4spanIKNS_5colorEEEtb.str1.4
-                0x0853b338       0x3b bn_palettes_manager.o
+                0x0853b2d8       0x3b bn_palettes_manager.o
  .rodata._ZN3_bn8profiler5startEPKcj.str1.4
-                0x0853b338       0x47 bn_profiler.o
+                0x0853b2d8       0x47 bn_profiler.o
  .rodata._ZN3_bn8profiler15ticks_per_entryEv.str1.4
-                0x0853b338       0x27 bn_profiler.o
+                0x0853b2d8       0x27 bn_profiler.o
  .rodata._ZN3_bn8profiler5resetEv.str1.4
-                0x0853b338       0x3f bn_profiler.o
+                0x0853b2d8       0x3f bn_profiler.o
  .rodata._ZN3_bn8profiler4stopEv.str1.4
-                0x0853b338       0xad bn_profiler.o
+                0x0853b2d8       0xad bn_profiler.o
  .rodata._ZN2bn26sprite_affine_mats_manager22reserve_sprite_handlesEi.str1.4
-                0x0853b338       0x72 bn_sprite_affine_mats_manager.o
+                0x0853b2d8       0x72 bn_sprite_affine_mats_manager.o
  .rodata._ZN2bn26sprite_affine_mats_manager18set_rotation_angleEiNS_7fixed_tILi12EEE.str1.4
-                0x0853b338       0x76 bn_sprite_affine_mats_manager.o
+                0x0853b2d8       0x76 bn_sprite_affine_mats_manager.o
  .rodata._ZN2bn26sprite_affine_mats_manager20set_horizontal_scaleEiNS_7fixed_tILi12EEE.str1.4
-                0x0853b338       0x67 bn_sprite_affine_mats_manager.o
+                0x0853b2d8       0x67 bn_sprite_affine_mats_manager.o
  .rodata._ZN2bn26sprite_affine_mats_manager18set_vertical_scaleEiNS_7fixed_tILi12EEE.str1.4
-                0x0853b338       0x41 bn_sprite_affine_mats_manager.o
+                0x0853b2d8       0x41 bn_sprite_affine_mats_manager.o
  .rodata._ZN2bn26sprite_affine_mats_manager12_GLOBAL__N_115_new_item_indexEv.str1.4
-                0x0853b338       0x69 bn_sprite_affine_mats_manager.o
+                0x0853b2d8       0x69 bn_sprite_affine_mats_manager.o
  .rodata._ZN2bn26sprite_affine_mats_manager6createERKNS_21affine_mat_attributesE.str1.4
-                0x0853b338       0x2d bn_sprite_affine_mats_manager.o
+                0x0853b2d8       0x2d bn_sprite_affine_mats_manager.o
  .rodata._ZN2bn26sprite_affine_mats_manager15decrease_usagesEi.part.0.str1.4
-                0x0853b338       0x1b bn_sprite_affine_mats_manager.o
+                0x0853b2d8       0x1b bn_sprite_affine_mats_manager.o
  .rodata._ZN2bn26sprite_affine_mats_manager14dettach_spriteEiRNS_24intrusive_list_node_typeE.str1.4
-                0x0853b338       0x22 bn_sprite_affine_mats_manager.o
+                0x0853b2d8       0x22 bn_sprite_affine_mats_manager.o
  .rodata._ZN2bn22isprite_animate_action16set_wait_updatesEi.str1.4
-                0x0853b338       0xb8 bn_sprite_animate_actions.o
+                0x0853b2d8       0xb8 bn_sprite_animate_actions.o
  .rodata._ZN2bn22isprite_animate_action24_assign_graphics_indexesERKNS_4spanIKtEE.str1.4
-                0x0853b338       0xc7 bn_sprite_animate_actions.o
+                0x0853b2d8       0xc7 bn_sprite_animate_actions.o
  .rodata._ZN2bn29isprite_cached_animate_action24_assign_graphics_indexesERKNS_17sprite_tiles_itemERKNS_4spanIKtEE.str1.4
-                0x0853b338       0x5c bn_sprite_animate_actions.o
+                0x0853b2d8       0x5c bn_sprite_animate_actions.o
  .rodata._ZN2bn29isprite_cached_animate_action6updateEv.str1.4
-                0x0853b338       0x5c bn_sprite_animate_actions.o
+                0x0853b2d8       0x5c bn_sprite_animate_actions.o
  .rodata._ZN2bn20sprite_tiles_manager10log_statusEv.str1.4
-                0x0853b338       0x94 bn_sprite_tiles_manager.o
+                0x0853b2d8       0x94 bn_sprite_tiles_manager.o
  .rodata._ZN2bn20sprite_tiles_manager12_GLOBAL__N_110_hw_commitEPKNS_4tileENS_16compression_typeEii.str1.4
-                0x0853b338       0x47 bn_sprite_tiles_manager.o
+                0x0853b2d8       0x47 bn_sprite_tiles_manager.o
  .rodata._ZN2bn20sprite_tiles_manager12_GLOBAL__N_122_insert_to_commit_itemEiRNS1_9item_typeE.part.0.str1.4
-                0x0853b338       0x27 bn_sprite_tiles_manager.o
+                0x0853b2d8       0x27 bn_sprite_tiles_manager.o
  .rodata._ZN2bn20sprite_tiles_manager12_GLOBAL__N_117_insert_free_itemEiPt.str1.4
-                0x0853b338       0x45 bn_sprite_tiles_manager.o
+                0x0853b2d8       0x45 bn_sprite_tiles_manager.o
  .rodata._ZN2bn20sprite_tiles_manager12_GLOBAL__N_116_erase_free_itemEi.str1.4
-                0x0853b338       0x40 bn_sprite_tiles_manager.o
+                0x0853b2d8       0x40 bn_sprite_tiles_manager.o
  .rodata._ZN2bn20sprite_tiles_manager12_GLOBAL__N_110_find_implEPKNS_4tileENS_16compression_typeEi.str1.4
-                0x0853b338       0xd2 bn_sprite_tiles_manager.o
+                0x0853b2d8       0xd2 bn_sprite_tiles_manager.o
  .rodata._ZN2bn16sprite_tiles_ptr4findERKNS_17sprite_tiles_itemE.str1.4
-                0x0853b338       0xa3 bn_sprite_tiles_manager.o
+                0x0853b2d8       0xa3 bn_sprite_tiles_manager.o
  .rodata._ZN2bn16sprite_tiles_ptr4findERKNS_17sprite_tiles_itemEi.str1.4
-                0x0853b338       0x51 bn_sprite_tiles_manager.o
+                0x0853b2d8       0x51 bn_sprite_tiles_manager.o
  .rodata._ZN2bn20sprite_tiles_manager12_GLOBAL__N_121_erase_items_map_itemEPKNS_4tileE.str1.4
-                0x0853b338       0x3a bn_sprite_tiles_manager.o
+                0x0853b2d8       0x3a bn_sprite_tiles_manager.o
  .rodata._ZN2bn20sprite_tiles_manager12_GLOBAL__N_112_create_itemEiPKNS_4tileENS_16compression_typeEib.str1.4
-                0x0853b338       0x35 bn_sprite_tiles_manager.o
+                0x0853b2d8       0x35 bn_sprite_tiles_manager.o
  .rodata._ZN2bn20sprite_tiles_manager8allocateEiNS_8bpp_modeE.str1.4
-                0x0853b338       0x5c bn_sprite_tiles_manager.o
+                0x0853b2d8       0x5c bn_sprite_tiles_manager.o
  .rodata._ZN2bn20sprite_tiles_manager6createERKNS_4spanIKNS_4tileEEENS_16compression_typeE.str1.4
-                0x0853b338       0x44 bn_sprite_tiles_manager.o
+                0x0853b2d8       0x44 bn_sprite_tiles_manager.o
  .rodata.str1.4
-                0x0853b338       0x25 bn_sprite_tiles_manager.o
+                0x0853b2d8       0x25 bn_sprite_tiles_manager.o
  .rodata._ZN2bn20sprite_tiles_manager12_GLOBAL__N_1L19_status_log_messageE
-                0x0853b338        0x8 bn_sprite_tiles_manager.o
+                0x0853b2d8        0x8 bn_sprite_tiles_manager.o
  .rodata._ZN2bn14sprite_builder20set_blending_enabledEb.str1.4
-                0x0853b340       0x6a bn_sprites_manager.o
+                0x0853b2e0       0x6a bn_sprites_manager.o
  .rodata._ZN2bn15sprites_manager20set_blending_enabledEPvb.str1.4
-                0x0853b340       0x17 bn_sprites_manager.o
+                0x0853b2e0       0x17 bn_sprites_manager.o
  .rodata._ZNK2bn17sprite_shape_size6heightEv.isra.0.str1.4
-                0x0853b340       0x40 bn_sprites_manager.o
+                0x0853b2e0       0x40 bn_sprites_manager.o
  .rodata._ZNK2bn17sprite_shape_size5widthEv.isra.0.str1.4
-                0x0853b340        0x6 bn_sprites_manager.o
+                0x0853b2e0        0x6 bn_sprites_manager.o
  .rodata._ZN2bn15sprites_manager12_GLOBAL__N_118_remove_affine_matERNS_20sprites_manager_itemE.str1.4
-                0x0853b340       0x32 bn_sprites_manager.o
+                0x0853b2e0       0x32 bn_sprites_manager.o
  .rodata._ZN2bn20sprites_manager_item13_builder_initERKNS_14sprite_builderE.str1.4
-                0x0853b340       0x53 bn_sprites_manager.o
+                0x0853b2e0       0x53 bn_sprites_manager.o
  .rodata._ZN2bn14sprite_builder11set_z_orderEi.str1.4
-                0x0853b340       0x66 bn_sprites_manager.o
+                0x0853b2e0       0x66 bn_sprites_manager.o
  .rodata._ZN2bn14sprite_builderC2ERKNS_17sprite_shape_sizeENS_16sprite_tiles_ptrENS_18sprite_palette_ptrE.str1.4
-                0x0853b340       0x6e bn_sprites_manager.o
+                0x0853b2e0       0x6e bn_sprites_manager.o
  .rodata._ZN2bn15sprites_manager9set_tilesEPvRKNS_16sprite_tiles_ptrE.str1.4
-                0x0853b340       0x65 bn_sprites_manager.o
+                0x0853b2e0       0x65 bn_sprites_manager.o
  .rodata._ZN2bn15sprites_manager6updateEv.str1.4
-                0x0853b340       0x2f bn_sprites_manager.o
+                0x0853b2e0       0x2f bn_sprites_manager.o
  .rodata._ZN2bn15sprites_manager11set_paletteEPvNS_8bpp_modeERKNS_18sprite_palette_ptrE.str1.4
-                0x0853b340       0x29 bn_sprites_manager.o
+                0x0853b2e0       0x29 bn_sprites_manager.o
  .rodata._ZN2bn15sprites_manager35fill_hblank_effect_third_attributesENS_17sprite_shape_sizeEPKNS_23sprite_third_attributesEPt.str1.4
-                0x0853b340       0x93 bn_sprites_manager.o
+                0x0853b2e0       0x93 bn_sprites_manager.o
  .rodata._ZN2bn14sorted_sprites6sorter6insertERNS_20sprites_manager_itemE.str1.4
-                0x0853b340       0x41 bn_sprites_manager.o
+                0x0853b2e0       0x41 bn_sprites_manager.o
  .rodata._ZN2bn15sprites_manager6createERKNS_13fixed_point_tILi12EEERKNS_17sprite_shape_sizeEONS_16sprite_tiles_ptrEONS_18sprite_palette_ptrE.str1.4
-                0x0853b340       0x27 bn_sprites_manager.o
+                0x0853b2e0       0x27 bn_sprites_manager.o
  .rodata._ZN2bn15sprites_manager15create_optionalEONS_14sprite_builderE.str1.4
-                0x0853b340       0x19 bn_sprites_manager.o
+                0x0853b2e0       0x19 bn_sprites_manager.o
  .rodata._ZN2bn15sprites_manager9put_aboveEPv.str1.4
-                0x0853b340       0x2a bn_sprites_manager.o
+                0x0853b2e0       0x2a bn_sprites_manager.o
  .rodata._ZN2bn15sprites_manager15set_bg_priorityEPvi.str1.4
-                0x0853b340       0x31 bn_sprites_manager.o
+                0x0853b2e0       0x31 bn_sprites_manager.o
  .rodata._ZN2bn14sprite_builder18set_rotation_angleENS_7fixed_tILi12EEE.str1.4
-                0x0853b340       0x76 bn_sprites_manager.o
+                0x0853b2e0       0x76 bn_sprites_manager.o
  .rodata._ZN2bn14sprite_builder20set_horizontal_scaleENS_7fixed_tILi12EEE.str1.4
-                0x0853b340       0x67 bn_sprites_manager.o
+                0x0853b2e0       0x67 bn_sprites_manager.o
  .rodata._ZN2bn14sprite_builder18set_vertical_scaleENS_7fixed_tILi12EEE.str1.4
-                0x0853b340       0x41 bn_sprites_manager.o
+                0x0853b2e0       0x41 bn_sprites_manager.o
  .rodata._ZN2bn2hw7sprites12_GLOBAL__N_1L10_obj_sizesE
-                0x0853b340       0x18 bn_sprites_manager.o
+                0x0853b2e0       0x18 bn_sprites_manager.o
  .rodata._ZN3_bn6assert9show_argsIJA19_ciA4_ciEEEvPKcS5_S5_iDpRKT_.str1.4
-                0x0853b358       0x43 bn_sstream.o
+                0x0853b2f8       0x43 bn_sstream.o
  .rodata._ZN2bn7istring6appendEPKc.isra.0.str1.4
-                0x0853b358       0x38 bn_sstream.o
+                0x0853b2f8       0x38 bn_sstream.o
  .rodata._ZN2bn13ostringstream6appendEi.str1.4
-                0x0853b358       0x32 bn_sstream.o
+                0x0853b2f8       0x32 bn_sstream.o
  .rodata._ZN2bn13ostringstream6appendEPKv.str1.4
-                0x0853b358        0x8 bn_sstream.o
+                0x0853b2f8        0x8 bn_sstream.o
  .rodata._ZN2bn13ostringstream16_append_fractionEji.str1.4
-                0x0853b358       0x1b bn_sstream.o
+                0x0853b2f8       0x1b bn_sstream.o
  .rodata._ZN2bn18igeneric_pool_baseD2Ev.str1.4
-                0x0853b358       0x42 bn_translation_unit.o
+                0x0853b2f8       0x42 bn_translation_unit.o
  .rodata._ZN2bn18igeneric_pool_base9_allocateEv.str1.4
-                0x0853b358       0x19 bn_translation_unit.o
+                0x0853b2f8       0x19 bn_translation_unit.o
  .rodata._ZN2bn7sin_lutE
-                0x0853b358        0x4 bn_translation_unit.o
-                0x0853b358                bn::sin_lut
+                0x0853b2f8        0x4 bn_translation_unit.o
+                0x0853b2f8                bn::sin_lut
  .rodata._ZN2bn12_GLOBAL__N_1L12sin_lut_implE
-                0x0853b35c     0x1002 bn_translation_unit.o
- *fill*         0x0853c35e        0x2 ff
+                0x0853b2fc     0x1002 bn_translation_unit.o
+ *fill*         0x0853c2fe        0x2 ff
  .rodata._ZN2bn17reciprocal_16_lutE
-                0x0853c360        0x4 bn_translation_unit.o
-                0x0853c360                bn::reciprocal_16_lut
+                0x0853c300        0x4 bn_translation_unit.o
+                0x0853c300                bn::reciprocal_16_lut
  .rodata._ZN2bn12_GLOBAL__N_1L22reciprocal_16_lut_implE
-                0x0853c364      0x802 bn_translation_unit.o
+                0x0853c304      0x802 bn_translation_unit.o
  .rodata._ZN2bn2hw5audio14play_dmg_musicEPKvNS_14dmg_music_typeEib.str1.4
-                0x0853cb66       0x5b bn_hw_audio.o
+                0x0853cb06       0x5b bn_hw_audio.o
  .rodata._ZN2bn2hw5audio22set_dmg_music_positionEii.str1.4
-                0x0853cb66       0x2a bn_hw_audio.o
+                0x0853cb06       0x2a bn_hw_audio.o
  .rodata._ZN2bn2hw5audio20set_dmg_music_volumeEii.str1.4
-                0x0853cb66       0x46 bn_hw_audio.o
+                0x0853cb06       0x46 bn_hw_audio.o
  .rodata._ZN2bn2hw5audio6commitEv.str1.4
-                0x0853cb66       0x1c bn_hw_audio.o
+                0x0853cb06       0x1c bn_hw_audio.o
  .rodata._ZN2bn2hw5audio12_GLOBAL__N_119_add_sound_to_queueEit.str1.4
-                0x0853cb66       0x21 bn_hw_audio.o
+                0x0853cb06       0x21 bn_hw_audio.o
  .rodata._ZN2bn2hw5audio12_GLOBAL__N_123_erase_sound_from_queueEt.str1.4
-                0x0853cb66       0x59 bn_hw_audio.o
+                0x0853cb06       0x59 bn_hw_audio.o
  .rodata._ZN2bn2hw5audio12_GLOBAL__N_119_check_sounds_queueEv.part.0.str1.4
-                0x0853cb66       0x12 bn_hw_audio.o
+                0x0853cb06       0x12 bn_hw_audio.o
  .rodata.__cxa_pure_virtual.str1.4
-                0x0853cb66       0x4f bn_hw_common.bn_noflto.o
+                0x0853cb06       0x4f bn_hw_common.bn_noflto.o
  .rodata.__aeabi_idiv0.str1.4
-                0x0853cb66       0x38 bn_hw_common.bn_noflto.o
- *fill*         0x0853cb66        0x2 ff
+                0x0853cb06       0x38 bn_hw_common.bn_noflto.o
+ *fill*         0x0853cb06        0x2 ff
  .rodata._ZN2bn2hw8game_pak12_GLOBAL__N_1L8rom_dataE
-                0x0853cb68        0xc bn_hw_game_pak.bn_ewram.o
+                0x0853cb08        0xc bn_hw_game_pak.bn_ewram.o
  .rodata._ZN2bn2hw4gpio12_GLOBAL__N_1L10rtc_stringE
-                0x0853cb74        0xc bn_hw_gpio.bn_noflto.o
+                0x0853cb14        0xc bn_hw_gpio.bn_noflto.o
  .rodata._ZN2bn2hw4link4sendEi.str1.4
-                0x0853cb80       0x2b bn_hw_link.o
+                0x0853cb20       0x2b bn_hw_link.o
  .rodata._ZN2bn2hw8palettes12_GLOBAL__N_1L13hue_shift_lutE
-                0x0853cb80      0x4a4 bn_hw_palettes.o
+                0x0853cb20      0x4a4 bn_hw_palettes.o
  .rodata._ZN2bn2hw8palettes12_GLOBAL__N_1L13intensity_lutE
-                0x0853d024      0x420 bn_hw_palettes.o
+                0x0853cfc4      0x420 bn_hw_palettes.o
  .rodata._ZN2bn2hw8palettes12_GLOBAL__N_1L12contrast_lutE
-                0x0853d444      0x420 bn_hw_palettes.o
+                0x0853d3e4      0x420 bn_hw_palettes.o
  .rodata._ZN2bn2hw4show12_GLOBAL__N_18init_tteERKNS_11system_fontE.str1.4
-                0x0853d864        0x2 bn_hw_show.o
+                0x0853d804        0x2 bn_hw_show.o
  .rodata._ZN2bn2hw4show5errorERKNS_11system_fontERKNS_11string_viewES7_S7_iS7_S7_.str1.4
-                0x0853d864      0x100 bn_hw_show.o
+                0x0853d804      0x100 bn_hw_show.o
  .rodata._ZN2bn2hw4sram12_GLOBAL__N_1L11save_stringE
-                0x0853d864        0xa bn_hw_sram.bn_noflto.o
+                0x0853d804        0xa bn_hw_sram.bn_noflto.o
  .rodata._ZN2bn2hw4text5parseEPKvRNS_5arrayIcLi32EEE.str1.4
-                0x0853d86e        0x5 bn_hw_text.o
+                0x0853d80e        0x5 bn_hw_text.o
  .rodata._ZN2bn2hw4text5parseExRNS_5arrayIcLi32EEE.str1.4
-                0x0853d86e        0x7 bn_hw_text.o
- *fill*         0x0853d86e        0x2 ff
+                0x0853d80e        0x7 bn_hw_text.o
+ *fill*         0x0853d80e        0x2 ff
  .rodata.m3_surface
-                0x0853d870       0x14 tonc_sbmp16.o
-                0x0853d870                m3_surface
- .rodata.srf.0  0x0853d884       0x14 tte_main.o
+                0x0853d810       0x14 tonc_sbmp16.o
+                0x0853d810                m3_surface
+ .rodata.srf.0  0x0853d824       0x14 tte_main.o
  .rodata.gbt_refresh_pattern_ptr.str1.4
-                0x0853d898        0x9 gbt_player.o
+                0x0853d838        0x9 gbt_player.o
  .rodata.gbt_ch4_jump_table
-                0x0853d898       0x40 gbt_player.o
+                0x0853d838       0x40 gbt_player.o
  .rodata.gbt_ch3_jump_table
-                0x0853d8d8       0x40 gbt_player.o
+                0x0853d878       0x40 gbt_player.o
  .rodata.gbt_ch2_jump_table
-                0x0853d918       0x40 gbt_player.o
+                0x0853d8b8       0x40 gbt_player.o
  .rodata.gbt_ch1_jump_table
-                0x0853d958       0x40 gbt_player.o
+                0x0853d8f8       0x40 gbt_player.o
  .rodata.vibrato_sine
-                0x0853d998       0x80 gbt_player.o
+                0x0853d938       0x80 gbt_player.o
  .rodata.gbt_noise
-                0x0853da18       0x10 gbt_player.o
+                0x0853d9b8       0x10 gbt_player.o
  .rodata.gbt_default_wave_7
-                0x0853da28       0x10 gbt_player.o
+                0x0853d9c8       0x10 gbt_player.o
  .rodata.gbt_default_wave_6
-                0x0853da38       0x10 gbt_player.o
+                0x0853d9d8       0x10 gbt_player.o
  .rodata.gbt_default_wave_5
-                0x0853da48       0x10 gbt_player.o
+                0x0853d9e8       0x10 gbt_player.o
  .rodata.gbt_default_wave_4
-                0x0853da58       0x10 gbt_player.o
+                0x0853d9f8       0x10 gbt_player.o
  .rodata.gbt_default_wave_3
-                0x0853da68       0x10 gbt_player.o
+                0x0853da08       0x10 gbt_player.o
  .rodata.gbt_default_wave_2
-                0x0853da78       0x10 gbt_player.o
+                0x0853da18       0x10 gbt_player.o
  .rodata.gbt_default_wave_1
-                0x0853da88       0x10 gbt_player.o
+                0x0853da28       0x10 gbt_player.o
  .rodata.gbt_default_wave_0
-                0x0853da98       0x10 gbt_player.o
+                0x0853da38       0x10 gbt_player.o
  *(.gnu.linkonce.r*)
-                0x0853daa8                        . = ALIGN (0x4)
+                0x0853da48                        . = ALIGN (0x4)
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x0853daa8                        __exidx_start = .
+                0x0853da48                        __exidx_start = .
 
 .ARM.exidx
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x0853daa8                        __exidx_end = .
+                0x0853da48                        __exidx_end = .
 
-.ctors          0x0853daa8        0x0
+.ctors          0x0853da48        0x0
  *crtbegin.o(.ctors)
  *(EXCLUDE_FILE(*crtend.o) .ctors)
  *(SORT_BY_NAME(.ctors.*))
  *(.ctors)
-                0x0853daa8                        . = ALIGN (0x4)
+                0x0853da48                        . = ALIGN (0x4)
 
-.dtors          0x0853daa8        0x0
+.dtors          0x0853da48        0x0
  *crtbegin.o(.dtors)
  *(EXCLUDE_FILE(*crtend.o) .dtors)
  *(SORT_BY_NAME(.dtors.*))
  *(.dtors)
-                0x0853daa8                        . = ALIGN (0x4)
+                0x0853da48                        . = ALIGN (0x4)
 
-.eh_frame       0x0853daa8        0x4
+.eh_frame       0x0853da48        0x4
  *(.eh_frame)
- .eh_frame      0x0853daa8        0x0 C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb/crtbegin.o
- .eh_frame      0x0853daa8        0x4 C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb/crtend.o
-                0x0853daac                        . = ALIGN (0x4)
+ .eh_frame      0x0853da48        0x0 C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb/crtbegin.o
+ .eh_frame      0x0853da48        0x4 C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb/crtend.o
+                0x0853da4c                        . = ALIGN (0x4)
 
 .gcc_except_table
-                0x0853daac        0x0
+                0x0853da4c        0x0
  *(.gcc_except_table)
-                0x0853daac                        . = ALIGN (0x4)
-                0x0853daac                        __iwram_lma = .
+                0x0853da4c                        . = ALIGN (0x4)
+                0x0853da4c                        __iwram_lma = .
 
-.iwram          0x03000000     0x2320 load address 0x0853daac
+.iwram          0x03000000     0x2320 load address 0x0853da4c
                 0x03000000                        __iwram_start__ = ABSOLUTE (.)
  *(.iwram .iwram*)
  .iwram         0x03000000      0x290 bn_sprites_manager.bn_iwram.o
@@ -9445,7 +9433,7 @@ Linker script and memory map
  *iwram.*(.text* .data*)
                 0x0300231c                        . = ALIGN (0x4)
                 0x03002320                        __iwram_end__ = ABSOLUTE (.)
-                0x0853fdcc                        __data_lma = (__iwram_lma + SIZEOF (.iwram))
+                0x0853fd6c                        __data_lma = (__iwram_lma + SIZEOF (.iwram))
 
 .bss            0x03002320      0x87c
                 0x03002320                        __bss_start = ABSOLUTE (.)
@@ -9513,7 +9501,7 @@ Linker script and memory map
                 0x03002b9c                        . = ALIGN (0x4)
                 0x03002b9c                        __bss_end__ = ABSOLUTE (.)
 
-.data           0x03002b9c      0x184 load address 0x0853fdcc
+.data           0x03002b9c      0x184 load address 0x0853fd6c
                 0x03002b9c                        __data_start__ = ABSOLUTE (.)
  *(.data*)
  .data.__dso_handle
@@ -9557,18 +9545,18 @@ Linker script and memory map
                 0x03002d00                left_shallow_slope_1_arr
  *(.gnu.linkonce.d*)
                 0x03002d20                        . = ALIGN (0x4)
-                0x0853ff50                        __preinit_lma = (__data_lma + SIZEOF (.data))
+                0x0853fef0                        __preinit_lma = (__data_lma + SIZEOF (.data))
 
-.igot.plt       0x03002d20        0x0 load address 0x0853ff50
+.igot.plt       0x03002d20        0x0 load address 0x0853fef0
  .igot.plt      0x03002d20        0x0 C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/gba_crt0.o
 
-.preinit_array  0x03002d20        0x0 load address 0x0853ff50
+.preinit_array  0x03002d20        0x0 load address 0x0853fef0
                 0x03002d20                        __preinit_array_start = ABSOLUTE (.)
  *(.preinit_array)
                 0x03002d20                        __preinit_array_end = ABSOLUTE (.)
-                0x0853ff50                        __init_lma = (__preinit_lma + SIZEOF (.preinit_array))
+                0x0853fef0                        __init_lma = (__preinit_lma + SIZEOF (.preinit_array))
 
-.init_array     0x03002d20       0x44 load address 0x0853ff50
+.init_array     0x03002d20       0x44 load address 0x0853fef0
                 0x03002d20                        __init_array_start = ABSOLUTE (.)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array)
@@ -9590,27 +9578,27 @@ Linker script and memory map
  .init_array    0x03002d5c        0x4 bn_hw_audio.o
  .init_array    0x03002d60        0x4 bn_hw_link.o
                 0x03002d64                        __init_array_end = ABSOLUTE (.)
-                0x0853ff94                        __fini_lma = (__init_lma + SIZEOF (.init_array))
+                0x0853ff34                        __fini_lma = (__init_lma + SIZEOF (.init_array))
 
-.fini_array     0x03002d64        0x4 load address 0x0853ff94
+.fini_array     0x03002d64        0x4 load address 0x0853ff34
                 0x03002d64                        __fini_array_start = ABSOLUTE (.)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array)
  .fini_array    0x03002d64        0x4 C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb/crtbegin.o
                 0x03002d68                        __fini_array_end = ABSOLUTE (.)
-                0x0853ff98                        __jcr_lma = (__fini_lma + SIZEOF (.fini_array))
+                0x0853ff38                        __jcr_lma = (__fini_lma + SIZEOF (.fini_array))
 
 .jcr
  *(.jcr)
                 0x03002d68                        __data_end__ = ABSOLUTE (.)
-                0x0853ff98                        __iwram_overlay_lma = (__jcr_lma + SIZEOF (.jcr))
+                0x0853ff38                        __iwram_overlay_lma = (__jcr_lma + SIZEOF (.jcr))
                 0x03002d68                        __iwram_overlay_start = .
 
-.iwram0         0x03002d68        0x0 load address 0x0853ff98
+.iwram0         0x03002d68        0x0 load address 0x0853ff38
  *(.iwram0)
                 0x03002d68                        . = ALIGN (0x4)
-                0x0853ff98                        PROVIDE (__load_start_iwram0 = LOADADDR (.iwram0))
-                0x0853ff98                        PROVIDE (__load_stop_iwram0 = (LOADADDR (.iwram0) + SIZEOF (.iwram0)))
+                0x0853ff38                        PROVIDE (__load_start_iwram0 = LOADADDR (.iwram0))
+                0x0853ff38                        PROVIDE (__load_stop_iwram0 = (LOADADDR (.iwram0) + SIZEOF (.iwram0)))
 
 .iwram1         0x03002d68        0x0
  *(.iwram1)
@@ -9666,11 +9654,11 @@ Linker script and memory map
                 [!provide]                        PROVIDE (__load_start_iwram9 = LOADADDR (.iwram9))
                 [!provide]                        PROVIDE (__load_stop_iwram9 = (LOADADDR (.iwram9) + SIZEOF (.iwram9)))
                 0x03002d68                        __iwram_overlay_end = .
-                0x0853ff98                        __ewram_lma = (__iwram_overlay_lma + (__iwram_overlay_end - __iwram_overlay_start))
+                0x0853ff38                        __ewram_lma = (__iwram_overlay_lma + (__iwram_overlay_end - __iwram_overlay_start))
                 0x03002d68                        __iheap_start = .
                 0x02000000                        __ewram_start = ORIGIN (ewram)
 
-.ewram          0x02000000      0xda0 load address 0x0853ff98
+.ewram          0x02000000      0xda0 load address 0x0853ff38
  *(.ewram*)
  .ewram         0x02000000        0x2 bn_gpio_manager.o
  *fill*         0x02000002        0x6 ff
@@ -9683,7 +9671,7 @@ Linker script and memory map
                 0x02000d58                __tte_main_context
                 0x02000da0                        . = ALIGN (0x4)
                 0x02000da0                        __ewram_end = ABSOLUTE (.)
-                0x08540d38                        __pad_lma = (__ewram_lma + SIZEOF (.ewram))
+                0x08540cd8                        __pad_lma = (__ewram_lma + SIZEOF (.ewram))
 
 .sbss           0x02000da0     0x8204
                 0x02000da0                        __sbss_start__ = ABSOLUTE (.)
@@ -9710,13 +9698,13 @@ Linker script and memory map
                 0x02008fa4                        __end__ = ABSOLUTE (.)
                 0x02008fa4                        __eheap_start = ABSOLUTE (.)
 
-.pad            0x02008fa4        0x8 load address 0x08540d38
+.pad            0x02008fa4        0x8 load address 0x08540cd8
                 0x02008fa4        0x4 LONG 0x52416b64
                 0x02008fa8        0x4 LONG 0x4d
                 0x02008fac                        . = ALIGN (0x4)
-                0x08540d40                        __rom_end__ = (__pad_lma + SIZEOF (.pad))
+                0x08540ce0                        __rom_end__ = (__pad_lma + SIZEOF (.pad))
 
-.rel.dyn        0x02008fac        0x0 load address 0x08540d40
+.rel.dyn        0x02008fac        0x0 load address 0x08540ce0
  .rel.iplt      0x02008fac        0x0 C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/../../../../arm-none-eabi/lib/thumb/gba_crt0.o
 
 .stab
@@ -10000,7 +9988,7 @@ Linker script and memory map
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000   0x42feb3
+.debug_info     0x00000000   0x42fe9e
  *(.debug_info)
  .debug_info    0x00000000     0x8367 collider.o
  .debug_info    0x00008367     0xeaa9 enemy.o
@@ -10009,87 +9997,87 @@ Linker script and memory map
  .debug_info    0x0004015e    0x22da2 game_object.o
  .debug_info    0x00062f00    0x187c3 ground_ghoul.o
  .debug_info    0x0007b6c3    0x12cd1 hitbox.o
- .debug_info    0x0008e394    0x17fcf level.o
- .debug_info    0x000a6363     0xbdf6 main.o
- .debug_info    0x000b2159    0x15047 phase_orb.o
- .debug_info    0x000c71a0     0x8781 physics.o
- .debug_info    0x000cf921    0x32a16 player.o
- .debug_info    0x00102337     0xf7e2 room.o
- .debug_info    0x00111b19     0x44be room_bounds.o
- .debug_info    0x00115fd7    0x11852 thorn_bar.o
- .debug_info    0x00127829    0x11852 thorn_column.o
- .debug_info    0x0013907b    0x12c89 tile_passage.o
- .debug_info    0x0014bd04     0x96d1 utility.o
- .debug_info    0x001553d5     0xdd4d bn_affine_bg_animate_actions.o
- .debug_info    0x00163122    0x1bb5e bn_audio_manager.o
- .debug_info    0x0017ec80     0x78df bn_best_fit_allocator.o
- .debug_info    0x0018655f    0x4c106 bn_bg_blocks_manager.o
- .debug_info    0x001d2665    0x57014 bn_bgs_manager.o
- .debug_info    0x00229679     0x7d52 bn_cameras_manager.o
- .debug_info    0x002313cb     0xade3 bn_core.o
- .debug_info    0x0023c1ae    0x24eb8 bn_display_manager.o
- .debug_info    0x00261066     0x7ec9 bn_gpio_manager.o
- .debug_info    0x00268f2f    0x64173 bn_hblank_effects_manager.o
- .debug_info    0x002cd0a2     0x5380 bn_hdma_manager.o
- .debug_info    0x002d2422     0x5dad bn_keypad_manager.o
- .debug_info    0x002d81cf     0x76ed bn_link_manager.o
- .debug_info    0x002df8bc     0x8868 bn_memory_manager.o
- .debug_info    0x002e8124    0x21bcd bn_palettes_manager.o
- .debug_info    0x00309cf1     0x81ae bn_profiler.o
- .debug_info    0x00311e9f    0x1a5e5 bn_sprite_affine_mats_manager.o
- .debug_info    0x0032c484     0xd5db bn_sprite_animate_actions.o
- .debug_info    0x00339a5f    0x2913d bn_sprite_text_generator.o
- .debug_info    0x00362b9c    0x1bc48 bn_sprite_tiles_manager.o
- .debug_info    0x0037e7e4     0xc3c4 bn_sprites_manager.bn_iwram.o
- .debug_info    0x0038aba8    0x44ee3 bn_sprites_manager.o
- .debug_info    0x003cfa8b     0xb1c4 bn_sstream.o
- .debug_info    0x003dac4f    0x18a02 bn_translation_unit.o
- .debug_info    0x003f3651     0x7e30 bn_hw_audio.o
- .debug_info    0x003fb481     0x1c57 bn_hw_common.bn_noflto.o
- .debug_info    0x003fd0d8     0x19bc bn_hw_cstdlib.o
- .debug_info    0x003fea94      0x614 bn_hw_game_pak.bn_ewram.o
- .debug_info    0x003ff0a8     0x4067 bn_hw_gpio.bn_noflto.o
- .debug_info    0x0040310f     0x7dba bn_hw_link.o
- .debug_info    0x0040aec9      0x4c2 bn_hw_memory.o
- .debug_info    0x0040b38b     0x1378 bn_hw_palettes.bn_iwram.o
- .debug_info    0x0040c703     0x5473 bn_hw_palettes.o
- .debug_info    0x00411b76    0x1206f bn_hw_show.o
- .debug_info    0x00423be5      0x55b bn_hw_sram.bn_noflto.o
- .debug_info    0x00424140      0x751 bn_hw_system_font.o
- .debug_info    0x00424891     0x5532 bn_hw_text.o
- .debug_info    0x00429dc3      0x778 vgm.o
- .debug_info    0x0042a53b      0xc2e tonc_color.o
- .debug_info    0x0042b169      0x994 tonc_sbmp16.o
- .debug_info    0x0042bafd      0x6ab bmp16_drawg_b1cs.o
- .debug_info    0x0042c1a8      0x578 tte_init_bmp.o
- .debug_info    0x0042c720      0xe1a tte_main.o
- .debug_info    0x0042d53a      0x241 interrupts_gba.o
- .debug_info    0x0042d77b     0x2203 gbt_player.o
- .debug_info    0x0042f97e       0x23 bn_hw_bg_blocks.o
- .debug_info    0x0042f9a1       0x24 bn_hw_hblank_effects.o
- .debug_info    0x0042f9c5       0x23 bn_hw_palettes_asm.o
- .debug_info    0x0042f9e8       0x30 clr_blend_fast.o
- .debug_info    0x0042fa18       0x23 clr_fade_fast.o
- .debug_info    0x0042fa3b      0x1c8 tonc_bios.o
- .debug_info    0x0042fc03       0x3a tonc_memset.o
- .debug_info    0x0042fc3d       0x24 irq_handler.o
- .debug_info    0x0042fc61       0x24 posprintf.o
- .debug_info    0x0042fc85       0x22 lmul.o
- .debug_info    0x0042fca7       0x22 memcpy.o
- .debug_info    0x0042fcc9       0x22 memmove.o
- .debug_info    0x0042fceb       0x22 memset.o
- .debug_info    0x0042fd0d       0x22 rmemcpy.o
- .debug_info    0x0042fd2f       0x23 sdiv32.o
- .debug_info    0x0042fd52       0x24 udiv32.o
- .debug_info    0x0042fd76       0x24 huffman.o
- .debug_info    0x0042fd9a       0x24 lz77.o
- .debug_info    0x0042fdbe       0x24 running_length.o
- .debug_info    0x0042fde2       0x24 mm_effect.o
- .debug_info    0x0042fe06       0x23 mm_main.o
- .debug_info    0x0042fe29       0x22 mm_mas.o
- .debug_info    0x0042fe4b       0x24 mm_mas_arm.o
- .debug_info    0x0042fe6f       0x22 mm_main_gba.o
- .debug_info    0x0042fe91       0x22 mm_mixer_gba.o
+ .debug_info    0x0008e394    0x17fba level.o
+ .debug_info    0x000a634e     0xbdf6 main.o
+ .debug_info    0x000b2144    0x15047 phase_orb.o
+ .debug_info    0x000c718b     0x8781 physics.o
+ .debug_info    0x000cf90c    0x32a16 player.o
+ .debug_info    0x00102322     0xf7e2 room.o
+ .debug_info    0x00111b04     0x44be room_bounds.o
+ .debug_info    0x00115fc2    0x11852 thorn_bar.o
+ .debug_info    0x00127814    0x11852 thorn_column.o
+ .debug_info    0x00139066    0x12c89 tile_passage.o
+ .debug_info    0x0014bcef     0x96d1 utility.o
+ .debug_info    0x001553c0     0xdd4d bn_affine_bg_animate_actions.o
+ .debug_info    0x0016310d    0x1bb5e bn_audio_manager.o
+ .debug_info    0x0017ec6b     0x78df bn_best_fit_allocator.o
+ .debug_info    0x0018654a    0x4c106 bn_bg_blocks_manager.o
+ .debug_info    0x001d2650    0x57014 bn_bgs_manager.o
+ .debug_info    0x00229664     0x7d52 bn_cameras_manager.o
+ .debug_info    0x002313b6     0xade3 bn_core.o
+ .debug_info    0x0023c199    0x24eb8 bn_display_manager.o
+ .debug_info    0x00261051     0x7ec9 bn_gpio_manager.o
+ .debug_info    0x00268f1a    0x64173 bn_hblank_effects_manager.o
+ .debug_info    0x002cd08d     0x5380 bn_hdma_manager.o
+ .debug_info    0x002d240d     0x5dad bn_keypad_manager.o
+ .debug_info    0x002d81ba     0x76ed bn_link_manager.o
+ .debug_info    0x002df8a7     0x8868 bn_memory_manager.o
+ .debug_info    0x002e810f    0x21bcd bn_palettes_manager.o
+ .debug_info    0x00309cdc     0x81ae bn_profiler.o
+ .debug_info    0x00311e8a    0x1a5e5 bn_sprite_affine_mats_manager.o
+ .debug_info    0x0032c46f     0xd5db bn_sprite_animate_actions.o
+ .debug_info    0x00339a4a    0x2913d bn_sprite_text_generator.o
+ .debug_info    0x00362b87    0x1bc48 bn_sprite_tiles_manager.o
+ .debug_info    0x0037e7cf     0xc3c4 bn_sprites_manager.bn_iwram.o
+ .debug_info    0x0038ab93    0x44ee3 bn_sprites_manager.o
+ .debug_info    0x003cfa76     0xb1c4 bn_sstream.o
+ .debug_info    0x003dac3a    0x18a02 bn_translation_unit.o
+ .debug_info    0x003f363c     0x7e30 bn_hw_audio.o
+ .debug_info    0x003fb46c     0x1c57 bn_hw_common.bn_noflto.o
+ .debug_info    0x003fd0c3     0x19bc bn_hw_cstdlib.o
+ .debug_info    0x003fea7f      0x614 bn_hw_game_pak.bn_ewram.o
+ .debug_info    0x003ff093     0x4067 bn_hw_gpio.bn_noflto.o
+ .debug_info    0x004030fa     0x7dba bn_hw_link.o
+ .debug_info    0x0040aeb4      0x4c2 bn_hw_memory.o
+ .debug_info    0x0040b376     0x1378 bn_hw_palettes.bn_iwram.o
+ .debug_info    0x0040c6ee     0x5473 bn_hw_palettes.o
+ .debug_info    0x00411b61    0x1206f bn_hw_show.o
+ .debug_info    0x00423bd0      0x55b bn_hw_sram.bn_noflto.o
+ .debug_info    0x0042412b      0x751 bn_hw_system_font.o
+ .debug_info    0x0042487c     0x5532 bn_hw_text.o
+ .debug_info    0x00429dae      0x778 vgm.o
+ .debug_info    0x0042a526      0xc2e tonc_color.o
+ .debug_info    0x0042b154      0x994 tonc_sbmp16.o
+ .debug_info    0x0042bae8      0x6ab bmp16_drawg_b1cs.o
+ .debug_info    0x0042c193      0x578 tte_init_bmp.o
+ .debug_info    0x0042c70b      0xe1a tte_main.o
+ .debug_info    0x0042d525      0x241 interrupts_gba.o
+ .debug_info    0x0042d766     0x2203 gbt_player.o
+ .debug_info    0x0042f969       0x23 bn_hw_bg_blocks.o
+ .debug_info    0x0042f98c       0x24 bn_hw_hblank_effects.o
+ .debug_info    0x0042f9b0       0x23 bn_hw_palettes_asm.o
+ .debug_info    0x0042f9d3       0x30 clr_blend_fast.o
+ .debug_info    0x0042fa03       0x23 clr_fade_fast.o
+ .debug_info    0x0042fa26      0x1c8 tonc_bios.o
+ .debug_info    0x0042fbee       0x3a tonc_memset.o
+ .debug_info    0x0042fc28       0x24 irq_handler.o
+ .debug_info    0x0042fc4c       0x24 posprintf.o
+ .debug_info    0x0042fc70       0x22 lmul.o
+ .debug_info    0x0042fc92       0x22 memcpy.o
+ .debug_info    0x0042fcb4       0x22 memmove.o
+ .debug_info    0x0042fcd6       0x22 memset.o
+ .debug_info    0x0042fcf8       0x22 rmemcpy.o
+ .debug_info    0x0042fd1a       0x23 sdiv32.o
+ .debug_info    0x0042fd3d       0x24 udiv32.o
+ .debug_info    0x0042fd61       0x24 huffman.o
+ .debug_info    0x0042fd85       0x24 lz77.o
+ .debug_info    0x0042fda9       0x24 running_length.o
+ .debug_info    0x0042fdcd       0x24 mm_effect.o
+ .debug_info    0x0042fdf1       0x23 mm_main.o
+ .debug_info    0x0042fe14       0x22 mm_mas.o
+ .debug_info    0x0042fe36       0x24 mm_mas_arm.o
+ .debug_info    0x0042fe5a       0x22 mm_main_gba.o
+ .debug_info    0x0042fe7c       0x22 mm_mixer_gba.o
 
 .debug_abbrev   0x00000000    0x2e4f2
  *(.debug_abbrev)
@@ -10182,96 +10170,96 @@ Linker script and memory map
  .debug_abbrev  0x0002e4ce       0x12 mm_main_gba.o
  .debug_abbrev  0x0002e4e0       0x12 mm_mixer_gba.o
 
-.debug_line     0x00000000    0xeab73
+.debug_line     0x00000000    0xeab75
  *(.debug_line)
  .debug_line    0x00000000     0x1693 collider.o
  .debug_line    0x00001693     0x20c0 enemy.o
  .debug_line    0x00003753     0x1d0b falling_platform_thin.o
  .debug_line    0x0000545e     0x1d23 falling_platform_wide.o
- .debug_line    0x00007181     0x7dee game_object.o
- .debug_line    0x0000ef6f     0x26b9 ground_ghoul.o
- .debug_line    0x00011628     0x17cc hitbox.o
- .debug_line    0x00012df4     0x3d52 level.o
- .debug_line    0x00016b46      0x99d main.o
- .debug_line    0x000174e3     0x29d4 phase_orb.o
- .debug_line    0x00019eb7     0x11f0 physics.o
- .debug_line    0x0001b0a7     0xc8d5 player.o
- .debug_line    0x0002797c     0x22d9 room.o
- .debug_line    0x00029c55      0x6e0 room_bounds.o
- .debug_line    0x0002a335     0x122d thorn_bar.o
- .debug_line    0x0002b562     0x1236 thorn_column.o
- .debug_line    0x0002c798     0x1af6 tile_passage.o
- .debug_line    0x0002e28e      0xb47 utility.o
- .debug_line    0x0002edd5     0x1f84 bn_affine_bg_animate_actions.o
- .debug_line    0x00030d59     0x7cf5 bn_audio_manager.o
- .debug_line    0x00038a4e     0x162a bn_best_fit_allocator.o
- .debug_line    0x0003a078    0x18240 bn_bg_blocks_manager.o
- .debug_line    0x000522b8    0x1e0ef bn_bgs_manager.o
- .debug_line    0x000703a7     0x13fb bn_cameras_manager.o
- .debug_line    0x000717a2     0x2233 bn_core.o
- .debug_line    0x000739d5     0x9338 bn_display_manager.o
- .debug_line    0x0007cd0d     0x137b bn_gpio_manager.o
- .debug_line    0x0007e088    0x17025 bn_hblank_effects_manager.o
- .debug_line    0x000950ad     0x1427 bn_hdma_manager.o
- .debug_line    0x000964d4     0x1541 bn_keypad_manager.o
- .debug_line    0x00097a15      0xe59 bn_link_manager.o
- .debug_line    0x0009886e     0x1978 bn_memory_manager.o
- .debug_line    0x0009a1e6     0xa691 bn_palettes_manager.o
- .debug_line    0x000a4877      0xfe4 bn_profiler.o
- .debug_line    0x000a585b     0x5e76 bn_sprite_affine_mats_manager.o
- .debug_line    0x000ab6d1     0x1f6b bn_sprite_animate_actions.o
- .debug_line    0x000ad63c     0x8cc8 bn_sprite_text_generator.o
- .debug_line    0x000b6304     0x680e bn_sprite_tiles_manager.o
- .debug_line    0x000bcb12      0xf84 bn_sprites_manager.bn_iwram.o
- .debug_line    0x000bda96    0x15d27 bn_sprites_manager.o
- .debug_line    0x000d37bd     0x27c8 bn_sstream.o
- .debug_line    0x000d5f85     0x3b98 bn_translation_unit.o
- .debug_line    0x000d9b1d     0x1c8f bn_hw_audio.o
- .debug_line    0x000db7ac      0x642 bn_hw_common.bn_noflto.o
- .debug_line    0x000dbdee      0x52d bn_hw_cstdlib.o
- .debug_line    0x000dc31b      0x464 bn_hw_game_pak.bn_ewram.o
- .debug_line    0x000dc77f      0x630 bn_hw_gpio.bn_noflto.o
- .debug_line    0x000dcdaf     0x1e39 bn_hw_link.o
- .debug_line    0x000debe8      0x27f bn_hw_memory.o
- .debug_line    0x000dee67      0x6b2 bn_hw_palettes.bn_iwram.o
- .debug_line    0x000df519      0xa42 bn_hw_palettes.o
- .debug_line    0x000dff5b     0x318b bn_hw_show.o
- .debug_line    0x000e30e6      0x2ee bn_hw_sram.bn_noflto.o
- .debug_line    0x000e33d4      0x31b bn_hw_system_font.o
- .debug_line    0x000e36ef      0xdab bn_hw_text.o
- .debug_line    0x000e449a      0x528 vgm.o
- .debug_line    0x000e49c2      0x87a tonc_color.o
- .debug_line    0x000e523c      0x6a6 tonc_sbmp16.o
- .debug_line    0x000e58e2      0x3fb bmp16_drawg_b1cs.o
- .debug_line    0x000e5cdd      0x175 tte_init_bmp.o
- .debug_line    0x000e5e52      0x99e tte_main.o
- .debug_line    0x000e67f0      0x2c5 interrupts_gba.o
- .debug_line    0x000e6ab5     0x1e66 gbt_player.o
- .debug_line    0x000e891b       0x7f bn_hw_bg_blocks.o
- .debug_line    0x000e899a       0x98 bn_hw_hblank_effects.o
- .debug_line    0x000e8a32       0x6f bn_hw_palettes_asm.o
- .debug_line    0x000e8aa1       0x8f clr_blend_fast.o
- .debug_line    0x000e8b30       0x8e clr_fade_fast.o
- .debug_line    0x000e8bbe      0x2aa tonc_bios.o
- .debug_line    0x000e8e68       0xad tonc_memset.o
- .debug_line    0x000e8f15       0xca irq_handler.o
- .debug_line    0x000e8fdf      0x1a4 posprintf.o
- .debug_line    0x000e9183       0xaa lmul.o
- .debug_line    0x000e922d       0xc0 memcpy.o
- .debug_line    0x000e92ed       0xa0 memmove.o
- .debug_line    0x000e938d       0xca memset.o
- .debug_line    0x000e9457       0xad rmemcpy.o
- .debug_line    0x000e9504       0x7b sdiv32.o
- .debug_line    0x000e957f       0xe4 udiv32.o
- .debug_line    0x000e9663       0x97 huffman.o
- .debug_line    0x000e96fa       0xdd lz77.o
- .debug_line    0x000e97d7       0xb5 running_length.o
- .debug_line    0x000e988c      0x206 mm_effect.o
- .debug_line    0x000e9a92       0x77 mm_main.o
- .debug_line    0x000e9b09      0xa66 mm_mas.o
- .debug_line    0x000ea56f      0x1ec mm_mas_arm.o
- .debug_line    0x000ea75b      0x10a mm_main_gba.o
- .debug_line    0x000ea865      0x30e mm_mixer_gba.o
+ .debug_line    0x00007181     0x7df0 game_object.o
+ .debug_line    0x0000ef71     0x26b9 ground_ghoul.o
+ .debug_line    0x0001162a     0x17cc hitbox.o
+ .debug_line    0x00012df6     0x3d52 level.o
+ .debug_line    0x00016b48      0x99d main.o
+ .debug_line    0x000174e5     0x29d4 phase_orb.o
+ .debug_line    0x00019eb9     0x11f0 physics.o
+ .debug_line    0x0001b0a9     0xc8d5 player.o
+ .debug_line    0x0002797e     0x22d9 room.o
+ .debug_line    0x00029c57      0x6e0 room_bounds.o
+ .debug_line    0x0002a337     0x122d thorn_bar.o
+ .debug_line    0x0002b564     0x1236 thorn_column.o
+ .debug_line    0x0002c79a     0x1af6 tile_passage.o
+ .debug_line    0x0002e290      0xb47 utility.o
+ .debug_line    0x0002edd7     0x1f84 bn_affine_bg_animate_actions.o
+ .debug_line    0x00030d5b     0x7cf5 bn_audio_manager.o
+ .debug_line    0x00038a50     0x162a bn_best_fit_allocator.o
+ .debug_line    0x0003a07a    0x18240 bn_bg_blocks_manager.o
+ .debug_line    0x000522ba    0x1e0ef bn_bgs_manager.o
+ .debug_line    0x000703a9     0x13fb bn_cameras_manager.o
+ .debug_line    0x000717a4     0x2233 bn_core.o
+ .debug_line    0x000739d7     0x9338 bn_display_manager.o
+ .debug_line    0x0007cd0f     0x137b bn_gpio_manager.o
+ .debug_line    0x0007e08a    0x17025 bn_hblank_effects_manager.o
+ .debug_line    0x000950af     0x1427 bn_hdma_manager.o
+ .debug_line    0x000964d6     0x1541 bn_keypad_manager.o
+ .debug_line    0x00097a17      0xe59 bn_link_manager.o
+ .debug_line    0x00098870     0x1978 bn_memory_manager.o
+ .debug_line    0x0009a1e8     0xa691 bn_palettes_manager.o
+ .debug_line    0x000a4879      0xfe4 bn_profiler.o
+ .debug_line    0x000a585d     0x5e76 bn_sprite_affine_mats_manager.o
+ .debug_line    0x000ab6d3     0x1f6b bn_sprite_animate_actions.o
+ .debug_line    0x000ad63e     0x8cc8 bn_sprite_text_generator.o
+ .debug_line    0x000b6306     0x680e bn_sprite_tiles_manager.o
+ .debug_line    0x000bcb14      0xf84 bn_sprites_manager.bn_iwram.o
+ .debug_line    0x000bda98    0x15d27 bn_sprites_manager.o
+ .debug_line    0x000d37bf     0x27c8 bn_sstream.o
+ .debug_line    0x000d5f87     0x3b98 bn_translation_unit.o
+ .debug_line    0x000d9b1f     0x1c8f bn_hw_audio.o
+ .debug_line    0x000db7ae      0x642 bn_hw_common.bn_noflto.o
+ .debug_line    0x000dbdf0      0x52d bn_hw_cstdlib.o
+ .debug_line    0x000dc31d      0x464 bn_hw_game_pak.bn_ewram.o
+ .debug_line    0x000dc781      0x630 bn_hw_gpio.bn_noflto.o
+ .debug_line    0x000dcdb1     0x1e39 bn_hw_link.o
+ .debug_line    0x000debea      0x27f bn_hw_memory.o
+ .debug_line    0x000dee69      0x6b2 bn_hw_palettes.bn_iwram.o
+ .debug_line    0x000df51b      0xa42 bn_hw_palettes.o
+ .debug_line    0x000dff5d     0x318b bn_hw_show.o
+ .debug_line    0x000e30e8      0x2ee bn_hw_sram.bn_noflto.o
+ .debug_line    0x000e33d6      0x31b bn_hw_system_font.o
+ .debug_line    0x000e36f1      0xdab bn_hw_text.o
+ .debug_line    0x000e449c      0x528 vgm.o
+ .debug_line    0x000e49c4      0x87a tonc_color.o
+ .debug_line    0x000e523e      0x6a6 tonc_sbmp16.o
+ .debug_line    0x000e58e4      0x3fb bmp16_drawg_b1cs.o
+ .debug_line    0x000e5cdf      0x175 tte_init_bmp.o
+ .debug_line    0x000e5e54      0x99e tte_main.o
+ .debug_line    0x000e67f2      0x2c5 interrupts_gba.o
+ .debug_line    0x000e6ab7     0x1e66 gbt_player.o
+ .debug_line    0x000e891d       0x7f bn_hw_bg_blocks.o
+ .debug_line    0x000e899c       0x98 bn_hw_hblank_effects.o
+ .debug_line    0x000e8a34       0x6f bn_hw_palettes_asm.o
+ .debug_line    0x000e8aa3       0x8f clr_blend_fast.o
+ .debug_line    0x000e8b32       0x8e clr_fade_fast.o
+ .debug_line    0x000e8bc0      0x2aa tonc_bios.o
+ .debug_line    0x000e8e6a       0xad tonc_memset.o
+ .debug_line    0x000e8f17       0xca irq_handler.o
+ .debug_line    0x000e8fe1      0x1a4 posprintf.o
+ .debug_line    0x000e9185       0xaa lmul.o
+ .debug_line    0x000e922f       0xc0 memcpy.o
+ .debug_line    0x000e92ef       0xa0 memmove.o
+ .debug_line    0x000e938f       0xca memset.o
+ .debug_line    0x000e9459       0xad rmemcpy.o
+ .debug_line    0x000e9506       0x7b sdiv32.o
+ .debug_line    0x000e9581       0xe4 udiv32.o
+ .debug_line    0x000e9665       0x97 huffman.o
+ .debug_line    0x000e96fc       0xdd lz77.o
+ .debug_line    0x000e97d9       0xb5 running_length.o
+ .debug_line    0x000e988e      0x206 mm_effect.o
+ .debug_line    0x000e9a94       0x77 mm_main.o
+ .debug_line    0x000e9b0b      0xa66 mm_mas.o
+ .debug_line    0x000ea571      0x1ec mm_mas_arm.o
+ .debug_line    0x000ea75d      0x10a mm_main_gba.o
+ .debug_line    0x000ea867      0x30e mm_mixer_gba.o
 
 .debug_frame    0x00000000    0x150dc
  *(.debug_frame)
@@ -10536,297 +10524,291 @@ Linker script and memory map
  .ARM.attributes
                 0x000000ce       0x1a block_bn_gfx.o
  .ARM.attributes
-                0x000000e8       0x1a ceiling_ghoul_bn_gfx.o
+                0x000000e8       0x1a devil_platform_bn_gfx.o
  .ARM.attributes
-                0x00000102       0x1a devil_platform_bn_gfx.o
+                0x00000102       0x1a falling_platform_thin_bn_gfx.o
  .ARM.attributes
-                0x0000011c       0x1a falling_platform_thin_bn_gfx.o
+                0x0000011c       0x1a falling_platform_wide_bn_gfx.o
  .ARM.attributes
-                0x00000136       0x1a falling_platform_wide_bn_gfx.o
+                0x00000136       0x1a game_object_bn_gfx.o
  .ARM.attributes
-                0x00000150       0x1a game_object_bn_gfx.o
+                0x00000150       0x1a ground_ghoul_bn_gfx.o
  .ARM.attributes
-                0x0000016a       0x1a ground_ghoul_bn_gfx.o
+                0x0000016a       0x1a hit_effect_bn_gfx.o
  .ARM.attributes
-                0x00000184       0x1a hit_effect_bn_gfx.o
+                0x00000184       0x1a hitbox_bn_gfx.o
  .ARM.attributes
-                0x0000019e       0x1a hitbox_bn_gfx.o
+                0x0000019e       0x1a jump_effect_bn_gfx.o
  .ARM.attributes
-                0x000001b8       0x1a jump_effect_bn_gfx.o
+                0x000001b8       0x1a land_effect_bn_gfx.o
  .ARM.attributes
-                0x000001d2       0x1a land_effect_bn_gfx.o
+                0x000001d2       0x1a phase_marker_bn_gfx.o
  .ARM.attributes
-                0x000001ec       0x1a phase_marker_bn_gfx.o
+                0x000001ec       0x1a phase_orb_down_bn_gfx.o
  .ARM.attributes
-                0x00000206       0x1a phase_orb_down_bn_gfx.o
+                0x00000206       0x1a phase_orb_left_bn_gfx.o
  .ARM.attributes
-                0x00000220       0x1a phase_orb_left_bn_gfx.o
+                0x00000220       0x1a phase_orb_right_bn_gfx.o
  .ARM.attributes
-                0x0000023a       0x1a phase_orb_right_bn_gfx.o
+                0x0000023a       0x1a phase_orb_up_bn_gfx.o
  .ARM.attributes
-                0x00000254       0x1a phase_orb_up_bn_gfx.o
+                0x00000254       0x1a player_bn_gfx.o
  .ARM.attributes
-                0x0000026e       0x1a player_bn_gfx.o
+                0x0000026e       0x1a scythe_platform_bn_gfx.o
  .ARM.attributes
-                0x00000288       0x1a scythe_platform_bn_gfx.o
+                0x00000288       0x1a sprite_flash_palette_bn_gfx.o
  .ARM.attributes
-                0x000002a2       0x1a sprite_flash_palette_bn_gfx.o
+                0x000002a2       0x1a test_bg_bn_gfx.o
  .ARM.attributes
-                0x000002bc       0x1a test_bg_bn_gfx.o
+                0x000002bc       0x1a test_enemy_bn_gfx.o
  .ARM.attributes
-                0x000002d6       0x1a test_enemy_bn_gfx.o
+                0x000002d6       0x1a test_level_bn_gfx.o
  .ARM.attributes
-                0x000002f0       0x1a test_level_bn_gfx.o
+                0x000002f0       0x1a test_object_bg_bn_gfx.o
  .ARM.attributes
-                0x0000030a       0x1a test_object_bg_bn_gfx.o
+                0x0000030a       0x1a test_painted_bg_bn_gfx.o
  .ARM.attributes
-                0x00000324       0x1a test_painted_bg_bn_gfx.o
+                0x00000324       0x1a thorn_bar_bn_gfx.o
  .ARM.attributes
-                0x0000033e       0x1a thorn_bar_bn_gfx.o
+                0x0000033e       0x1a thorn_column_bn_gfx.o
  .ARM.attributes
-                0x00000358       0x1a thorn_column_bn_gfx.o
+                0x00000358       0x1a tile_passage_bn_gfx.o
  .ARM.attributes
-                0x00000372       0x1a tile_passage_bn_gfx.o
+                0x00000372       0x1a wall_splat_effect_bn_gfx.o
  .ARM.attributes
-                0x0000038c       0x1a wall_left_ghoul_bn_gfx.o
+                0x0000038c       0x26 collider.o
  .ARM.attributes
-                0x000003a6       0x1a wall_right_ghoul_bn_gfx.o
+                0x000003b2       0x26 enemy.o
  .ARM.attributes
-                0x000003c0       0x1a wall_splat_effect_bn_gfx.o
+                0x000003d8       0x26 falling_platform_thin.o
  .ARM.attributes
-                0x000003da       0x26 collider.o
+                0x000003fe       0x26 falling_platform_wide.o
  .ARM.attributes
-                0x00000400       0x26 enemy.o
+                0x00000424       0x26 game_object.o
  .ARM.attributes
-                0x00000426       0x26 falling_platform_thin.o
+                0x0000044a       0x26 ground_ghoul.o
  .ARM.attributes
-                0x0000044c       0x26 falling_platform_wide.o
+                0x00000470       0x26 hitbox.o
  .ARM.attributes
-                0x00000472       0x26 game_object.o
+                0x00000496       0x26 level.o
  .ARM.attributes
-                0x00000498       0x26 ground_ghoul.o
+                0x000004bc       0x26 main.o
  .ARM.attributes
-                0x000004be       0x26 hitbox.o
+                0x000004e2       0x26 new_object_template.o
  .ARM.attributes
-                0x000004e4       0x26 level.o
+                0x00000508       0x26 phase_orb.o
  .ARM.attributes
-                0x0000050a       0x26 main.o
+                0x0000052e       0x26 physics.o
  .ARM.attributes
-                0x00000530       0x26 new_object_template.o
+                0x00000554       0x26 player.o
  .ARM.attributes
-                0x00000556       0x26 phase_orb.o
+                0x0000057a       0x26 room.o
  .ARM.attributes
-                0x0000057c       0x26 physics.o
+                0x000005a0       0x26 room_bounds.o
  .ARM.attributes
-                0x000005a2       0x26 player.o
+                0x000005c6       0x26 thorn_bar.o
  .ARM.attributes
-                0x000005c8       0x26 room.o
+                0x000005ec       0x26 thorn_column.o
  .ARM.attributes
-                0x000005ee       0x26 room_bounds.o
+                0x00000612       0x26 tile_passage.o
  .ARM.attributes
-                0x00000614       0x26 thorn_bar.o
+                0x00000638       0x26 utility.o
  .ARM.attributes
-                0x0000063a       0x26 thorn_column.o
+                0x0000065e       0x26 bn_affine_bg_animate_actions.o
  .ARM.attributes
-                0x00000660       0x26 tile_passage.o
+                0x00000684       0x26 bn_audio_manager.o
  .ARM.attributes
-                0x00000686       0x26 utility.o
+                0x000006aa       0x26 bn_best_fit_allocator.o
  .ARM.attributes
-                0x000006ac       0x26 bn_affine_bg_animate_actions.o
+                0x000006d0       0x26 bn_bg_blocks_manager.o
  .ARM.attributes
-                0x000006d2       0x26 bn_audio_manager.o
+                0x000006f6       0x26 bn_bgs_manager.o
  .ARM.attributes
-                0x000006f8       0x26 bn_best_fit_allocator.o
+                0x0000071c       0x26 bn_cameras_manager.o
  .ARM.attributes
-                0x0000071e       0x26 bn_bg_blocks_manager.o
+                0x00000742       0x26 bn_core.o
  .ARM.attributes
-                0x00000744       0x26 bn_bgs_manager.o
+                0x00000768       0x26 bn_display_manager.o
  .ARM.attributes
-                0x0000076a       0x26 bn_cameras_manager.o
+                0x0000078e       0x26 bn_gpio_manager.o
  .ARM.attributes
-                0x00000790       0x26 bn_core.o
+                0x000007b4       0x26 bn_hblank_effects_manager.o
  .ARM.attributes
-                0x000007b6       0x26 bn_display_manager.o
+                0x000007da       0x26 bn_hdma_manager.o
  .ARM.attributes
-                0x000007dc       0x26 bn_gpio_manager.o
+                0x00000800       0x26 bn_keypad_manager.o
  .ARM.attributes
-                0x00000802       0x26 bn_hblank_effects_manager.o
+                0x00000826       0x26 bn_link_manager.o
  .ARM.attributes
-                0x00000828       0x26 bn_hdma_manager.o
+                0x0000084c       0x26 bn_memory_manager.o
  .ARM.attributes
-                0x0000084e       0x26 bn_keypad_manager.o
+                0x00000872       0x26 bn_palettes_manager.o
  .ARM.attributes
-                0x00000874       0x26 bn_link_manager.o
+                0x00000898       0x26 bn_profiler.o
  .ARM.attributes
-                0x0000089a       0x26 bn_memory_manager.o
+                0x000008be       0x26 bn_regular_bg_animate_actions.o
  .ARM.attributes
-                0x000008c0       0x26 bn_palettes_manager.o
+                0x000008e4       0x26 bn_sprite_affine_mats_manager.o
  .ARM.attributes
-                0x000008e6       0x26 bn_profiler.o
+                0x0000090a       0x26 bn_sprite_animate_actions.o
  .ARM.attributes
-                0x0000090c       0x26 bn_regular_bg_animate_actions.o
+                0x00000930       0x26 bn_sprite_text_generator.o
  .ARM.attributes
-                0x00000932       0x26 bn_sprite_affine_mats_manager.o
+                0x00000956       0x26 bn_sprite_tiles_manager.o
  .ARM.attributes
-                0x00000958       0x26 bn_sprite_animate_actions.o
+                0x0000097c       0x26 bn_sprites_manager.bn_iwram.o
  .ARM.attributes
-                0x0000097e       0x26 bn_sprite_text_generator.o
+                0x000009a2       0x26 bn_sprites_manager.o
  .ARM.attributes
-                0x000009a4       0x26 bn_sprite_tiles_manager.o
+                0x000009c8       0x26 bn_sstream.o
  .ARM.attributes
-                0x000009ca       0x26 bn_sprites_manager.bn_iwram.o
+                0x000009ee       0x26 bn_translation_unit.o
  .ARM.attributes
-                0x000009f0       0x26 bn_sprites_manager.o
+                0x00000a14       0x26 bn_hw_audio.o
  .ARM.attributes
-                0x00000a16       0x26 bn_sstream.o
+                0x00000a3a       0x26 bn_hw_common.bn_noflto.o
  .ARM.attributes
-                0x00000a3c       0x26 bn_translation_unit.o
+                0x00000a60       0x26 bn_hw_cstdlib.o
  .ARM.attributes
-                0x00000a62       0x26 bn_hw_audio.o
+                0x00000a86       0x26 bn_hw_cstring.o
  .ARM.attributes
-                0x00000a88       0x26 bn_hw_common.bn_noflto.o
+                0x00000aac       0x26 bn_hw_game_pak.bn_ewram.o
  .ARM.attributes
-                0x00000aae       0x26 bn_hw_cstdlib.o
+                0x00000ad2       0x26 bn_hw_gpio.bn_noflto.o
  .ARM.attributes
-                0x00000ad4       0x26 bn_hw_cstring.o
+                0x00000af8       0x26 bn_hw_link.o
  .ARM.attributes
-                0x00000afa       0x26 bn_hw_game_pak.bn_ewram.o
+                0x00000b1e       0x26 bn_hw_memory.o
  .ARM.attributes
-                0x00000b20       0x26 bn_hw_gpio.bn_noflto.o
+                0x00000b44       0x26 bn_hw_palettes.bn_iwram.o
  .ARM.attributes
-                0x00000b46       0x26 bn_hw_link.o
+                0x00000b6a       0x26 bn_hw_palettes.o
  .ARM.attributes
-                0x00000b6c       0x26 bn_hw_memory.o
+                0x00000b90       0x26 bn_hw_show.o
  .ARM.attributes
-                0x00000b92       0x26 bn_hw_palettes.bn_iwram.o
+                0x00000bb6       0x26 bn_hw_sprite_tiles.bn_iwram.o
  .ARM.attributes
-                0x00000bb8       0x26 bn_hw_palettes.o
+                0x00000bdc       0x26 bn_hw_sram.bn_ewram.o
  .ARM.attributes
-                0x00000bde       0x26 bn_hw_show.o
+                0x00000c02       0x26 bn_hw_sram.bn_noflto.o
  .ARM.attributes
-                0x00000c04       0x26 bn_hw_sprite_tiles.bn_iwram.o
+                0x00000c28       0x26 bn_hw_system_font.o
  .ARM.attributes
-                0x00000c2a       0x26 bn_hw_sram.bn_ewram.o
+                0x00000c4e       0x26 bn_hw_text.o
  .ARM.attributes
-                0x00000c50       0x26 bn_hw_sram.bn_noflto.o
+                0x00000c74       0x26 vgm.o
  .ARM.attributes
-                0x00000c76       0x26 bn_hw_system_font.o
+                0x00000c9a       0x26 tonc_color.o
  .ARM.attributes
-                0x00000c9c       0x26 bn_hw_text.o
+                0x00000cc0       0x26 tonc_sbmp16.o
  .ARM.attributes
-                0x00000cc2       0x26 vgm.o
+                0x00000ce6       0x26 tonc_schr4c.o
  .ARM.attributes
-                0x00000ce8       0x26 tonc_color.o
+                0x00000d0c       0x26 tonc_schr4r.o
  .ARM.attributes
-                0x00000d0e       0x26 tonc_sbmp16.o
+                0x00000d32       0x26 tonc_surface.o
  .ARM.attributes
-                0x00000d34       0x26 tonc_schr4c.o
+                0x00000d58       0x26 bmp16_drawg_b1cs.o
  .ARM.attributes
-                0x00000d5a       0x26 tonc_schr4r.o
+                0x00000d7e       0x26 tte_init_bmp.o
  .ARM.attributes
-                0x00000d80       0x26 tonc_surface.o
+                0x00000da4       0x26 tte_main.o
  .ARM.attributes
-                0x00000da6       0x26 bmp16_drawg_b1cs.o
+                0x00000dca       0x26 interrupts_gba.o
  .ARM.attributes
-                0x00000dcc       0x26 tte_init_bmp.o
+                0x00000df0       0x26 coroutine.o
  .ARM.attributes
-                0x00000df2       0x26 tte_main.o
+                0x00000e16       0x26 rtc.o
  .ARM.attributes
-                0x00000e18       0x26 interrupts_gba.o
+                0x00000e3c       0x26 gbt_player.o
  .ARM.attributes
-                0x00000e3e       0x26 coroutine.o
+                0x00000e62       0x1a bn_hw_bg_blocks.o
  .ARM.attributes
-                0x00000e64       0x26 rtc.o
+                0x00000e7c       0x1a bn_hw_core.o
  .ARM.attributes
-                0x00000e8a       0x26 gbt_player.o
+                0x00000e96       0x1a bn_hw_hblank_effects.o
  .ARM.attributes
-                0x00000eb0       0x1a bn_hw_bg_blocks.o
+                0x00000eb0       0x1a bn_hw_palettes_asm.o
  .ARM.attributes
-                0x00000eca       0x1a bn_hw_core.o
+                0x00000eca       0x1a clr_blend_fast.o
  .ARM.attributes
-                0x00000ee4       0x1a bn_hw_hblank_effects.o
+                0x00000ee4       0x1a clr_fade_fast.o
  .ARM.attributes
-                0x00000efe       0x1a bn_hw_palettes_asm.o
+                0x00000efe       0x1a tonc_bios.o
  .ARM.attributes
-                0x00000f18       0x1a clr_blend_fast.o
+                0x00000f18       0x1a tonc_memset.o
  .ARM.attributes
-                0x00000f32       0x1a clr_fade_fast.o
+                0x00000f32       0x1a tonc_nocash.o
  .ARM.attributes
-                0x00000f4c       0x1a tonc_bios.o
+                0x00000f4c       0x1a verdana9.o
  .ARM.attributes
-                0x00000f66       0x1a tonc_memset.o
+                0x00000f66       0x1a irq_handler.o
  .ARM.attributes
-                0x00000f80       0x1a tonc_nocash.o
+                0x00000f80       0x1a posprintf.o
  .ARM.attributes
-                0x00000f9a       0x1a verdana9.o
+                0x00000f9a       0x1a atan2.o
  .ARM.attributes
-                0x00000fb4       0x1a irq_handler.o
+                0x00000fb4       0x1a coroutine_asm.o
  .ARM.attributes
-                0x00000fce       0x1a posprintf.o
+                0x00000fce       0x1a fiq_memcpy.o
  .ARM.attributes
-                0x00000fe8       0x1a atan2.o
+                0x00000fe8       0x1a lmul.o
  .ARM.attributes
-                0x00001002       0x1a coroutine_asm.o
+                0x00001002       0x1a memcpy.o
  .ARM.attributes
-                0x0000101c       0x1a fiq_memcpy.o
+                0x0000101c       0x1a memmove.o
  .ARM.attributes
-                0x00001036       0x1a lmul.o
+                0x00001036       0x1a memset.o
  .ARM.attributes
-                0x00001050       0x1a memcpy.o
+                0x00001050       0x1a rmemcpy.o
  .ARM.attributes
-                0x0000106a       0x1a memmove.o
+                0x0000106a       0x1a clz.o
  .ARM.attributes
-                0x00001084       0x1a memset.o
+                0x00001084       0x1a sdiv32.o
  .ARM.attributes
-                0x0000109e       0x1a rmemcpy.o
+                0x0000109e       0x1a sqrt32.o
  .ARM.attributes
-                0x000010b8       0x1a clz.o
+                0x000010b8       0x1a udiv32.o
  .ARM.attributes
-                0x000010d2       0x1a sdiv32.o
+                0x000010d2       0x1a huffman.o
  .ARM.attributes
-                0x000010ec       0x1a sqrt32.o
+                0x000010ec       0x1a lz77.o
  .ARM.attributes
-                0x00001106       0x1a udiv32.o
+                0x00001106       0x1a running_length.o
  .ARM.attributes
-                0x00001120       0x1a huffman.o
+                0x00001120       0x1a mm_effect.o
  .ARM.attributes
-                0x0000113a       0x1a lz77.o
+                0x0000113a       0x1a mm_main.o
  .ARM.attributes
-                0x00001154       0x1a running_length.o
+                0x00001154       0x1a mm_mas.o
  .ARM.attributes
-                0x0000116e       0x1a mm_effect.o
+                0x0000116e       0x1a mm_mas_arm.o
  .ARM.attributes
-                0x00001188       0x1a mm_main.o
+                0x00001188       0x1a mm_init_default.o
  .ARM.attributes
-                0x000011a2       0x1a mm_mas.o
+                0x000011a2       0x1a mm_main_gba.o
  .ARM.attributes
-                0x000011bc       0x1a mm_mas_arm.o
+                0x000011bc       0x1a mm_mixer_gba.o
  .ARM.attributes
-                0x000011d6       0x1a mm_init_default.o
+                0x000011d6       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_arm_muldf3.o)
  .ARM.attributes
-                0x000011f0       0x1a mm_main_gba.o
+                0x000011f2       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_call_via_rX.o)
  .ARM.attributes
-                0x0000120a       0x1a mm_mixer_gba.o
+                0x0000120e       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_arm_addsubdf3.o)
  .ARM.attributes
-                0x00001224       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_arm_muldf3.o)
+                0x0000122a       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_arm_fixdfsi.o)
  .ARM.attributes
-                0x00001240       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_call_via_rX.o)
+                0x00001246       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_aeabi_ldivmod.o)
  .ARM.attributes
-                0x0000125c       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_arm_addsubdf3.o)
+                0x00001262       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_aeabi_uldivmod.o)
  .ARM.attributes
-                0x00001278       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_arm_fixdfsi.o)
+                0x0000127e       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_sync_none.o)
  .ARM.attributes
-                0x00001294       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_aeabi_ldivmod.o)
+                0x0000129a       0x2a C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_udivmoddi4.o)
  .ARM.attributes
-                0x000012b0       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_aeabi_uldivmod.o)
+                0x000012c4       0x2a C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb/crtend.o
  .ARM.attributes
-                0x000012cc       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_sync_none.o)
- .ARM.attributes
-                0x000012e8       0x2a C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_udivmoddi4.o)
- .ARM.attributes
-                0x00001312       0x2a C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb/crtend.o
- .ARM.attributes
-                0x0000133c       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb/crtn.o
+                0x000012ee       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb/crtn.o
 
 /DISCARD/
  *(.note.GNU-stack)
@@ -10838,7 +10820,6 @@ LOAD air_jump_effect_bn_gfx.o
 LOAD angel_platform_bn_gfx.o
 LOAD bg_flash_palette_bn_gfx.o
 LOAD block_bn_gfx.o
-LOAD ceiling_ghoul_bn_gfx.o
 LOAD devil_platform_bn_gfx.o
 LOAD falling_platform_thin_bn_gfx.o
 LOAD falling_platform_wide_bn_gfx.o
@@ -10864,8 +10845,6 @@ LOAD test_painted_bg_bn_gfx.o
 LOAD thorn_bar_bn_gfx.o
 LOAD thorn_column_bn_gfx.o
 LOAD tile_passage_bn_gfx.o
-LOAD wall_left_ghoul_bn_gfx.o
-LOAD wall_right_ghoul_bn_gfx.o
 LOAD wall_splat_effect_bn_gfx.o
 LOAD collider.o
 LOAD enemy.o

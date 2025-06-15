@@ -1048,6 +1048,7 @@ void GameObject::resolveUpSpikeCollision(const Collider& other_collider)
         rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_KNOCKBACK_X_FORCE * 0, 
                                                        OBJECT_KNOCKBACK_Y_FORCE * UP),
                                                        OBJECT_KNOCKBACK_DECAY));
+
         hitpoints = 0;
     }
 }
