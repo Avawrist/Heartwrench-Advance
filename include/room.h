@@ -26,6 +26,7 @@
 #include "phase_orb.h"
 #include "falling_platform_wide.h"
 #include "falling_platform_thin.h"
+#include "push_block.h"
 
 // Enemies
 #include "ground_ghoul.h"

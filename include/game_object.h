@@ -47,6 +47,7 @@
 #include "bn_sprite_items_phase_orb_right.h"
 #include "bn_sprite_items_falling_platform_wide.h"
 #include "bn_sprite_items_falling_platform_thin.h"
+#include "bn_sprite_items_push_block.h"
 
 // Enemy Object Assets
 #include "bn_sprite_items_ground_ghoul.h"
@@ -126,6 +127,7 @@ enum ObjectType
 	PHASE_ORB_RIGHT,
 	FALLING_PLATFORM_WIDE,
 	FALLING_PLATFORM_THIN,
+	PUSH_BLOCK,
 
 	// Level Enemies
 	THORN_COLUMN,
@@ -340,6 +342,7 @@ struct GameObject
 	virtual void resolvePhaseOrbRightCollision(GameObject& object);
 	virtual void resolveFallingPlatformWideCollision(GameObject& object);
 	virtual void resolveFallingPlatformThinCollision(GameObject& object);
+	virtual void resolvePushBlockCollision(GameObject& object);
 
 	// Level Enemies
 	virtual void resolveThornColumnCollision(GameObject& object); 

@@ -203,6 +203,13 @@ void Hitbox::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&      
 // Collision Overrides //
 /////////////////////////
 
+// Level Objects
+void Hitbox::resolvePushBlockCollision(GameObject& object)
+{
+    if(collider.isCollision(object.collider))
+    {applyHit(object);}
+}
+
 // Level Enemies
 void Hitbox::resolveThornColumnCollision(GameObject& object)
 {

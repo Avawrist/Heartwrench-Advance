@@ -6,7 +6,7 @@
 
 NewObject::NewObject()
 {
-        // Init Assets //
+    // Init Assets //
     object_type = NEW_OBJECT;
     sprite_ptr  = bn::sprite_items::new_object.create_sprite(0, 0);
     sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
@@ -14,7 +14,7 @@ NewObject::NewObject()
     animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								                                   0,
 								                                   bn::sprite_items::new_object.tiles_item(),
-								                                   0);
+								                                   0, 0);
 
     // Init Variables //
     collider_offset_x = NEW_OBJECT_COLLIDER_OFFSET_X;

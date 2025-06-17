@@ -605,6 +605,9 @@ void GameObject::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game
 	collider_x_axis.setPos(collider.x(), collider.y() - rigidbody.final_dir.y());
 	collider_y_axis.setPos(collider.x() - rigidbody.final_dir.x(), collider.y());
 
+    // Reset grounded variable
+    grounded_detected = false;
+
     getStateFromObjects(game_objects);
     getStateFromTiles(bg_ptr, cells, bg_item);
 }
@@ -686,6 +689,10 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
                 resolveFallingPlatformThinCollision(*game_objects.at(i));
             break;
 
+            case PUSH_BLOCK:
+                resolvePushBlockCollision(*game_objects.at(i));
+            break;
+
             // Level Enemies
             case THORN_COLUMN:
                 resolveThornColumnCollision(*game_objects.at(i));
@@ -730,11 +737,12 @@ void GameObject::resolvePhaseOrbLeftCollision(GameObject& object)        {}
 void GameObject::resolvePhaseOrbRightCollision(GameObject& object)       {}
 void GameObject::resolveFallingPlatformWideCollision(GameObject& object) {}
 void GameObject::resolveFallingPlatformThinCollision(GameObject& object) {}
+void GameObject::resolvePushBlockCollision(GameObject& object)           {}
 
 // Level Enemies
-void GameObject::resolveThornColumnCollision(GameObject& object)    {}
-void GameObject::resolveThornBarCollision(GameObject& object)       {}
-void GameObject::resolveGroundGhoulCollision(GameObject& object)    {}
+void GameObject::resolveThornColumnCollision(GameObject& object) {}
+void GameObject::resolveThornBarCollision(GameObject& object)    {}
+void GameObject::resolveGroundGhoulCollision(GameObject& object) {}
 
 // Special Objects
 void GameObject::resolveHitboxAttackGround1Collision(GameObject& object) {}

@@ -154,6 +154,10 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             temp_object_ptr = new FallingPlatformThin();
         break;
 
+        case PUSH_BLOCK:
+            temp_object_ptr = new PushBlock();
+        break;
+
         ///////////////////
 	    // Level Enemies //
 	    ///////////////////

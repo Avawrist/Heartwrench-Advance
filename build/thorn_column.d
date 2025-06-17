@@ -91,6 +91,7 @@ thorn_column.o: G:/game/src/thorn_column.cpp \
  G:/game/build/bn_sprite_items_phase_orb_right.h \
  G:/game/build/bn_sprite_items_falling_platform_wide.h \
  G:/game/build/bn_sprite_items_falling_platform_thin.h \
+ G:/game/build/bn_sprite_items_push_block.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h \
  G:/game/build/bn_sprite_items_thorn_column.h \
  G:/game/build/bn_sprite_items_thorn_bar.h \
@@ -194,6 +195,7 @@ G:/game/build/bn_sprite_items_phase_orb_left.h:
 G:/game/build/bn_sprite_items_phase_orb_right.h:
 G:/game/build/bn_sprite_items_falling_platform_wide.h:
 G:/game/build/bn_sprite_items_falling_platform_thin.h:
+G:/game/build/bn_sprite_items_push_block.h:
 G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/build/bn_sprite_items_thorn_column.h:
 G:/game/build/bn_sprite_items_thorn_bar.h:

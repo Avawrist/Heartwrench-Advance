@@ -1537,6 +1537,15 @@ void Player::getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game
 
 				break;
 
+				case PUSH_BLOCK:
+
+					// Test for, and log grounded collision
+					if(test_collider.isCollision(other_collider) && 
+					   rigidbody.normalized_dir.y() >= 0)
+					{grounded_detected = true;}
+
+				break;
+
 				// Level Enemies
 				case THORN_COLUMN:
 				case THORN_BAR:
@@ -2275,6 +2284,21 @@ void Player::resolveFallingPlatformThinCollision(GameObject& object)
 			setY(this->y() - 1);
 		}
 	}
+}
+
+void Player::resolvePushBlockCollision(GameObject& object)
+{
+	if(collider.isCollision(object.collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(object.collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(object.collider);
+
+        // If there is still collision somehow, must be corner case //
+        resolveCornerCollision(object.collider);
+    }
 }
 
 // Level Enemies
