@@ -1409,198 +1409,229 @@ void Player::getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game
 	{
 		for(int32 i = 0; i < game_objects.size(); i++)
 		{
-			other_collider = game_objects.at(i)->collider;
-
-			switch(game_objects.at(i)->object_type)
+			if(game_objects.at(i)->object_id != object_id)
 			{
-				// Level Objects
-				case TILE_PASSAGE:
+				other_collider = game_objects.at(i)->collider;
 
-					// Test for, and log grounded collision
-					if(game_objects.at(i)->state == TILE_PASSAGE_SHUT &&
-					test_collider.isCollision(other_collider) && 
-					rigidbody.normalized_dir.y() >= 0)
-					{
-						if(rigidbody.final_dir.y() >= PLAYER_MIN_PASSAGE_SPEED)
-						{game_objects.at(i)->setState(TILE_PASSAGE_OPEN);}
-						else 
-						{
-							grounded_detected = true;
-						}
-					}
+				switch(game_objects.at(i)->object_type)
+				{
+					// Level Objects
+					case TILE_PASSAGE:
 
-				break;
-
-				case PHASE_ORB_UP:
-				
-					if(state != PLAYER_PHASE_STEP && collider.isCollision(other_collider))
-					{
-						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-						phase_dir = PHASE_UP;
-						setPos(game_objects.at(i)->pos());
-						setState(PLAYER_PHASE_STEP);
-					}
-
-				break;
-
-				case PHASE_ORB_DOWN:
-				
-					if(state != PLAYER_PHASE_STEP && collider.isCollision(other_collider))
-					{
-						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-						phase_dir = PHASE_DOWN;
-						setPos(game_objects.at(i)->pos());
-						setState(PLAYER_PHASE_STEP);
-					}
-
-				break;
-
-				case PHASE_ORB_LEFT:
-
-					if(state != PLAYER_PHASE_STEP && collider.isCollision(other_collider))
-					{
-						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-						phase_dir = PHASE_LEFT;
-						setPos(game_objects.at(i)->pos());
-						setState(PLAYER_PHASE_STEP);
-					}
-
-				break;
-
-				case PHASE_ORB_RIGHT:
-
-					if(state != PLAYER_PHASE_STEP && collider.isCollision(other_collider))
-					{
-						phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-						phase_dir = PHASE_RIGHT;
-						setPos(game_objects.at(i)->pos());
-						setState(PLAYER_PHASE_STEP);
-					}
-
-				break;
-
-				case FALLING_PLATFORM_WIDE:
-					
-					if(rigidbody.normalized_dir.y() >= 0 &&
-					   collider_y_axis.p4.y() <= game_objects.at(i)->collider.p1.y() + rigidbody.final_dir.y())
-					{
 						// Test for, and log grounded collision
-						if(test_collider.isCollision(game_objects.at(i)->collider) &&
-						   rigidbody.normalized_dir.y() >= 0)
+						if(game_objects.at(i)->state == TILE_PASSAGE_SHUT &&
+						test_collider.isCollision(other_collider) && 
+						rigidbody.normalized_dir.y() >= 0)
 						{
-							if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-							   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-							{createLandEffect();}
-
-							grounded_detected     = true;
-							grounded_owp_detected = true;
-							rigidbody.removeYForces();
-							
-							// Trigger the falling platform
-							if(game_objects.at(i)->state != FALLING_PLATFORM_WIDE_FALLING)
+							if(rigidbody.final_dir.y() >= PLAYER_MIN_PASSAGE_SPEED)
+							{game_objects.at(i)->setState(TILE_PASSAGE_OPEN);}
+							else 
 							{
-								setY(this->y() - 1); // One pixel adjustment to deal with 
-								                     // player slipping off platform on frame 1
-								game_objects.at(i)->setState(FALLING_PLATFORM_WIDE_FALLING);
+								grounded_detected = true;
 							}
 						}
-					}
 
-				break;
+					break;
 
-				case FALLING_PLATFORM_THIN:
+					case PHASE_ORB_UP:
 					
-					if(rigidbody.normalized_dir.y() >= 0 &&
-					   collider_y_axis.p4.y() <= game_objects.at(i)->collider.p1.y() + rigidbody.final_dir.y())
-					{
-						// Test for, and log grounded collision
-						if(test_collider.isCollision(game_objects.at(i)->collider) &&
-						   rigidbody.normalized_dir.y() >= 0)
+						if(state != PLAYER_PHASE_STEP && collider.isCollision(other_collider))
 						{
-							if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-							   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-							{createLandEffect();}
+							phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
+							phase_dir = PHASE_UP;
+							setPos(game_objects.at(i)->pos());
+							setState(PLAYER_PHASE_STEP);
+						}
 
-							grounded_detected     = true;
-							grounded_owp_detected = true;
-							rigidbody.removeYForces();
-							
-							// Trigger the falling platform
-							if(game_objects.at(i)->state != FALLING_PLATFORM_THIN_FALLING)
+					break;
+
+					case PHASE_ORB_DOWN:
+					
+						if(state != PLAYER_PHASE_STEP && collider.isCollision(other_collider))
+						{
+							phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
+							phase_dir = PHASE_DOWN;
+							setPos(game_objects.at(i)->pos());
+							setState(PLAYER_PHASE_STEP);
+						}
+
+					break;
+
+					case PHASE_ORB_LEFT:
+
+						if(state != PLAYER_PHASE_STEP && collider.isCollision(other_collider))
+						{
+							phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
+							phase_dir = PHASE_LEFT;
+							setPos(game_objects.at(i)->pos());
+							setState(PLAYER_PHASE_STEP);
+						}
+
+					break;
+
+					case PHASE_ORB_RIGHT:
+
+						if(state != PLAYER_PHASE_STEP && collider.isCollision(other_collider))
+						{
+							phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
+							phase_dir = PHASE_RIGHT;
+							setPos(game_objects.at(i)->pos());
+							setState(PLAYER_PHASE_STEP);
+						}
+
+					break;
+
+					case FALLING_PLATFORM_WIDE:
+						
+						if(rigidbody.normalized_dir.y() >= 0 &&
+						collider_y_axis.p4.y() <= game_objects.at(i)->collider.p1.y() + rigidbody.final_dir.y())
+						{
+							// Test for, and log grounded collision
+							if(test_collider.isCollision(game_objects.at(i)->collider) &&
+							rigidbody.normalized_dir.y() >= 0)
 							{
-								setY(this->y() - 1); // One pixel adjustment to deal with 
-								                     // player slipping off platform on frame 1
-								game_objects.at(i)->setState(FALLING_PLATFORM_THIN_FALLING);
+								if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+								rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+								{createLandEffect();}
+
+								grounded_detected     = true;
+								grounded_owp_detected = true;
+								rigidbody.removeYForces();
+								
+								// Trigger the falling platform
+								if(game_objects.at(i)->state != FALLING_PLATFORM_WIDE_FALLING)
+								{
+									setY(this->y() - 1); // One pixel adjustment to deal with 
+														// player slipping off platform on frame 1
+									game_objects.at(i)->setState(FALLING_PLATFORM_WIDE_FALLING);
+								}
 							}
 						}
-					}
 
-				break;
+					break;
 
-				case PUSH_BLOCK:
+					case FALLING_PLATFORM_THIN:
+						
+						if(rigidbody.normalized_dir.y() >= 0 &&
+						collider_y_axis.p4.y() <= game_objects.at(i)->collider.p1.y() + rigidbody.final_dir.y())
+						{
+							// Test for, and log grounded collision
+							if(test_collider.isCollision(game_objects.at(i)->collider) &&
+							rigidbody.normalized_dir.y() >= 0)
+							{
+								if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+								rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+								{createLandEffect();}
 
-					// Test for, and log grounded collision
-					if(test_collider.isCollision(other_collider) && 
-					   rigidbody.normalized_dir.y() >= 0)
-					{grounded_detected = true;}
+								grounded_detected     = true;
+								grounded_owp_detected = true;
+								rigidbody.removeYForces();
+								
+								// Trigger the falling platform
+								if(game_objects.at(i)->state != FALLING_PLATFORM_THIN_FALLING)
+								{
+									setY(this->y() - 1); // One pixel adjustment to deal with 
+														// player slipping off platform on frame 1
+									game_objects.at(i)->setState(FALLING_PLATFORM_THIN_FALLING);
+								}
+							}
+						}
 
-				break;
+					break;
 
-				// Level Enemies
-				case THORN_COLUMN:
-				case THORN_BAR:
-				case GROUND_GHOUL:
-				break;
+					case PUSH_BLOCK:
 
-				/*
-				// Special Objects
-				case DEVIL_PLATFORM:
-
-					// Test for, and log grounded collision
-					if(test_collider.isCollision(other_collider) && 
-					rigidbody.normalized_dir.y() >= 0)
-					{
-						if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED) 
-						{setHorizontalStretch();}
-						grounded_detected = true;
-					}
-
-					// Test for wall riding on right side
-					if(test_collider_right.isCollision(other_collider) && 
-					rigidbody.final_dir.y() >= 0)
-					{wall_right_detected = true;}
-					
-					// Test for wall riding on left side
-					if(test_collider_left.isCollision(other_collider) && 
-					rigidbody.final_dir.y() >= 0)
-					{wall_left_detected = true;}
-
-				break;
-
-				case ANGEL_PLATFORM:
-				case SCYTHE_PLATFORM:
-					
-					if(collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
-					{
 						// Test for, and log grounded collision
 						if(test_collider.isCollision(other_collider) && 
 						rigidbody.normalized_dir.y() >= 0)
-						{ 
-							if(!bn::keypad::down_held()) 
-							{
-								grounded_detected     = true;
-								grounded_owp_detected = true;
-								if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED)
-								{setHorizontalStretch();}
+						{
+							if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+						   		rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+							{createLandEffect();}
+							
+							grounded_detected = true;
+						}
+
+						// Test for wall riding on right side
+						if(test_collider_right.isCollision(other_collider))
+						{
+							right_wj_eligible = true;
+
+							if(rigidbody.normalized_dir.y() >= 0 &&
+							bn::keypad::right_held() && 
+							!bn::keypad::down_held()) 
+							{wall_right_detected = true;}
+						}
+					
+						// Test for wall riding on left side
+						if(test_collider_left.isCollision(other_collider))
+						{
+							left_wj_eligible = true;
+
+							if(rigidbody.normalized_dir.y() >= 0 &&
+							bn::keypad::left_held() &&
+							!bn::keypad::down_held()) 
+							{wall_left_detected = true;}
+						}
+
+					break;
+
+					// Level Enemies
+					case THORN_COLUMN:
+					case THORN_BAR:
+					case GROUND_GHOUL:
+					break;
+
+					/*
+					// Special Objects
+					case DEVIL_PLATFORM:
+
+						// Test for, and log grounded collision
+						if(test_collider.isCollision(other_collider) && 
+						rigidbody.normalized_dir.y() >= 0)
+						{
+							if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED) 
+							{setHorizontalStretch();}
+							grounded_detected = true;
+						}
+
+						// Test for wall riding on right side
+						if(test_collider_right.isCollision(other_collider) && 
+						rigidbody.final_dir.y() >= 0)
+						{wall_right_detected = true;}
+						
+						// Test for wall riding on left side
+						if(test_collider_left.isCollision(other_collider) && 
+						rigidbody.final_dir.y() >= 0)
+						{wall_left_detected = true;}
+
+					break;
+
+					case ANGEL_PLATFORM:
+					case SCYTHE_PLATFORM:
+						
+						if(collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
+						{
+							// Test for, and log grounded collision
+							if(test_collider.isCollision(other_collider) && 
+							rigidbody.normalized_dir.y() >= 0)
+							{ 
+								if(!bn::keypad::down_held()) 
+								{
+									grounded_detected     = true;
+									grounded_owp_detected = true;
+									if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED)
+									{setHorizontalStretch();}
+								}
 							}
 						}
-					}
-					
-				break;
-				*/
+						
+					break;
+					*/
 
-				default:
-				break;
+					default:
+					break;
+				}
 			}
 		}
 	}

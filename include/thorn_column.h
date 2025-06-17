@@ -19,7 +19,7 @@
 #define THORN_COLUMN_COLLIDER_OFFSET_X 0
 #define THORN_COLUMN_COLLIDER_OFFSET_Y 0
 
-#define THORN_COLUMN_HITPOINTS 1
+#define THORN_COLUMN_HITPOINTS 0
 
 struct ThornColumn : Enemy {
 
@@ -37,6 +37,7 @@ struct ThornColumn : Enemy {
     // GameObject Overrides //
     //////////////////////////
 
+    void checkIfDead()   override;
     void updatePhysics() override;
 
     //////////////////////////////

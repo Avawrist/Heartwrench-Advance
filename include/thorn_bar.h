@@ -19,7 +19,7 @@
 #define THORN_BAR_COLLIDER_OFFSET_X 0
 #define THORN_BAR_COLLIDER_OFFSET_Y 0
 
-#define THORN_BAR_HITPOINTS 1
+#define THORN_BAR_HITPOINTS 0
 
 struct ThornBar : Enemy {
 
@@ -37,6 +37,7 @@ struct ThornBar : Enemy {
     // GameObject Overrides //
     //////////////////////////
 
+    void checkIfDead()   override;
     void updatePhysics() override;
 
     //////////////////////////////

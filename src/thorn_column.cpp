@@ -49,6 +49,11 @@ ThornColumn& ThornColumn::operator =(const ThornColumn& other)
 // GameObject Overrides //
 //////////////////////////
 
+void ThornColumn::checkIfDead()
+{
+    
+}
+
 void ThornColumn::updatePhysics()
 {
 

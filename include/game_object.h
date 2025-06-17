@@ -105,7 +105,7 @@
 
 #define OBJECT_KNOCKBACK_X_FORCE      8
 #define OBJECT_KNOCKBACK_Y_FORCE      8
-#define OBJECT_KNOCKBACK_DECAY        0.06
+#define OBJECT_KNOCKBACK_DECAY        0.08
 
 #define GAME_OBJECT_GRAVITY       2
 #define GAME_OBJECT_GRAVITY_DECAY 1
@@ -265,6 +265,8 @@ struct GameObject
                                 const bn::camera_ptr&                          camera);
 
 	virtual void updateTimers();
+
+	virtual void checkIfDead();
 
 	void updateHitFlash();
 

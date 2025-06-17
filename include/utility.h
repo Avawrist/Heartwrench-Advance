@@ -37,6 +37,7 @@ typedef int   int32;
 #define HARD_BLOCK_MIN_INDEX        1
 #define HARD_BLOCK_MAX_INDEX        189
 
+#define SPIKE_MIN_INDEX           202
 #define UP_SPIKE_BLOCK_1_INDEX    202
 #define UP_SPIKE_BLOCK_2_INDEX    208
 #define DOWN_SPIKE_BLOCK_1_INDEX  203
@@ -45,6 +46,7 @@ typedef int   int32;
 #define LEFT_SPIKE_BLOCK_2_INDEX  205
 #define RIGHT_SPIKE_BLOCK_1_INDEX 206
 #define RIGHT_SPIKE_BLOCK_2_INDEX 207 
+#define SPIKE_MAX_INDEX           207
 
 #define ONEWAY_BLOCK_MIN_INDEX 210
 #define ONEWAY_BLOCK_MAX_INDEX 213

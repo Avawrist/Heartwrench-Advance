@@ -80,111 +80,114 @@ void Enemy::getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_
 
 	for(int32 i = 0; i < game_objects.size(); i++)
 	{
-		other_collider = game_objects.at(i)->collider;
-
-		switch(game_objects.at(i)->object_type)
+		if(game_objects.at(i)->object_id != object_id)
 		{
-			// Level Objects
-			case TILE_PASSAGE:
+			other_collider = game_objects.at(i)->collider;
 
-				// Test for, and log grounded collision
-				if(game_objects.at(i)->state == TILE_PASSAGE_SHUT &&
-					test_collider.isCollision(other_collider) && 
-					rigidbody.normalized_dir.y() >= 0)
-				{grounded_detected = true;}
+			switch(game_objects.at(i)->object_type)
+			{
+				// Level Objects
+				case TILE_PASSAGE:
 
-			break;
-
-			case PHASE_ORB_UP:
-			break;
-
-			case PHASE_ORB_DOWN:
-			break;
-
-			case PHASE_ORB_LEFT:
-			break;
-
-			case PHASE_ORB_RIGHT:
-			break;
-
-			case FALLING_PLATFORM_WIDE:
-				
-				if(rigidbody.normalized_dir.y() >= 0 &&
-					collider_y_axis.p4.y() <= game_objects.at(i)->collider.p1.y() + rigidbody.final_dir.y())
-				{
 					// Test for, and log grounded collision
-					if(test_collider.isCollision(game_objects.at(i)->collider) &&
+					if(game_objects.at(i)->state == TILE_PASSAGE_SHUT &&
+						test_collider.isCollision(other_collider) && 
 						rigidbody.normalized_dir.y() >= 0)
+					{grounded_detected = true;}
+
+				break;
+
+				case PHASE_ORB_UP:
+				break;
+
+				case PHASE_ORB_DOWN:
+				break;
+
+				case PHASE_ORB_LEFT:
+				break;
+
+				case PHASE_ORB_RIGHT:
+				break;
+
+				case FALLING_PLATFORM_WIDE:
+					
+					if(rigidbody.normalized_dir.y() >= 0 &&
+						collider_y_axis.p4.y() <= game_objects.at(i)->collider.p1.y() + rigidbody.final_dir.y())
 					{
-						grounded_detected     = true;
-						rigidbody.removeYForces();
-						
-						// Trigger the falling platform
-						/*
-						if(game_objects.at(i)->state != FALLING_PLATFORM_WIDE_FALLING)
+						// Test for, and log grounded collision
+						if(test_collider.isCollision(game_objects.at(i)->collider) &&
+							rigidbody.normalized_dir.y() >= 0)
 						{
-							setY(this->y() - 1); // One pixel adjustment to deal with 
-													// player slipping off platform on frame 1
-							game_objects.at(i)->setState(FALLING_PLATFORM_WIDE_FALLING);
+							grounded_detected     = true;
+							rigidbody.removeYForces();
+							
+							// Trigger the falling platform
+							/*
+							if(game_objects.at(i)->state != FALLING_PLATFORM_WIDE_FALLING)
+							{
+								setY(this->y() - 1); // One pixel adjustment to deal with 
+														// object slipping off platform on frame 1
+								game_objects.at(i)->setState(FALLING_PLATFORM_WIDE_FALLING);
+							}
+							*/
 						}
-						*/
 					}
-				}
 
-			break;
+				break;
 
-			case FALLING_PLATFORM_THIN:
-				
-				if(rigidbody.normalized_dir.y() >= 0 &&
-					collider_y_axis.p4.y() <= game_objects.at(i)->collider.p1.y() + rigidbody.final_dir.y())
-				{
+				case FALLING_PLATFORM_THIN:
+					
+					if(rigidbody.normalized_dir.y() >= 0 &&
+						collider_y_axis.p4.y() <= game_objects.at(i)->collider.p1.y() + rigidbody.final_dir.y())
+					{
+						// Test for, and log grounded collision
+						if(test_collider.isCollision(game_objects.at(i)->collider) &&
+							rigidbody.normalized_dir.y() >= 0)
+						{
+							grounded_detected = true;
+							rigidbody.removeYForces();
+							
+							// Trigger the falling platform
+							/*
+							if(game_objects.at(i)->state != FALLING_PLATFORM_THIN_FALLING)
+							{
+								setY(this->y() - 1); // One pixel adjustment to deal with 
+													// object slipping off platform on frame 1
+								game_objects.at(i)->setState(FALLING_PLATFORM_THIN_FALLING);
+							}
+							*/
+						}
+					}
+
+				break;
+
+				case PUSH_BLOCK:
+
 					// Test for, and log grounded collision
-					if(test_collider.isCollision(game_objects.at(i)->collider) &&
+					if(test_collider.isCollision(other_collider) && 
 						rigidbody.normalized_dir.y() >= 0)
-					{
-						grounded_detected = true;
-						rigidbody.removeYForces();
-						
-						// Trigger the falling platform
-						/*
-						if(game_objects.at(i)->state != FALLING_PLATFORM_THIN_FALLING)
-						{
-							setY(this->y() - 1); // One pixel adjustment to deal with 
-													// player slipping off platform on frame 1
-							game_objects.at(i)->setState(FALLING_PLATFORM_THIN_FALLING);
-						}
-						*/
-					}
-				}
+					{grounded_detected = true;}
 
-			break;
+				break;
 
-			case PUSH_BLOCK:
+				// Level Enemies
+				case THORN_COLUMN:
+				case THORN_BAR:
+				case GROUND_GHOUL:
+				break;
 
-				// Test for, and log grounded collision
-				if(test_collider.isCollision(other_collider) && 
-					rigidbody.normalized_dir.y() >= 0)
-				{grounded_detected = true;}
-
-			break;
-
-			// Level Enemies
-			case THORN_COLUMN:
-			case THORN_BAR:
-			case GROUND_GHOUL:
-			break;
-
-			default:
-			break;
+				default:
+				break;
+			}
 		}
 	}
-
 }
 
 void Enemy::getStateFromTiles(const bn::regular_bg_ptr&                      bg_ptr,
                            	  const bn::span<const bn::regular_bg_map_cell>& cells,
                               const bn::regular_bg_item&                     bg_item)
 {
+	
 	////////////////////////////////////////
 	// Initialize State Testing Variables //
 	////////////////////////////////////////

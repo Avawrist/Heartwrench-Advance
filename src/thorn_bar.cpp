@@ -49,6 +49,11 @@ ThornBar& ThornBar::operator =(const ThornBar& other)
 // GameObject Overrides //
 //////////////////////////
 
+void ThornBar::checkIfDead()
+{
+    
+}
+
 void ThornBar::updatePhysics()
 {
     

@@ -187,8 +187,7 @@ void GameObject::update(const RoomBounds& 							   room_bounds,
     // Check if dead //
     ///////////////////
 
-    if(hitpoints <= 0 && state != OBJECT_DEATH)
-    {setState(OBJECT_DEATH);}
+    checkIfDead();
 
     /////////////////////////////
 	// Update Sprite Direction //
@@ -247,6 +246,12 @@ void GameObject::updateTimers()
     // Invuln frames
     invulnerability_frames -= 1;
     if(invulnerability_frames < 0) {invulnerability_frames = 0;}
+}
+
+void GameObject::checkIfDead()
+{
+    if(hitpoints <= 0 && state != OBJECT_DEATH)
+    {setState(OBJECT_DEATH);}
 }
 
 void GameObject::applyForces()
@@ -655,76 +660,79 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
 
     for(int32 i = 0; i < game_objects.size(); i++)
     {   
-        switch(game_objects.at(i)->object_type)
+        if(game_objects.at(i)->object_id != object_id)
         {
-            case NO_TYPE:
-            break;
+            switch(game_objects.at(i)->object_type)
+            {
+                case NO_TYPE:
+                break;
 
-            // Level Objects
-            case TILE_PASSAGE:
-                resolveTilePassageCollision(*game_objects.at(i));
-            break;
+                // Level Objects
+                case TILE_PASSAGE:
+                    resolveTilePassageCollision(*game_objects.at(i));
+                break;
 
-            case PHASE_ORB_UP:
-                resolvePhaseOrbUpCollision(*game_objects.at(i));
-            break; 
+                case PHASE_ORB_UP:
+                    resolvePhaseOrbUpCollision(*game_objects.at(i));
+                break; 
 
-            case PHASE_ORB_DOWN:
-                resolvePhaseOrbDownCollision(*game_objects.at(i));
-            break;
+                case PHASE_ORB_DOWN:
+                    resolvePhaseOrbDownCollision(*game_objects.at(i));
+                break;
 
-            case PHASE_ORB_LEFT:
-                resolvePhaseOrbLeftCollision(*game_objects.at(i));
-            break;
+                case PHASE_ORB_LEFT:
+                    resolvePhaseOrbLeftCollision(*game_objects.at(i));
+                break;
 
-            case PHASE_ORB_RIGHT:
-                resolvePhaseOrbRightCollision(*game_objects.at(i));
-            break;
+                case PHASE_ORB_RIGHT:
+                    resolvePhaseOrbRightCollision(*game_objects.at(i));
+                break;
 
-            case FALLING_PLATFORM_WIDE:
-                resolveFallingPlatformWideCollision(*game_objects.at(i));
-            break;
+                case FALLING_PLATFORM_WIDE:
+                    resolveFallingPlatformWideCollision(*game_objects.at(i));
+                break;
 
-            case FALLING_PLATFORM_THIN:
-                resolveFallingPlatformThinCollision(*game_objects.at(i));
-            break;
+                case FALLING_PLATFORM_THIN:
+                    resolveFallingPlatformThinCollision(*game_objects.at(i));
+                break;
 
-            case PUSH_BLOCK:
-                resolvePushBlockCollision(*game_objects.at(i));
-            break;
+                case PUSH_BLOCK:
+                    resolvePushBlockCollision(*game_objects.at(i));
+                break;
 
-            // Level Enemies
-            case THORN_COLUMN:
-                resolveThornColumnCollision(*game_objects.at(i));
-            break; 
-            
-            case THORN_BAR:
-                resolveThornBarCollision(*game_objects.at(i));
-            break;
+                // Level Enemies
+                case THORN_COLUMN:
+                    resolveThornColumnCollision(*game_objects.at(i));
+                break; 
+                
+                case THORN_BAR:
+                    resolveThornBarCollision(*game_objects.at(i));
+                break;
 
-            case GROUND_GHOUL:
-                resolveGroundGhoulCollision(*game_objects.at(i));
-            break; 
+                case GROUND_GHOUL:
+                    resolveGroundGhoulCollision(*game_objects.at(i));
+                break; 
 
-            // Special Objects
-            case HITBOX_ATTACK_GROUND_1:
-                resolveHitboxAttackGround1Collision(*game_objects.at(i));
-            break;
+                // Special Objects
+                case HITBOX_ATTACK_GROUND_1:
+                    resolveHitboxAttackGround1Collision(*game_objects.at(i));
+                break;
 
-            case HITBOX_ATTACK_AIR_1:
-                resolveHitboxAir1Collision(*game_objects.at(i));
-            break;
+                case HITBOX_ATTACK_AIR_1:
+                    resolveHitboxAir1Collision(*game_objects.at(i));
+                break;
 
-            case HITBOX_WALL_SPLAT:
-                resolveHitboxWallSplatCollision(*game_objects.at(i));
-            break;
+                case HITBOX_WALL_SPLAT:
+                    resolveHitboxWallSplatCollision(*game_objects.at(i));
+                break;
 
-            case PLAYER:
-                resolvePlayerCollision(*game_objects.at(i));
-            break;
+                case PLAYER:
+                    resolvePlayerCollision(*game_objects.at(i));
+                break;
 
-            default:
-            break;
+                default:
+                break;
+            }
         }
     }
 }
