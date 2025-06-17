@@ -14,7 +14,7 @@ Candelabra::Candelabra()
     animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								                                   2,
 								                                   bn::sprite_items::candelabra.tiles_item(),
-								                                   0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2);
+								                                   0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3);
 
     // Init Variables //
     collider_offset_x = CANDELABRA_COLLIDER_OFFSET_X;
