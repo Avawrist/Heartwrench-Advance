@@ -225,6 +225,8 @@ void Hitbox::resolveThornBarCollision(GameObject& object)
 
 void Hitbox::resolveGroundGhoulCollision(GameObject& object)
 {
+    if(object.state == OBJECT_DEATH) {return;}
+
     if(collider.isCollision(object.collider))
     {applyHit(object);}
 }

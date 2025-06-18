@@ -598,6 +598,118 @@ void PushBlock::getStateFromTiles(const bn::regular_bg_ptr&                     
 // Collision Overrides //
 /////////////////////////
 
+void PushBlock::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
+{
+    // Placeholder for other objects
+	Collider other_collider;
+
+    for(int32 i = 0; i < game_objects.size(); i++)
+    {   
+        if(game_objects.at(i)->object_id != object_id)
+        {
+            switch(game_objects.at(i)->object_type)
+            {
+                case NO_TYPE:
+                break;
+
+                // Level Objects
+                case TILE_PASSAGE:
+                    resolveTilePassageCollision(*game_objects.at(i));
+                break;
+
+                case PHASE_ORB_UP:
+                    resolvePhaseOrbUpCollision(*game_objects.at(i));
+                break; 
+
+                case PHASE_ORB_DOWN:
+                    resolvePhaseOrbDownCollision(*game_objects.at(i));
+                break;
+
+                case PHASE_ORB_LEFT:
+                    resolvePhaseOrbLeftCollision(*game_objects.at(i));
+                break;
+
+                case PHASE_ORB_RIGHT:
+                    resolvePhaseOrbRightCollision(*game_objects.at(i));
+                break;
+
+                case FALLING_PLATFORM_WIDE:
+                    resolveFallingPlatformWideCollision(*game_objects.at(i));
+                break;
+
+                case FALLING_PLATFORM_THIN:
+                    resolveFallingPlatformThinCollision(*game_objects.at(i));
+                break;
+
+                case PUSH_BLOCK:
+                    resolvePushBlockCollision(*game_objects.at(i));
+                break;
+
+                // Level Enemies
+                case THORN_COLUMN:
+                    resolveThornColumnCollision(*game_objects.at(i));
+                break; 
+                
+                case THORN_BAR:
+                    resolveThornBarCollision(*game_objects.at(i));
+                break;
+
+                case GROUND_GHOUL:
+                    resolveGroundGhoulCollision(*game_objects.at(i));
+                break; 
+
+                // Special Objects
+                case HITBOX_ATTACK_GROUND_1:
+                    resolveHitboxAttackGround1Collision(*game_objects.at(i));
+                break;
+
+                case HITBOX_ATTACK_AIR_1:
+                    resolveHitboxAir1Collision(*game_objects.at(i));
+                break;
+
+                case HITBOX_WALL_SPLAT:
+                    resolveHitboxWallSplatCollision(*game_objects.at(i));
+                break;
+
+                case PLAYER:
+                    resolvePlayerCollision(*game_objects.at(i));
+                break;
+
+                default:
+                break;
+            }
+        }
+    }
+}
+
+// Level Objects
+void PushBlock::resolveTilePassageCollision(GameObject& object)
+{
+
+}
+
+void PushBlock::resolveFallingPlatformWideCollision(GameObject& object)
+{
+
+}
+
+void PushBlock::resolveFallingPlatformThinCollision(GameObject& object)
+{
+
+}
+
+void PushBlock::resolvePushBlockCollision(GameObject& object)
+{
+
+}
+
+// Special Objects
+void PushBlock::resolvePlayerCollision(GameObject& object)
+{
+
+}
+
+// Tiles
 void PushBlock::resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
                                         const bn::span<const bn::regular_bg_map_cell>& cells,
                                         const bn::regular_bg_item&                     bg_item)

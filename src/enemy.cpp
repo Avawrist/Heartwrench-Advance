@@ -621,14 +621,22 @@ void Enemy::resolvePushBlockCollision(GameObject& object)
 {
 	if(collider.isCollision(object.collider))
     {
-        // Resolve X Axis Collision //
-        resolveXAxisCollision(object.collider);
+		if(object.rigidbody.normalized_dir.x() != 0 || 
+           object.rigidbody.normalized_dir.y() != 0)
+        {
+            hitpoints = 0;   
+        }
+		else
+		{
+			// Resolve X Axis Collision //
+        	resolveXAxisCollision(object.collider);
 
-        // Resolve Y Axis Collision //
-        resolveYAxisCollision(object.collider);
+        	// Resolve Y Axis Collision //
+        	resolveYAxisCollision(object.collider);
 
-        // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(object.collider);
+        	// If there is still collision somehow, must be corner case //
+        	resolveCornerCollision(object.collider);
+		}
     }
 }
 

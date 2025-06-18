@@ -59,6 +59,18 @@ struct PushBlock : GameObject {
     // Collision Overrides //
     /////////////////////////
 
+    void resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects) override;
+
+    // Level Objects
+	void resolveTilePassageCollision(GameObject& object)         override;
+	void resolveFallingPlatformWideCollision(GameObject& object) override;
+	void resolveFallingPlatformThinCollision(GameObject& object) override;
+	void resolvePushBlockCollision(GameObject& object)           override;
+
+	// Special Objects
+	void resolvePlayerCollision(GameObject& object)              override;
+
+    // Tiles
     void resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
                               const bn::span<const bn::regular_bg_map_cell>& cells,
                               const bn::regular_bg_item&                     bg_item) override;
