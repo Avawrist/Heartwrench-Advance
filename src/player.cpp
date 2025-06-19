@@ -1156,9 +1156,9 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if(bn::keypad::a_pressed())
 			{jump_buffered_frames = PLAYER_JUMP_BUFFER_FRAMES;}
 
-			// Buffer Roll
-			if(bn::keypad::r_pressed())
-			{roll_buffered_frames = PLAYER_ROLL_BUFFER_FRAMES;}
+			// Roll Cancel
+			if(bn::keypad::r_pressed() && animate_action_ptr->current_index() > PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME)
+			{setState(PLAYER_ROLL);}
 
 			// Add Gravity //
 			if(!grounded_detected)
@@ -1436,14 +1436,15 @@ void Player::getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game
 
 						// Test for, and log grounded collision
 						if(game_objects.at(i)->state == TILE_PASSAGE_SHUT &&
-						test_collider.isCollision(other_collider) && 
-						rigidbody.normalized_dir.y() >= 0)
+						   test_collider.isCollision(other_collider) && 
+						   rigidbody.normalized_dir.y() >= 0)
 						{
 							if(rigidbody.final_dir.y() >= PLAYER_MIN_PASSAGE_SPEED)
 							{game_objects.at(i)->setState(TILE_PASSAGE_OPEN);}
 							else 
 							{
 								grounded_detected = true;
+								rigidbody.removeYForces();
 							}
 						}
 
@@ -1566,6 +1567,7 @@ void Player::getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game
 							{createLandEffect();}
 							
 							grounded_detected = true;
+							rigidbody.removeYForces();
 						}
 
 						// Test for wall riding on right side
@@ -1710,9 +1712,9 @@ void Player::getStateFromTiles(const bn::regular_bg_ptr&                      bg
 				{
 
 					other_collider = Collider(world_x,
-											world_y, 
-											TILE_WIDTH,
-											TILE_HEIGHT);
+											  world_y, 
+											  TILE_WIDTH,
+											  TILE_HEIGHT);
 
 					// Test for, and log grounded collision
 					if(test_collider.isCollision(other_collider) &&

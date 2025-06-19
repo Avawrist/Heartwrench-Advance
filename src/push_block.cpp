@@ -650,6 +650,9 @@ void PushBlock::getStateFromTiles(const bn::regular_bg_ptr&                     
 
 void PushBlock::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
 {
+	if(rigidbody.normalized_dir.x() == 0 && 
+       rigidbody.normalized_dir.y() == 0) {return;}
+
     // Placeholder for other objects
 	Collider other_collider;
 
@@ -787,6 +790,8 @@ void PushBlock::resolveTileCollision(const bn::regular_bg_ptr&                  
                                      const bn::span<const bn::regular_bg_map_cell>& cells,
                                      const bn::regular_bg_item&                     bg_item)
 {
+	if(rigidbody.normalized_dir.x() == 0 && 
+	   rigidbody.normalized_dir.y() == 0) {return;}
 
     //////////////////////////////
 	// Init Collision Variables //
