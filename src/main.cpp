@@ -23,16 +23,11 @@ int main()
     // Game Loop
     while(true)
     {
-        // Update Hitstop
-        global_hitstop_frames = 0;
-
         // Update Levels
         if(current_level.cam_is_scrolling) {current_level.updateCamera();}
         else                               {current_level.updateAll();}
-
-        // Update Core
-        for(int i = 0; i <= global_hitstop_frames; i++)
-        {bn::core::update();}
+       
+        bn::core::update();
     }
 }
 

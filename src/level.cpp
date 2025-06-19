@@ -181,6 +181,16 @@ void Level::reload()
 
 void Level::updateAll()
 {
+    if(global_hitstop_frames) 
+    {
+        global_hitstop_frames--;
+        if(global_hitstop_frames < 0) {global_hitstop_frames = 0;}
+
+        storePlayerInputs();
+
+        return;
+    }
+
     reloadOnDeath();
     updateObjects();
     updateCamera();
@@ -215,6 +225,8 @@ void Level::updateObjects()
 
 void Level::updateCamera()
 {
+    if(global_hitstop_frames) {return;}
+
     #define HALF_SCREEN_WIDTH  120
     #define HALF_SCREEN_HEIGHT 80
 
@@ -552,4 +564,23 @@ void Level::updateFade()
 
         if(main_bg_palette.fade_intensity() == 1) {fade_out = false;}
     }
+}
+
+void Level::storePlayerInputs()
+{
+    // This function exists to take input from the player even during
+    // hitstop frames. This way, the player isnt locked out of input
+    // just for the sake of juice.
+
+    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) == NULL)
+    {return;}
+
+    if(bn::keypad::r_pressed())
+    {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->roll_requested = true;}
+
+    if(bn::keypad::a_pressed())
+    {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->jump_requested = true;}
+
+    if(bn::keypad::b_pressed())
+    {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->attack_requested = true;}
 }

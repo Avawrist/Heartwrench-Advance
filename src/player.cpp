@@ -52,6 +52,10 @@ Player::Player()
 	right_wj_eligible        = false;
 	is_dead                  = false;
 
+	roll_requested   = false;
+	jump_requested   = false;
+	attack_requested = false;
+
 	hitbox_1_ptr = NULL;
 	hitbox_2_ptr = NULL;
 	hitbox_3_ptr = NULL;
@@ -91,6 +95,10 @@ Player::Player(const Player& other) : GameObject(other)
 	left_wj_eligible         = other.left_wj_eligible;
 	right_wj_eligible        = other.right_wj_eligible;
 	is_dead                  = other.is_dead;
+
+	roll_requested   = other.roll_requested;
+	jump_requested   = other.jump_requested;
+	attack_requested = other.attack_requested;
 
 	test_collider         = other.test_collider;
 	test_collider_right   = other.test_collider_right;
@@ -148,6 +156,10 @@ Player& Player::operator =(const Player& other)
 	left_wj_eligible         = other.left_wj_eligible;
 	right_wj_eligible        = other.right_wj_eligible;
 	is_dead                  = other.is_dead;
+	
+	roll_requested   = other.roll_requested;
+	jump_requested   = other.jump_requested;
+	attack_requested = other.attack_requested;
 
 	test_collider         = other.test_collider;
 	test_collider_right   = other.test_collider_right;
@@ -434,6 +446,10 @@ void Player::updateTimers()
 	if(grounded_detected) {air_frames_elapsed = 0;}
 
 	received_platform_force = false;
+
+	roll_requested   = false;
+	jump_requested   = false;
+	attack_requested = false;
 
 	if(jump_effect_anim_ptr.has_value())
 	{
@@ -1152,12 +1168,14 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 				{rigidbody.addForce(PLAYER_X_RIGHT_FORCE); x_dir = RIGHT;}
 			}
 
-			// Buffer Jump
-			if(bn::keypad::a_pressed())
-			{jump_buffered_frames = PLAYER_JUMP_BUFFER_FRAMES;}
-
+			// Jump Cancel
+			if((bn::keypad::a_pressed() || jump_requested) && 
+			   animate_action_ptr->current_index() >= PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME)
+			{jump();}
+			
 			// Roll Cancel
-			if(bn::keypad::r_pressed() && animate_action_ptr->current_index() > PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME)
+			else if((bn::keypad::r_pressed() || roll_requested) && 
+			   animate_action_ptr->current_index() >= PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME)
 			{setState(PLAYER_ROLL);}
 
 			// Add Gravity //

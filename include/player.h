@@ -82,7 +82,7 @@
 #define PLAYER_ATTACK_GROUND_1_Y_KNOCKBACK        0
 #define PLAYER_ATTACK_GROUND_1_KNOCKBACK_DECAY    0.05
 #define PLAYER_ATTACK_GROUND_1_DAMAGE             1
-#define PLAYER_ATTACK_GROUND_1_HITSTOP_FRAMES     10
+#define PLAYER_ATTACK_GROUND_1_HITSTOP_FRAMES     12
 #define PLAYER_ATTACK_GROUND_1_HITSTUN_FRAMES     50
 #define PLAYER_ATTACK_GROUND_1_SCREENSHAKE_FRAMES 10
 #define PLAYER_ATTACK_GROUND_1_SCREENSHAKE_SEVERITY STRONG_SHAKE
@@ -97,7 +97,7 @@
 #define PLAYER_ATTACK_AIR_1_Y_KNOCKBACK        0
 #define PLAYER_ATTACK_AIR_1_KNOCKBACK_DECAY    0.05
 #define PLAYER_ATTACK_AIR_1_DAMAGE             1
-#define PLAYER_ATTACK_AIR_1_HITSTOP_FRAMES     10
+#define PLAYER_ATTACK_AIR_1_HITSTOP_FRAMES     12
 #define PLAYER_ATTACK_AIR_1_HITSTUN_FRAMES     50
 #define PLAYER_ATTACK_AIR_1_SCREENSHAKE_FRAMES 10
 #define PLAYER_ATTACK_AIR_1_SCREENSHAKE_SEVERITY STRONG_SHAKE
@@ -180,6 +180,10 @@ struct Player : GameObject {
 	bool grounded_owp_detected;
 	bool left_wj_eligible;
 	bool right_wj_eligible;
+
+	bool roll_requested;
+	bool jump_requested;
+	bool attack_requested;
 
 	Collider test_collider;
 	Collider test_collider_right;

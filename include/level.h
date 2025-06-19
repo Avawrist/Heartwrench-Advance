@@ -110,6 +110,7 @@ struct Level
     void transitionRoom();
     void drawObjects();
     void updateFade();
+    void storePlayerInputs();
 };
 
 #endif
