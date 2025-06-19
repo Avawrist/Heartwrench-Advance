@@ -32,11 +32,17 @@ PushBlock::PushBlock()
     y_dir       = UP;
 
     hitpoints = PUSH_BLOCK_HITPOINTS;
+
+	frame_start_pos = bn::fixed_point(0, 0);
+	hit_h_wall = false;
+	hit_v_wall = false;
 }
 
 PushBlock::PushBlock(const PushBlock& other) : GameObject(other)
 {
-
+	frame_start_pos = other.frame_start_pos;
+	hit_h_wall = other.hit_h_wall;
+	hit_v_wall = other.hit_v_wall;
 }
 
 PushBlock::~PushBlock()
@@ -46,12 +52,23 @@ PushBlock::~PushBlock()
 
 PushBlock& PushBlock::operator =(const PushBlock& other)
 {
+	frame_start_pos = other.frame_start_pos;
+	hit_h_wall = other.hit_h_wall;
+	hit_v_wall = other.hit_v_wall;
+
     return *this;
 }
 
 //////////////////////////
 // GameObject Overrides //
 //////////////////////////
+
+void PushBlock::updatePhysics()
+{
+	frame_start_pos = pos();
+
+	GameObject::updatePhysics();
+}
 
 void PushBlock::checkIfDead()
 {
@@ -72,8 +89,6 @@ void PushBlock::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   
     {
         case IDLE:
 
-            BN_LOG(grounded_detected);
-
             // Gravity
             if(!grounded_detected)
             {rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
@@ -89,6 +104,17 @@ void PushBlock::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   
         default:
         break;
     }
+}
+
+void PushBlock::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+							const bn::regular_bg_ptr&                      bg_ptr, 
+							const bn::span<const bn::regular_bg_map_cell>& cells,
+							const bn::regular_bg_item&                     bg_item)
+{
+	hit_h_wall = false;
+	hit_v_wall = false;
+
+	GameObject::updateState(game_objects, bg_ptr, cells, bg_item);
 }
 
 void PushBlock::getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
@@ -215,6 +241,7 @@ void PushBlock::getStateFromTiles(const bn::regular_bg_ptr&                     
                                   const bn::span<const bn::regular_bg_map_cell>& cells,
                                   const bn::regular_bg_item&                     bg_item)
 {
+
 	////////////////////////////////////////
 	// Initialize State Testing Variables //
 	////////////////////////////////////////
@@ -293,7 +320,12 @@ void PushBlock::getStateFromTiles(const bn::regular_bg_ptr&                     
 											TILE_WIDTH, 
 											TILE_HEIGHT);
 				
-				resolveUpSpikeCollision(other_collider);
+				if(test_collider.isCollision(other_collider) &&
+				   rigidbody.normalized_dir.y() >= 0)
+				{
+					grounded_detected = true;
+					rigidbody.removeYForces();
+				}
 			}
 
 			else if(tile_index == DOWN_SPIKE_BLOCK_1_INDEX ||
@@ -304,7 +336,13 @@ void PushBlock::getStateFromTiles(const bn::regular_bg_ptr&                     
 										TILE_WIDTH, 
 										TILE_HEIGHT);
 				
-				resolveDownSpikeCollision(other_collider);
+				// Test for, and log grounded collision
+				if(test_collider.isCollision(other_collider) &&
+					rigidbody.normalized_dir.y() >= 0)
+				{
+					grounded_detected = true;
+					rigidbody.removeYForces();
+				}
 			}
 
 			else if(tile_index == LEFT_SPIKE_BLOCK_1_INDEX ||
@@ -315,7 +353,13 @@ void PushBlock::getStateFromTiles(const bn::regular_bg_ptr&                     
 											TILE_WIDTH, 
 											TILE_HEIGHT);
 				
-				resolveLeftSpikeCollision(other_collider);
+				// Test for, and log grounded collision
+				if(test_collider.isCollision(other_collider) &&
+					rigidbody.normalized_dir.y() >= 0)
+				{
+					grounded_detected = true;
+					rigidbody.removeYForces();
+				}
 			}
 
 			else if(tile_index == RIGHT_SPIKE_BLOCK_1_INDEX || 
@@ -326,7 +370,13 @@ void PushBlock::getStateFromTiles(const bn::regular_bg_ptr&                     
 											TILE_WIDTH,
 											TILE_HEIGHT);
 				
-				resolveRightSpikeCollision(other_collider);
+				// Test for, and log grounded collision
+				if(test_collider.isCollision(other_collider) &&
+					rigidbody.normalized_dir.y() >= 0)
+				{
+					grounded_detected = true;
+					rigidbody.removeYForces();
+				}
 			}
 
 			else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
@@ -706,15 +756,39 @@ void PushBlock::resolvePushBlockCollision(GameObject& object)
 // Special Objects
 void PushBlock::resolvePlayerCollision(GameObject& object)
 {
+	#define PUSH_BLOCK_ROOF_OFFSET             ((PUSH_BLOCK_COLLIDER_HEIGHT / 2) * -1)
+	#define PUSH_BLOCK_ROOF_COLLIDER_HEIGHT    8
+	#define PUSH_BLOCK_ROOF_COLLIDER_WIDTH_PAD 8
 
+	Collider roof_test_collider = Collider(collider.x(),
+										   collider.y()   + PUSH_BLOCK_ROOF_OFFSET,
+										   collider.width + PUSH_BLOCK_ROOF_COLLIDER_WIDTH_PAD,
+										   PUSH_BLOCK_ROOF_COLLIDER_HEIGHT);
+
+	if(roof_test_collider.isCollision(object.collider))
+	{
+		int32 pixels_moved_x = (frame_start_pos.x().integer() - pos().x().integer()) * -1;
+		int32 pixels_moved_y = (frame_start_pos.y().integer() - pos().y().integer()) * -1;
+
+		object.rigidbody.addForce(Force(bn::fixed_point_t<12>(pixels_moved_x, pixels_moved_y), 1));
+
+		BN_LOG(hit_h_wall);
+
+		if(hit_h_wall)
+		{object.rigidbody.addForce(PUSH_BLOCK_MOMENTUM_TRANSFER_H_FORCE);}
+
+		if(hit_v_wall)
+		{object.rigidbody.addForce(PUSH_BLOCK_MOMENTUM_TRANSFER_V_FORCE);}
+	}
 }
 
 // Tiles
 void PushBlock::resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
-                                        const bn::span<const bn::regular_bg_map_cell>& cells,
-                                        const bn::regular_bg_item&                     bg_item)
+                                     const bn::span<const bn::regular_bg_map_cell>& cells,
+                                     const bn::regular_bg_item&                     bg_item)
 {
-     //////////////////////////////
+
+    //////////////////////////////
 	// Init Collision Variables //
 	//////////////////////////////
 
@@ -928,62 +1002,24 @@ void PushBlock::resolveTileCollision(const bn::regular_bg_ptr&                  
 	}
 }
 
-void PushBlock::resolveUpSpikeCollision(const Collider& other_collider)
+void PushBlock::resolveXAxisCollision(const Collider& other_collider)
 {
-    if(collider.isCollision(other_collider))
-    {
-        // Resolve X Axis Collision //
-        resolveXAxisCollision(other_collider);
+	GameObject::resolveXAxisCollision(other_collider);
 
-        // Resolve Y Axis Collision //
-        resolveYAxisCollision(other_collider);
-
-        // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(other_collider);
-    }
+	if(col_x_offset != 0 && pos().x() != frame_start_pos.x())
+	{
+		hit_h_wall = true;
+		rigidbody.removeXForces();
+	}
 }
 
-void PushBlock::resolveDownSpikeCollision(const Collider& other_collider)
+void PushBlock::resolveYAxisCollision(const Collider& other_collider)
 {
-    if(collider.isCollision(other_collider))
-    {
-        // Resolve X Axis Collision //
-        resolveXAxisCollision(other_collider);
+	GameObject::resolveYAxisCollision(other_collider);
 
-        // Resolve Y Axis Collision //
-        resolveYAxisCollision(other_collider);
-
-        // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(other_collider);
-    }
-}
-
-void PushBlock::resolveLeftSpikeCollision(const Collider& other_collider)
-{
-    if(collider.isCollision(other_collider))
-    {
-        // Resolve X Axis Collision //
-        resolveXAxisCollision(other_collider);
-
-        // Resolve Y Axis Collision //
-        resolveYAxisCollision(other_collider);
-
-        // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(other_collider);
-    }
-}
-
-void PushBlock::resolveRightSpikeCollision(const Collider& other_collider)
-{
-    if(collider.isCollision(other_collider))
-    {
-        // Resolve X Axis Collision //
-        resolveXAxisCollision(other_collider);
-
-        // Resolve Y Axis Collision //
-        resolveYAxisCollision(other_collider);
-
-        // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(other_collider);
-    }
+	if(col_y_offset != 0 && pos().y() != frame_start_pos.y()) 
+	{
+		hit_v_wall = true;
+		rigidbody.removeYForces();
+	}
 }

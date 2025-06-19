@@ -21,11 +21,23 @@
 
 #define PUSH_BLOCK_HITPOINTS 0
 
+#define PUSH_BLOCK_MOMENTUM_TRANSFER_X_FORCE 8
+#define PUSH_BLOCK_MOMENTUM_TRANSFER_Y_FORCE 8
+#define PUSH_BLOCK_MOMENTUM_TRANSFER_DECAY   0.05
+
+#define PUSH_BLOCK_MOMENTUM_TRANSFER_H_FORCE Force(bn::fixed_point_t<12>(PUSH_BLOCK_MOMENTUM_TRANSFER_X_FORCE * rigidbody.normalized_dir.x(), 0), PUSH_BLOCK_MOMENTUM_TRANSFER_DECAY)
+#define PUSH_BLOCK_MOMENTUM_TRANSFER_V_FORCE Force(bn::fixed_point_t<12>(0, PUSH_BLOCK_MOMENTUM_TRANSFER_Y_FORCE * rigidbody.normalized_dir.y()), PUSH_BLOCK_MOMENTUM_TRANSFER_DECAY)
+
 struct PushBlock : GameObject {
 
     //////////////////////
     // Struct PushBlock //
     //////////////////////
+
+    bn::fixed_point frame_start_pos;
+
+    bool hit_h_wall;
+    bool hit_v_wall;
 
     PushBlock();
     PushBlock(const PushBlock& other);
@@ -37,6 +49,7 @@ struct PushBlock : GameObject {
     // GameObject Overrides //
     //////////////////////////
 
+    void updatePhysics() override;
     void checkIfDead() override;
 
     //////////////////////////////
@@ -48,6 +61,11 @@ struct PushBlock : GameObject {
                             const bn::span<const bn::regular_bg_map_cell>& cells,
                             const bn::regular_bg_item&                     bg_item,
                             const bn::camera_ptr&                          camera) override;
+
+    void updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                     const bn::regular_bg_ptr&                      bg_ptr, 
+                     const bn::span<const bn::regular_bg_map_cell>& cells,
+                     const bn::regular_bg_item&                     bg_item) override;
 
     void getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects) override;
 
@@ -75,10 +93,8 @@ struct PushBlock : GameObject {
                               const bn::span<const bn::regular_bg_map_cell>& cells,
                               const bn::regular_bg_item&                     bg_item) override;
 
-    void resolveUpSpikeCollision(const Collider& other_collider)    override;
-    void resolveDownSpikeCollision(const Collider& other_collider)  override;
-    void resolveLeftSpikeCollision(const Collider& other_collider)  override;
-    void resolveRightSpikeCollision(const Collider& other_collider) override;
+    void resolveXAxisCollision(const Collider& other_collider) override;
+    void resolveYAxisCollision(const Collider& other_collider) override;
 
 };
 

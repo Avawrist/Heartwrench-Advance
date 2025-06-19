@@ -520,7 +520,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			{setState(PLAYER_ATTACK_GROUND_1);}
 
 			// Jump
-			else if(bn::keypad::a_pressed() || jump_buffered_frames) 
+			else if(bn::keypad::a_pressed() || jump_buffered_frames)
 			{
 				if(late_roll_jump_grace_frames) {rollJump();}
 				else {jump();}
@@ -530,8 +530,14 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			else if(bn::keypad::r_pressed() || roll_buffered_frames) 
 			{setState(PLAYER_ROLL);}
 
-			// Add Gravity if Grounded on OWP
-			if(grounded_owp_detected) {rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
+			// Add Gravity 
+			if(!grounded_detected)
+			{
+				rigidbody.addForce(PLAYER_GRAVITY_FORCE);
+				
+				if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
+				{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
+			}
 
 		break;
 	
@@ -591,8 +597,14 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			// Roll
 			else if(bn::keypad::r_pressed() || roll_buffered_frames) {setState(PLAYER_ROLL);}
 
-			// Add Gravity if Grounded on OWP
-			if(grounded_owp_detected) {rigidbody.addForce(PLAYER_GRAVITY_FORCE);}
+			// Add Gravity 
+			if(!grounded_detected)
+			{
+				rigidbody.addForce(PLAYER_GRAVITY_FORCE);
+				
+				if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
+				{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
+			}
 
 		break;
 
@@ -1149,9 +1161,13 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			{roll_buffered_frames = PLAYER_ROLL_BUFFER_FRAMES;}
 
 			// Add Gravity //
-			rigidbody.addForce(PLAYER_GRAVITY_FORCE);
-			if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
-			{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
+			if(!grounded_detected)
+			{
+				rigidbody.addForce(PLAYER_GRAVITY_FORCE);
+
+				if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
+				{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
+			}
 
 		break;
 
