@@ -21,8 +21,8 @@
 
 #define PUSH_BLOCK_HITPOINTS 0
 
-#define PUSH_BLOCK_MOMENTUM_TRANSFER_X_FORCE 8
-#define PUSH_BLOCK_MOMENTUM_TRANSFER_Y_FORCE 8
+#define PUSH_BLOCK_MOMENTUM_TRANSFER_X_FORCE 6
+#define PUSH_BLOCK_MOMENTUM_TRANSFER_Y_FORCE 6
 #define PUSH_BLOCK_MOMENTUM_TRANSFER_DECAY   0.05
 
 #define PUSH_BLOCK_MOMENTUM_TRANSFER_H_FORCE Force(bn::fixed_point_t<12>(PUSH_BLOCK_MOMENTUM_TRANSFER_X_FORCE * rigidbody.normalized_dir.x(), 0), PUSH_BLOCK_MOMENTUM_TRANSFER_DECAY)
@@ -92,6 +92,10 @@ struct PushBlock : GameObject {
     void resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
                               const bn::span<const bn::regular_bg_map_cell>& cells,
                               const bn::regular_bg_item&                     bg_item) override;
+
+    void resolveHGearLeftCollision(const Collider& other_collider)  override;
+	void resolveHGearMidCollision(const Collider& other_collider)   override;
+	void resolveHGearRightCollision(const Collider& other_collider) override;
 
     void resolveXAxisCollision(const Collider& other_collider) override;
     void resolveYAxisCollision(const Collider& other_collider) override;

@@ -367,6 +367,9 @@ struct GameObject
     virtual void resolveCornerCollision(const Collider& other_collider);
 
 	virtual void resolveHardBlockCollision(const Collider& other_collider);
+	virtual void resolveHGearLeftCollision(const Collider& other_collider);
+	virtual void resolveHGearMidCollision(const Collider& other_collider);
+	virtual void resolveHGearRightCollision(const Collider& other_collider);
 	virtual void resolveUpSpikeCollision(const Collider& other_collider);
 	virtual void resolveDownSpikeCollision(const Collider& other_collider);
 	virtual void resolveLeftSpikeCollision(const Collider& other_collider);

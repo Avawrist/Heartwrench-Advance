@@ -761,7 +761,7 @@ void PushBlock::resolvePlayerCollision(GameObject& object)
 {
 	#define PUSH_BLOCK_ROOF_OFFSET             ((PUSH_BLOCK_COLLIDER_HEIGHT / 2) * -1)
 	#define PUSH_BLOCK_ROOF_COLLIDER_HEIGHT    8
-	#define PUSH_BLOCK_ROOF_COLLIDER_WIDTH_PAD 8
+	#define PUSH_BLOCK_ROOF_COLLIDER_WIDTH_PAD 10
 
 	Collider roof_test_collider = Collider(collider.x(),
 										   collider.y()   + PUSH_BLOCK_ROOF_OFFSET,
@@ -870,7 +870,37 @@ void PushBlock::resolveTileCollision(const bn::regular_bg_ptr&                  
 					resolveCornerCollision(other_collider);
 				}
 			}
-    
+
+            else if(tile_index == H_GEAR_LEFT)
+            {
+                other_collider = Collider(world_x,
+                                          world_y, 
+                                          TILE_WIDTH, 
+                                          TILE_HEIGHT);
+                
+                resolveHGearLeftCollision(other_collider);
+            }
+
+            else if(tile_index >= H_GEAR_MID_MIN &&
+                    tile_index <= H_GEAR_MID_MAX)
+            {
+                other_collider = Collider(world_x,
+                                          world_y, 
+                                          TILE_WIDTH, 
+                                          TILE_HEIGHT);
+                
+                resolveHGearMidCollision(other_collider);
+            }
+
+            else if(tile_index == H_GEAR_RIGHT)
+            {
+                other_collider = Collider(world_x,
+                                          world_y, 
+                                          TILE_WIDTH, 
+                                          TILE_HEIGHT);
+                
+                resolveHGearRightCollision(other_collider);
+            }
             else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
             {
                 other_collider = Collider(world_x, 
@@ -1003,6 +1033,40 @@ void PushBlock::resolveTileCollision(const bn::regular_bg_ptr&                  
                 resolveOneWayBlockCollision(other_collider);
             }
 
+		}
+	}
+}
+
+void PushBlock::resolveHGearLeftCollision(const Collider& other_collider)
+{
+	if(collider.isCollision(other_collider))
+	{
+		setY(other_collider.y() + (TILE_HEIGHT / 2));
+
+		if(rigidbody.normalized_dir.x() < 0 && x() < (other_collider.x() - (TILE_WIDTH /2))) 
+		{
+			setX(other_collider.x() - (TILE_WIDTH / 2));
+		}
+	}
+}
+
+void PushBlock::resolveHGearMidCollision(const Collider& other_collider)
+{
+	if(collider.isCollision(other_collider))
+	{
+		setY(other_collider.y() + (TILE_HEIGHT / 2));
+	}
+}
+
+void PushBlock::resolveHGearRightCollision(const Collider& other_collider)
+{
+	if(collider.isCollision(other_collider))
+	{
+		setY(other_collider.y() + (TILE_HEIGHT / 2));
+
+		if(rigidbody.normalized_dir.x() > 0 && x() > (other_collider.x() + (TILE_WIDTH /2))) 
+		{
+			setX(other_collider.x() + (TILE_WIDTH / 2));
 		}
 	}
 }

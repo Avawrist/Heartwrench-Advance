@@ -1167,14 +1167,9 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 				else if(bn::keypad::right_held()) 
 				{rigidbody.addForce(PLAYER_X_RIGHT_FORCE); x_dir = RIGHT;}
 			}
-
-			// Jump Cancel
-			if((jump_requested) && 
-			   animate_action_ptr->current_index() >= PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME)
-			{jump();}
 			
 			// Roll Cancel
-			else if((roll_requested) && 
+			if((roll_requested) && 
 			   animate_action_ptr->current_index() >= PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME)
 			{setState(PLAYER_ROLL);}
 
@@ -1254,6 +1249,14 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 			else if(bn::keypad::a_released()) 
 			{remaining_jump_input_frames = 0;}
+
+			// Roll Cancel
+			/*
+			if((roll_requested) && 
+			        animate_action_ptr->current_index() >= PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME && 
+					grounded_detected)
+			{setState(PLAYER_ROLL);}
+			*/
 
 			// Buffer Roll
 			if(bn::keypad::r_pressed())
@@ -2582,7 +2585,38 @@ void Player::resolveTileCollision(const bn::regular_bg_ptr&                     
 											TILE_HEIGHT);
 
 					resolveHardBlockCollision(other_collider);
-				}		
+				}
+
+				else if(tile_index == H_GEAR_LEFT)
+				{
+					other_collider = Collider(world_x,
+											world_y, 
+											TILE_WIDTH, 
+											TILE_HEIGHT);
+					
+					resolveHGearLeftCollision(other_collider);
+				}
+
+				else if(tile_index >= H_GEAR_MID_MIN &&
+						tile_index <= H_GEAR_MID_MAX)
+				{
+					other_collider = Collider(world_x,
+											world_y, 
+											TILE_WIDTH, 
+											TILE_HEIGHT);
+					
+					resolveHGearMidCollision(other_collider);
+				}
+
+				else if(tile_index == H_GEAR_RIGHT)
+				{
+					other_collider = Collider(world_x,
+											world_y, 
+											TILE_WIDTH, 
+											TILE_HEIGHT);
+					
+					resolveHGearRightCollision(other_collider);
+				}
 				
 				else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
 				{
