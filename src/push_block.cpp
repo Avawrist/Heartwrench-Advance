@@ -1039,7 +1039,8 @@ void PushBlock::resolveTileCollision(const bn::regular_bg_ptr&                  
 
 void PushBlock::resolveHGearLeftCollision(const Collider& other_collider)
 {
-	if(collider.isCollision(other_collider))
+	if(collider.isCollision(other_collider) && 
+	   collider.y() >= other_collider.y() + (TILE_HEIGHT / 2))
 	{
 		setY(other_collider.y() + (TILE_HEIGHT / 2));
 
@@ -1052,15 +1053,17 @@ void PushBlock::resolveHGearLeftCollision(const Collider& other_collider)
 
 void PushBlock::resolveHGearMidCollision(const Collider& other_collider)
 {
-	if(collider.isCollision(other_collider))
+	if(collider.isCollision(other_collider) && 
+	   collider.y() >= other_collider.y() + (TILE_HEIGHT / 2))
 	{
 		setY(other_collider.y() + (TILE_HEIGHT / 2));
 	}
 }
 
 void PushBlock::resolveHGearRightCollision(const Collider& other_collider)
-{
-	if(collider.isCollision(other_collider))
+{  
+	if(collider.isCollision(other_collider) && 
+	   collider.y() >= other_collider.y() + (TILE_HEIGHT / 2))
 	{
 		setY(other_collider.y() + (TILE_HEIGHT / 2));
 
