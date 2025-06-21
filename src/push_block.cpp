@@ -768,18 +768,17 @@ void PushBlock::resolvePlayerCollision(GameObject& object)
 {
 	#define PUSH_BLOCK_ROOF_OFFSET             ((PUSH_BLOCK_COLLIDER_HEIGHT / 2) * -1)
 	#define PUSH_BLOCK_ROOF_COLLIDER_HEIGHT    8
-	#define PUSH_BLOCK_ROOF_COLLIDER_WIDTH_PAD 8
 
-	Collider roof_test_collider = Collider(collider.x(),
-										   collider.y()   + PUSH_BLOCK_ROOF_OFFSET,
-										   collider.width + PUSH_BLOCK_ROOF_COLLIDER_WIDTH_PAD,
+	int32 pixels_moved_x = (frame_start_pos.x().integer() - pos().x().integer()) * -1;
+	int32 pixels_moved_y = (frame_start_pos.y().integer() - pos().y().integer()) * -1;
+
+	Collider roof_test_collider = Collider(collider.x() - pixels_moved_x,
+										   collider.y() - pixels_moved_y + PUSH_BLOCK_ROOF_OFFSET ,
+										   collider.width,
 										   PUSH_BLOCK_ROOF_COLLIDER_HEIGHT);
 
 	if(roof_test_collider.isCollision(object.collider))
 	{
-		int32 pixels_moved_x = (frame_start_pos.x().integer() - pos().x().integer()) * -1;
-		int32 pixels_moved_y = (frame_start_pos.y().integer() - pos().y().integer()) * -1;
-
 		object.rigidbody.addForce(Force(bn::fixed_point_t<12>(pixels_moved_x, pixels_moved_y), 1));
 
 		if(hit_h_wall && (object.state == PLAYER_ROLL || object.state == PLAYER_AIR_NEUTRAL))
