@@ -773,7 +773,7 @@ void PushBlock::resolvePlayerCollision(GameObject& object)
 	int32 pixels_moved_y = (frame_start_pos.y().integer() - pos().y().integer()) * -1;
 
 	Collider roof_test_collider = Collider(collider.x() - pixels_moved_x,
-										   collider.y() - pixels_moved_y + PUSH_BLOCK_ROOF_OFFSET ,
+										   collider.y() - pixels_moved_y + PUSH_BLOCK_ROOF_OFFSET,
 										   collider.width,
 										   PUSH_BLOCK_ROOF_COLLIDER_HEIGHT);
 
