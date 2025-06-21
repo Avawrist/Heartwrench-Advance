@@ -766,6 +766,16 @@ void PushBlock::resolvePushBlockCollision(GameObject& object)
 // Special Objects
 void PushBlock::resolvePlayerCollision(GameObject& object)
 {
+	// Backwards collision resolution, let the player correct itself first.
+	// Expensive, but necessary.
+	if(object.collider.isCollision(collider))
+	{
+		object.resolveXAxisCollision(collider);
+		object.resolveYAxisCollision(collider);
+		object.resolveCornerCollision(collider);
+	}
+
+	// Now test for roof riding and resolve the PushBlock + Player.
 	#define PUSH_BLOCK_ROOF_OFFSET             ((PUSH_BLOCK_COLLIDER_HEIGHT / 2) * -1)
 	#define PUSH_BLOCK_ROOF_COLLIDER_HEIGHT    8
 
