@@ -25,6 +25,9 @@
 #define PUSH_BLOCK_MOMENTUM_TRANSFER_Y_FORCE 6
 #define PUSH_BLOCK_MOMENTUM_TRANSFER_DECAY   0.05
 
+#define PUSH_BLOCK_TRACK_DECAY 0.02
+#define PUSH_BLOCK_TRACK_FRICTION_FORCE Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), 0), PUSH_BLOCK_TRACK_DECAY)
+
 #define PUSH_BLOCK_MOMENTUM_TRANSFER_H_FORCE Force(bn::fixed_point_t<12>(PUSH_BLOCK_MOMENTUM_TRANSFER_X_FORCE * rigidbody.normalized_dir.x(), 0), PUSH_BLOCK_MOMENTUM_TRANSFER_DECAY)
 #define PUSH_BLOCK_MOMENTUM_TRANSFER_V_FORCE Force(bn::fixed_point_t<12>(0, PUSH_BLOCK_MOMENTUM_TRANSFER_Y_FORCE * rigidbody.normalized_dir.y()), PUSH_BLOCK_MOMENTUM_TRANSFER_DECAY)
 
@@ -38,6 +41,7 @@ struct PushBlock : GameObject {
 
     bool hit_h_wall;
     bool hit_v_wall;
+    bool received_track_force;
 
     PushBlock();
     PushBlock(const PushBlock& other);
@@ -50,7 +54,7 @@ struct PushBlock : GameObject {
     //////////////////////////
 
     void updatePhysics() override;
-    void checkIfDead() override;
+    void checkIfDead()   override;
 
     //////////////////////////////
     // State Function Overrides //

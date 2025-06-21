@@ -260,7 +260,7 @@ void Room::load(RoomName                                       room_name,
     // Init Player FIRST. Player will always be updated last.
     Player* player_ptr = new Player();
     addObject(player_ptr, camera_ptr);
-    game_objects.back()->setPos(-5056, -1904);
+    game_objects.back()->setPos(-5056, -1968);
 
     // Initialize Objects
     switch(room_name)
