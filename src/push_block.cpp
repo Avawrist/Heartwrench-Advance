@@ -1070,6 +1070,7 @@ void PushBlock::resolveHGearLeftCollision(const Collider& other_collider)
 		if(rigidbody.normalized_dir.x() < 0 && x() < (other_collider.x() - (TILE_WIDTH / 2)))
 		{
 			setX(other_collider.x() - (TILE_WIDTH / 2));
+			rigidbody.removeXForces();
 		}
 	}
 }
@@ -1110,6 +1111,7 @@ void PushBlock::resolveHGearRightCollision(const Collider& other_collider)
 		if(rigidbody.normalized_dir.x() > 0 && x() > (other_collider.x() + (TILE_WIDTH /2))) 
 		{
 			setX(other_collider.x() + (TILE_WIDTH / 2));
+			rigidbody.removeXForces();
 		}
 	}
 }
