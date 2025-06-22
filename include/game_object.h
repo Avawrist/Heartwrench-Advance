@@ -163,6 +163,9 @@ enum ObjectState
 	FALLING_PLATFORM_THIN_NEUTRAL,
 	FALLING_PLATFORM_THIN_FALLING,
 
+	// PushBlock
+	PUSH_BLOCK_ROLLING,
+
 	///////////////////
 	// Level Enemies //
 	///////////////////
@@ -270,7 +273,7 @@ struct GameObject
 
 	void updateHitFlash();
 
-	void updateSpriteDirection();
+	virtual void updateSpriteDirection();
 
 	void updateSpriteOffsets();
 

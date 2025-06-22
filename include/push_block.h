@@ -21,6 +21,9 @@
 
 #define PUSH_BLOCK_HITPOINTS 0
 
+#define PUSH_BLOCK_HIT_H_WALL_FRAMES 5
+#define PUSH_BLOCK_HIT_V_WALL_FRAMES 5
+
 #define PUSH_BLOCK_MOMENTUM_TRANSFER_X_FORCE 6
 #define PUSH_BLOCK_MOMENTUM_TRANSFER_Y_FORCE 6
 #define PUSH_BLOCK_MOMENTUM_TRANSFER_DECAY   0.05
@@ -28,8 +31,8 @@
 #define PUSH_BLOCK_TRACK_DECAY 0.02
 #define PUSH_BLOCK_TRACK_FRICTION_FORCE Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), 0), PUSH_BLOCK_TRACK_DECAY)
 
-#define PUSH_BLOCK_MOMENTUM_TRANSFER_H_FORCE Force(bn::fixed_point_t<12>(PUSH_BLOCK_MOMENTUM_TRANSFER_X_FORCE * rigidbody.normalized_dir.x(), 0), PUSH_BLOCK_MOMENTUM_TRANSFER_DECAY)
-#define PUSH_BLOCK_MOMENTUM_TRANSFER_V_FORCE Force(bn::fixed_point_t<12>(0, PUSH_BLOCK_MOMENTUM_TRANSFER_Y_FORCE * rigidbody.normalized_dir.y()), PUSH_BLOCK_MOMENTUM_TRANSFER_DECAY)
+#define PUSH_BLOCK_MOMENTUM_TRANSFER_H_FORCE Force(bn::fixed_point_t<12>(PUSH_BLOCK_MOMENTUM_TRANSFER_X_FORCE * (int32)x_dir * -1, 0), PUSH_BLOCK_MOMENTUM_TRANSFER_DECAY)
+#define PUSH_BLOCK_MOMENTUM_TRANSFER_V_FORCE Force(bn::fixed_point_t<12>(0, PUSH_BLOCK_MOMENTUM_TRANSFER_Y_FORCE * (int32)y_dir) * -1, PUSH_BLOCK_MOMENTUM_TRANSFER_DECAY)
 
 struct PushBlock : GameObject {
 
@@ -39,8 +42,8 @@ struct PushBlock : GameObject {
 
     bn::fixed_point frame_start_pos;
 
-    bool hit_h_wall;
-    bool hit_v_wall;
+    int32 hit_h_wall;
+    int32 hit_v_wall;
     bool received_track_force;
 
     PushBlock();
@@ -53,8 +56,10 @@ struct PushBlock : GameObject {
     // GameObject Overrides //
     //////////////////////////
 
-    void updatePhysics() override;
-    void checkIfDead()   override;
+    void updatePhysics()         override;
+    void checkIfDead()           override;
+    void updateSpriteDirection() override;
+    void updateTimers()          override;
 
     //////////////////////////////
     // State Function Overrides //
@@ -76,6 +81,8 @@ struct PushBlock : GameObject {
     void getStateFromTiles(const bn::regular_bg_ptr&                      bg_ptr,
                            const bn::span<const bn::regular_bg_map_cell>& cells,
                            const bn::regular_bg_item&                     bg_item) override;
+
+    void setState(ObjectState new_state) override;
 
     /////////////////////////
     // Collision Overrides //

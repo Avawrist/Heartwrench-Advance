@@ -34,8 +34,8 @@ PushBlock::PushBlock()
     hitpoints = PUSH_BLOCK_HITPOINTS;
 
 	frame_start_pos = bn::fixed_point(0, 0);
-	hit_h_wall 			  = false;
-	hit_v_wall 			  = false;
+	hit_h_wall 			  = 0;
+	hit_v_wall 			  = 0;
 	received_track_force  = false;
 }
 
@@ -78,6 +78,22 @@ void PushBlock::checkIfDead()
 
 }
 
+void PushBlock::updateSpriteDirection()
+{
+
+}
+
+void PushBlock::updateTimers()
+{
+	GameObject::updateTimers();
+
+	hit_h_wall--;
+	hit_h_wall = clamp(0, PUSH_BLOCK_HIT_H_WALL_FRAMES, hit_h_wall);
+
+	hit_v_wall--;
+	hit_v_wall = clamp(0, PUSH_BLOCK_HIT_V_WALL_FRAMES, hit_v_wall);
+}
+
 //////////////////////////////
 // State Function Overrides //
 //////////////////////////////
@@ -98,6 +114,14 @@ void PushBlock::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   
 
         break;
 
+		case PUSH_BLOCK_ROLLING:
+
+			// Gravity
+            if(!grounded_detected)
+            {rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
+
+		break;
+
         case OBJECT_HITSTUN:
 
             updateHitstunState();
@@ -114,13 +138,16 @@ void PushBlock::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_
 							const bn::span<const bn::regular_bg_map_cell>& cells,
 							const bn::regular_bg_item&                     bg_item)
 {
-	hit_h_wall = false;
-	hit_v_wall = false;
-
-	if(rigidbody.normalized_dir.x() == 0)
-	{received_track_force = false;}
+	if(state == IDLE) {received_track_force = false;}
 
 	GameObject::updateState(game_objects, bg_ptr, cells, bg_item);
+
+	ObjectState new_state = state;
+
+	if(rigidbody.normalized_dir.x() != 0) {new_state = PUSH_BLOCK_ROLLING;}
+	else                                  {new_state = IDLE;}
+
+	if(new_state != state) {setState(new_state);}
 }
 
 void PushBlock::getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
@@ -651,6 +678,35 @@ void PushBlock::getStateFromTiles(const bn::regular_bg_ptr&                     
 
 }
 
+void PushBlock::setState(ObjectState new_state)
+{
+	state = new_state;
+
+	switch(new_state)
+	{
+		case IDLE:
+
+			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+																		  0,
+																		  bn::sprite_items::push_block.tiles_item(),
+																		  0, 0);
+
+		break;
+
+		case PUSH_BLOCK_ROLLING:
+
+			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+																		  1,
+																		  bn::sprite_items::push_block.tiles_item(),
+																		  0, 0, 0, 1, 1, 1);
+
+		break;
+
+		default:
+		break;
+	}
+}
+
 /////////////////////////
 // Collision Overrides //
 /////////////////////////
@@ -792,10 +848,10 @@ void PushBlock::resolvePlayerCollision(GameObject& object)
 		object.rigidbody.addForce(Force(bn::fixed_point_t<12>(pixels_moved_x, pixels_moved_y), 1));
 
 		if(hit_h_wall && (object.state == PLAYER_ROLL || object.state == PLAYER_AIR_NEUTRAL))
-		{object.rigidbody.addForce(PUSH_BLOCK_MOMENTUM_TRANSFER_H_FORCE);}
+		{object.rigidbody.addForce(PUSH_BLOCK_MOMENTUM_TRANSFER_H_FORCE); hit_h_wall = 0;}
 
 		if(hit_v_wall && object.state == PLAYER_AIR_NEUTRAL)
-		{object.rigidbody.addForce(PUSH_BLOCK_MOMENTUM_TRANSFER_V_FORCE);}
+		{object.rigidbody.addForce(PUSH_BLOCK_MOMENTUM_TRANSFER_V_FORCE); hit_v_wall = 0;}
 	}
 }
 
@@ -1069,6 +1125,7 @@ void PushBlock::resolveHGearLeftCollision(const Collider& other_collider)
 		// Apply left endcap
 		if(rigidbody.normalized_dir.x() < 0 && x() < (other_collider.x() - (TILE_WIDTH / 2)))
 		{
+			hit_h_wall = PUSH_BLOCK_HIT_H_WALL_FRAMES;
 			setX(other_collider.x() - (TILE_WIDTH / 2));
 			rigidbody.removeXForces();
 		}
@@ -1110,6 +1167,7 @@ void PushBlock::resolveHGearRightCollision(const Collider& other_collider)
 		// Apply right endcap
 		if(rigidbody.normalized_dir.x() > 0 && x() > (other_collider.x() + (TILE_WIDTH /2))) 
 		{
+			hit_h_wall = PUSH_BLOCK_HIT_H_WALL_FRAMES;
 			setX(other_collider.x() + (TILE_WIDTH / 2));
 			rigidbody.removeXForces();
 		}
@@ -1122,7 +1180,7 @@ void PushBlock::resolveXAxisCollision(const Collider& other_collider)
 
 	if(col_x_offset != 0 && pos().x() != frame_start_pos.x())
 	{
-		hit_h_wall = true;
+		hit_h_wall = PUSH_BLOCK_HIT_H_WALL_FRAMES;
 		rigidbody.removeXForces();
 	}
 }
@@ -1133,7 +1191,7 @@ void PushBlock::resolveYAxisCollision(const Collider& other_collider)
 
 	if(col_y_offset != 0 && pos().y() != frame_start_pos.y()) 
 	{
-		hit_v_wall = true;
+		hit_v_wall = PUSH_BLOCK_HIT_V_WALL_FRAMES;
 		rigidbody.removeYForces();
 	}
 }
