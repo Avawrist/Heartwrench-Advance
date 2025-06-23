@@ -1169,8 +1169,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			}
 			
 			// Roll Cancel
-			if((roll_requested) && 
-			   animate_action_ptr->current_index() >= PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME)
+			if((roll_requested) && animate_action_ptr->current_index() >= PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME)
 			{setState(PLAYER_ROLL);}
 
 			// Jump Buffer
