@@ -50,6 +50,7 @@ enum RoomName
     ROOM_TEST_2,
     ROOM_TEST_3,
     ROOM_TEST_4,
+    ROOM_TEST_5,
 };
 
 struct Room

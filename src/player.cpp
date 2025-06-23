@@ -37,7 +37,6 @@ Player::Player()
 	roll_buffered_frames             = 0;
 	jump_buffered_frames             = 0;
 	remaining_jump_input_frames      = 0;
-	remaining_x_drift_lockout_frames = 0;
 	air_frames_elapsed               = 0;
 	v_collision_grace_frames         = 0;
 	late_jump_grace_frames           = 0;
@@ -81,7 +80,6 @@ Player::Player(const Player& other) : GameObject(other)
 	roll_buffered_frames             = other.roll_buffered_frames;
 	jump_buffered_frames             = other.jump_buffered_frames;
 	remaining_jump_input_frames      = other.remaining_jump_input_frames;
-	remaining_x_drift_lockout_frames = other.remaining_x_drift_lockout_frames;
 	air_frames_elapsed               = other.air_frames_elapsed;
 	v_collision_grace_frames         = other.v_collision_grace_frames;
 	late_jump_grace_frames           = other.late_jump_grace_frames;
@@ -142,7 +140,6 @@ Player& Player::operator =(const Player& other)
 	roll_buffered_frames             = other.roll_buffered_frames;
 	jump_buffered_frames             = other.jump_buffered_frames;
 	remaining_jump_input_frames      = other.remaining_jump_input_frames;
-	remaining_x_drift_lockout_frames = other.remaining_x_drift_lockout_frames;
 	air_frames_elapsed               = other.air_frames_elapsed;
 	v_collision_grace_frames         = other.v_collision_grace_frames;
 	late_jump_grace_frames           = other.late_jump_grace_frames;
@@ -216,7 +213,6 @@ void Player::wallJump()
 
 	rigidbody.removeForces();
 	rigidbody.addForce(PLAYER_WALL_JUMP_FORCE);
-	remaining_x_drift_lockout_frames = PLAYER_X_DRIFT_LOCKOUT_FRAMES;
 	remaining_jump_input_frames      = PLAYER_MAX_WALL_JUMP_INPUT_FRAMES;
 	
 	//setVerticalStretch();
@@ -646,7 +642,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 			// Update drift speed //
 			// Simulate friction/momentum
-			if((bn::keypad::left_held() || bn::keypad::right_held()) && !remaining_x_drift_lockout_frames)  
+			if((bn::keypad::left_held() || bn::keypad::right_held()))  
 			{
 				x_speed += X_SPEED_ACC_RATE;
 				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
@@ -665,10 +661,10 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			}
 
 			// Drift
-			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames)       
+			if(bn::keypad::left_held())       
 			{rigidbody.addForce(PLAYER_X_LEFT_FORCE); x_dir = LEFT;}
 
-			else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames)
+			else if(bn::keypad::right_held())
 			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE); x_dir = RIGHT;}
 
 			// Attack Air 1
@@ -729,12 +725,6 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 												PLAYER_MAX_JUMP_INPUT_FRAMES, 
 												remaining_jump_input_frames);
 
-			// Update X Drift Lockout Frames //
-			remaining_x_drift_lockout_frames--;
-			remaining_x_drift_lockout_frames = clamp(0, 
-													PLAYER_X_DRIFT_LOCKOUT_FRAMES, 
-													remaining_x_drift_lockout_frames);
-
 			// Update grace frames for a late jump //
 			late_jump_grace_frames--;
 			late_jump_grace_frames = clamp(0, 
@@ -761,7 +751,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			}
 	
 			// Drift
-			if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames) 
+			if(bn::keypad::left_held()) 
 			{rigidbody.addForce(PLAYER_X_LEFT_FORCE);}
 
 			// Wall Jump
@@ -794,7 +784,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			}
 
 			// Drift
-			if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames)
+			if(bn::keypad::right_held())
 			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE);}
 
 			// Wall Jump
@@ -1169,7 +1159,8 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			}
 			
 			// Roll Cancel
-			if((roll_requested) && animate_action_ptr->current_index() >= PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME)
+			if((roll_requested || bn::keypad::r_pressed()) && 
+			   animate_action_ptr->current_index() >= PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME)
 			{setState(PLAYER_ROLL);}
 
 			// Jump Buffer
@@ -1214,7 +1205,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 			// Update drift speed //
 			// Simulate friction/momentum
-			if((bn::keypad::left_held() || bn::keypad::right_held()) && !remaining_x_drift_lockout_frames)  
+			if((bn::keypad::left_held() || bn::keypad::right_held()))  
 			{
 				x_speed += X_SPEED_ACC_RATE;
 				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
@@ -1235,10 +1226,10 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			// Drift
 			if(animate_action_ptr->current_index() < PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME)
 			{
-				if(bn::keypad::left_held() && !remaining_x_drift_lockout_frames)       
+				if(bn::keypad::left_held())       
 				{rigidbody.addForce(PLAYER_X_LEFT_FORCE);}
 
-				else if(bn::keypad::right_held() && !remaining_x_drift_lockout_frames)
+				else if(bn::keypad::right_held())
 				{rigidbody.addForce(PLAYER_X_RIGHT_FORCE);}
 			}
 			
@@ -1262,9 +1253,10 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			{roll_buffered_frames = PLAYER_ROLL_BUFFER_FRAMES;}
 
 			// Add Gravity //
-			if(!remaining_x_drift_lockout_frames)
+			if(!grounded_detected)
 			{
 				rigidbody.addForce(PLAYER_GRAVITY_FORCE);
+
 				if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
 				{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
 			}
@@ -1274,12 +1266,6 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			remaining_jump_input_frames = clamp(0, 
 												PLAYER_MAX_JUMP_INPUT_FRAMES, 
 												remaining_jump_input_frames);
-
-			// Update X Drift Lockout Frames //
-			remaining_x_drift_lockout_frames--;
-			remaining_x_drift_lockout_frames = clamp(0, 
-													PLAYER_X_DRIFT_LOCKOUT_FRAMES, 
-													remaining_x_drift_lockout_frames);
 
 			// Update grace frames for a late jump //
 			late_jump_grace_frames--;
@@ -2166,7 +2152,6 @@ void Player::setState(ObjectState new_state)
 
 		case PLAYER_GROUNDED_NEUTRAL:
 
-			remaining_x_drift_lockout_frames = 0;
 			late_jump_grace_frames           = PLAYER_LATE_JUMP_GRACE_FRAMES;
 			
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
@@ -2179,7 +2164,6 @@ void Player::setState(ObjectState new_state)
 
 		case PLAYER_WALK:
 
-			remaining_x_drift_lockout_frames = 0;
 			late_jump_grace_frames           = PLAYER_LATE_JUMP_GRACE_FRAMES;
 
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
@@ -2193,7 +2177,6 @@ void Player::setState(ObjectState new_state)
 		case PLAYER_WALL_SLIDE_RIGHT:
 
 			rigidbody.removeForces();
-			remaining_x_drift_lockout_frames = 0;
 			remaining_jump_input_frames      = 0;
 			late_jump_grace_frames           = 0;
 			x_dir                            = LEFT;
@@ -2208,7 +2191,6 @@ void Player::setState(ObjectState new_state)
 		case PLAYER_WALL_SLIDE_LEFT:
 			
 			rigidbody.removeForces();
-			remaining_x_drift_lockout_frames = 0;
 			remaining_jump_input_frames      = 0;
 			late_jump_grace_frames           = 0;
 			x_dir                            = RIGHT;
@@ -2236,7 +2218,6 @@ void Player::setState(ObjectState new_state)
 
 			current_phase_frame              = 0;
 			remaining_jump_input_frames      = 0;
-			remaining_x_drift_lockout_frames = 0;
 			late_jump_grace_frames           = PLAYER_LATE_JUMP_GRACE_FRAMES;
 
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
@@ -2251,8 +2232,6 @@ void Player::setState(ObjectState new_state)
 		break;
 
 		case PLAYER_ATTACK_GROUND_1:
-
-			remaining_x_drift_lockout_frames = 0;
 
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 																		0,

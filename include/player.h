@@ -47,7 +47,6 @@
 #define PLAYER_JUMP_DECAY                  0.04
 #define PLAYER_SECONDARY_JUMP_DECAY        1
 #define PLAYER_TERTIARY_JUMP_DECAY         1
-#define PLAYER_X_DRIFT_LOCKOUT_FRAMES      0
 #define PLAYER_MAX_JUMP_INPUT_FRAMES       6
 #define PLAYER_MAX_WALL_JUMP_INPUT_FRAMES  6
 #define PLAYER_WALL_JUMP_DECAY             0.05
@@ -82,7 +81,7 @@
 #define PLAYER_ATTACK_GROUND_1_Y_KNOCKBACK        0
 #define PLAYER_ATTACK_GROUND_1_KNOCKBACK_DECAY    0.05
 #define PLAYER_ATTACK_GROUND_1_DAMAGE             1
-#define PLAYER_ATTACK_GROUND_1_HITSTOP_FRAMES     10
+#define PLAYER_ATTACK_GROUND_1_HITSTOP_FRAMES     8
 #define PLAYER_ATTACK_GROUND_1_HITSTUN_FRAMES     30
 #define PLAYER_ATTACK_GROUND_1_SCREENSHAKE_FRAMES 10
 #define PLAYER_ATTACK_GROUND_1_SCREENSHAKE_SEVERITY STRONG_SHAKE
@@ -97,7 +96,7 @@
 #define PLAYER_ATTACK_AIR_1_Y_KNOCKBACK        0
 #define PLAYER_ATTACK_AIR_1_KNOCKBACK_DECAY    0.05
 #define PLAYER_ATTACK_AIR_1_DAMAGE             1
-#define PLAYER_ATTACK_AIR_1_HITSTOP_FRAMES     10
+#define PLAYER_ATTACK_AIR_1_HITSTOP_FRAMES     8
 #define PLAYER_ATTACK_AIR_1_HITSTUN_FRAMES     30
 #define PLAYER_ATTACK_AIR_1_SCREENSHAKE_FRAMES 10
 #define PLAYER_ATTACK_AIR_1_SCREENSHAKE_SEVERITY STRONG_SHAKE
@@ -167,7 +166,6 @@ struct Player : GameObject {
 	int32 roll_buffered_frames;
 	int32 jump_buffered_frames;
 	int32 remaining_jump_input_frames;
-	int32 remaining_x_drift_lockout_frames;
 	int32 air_frames_elapsed;
 	int32 v_collision_grace_frames;
 	int32 late_jump_grace_frames;
