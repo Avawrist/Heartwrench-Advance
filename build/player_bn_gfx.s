@@ -8,7 +8,7 @@
 @	+ 4224 tiles not compressed
 @	Total size: 32 + 135168 = 135200
 @
-@	Time-stamp: 2025-06-17, 13:15:09
+@	Time-stamp: 2025-06-23, 01:51:41
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -4776,7 +4776,7 @@ player_bn_gfxTiles:
 	.global player_bn_gfxPal		@ 32 unsigned chars
 	.hidden player_bn_gfxPal
 player_bn_gfxPal:
-	.hword 0x1485,0x0000,0x7FFF,0x6B78,0x5AB3,0x45CF,0x2C70,0x2898
-	.hword 0x3D3E,0x5989,0x7269,0x20C7,0x314C,0x35B2,0x171F,0x0A5E
+	.hword 0x1485,0x0000,0x7FFF,0x6B78,0x5AB3,0x45CF,0x3929,0x5989
+	.hword 0x7269,0x1CFD,0x0DBF,0x20C7,0x314C,0x35B2,0x2AFF,0x265C
 
 @}}BLOCK(player_bn_gfx)
