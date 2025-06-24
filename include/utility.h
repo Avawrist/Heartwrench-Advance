@@ -21,7 +21,7 @@ typedef int   int32;
 #define MAX_UNLOADED_OBJECTS 25
 
 #define LOAD_RANGE_W  500
-#define LOAD_RANGE_H  360
+#define LOAD_RANGE_H  400
 #define SCREEN_W 400
 #define SCREEN_H 320
 
@@ -97,14 +97,16 @@ typedef int   int32;
 // Enums
 enum XDirection
 {
-    LEFT  = -1,
-    RIGHT =  1
+    LEFT   = -1,
+    X_NONE =  0,
+    RIGHT  =  1
 };
 
 enum YDirection
 {
-    UP    = -1,
-    DOWN  =  1,
+    UP     = -1,
+    Y_NONE =  0,
+    DOWN   =  1,
 };
 
 enum ScreenShakeSeverity

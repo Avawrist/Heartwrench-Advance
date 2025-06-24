@@ -158,6 +158,10 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             temp_object_ptr = new PushBlock();
         break;
 
+        case AUTO_PLATFORM:
+            temp_object_ptr = new AutoPlatform();
+        break;
+
         ///////////////////
 	    // Level Enemies //
 	    ///////////////////

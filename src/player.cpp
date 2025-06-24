@@ -1582,7 +1582,7 @@ void Player::getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game
 						rigidbody.normalized_dir.y() >= 0)
 						{
 							if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						   		rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+						   	   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
 							{createLandEffect();}
 							
 							grounded_detected = true;
@@ -1595,9 +1595,14 @@ void Player::getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game
 							right_wj_eligible = true;
 
 							if(rigidbody.normalized_dir.y() >= 0 &&
-							bn::keypad::right_held() && 
-							!bn::keypad::down_held()) 
-							{wall_right_detected = true;}
+							   bn::keypad::right_held() && !bn::keypad::down_held())
+							{
+								wall_right_detected = true;
+
+								// Add some Y force from the pushblock to the player if sliding
+								int32 y_force = game_objects.at(i)->rigidbody.normalized_dir.y().integer();
+								rigidbody.addForce(Force(bn::fixed_point_t<12>(0, y_force), 1));
+							}
 						}
 					
 						// Test for wall riding on left side
@@ -1606,9 +1611,35 @@ void Player::getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game
 							left_wj_eligible = true;
 
 							if(rigidbody.normalized_dir.y() >= 0 &&
-							bn::keypad::left_held() &&
-							!bn::keypad::down_held()) 
-							{wall_left_detected = true;}
+							   bn::keypad::left_held() && !bn::keypad::down_held()) 
+							{
+								wall_left_detected = true;
+
+								// Add some Y force from the pushblock to the player if sliding
+								int32 y_force = game_objects.at(i)->rigidbody.normalized_dir.y().integer();
+								rigidbody.addForce(Force(bn::fixed_point_t<12>(0, y_force), 1));
+							}
+						}
+
+					break;
+
+					case AUTO_PLATFORM:
+						
+						if(rigidbody.normalized_dir.y() >= 0 &&
+						   collider_y_axis.p4.y() <= game_objects.at(i)->collider.p1.y() + rigidbody.final_dir.y())
+						{
+							// Test for, and log grounded collision
+							if(test_collider.isCollision(game_objects.at(i)->collider) &&
+							   rigidbody.normalized_dir.y() >= 0)
+							{
+								if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+								rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+								{createLandEffect();}
+
+								grounded_detected     = true;
+								grounded_owp_detected = true;
+								rigidbody.removeYForces();
+							}
 						}
 
 					break;
@@ -2360,6 +2391,20 @@ void Player::resolvePushBlockCollision(GameObject& object)
         // If there is still collision somehow, must be corner case //
         resolveCornerCollision(object.collider);
     }
+}
+
+void Player::resolveAutoPlatformCollision(GameObject& object)
+{
+	if(rigidbody.normalized_dir.y() >= 0 &&
+	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
+	{
+		// Resolve Collision //
+		while(collider_y_axis.isCollision(object.collider))
+		{
+			collider_y_axis.setY(collider_y_axis.y() - 1);
+			setY(this->y() - 1);
+		}
+	}
 }
 
 // Level Enemies

@@ -27,6 +27,7 @@
 #include "falling_platform_wide.h"
 #include "falling_platform_thin.h"
 #include "push_block.h"
+#include "auto_platform.h"
 
 // Enemies
 #include "ground_ghoul.h"
@@ -83,16 +84,16 @@ struct Room
     int32 addObject(const UnloadedObject& object, const bn::camera_ptr& camera_ptr);
     int32 addUnloadedObject(const UnloadedObject& new_object, bool is_persistent); // This will be called when the room is loaded.
     int32 findUnloadedObjectIndex(int32 object_id);
-    void  clear();
-    void  load(RoomName                                       room_name, 
+    void clear();
+    void load(RoomName                                        room_name, 
                const bn::camera_ptr&                          camera_ptr, 
                const bn::regular_bg_ptr&                      object_bg_ptr, 
                const bn::regular_bg_item&                     object_bg_item,
                const bn::span<const bn::regular_bg_map_cell>& object_cells);
-    void  prepObjects(const bn::regular_bg_ptr&                      object_bg_ptr, 
+    void prepObjects(const bn::regular_bg_ptr&                       object_bg_ptr, 
                       const bn::regular_bg_item&                     object_bg_item,
                       const bn::span<const bn::regular_bg_map_cell>& object_cells);
-    void  monitorUnloadedObjects(const bn::camera_ptr& camera_ptr); // This will be called every frame to 
+    void monitorUnloadedObjects(const bn::camera_ptr& camera_ptr); // This will be called every frame to 
                                                                     // test for objects that should be loaded.
                                  
 };

@@ -48,6 +48,7 @@
 #include "bn_sprite_items_falling_platform_wide.h"
 #include "bn_sprite_items_falling_platform_thin.h"
 #include "bn_sprite_items_push_block.h"
+#include "bn_sprite_items_auto_platform.h"
 
 // Enemy Object Assets
 #include "bn_sprite_items_ground_ghoul.h"
@@ -128,6 +129,7 @@ enum ObjectType
 	FALLING_PLATFORM_WIDE,
 	FALLING_PLATFORM_THIN,
 	PUSH_BLOCK,
+	AUTO_PLATFORM,
 
 	// Level Enemies
 	THORN_COLUMN,
@@ -348,6 +350,7 @@ struct GameObject
 	virtual void resolveFallingPlatformWideCollision(GameObject& object);
 	virtual void resolveFallingPlatformThinCollision(GameObject& object);
 	virtual void resolvePushBlockCollision(GameObject& object);
+	virtual void resolveAutoPlatformCollision(GameObject& object);
 
 	// Level Enemies
 	virtual void resolveThornColumnCollision(GameObject& object); 
@@ -392,7 +395,6 @@ struct GameObject
 	virtual void resolveRightShallowSlope4Collision(const Collider& other_collider, int32 world_y);
 	virtual void resolveRightSteepSlope1Collision(const Collider& other_collider, int32 world_y);
 	virtual void resolveRightSteepSlope2Collision(const Collider& other_collider, int32 world_y);
-
 	virtual void resolveOneWayBlockCollision(const Collider& other_collider);
 
 };

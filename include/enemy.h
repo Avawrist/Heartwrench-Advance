@@ -45,6 +45,7 @@ struct Enemy : GameObject
     void resolveFallingPlatformWideCollision(GameObject& object) override;
     void resolveFallingPlatformThinCollision(GameObject& object) override;
     void resolvePushBlockCollision(GameObject& object)           override;
+    void resolveAutoPlatformCollision(GameObject& object)        override;
 
     // Level Enemies
     void resolveThornColumnCollision(GameObject& object) override;

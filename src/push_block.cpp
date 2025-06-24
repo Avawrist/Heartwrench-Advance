@@ -1147,10 +1147,10 @@ void PushBlock::resolveTileCollision(const bn::regular_bg_ptr&                  
 void PushBlock::resolveHGearLeftCollision(const Collider& other_collider)
 {
 	if(collider.isCollision(other_collider) && 
-	   collider.y() >= other_collider.y() + (TILE_HEIGHT / 2))
+	   collider.y() >= other_collider.y() + ((TILE_HEIGHT / 2) * 3))
 	{
 		// Set minimum height
-		setY(other_collider.y() + (TILE_HEIGHT / 2));
+		setY(other_collider.y() + ((TILE_HEIGHT / 2) * 3));
 
 		// Bonus friction 
 		if(!received_track_force)
@@ -1172,10 +1172,10 @@ void PushBlock::resolveHGearLeftCollision(const Collider& other_collider)
 void PushBlock::resolveHGearMidCollision(const Collider& other_collider)
 {
 	if(collider.isCollision(other_collider) && 
-	   collider.y() >= other_collider.y() + (TILE_HEIGHT / 2))
+	   collider.y() >= other_collider.y() + ((TILE_HEIGHT / 2) * 3))
 	{
 		// Set minimum height
-		setY(other_collider.y() + (TILE_HEIGHT / 2));
+		setY(other_collider.y() + ((TILE_HEIGHT / 2) * 3));
 
 		// Bonus friction 
 		if(!received_track_force)
@@ -1189,10 +1189,10 @@ void PushBlock::resolveHGearMidCollision(const Collider& other_collider)
 void PushBlock::resolveHGearRightCollision(const Collider& other_collider)
 {  
 	if(collider.isCollision(other_collider) && 
-	   collider.y() >= other_collider.y() + (TILE_HEIGHT / 2))
+	   collider.y() >= other_collider.y() + ((TILE_HEIGHT / 2) * 3))
 	{
 		// Set minimum height
-		setY(other_collider.y() + (TILE_HEIGHT / 2));
+		setY(other_collider.y() + ((TILE_HEIGHT / 2) * 3));
 
 		// Bonus friction 
 		if(!received_track_force)
@@ -1213,15 +1213,8 @@ void PushBlock::resolveHGearRightCollision(const Collider& other_collider)
 
 void PushBlock::resolveVGearTopCollision(const Collider& other_collider)
 {
-	int32 pixels_moved_x = (frame_start_pos.x().integer() - pos().x().integer()) * -1;
-
 	if(collider.isCollision(other_collider))
 	{
-		// Remove momentum if snapping to track for the first time,
-		// so it doesn't convert into awkward looking upward force.
-		if(x() - pixels_moved_x != other_collider.x() + (TILE_WIDTH / 2)) 
-		{rigidbody.removeXForces();}
-
 		// Snap to track
 		setX(other_collider.x() + (TILE_WIDTH / 2));
 
@@ -1236,15 +1229,8 @@ void PushBlock::resolveVGearTopCollision(const Collider& other_collider)
 
 void PushBlock::resolveVGearMidCollision(const Collider& other_collider)
 {
-	int32 pixels_moved_x = (frame_start_pos.x().integer() - pos().x().integer()) * -1;
-
 	if(collider.isCollision(other_collider))
 	{
-		// Remove momentum if snapping to track for the first time,
-		// so it doesn't convert into awkward looking upward force.
-		if(x() - pixels_moved_x != other_collider.x() + (TILE_WIDTH / 2)) 
-		{rigidbody.removeXForces();}
-
 		// Snap to track
 		setX(other_collider.x() + (TILE_WIDTH / 2));
 
@@ -1255,15 +1241,8 @@ void PushBlock::resolveVGearMidCollision(const Collider& other_collider)
 
 void PushBlock::resolveVGearBottomCollision(const Collider& other_collider)
 {  
-	int32 pixels_moved_x = (frame_start_pos.x().integer() - pos().x().integer()) * -1;
-
 	if(collider.isCollision(other_collider))
 	{
-		// Remove momentum if snapping to track for the first time,
-		// so it doesn't convert into awkward looking upward force.
-		if(x() - pixels_moved_x != other_collider.x() + (TILE_WIDTH / 2)) 
-		{rigidbody.removeXForces();}
-
 		// Snap to track
 		setX(other_collider.x() + (TILE_WIDTH / 2));
 

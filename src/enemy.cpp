@@ -170,6 +170,22 @@ void Enemy::getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_
 
 				break;
 
+				case AUTO_PLATFORM:
+
+					if(rigidbody.normalized_dir.y() >= 0 &&
+					   collider_y_axis.p4.y() <= game_objects.at(i)->collider.p1.y() + rigidbody.final_dir.y())
+					{
+						// Test for, and log grounded collision
+						if(test_collider.isCollision(game_objects.at(i)->collider) &&
+							rigidbody.normalized_dir.y() >= 0)
+						{
+							grounded_detected     = true;
+							rigidbody.removeYForces();
+						}
+					}
+
+				break;
+
 				// Level Enemies
 				case THORN_COLUMN:
 				case THORN_BAR:
@@ -603,7 +619,7 @@ void Enemy::resolveFallingPlatformWideCollision(GameObject& object)
 	}
 }
 
-void Enemy::resolveFallingPlatformThinCollision(GameObject& object) 
+void Enemy::resolveFallingPlatformThinCollision(GameObject& object)
 {
 	if(rigidbody.normalized_dir.y() >= 0 &&
 	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
@@ -638,6 +654,20 @@ void Enemy::resolvePushBlockCollision(GameObject& object)
         	resolveCornerCollision(object.collider);
 		}
     }
+}
+
+void Enemy::resolveAutoPlatformCollision(GameObject& object)
+{
+	if(rigidbody.normalized_dir.y() >= 0 &&
+	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
+	{
+		// Resolve Collision //
+		while(collider_y_axis.isCollision(object.collider))
+		{
+			collider_y_axis.setY(collider_y_axis.y() - 1);
+			setY(this->y() - 1);
+		}
+	}
 }
 
 // Level Enemies

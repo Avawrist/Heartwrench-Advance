@@ -702,6 +702,10 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
                     resolvePushBlockCollision(*game_objects.at(i));
                 break;
 
+                case AUTO_PLATFORM:
+                    resolveAutoPlatformCollision(*game_objects.at(i));
+                break;
+
                 // Level Enemies
                 case THORN_COLUMN:
                     resolveThornColumnCollision(*game_objects.at(i));
@@ -748,6 +752,7 @@ void GameObject::resolvePhaseOrbRightCollision(GameObject& object)       {}
 void GameObject::resolveFallingPlatformWideCollision(GameObject& object) {}
 void GameObject::resolveFallingPlatformThinCollision(GameObject& object) {}
 void GameObject::resolvePushBlockCollision(GameObject& object)           {}
+void GameObject::resolveAutoPlatformCollision(GameObject& object)        {}
 
 // Level Enemies
 void GameObject::resolveThornColumnCollision(GameObject& object) {}
@@ -1150,7 +1155,6 @@ void GameObject::resolveVGearBottomCollision(const Collider& other_collider)
 {
 
 }
-
 
 void GameObject::resolveUpSpikeCollision(const Collider& other_collider)
 {
