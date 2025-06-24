@@ -1650,53 +1650,6 @@ void Player::getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game
 					case GROUND_GHOUL:
 					break;
 
-					/*
-					// Special Objects
-					case DEVIL_PLATFORM:
-
-						// Test for, and log grounded collision
-						if(test_collider.isCollision(other_collider) && 
-						rigidbody.normalized_dir.y() >= 0)
-						{
-							if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED) 
-							{setHorizontalStretch();}
-							grounded_detected = true;
-						}
-
-						// Test for wall riding on right side
-						if(test_collider_right.isCollision(other_collider) && 
-						rigidbody.final_dir.y() >= 0)
-						{wall_right_detected = true;}
-						
-						// Test for wall riding on left side
-						if(test_collider_left.isCollision(other_collider) && 
-						rigidbody.final_dir.y() >= 0)
-						{wall_left_detected = true;}
-
-					break;
-
-					case ANGEL_PLATFORM:
-					case SCYTHE_PLATFORM:
-						
-						if(collider_y_axis.p4.y() <= other_collider.p1.y() + PLAYER_GRAVITY)
-						{
-							// Test for, and log grounded collision
-							if(test_collider.isCollision(other_collider) && 
-							rigidbody.normalized_dir.y() >= 0)
-							{ 
-								if(!bn::keypad::down_held()) 
-								{
-									grounded_detected     = true;
-									grounded_owp_detected = true;
-									if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED)
-									{setHorizontalStretch();}
-								}
-							}
-						}
-						
-					break;
-					*/
-
 					default:
 					break;
 				}
@@ -2469,72 +2422,6 @@ void Player::resolveGroundGhoulCollision(GameObject& object)
 		applyHit(knockback_x_dir, 0, object.damage);
 	}
 }
-
-// Special Objects
-/*
-void Player::resolveDevilPlatformCollision(GameObject& object)       
-{
-	if(collider.isCollision(object.collider))
-	{
-		// Handle Default Collision Cases //
-		resolveXAxisCollision(object.collider);
-
-		resolveYAxisCollision(object.collider);
-
-		// If there is still collision somehow, must be corner case //
-		resolveCornerCollision(object.collider);
-	}
-}
-
-void Player::resolveAngelPlatformCollision(GameObject& object)       
-{
-	if(collider_y_axis.p4.y() <= object.collider.p1.y() + PLAYER_GRAVITY)
-	{
-
-		// Handle Corner Case //
-		if(!collider_x_axis.isCollision(object.collider) &&
-		   !collider_y_axis.isCollision(object.collider))
-		{
-			while(collider.isCollision(object.collider))
-			{setY(this->y() - 1);}
-		}
-	
-		// Handle Remaining Collision Cases //
-		else
-		{
-			while(collider_y_axis.isCollision(object.collider))
-			{collider_y_axis.setY(collider_y_axis.y() - 1);
-			 setY(this->y() - 1);}
-		}
-	}
-}
-
-void Player::resolveScythePlatformCollision(GameObject& object)      
-{
-	if(collider_y_axis.p4.y() <= object.collider.p1.y() + PLAYER_GRAVITY)
-	{
-		// Handle Corner Case //
-		if(!collider_x_axis.isCollision(object.collider) &&
-		!collider_y_axis.isCollision(object.collider))
-		{
-			while(collider.isCollision(object.collider))
-			{
-				setY(this->y() - 1);
-			}
-		} 
-	
-		// Handle Remaining Collision Cases //
-		else
-		{
-			while(collider_y_axis.isCollision(object.collider))
-			{
-				collider_y_axis.setY(collider_y_axis.y() - 1);
-				setY(this->y() - 1);
-			}
-		}
-	}
-}
-*/
 
 void Player::resolveHitboxAttackGround1Collision(GameObject& object) {}
 void Player::resolveHitboxAir1Collision(GameObject& object)          {} 

@@ -120,16 +120,6 @@ void Enemy::getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_
 						{
 							grounded_detected     = true;
 							rigidbody.removeYForces();
-							
-							// Trigger the falling platform
-							/*
-							if(game_objects.at(i)->state != FALLING_PLATFORM_WIDE_FALLING)
-							{
-								setY(this->y() - 1); // One pixel adjustment to deal with 
-														// object slipping off platform on frame 1
-								game_objects.at(i)->setState(FALLING_PLATFORM_WIDE_FALLING);
-							}
-							*/
 						}
 					}
 
