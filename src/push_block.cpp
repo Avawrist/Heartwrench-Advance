@@ -845,8 +845,8 @@ void PushBlock::resolvePlayerCollision(GameObject& object)
 		if(hit_h_wall && (object.state == PLAYER_ROLL || object.state == PLAYER_AIR_NEUTRAL))
 		{object.rigidbody.addForce(PUSH_BLOCK_MOMENTUM_TRANSFER_H_FORCE); hit_h_wall = 0;}
 
-		//if(hit_v_wall && object.state == PLAYER_AIR_NEUTRAL)
-		//{object.rigidbody.addForce(PUSH_BLOCK_MOMENTUM_TRANSFER_V_FORCE); hit_v_wall = 0;}
+		if(hit_v_wall && object.state == PLAYER_AIR_NEUTRAL)
+		{object.rigidbody.addForce(PUSH_BLOCK_MOMENTUM_TRANSFER_V_FORCE); hit_v_wall = 0;}
 	}
 
 	// Backwards collision resolution, let the player correct itself.
@@ -1213,8 +1213,15 @@ void PushBlock::resolveHGearRightCollision(const Collider& other_collider)
 
 void PushBlock::resolveVGearTopCollision(const Collider& other_collider)
 {
+	int32 pixels_moved_x = (frame_start_pos.x().integer() - pos().x().integer()) * -1;
+
 	if(collider.isCollision(other_collider))
 	{
+		// Remove momentum if snapping to track for the first time,
+		// so it doesn't convert into awkward looking upward force.
+		if(x() - pixels_moved_x != other_collider.x() + (TILE_WIDTH / 2)) 
+		{rigidbody.removeXForces();}
+
 		// Snap to track
 		setX(other_collider.x() + (TILE_WIDTH / 2));
 
@@ -1229,29 +1236,40 @@ void PushBlock::resolveVGearTopCollision(const Collider& other_collider)
 
 void PushBlock::resolveVGearMidCollision(const Collider& other_collider)
 {
+	int32 pixels_moved_x = (frame_start_pos.x().integer() - pos().x().integer()) * -1;
+
 	if(collider.isCollision(other_collider))
 	{
+		// Remove momentum if snapping to track for the first time,
+		// so it doesn't convert into awkward looking upward force.
+		if(x() - pixels_moved_x != other_collider.x() + (TILE_WIDTH / 2)) 
+		{rigidbody.removeXForces();}
+
 		// Snap to track
 		setX(other_collider.x() + (TILE_WIDTH / 2));
 
 		// Convert x force to y force
-		rigidbody.addForce(Force(bn::fixed_point_t<12>(0, abs(rigidbody.final_dir.x() / 2) * -1), 1));
+		rigidbody.addForce(Force(bn::fixed_point_t<12>(0, abs(rigidbody.final_dir.x()) * -1), 1));
 	}
 }
 
 void PushBlock::resolveVGearBottomCollision(const Collider& other_collider)
 {  
+	int32 pixels_moved_x = (frame_start_pos.x().integer() - pos().x().integer()) * -1;
+
 	if(collider.isCollision(other_collider))
 	{
+		// Remove momentum if snapping to track for the first time,
+		// so it doesn't convert into awkward looking upward force.
+		if(x() - pixels_moved_x != other_collider.x() + (TILE_WIDTH / 2)) 
+		{rigidbody.removeXForces();}
+
 		// Snap to track
 		setX(other_collider.x() + (TILE_WIDTH / 2));
 
 		// Apply bottom endcap
 		if(rigidbody.normalized_dir.y() > 0 && y() > (other_collider.y() + (TILE_HEIGHT / 2)))
-		{
-			hit_v_wall = PUSH_BLOCK_HIT_V_WALL_FRAMES;
-			setY(other_collider.y() + (TILE_HEIGHT / 2));
-		}
+		{setY(other_collider.y() + (TILE_HEIGHT / 2));}
 	}
 }
 

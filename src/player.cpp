@@ -1163,13 +1163,18 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			   animate_action_ptr->current_index() >= PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME)
 			{setState(PLAYER_ROLL);}
 
+			// Jump Cancel
+			if((jump_requested || bn::keypad::a_pressed()) && 
+			   animate_action_ptr->current_index() >= PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME)
+			{jump();}
+
 			// Jump Buffer
-			else if(bn::keypad::a_pressed())
-			{jump_buffered_frames = PLAYER_JUMP_BUFFER_FRAMES;}
+			//else if(bn::keypad::a_pressed())
+			//{jump_buffered_frames = PLAYER_JUMP_BUFFER_FRAMES;}
 
 			// Roll Buffer
-			else if(bn::keypad::r_pressed())
-			{roll_buffered_frames = PLAYER_ROLL_BUFFER_FRAMES;}
+			//else if(bn::keypad::r_pressed())
+			//{roll_buffered_frames = PLAYER_ROLL_BUFFER_FRAMES;}
 
 			// Add Gravity //
 			if(!grounded_detected)
