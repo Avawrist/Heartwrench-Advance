@@ -845,8 +845,8 @@ void PushBlock::resolvePlayerCollision(GameObject& object)
 		if(hit_h_wall && (object.state == PLAYER_ROLL || object.state == PLAYER_AIR_NEUTRAL))
 		{object.rigidbody.addForce(PUSH_BLOCK_MOMENTUM_TRANSFER_H_FORCE); hit_h_wall = 0;}
 
-		if(hit_v_wall && object.state == PLAYER_AIR_NEUTRAL)
-		{object.rigidbody.addForce(PUSH_BLOCK_MOMENTUM_TRANSFER_V_FORCE); hit_v_wall = 0;}
+		//if(hit_v_wall && object.state == PLAYER_AIR_NEUTRAL)
+		//{object.rigidbody.addForce(PUSH_BLOCK_MOMENTUM_TRANSFER_V_FORCE); hit_v_wall = 0;}
 	}
 
 	// Backwards collision resolution, let the player correct itself.
