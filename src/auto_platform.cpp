@@ -144,7 +144,8 @@ void AutoPlatform::resolvePlayerCollision(GameObject& object)
 
     // If object is riding the platform:
     if(roof_test_collider.isCollision(object.collider) &&
-       object.collider.p4.y() < collider.p1.y() - rigidbody.final_dir.y()) 
+       object.collider.p4.y() < collider.p1.y() - rigidbody.final_dir.y() &&
+       object.state != PLAYER_AIR_NEUTRAL) 
     {        
         if(rigidbody.final_dir.y() <= 0)
         {
