@@ -871,6 +871,38 @@ void GameObject::resolveTileCollision(const bn::regular_bg_ptr&                 
                 resolveHGearRightCollision(other_collider);
             }
 
+            else if(tile_index == V_GEAR_TOP)
+			{
+				other_collider = Collider(world_x,
+										  world_y, 
+										  TILE_WIDTH, 
+										  TILE_HEIGHT);
+
+				resolveVGearTopCollision(other_collider);
+			}
+
+			else if(tile_index == V_GEAR_MID_1 ||
+					tile_index == V_GEAR_MID_2 ||
+					tile_index == V_GEAR_MID_3)
+			{
+				other_collider = Collider(world_x,
+										  world_y, 
+										  TILE_WIDTH, 
+										  TILE_HEIGHT);
+
+				resolveVGearMidCollision(other_collider);
+			}
+
+			else if(tile_index == V_GEAR_BOTTOM)
+			{
+				other_collider = Collider(world_x,
+										  world_y, 
+										  TILE_WIDTH, 
+										  TILE_HEIGHT);
+
+				resolveVGearBottomCollision(other_collider);
+			}
+
             else if(tile_index == UP_SPIKE_BLOCK_1_INDEX ||
                     tile_index == UP_SPIKE_BLOCK_2_INDEX)
             {
@@ -1103,6 +1135,22 @@ void GameObject::resolveHGearRightCollision(const Collider& other_collider)
 {
 
 }
+
+void GameObject::resolveVGearTopCollision(const Collider& other_collider)
+{
+
+}
+
+void GameObject::resolveVGearMidCollision(const Collider& other_collider)
+{
+
+}
+
+void GameObject::resolveVGearBottomCollision(const Collider& other_collider)
+{
+
+}
+
 
 void GameObject::resolveUpSpikeCollision(const Collider& other_collider)
 {

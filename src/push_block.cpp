@@ -144,8 +144,12 @@ void PushBlock::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_
 
 	ObjectState new_state = state;
 
-	if(rigidbody.normalized_dir.x() != 0) {new_state = PUSH_BLOCK_ROLLING;}
-	else                                  {new_state = IDLE;}
+	int32 pixels_moved_x = (frame_start_pos.x().integer() - pos().x().integer()) * -1;
+	int32 pixels_moved_y = (frame_start_pos.y().integer() - pos().y().integer()) * -1;
+
+	if(pixels_moved_x != 0 ||
+       pixels_moved_y != 0) {new_state = PUSH_BLOCK_ROLLING;}
+	else                    {new_state = IDLE;}
 
 	if(new_state != state) {setState(new_state);}
 }
@@ -822,19 +826,9 @@ void PushBlock::resolvePushBlockCollision(GameObject& object)
 // Special Objects
 void PushBlock::resolvePlayerCollision(GameObject& object)
 {
-	// Backwards collision resolution, let the player correct itself first.
-	// Expensive, but necessary.
-	if(object.collider.isCollision(collider))
-	{
-		object.resolveXAxisCollision(collider);
-		object.resolveYAxisCollision(collider);
-		object.resolveCornerCollision(collider);
-	}
+	if(object.state == OBJECT_DEATH) {return;}
 
 	// Now test for roof riding and resolve the PushBlock + Player.
-	#define PUSH_BLOCK_ROOF_OFFSET             ((PUSH_BLOCK_COLLIDER_HEIGHT / 2) * -1)
-	#define PUSH_BLOCK_ROOF_COLLIDER_HEIGHT    8
-
 	int32 pixels_moved_x = (frame_start_pos.x().integer() - pos().x().integer()) * -1;
 	int32 pixels_moved_y = (frame_start_pos.y().integer() - pos().y().integer()) * -1;
 
@@ -845,13 +839,23 @@ void PushBlock::resolvePlayerCollision(GameObject& object)
 
 	if(roof_test_collider.isCollision(object.collider))
 	{
-		object.rigidbody.addForce(Force(bn::fixed_point_t<12>(pixels_moved_x, pixels_moved_y), 1));
+		object.rigidbody.addForce(Force(bn::fixed_point_t<12>(pixels_moved_x, 0), 1));
+		object.setY(object.y() + pixels_moved_y);
 
 		if(hit_h_wall && (object.state == PLAYER_ROLL || object.state == PLAYER_AIR_NEUTRAL))
 		{object.rigidbody.addForce(PUSH_BLOCK_MOMENTUM_TRANSFER_H_FORCE); hit_h_wall = 0;}
 
 		if(hit_v_wall && object.state == PLAYER_AIR_NEUTRAL)
 		{object.rigidbody.addForce(PUSH_BLOCK_MOMENTUM_TRANSFER_V_FORCE); hit_v_wall = 0;}
+	}
+
+	// Backwards collision resolution, let the player correct itself.
+	// Expensive, but necessary.
+	if(object.collider.isCollision(collider))
+	{
+		object.resolveXAxisCollision(collider);
+		object.resolveYAxisCollision(collider);
+		object.resolveCornerCollision(collider);
 	}
 }
 
@@ -971,6 +975,39 @@ void PushBlock::resolveTileCollision(const bn::regular_bg_ptr&                  
                 
                 resolveHGearRightCollision(other_collider);
             }
+
+			else if(tile_index == V_GEAR_TOP)
+			{
+				other_collider = Collider(world_x,
+										  world_y, 
+										  TILE_WIDTH, 
+										  TILE_HEIGHT);
+
+				resolveVGearTopCollision(other_collider);
+			}
+
+			else if(tile_index == V_GEAR_MID_1 ||
+					tile_index == V_GEAR_MID_2 ||
+					tile_index == V_GEAR_MID_3)
+			{
+				other_collider = Collider(world_x,
+										  world_y, 
+										  TILE_WIDTH, 
+										  TILE_HEIGHT);
+
+				resolveVGearMidCollision(other_collider);
+			}
+
+			else if(tile_index == V_GEAR_BOTTOM)
+			{
+				other_collider = Collider(world_x,
+										  world_y, 
+										  TILE_WIDTH, 
+										  TILE_HEIGHT);
+
+				resolveVGearBottomCollision(other_collider);
+			}
+
             else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
             {
                 other_collider = Collider(world_x, 
@@ -1119,7 +1156,7 @@ void PushBlock::resolveHGearLeftCollision(const Collider& other_collider)
 		if(!received_track_force)
 		{
 			received_track_force = true;
-			rigidbody.addForce(PUSH_BLOCK_TRACK_FRICTION_FORCE);
+			rigidbody.addForce(PUSH_BLOCK_TRACK_FRICTION_H_FORCE);
 		}
 
 		// Apply left endcap
@@ -1144,7 +1181,7 @@ void PushBlock::resolveHGearMidCollision(const Collider& other_collider)
 		if(!received_track_force)
 		{
 			received_track_force = true;
-			rigidbody.addForce(PUSH_BLOCK_TRACK_FRICTION_FORCE);
+			rigidbody.addForce(PUSH_BLOCK_TRACK_FRICTION_H_FORCE);
 		}
 	}
 }
@@ -1161,7 +1198,7 @@ void PushBlock::resolveHGearRightCollision(const Collider& other_collider)
 		if(!received_track_force)
 		{
 			received_track_force = true;
-			rigidbody.addForce(PUSH_BLOCK_TRACK_FRICTION_FORCE);
+			rigidbody.addForce(PUSH_BLOCK_TRACK_FRICTION_H_FORCE);
 		}
 
 		// Apply right endcap
@@ -1170,6 +1207,49 @@ void PushBlock::resolveHGearRightCollision(const Collider& other_collider)
 			hit_h_wall = PUSH_BLOCK_HIT_H_WALL_FRAMES;
 			setX(other_collider.x() + (TILE_WIDTH / 2));
 			rigidbody.removeXForces();
+		}
+	}
+}
+
+void PushBlock::resolveVGearTopCollision(const Collider& other_collider)
+{
+	if(collider.isCollision(other_collider))
+	{
+		// Snap to track
+		setX(other_collider.x() + (TILE_WIDTH / 2));
+
+		// Apply top endcap
+		if(rigidbody.normalized_dir.y() < 0 && y() < (other_collider.y() - (TILE_HEIGHT / 2)))
+		{
+			hit_v_wall = PUSH_BLOCK_HIT_V_WALL_FRAMES;
+			setY(other_collider.y() - (TILE_HEIGHT / 2));
+		}
+	}
+}
+
+void PushBlock::resolveVGearMidCollision(const Collider& other_collider)
+{
+	if(collider.isCollision(other_collider))
+	{
+		// Snap to track
+		setX(other_collider.x() + (TILE_WIDTH / 2));
+
+		rigidbody.addForce(Force(bn::fixed_point_t<12>(0, abs(rigidbody.final_dir.x() / 2) * -1), 1));
+	}
+}
+
+void PushBlock::resolveVGearBottomCollision(const Collider& other_collider)
+{  
+	if(collider.isCollision(other_collider))
+	{
+		// Snap to track
+		setX(other_collider.x() + (TILE_WIDTH / 2));
+
+		// Apply bottom endcap
+		if(rigidbody.normalized_dir.y() > 0 && y() > (other_collider.y() + (TILE_HEIGHT / 2)))
+		{
+			hit_v_wall = PUSH_BLOCK_HIT_V_WALL_FRAMES;
+			setY(other_collider.y() + (TILE_HEIGHT / 2));
 		}
 	}
 }

@@ -2120,15 +2120,15 @@ void Player::getStateFromTiles(const bn::regular_bg_ptr&                      bg
 						if(test_collider.isCollision(other_collider) &&
 						   rigidbody.normalized_dir.y() >= 0)
 						{
-							if(!bn::keypad::down_held()) 
-							{
-								if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						  		   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-								{createLandEffect();}
+							//if(!bn::keypad::down_held()) 
+							//{
+							if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+								rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+							{createLandEffect();}
 
-								grounded_detected = true;
-								rigidbody.removeYForces();
-							}
+							grounded_detected = true;
+							rigidbody.removeYForces();
+							//}
 						}
 					}
 				}
@@ -2595,6 +2595,38 @@ void Player::resolveTileCollision(const bn::regular_bg_ptr&                     
 					
 					resolveHGearRightCollision(other_collider);
 				}
+
+				else if(tile_index == V_GEAR_TOP)
+				{
+					other_collider = Collider(world_x,
+											  world_y, 
+											  TILE_WIDTH, 
+											  TILE_HEIGHT);
+
+					resolveVGearTopCollision(other_collider);
+				}
+
+				else if(tile_index == V_GEAR_MID_1 ||
+						tile_index == V_GEAR_MID_2 ||
+						tile_index == V_GEAR_MID_3)
+				{
+					other_collider = Collider(world_x,
+											  world_y, 
+											  TILE_WIDTH, 
+											  TILE_HEIGHT);
+
+					resolveVGearMidCollision(other_collider);
+				}
+
+				else if(tile_index == V_GEAR_BOTTOM)
+				{
+					other_collider = Collider(world_x,
+											  world_y, 
+											  TILE_WIDTH, 
+											  TILE_HEIGHT);
+
+					resolveVGearBottomCollision(other_collider);
+				}
 				
 				else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
 				{
@@ -2754,20 +2786,20 @@ void Player::resolveOneWayBlockCollision(const Collider& other_collider)
 	if(rigidbody.normalized_dir.y() >= 0 &&
 		collider_y_axis.p4.y() <= other_collider.p1.y() + rigidbody.final_dir.y())
 	{
-		if(bn::keypad::down_held() && 
-			(state == PLAYER_AIR_NEUTRAL || state == PLAYER_GROUNDED_NEUTRAL)) 
+		//if(bn::keypad::down_held() && 
+		//	(state == PLAYER_AIR_NEUTRAL || state == PLAYER_GROUNDED_NEUTRAL)) 
+		//{
+		//	late_jump_grace_frames = 0;
+		//	rigidbody.addForce(PLAYER_GRAVITY_FORCE);
+		//}
+		//else
+		//{
+		// Resolve Collision //
+		while(collider_y_axis.isCollision(other_collider))
 		{
-			late_jump_grace_frames = 0;
-			rigidbody.addForce(PLAYER_GRAVITY_FORCE);
+			collider_y_axis.setY(collider_y_axis.y() - 1);
+			setY(this->y() - 1);
 		}
-		else
-		{
-			// Resolve Collision //
-			while(collider_y_axis.isCollision(other_collider))
-			{
-				collider_y_axis.setY(collider_y_axis.y() - 1);
-				setY(this->y() - 1);
-			}
-		}
+		//}
 	}
 }

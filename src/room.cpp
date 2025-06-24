@@ -269,12 +269,12 @@ void Room::load(RoomName                                       room_name,
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
-            right_neighbor  = ROOM_TEST_2;
+            right_neighbor  = NO_ROOM;
             bottom_neighbor = NO_ROOM;
             left_neighbor   = NO_ROOM;
 
             room_bounds.top_bound    = -2256;
-            room_bounds.right_bound  = -4672;
+            room_bounds.right_bound  = -4400;
             room_bounds.bottom_bound = -1824;
             room_bounds.left_bound   = -5104;
 
@@ -282,72 +282,16 @@ void Room::load(RoomName                                       room_name,
             
         break;
 
-        case ROOM_TEST_2:
-
-            // Init Variables //
-            top_neighbor    = NO_ROOM;
-            right_neighbor  = ROOM_TEST_3;
-            bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TEST_1;
-
-            room_bounds.top_bound    = -2256;
-            room_bounds.right_bound  = -4208;
-            room_bounds.bottom_bound = -1824;
-            room_bounds.left_bound   = -4672;
-
-            // Add any special objects //
-            
+        case ROOM_TEST_2:   
         break;
 
-        case ROOM_TEST_3:
-
-            // Init Variables //
-            top_neighbor    = NO_ROOM;
-            right_neighbor  = ROOM_TEST_4;
-            bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TEST_2;
-
-            room_bounds.top_bound    = -2256;
-            room_bounds.right_bound  = -3680;
-            room_bounds.bottom_bound = -1824;
-            room_bounds.left_bound   = -4208;
-
-            // Add any special objects //
-            
+        case ROOM_TEST_3:       
         break;
 
         case ROOM_TEST_4:
-
-            // Init Variables //
-            top_neighbor    = NO_ROOM;
-            right_neighbor  = ROOM_TEST_5;
-            bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TEST_3;
-
-            room_bounds.top_bound    = -2256;
-            room_bounds.right_bound  = -3440;
-            room_bounds.bottom_bound = -1824;
-            room_bounds.left_bound   = -3680;
-
-            // Add any special objects //
-            
         break;
 
-            case ROOM_TEST_5:
-
-            // Init Variables //
-            top_neighbor    = NO_ROOM;
-            right_neighbor  = NO_ROOM;
-            bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TEST_4;
-
-            room_bounds.top_bound    = -2256;
-            room_bounds.right_bound  = -3040;
-            room_bounds.bottom_bound = -1824;
-            room_bounds.left_bound   = -3440;
-
-            // Add any special objects //
-            
+        case ROOM_TEST_5:
         break;
 
         default:

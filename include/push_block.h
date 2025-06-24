@@ -21,6 +21,9 @@
 
 #define PUSH_BLOCK_HITPOINTS 0
 
+#define PUSH_BLOCK_ROOF_OFFSET             ((PUSH_BLOCK_COLLIDER_HEIGHT / 2) * -1)
+#define PUSH_BLOCK_ROOF_COLLIDER_HEIGHT    16
+
 #define PUSH_BLOCK_HIT_H_WALL_FRAMES 5
 #define PUSH_BLOCK_HIT_V_WALL_FRAMES 5
 
@@ -29,7 +32,7 @@
 #define PUSH_BLOCK_MOMENTUM_TRANSFER_DECAY   0.03
 
 #define PUSH_BLOCK_TRACK_DECAY 0.01
-#define PUSH_BLOCK_TRACK_FRICTION_FORCE Force(bn::fixed_point_t<12>(rigidbody.final_dir.x() / 3, 0), PUSH_BLOCK_TRACK_DECAY)
+#define PUSH_BLOCK_TRACK_FRICTION_H_FORCE Force(bn::fixed_point_t<12>(rigidbody.final_dir.x() / 3, 0), PUSH_BLOCK_TRACK_DECAY)
 
 #define PUSH_BLOCK_MOMENTUM_TRANSFER_H_FORCE Force(bn::fixed_point_t<12>(PUSH_BLOCK_MOMENTUM_TRANSFER_X_FORCE * (int32)x_dir * -1, 0), PUSH_BLOCK_MOMENTUM_TRANSFER_DECAY)
 #define PUSH_BLOCK_MOMENTUM_TRANSFER_V_FORCE Force(bn::fixed_point_t<12>(0, PUSH_BLOCK_MOMENTUM_TRANSFER_Y_FORCE * (int32)y_dir) * -1, PUSH_BLOCK_MOMENTUM_TRANSFER_DECAY)
@@ -107,6 +110,10 @@ struct PushBlock : GameObject {
     void resolveHGearLeftCollision(const Collider& other_collider)  override;
 	void resolveHGearMidCollision(const Collider& other_collider)   override;
 	void resolveHGearRightCollision(const Collider& other_collider) override;
+
+    void resolveVGearTopCollision(const Collider& other_collider)    override;
+	void resolveVGearMidCollision(const Collider& other_collider)    override;
+	void resolveVGearBottomCollision(const Collider& other_collider) override;    
 
     void resolveXAxisCollision(const Collider& other_collider) override;
     void resolveYAxisCollision(const Collider& other_collider) override;
