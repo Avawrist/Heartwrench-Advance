@@ -1234,6 +1234,7 @@ void PushBlock::resolveVGearMidCollision(const Collider& other_collider)
 		// Snap to track
 		setX(other_collider.x() + (TILE_WIDTH / 2));
 
+		// Convert x force to y force
 		rigidbody.addForce(Force(bn::fixed_point_t<12>(0, abs(rigidbody.final_dir.x() / 2) * -1), 1));
 	}
 }
