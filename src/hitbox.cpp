@@ -210,6 +210,12 @@ void Hitbox::resolvePushBlockCollision(GameObject& object)
     {applyHit(object);}
 }
 
+void Hitbox::resolvePushBlockMiniCollision(GameObject& object)
+{
+    if(collider.isCollision(object.collider))
+    {applyHit(object);}
+}
+
 // Level Enemies
 void Hitbox::resolveThornColumnCollision(GameObject& object)
 {

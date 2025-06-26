@@ -22,7 +22,6 @@ Player::Player()
 	collider            = Collider(x(), y(), PLAYER_COLLIDER_WIDTH, PLAYER_COLLIDER_HEIGHT);
 	collider_x_axis     = collider;
 	collider_y_axis     = collider;
-	test_collider       = collider;
 	test_collider_right = collider;
 	test_collider_left  = collider;
 	collider_offset_x   = PLAYER_COLLIDER_OFFSET_X;
@@ -98,7 +97,6 @@ Player::Player(const Player& other) : GameObject(other)
 	jump_requested   = other.jump_requested;
 	attack_requested = other.attack_requested;
 
-	test_collider         = other.test_collider;
 	test_collider_right   = other.test_collider_right;
 	test_collider_left    = other.test_collider_left;
 
@@ -158,7 +156,6 @@ Player& Player::operator =(const Player& other)
 	jump_requested   = other.jump_requested;
 	attack_requested = other.attack_requested;
 
-	test_collider         = other.test_collider;
 	test_collider_right   = other.test_collider_right;
 	test_collider_left    = other.test_collider_left;
 
@@ -1364,14 +1361,10 @@ void Player::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_obj
 	// Get State Info //
 	////////////////////
 
-	// Update colliders for each axis. 
-	collider_x_axis.setPos(collider.x(), collider.y() - rigidbody.final_dir.y());
-	collider_y_axis.setPos(collider.x() - rigidbody.final_dir.x(), collider.y());
-
-	// Update test colliders for grounded collision checks
-	const uint32 ground_ray_length = 1;
-	test_collider.setPos(collider.x(),
-                         collider.y() + ground_ray_length);
+	// Initialize state variables, to be updated on collision.
+    wall_right_detected   = false;
+    wall_left_detected    = false;
+	grounded_owp_detected = false;
 
 	// Create test colliders for wall collision checks
 	const uint32 wall_ray_length = 1;
@@ -1380,14 +1373,7 @@ void Player::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_obj
 	test_collider_left.setPos(collider.x() - wall_ray_length,
                               collider.y());
 
-	// Initialize state variables, to be updated on collision.
-    wall_right_detected   = false;
-    wall_left_detected    = false;
-    grounded_detected     = false;
-	grounded_owp_detected = false;
-
-	getStateFromObjects(game_objects);
-	getStateFromTiles(bg_ptr, cells, bg_item);
+	GameObject::updateState(game_objects, bg_ptr, cells, bg_item);
 
 	//////////////////
 	// Update State //
@@ -1427,236 +1413,237 @@ void Player::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_obj
 	}
 }
 
-void Player::getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
+// Get State From Objects
+
+void Player::getStateFromTilePassage(GameObject& object)
 {
-	////////////////////////////////////////
-	// Initialize State Testing Variables //
-	////////////////////////////////////////
-
-	// Placeholder for other objects
-	Collider other_collider;
-
-	/////////////////////////////////////
-	// Get State Info from GameObjects //
-	/////////////////////////////////////
-
-	if(state != PLAYER_PHASE_STEP)
+	// Test for, and log grounded collision
+	if(object.state == TILE_PASSAGE_SHUT &&
+		test_collider.isCollision(object.collider) && 
+		rigidbody.normalized_dir.y() >= 0)
 	{
-		for(int32 i = 0; i < game_objects.size(); i++)
+		if(rigidbody.final_dir.y() >= PLAYER_MIN_PASSAGE_SPEED)
+		{object.setState(TILE_PASSAGE_OPEN);}
+		else 
 		{
-			if(game_objects.at(i)->object_id != object_id)
+			grounded_detected = true;
+			rigidbody.removeYForces();
+		}
+	}
+}
+
+void Player::getStateFromPhaseOrbUp(GameObject& object)
+{
+	if(state != PLAYER_PHASE_STEP && collider.isCollision(object.collider))
+	{
+		phase_destination = ((PhaseOrb*)(&object))->phase_destination;
+		phase_dir = PHASE_UP;
+		setPos(object.pos());
+		setState(PLAYER_PHASE_STEP);
+	}
+}
+
+void Player::getStateFromPhaseOrbDown(GameObject& object)
+{
+	if(state != PLAYER_PHASE_STEP && collider.isCollision(object.collider))
+	{
+		phase_destination = ((PhaseOrb*)(&object))->phase_destination;
+		phase_dir = PHASE_DOWN;
+		setPos(object.pos());
+		setState(PLAYER_PHASE_STEP);
+	}
+}
+
+void Player::getStateFromPhaseOrbLeft(GameObject& object)
+{
+	if(state != PLAYER_PHASE_STEP && collider.isCollision(object.collider))
+	{
+		phase_destination = ((PhaseOrb*)(&object))->phase_destination;
+		phase_dir = PHASE_LEFT;
+		setPos(object.pos());
+		setState(PLAYER_PHASE_STEP);
+	}
+}
+
+void Player::getStateFromPhaseOrbRight(GameObject& object)
+{
+	if(state != PLAYER_PHASE_STEP && collider.isCollision(object.collider))
+	{
+		phase_destination = ((PhaseOrb*)(&object))->phase_destination;
+		phase_dir = PHASE_RIGHT;
+		setPos(object.pos());
+		setState(PLAYER_PHASE_STEP);
+	}
+}
+
+void Player::getStateFromFallingPlatformWide(GameObject& object)
+{
+	if(rigidbody.normalized_dir.y() >= 0 &&
+	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
+	{
+		// Test for, and log grounded collision
+		if(test_collider.isCollision(object.collider) &&
+		   rigidbody.normalized_dir.y() >= 0)
+		{
+			if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+			   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+			{createLandEffect();}
+
+			grounded_detected = true;
+			rigidbody.removeYForces();
+			
+			// Trigger the falling platform
+			if(object.state != FALLING_PLATFORM_WIDE_FALLING)
 			{
-				other_collider = game_objects.at(i)->collider;
-
-				switch(game_objects.at(i)->object_type)
-				{
-					// Level Objects
-					case TILE_PASSAGE:
-
-						// Test for, and log grounded collision
-						if(game_objects.at(i)->state == TILE_PASSAGE_SHUT &&
-						   test_collider.isCollision(other_collider) && 
-						   rigidbody.normalized_dir.y() >= 0)
-						{
-							if(rigidbody.final_dir.y() >= PLAYER_MIN_PASSAGE_SPEED)
-							{game_objects.at(i)->setState(TILE_PASSAGE_OPEN);}
-							else 
-							{
-								grounded_detected = true;
-								rigidbody.removeYForces();
-							}
-						}
-
-					break;
-
-					case PHASE_ORB_UP:
-					
-						if(state != PLAYER_PHASE_STEP && collider.isCollision(other_collider))
-						{
-							phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-							phase_dir = PHASE_UP;
-							setPos(game_objects.at(i)->pos());
-							setState(PLAYER_PHASE_STEP);
-						}
-
-					break;
-
-					case PHASE_ORB_DOWN:
-					
-						if(state != PLAYER_PHASE_STEP && collider.isCollision(other_collider))
-						{
-							phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-							phase_dir = PHASE_DOWN;
-							setPos(game_objects.at(i)->pos());
-							setState(PLAYER_PHASE_STEP);
-						}
-
-					break;
-
-					case PHASE_ORB_LEFT:
-
-						if(state != PLAYER_PHASE_STEP && collider.isCollision(other_collider))
-						{
-							phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-							phase_dir = PHASE_LEFT;
-							setPos(game_objects.at(i)->pos());
-							setState(PLAYER_PHASE_STEP);
-						}
-
-					break;
-
-					case PHASE_ORB_RIGHT:
-
-						if(state != PLAYER_PHASE_STEP && collider.isCollision(other_collider))
-						{
-							phase_destination = ((PhaseOrb*)(game_objects.at(i)))->phase_destination;
-							phase_dir = PHASE_RIGHT;
-							setPos(game_objects.at(i)->pos());
-							setState(PLAYER_PHASE_STEP);
-						}
-
-					break;
-
-					case FALLING_PLATFORM_WIDE:
-						
-						if(rigidbody.normalized_dir.y() >= 0 &&
-						collider_y_axis.p4.y() <= game_objects.at(i)->collider.p1.y() + rigidbody.final_dir.y())
-						{
-							// Test for, and log grounded collision
-							if(test_collider.isCollision(game_objects.at(i)->collider) &&
-							rigidbody.normalized_dir.y() >= 0)
-							{
-								if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-								rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-								{createLandEffect();}
-
-								grounded_detected     = true;
-								grounded_owp_detected = true;
-								rigidbody.removeYForces();
-								
-								// Trigger the falling platform
-								if(game_objects.at(i)->state != FALLING_PLATFORM_WIDE_FALLING)
-								{
-									setY(this->y() - 1); // One pixel adjustment to deal with 
-														// player slipping off platform on frame 1
-									game_objects.at(i)->setState(FALLING_PLATFORM_WIDE_FALLING);
-								}
-							}
-						}
-
-					break;
-
-					case FALLING_PLATFORM_THIN:
-						
-						if(rigidbody.normalized_dir.y() >= 0 &&
-						collider_y_axis.p4.y() <= game_objects.at(i)->collider.p1.y() + rigidbody.final_dir.y())
-						{
-							// Test for, and log grounded collision
-							if(test_collider.isCollision(game_objects.at(i)->collider) &&
-							rigidbody.normalized_dir.y() >= 0)
-							{
-								if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-								rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-								{createLandEffect();}
-
-								grounded_detected     = true;
-								grounded_owp_detected = true;
-								rigidbody.removeYForces();
-								
-								// Trigger the falling platform
-								if(game_objects.at(i)->state != FALLING_PLATFORM_THIN_FALLING)
-								{
-									setY(this->y() - 1); // One pixel adjustment to deal with 
-														// player slipping off platform on frame 1
-									game_objects.at(i)->setState(FALLING_PLATFORM_THIN_FALLING);
-								}
-							}
-						}
-
-					break;
-
-					case PUSH_BLOCK:
-
-						// Test for, and log grounded collision
-						if(test_collider.isCollision(other_collider) && 
-						rigidbody.normalized_dir.y() >= 0)
-						{
-							if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-						   	   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-							{createLandEffect();}
-							
-							grounded_detected = true;
-							rigidbody.removeYForces();
-						}
-
-						// Test for wall riding on right side
-						if(test_collider_right.isCollision(other_collider))
-						{
-							right_wj_eligible = true;
-
-							if(rigidbody.normalized_dir.y() >= 0 &&
-							   bn::keypad::right_held() && !bn::keypad::down_held())
-							{
-								wall_right_detected = true;
-
-								// Add some Y force from the pushblock to the player if sliding
-								int32 y_force = game_objects.at(i)->rigidbody.normalized_dir.y().integer();
-								rigidbody.addForce(Force(bn::fixed_point_t<12>(0, y_force), 1));
-							}
-						}
-					
-						// Test for wall riding on left side
-						if(test_collider_left.isCollision(other_collider))
-						{
-							left_wj_eligible = true;
-
-							if(rigidbody.normalized_dir.y() >= 0 &&
-							   bn::keypad::left_held() && !bn::keypad::down_held()) 
-							{
-								wall_left_detected = true;
-
-								// Add some Y force from the pushblock to the player if sliding
-								int32 y_force = game_objects.at(i)->rigidbody.normalized_dir.y().integer();
-								rigidbody.addForce(Force(bn::fixed_point_t<12>(0, y_force), 1));
-							}
-						}
-
-					break;
-
-					case AUTO_PLATFORM:
-						
-						if(rigidbody.normalized_dir.y() >= 0 &&
-						   collider_y_axis.p4.y() <= game_objects.at(i)->collider.p1.y() + rigidbody.final_dir.y())
-						{
-							// Test for, and log grounded collision
-							if(test_collider.isCollision(game_objects.at(i)->collider) &&
-							   rigidbody.normalized_dir.y() >= 0)
-							{
-								if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-								rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-								{createLandEffect();}
-
-								grounded_detected     = true;
-								grounded_owp_detected = true;
-								rigidbody.removeYForces();
-							}
-						}
-
-					break;
-
-					// Level Enemies
-					case THORN_COLUMN:
-					case THORN_BAR:
-					case GROUND_GHOUL:
-					break;
-
-					default:
-					break;
-				}
+				setY(this->y() - 1); // One pixel adjustment to deal with 
+									 // player slipping off platform on frame 1
+				object.setState(FALLING_PLATFORM_WIDE_FALLING);
 			}
 		}
 	}
 }
+
+void Player::getStateFromFallingPlatformThin(GameObject& object)
+{
+	if(rigidbody.normalized_dir.y() >= 0 &&
+	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
+	{
+		// Test for, and log grounded collision
+		if(test_collider.isCollision(object.collider) &&
+		   rigidbody.normalized_dir.y() >= 0)
+		{
+			if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+			   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+			{createLandEffect();}
+
+			grounded_detected = true;
+			rigidbody.removeYForces();
+			
+			// Trigger the falling platform
+			if(object.state != FALLING_PLATFORM_THIN_FALLING)
+			{
+				setY(this->y() - 1); // One pixel adjustment to deal with 
+									 // player slipping off platform on frame 1
+				object.setState(FALLING_PLATFORM_THIN_FALLING);
+			}
+		}
+	}
+}
+
+void Player::getStateFromPushBlock(GameObject& object)
+{
+	// Test for, and log grounded collision
+	if(test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{
+		if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+		   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+		{createLandEffect();}
+		
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
+
+	// Test for wall riding on right side
+	if(test_collider_right.isCollision(object.collider))
+	{
+		right_wj_eligible = true;
+
+		if(rigidbody.normalized_dir.y() >= 0 &&
+		   bn::keypad::right_held() && !bn::keypad::down_held())
+		{
+			wall_right_detected = true;
+
+			// Add some Y force from the pushblock to the player if sliding
+			int32 y_force = object.rigidbody.normalized_dir.y().integer();
+			rigidbody.addForce(Force(bn::fixed_point_t<12>(0, y_force), 1));
+		}
+	}
+
+	// Test for wall riding on left side
+	if(test_collider_left.isCollision(object.collider))
+	{
+		left_wj_eligible = true;
+
+		if(rigidbody.normalized_dir.y() >= 0 &&
+			bn::keypad::left_held() && !bn::keypad::down_held()) 
+		{
+			wall_left_detected = true;
+
+			// Add some Y force from the pushblock to the player if sliding
+			int32 y_force = object.rigidbody.normalized_dir.y().integer();
+			rigidbody.addForce(Force(bn::fixed_point_t<12>(0, y_force), 1));
+		}
+	}
+}
+
+void Player::getStateFromPushBlockMini(GameObject& object)
+{
+	// Test for, and log grounded collision
+	if(test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{
+		if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+		   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+		{createLandEffect();}
+		
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
+
+	// Test for wall riding on right side
+	if(test_collider_right.isCollision(object.collider))
+	{
+		right_wj_eligible = true;
+
+		if(rigidbody.normalized_dir.y() >= 0 &&
+		   bn::keypad::right_held() && !bn::keypad::down_held())
+		{
+			wall_right_detected = true;
+
+			// Add some Y force from the pushblock to the player if sliding
+			int32 y_force = object.rigidbody.normalized_dir.y().integer();
+			rigidbody.addForce(Force(bn::fixed_point_t<12>(0, y_force), 1));
+		}
+	}
+
+	// Test for wall riding on left side
+	if(test_collider_left.isCollision(object.collider))
+	{
+		left_wj_eligible = true;
+
+		if(rigidbody.normalized_dir.y() >= 0 &&
+			bn::keypad::left_held() && !bn::keypad::down_held()) 
+		{
+			wall_left_detected = true;
+
+			// Add some Y force from the pushblock to the player if sliding
+			int32 y_force = object.rigidbody.normalized_dir.y().integer();
+			rigidbody.addForce(Force(bn::fixed_point_t<12>(0, y_force), 1));
+		}
+	}
+}
+
+void Player::getStateFromAutoPlatform(GameObject& object)
+{
+	if(rigidbody.normalized_dir.y() >= 0 &&
+	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
+	{
+		// Test for, and log grounded collision
+		if(test_collider.isCollision(object.collider) &&
+			rigidbody.normalized_dir.y() >= 0)
+		{
+			if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+			   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+			{createLandEffect();}
+
+			grounded_detected = true;
+			rigidbody.removeYForces();
+		}
+	}
+}
+
+// Get State From Tiles
 
 void Player::getStateFromTiles(const bn::regular_bg_ptr&                      bg_ptr,
 							   const bn::span<const bn::regular_bg_map_cell>& cells,
@@ -1680,6 +1667,13 @@ void Player::getStateFromTiles(const bn::regular_bg_ptr&                      bg
 
 	// Placeholder for other objects
 	Collider other_collider;
+
+	// Update test collider
+	int32 ground_ray_length = 1;
+	test_collider = Collider(collider.x(), 
+	                         collider.y() + ground_ray_length,
+							 collider.width, 
+							 collider.height);
 
 	///////////////////////////////
     // Get State Info from Tiles //
@@ -2298,12 +2292,7 @@ void Player::resolveTilePassageCollision(GameObject& object)
 	}
 }
 
-void Player::resolvePhaseOrbUpCollision(GameObject& object)          {}
-void Player::resolvePhaseOrbDownCollision(GameObject& object)        {}
-void Player::resolvePhaseOrbLeftCollision(GameObject& object)        {}
-void Player::resolvePhaseOrbRightCollision(GameObject& object)       {}
-
-void Player::resolveFallingPlatformWideCollision(GameObject& object) 
+void Player::resolveFallingPlatformWideCollision(GameObject& object)
 {
 	if(rigidbody.normalized_dir.y() >= 0 &&
 	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
@@ -2332,6 +2321,21 @@ void Player::resolveFallingPlatformThinCollision(GameObject& object)
 }
 
 void Player::resolvePushBlockCollision(GameObject& object)
+{
+	if(collider.isCollision(object.collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(object.collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(object.collider);
+
+        // If there is still collision somehow, must be corner case //
+        resolveCornerCollision(object.collider);
+    }
+}
+
+void Player::resolvePushBlockMiniCollision(GameObject& object)
 {
 	if(collider.isCollision(object.collider))
     {
@@ -2422,11 +2426,6 @@ void Player::resolveGroundGhoulCollision(GameObject& object)
 		applyHit(knockback_x_dir, 0, object.damage);
 	}
 }
-
-void Player::resolveHitboxAttackGround1Collision(GameObject& object) {}
-void Player::resolveHitboxAir1Collision(GameObject& object)          {} 
-void Player::resolveHitboxWallSplatCollision(GameObject& object)     {}
-void Player::resolvePlayerCollision(GameObject& object)              {}
 
 // Tiles
 void Player::resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 

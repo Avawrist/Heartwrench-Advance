@@ -183,7 +183,6 @@ struct Player : GameObject {
 	bool jump_requested;
 	bool attack_requested;
 
-	Collider test_collider;
 	Collider test_collider_right;
 	Collider test_collider_left;
 
@@ -248,11 +247,22 @@ struct Player : GameObject {
 					 const bn::span<const bn::regular_bg_map_cell>& cells,
 					 const bn::regular_bg_item&                     bg_item) override;
 
+	// Get State from Level Objects
+	void getStateFromTilePassage(GameObject& object)         override;
+	void getStateFromPhaseOrbUp(GameObject& object)          override;
+	void getStateFromPhaseOrbDown(GameObject& object)        override;
+	void getStateFromPhaseOrbLeft(GameObject& object)        override;
+	void getStateFromPhaseOrbRight(GameObject& object)       override;
+	void getStateFromFallingPlatformWide(GameObject& object) override;
+	void getStateFromFallingPlatformThin(GameObject& object) override;
+	void getStateFromPushBlock(GameObject& object)           override;
+	void getStateFromPushBlockMini(GameObject& object)       override;
+	void getStateFromAutoPlatform(GameObject& object)        override;
+	
+	// Get State from Tiles
 	void getStateFromTiles(const bn::regular_bg_ptr&                      bg_ptr, 
 		                   const bn::span<const bn::regular_bg_map_cell>& cells,
 					       const bn::regular_bg_item&                     bg_item) override;
-
-	void getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects) override;
 
 	void setState(ObjectState new_state) override;
 
@@ -262,25 +272,16 @@ struct Player : GameObject {
 
 	// Level Objects
 	void resolveTilePassageCollision(GameObject& object)         override;
-	void resolvePhaseOrbUpCollision(GameObject& object)          override;
-	void resolvePhaseOrbDownCollision(GameObject& object)        override;
-	void resolvePhaseOrbLeftCollision(GameObject& object)        override;
-	void resolvePhaseOrbRightCollision(GameObject& object)       override;
 	void resolveFallingPlatformWideCollision(GameObject& object) override;
 	void resolveFallingPlatformThinCollision(GameObject& object) override;
 	void resolvePushBlockCollision(GameObject& object)           override;
+	void resolvePushBlockMiniCollision(GameObject& object)       override;
 	void resolveAutoPlatformCollision(GameObject& object)        override;
 
 	// Level Enemies
 	void resolveThornColumnCollision(GameObject& object) override; 
 	void resolveThornBarCollision(GameObject& object)    override; 
 	void resolveGroundGhoulCollision(GameObject& object) override;
-
-	// Special Objects
-	void resolveHitboxAttackGround1Collision(GameObject& object) override;
-	void resolveHitboxAir1Collision(GameObject& object)          override; 
-	void resolveHitboxWallSplatCollision(GameObject& object)     override;
-	void resolvePlayerCollision(GameObject& object)              override;
 
 	// Tiles
 	void resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 

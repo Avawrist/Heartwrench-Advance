@@ -9,12 +9,12 @@ AutoPlatform::AutoPlatform()
     // Init Assets //
     object_type = AUTO_PLATFORM;
     sprite_ptr  = bn::sprite_items::auto_platform.create_sprite(0, 0);
-    sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
+    sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER + 1);
     default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								                                   1,
 								                                   bn::sprite_items::auto_platform.tiles_item(),
-								                                   0, 0, 0, 1, 1, 1);
+								                                   0, 0, 0, 0, 1, 1, 1, 1);
 
     // Init Variables //
     collider_offset_x = AUTO_PLATFORM_COLLIDER_OFFSET_X;
@@ -149,17 +149,16 @@ void AutoPlatform::resolvePlayerCollision(GameObject& object)
     {        
         if(rigidbody.final_dir.y() <= 0)
         {
-            // If descending, applying force to the x axis is all that's needed.
-            // The object gravity will take care of the rest. 
+            // If ascending, applying force to the x axis is all that's needed.
             if(!changed_x_dir)
             {object.rigidbody.addForce(Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), 0), 1));}
         }
         else
         {
-            // If ascending, apply force to BOTH axes and offset y by 1 
+            // If descending, apply force to BOTH axes
             // so the object hugs the platform tight.
             if(!changed_x_dir)
-            {object.rigidbody.addForce(Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), rigidbody.final_dir.y() + 1), 1));}
+            {object.rigidbody.addForce(Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), rigidbody.final_dir.y()), 1));}
         }
     }
 }

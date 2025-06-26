@@ -30,8 +30,15 @@ struct Enemy : GameObject
     // State Function Overrides //
     //////////////////////////////
 
-	void getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects) override;
+    // Get State from Level Objects
+	void getStateFromTilePassage(GameObject& object)         override;
+	void getStateFromFallingPlatformWide(GameObject& object) override;
+	void getStateFromFallingPlatformThin(GameObject& object) override;
+	void getStateFromPushBlock(GameObject& object)           override;
+	void getStateFromPushBlockMini(GameObject& object)       override;
+	void getStateFromAutoPlatform(GameObject& object)        override;
 
+    // Get State From Tiles
     void getStateFromTiles(const bn::regular_bg_ptr&                      bg_ptr,
                            const bn::span<const bn::regular_bg_map_cell>& cells,
                            const bn::regular_bg_item&                     bg_item) override;
@@ -45,6 +52,7 @@ struct Enemy : GameObject
     void resolveFallingPlatformWideCollision(GameObject& object) override;
     void resolveFallingPlatformThinCollision(GameObject& object) override;
     void resolvePushBlockCollision(GameObject& object)           override;
+    void resolvePushBlockMiniCollision(GameObject& object)       override;
     void resolveAutoPlatformCollision(GameObject& object)        override;
 
     // Level Enemies

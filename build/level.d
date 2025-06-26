@@ -106,6 +106,7 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/build/bn_sprite_items_falling_platform_wide.h \
  G:/game/build/bn_sprite_items_falling_platform_thin.h \
  G:/game/build/bn_sprite_items_push_block.h \
+ G:/game/build/bn_sprite_items_push_block_mini.h \
  G:/game/build/bn_sprite_items_auto_platform.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h \
  G:/game/build/bn_sprite_items_thorn_column.h \
@@ -117,11 +118,11 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/include/tile_passage.h G:/game/include/phase_orb.h \
  G:/game/include/falling_platform_wide.h \
  G:/game/include/falling_platform_thin.h G:/game/include/push_block.h \
- G:/game/include/auto_platform.h G:/game/include/ground_ghoul.h \
- G:/game/include/enemy.h G:/game/include/hitbox.h \
- G:/game/include/thorn_column.h G:/game/include/thorn_bar.h \
- G:/game/include/candelabra.h G:/game/include/prop.h \
- G:/game/include/player.h
+ G:/game/include/push_block_mini.h G:/game/include/auto_platform.h \
+ G:/game/include/ground_ghoul.h G:/game/include/enemy.h \
+ G:/game/include/hitbox.h G:/game/include/thorn_column.h \
+ G:/game/include/thorn_bar.h G:/game/include/candelabra.h \
+ G:/game/include/prop.h G:/game/include/player.h
 G:/game/include/level.h:
 G:/butano-master/butano/include/bn_log.h:
 G:/butano-master/butano/include/bn_config_log.h:
@@ -233,6 +234,7 @@ G:/game/build/bn_sprite_items_phase_orb_right.h:
 G:/game/build/bn_sprite_items_falling_platform_wide.h:
 G:/game/build/bn_sprite_items_falling_platform_thin.h:
 G:/game/build/bn_sprite_items_push_block.h:
+G:/game/build/bn_sprite_items_push_block_mini.h:
 G:/game/build/bn_sprite_items_auto_platform.h:
 G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/build/bn_sprite_items_thorn_column.h:
@@ -246,6 +248,7 @@ G:/game/include/phase_orb.h:
 G:/game/include/falling_platform_wide.h:
 G:/game/include/falling_platform_thin.h:
 G:/game/include/push_block.h:
+G:/game/include/push_block_mini.h:
 G:/game/include/auto_platform.h:
 G:/game/include/ground_ghoul.h:
 G:/game/include/enemy.h:

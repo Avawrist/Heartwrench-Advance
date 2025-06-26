@@ -80,7 +80,8 @@ struct Hitbox : GameObject
     /////////////////////////
 
     // Level Objects
-    void resolvePushBlockCollision(GameObject& object) override;
+    void resolvePushBlockCollision(GameObject& object)     override;
+    void resolvePushBlockMiniCollision(GameObject& object) override;
 
     // Level Enemies
     void resolveThornColumnCollision(GameObject& object) override;

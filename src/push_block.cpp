@@ -154,125 +154,47 @@ void PushBlock::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_
 	if(new_state != state) {setState(new_state);}
 }
 
-void PushBlock::getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
+// Get State From Objects
+void PushBlock::getStateFromTilePassage(GameObject& object)
 {
-	////////////////////////////////////////
-	// Initialize State Testing Variables //
-	////////////////////////////////////////
+	// Test for, and log grounded collision
+	if(object.state == TILE_PASSAGE_SHUT &&
+	   test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{grounded_detected = true;}
+}
 
-	int32    ground_ray_length = 1;
-	Collider test_collider     = Collider(collider.x(), 
-	                                      collider.y() + ground_ray_length, 
-										  collider.width, 
-										  collider.height);
-
-	// Placeholder for other objects
-	Collider other_collider;
-
-	/////////////////////////////////////
-	// Get State Info from GameObjects //
-	/////////////////////////////////////
-
-	for(int32 i = 0; i < game_objects.size(); i++)
+void PushBlock::getStateFromFallingPlatformWide(GameObject& object)
+{
+	if(rigidbody.normalized_dir.y() >= 0 &&
+	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
 	{
-        if(game_objects.at(i)->object_id != object_id)
-        {
-            other_collider = game_objects.at(i)->collider;
-
-            switch(game_objects.at(i)->object_type)
-            {
-                // Level Objects
-                case TILE_PASSAGE:
-
-                    // Test for, and log grounded collision
-                    if(game_objects.at(i)->state == TILE_PASSAGE_SHUT &&
-                        test_collider.isCollision(other_collider) && 
-                        rigidbody.normalized_dir.y() >= 0)
-                    {grounded_detected = true;}
-
-                break;
-
-                case PHASE_ORB_UP:
-                break;
-
-                case PHASE_ORB_DOWN:
-                break;
-
-                case PHASE_ORB_LEFT:
-                break;
-
-                case PHASE_ORB_RIGHT:
-                break;
-
-                case FALLING_PLATFORM_WIDE:
-                    
-                    if(rigidbody.normalized_dir.y() >= 0 &&
-                        collider_y_axis.p4.y() <= game_objects.at(i)->collider.p1.y() + rigidbody.final_dir.y())
-                    {
-                        // Test for, and log grounded collision
-                        if(test_collider.isCollision(game_objects.at(i)->collider) &&
-                            rigidbody.normalized_dir.y() >= 0)
-                        {
-                            grounded_detected     = true;
-                            rigidbody.removeYForces();
-                            
-                            // Trigger the falling platform
-                            if(game_objects.at(i)->state != FALLING_PLATFORM_WIDE_FALLING)
-                            {
-                                setY(this->y() - 1); // One pixel adjustment to deal with 
-                                                    // object slipping off platform on frame 1
-                                game_objects.at(i)->setState(FALLING_PLATFORM_WIDE_FALLING);
-                            }
-                        }
-                    }
-
-                break;
-
-                case FALLING_PLATFORM_THIN:
-                    
-                    if(rigidbody.normalized_dir.y() >= 0 &&
-                        collider_y_axis.p4.y() <= game_objects.at(i)->collider.p1.y() + rigidbody.final_dir.y())
-                    {
-                        // Test for, and log grounded collision
-                        if(test_collider.isCollision(game_objects.at(i)->collider) &&
-                            rigidbody.normalized_dir.y() >= 0)
-                        {
-                            grounded_detected = true;
-                            rigidbody.removeYForces();
-                            
-                            // Trigger the falling platform
-                            if(game_objects.at(i)->state != FALLING_PLATFORM_THIN_FALLING)
-                            {
-                                setY(this->y() - 1); // One pixel adjustment to deal with 
-                                                    // object slipping off platform on frame 1
-                                game_objects.at(i)->setState(FALLING_PLATFORM_THIN_FALLING);
-                            }
-                        }
-                    }
-
-                break;
-
-                case PUSH_BLOCK:
-
-                    // Test for, and log grounded collision
-                    if(test_collider.isCollision(other_collider) && 
-                        rigidbody.normalized_dir.y() >= 0)
-                    {grounded_detected = true;}
-
-                break;
-
-                // Level Enemies
-                case THORN_COLUMN:
-                case THORN_BAR:
-                case GROUND_GHOUL:
-                break;
-
-                default:
-                break;
-            }
-        }
+		// Test for, and log grounded collision
+		if(test_collider.isCollision(object.collider) &&
+			rigidbody.normalized_dir.y() >= 0)
+		{
+			grounded_detected = true;
+			rigidbody.removeYForces();
+		}
 	}
 }
+
+void PushBlock::getStateFromFallingPlatformThin(GameObject& object)
+{
+	if(rigidbody.normalized_dir.y() >= 0 &&
+		collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
+	{
+		// Test for, and log grounded collision
+		if(test_collider.isCollision(object.collider) &&
+			rigidbody.normalized_dir.y() >= 0)
+		{
+			grounded_detected = true;
+			rigidbody.removeYForces();
+		}
+	}
+}
+
+// Get State From Tiles
 
 void PushBlock::getStateFromTiles(const bn::regular_bg_ptr&                      bg_ptr,
                                   const bn::span<const bn::regular_bg_map_cell>& cells,
@@ -288,10 +210,10 @@ void PushBlock::getStateFromTiles(const bn::regular_bg_ptr&                     
 	int32 global_height;
 
 	int32    ground_ray_length = 1;
-	Collider test_collider     = Collider(collider.x(), 
-	                                      collider.y() + ground_ray_length,
-										  collider.width, 
-										  collider.height);
+	test_collider = Collider(collider.x(), 
+						     collider.y() + ground_ray_length,
+							 collider.width, 
+							 collider.height);
 
 	// Get current cell index that player resides in:
 	int32 half_level_width_pixels  = bg_ptr.dimensions().width() / 2;
@@ -810,17 +732,30 @@ void PushBlock::resolveTilePassageCollision(GameObject& object)
 
 void PushBlock::resolveFallingPlatformWideCollision(GameObject& object)
 {
-
+	if(rigidbody.normalized_dir.y() >= 0 &&
+	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
+	{
+		// Resolve Collision //
+		while(collider_y_axis.isCollision(object.collider))
+		{
+			collider_y_axis.setY(collider_y_axis.y() - 1);
+			setY(this->y() - 1);
+		}
+	}
 }
 
 void PushBlock::resolveFallingPlatformThinCollision(GameObject& object)
 {
-
-}
-
-void PushBlock::resolvePushBlockCollision(GameObject& object)
-{
-
+	if(rigidbody.normalized_dir.y() >= 0 &&
+	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
+	{
+		// Resolve Collision //
+		while(collider_y_axis.isCollision(object.collider))
+		{
+			collider_y_axis.setY(collider_y_axis.y() - 1);
+			setY(this->y() - 1);
+		}
+	}
 }
 
 // Special Objects

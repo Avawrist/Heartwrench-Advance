@@ -130,10 +130,30 @@ void FallingPlatformWide::setState(ObjectState new_state)
 // Collision Overrides //
 /////////////////////////
 
-void FallingPlatformWide::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
-                                           const bn::regular_bg_ptr&                      bg_ptr, 
-                                           const bn::span<const bn::regular_bg_map_cell>& cells,
-                                           const bn::regular_bg_item&                     bg_item)
+void FallingPlatformWide::resolvePlayerCollision(GameObject& object)
+{
+    Collider roof_test_collider = Collider(collider.x(),
+                                           collider.y() + FALLING_PLATFORM_WIDE_ROOF_OFFSET,
+                                           collider.width,
+                                           FALLING_PLATFORM_WIDE_ROOF_COLLIDER_HEIGHT);
+
+    // If object is riding the platform:
+    if(roof_test_collider.isCollision(object.collider) &&
+       object.collider.p4.y() < collider.p1.y() - rigidbody.final_dir.y() &&
+       object.state != PLAYER_AIR_NEUTRAL) 
+    {        
+        if(rigidbody.final_dir.y() > 0)
+        {
+            // If descending, apply force to BOTH axes
+            // so the object hugs the platform tight.
+            object.rigidbody.addForce(Force(bn::fixed_point_t<12>(0, rigidbody.final_dir.y()), 1));
+        }
+    }
+}
+
+void FallingPlatformWide::resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
+                                               const bn::span<const bn::regular_bg_map_cell>& cells,
+                                               const bn::regular_bg_item&                     bg_item)
 {
 
 }

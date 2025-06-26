@@ -19,6 +19,8 @@ GameObject::GameObject()
                         GAME_OBJECT_COLLIDER_WIDTH, 
                         GAME_OBJECT_COLLIDER_HEIGHT);
 
+    test_collider = collider;
+
     col_x_offset = 0;
 	col_y_offset = 0;
 
@@ -55,6 +57,8 @@ GameObject::GameObject(const GameObject& other)
     collider_y_axis   = other.collider_y_axis;
     collider_offset_x = other.collider_offset_x;
 	collider_offset_y = other.collider_offset_y;
+
+    test_collider = other.test_collider;
 
     col_x_offset = other.col_x_offset;
     col_y_offset = other.col_y_offset;
@@ -116,6 +120,8 @@ GameObject& GameObject::operator =(const GameObject& other)
     collider_y_axis   = other.collider_y_axis;
     collider_offset_x = other.collider_offset_x;
 	collider_offset_y = other.collider_offset_y;
+
+    test_collider = other.test_collider;
 
     col_x_offset = other.col_x_offset;
     col_y_offset = other.col_y_offset;
@@ -613,13 +619,90 @@ void GameObject::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game
     // Reset grounded variable
     grounded_detected = false;
 
+    // Update test collider for grounded collision checks
+	const uint32 ground_ray_length = 1;
+	test_collider.setPos(collider.x(),
+                         collider.y() + ground_ray_length);
+
     getStateFromObjects(game_objects);
     getStateFromTiles(bg_ptr, cells, bg_item);
 }
 
 void GameObject::getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
 {
-    
+	/////////////////////////////////////
+	// Get State Info from GameObjects //
+	/////////////////////////////////////
+
+	if(state != PLAYER_PHASE_STEP && 
+       state != OBJECT_DEATH)
+	{
+		for(int32 i = 0; i < game_objects.size(); i++)
+		{
+			if(game_objects.at(i)->object_id != object_id)
+			{
+				switch(game_objects.at(i)->object_type)
+				{
+					// Level Objects
+					case TILE_PASSAGE:
+                        getStateFromTilePassage(*game_objects.at(i));
+					break;
+
+					case PHASE_ORB_UP:
+                        getStateFromPhaseOrbUp(*game_objects.at(i));
+					break;
+
+					case PHASE_ORB_DOWN:
+                        getStateFromPhaseOrbDown(*game_objects.at(i));
+					break;
+
+					case PHASE_ORB_LEFT:
+                        getStateFromPhaseOrbLeft(*game_objects.at(i));
+					break;
+
+					case PHASE_ORB_RIGHT:
+                        getStateFromPhaseOrbRight(*game_objects.at(i));
+					break;
+
+					case FALLING_PLATFORM_WIDE:
+                        getStateFromFallingPlatformWide(*game_objects.at(i));
+					break;
+
+					case FALLING_PLATFORM_THIN:
+                        getStateFromFallingPlatformThin(*game_objects.at(i));
+					break;
+
+					case PUSH_BLOCK:
+                        getStateFromPushBlock(*game_objects.at(i));
+                    break; 
+
+					case PUSH_BLOCK_MINI:
+                        getStateFromPushBlockMini(*game_objects.at(i));
+					break;
+
+					case AUTO_PLATFORM:
+                        getStateFromAutoPlatform(*game_objects.at(i));
+					break;
+
+					// Level Enemies
+					case THORN_COLUMN:
+                        getStateFromThornColumn(*game_objects.at(i));
+                    break; 
+
+					case THORN_BAR:
+                        getStateFromThornBar(*game_objects.at(i));
+                    break;
+
+					case GROUND_GHOUL:
+                        getStateFromGroundGhoul(*game_objects.at(i));
+					break;
+
+					default:
+					break;
+				}
+			}
+		}
+	}
 }
 
 void GameObject::getStateFromTiles(const bn::regular_bg_ptr&                      bg_ptr,
@@ -702,6 +785,10 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
                     resolvePushBlockCollision(*game_objects.at(i));
                 break;
 
+                case PUSH_BLOCK_MINI:
+                    resolvePushBlockMiniCollision(*game_objects.at(i));
+                break;
+
                 case AUTO_PLATFORM:
                     resolveAutoPlatformCollision(*game_objects.at(i));
                 break;
@@ -752,6 +839,7 @@ void GameObject::resolvePhaseOrbRightCollision(GameObject& object)       {}
 void GameObject::resolveFallingPlatformWideCollision(GameObject& object) {}
 void GameObject::resolveFallingPlatformThinCollision(GameObject& object) {}
 void GameObject::resolvePushBlockCollision(GameObject& object)           {}
+void GameObject::resolvePushBlockMiniCollision(GameObject& object)       {}
 void GameObject::resolveAutoPlatformCollision(GameObject& object)        {}
 
 // Level Enemies

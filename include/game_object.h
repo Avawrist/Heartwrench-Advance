@@ -48,6 +48,7 @@
 #include "bn_sprite_items_falling_platform_wide.h"
 #include "bn_sprite_items_falling_platform_thin.h"
 #include "bn_sprite_items_push_block.h"
+#include "bn_sprite_items_push_block_mini.h"
 #include "bn_sprite_items_auto_platform.h"
 
 // Enemy Object Assets
@@ -129,6 +130,7 @@ enum ObjectType
 	FALLING_PLATFORM_WIDE,
 	FALLING_PLATFORM_THIN,
 	PUSH_BLOCK,
+	PUSH_BLOCK_MINI,
 	AUTO_PLATFORM,
 
 	// Level Enemies
@@ -227,6 +229,8 @@ struct GameObject
 	Collider collider_x_axis;
 	Collider collider_y_axis;
 
+	Collider test_collider;
+
 	bn::fixed col_x_offset;
 	bn::fixed col_y_offset;
 
@@ -324,11 +328,61 @@ struct GameObject
 							 const bn::span<const bn::regular_bg_map_cell>& cells,
 							 const bn::regular_bg_item&                     bg_item);
 
+	// Get State from Objects
 	virtual void getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects);
 
+	// Get State from Level Objects
+	virtual void getStateFromTilePassage(GameObject& object)         {};
+	virtual void getStateFromPhaseOrbUp(GameObject& object)          {};
+	virtual void getStateFromPhaseOrbDown(GameObject& object)        {};
+	virtual void getStateFromPhaseOrbLeft(GameObject& object)        {};
+	virtual void getStateFromPhaseOrbRight(GameObject& object)       {};
+	virtual void getStateFromFallingPlatformWide(GameObject& object) {};
+	virtual void getStateFromFallingPlatformThin(GameObject& object) {};
+	virtual void getStateFromPushBlock(GameObject& object)           {};
+	virtual void getStateFromPushBlockMini(GameObject& object)       {};
+	virtual void getStateFromAutoPlatform(GameObject& object)        {};
+
+	// Get State from Level Enemies
+	virtual void getStateFromThornColumn(GameObject& object) {}; 
+	virtual void getStateFromThornBar(GameObject& object)    {}; 
+	virtual void getStateFromGroundGhoul(GameObject& object) {};
+
+	// Get State from Special Objects
+	virtual void getStateFromHitboxAttackGround1(GameObject& object) {};
+	virtual void getStateFromHitboxAir1(GameObject& object)          {}; 
+	virtual void getStateFromHitboxWallSplat(GameObject& object)     {};
+	virtual void getStateFromPlayer(GameObject& object)              {};
+
+	// Get State from Tiles
 	virtual void getStateFromTiles(const bn::regular_bg_ptr&                      bg_ptr,
 								   const bn::span<const bn::regular_bg_map_cell>& cells,
 								   const bn::regular_bg_item&                     bg_item);
+
+	virtual void getStateFromHardBlock(const Collider& other_collider)                         {};
+	virtual void getStateFromHGearLeft(const Collider& other_collider)                         {};
+	virtual void getStateFromHGearMid(const Collider& other_collider)                          {};
+	virtual void getStateFromHGearRight(const Collider& other_collider)                        {};
+	virtual void getStateFromVGearTop(const Collider& other_collider)                          {};
+	virtual void getStateFromVGearMid(const Collider& other_collider)                          {};
+	virtual void getStateFromVGearBottom(const Collider& other_collider)                       {};
+	virtual void getStateFromUpSpike(const Collider& other_collider)                           {};
+	virtual void getStateFromDownSpike(const Collider& other_collider)                         {};
+	virtual void getStateFromLeftSpike(const Collider& other_collider)                         {};
+	virtual void getStateFromRightSpike(const Collider& other_collider)                        {};
+	virtual void getStateFromLeftShallowSlope1(const Collider& other_collider, int32 world_y)  {};
+	virtual void getStateFromLeftShallowSlope2(const Collider& other_collider, int32 world_y)  {};
+	virtual void getStateFromLeftShallowSlope3(const Collider& other_collider, int32 world_y)  {};
+	virtual void getStateFromLeftShallowSlope4(const Collider& other_collider, int32 world_y)  {};
+	virtual void getStateFromLeftSteepSlope1(const Collider& other_collider, int32 world_y)    {};
+	virtual void getStateFromLeftSteepSlope2(const Collider& other_collider, int32 world_y)    {};
+	virtual void getStateFromRightShallowSlope1(const Collider& other_collider, int32 world_y) {};
+	virtual void getStateFromRightShallowSlope2(const Collider& other_collider, int32 world_y) {};
+	virtual void getStateFromRightShallowSlope3(const Collider& other_collider, int32 world_y) {};
+	virtual void getStateFromRightShallowSlope4(const Collider& other_collider, int32 world_y) {};
+	virtual void getStateFromRightSteepSlope1(const Collider& other_collider, int32 world_y)   {};
+	virtual void getStateFromRightSteepSlope2(const Collider& other_collider, int32 world_y)   {};
+	virtual void getStateFromOneWayBlock(const Collider& other_collider)                       {};
 	
 	/////////////////////////
 	// Collision functions //
@@ -350,6 +404,7 @@ struct GameObject
 	virtual void resolveFallingPlatformWideCollision(GameObject& object);
 	virtual void resolveFallingPlatformThinCollision(GameObject& object);
 	virtual void resolvePushBlockCollision(GameObject& object);
+	virtual void resolvePushBlockMiniCollision(GameObject& object);
 	virtual void resolveAutoPlatformCollision(GameObject& object);
 
 	// Level Enemies

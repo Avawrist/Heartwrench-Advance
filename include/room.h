@@ -27,6 +27,7 @@
 #include "falling_platform_wide.h"
 #include "falling_platform_thin.h"
 #include "push_block.h"
+#include "push_block_mini.h"
 #include "auto_platform.h"
 
 // Enemies
