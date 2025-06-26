@@ -651,32 +651,30 @@ void GameObject::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game
     // Get state from Tiles
     switch(object_type)
     {
+        case PHASE_ORB_UP:
+        case PHASE_ORB_DOWN:
+        case PHASE_ORB_LEFT:
+        case PHASE_ORB_RIGHT:
         case PUSH_BLOCK_MINI:
         case GROUND_GHOUL:
             getStateFromTiles(bg_ptr, cells, bg_item);
         break;
 
+        case CANDELABRA:
+        case FALLING_PLATFORM_WIDE:
+        case FALLING_PLATFORM_THIN:
         case PUSH_BLOCK:
+        case AUTO_PLATFORM:
+        case THORN_COLUMN:
+        case THORN_BAR:
+        case HITBOX_ATTACK_GROUND_1:
+	    case HITBOX_ATTACK_AIR_1:
+	    case HITBOX_WALL_SPLAT:
         case PLAYER:
             getStateFromTilesLarge(bg_ptr, cells, bg_item);
         break;
 
         case NO_TYPE:
-        case PHASE_ORB_UP:
-        case PHASE_ORB_DOWN:
-        case PHASE_ORB_LEFT:
-        case PHASE_ORB_RIGHT:
-        case FALLING_PLATFORM_WIDE:
-        case FALLING_PLATFORM_THIN:
-        case AUTO_PLATFORM:
-        case THORN_COLUMN:
-        case THORN_BAR:
-        case CANDELABRA:
-        case HITBOX_ATTACK_GROUND_1:
-	    case HITBOX_ATTACK_AIR_1:
-	    case HITBOX_WALL_SPLAT:
-        break;
-
         default:
         break;
     }

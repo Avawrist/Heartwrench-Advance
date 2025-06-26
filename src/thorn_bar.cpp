@@ -71,6 +71,20 @@ void ThornBar::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_o
 
 }
 
+void ThornBar::getStateFromTiles(const bn::regular_bg_ptr&                      bg_ptr,
+                                 const bn::span<const bn::regular_bg_map_cell>& cells,
+                                 const bn::regular_bg_item&                     bg_item)
+{
+
+}
+                        
+void ThornBar::getStateFromTilesLarge(const bn::regular_bg_ptr&                      bg_ptr,
+                                      const bn::span<const bn::regular_bg_map_cell>& cells,
+                                      const bn::regular_bg_item&                     bg_item)
+{
+
+}
+
 /////////////////////////
 // Collision Overrides //
 /////////////////////////
