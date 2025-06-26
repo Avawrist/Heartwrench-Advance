@@ -39,9 +39,20 @@ struct Enemy : GameObject
 	void getStateFromAutoPlatform(GameObject& object)        override;
 
     // Get State From Tiles
-    void getStateFromTiles(const bn::regular_bg_ptr&                      bg_ptr,
-                           const bn::span<const bn::regular_bg_map_cell>& cells,
-                           const bn::regular_bg_item&                     bg_item) override;
+    void getStateFromHardBlock(int32 world_x, int32 world_y)          override;
+	void getStateFromLeftShallowSlope1(int32 world_x, int32 world_y)  override;
+	void getStateFromLeftShallowSlope2(int32 world_x, int32 world_y)  override;
+	void getStateFromLeftShallowSlope3(int32 world_x, int32 world_y)  override;
+	void getStateFromLeftShallowSlope4(int32 world_x, int32 world_y)  override;
+	void getStateFromLeftSteepSlope1(int32 world_x, int32 world_y)    override;
+	void getStateFromLeftSteepSlope2(int32 world_x, int32 world_y)    override;
+	void getStateFromRightShallowSlope1(int32 world_x, int32 world_y) override;
+	void getStateFromRightShallowSlope2(int32 world_x, int32 world_y) override;
+	void getStateFromRightShallowSlope3(int32 world_x, int32 world_y) override;
+	void getStateFromRightShallowSlope4(int32 world_x, int32 world_y) override;
+	void getStateFromRightSteepSlope1(int32 world_x, int32 world_y)   override;
+	void getStateFromRightSteepSlope2(int32 world_x, int32 world_y)   override;
+	void getStateFromOneWayBlock(int32 world_x, int32 world_y)        override;
 
     /////////////////////////
     // Collision Overrides //

@@ -91,6 +91,8 @@
 
 #define GAME_OBJECT_REQUIRED_SPLAT_SPEED 3
 
+#define GAME_OBJECT_LARGE_CUTOFF 16
+
 #define WALL_SPLAT_X_OFFSET           0
 #define WALL_SPLAT_Y_OFFSET           0
 #define WALL_SPLAT_HB_WIDTH           0
@@ -358,31 +360,34 @@ struct GameObject
 	virtual void getStateFromTiles(const bn::regular_bg_ptr&                      bg_ptr,
 								   const bn::span<const bn::regular_bg_map_cell>& cells,
 								   const bn::regular_bg_item&                     bg_item);
+	virtual void getStateFromTilesLarge(const bn::regular_bg_ptr&                      bg_ptr,
+										const bn::span<const bn::regular_bg_map_cell>& cells,
+										const bn::regular_bg_item&                     bg_item);
 
-	virtual void getStateFromHardBlock(const Collider& other_collider)                         {};
-	virtual void getStateFromHGearLeft(const Collider& other_collider)                         {};
-	virtual void getStateFromHGearMid(const Collider& other_collider)                          {};
-	virtual void getStateFromHGearRight(const Collider& other_collider)                        {};
-	virtual void getStateFromVGearTop(const Collider& other_collider)                          {};
-	virtual void getStateFromVGearMid(const Collider& other_collider)                          {};
-	virtual void getStateFromVGearBottom(const Collider& other_collider)                       {};
-	virtual void getStateFromUpSpike(const Collider& other_collider)                           {};
-	virtual void getStateFromDownSpike(const Collider& other_collider)                         {};
-	virtual void getStateFromLeftSpike(const Collider& other_collider)                         {};
-	virtual void getStateFromRightSpike(const Collider& other_collider)                        {};
-	virtual void getStateFromLeftShallowSlope1(const Collider& other_collider, int32 world_y)  {};
-	virtual void getStateFromLeftShallowSlope2(const Collider& other_collider, int32 world_y)  {};
-	virtual void getStateFromLeftShallowSlope3(const Collider& other_collider, int32 world_y)  {};
-	virtual void getStateFromLeftShallowSlope4(const Collider& other_collider, int32 world_y)  {};
-	virtual void getStateFromLeftSteepSlope1(const Collider& other_collider, int32 world_y)    {};
-	virtual void getStateFromLeftSteepSlope2(const Collider& other_collider, int32 world_y)    {};
-	virtual void getStateFromRightShallowSlope1(const Collider& other_collider, int32 world_y) {};
-	virtual void getStateFromRightShallowSlope2(const Collider& other_collider, int32 world_y) {};
-	virtual void getStateFromRightShallowSlope3(const Collider& other_collider, int32 world_y) {};
-	virtual void getStateFromRightShallowSlope4(const Collider& other_collider, int32 world_y) {};
-	virtual void getStateFromRightSteepSlope1(const Collider& other_collider, int32 world_y)   {};
-	virtual void getStateFromRightSteepSlope2(const Collider& other_collider, int32 world_y)   {};
-	virtual void getStateFromOneWayBlock(const Collider& other_collider)                       {};
+	virtual void getStateFromHardBlock(int32 world_x, int32 world_y)          {};
+	virtual void getStateFromHGearLeft(int32 world_x, int32 world_y)          {};
+	virtual void getStateFromHGearMid(int32 world_x, int32 world_y)           {};
+	virtual void getStateFromHGearRight(int32 world_x, int32 world_y)         {};
+	virtual void getStateFromVGearTop(int32 world_x, int32 world_y)           {};
+	virtual void getStateFromVGearMid(int32 world_x, int32 world_y)           {};
+	virtual void getStateFromVGearBottom(int32 world_x, int32 world_y)        {};
+	virtual void getStateFromUpSpike(int32 world_x, int32 world_y)            {};
+	virtual void getStateFromDownSpike(int32 world_x, int32 world_y)          {};
+	virtual void getStateFromLeftSpike(int32 world_x, int32 world_y)          {};
+	virtual void getStateFromRightSpike(int32 world_x, int32 world_y)         {};
+	virtual void getStateFromLeftShallowSlope1(int32 world_x, int32 world_y)  {};
+	virtual void getStateFromLeftShallowSlope2(int32 world_x, int32 world_y)  {};
+	virtual void getStateFromLeftShallowSlope3(int32 world_x, int32 world_y)  {};
+	virtual void getStateFromLeftShallowSlope4(int32 world_x, int32 world_y)  {};
+	virtual void getStateFromLeftSteepSlope1(int32 world_x, int32 world_y)    {};
+	virtual void getStateFromLeftSteepSlope2(int32 world_x, int32 world_y)    {};
+	virtual void getStateFromRightShallowSlope1(int32 world_x, int32 world_y) {};
+	virtual void getStateFromRightShallowSlope2(int32 world_x, int32 world_y) {};
+	virtual void getStateFromRightShallowSlope3(int32 world_x, int32 world_y) {};
+	virtual void getStateFromRightShallowSlope4(int32 world_x, int32 world_y) {};
+	virtual void getStateFromRightSteepSlope1(int32 world_x, int32 world_y)   {};
+	virtual void getStateFromRightSteepSlope2(int32 world_x, int32 world_y)   {};
+	virtual void getStateFromOneWayBlock(int32 world_x, int32 world_y)        {};
 	
 	/////////////////////////
 	// Collision functions //
