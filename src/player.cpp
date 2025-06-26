@@ -2275,15 +2275,15 @@ void Player::resolveThornColumnCollision(GameObject& object)
 	
 	if(state != PLAYER_ROLL)
 	{
-		resolveXAxisCollision(object.collider);
-		resolveYAxisCollision(object.collider);
-
-	   if(thorn_collision_x_offset != 0 && 
+	   if(collider.isCollision(object.collider) && 
 	      hitpoints > 0)
 		{
 			int32 knockback_x_dir = abs(thorn_collision_x_offset) / thorn_collision_x_offset;
-			applyHit(knockback_x_dir, 0, object.damage);
+			applyHit(object.damage, knockback_x_dir, 0);
 		}
+
+		resolveXAxisCollision(object.collider);
+		resolveYAxisCollision(object.collider);
 	}
 }
 
@@ -2291,12 +2291,12 @@ void Player::resolveThornBarCollision(GameObject& object)
 {	
 	if(state != PLAYER_ROLL)
 	{		
-		resolveXAxisCollision(object.collider);
-		resolveYAxisCollision(object.collider);
-
 		if(collider.isCollision(object.collider) &&
 	  	   hitpoints > 0)
-		{applyHit(0, rigidbody.normalized_dir.y().integer() * -1, object.damage);}
+		{applyHit(object.damage, 0, 0);}
+
+		resolveXAxisCollision(object.collider);
+		resolveYAxisCollision(object.collider);
 	}
 }
 
@@ -2327,7 +2327,7 @@ void Player::resolveGroundGhoulCollision(GameObject& object)
 	   hitpoints > 0)
 	{
 		int32 knockback_x_dir = abs(ghoul_collision_x_offset) / ghoul_collision_x_offset;
-		applyHit(knockback_x_dir, 0, object.damage);
+		applyHit(object.damage, knockback_x_dir, 0);
 	}
 }
 

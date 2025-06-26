@@ -452,7 +452,7 @@ void Enemy::resolvePushBlockCollision(GameObject& object)
 		if(object.rigidbody.normalized_dir.x() != 0 || 
            object.rigidbody.normalized_dir.y() != 0)
         {
-            hitpoints = 0;   
+            GameObject::applyHit(object.damage, object.rigidbody.normalized_dir.x().integer(), 0); 
         }
 		else
 		{
@@ -475,7 +475,7 @@ void Enemy::resolvePushBlockMiniCollision(GameObject& object)
 		if(object.rigidbody.normalized_dir.x() != 0 || 
            object.rigidbody.normalized_dir.y() != 0)
         {
-            hitpoints = 0;   
+            GameObject::applyHit(object.damage, object.rigidbody.normalized_dir.x().integer(), 0);  
         }
 		else
 		{
@@ -517,7 +517,7 @@ void Enemy::resolveThornColumnCollision(GameObject& object)
 	   hitpoints > 0)
 	{
 		int32 knockback_x_dir = abs(thorn_collision_x_offset) / thorn_collision_x_offset;
-		applyHit(knockback_x_dir, 0, object.damage);
+		GameObject::applyHit(object.damage, knockback_x_dir, 0);
 	}
 }
 
@@ -529,7 +529,7 @@ void Enemy::resolveThornBarCollision(GameObject& object)
 	if(collider.isCollision(object.collider) &&
 	   hitpoints > 0)
 	{
-		applyHit(0, rigidbody.normalized_dir.y().integer() * -1, object.damage);
+		GameObject::applyHit(object.damage, 0, 0);
 	}
 }
 

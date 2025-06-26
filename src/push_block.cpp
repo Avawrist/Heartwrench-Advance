@@ -32,6 +32,7 @@ PushBlock::PushBlock()
     y_dir       = UP;
 
     hitpoints = PUSH_BLOCK_HITPOINTS;
+	damage    = PUSH_BLOCK_DAMAGE;
 
 	frame_start_pos = bn::fixed_point(0, 0);
 	hit_h_wall 			  = 0;

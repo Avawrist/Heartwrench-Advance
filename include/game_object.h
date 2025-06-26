@@ -111,6 +111,21 @@
 #define OBJECT_KNOCKBACK_Y_FORCE      8
 #define OBJECT_KNOCKBACK_DECAY        0.08
 
+#define GENERIC_HIT_X_OFFSET           0
+#define GENERIC_HIT_Y_OFFSET           0
+#define GENERIC_HIT_HB_WIDTH           0
+#define GENERIC_HIT_HB_HEIGHT          0
+#define GENERIC_HIT_CREATE_HB_FRAME    0
+#define GENERIC_HIT_HB_LIFESPAN_FRAMES 0
+#define GENERIC_HIT_X_KNOCKBACK        4
+#define GENERIC_HIT_Y_KNOCKBACK        4
+#define GENERIC_HIT_KNOCKBACK_DECAY    0.05
+#define GENERIC_HIT_DAMAGE             10
+#define GENERIC_HIT_HITSTOP_FRAMES     8
+#define GENERIC_HIT_HITSTUN_FRAMES     30
+#define GENERIC_HIT_SCREENSHAKE_FRAMES 8
+#define GENERIC_HIT_SCREENSHAKE_SEVERITY STRONG_SHAKE
+
 #define GAME_OBJECT_GRAVITY       2
 #define GAME_OBJECT_GRAVITY_DECAY 1
 
@@ -310,8 +325,8 @@ struct GameObject
 	void clampPosition(const bn::regular_bg_ptr& bg_ptr);
 	void setHitFlash();
 	void setHitFlash(int32 frames);
-	void applyHit(int32 knockback_x_dir, int32 knockback_y_dir, int32 _damage);
-	void applyDamage(int32 damage);
+	void applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_dir);
+	void applyDamage(int32 _damage);
 	void applyHitEffect(int32 x, int32 y);
 	void applySplatEffect(int32 x, int32 y);
 

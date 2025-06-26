@@ -554,17 +554,38 @@ void GameObject::updateHitFlash()
     {hit_flash_frames = 0;}
 }
 
-void GameObject::applyHit(int32 knockback_x_dir, int32 knockback_y_dir, int32 _damage)
+void GameObject::applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_dir)
 {
-    if(invulnerability_frames) {return;}
 
+    if(invulnerability_frames) {return;}
+    
+    // Object invuln:
     invulnerability_frames = GAME_OBJECT_HIT_INVULNERABILITY_FRAMES;
 
-	rigidbody.removeForces();
-	rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_KNOCKBACK_X_FORCE * knockback_x_dir, 
-												   OBJECT_KNOCKBACK_Y_FORCE * knockback_y_dir),
-												   OBJECT_KNOCKBACK_DECAY));
-	applyDamage(_damage);
+    // Global juice
+    global_bg_hitflash_frames   = GENERIC_HIT_HITSTOP_FRAMES;
+    global_hitstop_frames       = GENERIC_HIT_HITSTOP_FRAMES;
+    global_screenshake_frames   = GENERIC_HIT_SCREENSHAKE_FRAMES;
+    global_screenshake_severity = GENERIC_HIT_SCREENSHAKE_SEVERITY;
+
+    // Object physics:
+    rigidbody.removeForces();
+    rigidbody.addForce(Force(bn::fixed_point_t<12>(GENERIC_HIT_X_KNOCKBACK * knockback_x_dir, 
+                                                   GENERIC_HIT_Y_KNOCKBACK * knockback_y_dir), 
+                                                   GENERIC_HIT_KNOCKBACK_DECAY));
+
+    // Object damage:
+    applyDamage(_damage);
+
+    // Object hitstun state:
+    hitstun_frames = GENERIC_HIT_HITSTUN_FRAMES;
+    setState(OBJECT_HITSTUN);
+
+    // Object juice:
+    setHitFlash();
+    applyHitEffect(x().integer(),
+                   y().integer());
+                       
 }
 
 void GameObject::applyDamage(int32 _damage)
@@ -1467,12 +1488,7 @@ void GameObject::resolveUpSpikeCollision(const Collider& other_collider)
 {
     if(collider.isCollision(other_collider) && hitpoints > 0)
     {
-        rigidbody.removeForces();
-        rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_KNOCKBACK_X_FORCE * 0, 
-                                                       OBJECT_KNOCKBACK_Y_FORCE * UP),
-                                                       OBJECT_KNOCKBACK_DECAY));
-
-        hitpoints = 0;
+        applyHit(SPIKE_DAMAGE, 0, -1);
     }
 }
 
@@ -1480,11 +1496,7 @@ void GameObject::resolveDownSpikeCollision(const Collider& other_collider)
 {
     if(collider.isCollision(other_collider) && hitpoints > 0)
     {
-        rigidbody.removeForces();
-        rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_KNOCKBACK_X_FORCE * 0, 
-                                                       OBJECT_KNOCKBACK_Y_FORCE * DOWN), 
-                                                       OBJECT_KNOCKBACK_DECAY));
-        hitpoints = 0;
+        applyHit(SPIKE_DAMAGE, 0, 1);
     }
 }
 
@@ -1492,11 +1504,7 @@ void GameObject::resolveLeftSpikeCollision(const Collider& other_collider)
 {
     if(collider.isCollision(other_collider) && hitpoints > 0)
     {
-        rigidbody.removeForces();
-        rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_KNOCKBACK_X_FORCE * LEFT,
-                                                       OBJECT_KNOCKBACK_Y_FORCE * 0), 
-                                                       OBJECT_KNOCKBACK_DECAY));
-        hitpoints = 0;
+        applyHit(SPIKE_DAMAGE, -1, 0);
     }
 }
 
@@ -1504,11 +1512,7 @@ void GameObject::resolveRightSpikeCollision(const Collider& other_collider)
 {
     if(collider.isCollision(other_collider) && hitpoints > 0)
     {
-        rigidbody.removeForces();
-        rigidbody.addForce(Force(bn::fixed_point_t<12>(OBJECT_KNOCKBACK_X_FORCE * RIGHT,
-                                                       OBJECT_KNOCKBACK_Y_FORCE * 0), 
-                                                       OBJECT_KNOCKBACK_DECAY));
-        hitpoints = 0;
+        applyHit(SPIKE_DAMAGE, 1, 0);
     }
 }
 

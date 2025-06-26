@@ -94,6 +94,9 @@ typedef int   int32;
 #define ONEWAYBLOCK_COLLIDER_HEIGHT    1
 #define ONEWAYBLOCK_COLLIDER_Y_OFFSET -4
 
+// Tile Macros
+#define SPIKE_DAMAGE 10
+
 // Enums
 enum XDirection
 {

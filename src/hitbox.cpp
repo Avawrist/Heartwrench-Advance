@@ -135,7 +135,6 @@ void Hitbox::applyHit(GameObject& object)
 
     // Object juice:
     object.setHitFlash();
-    //object.setHorizontalStretch();
     object.applyHitEffect(x().integer() + x_offset,
                           y().integer() + y_offset);
     
