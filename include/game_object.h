@@ -91,8 +91,6 @@
 
 #define GAME_OBJECT_REQUIRED_SPLAT_SPEED 3
 
-#define GAME_OBJECT_LARGE_CUTOFF 16
-
 #define WALL_SPLAT_X_OFFSET           0
 #define WALL_SPLAT_Y_OFFSET           0
 #define WALL_SPLAT_HB_WIDTH           0

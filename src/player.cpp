@@ -1775,6 +1775,7 @@ void Player::getStateFromPushBlockMini(GameObject& object)
 
 void Player::getStateFromAutoPlatform(GameObject& object)
 {
+	BN_LOG("test");
 	if(rigidbody.normalized_dir.y() >= 0 &&
 	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
 	{
