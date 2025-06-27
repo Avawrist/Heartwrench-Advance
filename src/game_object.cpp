@@ -633,350 +633,7 @@ void GameObject::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game
                              const bn::span<const bn::regular_bg_map_cell>& cells,
                              const bn::regular_bg_item&                     bg_item)
 {
-    // Update colliders for each axis. 
-	collider_x_axis.setPos(collider.x(), collider.y() - rigidbody.final_dir.y());
-	collider_y_axis.setPos(collider.x() - rigidbody.final_dir.x(), collider.y());
 
-    // Reset grounded variable
-    grounded_detected = false;
-
-    // Update test collider for grounded collision checks
-	const uint32 ground_ray_length = 1;
-	test_collider.setPos(collider.x(),
-                         collider.y() + ground_ray_length);
-
-    // Get state from Objects
-    getStateFromObjects(game_objects);
-
-    // Get state from Tiles
-    switch(object_type)
-    {
-        case PHASE_ORB_UP:
-        case PHASE_ORB_DOWN:
-        case PHASE_ORB_LEFT:
-        case PHASE_ORB_RIGHT:
-        case PUSH_BLOCK_MINI:
-        case GROUND_GHOUL:
-            getStateFromTiles(bg_ptr, cells, bg_item);
-        break;
-
-        case CANDELABRA:
-        case FALLING_PLATFORM_WIDE:
-        case FALLING_PLATFORM_THIN:
-        case PUSH_BLOCK:
-        case AUTO_PLATFORM:
-        case THORN_COLUMN:
-        case THORN_BAR:
-        case HITBOX_ATTACK_GROUND_1:
-	    case HITBOX_ATTACK_AIR_1:
-	    case HITBOX_WALL_SPLAT:
-        case PLAYER:
-            getStateFromTilesLarge(bg_ptr, cells, bg_item);
-        break;
-
-        case NO_TYPE:
-        default:
-        break;
-    }
-}
-
-void GameObject::getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
-{
-	/////////////////////////////////////
-	// Get State Info from GameObjects //
-	/////////////////////////////////////
-
-	if(state != PLAYER_PHASE_STEP && 
-       state != OBJECT_DEATH)
-	{
-		for(int32 i = 0; i < game_objects.size(); i++)
-		{
-			if(game_objects.at(i)->object_id != object_id)
-			{
-				switch(game_objects.at(i)->object_type)
-				{
-					// Level Objects
-					case TILE_PASSAGE:
-                        getStateFromTilePassage(*game_objects.at(i));
-					break;
-
-					case PHASE_ORB_UP:
-                        getStateFromPhaseOrbUp(*game_objects.at(i));
-					break;
-
-					case PHASE_ORB_DOWN:
-                        getStateFromPhaseOrbDown(*game_objects.at(i));
-					break;
-
-					case PHASE_ORB_LEFT:
-                        getStateFromPhaseOrbLeft(*game_objects.at(i));
-					break;
-
-					case PHASE_ORB_RIGHT:
-                        getStateFromPhaseOrbRight(*game_objects.at(i));
-					break;
-
-					case FALLING_PLATFORM_WIDE:
-                        getStateFromFallingPlatformWide(*game_objects.at(i));
-					break;
-
-					case FALLING_PLATFORM_THIN:
-                        getStateFromFallingPlatformThin(*game_objects.at(i));
-					break;
-
-					case PUSH_BLOCK:
-                        getStateFromPushBlock(*game_objects.at(i));
-                    break; 
-
-					case PUSH_BLOCK_MINI:
-                        getStateFromPushBlockMini(*game_objects.at(i));
-					break;
-
-					case AUTO_PLATFORM:
-                        getStateFromAutoPlatform(*game_objects.at(i));
-					break;
-
-					// Level Enemies
-					case THORN_COLUMN:
-                        getStateFromThornColumn(*game_objects.at(i));
-                    break; 
-
-					case THORN_BAR:
-                        getStateFromThornBar(*game_objects.at(i));
-                    break;
-
-					case GROUND_GHOUL:
-                        getStateFromGroundGhoul(*game_objects.at(i));
-					break;
-
-					default:
-					break;
-				}
-			}
-		}
-	}
-}
-
-void GameObject::getStateFromTiles(const bn::regular_bg_ptr&                      bg_ptr,
-                                   const bn::span<const bn::regular_bg_map_cell>& cells,
-                                   const bn::regular_bg_item&                     bg_item)
-{
-    ////////////////////////////////////////
-	// Initialize State Testing Variables //
-	////////////////////////////////////////
-    
-	int32 ground_ray_length = 1;
-	test_collider = Collider(collider.x(), 
-	                         collider.y() + ground_ray_length,
-							 collider.width, 
-							 collider.height);
-
-	// Get current cell index that object resides in:
-	int32 half_level_width_pixels  = bg_ptr.dimensions().width() / 2;
-	int32 half_level_height_pixels = bg_ptr.dimensions().height() / 2;
-	bn::fixed index_x = (x() + half_level_width_pixels  + collider_offset_x) / TILE_WIDTH;
-	bn::fixed index_y = (y() + half_level_height_pixels + collider_offset_y) / TILE_HEIGHT;
-	bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
-
-	///////////////////////////////
-    // Get State Info from Tiles //
-    ///////////////////////////////	
-
-	for(int32 y = -1; y < 2; y++)
-	{
-		for(int32 x = -1; x < 2; x++)
-		{
-			// 1. Get tile type at index //
-			int32 check_index_x = cell_index.x() + x;
-			int32 check_index_y = cell_index.y() + y;
-
-			// Clamp index values so we don't crash by going out of bounds.
-			while(check_index_x < 0) {check_index_x++;}
-			while(check_index_x > (bg_ptr.dimensions().width() / 8) - 1)  {check_index_x--;}
-
-			while(check_index_y < 0) {check_index_y++;}
-			while(check_index_y > (bg_ptr.dimensions().height() / 8) - 1) {check_index_y--;}
-
-			// Determine world coords in case we need to make a collider.
-			int32 world_x = ((check_index_x * TILE_WIDTH)  - half_level_width_pixels)  + (TILE_WIDTH / 2);
-			int32 world_y = ((check_index_y * TILE_HEIGHT) - half_level_height_pixels) + (TILE_HEIGHT / 2);
-
-			uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y, 
-												 bg_ptr, cells, bg_item);
-
-			// 2. Check Tile Type and update state accordingly //
-			if(tile_index >= HARD_BLOCK_MIN_INDEX &&
-			   tile_index <= HARD_BLOCK_MAX_INDEX)
-			{getStateFromHardBlock(world_x, world_y);}
-					
-			else if(tile_index == UP_SPIKE_BLOCK_1_INDEX ||
-					tile_index == UP_SPIKE_BLOCK_2_INDEX)
-			{getStateFromUpSpike(world_x, world_y);}
-
-			else if(tile_index == DOWN_SPIKE_BLOCK_1_INDEX ||
-					tile_index == DOWN_SPIKE_BLOCK_2_INDEX)
-			{getStateFromDownSpike(world_x, world_y);}
-
-			else if(tile_index == LEFT_SPIKE_BLOCK_1_INDEX ||
-					tile_index == LEFT_SPIKE_BLOCK_2_INDEX)
-			{getStateFromLeftSpike(world_x, world_y);}
-
-			else if(tile_index == RIGHT_SPIKE_BLOCK_1_INDEX || 
-					tile_index == RIGHT_SPIKE_BLOCK_2_INDEX)
-			{getStateFromRightSpike(world_x, world_y);}
-
-			else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
-			{getStateFromLeftShallowSlope1(world_x, world_y);}
-
-			else if(tile_index == LEFT_SHALLOW_SLOPE_2_INDEX)
-			{getStateFromLeftShallowSlope2(world_x, world_y);}
-
-			else if(tile_index == LEFT_SHALLOW_SLOPE_3_INDEX)
-			{getStateFromLeftShallowSlope3(world_x, world_y);}
-
-			else if(tile_index == LEFT_SHALLOW_SLOPE_4_INDEX)
-			{getStateFromLeftShallowSlope4(world_x, world_y);}
-			
-			else if(tile_index == LEFT_STEEP_SLOPE_1_INDEX)
-			{getStateFromLeftSteepSlope1(world_x, world_y);}
-			
-			else if(tile_index == LEFT_STEEP_SLOPE_2_INDEX)
-			{getStateFromLeftSteepSlope2(world_x, world_y);}			
-
-			else if(tile_index == RIGHT_SHALLOW_SLOPE_1_INDEX)
-			{getStateFromRightShallowSlope1(world_x, world_y);}
-
-			else if(tile_index == RIGHT_SHALLOW_SLOPE_2_INDEX)
-			{getStateFromRightShallowSlope2(world_x, world_y);}
-
-			else if(tile_index == RIGHT_SHALLOW_SLOPE_3_INDEX)
-			{getStateFromRightShallowSlope3(world_x, world_y);}
-
-			else if(tile_index == RIGHT_SHALLOW_SLOPE_4_INDEX)
-			{getStateFromRightShallowSlope4(world_x, world_y);}
-
-			else if(tile_index == RIGHT_STEEP_SLOPE_1_INDEX)
-			{getStateFromRightSteepSlope1(world_x, world_y);}
-
-			else if(tile_index == RIGHT_STEEP_SLOPE_2_INDEX)
-			{getStateFromRightSteepSlope2(world_x, world_y);}
-
-			else if(tile_index >= ONEWAY_BLOCK_MIN_INDEX &&
-					tile_index <= ONEWAY_BLOCK_MAX_INDEX)
-			{getStateFromOneWayBlock(world_x, world_y);}
-		}
-	}
-}
-
-void GameObject::getStateFromTilesLarge(const bn::regular_bg_ptr&                      bg_ptr,
-                                        const bn::span<const bn::regular_bg_map_cell>& cells,
-                                        const bn::regular_bg_item&                     bg_item)
-{
-    ////////////////////////////////////////
-	// Initialize State Testing Variables //
-	////////////////////////////////////////
-    
-	int32 ground_ray_length = 1;
-	test_collider = Collider(collider.x(), 
-	                         collider.y() + ground_ray_length,
-							 collider.width, 
-							 collider.height);
-
-	// Get current cell index that object resides in:
-	int32 half_level_width_pixels  = bg_ptr.dimensions().width() / 2;
-	int32 half_level_height_pixels = bg_ptr.dimensions().height() / 2;
-	bn::fixed index_x = (x() + half_level_width_pixels  + collider_offset_x) / TILE_WIDTH;
-	bn::fixed index_y = (y() + half_level_height_pixels + collider_offset_y) / TILE_HEIGHT;
-	bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
-
-	///////////////////////////////
-    // Get State Info from Tiles //
-    ///////////////////////////////	
-
-	for(int32 y = -2; y < 3; y++)
-	{
-		for(int32 x = -2; x < 3; x++)
-		{
-			// 1. Get tile type at index //
-			int32 check_index_x = cell_index.x() + x;
-			int32 check_index_y = cell_index.y() + y;
-
-			// Clamp index values so we don't crash by going out of bounds.
-			while(check_index_x < 0) {check_index_x++;}
-			while(check_index_x > (bg_ptr.dimensions().width() / 8) - 1)  {check_index_x--;}
-
-			while(check_index_y < 0) {check_index_y++;}
-			while(check_index_y > (bg_ptr.dimensions().height() / 8) - 1) {check_index_y--;}
-
-			// Determine world coords in case we need to make a collider.
-			int32 world_x = ((check_index_x * TILE_WIDTH)  - half_level_width_pixels)  + (TILE_WIDTH / 2);
-			int32 world_y = ((check_index_y * TILE_HEIGHT) - half_level_height_pixels) + (TILE_HEIGHT / 2);
-
-			uint32 tile_index = getTileAtBGIndex(check_index_x, check_index_y, 
-												 bg_ptr, cells, bg_item);
-
-			// 2. Check Tile Type and update state accordingly //
-			if(tile_index >= HARD_BLOCK_MIN_INDEX &&
-			   tile_index <= HARD_BLOCK_MAX_INDEX)
-			{getStateFromHardBlock(world_x, world_y);}
-					
-			else if(tile_index == UP_SPIKE_BLOCK_1_INDEX ||
-					tile_index == UP_SPIKE_BLOCK_2_INDEX)
-			{getStateFromUpSpike(world_x, world_y);}
-
-			else if(tile_index == DOWN_SPIKE_BLOCK_1_INDEX ||
-					tile_index == DOWN_SPIKE_BLOCK_2_INDEX)
-			{getStateFromDownSpike(world_x, world_y);}
-
-			else if(tile_index == LEFT_SPIKE_BLOCK_1_INDEX ||
-					tile_index == LEFT_SPIKE_BLOCK_2_INDEX)
-			{getStateFromLeftSpike(world_x, world_y);}
-
-			else if(tile_index == RIGHT_SPIKE_BLOCK_1_INDEX || 
-					tile_index == RIGHT_SPIKE_BLOCK_2_INDEX)
-			{getStateFromRightSpike(world_x, world_y);}
-
-			else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
-			{getStateFromLeftShallowSlope1(world_x, world_y);}
-
-			else if(tile_index == LEFT_SHALLOW_SLOPE_2_INDEX)
-			{getStateFromLeftShallowSlope2(world_x, world_y);}
-
-			else if(tile_index == LEFT_SHALLOW_SLOPE_3_INDEX)
-			{getStateFromLeftShallowSlope3(world_x, world_y);}
-
-			else if(tile_index == LEFT_SHALLOW_SLOPE_4_INDEX)
-			{getStateFromLeftShallowSlope4(world_x, world_y);}
-			
-			else if(tile_index == LEFT_STEEP_SLOPE_1_INDEX)
-			{getStateFromLeftSteepSlope1(world_x, world_y);}
-			
-			else if(tile_index == LEFT_STEEP_SLOPE_2_INDEX)
-			{getStateFromLeftSteepSlope2(world_x, world_y);}			
-
-			else if(tile_index == RIGHT_SHALLOW_SLOPE_1_INDEX)
-			{getStateFromRightShallowSlope1(world_x, world_y);}
-
-			else if(tile_index == RIGHT_SHALLOW_SLOPE_2_INDEX)
-			{getStateFromRightShallowSlope2(world_x, world_y);}
-
-			else if(tile_index == RIGHT_SHALLOW_SLOPE_3_INDEX)
-			{getStateFromRightShallowSlope3(world_x, world_y);}
-
-			else if(tile_index == RIGHT_SHALLOW_SLOPE_4_INDEX)
-			{getStateFromRightShallowSlope4(world_x, world_y);}
-
-			else if(tile_index == RIGHT_STEEP_SLOPE_1_INDEX)
-			{getStateFromRightSteepSlope1(world_x, world_y);}
-
-			else if(tile_index == RIGHT_STEEP_SLOPE_2_INDEX)
-			{getStateFromRightSteepSlope2(world_x, world_y);}
-
-			else if(tile_index >= ONEWAY_BLOCK_MIN_INDEX &&
-					tile_index <= ONEWAY_BLOCK_MAX_INDEX)
-			{getStateFromOneWayBlock(world_x, world_y);}
-		}
-	}
 }
 
 /////////////////////////
@@ -988,7 +645,6 @@ void GameObject::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&    
                                   const bn::span<const bn::regular_bg_map_cell>& cells,
                                   const bn::regular_bg_item&                     bg_item)
 {
-
     ////////////////////////////
     // Resolve Tile Collision //
     ////////////////////////////
@@ -1006,9 +662,6 @@ void GameObject::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&    
 void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
 {
     if(state == OBJECT_DEATH) {return;}
-
-    // Placeholder for other objects
-	Collider other_collider;
 
     for(int32 i = 0; i < game_objects.size(); i++)
     {   
@@ -1175,7 +828,7 @@ void GameObject::resolveTileCollision(const bn::regular_bg_ptr&                 
 				// This is a hack to resolve collision since checks are always made from
 				// left to right. 
 				if(getTileAtBGIndex(check_index_x + 1, check_index_y, 
-									 bg_ptr, cells, bg_item) >= HARD_BLOCK_MIN_INDEX && 
+									bg_ptr, cells, bg_item) >= HARD_BLOCK_MIN_INDEX && 
 					getTileAtBGIndex(check_index_x + 1, check_index_y, 
 									 bg_ptr, cells, bg_item) <= HARD_BLOCK_MAX_INDEX)
 				{
@@ -1189,15 +842,8 @@ void GameObject::resolveTileCollision(const bn::regular_bg_ptr&                 
 										  TILE_WIDTH + block_w_offset,
 										  TILE_HEIGHT);
 
-				if(collider.isCollision(other_collider))
-				{
-					// Resolve Axis Collision
-					resolveXAxisCollision(other_collider);
-					resolveYAxisCollision(other_collider);
-
-					// If there is still collision somehow, must be corner case
-					resolveCornerCollision(other_collider);
-				}
+				resolveHardBlockCollision(other_collider);
+                getStateFromHardBlock(other_collider.x().integer(), other_collider.y().integer());
 			}
 
             else if(tile_index == H_GEAR_LEFT)
@@ -1545,182 +1191,337 @@ void GameObject::resolveRightSpikeCollision(const Collider& other_collider)
 
 void GameObject::resolveLeftShallowSlope1Collision(const Collider& other_collider, int32 world_y)
 {
+    // Derive slope height at object position:
+    int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+    index = clamp(0, 7, index);
+    int32 local_height  = left_shallow_slope_1_arr[index];
+    int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+    // Resolve collision
     if(collider.isCollision(other_collider))
     {
-        // Derive slope height at player position:
-        int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-        index = clamp(0, 7, index);
-        int32 local_height  = left_shallow_slope_1_arr[index];
-        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-        // Manually set player position:
+        // Manually set object position:
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
+
+    // Test for, and log grounded collision
+	if(test_collider.isCollision(other_collider) &&
+	   test_collider.p4.y() >= global_height)
+	{
+		grounded_detected = true;
+		
+		// Offset the decline of the slope if object is moving with it.
+		// This avoids a frame in air state when descending slopes.
+		if(rigidbody.normalized_dir.x() == -1)
+		{rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
+	}
 }
 
 void GameObject::resolveLeftShallowSlope2Collision(const Collider& other_collider, int32 world_y)
 {
+    // Derive slope height at object position:
+    int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+    index = clamp(0, 7, index);
+    int32 local_height  = left_shallow_slope_2_arr[index];
+    int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+    // Resolve collision
     if(collider.isCollision(other_collider))
     {
-        // Derive slope height at player position:
-        int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-        index = clamp(0, 7, index);
-        int32 local_height  = left_shallow_slope_2_arr[index];
-        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-        // Manually set player position:
+        // Manually set object position:
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
+
+    // Test for, and log grounded collision
+	if(test_collider.isCollision(other_collider) &&
+		test_collider.p4.y() >= global_height)
+	{
+		grounded_detected = true;
+		
+		// Offset the decline of the slope if object is moving with it.
+		// This avoids a frame in air state when descending slopes.
+		if(rigidbody.normalized_dir.x() == -1)
+		{rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
+	}
 }
 
 void GameObject::resolveLeftShallowSlope3Collision(const Collider& other_collider, int32 world_y)
 {
+    // Derive slope height at object position:
+    int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+    index = clamp(0, 7, index);
+    int32 local_height  = left_shallow_slope_3_arr[index];
+    int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+    // Resolve collision
     if(collider.isCollision(other_collider))
     {
-        // Derive slope height at player position:
-        int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-        index = clamp(0, 7, index);
-        int32 local_height  = left_shallow_slope_3_arr[index];
-        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-        // Manually set player position:
+        // Manually set object position:
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
+
+    // Test for, and log grounded collision
+	if(test_collider.isCollision(other_collider) &&
+		test_collider.p4.y() >= global_height)
+	{
+		grounded_detected = true;
+
+		// Offset the decline of the slope if object is moving with it.
+		// This avoids a frame in air state when descending slopes.
+		if(rigidbody.normalized_dir.x() == -1)
+		{rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
+	}
 }
 
 void GameObject::resolveLeftShallowSlope4Collision(const Collider& other_collider, int32 world_y)
 {
+    // Derive slope height at object position:
+    int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+    index = clamp(0, 7, index);
+    int32 local_height  = left_shallow_slope_4_arr[index];
+    int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+    // Resolve collision
     if(collider.isCollision(other_collider))
     {
-        // Derive slope height at player position:
-        int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-        index = clamp(0, 7, index);
-        int32 local_height  = left_shallow_slope_4_arr[index];
-        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-        // Manually set player position:
+        // Manually set object position:
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
+
+    // Test for, and log grounded collision
+	if(test_collider.isCollision(other_collider) &&
+	   test_collider.p4.y() >= global_height)
+	{
+		grounded_detected = true;
+
+		// Offset the decline of the slope if object is moving with it.
+		// This avoids a frame in air state when descending slopes.
+		if(rigidbody.normalized_dir.x() == -1)
+		{rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
+	}
 }
 
 void GameObject::resolveLeftSteepSlope1Collision(const Collider& other_collider, int32 world_y)
 {
+    // Derive slope height at object position:
+    int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+    index = clamp(0, 7, index);
+    int32 local_height  = left_steep_slope_1_arr[index];
+    int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+    // Resolve collision
     if(collider.isCollision(other_collider))
     {
-        // Derive slope height at player position:
-        int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-        index = clamp(0, 7, index);
-        int32 local_height  = left_steep_slope_1_arr[index];
-        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-        // Manually set player position:
+        // Manually set object position:
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
+
+    // Test for, and log grounded collision
+	if(test_collider.isCollision(other_collider) &&
+		test_collider.p4.y() >= global_height)
+	{
+		grounded_detected = true;
+		
+		// Offset the decline of the slope if object is moving with it.
+		// This avoids a frame in air state when descending slopes.
+		if(rigidbody.normalized_dir.x() == -1)
+		{rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
+	}
 }
 
 void GameObject::resolveLeftSteepSlope2Collision(const Collider& other_collider, int32 world_y)
 {
+    // Derive slope height at player position:
+    int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
+    index = clamp(0, 7, index);
+    int32 local_height  = left_steep_slope_2_arr[index];
+    int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+    // Resolve collision
     if(collider.isCollision(other_collider))
     {
-        // Derive slope height at player position:
-        int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-        index = clamp(0, 7, index);
-        int32 local_height  = left_steep_slope_2_arr[index];
-        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
         // Manually set player position:
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
+
+    // Test for, and log grounded collision
+	if(test_collider.isCollision(other_collider) &&
+		test_collider.p4.y() >= global_height)
+	{
+		grounded_detected = true;
+
+		// Offset the decline of the slope if object is moving with it.
+		// This avoids a frame in air state when descending slopes.
+		if(rigidbody.normalized_dir.x() == -1)
+		{rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
+	}
 }
 
 void GameObject::resolveRightShallowSlope1Collision(const Collider& other_collider, int32 world_y)
 {
+    // Derive slope height at object position:
+    int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
+    index = clamp(0, 7, index);
+    int32 local_height  = right_shallow_slope_1_arr[index];
+    int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
     if(collider.isCollision(other_collider))
     {
-        // Derive slope height at player position:
-        int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
-        index = clamp(0, 7, index);
-        int32 local_height  = right_shallow_slope_1_arr[index];
-        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-        // Manually set player position:
+        // Manually set object position:
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
+
+    // Test for, and log grounded collision
+	if(test_collider.isCollision(other_collider) &&
+		collider.p1.y() + collider.height > global_height)
+	{
+		grounded_detected = true;
+
+		// Offset the decline of the slope if object is moving with it.
+		// This avoids a frame in air state when descending slopes.
+		if(rigidbody.normalized_dir.x() == 1)
+		{rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
+	}
 }
 
 void GameObject::resolveRightShallowSlope2Collision(const Collider& other_collider, int32 world_y)
 {
+    // Derive slope height at object position:
+    int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
+    index = clamp(0, 7, index);
+    int32 local_height  = right_shallow_slope_2_arr[index];
+    int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+    // Resolve collision
     if(collider.isCollision(other_collider))
     {
-        // Derive slope height at player position:
-        int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
-        index = clamp(0, 7, index);
-        int32 local_height  = right_shallow_slope_2_arr[index];
-        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-        // Manually set player position:
+        // Manually set object position:
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
+
+    // Test for, and log grounded collision
+	if(test_collider.isCollision(other_collider) &&
+		collider.p1.y() + collider.height > global_height)
+	{
+		grounded_detected = true;
+
+		// Offset the decline of the slope if object is moving with it.
+		// This avoids a frame in air state when descending slopes.
+		if(rigidbody.normalized_dir.x() == 1)
+		{rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
+	}
 }
 
 void GameObject::resolveRightShallowSlope3Collision(const Collider& other_collider, int32 world_y)
 {
+    // Derive slope height at object position:
+    int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
+    index = clamp(0, 7, index);
+    int32 local_height  = right_shallow_slope_3_arr[index];
+    int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+    // Resolve collision
     if(collider.isCollision(other_collider))
     {
-        // Derive slope height at player position:
-        int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
-        index = clamp(0, 7, index);
-        int32 local_height  = right_shallow_slope_3_arr[index];
-        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-        // Manually set player position:
+        // Manually set object position:
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
+
+    // Test for, and log grounded collision
+	if(test_collider.isCollision(other_collider) &&
+		collider.p1.y() + collider.height > global_height)
+	{
+		grounded_detected = true;
+
+		// Offset the decline of the slope if object is moving with it.
+		// This avoids a frame in air state when descending slopes.
+		if(rigidbody.normalized_dir.x() == 1)
+		{rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
+	}
 }
 
 void GameObject::resolveRightShallowSlope4Collision(const Collider& other_collider, int32 world_y)
 {
+    // Derive slope height at object position:
+    int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
+    index = clamp(0, 7, index);
+    int32 local_height  = right_shallow_slope_4_arr[index];
+    int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+    // Resolve Collision
     if(collider.isCollision(other_collider))
     {
-        // Derive slope height at player position:
-        int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
-        index = clamp(0, 7, index);
-        int32 local_height  = right_shallow_slope_4_arr[index];
-        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
         // Manually set player position:
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
+
+    // Test for, and log grounded collision
+	if(test_collider.isCollision(other_collider) &&
+		collider.p1.y() + collider.height > global_height)
+	{
+		grounded_detected = true;
+
+		// Offset the decline of the slope if player is moving with it.
+		// This avoids a frame in air state when descending slopes.
+		if(rigidbody.normalized_dir.x() == 1)
+		{rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
+	}
 }
 
 void GameObject::resolveRightSteepSlope1Collision(const Collider& other_collider, int32 world_y)
 {
+    // Derive slope height at object position:
+    int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
+    index = clamp(0, 7, index);
+    int32 local_height  = right_steep_slope_1_arr[index];
+    int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+    // Resolve collision
     if(collider.isCollision(other_collider))
     {
-        // Derive slope height at player position:
-        int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
-        index = clamp(0, 7, index);
-        int32 local_height  = right_steep_slope_1_arr[index];
-        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-        // Manually set player position:
+        // Manually set object position:
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
+
+    // Test for, and log grounded collision
+	if(test_collider.isCollision(other_collider) &&
+		collider.p1.y() + collider.height > global_height)
+	{
+		grounded_detected = true;
+
+		// Offset the decline of the slope if object is moving with it.
+		// This avoids a frame in air state when descending slopes.
+		if(rigidbody.normalized_dir.x() == 1)
+		{rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
+	}
 }
 
 void GameObject::resolveRightSteepSlope2Collision(const Collider& other_collider, int32 world_y)
 {
+    // Derive slope height at object position:
+    int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
+    index = clamp(0, 7, index);
+    int32 local_height  = right_steep_slope_2_arr[index];
+    int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
+
+    // Resolve collision
     if(collider.isCollision(other_collider))
     {
-        // Derive slope height at player position:
-        int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
-        index = clamp(0, 7, index);
-        int32 local_height  = right_steep_slope_2_arr[index];
-        int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-        // Manually set player position:
+        // Manually set object position:
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
+
+	// Test for grounded collision
+	if(test_collider.isCollision(other_collider) &&
+		collider.p1.y() + collider.height > global_height)
+	{
+		grounded_detected = true;
+
+		// Offset the decline of the slope if object is moving with it.
+		// This avoids a frame in air state when descending slopes.
+		if(rigidbody.normalized_dir.x() == 1)
+		{rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
+	}
 }
 
 void GameObject::resolveOneWayBlockCollision(const Collider& other_collider) 
@@ -1734,6 +1535,13 @@ void GameObject::resolveOneWayBlockCollision(const Collider& other_collider)
             collider_y_axis.setY(collider_y_axis.y() - 1);
             setY(this->y() - 1);
         }
+
+        // Test for, and log grounded collision
+		if(test_collider.isCollision(other_collider))
+		{
+			grounded_detected = true;
+			rigidbody.removeYForces();
+		}
 	}
 }
 

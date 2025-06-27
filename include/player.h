@@ -248,34 +248,9 @@ struct Player : GameObject {
 					 const bn::regular_bg_item&                     bg_item) override;
 
 	void setState(ObjectState new_state) override;
-
-	// Get State from Level Objects
-	void getStateFromTilePassage(GameObject& object)         override;
-	void getStateFromPhaseOrbUp(GameObject& object)          override;
-	void getStateFromPhaseOrbDown(GameObject& object)        override;
-	void getStateFromPhaseOrbLeft(GameObject& object)        override;
-	void getStateFromPhaseOrbRight(GameObject& object)       override;
-	void getStateFromFallingPlatformWide(GameObject& object) override;
-	void getStateFromFallingPlatformThin(GameObject& object) override;
-	void getStateFromPushBlock(GameObject& object)           override;
-	void getStateFromPushBlockMini(GameObject& object)       override;
-	void getStateFromAutoPlatform(GameObject& object)        override;
 	
 	// Get State from Tiles
 	void getStateFromHardBlock(int32 world_x, int32 world_y)          override;
-	void getStateFromLeftShallowSlope1(int32 world_x, int32 world_y)  override;
-	void getStateFromLeftShallowSlope2(int32 world_x, int32 world_y)  override;
-	void getStateFromLeftShallowSlope3(int32 world_x, int32 world_y)  override;
-	void getStateFromLeftShallowSlope4(int32 world_x, int32 world_y)  override;
-	void getStateFromLeftSteepSlope1(int32 world_x, int32 world_y)    override;
-	void getStateFromLeftSteepSlope2(int32 world_x, int32 world_y)    override;
-	void getStateFromRightShallowSlope1(int32 world_x, int32 world_y) override;
-	void getStateFromRightShallowSlope2(int32 world_x, int32 world_y) override;
-	void getStateFromRightShallowSlope3(int32 world_x, int32 world_y) override;
-	void getStateFromRightShallowSlope4(int32 world_x, int32 world_y) override;
-	void getStateFromRightSteepSlope1(int32 world_x, int32 world_y)   override;
-	void getStateFromRightSteepSlope2(int32 world_x, int32 world_y)   override;
-	void getStateFromOneWayBlock(int32 world_x, int32 world_y)        override;
 
 	/////////////////////////
 	// Collision Overrides //
@@ -283,6 +258,10 @@ struct Player : GameObject {
 
 	// Level Objects
 	void resolveTilePassageCollision(GameObject& object)         override;
+	void resolvePhaseOrbUpCollision(GameObject& object)          override;
+	void resolvePhaseOrbDownCollision(GameObject& object)        override;
+	void resolvePhaseOrbLeftCollision(GameObject& object)        override;
+	void resolvePhaseOrbRightCollision(GameObject& object)       override;
 	void resolveFallingPlatformWideCollision(GameObject& object) override;
 	void resolveFallingPlatformThinCollision(GameObject& object) override;
 	void resolvePushBlockCollision(GameObject& object)           override;

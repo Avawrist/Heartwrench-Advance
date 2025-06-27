@@ -141,8 +141,6 @@ void PushBlock::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_
 {
 	if(state == IDLE) {received_track_force = false;}
 
-	GameObject::updateState(game_objects, bg_ptr, cells, bg_item);
-
 	ObjectState new_state = state;
 
 	int32 pixels_moved_x = (frame_start_pos.x().integer() - pos().x().integer()) * -1;
@@ -184,46 +182,6 @@ void PushBlock::setState(ObjectState new_state)
 	}
 }
 
-// Get State From Objects
-void PushBlock::getStateFromTilePassage(GameObject& object)
-{
-	// Test for, and log grounded collision
-	if(object.state == TILE_PASSAGE_SHUT &&
-	   test_collider.isCollision(object.collider) && 
-	   rigidbody.normalized_dir.y() >= 0)
-	{grounded_detected = true;}
-}
-
-void PushBlock::getStateFromFallingPlatformWide(GameObject& object)
-{
-	if(rigidbody.normalized_dir.y() >= 0 &&
-	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
-	{
-		// Test for, and log grounded collision
-		if(test_collider.isCollision(object.collider) &&
-			rigidbody.normalized_dir.y() >= 0)
-		{
-			grounded_detected = true;
-			rigidbody.removeYForces();
-		}
-	}
-}
-
-void PushBlock::getStateFromFallingPlatformThin(GameObject& object)
-{
-	if(rigidbody.normalized_dir.y() >= 0 &&
-		collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
-	{
-		// Test for, and log grounded collision
-		if(test_collider.isCollision(object.collider) &&
-			rigidbody.normalized_dir.y() >= 0)
-		{
-			grounded_detected = true;
-			rigidbody.removeYForces();
-		}
-	}
-}
-
 // Get State From Tiles
 
 void PushBlock::getStateFromHardBlock(int32 world_x, int32 world_y)
@@ -242,403 +200,9 @@ void PushBlock::getStateFromHardBlock(int32 world_x, int32 world_y)
 	}
 }
 
-void PushBlock::getStateFromUpSpike(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-									   world_y, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT);
-	
-	if(test_collider.isCollision(other_collider) &&
-		rigidbody.normalized_dir.y() >= 0)
-	{
-		grounded_detected = true;
-		rigidbody.removeYForces();
-	}
-}
-
-void PushBlock::getStateFromDownSpike(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-									   world_y, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT);
-	
-	if(test_collider.isCollision(other_collider) &&
-		rigidbody.normalized_dir.y() >= 0)
-	{
-		grounded_detected = true;
-		rigidbody.removeYForces();
-	}
-}
-
-void PushBlock::getStateFromLeftSpike(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-									   world_y, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT);
-	
-	if(test_collider.isCollision(other_collider) &&
-		rigidbody.normalized_dir.y() >= 0)
-	{
-		grounded_detected = true;
-		rigidbody.removeYForces();
-	}
-}
-
-void PushBlock::getStateFromRightSpike(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-									   world_y, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT);
-	
-	if(test_collider.isCollision(other_collider) &&
-		rigidbody.normalized_dir.y() >= 0)
-	{
-		grounded_detected = true;
-		rigidbody.removeYForces();
-	}
-}
-
-void PushBlock::getStateFromLeftShallowSlope1(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-							           world_y + 3, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT / 4);
-
-	int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = left_shallow_slope_1_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-	   test_collider.p4.y() >= global_height)
-	{grounded_detected = true;}
-}
-
-void PushBlock::getStateFromLeftShallowSlope2(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-								       world_y + 2, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT / 2);
-
-	int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = left_shallow_slope_2_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		test_collider.p4.y() >= global_height)
-	{grounded_detected = true;}
-}
-
-void PushBlock::getStateFromLeftShallowSlope3(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-								       world_y + 1, 
-								       TILE_WIDTH, 
-								       TILE_HEIGHT - 2);
-
-	int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-	index = clamp(0, 7, index);
-	int32 local_height  = left_shallow_slope_3_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		test_collider.p4.y() >= global_height)
-	{grounded_detected = true;}
-}
-
-void PushBlock::getStateFromLeftShallowSlope4(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-									   world_y, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT);
-
-	int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = left_shallow_slope_4_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-	   test_collider.p4.y() >= global_height)
-	{grounded_detected = true;}
-}
-
-void PushBlock::getStateFromLeftSteepSlope1(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-									   world_y + 2, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT / 2);
-
-	int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = left_steep_slope_1_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		test_collider.p4.y() >= global_height)
-	{grounded_detected = true;}
-}
-
-void PushBlock::getStateFromLeftSteepSlope2(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-								       world_y, 
-								       TILE_WIDTH, 
-								       TILE_HEIGHT);
-
-	int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = left_steep_slope_2_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		test_collider.p4.y() >= global_height)
-	{grounded_detected = true;}
-}
-
-void PushBlock::getStateFromRightShallowSlope1(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-								       world_y + 3, 
-								       TILE_WIDTH, 
-								       TILE_HEIGHT / 4);
-
-	int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = right_shallow_slope_1_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		collider.p1.y() + collider.height > global_height)
-	{grounded_detected = true;}
-}
-
-void PushBlock::getStateFromRightShallowSlope2(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-								       world_y + 2, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT / 2);
-
-	int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = right_shallow_slope_2_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		collider.p1.y() + collider.height > global_height)
-	{grounded_detected = true;}
-}
-
-void PushBlock::getStateFromRightShallowSlope3(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-									   world_y + 1, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT - 2);
-
-	int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = right_shallow_slope_3_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		collider.p1.y() + collider.height > global_height)
-	{grounded_detected = true;}
-}
-
-void PushBlock::getStateFromRightShallowSlope4(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-									   world_y, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT);
-
-	int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = right_shallow_slope_4_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		collider.p1.y() + collider.height > global_height)
-	{grounded_detected = true;}
-}
-
-void PushBlock::getStateFromRightSteepSlope1(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-									   world_y + 2, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT / 2);
-
-	int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = right_steep_slope_1_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		collider.p1.y() + collider.height > global_height)
-	{grounded_detected = true;}
-}
-
-void PushBlock::getStateFromRightSteepSlope2(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-									   world_y, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT);
-
-	int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = right_steep_slope_2_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		collider.p1.y() + collider.height > global_height)
-	{grounded_detected = true;}
-}
-
-void PushBlock::getStateFromOneWayBlock(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x, 
-									   world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
-									   TILE_WIDTH, 
-									   ONEWAYBLOCK_COLLIDER_HEIGHT);
-
-	if(rigidbody.normalized_dir.y() >= 0 &&
-		collider_y_axis.p4.y() <= other_collider.p1.y() + rigidbody.final_dir.y())
-	{
-		// Test for, and log grounded collision
-		if(test_collider.isCollision(other_collider) &&
-		   rigidbody.normalized_dir.y() >= 0)
-		{
-			grounded_detected = true;
-			rigidbody.removeYForces();
-		}
-	}
-}
-
 /////////////////////////
 // Collision Overrides //
 /////////////////////////
-
-void PushBlock::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
-{
-	if(rigidbody.normalized_dir.x() == 0 && 
-       rigidbody.normalized_dir.y() == 0) {return;}
-
-    // Placeholder for other objects
-	Collider other_collider;
-
-    for(int32 i = 0; i < game_objects.size(); i++)
-    {   
-        if(game_objects.at(i)->object_id != object_id)
-        {
-            switch(game_objects.at(i)->object_type)
-            {
-                case NO_TYPE:
-                break;
-
-                // Level Objects
-                case TILE_PASSAGE:
-                    resolveTilePassageCollision(*game_objects.at(i));
-                break;
-
-                case PHASE_ORB_UP:
-                    resolvePhaseOrbUpCollision(*game_objects.at(i));
-                break; 
-
-                case PHASE_ORB_DOWN:
-                    resolvePhaseOrbDownCollision(*game_objects.at(i));
-                break;
-
-                case PHASE_ORB_LEFT:
-                    resolvePhaseOrbLeftCollision(*game_objects.at(i));
-                break;
-
-                case PHASE_ORB_RIGHT:
-                    resolvePhaseOrbRightCollision(*game_objects.at(i));
-                break;
-
-                case FALLING_PLATFORM_WIDE:
-                    resolveFallingPlatformWideCollision(*game_objects.at(i));
-                break;
-
-                case FALLING_PLATFORM_THIN:
-                    resolveFallingPlatformThinCollision(*game_objects.at(i));
-                break;
-
-                case PUSH_BLOCK:
-                    resolvePushBlockCollision(*game_objects.at(i));
-                break;
-
-                // Level Enemies
-                case THORN_COLUMN:
-                    resolveThornColumnCollision(*game_objects.at(i));
-                break; 
-                
-                case THORN_BAR:
-                    resolveThornBarCollision(*game_objects.at(i));
-                break;
-
-                case GROUND_GHOUL:
-                    resolveGroundGhoulCollision(*game_objects.at(i));
-                break; 
-
-                // Special Objects
-                case HITBOX_ATTACK_GROUND_1:
-                    resolveHitboxAttackGround1Collision(*game_objects.at(i));
-                break;
-
-                case HITBOX_ATTACK_AIR_1:
-                    resolveHitboxAir1Collision(*game_objects.at(i));
-                break;
-
-                case HITBOX_WALL_SPLAT:
-                    resolveHitboxWallSplatCollision(*game_objects.at(i));
-                break;
-
-                case PLAYER:
-                    resolvePlayerCollision(*game_objects.at(i));
-                break;
-
-                default:
-                break;
-            }
-        }
-    }
-}
 
 // Level Objects
 void PushBlock::resolveTilePassageCollision(GameObject& object)
@@ -715,8 +279,8 @@ void PushBlock::resolveTileCollision(const bn::regular_bg_ptr&                  
                                      const bn::span<const bn::regular_bg_map_cell>& cells,
                                      const bn::regular_bg_item&                     bg_item)
 {
-	if(rigidbody.normalized_dir.x() == 0 && 
-	   rigidbody.normalized_dir.y() == 0) {return;}
+
+	if(rigidbody.normalized_dir.x() == 0 && rigidbody.normalized_dir.y() == 0) {return;}
 
     //////////////////////////////
 	// Init Collision Variables //
@@ -740,7 +304,6 @@ void PushBlock::resolveTileCollision(const bn::regular_bg_ptr&                  
 	{
 		for(int32 x = -2; x < 3; x++)
 		{
-			
 			// 1. Get tile type at index //
 			int32 check_index_x = cell_index.x() + x;
 			int32 check_index_y = cell_index.y() + y;
@@ -785,15 +348,7 @@ void PushBlock::resolveTileCollision(const bn::regular_bg_ptr&                  
 										  TILE_WIDTH + block_w_offset,
 										  TILE_HEIGHT);
 
-				if(collider.isCollision(other_collider))
-				{
-					// Resolve Axis Collision
-					resolveXAxisCollision(other_collider);
-					resolveYAxisCollision(other_collider);
-
-					// If there is still collision somehow, must be corner case
-					resolveCornerCollision(other_collider);
-				}
+				resolveHardBlockCollision(other_collider);
 			}
 
             else if(tile_index == H_GEAR_LEFT)
@@ -827,7 +382,7 @@ void PushBlock::resolveTileCollision(const bn::regular_bg_ptr&                  
                 resolveHGearRightCollision(other_collider);
             }
 
-			else if(tile_index == V_GEAR_TOP)
+            else if(tile_index == V_GEAR_TOP)
 			{
 				other_collider = Collider(world_x,
 										  world_y, 
@@ -858,7 +413,7 @@ void PushBlock::resolveTileCollision(const bn::regular_bg_ptr&                  
 
 				resolveVGearBottomCollision(other_collider);
 			}
-
+    
             else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
             {
                 other_collider = Collider(world_x, 
@@ -990,7 +545,6 @@ void PushBlock::resolveTileCollision(const bn::regular_bg_ptr&                  
 
                 resolveOneWayBlockCollision(other_collider);
             }
-
 		}
 	}
 }

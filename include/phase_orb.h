@@ -47,14 +47,6 @@ struct PhaseOrb : GameObject {
 							const bn::regular_bg_item&                        bg_item,
 							const bn::camera_ptr&                             camera) override;
 
-	void getStateFromTiles(const bn::regular_bg_ptr&                      bg_ptr,
-						   const bn::span<const bn::regular_bg_map_cell>& cells,
-						   const bn::regular_bg_item&                     bg_item) override;
-						   
-	void getStateFromTilesLarge(const bn::regular_bg_ptr&                      bg_ptr,
-								const bn::span<const bn::regular_bg_map_cell>& cells,
-								const bn::regular_bg_item&                     bg_item) override;
-
 	/////////////////////////
 	// Collision Overrides //
 	/////////////////////////

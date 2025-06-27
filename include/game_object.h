@@ -343,64 +343,8 @@ struct GameObject
 							 const bn::span<const bn::regular_bg_map_cell>& cells,
 							 const bn::regular_bg_item&                     bg_item);
 
-	// Get State from Objects
-	virtual void getStateFromObjects(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects);
-
-	// Get State from Level Objects
-	virtual void getStateFromTilePassage(GameObject& object)         {};
-	virtual void getStateFromPhaseOrbUp(GameObject& object)          {};
-	virtual void getStateFromPhaseOrbDown(GameObject& object)        {};
-	virtual void getStateFromPhaseOrbLeft(GameObject& object)        {};
-	virtual void getStateFromPhaseOrbRight(GameObject& object)       {};
-	virtual void getStateFromFallingPlatformWide(GameObject& object) {};
-	virtual void getStateFromFallingPlatformThin(GameObject& object) {};
-	virtual void getStateFromPushBlock(GameObject& object)           {};
-	virtual void getStateFromPushBlockMini(GameObject& object)       {};
-	virtual void getStateFromAutoPlatform(GameObject& object)        {};
-
-	// Get State from Level Enemies
-	virtual void getStateFromThornColumn(GameObject& object) {}; 
-	virtual void getStateFromThornBar(GameObject& object)    {}; 
-	virtual void getStateFromGroundGhoul(GameObject& object) {};
-
-	// Get State from Special Objects
-	virtual void getStateFromHitboxAttackGround1(GameObject& object) {};
-	virtual void getStateFromHitboxAir1(GameObject& object)          {}; 
-	virtual void getStateFromHitboxWallSplat(GameObject& object)     {};
-	virtual void getStateFromPlayer(GameObject& object)              {};
-
 	// Get State from Tiles
-	virtual void getStateFromTiles(const bn::regular_bg_ptr&                      bg_ptr,
-								   const bn::span<const bn::regular_bg_map_cell>& cells,
-								   const bn::regular_bg_item&                     bg_item);
-	virtual void getStateFromTilesLarge(const bn::regular_bg_ptr&                      bg_ptr,
-										const bn::span<const bn::regular_bg_map_cell>& cells,
-										const bn::regular_bg_item&                     bg_item);
-
-	virtual void getStateFromHardBlock(int32 world_x, int32 world_y)          {};
-	virtual void getStateFromHGearLeft(int32 world_x, int32 world_y)          {};
-	virtual void getStateFromHGearMid(int32 world_x, int32 world_y)           {};
-	virtual void getStateFromHGearRight(int32 world_x, int32 world_y)         {};
-	virtual void getStateFromVGearTop(int32 world_x, int32 world_y)           {};
-	virtual void getStateFromVGearMid(int32 world_x, int32 world_y)           {};
-	virtual void getStateFromVGearBottom(int32 world_x, int32 world_y)        {};
-	virtual void getStateFromUpSpike(int32 world_x, int32 world_y)            {};
-	virtual void getStateFromDownSpike(int32 world_x, int32 world_y)          {};
-	virtual void getStateFromLeftSpike(int32 world_x, int32 world_y)          {};
-	virtual void getStateFromRightSpike(int32 world_x, int32 world_y)         {};
-	virtual void getStateFromLeftShallowSlope1(int32 world_x, int32 world_y)  {};
-	virtual void getStateFromLeftShallowSlope2(int32 world_x, int32 world_y)  {};
-	virtual void getStateFromLeftShallowSlope3(int32 world_x, int32 world_y)  {};
-	virtual void getStateFromLeftShallowSlope4(int32 world_x, int32 world_y)  {};
-	virtual void getStateFromLeftSteepSlope1(int32 world_x, int32 world_y)    {};
-	virtual void getStateFromLeftSteepSlope2(int32 world_x, int32 world_y)    {};
-	virtual void getStateFromRightShallowSlope1(int32 world_x, int32 world_y) {};
-	virtual void getStateFromRightShallowSlope2(int32 world_x, int32 world_y) {};
-	virtual void getStateFromRightShallowSlope3(int32 world_x, int32 world_y) {};
-	virtual void getStateFromRightShallowSlope4(int32 world_x, int32 world_y) {};
-	virtual void getStateFromRightSteepSlope1(int32 world_x, int32 world_y)   {};
-	virtual void getStateFromRightSteepSlope2(int32 world_x, int32 world_y)   {};
-	virtual void getStateFromOneWayBlock(int32 world_x, int32 world_y)        {};
+	virtual void getStateFromHardBlock(int32 world_x, int32 world_y) {};
 	
 	/////////////////////////
 	// Collision functions //

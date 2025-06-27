@@ -59,80 +59,6 @@ void Enemy::wallSplatCheck()
 // State Function Overrides //
 //////////////////////////////
 
-// Get State From Objects
-
-void Enemy::getStateFromTilePassage(GameObject& object)
-{
-	// Test for, and log grounded collision
-	if(object.state == TILE_PASSAGE_SHUT &&
-		test_collider.isCollision(object.collider) && 
-		rigidbody.normalized_dir.y() >= 0)
-	{grounded_detected = true;}
-}
-
-void Enemy::getStateFromFallingPlatformWide(GameObject& object)
-{
-	if(rigidbody.normalized_dir.y() >= 0 &&
-		collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
-	{
-		// Test for, and log grounded collision
-		if(test_collider.isCollision(object.collider) &&
-			rigidbody.normalized_dir.y() >= 0)
-		{
-			grounded_detected = true;
-			rigidbody.removeYForces();
-		}
-	}
-}
-
-void Enemy::getStateFromFallingPlatformThin(GameObject& object)
-{
-	if(rigidbody.normalized_dir.y() >= 0 &&
-		collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
-	{
-		// Test for, and log grounded collision
-		if(test_collider.isCollision(object.collider) &&
-			rigidbody.normalized_dir.y() >= 0)
-		{
-			grounded_detected = true;
-			rigidbody.removeYForces();
-		}
-	}
-}
-
-void Enemy::getStateFromPushBlock(GameObject& object)
-{
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(object.collider) && 
-		rigidbody.normalized_dir.y() >= 0)
-	{grounded_detected = true;}
-}
-
-void Enemy::getStateFromPushBlockMini(GameObject& object)
-{
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(object.collider) && 
-		rigidbody.normalized_dir.y() >= 0)
-	{grounded_detected = true;}
-}
-
-void Enemy::getStateFromAutoPlatform(GameObject& object)
-{
-	if(rigidbody.normalized_dir.y() >= 0 &&
-	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
-	{
-		// Test for, and log grounded collision
-		if(test_collider.isCollision(object.collider) &&
-			rigidbody.normalized_dir.y() >= 0)
-		{
-			grounded_detected = true;
-			rigidbody.removeYForces();
-		}
-	}
-}
-
-// Get State From Tiles
-
 void Enemy::getStateFromHardBlock(int32 world_x, int32 world_y)
 {
 	Collider other_collider = Collider(world_x,
@@ -146,253 +72,6 @@ void Enemy::getStateFromHardBlock(int32 world_x, int32 world_y)
 	{
 		grounded_detected = true;
 		rigidbody.removeYForces();
-	}
-}
-
-void Enemy::getStateFromLeftShallowSlope1(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-							           world_y + 3, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT / 4);
-
-	int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = left_shallow_slope_1_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-	   test_collider.p4.y() >= global_height)
-	{grounded_detected = true;}
-}
-
-void Enemy::getStateFromLeftShallowSlope2(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-								       world_y + 2, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT / 2);
-
-	int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = left_shallow_slope_2_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		test_collider.p4.y() >= global_height)
-	{grounded_detected = true;}
-}
-
-void Enemy::getStateFromLeftShallowSlope3(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-								       world_y + 1, 
-								       TILE_WIDTH, 
-								       TILE_HEIGHT - 2);
-
-	int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-	index = clamp(0, 7, index);
-	int32 local_height  = left_shallow_slope_3_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		test_collider.p4.y() >= global_height)
-	{grounded_detected = true;}
-}
-
-void Enemy::getStateFromLeftShallowSlope4(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-									   world_y, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT);
-
-	int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = left_shallow_slope_4_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-	   test_collider.p4.y() >= global_height)
-	{grounded_detected = true;}
-}
-
-void Enemy::getStateFromLeftSteepSlope1(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-									   world_y + 2, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT / 2);
-
-	int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = left_steep_slope_1_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		test_collider.p4.y() >= global_height)
-	{grounded_detected = true;}
-}
-
-void Enemy::getStateFromLeftSteepSlope2(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-								       world_y, 
-								       TILE_WIDTH, 
-								       TILE_HEIGHT);
-
-	int32 index = abs(other_collider.p1.x() - collider.p4.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = left_steep_slope_2_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		test_collider.p4.y() >= global_height)
-	{grounded_detected = true;}
-}
-
-void Enemy::getStateFromRightShallowSlope1(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-								       world_y + 3, 
-								       TILE_WIDTH, 
-								       TILE_HEIGHT / 4);
-
-	int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = right_shallow_slope_1_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		collider.p1.y() + collider.height > global_height)
-	{grounded_detected = true;}
-}
-
-void Enemy::getStateFromRightShallowSlope2(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-								       world_y + 2, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT / 2);
-
-	int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = right_shallow_slope_2_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		collider.p1.y() + collider.height > global_height)
-	{grounded_detected = true;}
-}
-
-void Enemy::getStateFromRightShallowSlope3(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-									   world_y + 1, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT - 2);
-
-	int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = right_shallow_slope_3_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		collider.p1.y() + collider.height > global_height)
-	{grounded_detected = true;}
-}
-
-void Enemy::getStateFromRightShallowSlope4(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-									   world_y, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT);
-
-	int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = right_shallow_slope_4_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		collider.p1.y() + collider.height > global_height)
-	{grounded_detected = true;}
-}
-
-void Enemy::getStateFromRightSteepSlope1(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-									   world_y + 2, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT / 2);
-
-	int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = right_steep_slope_1_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		collider.p1.y() + collider.height > global_height)
-	{grounded_detected = true;}
-}
-
-void Enemy::getStateFromRightSteepSlope2(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-									   world_y, 
-									   TILE_WIDTH, 
-									   TILE_HEIGHT);
-
-	int32 index = (collider.p1.x() - other_collider.p1.x()).integer();
-	index = clamp(0, 7, index);
-
-	int32 local_height  = right_steep_slope_2_arr[index];
-	int32 global_height = world_y + (TILE_HEIGHT / 2) - local_height;
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		collider.p1.y() + collider.height > global_height)
-	{grounded_detected = true;}
-}
-
-void Enemy::getStateFromOneWayBlock(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x, 
-									   world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
-									   TILE_WIDTH, 
-									   ONEWAYBLOCK_COLLIDER_HEIGHT);
-
-	if(rigidbody.normalized_dir.y() >= 0 &&
-		collider_y_axis.p4.y() <= other_collider.p1.y() + rigidbody.final_dir.y())
-	{
-		// Test for, and log grounded collision
-		if(test_collider.isCollision(other_collider) &&
-			rigidbody.normalized_dir.y() >= 0)
-		{
-			grounded_detected = true;
-			rigidbody.removeYForces();
-		}
 	}
 }
 
@@ -415,6 +94,12 @@ void Enemy::resolveTilePassageCollision(GameObject& object)
 		// If there is still collision somehow, must be corner case //
 		resolveCornerCollision(object.collider);
 	}
+
+	// Test for, and log grounded collision
+	if(object.state == TILE_PASSAGE_SHUT &&
+		test_collider.isCollision(object.collider) && 
+		rigidbody.normalized_dir.y() >= 0)
+	{grounded_detected = true;}
 }
 
 void Enemy::resolveFallingPlatformWideCollision(GameObject& object) 
@@ -427,6 +112,14 @@ void Enemy::resolveFallingPlatformWideCollision(GameObject& object)
 		{
 			collider_y_axis.setY(collider_y_axis.y() - 1);
 			setY(this->y() - 1);
+		}
+
+		// Test for, and log grounded collision
+		if(test_collider.isCollision(object.collider) &&
+			rigidbody.normalized_dir.y() >= 0)
+		{
+			grounded_detected = true;
+			rigidbody.removeYForces();
 		}
 	}
 }
@@ -441,6 +134,14 @@ void Enemy::resolveFallingPlatformThinCollision(GameObject& object)
 		{
 			collider_y_axis.setY(collider_y_axis.y() - 1);
 			setY(this->y() - 1);
+		}
+
+		// Test for, and log grounded collision
+		if(test_collider.isCollision(object.collider) &&
+			rigidbody.normalized_dir.y() >= 0)
+		{
+			grounded_detected = true;
+			rigidbody.removeYForces();
 		}
 	}
 }
@@ -466,6 +167,11 @@ void Enemy::resolvePushBlockCollision(GameObject& object)
         	resolveCornerCollision(object.collider);
 		}
     }
+
+	// Test for, and log grounded collision
+	if(test_collider.isCollision(object.collider) && 
+		rigidbody.normalized_dir.y() >= 0)
+	{grounded_detected = true;}
 }
 
 void Enemy::resolvePushBlockMiniCollision(GameObject& object)
@@ -489,6 +195,11 @@ void Enemy::resolvePushBlockMiniCollision(GameObject& object)
         	resolveCornerCollision(object.collider);
 		}
     }
+
+	// Test for, and log grounded collision
+	if(test_collider.isCollision(object.collider) && 
+		rigidbody.normalized_dir.y() >= 0)
+	{grounded_detected = true;}
 }
 
 void Enemy::resolveAutoPlatformCollision(GameObject& object)
@@ -501,6 +212,14 @@ void Enemy::resolveAutoPlatformCollision(GameObject& object)
 		{
 			collider_y_axis.setY(collider_y_axis.y() - 1);
 			setY(this->y() - 1);
+		}
+
+		// Test for, and log grounded collision
+		if(test_collider.isCollision(object.collider) &&
+			rigidbody.normalized_dir.y() >= 0)
+		{
+			grounded_detected = true;
+			rigidbody.removeYForces();
 		}
 	}
 }

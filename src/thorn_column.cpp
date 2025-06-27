@@ -71,20 +71,6 @@ void ThornColumn::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     gam
 
 }
 
-void ThornColumn::getStateFromTiles(const bn::regular_bg_ptr&                      bg_ptr,
-                                    const bn::span<const bn::regular_bg_map_cell>& cells,
-                                    const bn::regular_bg_item&                     bg_item)
-{
-
-}
-
-void ThornColumn::getStateFromTilesLarge(const bn::regular_bg_ptr&                      bg_ptr,
-                                         const bn::span<const bn::regular_bg_map_cell>& cells,
-                                         const bn::regular_bg_item&                     bg_item)
-{
-    
-}
-
 /////////////////////////
 // Collision Overrides //
 /////////////////////////

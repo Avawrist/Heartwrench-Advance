@@ -198,20 +198,6 @@ void Hitbox::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&      
     if(current_lifespan_frame <= 0) {is_inactive = true;}
 }
 
-void Hitbox::getStateFromTiles(const bn::regular_bg_ptr&                      bg_ptr,
-                               const bn::span<const bn::regular_bg_map_cell>& cells,
-                               const bn::regular_bg_item&                     bg_item)
-{
-
-}
-
-void Hitbox::getStateFromTilesLarge(const bn::regular_bg_ptr&                      bg_ptr,
-                                    const bn::span<const bn::regular_bg_map_cell>& cells,
-                                    const bn::regular_bg_item&                     bg_item)
-{
-
-}
-
 /////////////////////////
 // Collision Overrides //
 /////////////////////////
