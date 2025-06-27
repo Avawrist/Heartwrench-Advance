@@ -106,7 +106,6 @@ struct Level
     void updateBGFlash();
     void reloadOnDeath();
     void freeObjects();
-    void updateIndexes();
     void transitionRoom();
     void drawObjects();
     void updateFade();

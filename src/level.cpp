@@ -203,7 +203,6 @@ void Level::updateAll()
 
 void Level::updateObjects()
 {
-
     // Update all objects
     for(int32 i = current_room.game_objects.size() - 1; i >= 0; i--)
     {
@@ -220,7 +219,6 @@ void Level::updateObjects()
 
     // Load unloaded objects if needed - Is it appropriate to have this here? 
     current_room.monitorUnloadedObjects(camera.value());
-
 }
 
 void Level::updateCamera()
@@ -370,22 +368,7 @@ void Level::freeObjects()
         }
     }
 
-    updateIndexes();
-}
-
-void Level::updateIndexes()
-{    
-    for(int32 i = current_room.game_objects.size() - 1; i >= 0; i--)
-    {
-        // Search for the unloaded object by index, if found, update the ID:
-        int32 object_id = current_room.game_objects.at(i)->object_id;
-        int32 unloaded_index = current_room.findUnloadedObjectIndex(object_id);
-        if(unloaded_index > -1)
-        {current_room.unloaded_objects.at(unloaded_index).loaded_instance_id = i;}
-
-        // Update the loaded object's ID:
-        current_room.game_objects.data()[i]->object_id = i;
-    }
+    current_room.updateIndexes();
 }
 
 void Level::transitionRoom()

@@ -103,11 +103,39 @@ int32 Room::addObject(GameObject* object_ptr, const bn::camera_ptr& camera_ptr)
 {
     if(game_objects.size() >= MAX_GAME_OBJECTS) {return -1;}
 
-    game_objects.push_back(object_ptr);
-    game_objects.back()->setCamera(camera_ptr);
-    game_objects.back()->object_id = game_objects.size() - 1;
+    if(object_ptr->object_type == FALLING_PLATFORM_WIDE ||
+       object_ptr->object_type == FALLING_PLATFORM_THIN ||
+       object_ptr->object_type == PUSH_BLOCK ||
+       object_ptr->object_type == PUSH_BLOCK_MINI ||
+       object_ptr->object_type == AUTO_PLATFORM)
+    {
+        game_objects.push_back(object_ptr);
+        game_objects.back()->setCamera(camera_ptr);
+        game_objects.back()->object_id = game_objects.size() - 1;
 
-    return game_objects.back()->object_id;
+        return game_objects.back()->object_id;
+    }
+    else if(object_ptr->object_type == PLAYER)
+    {
+        bn::vector<GameObject*, MAX_GAME_OBJECTS>::iterator insert_index = game_objects.begin();
+
+        game_objects.insert(insert_index, object_ptr);
+        (*insert_index)->setCamera(camera_ptr);
+        (*insert_index)->object_id = 0;
+
+        return (*insert_index)->object_id;
+    }
+    else
+    {
+        bn::vector<GameObject*, MAX_GAME_OBJECTS>::iterator insert_index = game_objects.begin();
+        insert_index++;
+
+        game_objects.insert(insert_index, object_ptr);
+        (*insert_index)->setCamera(camera_ptr);
+        (*insert_index)->object_id = 1;
+
+        return (*insert_index)->object_id;
+    }
 }
 
 int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera_ptr)
@@ -115,6 +143,8 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
     if(game_objects.size() >= MAX_GAME_OBJECTS) {return -1;}
 
     GameObject* temp_object_ptr = NULL;
+
+    bool priority_object = false;
 
     // Allocate object based on type
     // NOTE: All object types should be represented here. When adding object types
@@ -148,22 +178,27 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
 
         case FALLING_PLATFORM_WIDE:
             temp_object_ptr = new FallingPlatformWide();
+            priority_object = true;
         break;
 
         case FALLING_PLATFORM_THIN:
             temp_object_ptr = new FallingPlatformThin();
+            priority_object = true;
         break;
 
         case PUSH_BLOCK:
             temp_object_ptr = new PushBlock();
+            priority_object = true;
         break;
 
         case PUSH_BLOCK_MINI:
             temp_object_ptr = new PushBlockMini();
+            priority_object = true;
         break;
 
         case AUTO_PLATFORM:
             temp_object_ptr = new AutoPlatform();
+            priority_object = true;
         break;
 
         ///////////////////
@@ -211,13 +246,30 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
         break;
     }
 	
-    game_objects.push_back(temp_object_ptr);
-    game_objects.back()->setCamera(camera_ptr);
-    game_objects.back()->setPos(object.room_pos);
-    game_objects.back()->object_id = game_objects.size() - 1;
-    game_objects.back()->is_persistent = object.is_persistent;
+    if(priority_object)
+    {
+        game_objects.push_back(temp_object_ptr);
+        game_objects.back()->setCamera(camera_ptr);
+        game_objects.back()->setPos(object.room_pos);
+        game_objects.back()->object_id = game_objects.size() - 1;
+        game_objects.back()->is_persistent = object.is_persistent;
 
-    return game_objects.back()->object_id;
+        return game_objects.back()->object_id;
+    }
+    else
+    {
+        bn::vector<GameObject*, MAX_GAME_OBJECTS>::iterator insert_index = game_objects.begin();
+        insert_index++;
+        
+        game_objects.insert(insert_index, temp_object_ptr);
+        (*insert_index)->setCamera(camera_ptr);
+        (*insert_index)->setPos(object.room_pos);
+        (*insert_index)->object_id = 1;
+        (*insert_index)->is_persistent = object.is_persistent;
+
+        return (*insert_index)->object_id;
+    }
+
 }
 
 int32 Room::addUnloadedObject(const UnloadedObject& new_object, bool is_persistent)
@@ -245,7 +297,6 @@ int32 Room::findUnloadedObjectIndex(int32 object_id)
 
 void Room::clear()
 {
-
     // Free all game object pointers
     for(int32 i = game_objects.size() - 1; i >= 0; i--)
     {
@@ -254,7 +305,6 @@ void Room::clear()
 
     // Remove all game objects from vector
     game_objects.clear();
-
 }
 
 void Room::load(RoomName                                       room_name, 
@@ -357,6 +407,7 @@ void Room::monitorUnloadedObjects(const bn::camera_ptr& camera_ptr)
     if(game_objects.at(PLAYER_OBJECT_LIST_INDEX) == NULL) {return;}
 
     bn::fixed_point camera_center = game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos();
+
     Collider load_range_collider(camera_center.x(), 
                                  camera_center.y(), 
                                  LOAD_RANGE_W, 
@@ -409,4 +460,19 @@ void Room::monitorUnloadedObjects(const bn::camera_ptr& camera_ptr)
         }
     }
 
+}
+
+void Room::updateIndexes()
+{    
+    for(int32 i = game_objects.size() - 1; i >= 0; i--)
+    {
+        // Search for the unloaded object by index, if found, update the ID:
+        int32 object_id = game_objects.at(i)->object_id;
+        int32 unloaded_index = findUnloadedObjectIndex(object_id);
+        if(unloaded_index > -1)
+        {unloaded_objects.at(unloaded_index).loaded_instance_id = i;}
+
+        // Update the loaded object's ID:
+        game_objects.data()[i]->object_id = i;
+    }
 }

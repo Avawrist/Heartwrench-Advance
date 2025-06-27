@@ -90,6 +90,9 @@ struct PushBlockMini : GameObject {
 	void resolveFallingPlatformWideCollision(GameObject& object) override;
 	void resolveFallingPlatformThinCollision(GameObject& object) override;
 
+    // Enemy Objects
+    void resolveGroundGhoulCollision(GameObject& object) override;
+
 	// Special Objects
 	void resolvePlayerCollision(GameObject& object) override;
 

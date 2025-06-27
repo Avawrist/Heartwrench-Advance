@@ -123,13 +123,15 @@ void AutoPlatform::resolveGroundGhoulCollision(GameObject& object)
         {
             // If descending, applying force to the x axis is all that's needed.
             // The object gravity will take care of the rest. 
-            object.rigidbody.addForce(Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), 0), 1));
+            if(!changed_x_dir)
+            {object.rigidbody.addForce(Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), 0), 1));}
         }
         else
         {
             // If ascending, apply force to BOTH axes and offset y by 1 
             // so the object hugs the platform tight.
-            object.rigidbody.addForce(Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), rigidbody.final_dir.y()), 1));
+            if(!changed_x_dir)
+            {object.rigidbody.addForce(Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), rigidbody.final_dir.y()), 1));}
         }
     }
 }

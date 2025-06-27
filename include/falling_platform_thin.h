@@ -74,8 +74,11 @@ struct FallingPlatformThin : GameObject {
     // Collision Overrides //
     /////////////////////////
 
+    // Level Enemies
+    void resolveGroundGhoulCollision(GameObject& object) override;
+
     // Special Objects
-    void resolvePlayerCollision(GameObject& object);
+    void resolvePlayerCollision(GameObject& object) override;
 
     // Tiles
     void resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 

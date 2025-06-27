@@ -152,7 +152,7 @@ void GameObject::update(const RoomBounds& 							   room_bounds,
                         const bn::regular_bg_item&                     bg_item,
                         const bn::camera_ptr&                          camera)
 {
-    BN_LOG("updating ", object_type);
+    
     //////////////////
     // Update State //
     //////////////////

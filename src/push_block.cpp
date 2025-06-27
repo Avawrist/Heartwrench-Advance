@@ -235,6 +235,37 @@ void PushBlock::resolveFallingPlatformThinCollision(GameObject& object)
 	}
 }
 
+// Enemy Objects
+void PushBlock::resolveGroundGhoulCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	// Now test for roof riding and resolve the PushBlock + Player.
+	int32 pixels_moved_x = (frame_start_pos.x().integer() - pos().x().integer()) * -1;
+	int32 pixels_moved_y = (frame_start_pos.y().integer() - pos().y().integer()) * -1;
+
+	Collider roof_test_collider = Collider(collider.x() - pixels_moved_x,
+										   collider.y() - pixels_moved_y + PUSH_BLOCK_ROOF_OFFSET,
+										   collider.width,
+										   PUSH_BLOCK_ROOF_COLLIDER_HEIGHT);
+
+	if(roof_test_collider.isCollision(object.collider))
+	{
+		object.rigidbody.addForce(Force(bn::fixed_point_t<12>(pixels_moved_x, 0), 1));
+		object.setY(object.y() + pixels_moved_y);
+	}
+
+	// Backwards collision resolution, let the object correct itself.
+	// Expensive, but necessary.
+	if(object.collider.isCollision(collider))
+	{
+		object.resolveXAxisCollision(collider);
+		object.resolveYAxisCollision(collider);
+		object.resolveCornerCollision(collider);
+		object.updateTestColliders();
+	}
+}
+
 // Special Objects
 void PushBlock::resolvePlayerCollision(GameObject& object)
 {

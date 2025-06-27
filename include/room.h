@@ -96,6 +96,7 @@ struct Room
                       const bn::span<const bn::regular_bg_map_cell>& object_cells);
     void monitorUnloadedObjects(const bn::camera_ptr& camera_ptr); // This will be called every frame to 
                                                                     // test for objects that should be loaded.
+    void updateIndexes();
                                  
 };
 
