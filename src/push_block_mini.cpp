@@ -182,34 +182,11 @@ void PushBlockMini::setState(ObjectState new_state)
 	}
 }
 
-// Get State From Tiles
-
-void PushBlockMini::getStateFromHardBlock(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-									world_y, 
-									TILE_WIDTH,
-									TILE_HEIGHT);
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		rigidbody.normalized_dir.y() >= 0)
-	{
-		grounded_detected = true;
-		rigidbody.removeYForces();
-	}
-}
-
 /////////////////////////
 // Collision Overrides //
 /////////////////////////
 
 // Level Objects
-void PushBlockMini::resolveTilePassageCollision(GameObject& object)
-{
-
-}
-
 void PushBlockMini::resolveFallingPlatformWideCollision(GameObject& object)
 {
 	if(rigidbody.normalized_dir.y() >= 0 &&
@@ -220,6 +197,16 @@ void PushBlockMini::resolveFallingPlatformWideCollision(GameObject& object)
 		{
 			collider_y_axis.setY(collider_y_axis.y() - 1);
 			setY(this->y() - 1);
+		}
+
+		updateTestColliders();
+
+		// Test for, and log grounded collision
+		if(test_collider.isCollision(object.collider) &&
+		   rigidbody.normalized_dir.y() >= 0)
+		{
+			grounded_detected = true;
+			rigidbody.removeYForces();
 		}
 	}
 }
@@ -234,6 +221,16 @@ void PushBlockMini::resolveFallingPlatformThinCollision(GameObject& object)
 		{
 			collider_y_axis.setY(collider_y_axis.y() - 1);
 			setY(this->y() - 1);
+		}
+
+		updateTestColliders();
+
+		// Test for, and log grounded collision
+		if(test_collider.isCollision(object.collider) &&
+		   rigidbody.normalized_dir.y() >= 0)
+		{
+			grounded_detected = true;
+			rigidbody.removeYForces();
 		}
 	}
 }
@@ -271,14 +268,25 @@ void PushBlockMini::resolvePlayerCollision(GameObject& object)
 		object.resolveXAxisCollision(collider);
 		object.resolveYAxisCollision(collider);
 		object.resolveCornerCollision(collider);
+		object.updateTestColliders();
 	}
 }
 
 // Tiles
 void PushBlockMini::resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
-                                     const bn::span<const bn::regular_bg_map_cell>& cells,
-                                     const bn::regular_bg_item&                     bg_item)
+                                     	 const bn::span<const bn::regular_bg_map_cell>& cells,
+                                     	 const bn::regular_bg_item&                     bg_item)
 {
+	////////////////////////////////////////
+    // Update Variables for state testing //
+	////////////////////////////////////////
+	grounded_detected = false;
+
+	// Grounded test collider
+	test_collider = Collider(collider.x(), 
+	                         collider.y() + GAME_OBJECT_GROUND_RAY_LENGTH,
+							 collider.width, 
+							 collider.height);
 
     //////////////////////////////
 	// Init Collision Variables //
@@ -348,7 +356,6 @@ void PushBlockMini::resolveTileCollision(const bn::regular_bg_ptr&              
 										  TILE_HEIGHT);
 
 				resolveHardBlockCollision(other_collider);
-				getStateFromHardBlock(other_collider.x().integer(), other_collider.y().integer());
 			}
 
             else if(tile_index == H_GEAR_LEFT)

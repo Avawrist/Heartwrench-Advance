@@ -30,8 +30,7 @@ struct Enemy : GameObject
     // State Function Overrides //
     //////////////////////////////
 
-    // Get State From Tiles
-    void getStateFromHardBlock(int32 world_x, int32 world_y) override;
+    // None..
 
     /////////////////////////
     // Collision Overrides //

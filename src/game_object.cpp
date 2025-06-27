@@ -152,7 +152,7 @@ void GameObject::update(const RoomBounds& 							   room_bounds,
                         const bn::regular_bg_item&                     bg_item,
                         const bn::camera_ptr&                          camera)
 {
-
+    BN_LOG("updating ", object_type);
     //////////////////
     // Update State //
     //////////////////
@@ -499,6 +499,12 @@ void GameObject::udpateDeathState()
     {is_dead = true;}
 }
 
+void GameObject::updateTestColliders()
+{
+    // Update test colliders to the object's position.
+	test_collider.setPos(bn::point(collider.pos().x().integer(), collider.pos().y().integer() + GAME_OBJECT_GROUND_RAY_LENGTH));
+}
+
 void GameObject::clampPosition(const bn::regular_bg_ptr& bg_ptr)
 {
     int32 half_level_width_pixels  = bg_ptr.dimensions().width() / 2;
@@ -781,6 +787,18 @@ void GameObject::resolveTileCollision(const bn::regular_bg_ptr&                 
                                       const bn::span<const bn::regular_bg_map_cell>& cells,
                                       const bn::regular_bg_item&                     bg_item)
 {
+
+	////////////////////////////////////////
+    // Update Variables for state testing //
+	////////////////////////////////////////
+	grounded_detected = false;
+
+	// Grounded test collider
+	test_collider = Collider(collider.x(), 
+	                         collider.y() + GAME_OBJECT_GROUND_RAY_LENGTH,
+							 collider.width, 
+							 collider.height);
+
     //////////////////////////////
 	// Init Collision Variables //
 	//////////////////////////////
@@ -843,7 +861,6 @@ void GameObject::resolveTileCollision(const bn::regular_bg_ptr&                 
 										  TILE_HEIGHT);
 
 				resolveHardBlockCollision(other_collider);
-                getStateFromHardBlock(other_collider.x().integer(), other_collider.y().integer());
 			}
 
             else if(tile_index == H_GEAR_LEFT)
@@ -1125,6 +1142,16 @@ void GameObject::resolveHardBlockCollision(const Collider& other_collider)
         // If there is still collision somehow, must be corner case //
         resolveCornerCollision(other_collider);
     }
+
+    updateTestColliders();
+
+	// Test for, and log grounded collision
+	if(test_collider.isCollision(other_collider) &&
+		rigidbody.normalized_dir.y() >= 0)
+	{
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
 }
 
 void GameObject::resolveHGearLeftCollision(const Collider& other_collider)
@@ -1204,6 +1231,8 @@ void GameObject::resolveLeftShallowSlope1Collision(const Collider& other_collide
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
 
+    updateTestColliders();
+
     // Test for, and log grounded collision
 	if(test_collider.isCollision(other_collider) &&
 	   test_collider.p4.y() >= global_height)
@@ -1231,6 +1260,8 @@ void GameObject::resolveLeftShallowSlope2Collision(const Collider& other_collide
         // Manually set object position:
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
+
+    updateTestColliders();
 
     // Test for, and log grounded collision
 	if(test_collider.isCollision(other_collider) &&
@@ -1260,6 +1291,8 @@ void GameObject::resolveLeftShallowSlope3Collision(const Collider& other_collide
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
 
+    updateTestColliders();
+
     // Test for, and log grounded collision
 	if(test_collider.isCollision(other_collider) &&
 		test_collider.p4.y() >= global_height)
@@ -1287,6 +1320,8 @@ void GameObject::resolveLeftShallowSlope4Collision(const Collider& other_collide
         // Manually set object position:
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
+
+    updateTestColliders();
 
     // Test for, and log grounded collision
 	if(test_collider.isCollision(other_collider) &&
@@ -1316,6 +1351,8 @@ void GameObject::resolveLeftSteepSlope1Collision(const Collider& other_collider,
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
 
+    updateTestColliders();
+
     // Test for, and log grounded collision
 	if(test_collider.isCollision(other_collider) &&
 		test_collider.p4.y() >= global_height)
@@ -1344,6 +1381,8 @@ void GameObject::resolveLeftSteepSlope2Collision(const Collider& other_collider,
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
 
+    updateTestColliders();
+
     // Test for, and log grounded collision
 	if(test_collider.isCollision(other_collider) &&
 		test_collider.p4.y() >= global_height)
@@ -1370,6 +1409,8 @@ void GameObject::resolveRightShallowSlope1Collision(const Collider& other_collid
         // Manually set object position:
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
+
+    updateTestColliders();
 
     // Test for, and log grounded collision
 	if(test_collider.isCollision(other_collider) &&
@@ -1399,6 +1440,8 @@ void GameObject::resolveRightShallowSlope2Collision(const Collider& other_collid
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
 
+    updateTestColliders();
+
     // Test for, and log grounded collision
 	if(test_collider.isCollision(other_collider) &&
 		collider.p1.y() + collider.height > global_height)
@@ -1426,6 +1469,8 @@ void GameObject::resolveRightShallowSlope3Collision(const Collider& other_collid
         // Manually set object position:
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
+
+    updateTestColliders();
 
     // Test for, and log grounded collision
 	if(test_collider.isCollision(other_collider) &&
@@ -1455,6 +1500,8 @@ void GameObject::resolveRightShallowSlope4Collision(const Collider& other_collid
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
 
+    updateTestColliders();
+
     // Test for, and log grounded collision
 	if(test_collider.isCollision(other_collider) &&
 		collider.p1.y() + collider.height > global_height)
@@ -1482,6 +1529,8 @@ void GameObject::resolveRightSteepSlope1Collision(const Collider& other_collider
         // Manually set object position:
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
+
+    updateTestColliders();
 
     // Test for, and log grounded collision
 	if(test_collider.isCollision(other_collider) &&
@@ -1511,6 +1560,8 @@ void GameObject::resolveRightSteepSlope2Collision(const Collider& other_collider
         setY(global_height - (collider.height / 2) - collider_offset_y);
     }
 
+    updateTestColliders();
+
 	// Test for grounded collision
 	if(test_collider.isCollision(other_collider) &&
 		collider.p1.y() + collider.height > global_height)
@@ -1535,6 +1586,8 @@ void GameObject::resolveOneWayBlockCollision(const Collider& other_collider)
             collider_y_axis.setY(collider_y_axis.y() - 1);
             setY(this->y() - 1);
         }
+
+        updateTestColliders();
 
         // Test for, and log grounded collision
 		if(test_collider.isCollision(other_collider))

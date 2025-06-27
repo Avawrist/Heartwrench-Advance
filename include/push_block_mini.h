@@ -82,15 +82,11 @@ struct PushBlockMini : GameObject {
 
     void setState(ObjectState new_state) override;
     
-    // Get State From Tiles
-    void getStateFromHardBlock(int32 world_x, int32 world_y) override;
-
     /////////////////////////
     // Collision Overrides //
     /////////////////////////
 
     // Level Objects
-	void resolveTilePassageCollision(GameObject& object)         override;
 	void resolveFallingPlatformWideCollision(GameObject& object) override;
 	void resolveFallingPlatformThinCollision(GameObject& object) override;
 

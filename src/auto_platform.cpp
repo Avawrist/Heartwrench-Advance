@@ -117,7 +117,7 @@ void AutoPlatform::resolveGroundGhoulCollision(GameObject& object)
 
     // If object is riding the platform:
     if(roof_test_collider.isCollision(object.collider) &&
-       object.collider.p4.y() < collider.p1.y() - rigidbody.final_dir.y()) 
+       object.collider.p4.y() < collider.p1.y() - rigidbody.final_dir.y())
     {        
         if(rigidbody.final_dir.y() <= 0)
         {
@@ -129,7 +129,7 @@ void AutoPlatform::resolveGroundGhoulCollision(GameObject& object)
         {
             // If ascending, apply force to BOTH axes and offset y by 1 
             // so the object hugs the platform tight.
-            object.rigidbody.addForce(Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), rigidbody.final_dir.y() + 1), 1));
+            object.rigidbody.addForce(Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), rigidbody.final_dir.y()), 1));
         }
     }
 }

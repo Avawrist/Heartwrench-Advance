@@ -77,6 +77,8 @@
 #define GAME_OBJECT_COLLIDER_WIDTH  8
 #define GAME_OBJECT_COLLIDER_HEIGHT 8
 
+#define GAME_OBJECT_GROUND_RAY_LENGTH 1
+
 #define GAME_OBJECT_IGNORE_OWP_FRAMES 3
 
 #define GAME_OBJECT_HIT_INVULNERABILITY_FRAMES 30
@@ -304,6 +306,8 @@ struct GameObject
 
 	virtual void udpateDeathState();
 
+	virtual void updateTestColliders();
+
 	virtual void setCamera(const bn::camera_ptr& camera);
 
 	virtual void setState(ObjectState new_state);
@@ -342,9 +346,6 @@ struct GameObject
 		                     const bn::regular_bg_ptr&                      bg_ptr, 
 							 const bn::span<const bn::regular_bg_map_cell>& cells,
 							 const bn::regular_bg_item&                     bg_item);
-
-	// Get State from Tiles
-	virtual void getStateFromHardBlock(int32 world_x, int32 world_y) {};
 	
 	/////////////////////////
 	// Collision functions //

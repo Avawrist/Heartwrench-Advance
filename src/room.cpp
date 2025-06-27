@@ -354,8 +354,6 @@ void Room::prepObjects(const bn::regular_bg_ptr&                      object_bg_
 
 void Room::monitorUnloadedObjects(const bn::camera_ptr& camera_ptr)
 {
-    #define SCREEN_LOAD_PADDING 64
-
     if(game_objects.at(PLAYER_OBJECT_LIST_INDEX) == NULL) {return;}
 
     bn::fixed_point camera_center = game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos();

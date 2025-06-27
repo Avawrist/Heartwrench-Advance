@@ -59,21 +59,7 @@ void Enemy::wallSplatCheck()
 // State Function Overrides //
 //////////////////////////////
 
-void Enemy::getStateFromHardBlock(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-								       world_y, 
-									   TILE_WIDTH,
-									   TILE_HEIGHT);
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		rigidbody.normalized_dir.y() >= 0)
-	{
-		grounded_detected = true;
-		rigidbody.removeYForces();
-	}
-}
+// None..
 
 /////////////////////////
 // Collision Overrides //
@@ -95,6 +81,8 @@ void Enemy::resolveTilePassageCollision(GameObject& object)
 		resolveCornerCollision(object.collider);
 	}
 
+	updateTestColliders();
+
 	// Test for, and log grounded collision
 	if(object.state == TILE_PASSAGE_SHUT &&
 		test_collider.isCollision(object.collider) && 
@@ -113,6 +101,8 @@ void Enemy::resolveFallingPlatformWideCollision(GameObject& object)
 			collider_y_axis.setY(collider_y_axis.y() - 1);
 			setY(this->y() - 1);
 		}
+
+		updateTestColliders();
 
 		// Test for, and log grounded collision
 		if(test_collider.isCollision(object.collider) &&
@@ -135,6 +125,8 @@ void Enemy::resolveFallingPlatformThinCollision(GameObject& object)
 			collider_y_axis.setY(collider_y_axis.y() - 1);
 			setY(this->y() - 1);
 		}
+
+		updateTestColliders();
 
 		// Test for, and log grounded collision
 		if(test_collider.isCollision(object.collider) &&
@@ -168,6 +160,8 @@ void Enemy::resolvePushBlockCollision(GameObject& object)
 		}
     }
 
+	updateTestColliders();
+
 	// Test for, and log grounded collision
 	if(test_collider.isCollision(object.collider) && 
 		rigidbody.normalized_dir.y() >= 0)
@@ -196,6 +190,8 @@ void Enemy::resolvePushBlockMiniCollision(GameObject& object)
 		}
     }
 
+	updateTestColliders();
+
 	// Test for, and log grounded collision
 	if(test_collider.isCollision(object.collider) && 
 		rigidbody.normalized_dir.y() >= 0)
@@ -213,6 +209,8 @@ void Enemy::resolveAutoPlatformCollision(GameObject& object)
 			collider_y_axis.setY(collider_y_axis.y() - 1);
 			setY(this->y() - 1);
 		}
+
+		updateTestColliders();
 
 		// Test for, and log grounded collision
 		if(test_collider.isCollision(object.collider) &&

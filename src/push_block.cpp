@@ -182,34 +182,11 @@ void PushBlock::setState(ObjectState new_state)
 	}
 }
 
-// Get State From Tiles
-
-void PushBlock::getStateFromHardBlock(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-									   world_y, 
-									   TILE_WIDTH,
-									   TILE_HEIGHT);
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		rigidbody.normalized_dir.y() >= 0)
-	{
-		grounded_detected = true;
-		rigidbody.removeYForces();
-	}
-}
-
 /////////////////////////
 // Collision Overrides //
 /////////////////////////
 
 // Level Objects
-void PushBlock::resolveTilePassageCollision(GameObject& object)
-{
-
-}
-
 void PushBlock::resolveFallingPlatformWideCollision(GameObject& object)
 {
 	if(rigidbody.normalized_dir.y() >= 0 &&
@@ -220,6 +197,16 @@ void PushBlock::resolveFallingPlatformWideCollision(GameObject& object)
 		{
 			collider_y_axis.setY(collider_y_axis.y() - 1);
 			setY(this->y() - 1);
+		}
+
+		updateTestColliders();
+
+		// Test for, and log grounded collision
+		if(test_collider.isCollision(object.collider) &&
+		   rigidbody.normalized_dir.y() >= 0)
+		{
+			grounded_detected = true;
+			rigidbody.removeYForces();
 		}
 	}
 }
@@ -234,6 +221,16 @@ void PushBlock::resolveFallingPlatformThinCollision(GameObject& object)
 		{
 			collider_y_axis.setY(collider_y_axis.y() - 1);
 			setY(this->y() - 1);
+		}
+
+		updateTestColliders();
+
+		// Test for, and log grounded collision
+		if(test_collider.isCollision(object.collider) &&
+		   rigidbody.normalized_dir.y() >= 0)
+		{
+			grounded_detected = true;
+			rigidbody.removeYForces();
 		}
 	}
 }
@@ -271,6 +268,7 @@ void PushBlock::resolvePlayerCollision(GameObject& object)
 		object.resolveXAxisCollision(collider);
 		object.resolveYAxisCollision(collider);
 		object.resolveCornerCollision(collider);
+		object.updateTestColliders();
 	}
 }
 
@@ -281,6 +279,17 @@ void PushBlock::resolveTileCollision(const bn::regular_bg_ptr&                  
 {
 
 	if(rigidbody.normalized_dir.x() == 0 && rigidbody.normalized_dir.y() == 0) {return;}
+
+	////////////////////////////////////////
+    // Update Variables for state testing //
+	////////////////////////////////////////
+	grounded_detected = false;
+
+	// Grounded test collider
+	test_collider = Collider(collider.x(), 
+	                         collider.y() + GAME_OBJECT_GROUND_RAY_LENGTH,
+							 collider.width, 
+							 collider.height);
 
     //////////////////////////////
 	// Init Collision Variables //

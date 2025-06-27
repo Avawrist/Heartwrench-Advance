@@ -22,8 +22,9 @@ typedef int   int32;
 
 #define LOAD_RANGE_W  500
 #define LOAD_RANGE_H  400
-#define SCREEN_W 400
-#define SCREEN_H 320
+#define SCREEN_W 240
+#define SCREEN_H 160
+#define SCREEN_LOAD_PADDING 128
 
 #define CAM_PLAYER_Y_OFFSET -16
 

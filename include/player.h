@@ -24,6 +24,8 @@
 #define PLAYER_COLLIDER_OFFSET_X 0
 #define PLAYER_COLLIDER_OFFSET_Y 2
 
+#define PLAYER_WALL_TEST_RAY_LENGTH 1
+
 #define PLAYER_FALL_STRETCH_V 1.5
 #define PLAYER_FALL_STRETCH_H 0.75
 
@@ -228,6 +230,8 @@ struct Player : GameObject {
 
 	void updateTimers() override;
 
+	void updateTestColliders() override;
+
 	void draw() override;
 
 	void setCamera(const bn::camera_ptr& camera) override;
@@ -249,9 +253,6 @@ struct Player : GameObject {
 
 	void setState(ObjectState new_state) override;
 	
-	// Get State from Tiles
-	void getStateFromHardBlock(int32 world_x, int32 world_y)          override;
-
 	/////////////////////////
 	// Collision Overrides //
 	/////////////////////////

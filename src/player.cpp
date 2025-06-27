@@ -451,6 +451,15 @@ void Player::updateTimers()
 	}
 }
 
+void Player::updateTestColliders()
+{
+	GameObject::updateTestColliders();
+
+	// Update wall right/left test colliders
+	test_collider_right.setPos(bn::point(collider.pos().x().integer() + PLAYER_WALL_TEST_RAY_LENGTH, collider.pos().y().integer()));
+	test_collider_left.setPos(bn::point(collider.pos().x().integer()  - PLAYER_WALL_TEST_RAY_LENGTH, collider.pos().y().integer()));
+}
+
 void Player::draw()
 {
 	GameObject::draw();
@@ -1544,52 +1553,6 @@ void Player::setState(ObjectState new_state)
 
 }
 
-// Get State From Tiles
-
-void Player::getStateFromHardBlock(int32 world_x, int32 world_y)
-{
-	Collider other_collider = Collider(world_x,
-								       world_y, 
-								       TILE_WIDTH,
-								       TILE_HEIGHT);
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		rigidbody.normalized_dir.y() >= 0)
-	{
-		if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-		   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-		{createLandEffect();}
-
-		grounded_detected = true;
-		rigidbody.removeYForces();
-	}
-
-	/*
-	// Test for wall riding on right side
-	if(test_collider_right.isCollision(other_collider))
-	{
-		right_wj_eligible = true;
-
-		if(rigidbody.normalized_dir.y() >= 0 &&
-		   bn::keypad::right_held() && 
-		   !bn::keypad::down_held()) 
-		{wall_right_detected = true;}
-	}
-	
-	// Test for wall riding on left side
-	if(test_collider_left.isCollision(other_collider))
-	{
-		left_wj_eligible = true;
-
-		if(rigidbody.normalized_dir.y() >= 0 &&
-			bn::keypad::left_held() &&
-			!bn::keypad::down_held()) 
-		{wall_left_detected = true;}
-	}
-	*/
-}
-
 /////////////////////////
 // Collision Overrides //
 /////////////////////////
@@ -1611,6 +1574,8 @@ void Player::resolveTilePassageCollision(GameObject& object)
 		// If there is still collision somehow, must be corner case //
 		resolveCornerCollision(object.collider);
 	}
+
+	updateTestColliders();
 
 	// Test for, and log grounded collision
 	if(object.state == TILE_PASSAGE_SHUT &&
@@ -1683,6 +1648,8 @@ void Player::resolveFallingPlatformWideCollision(GameObject& object)
 			setY(this->y() - 1);
 		}
 
+		updateTestColliders();
+
 		// Test for, and log grounded collision
 		if(test_collider.isCollision(object.collider) &&
 		   rigidbody.normalized_dir.y() >= 0)
@@ -1716,6 +1683,8 @@ void Player::resolveFallingPlatformThinCollision(GameObject& object)
 			collider_y_axis.setY(collider_y_axis.y() - 1);
 			setY(this->y() - 1);
 		}
+
+		updateTestColliders();
 
 		// Test for, and log grounded collision
 		if(test_collider.isCollision(object.collider) &&
@@ -1753,6 +1722,8 @@ void Player::resolvePushBlockCollision(GameObject& object)
         resolveCornerCollision(object.collider);
     }
 
+	updateTestColliders();
+
 	// Test for, and log grounded collision
 	if(test_collider.isCollision(object.collider) && 
 	   rigidbody.normalized_dir.y() >= 0)
@@ -1764,7 +1735,7 @@ void Player::resolvePushBlockCollision(GameObject& object)
 		grounded_detected = true;
 		rigidbody.removeYForces();
 	}
-	/*
+	
 	// Test for wall riding on right side
 	if(test_collider_right.isCollision(object.collider))
 	{
@@ -1796,7 +1767,7 @@ void Player::resolvePushBlockCollision(GameObject& object)
 			rigidbody.addForce(Force(bn::fixed_point_t<12>(0, y_force), 1));
 		}
 	}
-	*/
+	
 }
 
 void Player::resolvePushBlockMiniCollision(GameObject& object)
@@ -1813,6 +1784,8 @@ void Player::resolvePushBlockMiniCollision(GameObject& object)
         resolveCornerCollision(object.collider);
     }
 
+	updateTestColliders();
+
 	// Test for, and log grounded collision
 	if(test_collider.isCollision(object.collider) && 
 	   rigidbody.normalized_dir.y() >= 0)
@@ -1824,7 +1797,7 @@ void Player::resolvePushBlockMiniCollision(GameObject& object)
 		grounded_detected = true;
 		rigidbody.removeYForces();
 	}
-	/*
+	
 	// Test for wall riding on right side
 	if(test_collider_right.isCollision(object.collider))
 	{
@@ -1856,7 +1829,7 @@ void Player::resolvePushBlockMiniCollision(GameObject& object)
 			rigidbody.addForce(Force(bn::fixed_point_t<12>(0, y_force), 1));
 		}
 	}
-	*/
+	
 }
 
 void Player::resolveAutoPlatformCollision(GameObject& object)
@@ -1870,6 +1843,8 @@ void Player::resolveAutoPlatformCollision(GameObject& object)
 			collider_y_axis.setY(collider_y_axis.y() - 1);
 			setY(this->y() - 1);
 		}
+
+		updateTestColliders();
 
 		// Test for, and log grounded collision
 		if(test_collider.isCollision(object.collider) &&
@@ -1972,16 +1947,14 @@ void Player::resolveTileCollision(const bn::regular_bg_ptr&                     
 	collider_y_axis.setPos(collider.x() - rigidbody.final_dir.x(), collider.y());
 
 	// Wall slide test colliders
-	const uint32 wall_ray_length = 1;
-	test_collider_right.setPos(collider.x() + wall_ray_length,
+	test_collider_right.setPos(collider.x() + PLAYER_WALL_TEST_RAY_LENGTH,
                                collider.y());
-	test_collider_left.setPos(collider.x() - wall_ray_length,
+	test_collider_left.setPos(collider.x() - PLAYER_WALL_TEST_RAY_LENGTH,
                               collider.y());
 
 	// Grounded test collider
-	int32 ground_ray_length = 1;
 	test_collider = Collider(collider.x(), 
-	                         collider.y() + ground_ray_length,
+	                         collider.y() + GAME_OBJECT_GROUND_RAY_LENGTH,
 							 collider.width, 
 							 collider.height);
 
@@ -2049,7 +2022,6 @@ void Player::resolveTileCollision(const bn::regular_bg_ptr&                     
 											  TILE_HEIGHT);
 
 					resolveHardBlockCollision(other_collider);
-					getStateFromHardBlock(other_collider.x().integer(), other_collider.y().integer());
 				}
 
 				else if(tile_index == H_GEAR_LEFT)
@@ -2309,6 +2281,43 @@ void Player::resolveHardBlockCollision(const Collider& other_collider)
         // If there is still collision somehow, must be corner case //
         resolveCornerCollision(other_collider);
     }
+
+	// Update test colliders since the player has moved.
+	updateTestColliders();
+
+	// Test for, and log grounded collision
+	if(test_collider.isCollision(other_collider) &&
+		rigidbody.normalized_dir.y() >= 0)
+	{
+		if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
+		   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
+		{createLandEffect();}
+
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
+
+	// Test for wall riding on right side
+	if(test_collider_right.isCollision(other_collider))
+	{
+		right_wj_eligible = true;
+
+		if(rigidbody.normalized_dir.y() >= 0 &&
+		   bn::keypad::right_held() && 
+		   !bn::keypad::down_held()) 
+		{wall_right_detected = true;}
+	}
+	
+	// Test for wall riding on left side
+	if(test_collider_left.isCollision(other_collider))
+	{
+		left_wj_eligible = true;
+
+		if(rigidbody.normalized_dir.y() >= 0 &&
+			bn::keypad::left_held() &&
+			!bn::keypad::down_held()) 
+		{wall_left_detected = true;}
+	}
 }
 
 void Player::resolveOneWayBlockCollision(const Collider& other_collider)
@@ -2322,6 +2331,8 @@ void Player::resolveOneWayBlockCollision(const Collider& other_collider)
 			collider_y_axis.setY(collider_y_axis.y() - 1);
 			setY(this->y() - 1);
 		}
+
+		updateTestColliders();
 
 		// Test for, and log grounded collision
 		if(test_collider.isCollision(other_collider))
