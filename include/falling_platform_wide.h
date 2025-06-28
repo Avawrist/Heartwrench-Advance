@@ -74,6 +74,11 @@ struct FallingPlatformWide : GameObject {
     // Collision Overrides //
     /////////////////////////
 
+    // Level Objects
+    void resolvePushBlockCollision(GameObject& object) override;
+
+    void resolvePushBlockMiniCollision(GameObject& object) override;
+
     // Level Enemies
     void resolveGroundGhoulCollision(GameObject& object) override;
 
