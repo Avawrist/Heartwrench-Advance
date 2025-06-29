@@ -477,7 +477,10 @@ void GameObject::updateInactiveState(const bn::camera_ptr& camera)
                                  LOAD_RANGE_H);
 
     if(!load_range_collider.isCollision(pos()))
-    {is_inactive = true;}
+    {
+        is_inactive = true;
+        BN_LOG("object marked inactive: ", object_type);
+    }
 }
 
 void GameObject::updateHitstunState()

@@ -254,16 +254,6 @@ void PushBlockMini::resolveGroundGhoulCollision(GameObject& object)
 		object.rigidbody.addForce(Force(bn::fixed_point_t<12>(pixels_moved_x, 0), 1));
 		object.setY(object.y() + pixels_moved_y);
 	}
-
-	// Backwards collision resolution, let the object correct itself.
-	// Expensive, but necessary.
-	if(object.collider.isCollision(collider))
-	{
-		object.resolveXAxisCollision(collider);
-		object.resolveYAxisCollision(collider);
-		object.resolveCornerCollision(collider);
-		object.updateTestColliders();
-	}
 }
 
 // Special Objects
