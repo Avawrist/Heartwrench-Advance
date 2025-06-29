@@ -433,8 +433,8 @@ void Room::monitorUnloadedObjects(const bn::camera_ptr& camera_ptr)
                                  LOAD_RANGE_H);
     Collider screen_range_collider(camera_center.x(), 
                                    camera_center.y(), 
-                                   SCREEN_W, 
-                                   SCREEN_H);
+                                   SCREEN_W + SCREEN_LOAD_PADDING, 
+                                   SCREEN_H + SCREEN_LOAD_PADDING);
 
     if(first_frame)
     {
