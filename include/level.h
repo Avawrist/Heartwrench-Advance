@@ -81,11 +81,18 @@ struct Level
     LevelName current_level_name;
 
     bn::point player_spawn;
+    
     bool  fade_in;
     bool  fade_out;
     bool  cam_is_scrolling;
+
     int32 cam_x_offset;
     int32 cam_y_offset;
+    int32 cam_look_x_offset;
+    int32 cam_look_dir_x_offset;
+    int32 cam_look_y_offset;
+
+    int32 cam_update_timer;
 
     bn::random random_engine;
 

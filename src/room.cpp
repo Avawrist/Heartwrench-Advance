@@ -246,6 +246,8 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
         break;
     }
 	
+    BN_LOG("object added: ", object.object_type);
+
     if(priority_object)
     {
         game_objects.push_back(temp_object_ptr);
@@ -327,7 +329,7 @@ void Room::load(RoomName                                       room_name,
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
-            right_neighbor  = NO_ROOM;
+            right_neighbor  = ROOM_TEST_2;
             bottom_neighbor = NO_ROOM;
             left_neighbor   = NO_ROOM;
 
@@ -341,6 +343,20 @@ void Room::load(RoomName                                       room_name,
         break;
 
         case ROOM_TEST_2:   
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = ROOM_TEST_1;
+
+            room_bounds.top_bound    = -2256;
+            room_bounds.right_bound  = -3952;
+            room_bounds.bottom_bound = -1824;
+            room_bounds.left_bound   = -4400;
+
+            // Add any special objects //
+
         break;
 
         case ROOM_TEST_3:       

@@ -24,9 +24,12 @@ typedef int   int32;
 #define LOAD_RANGE_H  400
 #define SCREEN_W 240
 #define SCREEN_H 160
-#define SCREEN_LOAD_PADDING 128
+#define SCREEN_LOAD_PADDING 64
 
-#define CAM_PLAYER_Y_OFFSET -16
+#define CAM_PLAYER_Y_OFFSET -24
+#define CAM_MAX_LOOK_Y       16
+#define CAM_MAX_LOOK_X       12
+#define CAM_MAX_DIR_LOOK_X   12
 
 #define ROOM_MAX_COLLIDERS 1800
 #define ROOM_MAX_WIDTH     128

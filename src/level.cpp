@@ -28,13 +28,17 @@ Level::Level(const Level& other)
     tile_width  = other.tile_width;
     tile_height = other.tile_height;
 
-    current_level_name = other.current_level_name;
-    fade_in            = other.fade_in;
-    fade_out           = other.fade_out;
-    player_spawn       = other.player_spawn;
-    cam_is_scrolling   = other.cam_is_scrolling;
-    cam_x_offset       = other.cam_x_offset;
-    cam_y_offset       = other.cam_y_offset;
+    current_level_name    = other.current_level_name;
+    player_spawn          = other.player_spawn;
+    fade_in               = other.fade_in;
+    fade_out              = other.fade_out;
+    cam_is_scrolling      = other.cam_is_scrolling;
+    cam_x_offset          = other.cam_x_offset;
+    cam_y_offset          = other.cam_y_offset;
+    cam_look_x_offset     = other.cam_look_x_offset;
+    cam_look_dir_x_offset = other.cam_look_dir_x_offset;
+    cam_look_y_offset     = other.cam_look_y_offset;
+    cam_update_timer      = other.cam_update_timer;
 
     random_engine = other.random_engine;
 }
@@ -62,13 +66,17 @@ void Level::operator =(const Level& other)
     tile_width  = other.tile_width;
     tile_height = other.tile_height;
 
-    current_level_name = other.current_level_name;
-    player_spawn       = other.player_spawn;
-    fade_in            = other.fade_in;
-    fade_out           = other.fade_out;
-    cam_is_scrolling   = other.cam_is_scrolling;
-    cam_x_offset       = other.cam_x_offset;
-    cam_y_offset       = other.cam_y_offset;
+    current_level_name    = other.current_level_name;
+    player_spawn          = other.player_spawn;
+    fade_in               = other.fade_in;
+    fade_out              = other.fade_out;
+    cam_is_scrolling      = other.cam_is_scrolling;
+    cam_x_offset          = other.cam_x_offset;
+    cam_y_offset          = other.cam_y_offset;
+    cam_look_x_offset     = other.cam_look_x_offset;
+    cam_look_dir_x_offset = other.cam_look_dir_x_offset;
+    cam_look_y_offset     = other.cam_look_y_offset;
+    cam_update_timer      = other.cam_update_timer;
 
     random_engine = other.random_engine;
 }
@@ -97,11 +105,15 @@ void Level::load(LevelName level_name)
     camera       = bn::camera_ptr::create(0, 0);
     player_spawn = bn::point(0, 0);
 
-    fade_in          = false;
-    fade_out         = false;
-    cam_is_scrolling = false;
-    cam_x_offset     = 0;
-    cam_y_offset     = 0;
+    fade_in               = false;
+    fade_out              = false;
+    cam_is_scrolling      = false;
+    cam_x_offset          = 0;
+    cam_y_offset          = 0;
+    cam_look_x_offset     = 0;
+    cam_look_dir_x_offset = 0;
+    cam_look_y_offset     = 0;
+    cam_update_timer      = 0;
 
     // Record current level & pos
     current_level_name = level_name;
@@ -223,7 +235,10 @@ void Level::updateObjects()
 
 void Level::updateCamera()
 {
-    if(global_hitstop_frames) {return;}
+    if(global_hitstop_frames)                                          {return;}
+    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) == NULL) {return;}
+
+    GameObject* temp_player_ptr = current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
 
     #define HALF_SCREEN_WIDTH  120
     #define HALF_SCREEN_HEIGHT 80
@@ -260,19 +275,66 @@ void Level::updateCamera()
     }
     else
     {
-        // Typical camera behavior - Follow the player & clamp to the room bounds. 
-        
+        // Typical camera behavior - Start with player position, add look offsets, & clamp to the room bounds. //
         int32 new_cam_x = current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos().x().integer();
         int32 new_cam_y = current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos().y().integer() + CAM_PLAYER_Y_OFFSET;
+
+        if(cam_update_timer % 2 == 0)
+        {
+            ////////////////////////////////////
+            // Determine camera X look offset //
+            ////////////////////////////////////
+            if(temp_player_ptr->rigidbody.final_dir.x() >= PLAYER_MAX_X_SPEED)       {cam_look_x_offset++;}
+            else if(temp_player_ptr->rigidbody.final_dir.x() <= -PLAYER_MAX_X_SPEED) {cam_look_x_offset--;}
+            else
+            {
+                if(cam_look_x_offset > 0)      {cam_look_x_offset--;}
+                else if(cam_look_x_offset < 0) {cam_look_x_offset++;}
+            }
+
+            ///////////////////////////////////
+            // Determine camera X dir offset //
+            ///////////////////////////////////
+            if(temp_player_ptr->x_dir == RIGHT)     {cam_look_dir_x_offset++;}
+            else if(temp_player_ptr->x_dir == LEFT) {cam_look_dir_x_offset--;}
+
+            ////////////////////////////////////
+            // Determine camera Y look offset //
+            ////////////////////////////////////
+            if(bn::keypad::up_held())                                              {cam_look_y_offset--;}
+            else if(bn::keypad::down_held() && temp_player_ptr->grounded_detected) {cam_look_y_offset++;}
+            else
+            {
+                if(cam_look_y_offset > 0)      {cam_look_y_offset--;}
+                else if(cam_look_y_offset < 0) {cam_look_y_offset++;}
+            }
+        }
+
+        cam_look_x_offset = clamp(-CAM_MAX_LOOK_X, CAM_MAX_LOOK_X, cam_look_x_offset);
+        cam_look_dir_x_offset = clamp(-CAM_MAX_DIR_LOOK_X, CAM_MAX_DIR_LOOK_X, cam_look_dir_x_offset);
+        cam_look_y_offset = clamp(-CAM_MAX_LOOK_Y, CAM_MAX_LOOK_Y, cam_look_y_offset);
+
+        //////////////////////////
+        // Clamp Camera to Room //
+        //////////////////////////
         new_cam_x = clamp(current_room.room_bounds.left_bound  + HALF_SCREEN_WIDTH,  
                           current_room.room_bounds.right_bound - HALF_SCREEN_WIDTH, 
-                          new_cam_x);
+                          new_cam_x + cam_look_x_offset + cam_look_dir_x_offset);
         new_cam_y = clamp(current_room.room_bounds.top_bound    + HALF_SCREEN_HEIGHT, 
                           current_room.room_bounds.bottom_bound - HALF_SCREEN_HEIGHT,
                           new_cam_y);
+
+        // Add Y offset late so it bypasses room clamp.
+        new_cam_y += cam_look_y_offset;
+
+        ////////////////////////////
+        // Set the final position //
+        ////////////////////////////
         camera.value().set_position(new_cam_x, new_cam_y);
 
-        // Apply screenshake
+        ///////////////////////
+        // Apply screenshake //
+        ///////////////////////
         if(global_screenshake_frames > 0)
         {
             int32 x_shake_offset = random_engine.get_int(MIN_X_SHAKE_RANGE, MAX_X_SHAKE_RANGE);
@@ -284,13 +346,22 @@ void Level::updateCamera()
 
     }
 
-    // Update screenshake frame counter
+    //////////////////////////////////////
+    // Update screenshake frame counter //
+    //////////////////////////////////////
     global_screenshake_frames--;
     if(global_screenshake_frames <= 0) 
     {
         global_screenshake_frames   = 0;
         global_screenshake_severity = NO_SHAKE;
     }
+
+    /////////////////////////
+    // Update camera timer //
+    /////////////////////////
+    cam_update_timer++;
+    if(cam_update_timer >= 60) {cam_update_timer = 0;}
+
 
 }
 
