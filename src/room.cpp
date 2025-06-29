@@ -134,6 +134,8 @@ int32 Room::addObject(GameObject* object_ptr, const bn::camera_ptr& camera_ptr)
         (*insert_index)->setCamera(camera_ptr);
         (*insert_index)->object_id = 1;
 
+        updateIndexes();
+
         return (*insert_index)->object_id;
     }
 }
@@ -246,8 +248,6 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
         break;
     }
 	
-    BN_LOG("object added: ", object.object_type);
-
     if(priority_object)
     {
         game_objects.push_back(temp_object_ptr);
@@ -268,6 +268,8 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
         (*insert_index)->setPos(object.room_pos);
         (*insert_index)->object_id = 1;
         (*insert_index)->is_persistent = object.is_persistent;
+
+        updateIndexes();
 
         return (*insert_index)->object_id;
     }
@@ -422,7 +424,8 @@ void Room::monitorUnloadedObjects(const bn::camera_ptr& camera_ptr)
 {
     if(game_objects.at(PLAYER_OBJECT_LIST_INDEX) == NULL) {return;}
 
-    bn::fixed_point camera_center = game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos();
+    bn::fixed_point  camera_center = camera_ptr.position();
+    if(first_frame) {camera_center = game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos();}
 
     Collider load_range_collider(camera_center.x(), 
                                  camera_center.y(), 
@@ -430,8 +433,8 @@ void Room::monitorUnloadedObjects(const bn::camera_ptr& camera_ptr)
                                  LOAD_RANGE_H);
     Collider screen_range_collider(camera_center.x(), 
                                    camera_center.y(), 
-                                   SCREEN_W + SCREEN_LOAD_PADDING, 
-                                   SCREEN_H + SCREEN_LOAD_PADDING);
+                                   SCREEN_W, 
+                                   SCREEN_H);
 
     if(first_frame)
     {
