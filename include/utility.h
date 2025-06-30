@@ -20,6 +20,8 @@ typedef int   int32;
 #define MAX_GAME_OBJECTS     10
 #define MAX_UNLOADED_OBJECTS 25
 
+#define MAX_SPRITE_TILES 1300
+
 #define SCREEN_W 240
 #define SCREEN_H 160
 #define SCREEN_LOAD_PADDING 64
@@ -28,8 +30,8 @@ typedef int   int32;
 
 #define CAM_PLAYER_Y_OFFSET -24
 #define CAM_MAX_LOOK_Y       16
-#define CAM_MAX_LOOK_X       12
-#define CAM_MAX_DIR_LOOK_X   12
+#define CAM_MAX_LOOK_X       14
+#define CAM_MAX_DIR_LOOK_X   14
 
 #define ROOM_MAX_COLLIDERS 1800
 #define ROOM_MAX_WIDTH     128
@@ -141,6 +143,7 @@ extern int32 right_steep_slope_1_arr[TILE_WIDTH];
 extern int32 right_steep_slope_2_arr[TILE_WIDTH];
 
 // Global Variables
+extern int32               global_tiles_in_VRAM;
 extern int32               global_bg_hitflash_frames;
 extern int32               global_hitstop_frames;
 extern int32               global_screenshake_frames;

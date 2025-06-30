@@ -281,6 +281,8 @@ void Player::createAirAttack1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>&
 
 void Player::createJumpEffect()
 {
+    if(global_tiles_in_VRAM > MAX_SPRITE_TILES) {return;}
+
 	#define POOF_Y_OFFSET 1 
 	jump_effect_sprite_ptr->set_visible(true);
 	jump_effect_sprite_ptr->set_position(x(), y() - POOF_Y_OFFSET); 
@@ -288,22 +290,26 @@ void Player::createJumpEffect()
 	jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
 																1,
 																bn::sprite_items::jump_effect.tiles_item(),
-																0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+																0, 1, 2, 3, 4, 5, 6, 7);
 }
 
 void Player::createAirJumpEffect()
 {
+    if(global_tiles_in_VRAM > MAX_SPRITE_TILES) {return;}
+
 	jump_effect_sprite_ptr->set_visible(true);
 	jump_effect_sprite_ptr->set_position(x(), y());
 	jump_effect_sprite_ptr->set_rotation_angle(0);
 	jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
 																1,
 																bn::sprite_items::air_jump_effect.tiles_item(),
-																0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+																0, 1, 2, 3, 4, 5, 6, 7, 8);
 }
 
 void Player::createWallJumpEffect()
 {
+	if(global_tiles_in_VRAM > MAX_SPRITE_TILES) {return;}
+
 	#define WALL_JUMP_EFFECT_OFFSET 8
 
 	jump_effect_sprite_ptr->set_visible(true);
@@ -313,7 +319,7 @@ void Player::createWallJumpEffect()
 	jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
 																1,
 																bn::sprite_items::jump_effect.tiles_item(),
-																0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+																0, 1, 2, 3, 4, 5, 6, 7);
 }
 
 void Player::createLandEffect()
@@ -464,6 +470,8 @@ void Player::draw()
 {
 	GameObject::draw();
 
+	if(global_tiles_in_VRAM > MAX_SPRITE_TILES) {return;}
+
 	// Jump effect
 	if(jump_effect_anim_ptr.has_value())
 	{
@@ -471,6 +479,7 @@ void Player::draw()
 		{jump_effect_anim_ptr->update();}
 	}
 
+	global_tiles_in_VRAM += jump_effect_sprite_ptr->tiles().tiles_count();
 }
 
 void Player::setCamera(const bn::camera_ptr& camera)

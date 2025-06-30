@@ -555,6 +555,8 @@ void Level::transitionRoom()
 
 void Level::drawObjects()
 {
+    global_tiles_in_VRAM = 0;
+
     // Update & draw all objects
     for(int32 i = current_room.game_objects.size() - 1; i >= 0; i--)
     {
@@ -562,7 +564,9 @@ void Level::drawObjects()
         {
             current_room.game_objects.data()[i]->draw();
         }   
-    } 
+    }
+
+    BN_LOG(global_tiles_in_VRAM);
 }
 
 void Level::updateFade()

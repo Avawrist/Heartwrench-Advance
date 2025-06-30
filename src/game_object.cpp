@@ -13,7 +13,7 @@ GameObject::GameObject()
     splat_effect_sprite_ptr = bn::sprite_items::wall_splat_effect.create_sprite(0, 0);
     splat_effect_sprite_ptr->set_z_order(SPLAT_EFFECT_Z_ORDER);
     splat_effect_sprite_ptr->set_visible(false);
-
+    
     collider = Collider(x() + collider_offset_x, 
                         y() + collider_offset_y, 
                         GAME_OBJECT_COLLIDER_WIDTH, 
@@ -325,6 +325,10 @@ void GameObject::draw()
             splat_effect_sprite_ptr->set_visible(false);
         }
     }
+
+    global_tiles_in_VRAM += sprite_ptr->tiles().tiles_count();
+    global_tiles_in_VRAM += hit_effect_sprite_ptr->tiles().tiles_count();
+    global_tiles_in_VRAM += splat_effect_sprite_ptr->tiles().tiles_count();
 }
 
 void GameObject::setCamera(const bn::camera_ptr& camera)
@@ -602,20 +606,26 @@ void GameObject::applyDamage(int32 _damage)
 
 void GameObject::applyHitEffect(int32 x, int32 y)
 {   
+    if(global_tiles_in_VRAM > MAX_SPRITE_TILES) {return;}
+
     hit_effect_sprite_ptr->set_position(x, y);
+    hit_effect_sprite_ptr->set_visible(true);
     hit_effect_animate_action_ptr = bn::create_sprite_animate_action_once(hit_effect_sprite_ptr.value(), 
-                                    0, 
-                                    bn::sprite_items::hit_effect.tiles_item(),
-                                    0, 1, 2, 3, 4, 5, 6, 7, 8);
+                                                                          0, 
+                                                                          bn::sprite_items::hit_effect.tiles_item(),
+                                                                          0, 1, 2, 3, 4, 5, 6, 7);
 }
 
 void GameObject::applySplatEffect(int32 x, int32 y)
 {
+    if(global_tiles_in_VRAM > MAX_SPRITE_TILES) {return;}
+
     splat_effect_sprite_ptr->set_position(x, y);
-    splat_effect_animate_action_ptr = bn::create_sprite_animate_action_once(splat_effect_sprite_ptr.value(), 
-                                0, 
-                                bn::sprite_items::wall_splat_effect.tiles_item(),
-                                0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);
+    splat_effect_sprite_ptr->set_visible(true);
+    splat_effect_animate_action_ptr = bn::create_sprite_animate_action_once(splat_effect_sprite_ptr.value(),
+                                                                            0, 
+                                                                            bn::sprite_items::wall_splat_effect.tiles_item(),
+                                                                            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
 
     if(col_x_offset < 0) {splat_effect_sprite_ptr->set_horizontal_flip(true);}
     else                 {splat_effect_sprite_ptr->set_horizontal_flip(false);}

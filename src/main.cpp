@@ -1,4 +1,5 @@
 // Butano
+#include "bn_sprites.h"
 #include "bn_log.h"
 #include "bn_profiler.h"
 #include "bn_core.h"

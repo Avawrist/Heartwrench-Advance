@@ -1,8 +1,11 @@
-main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_log.h \
+main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
+ G:/butano-master/butano/hw/include/bn_hw_sprites_constants.h \
+ G:/butano-master/butano/include/bn_common.h \
+ G:/butano-master/butano/hw/include/bn_hw_common.h \
+ G:/butano-master/butano/include/bn_log.h \
  G:/butano-master/butano/include/bn_config_log.h \
  G:/butano-master/butano/include/bn_log_backend.h \
  G:/butano-master/butano/include/bn_common.h \
- G:/butano-master/butano/hw/include/bn_hw_common.h \
  G:/butano-master/butano/include/bn_config_doxygen.h \
  G:/butano-master/butano/include/bn_sstream.h \
  G:/butano-master/butano/include/bn_fixed_fwd.h \
@@ -123,11 +126,14 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_log.h \
  G:/game/include/hitbox.h G:/game/include/thorn_column.h \
  G:/game/include/thorn_bar.h G:/game/include/candelabra.h \
  G:/game/include/prop.h G:/game/include/player.h
+G:/butano-master/butano/include/bn_sprites.h:
+G:/butano-master/butano/hw/include/bn_hw_sprites_constants.h:
+G:/butano-master/butano/include/bn_common.h:
+G:/butano-master/butano/hw/include/bn_hw_common.h:
 G:/butano-master/butano/include/bn_log.h:
 G:/butano-master/butano/include/bn_config_log.h:
 G:/butano-master/butano/include/bn_log_backend.h:
 G:/butano-master/butano/include/bn_common.h:
-G:/butano-master/butano/hw/include/bn_hw_common.h:
 G:/butano-master/butano/include/bn_config_doxygen.h:
 G:/butano-master/butano/include/bn_sstream.h:
 G:/butano-master/butano/include/bn_fixed_fwd.h:
