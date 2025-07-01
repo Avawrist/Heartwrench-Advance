@@ -235,12 +235,32 @@ void PushBlock::resolveFallingPlatformThinCollision(GameObject& object)
 	}
 }
 
+void PushBlock::resolveSmashBlockLargeCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+	{
+		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
+	}
+}
+
+void PushBlock::resolveSmashBlockMiniCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+	{
+		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
+	}
+}
+
 // Enemy Objects
 void PushBlock::resolveGroundGhoulCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
-	// Now test for roof riding and resolve the PushBlock + Player.
+	// Now test for roof riding and resolve the PushBlock + Object.
 	int32 pixels_moved_x = (frame_start_pos.x().integer() - pos().x().integer()) * -1;
 	int32 pixels_moved_y = (frame_start_pos.y().integer() - pos().y().integer()) * -1;
 

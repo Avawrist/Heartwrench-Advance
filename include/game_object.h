@@ -50,6 +50,12 @@
 #include "bn_sprite_items_push_block.h"
 #include "bn_sprite_items_push_block_mini.h"
 #include "bn_sprite_items_auto_platform.h"
+#include "bn_sprite_items_smash_block_large.h"
+#include "bn_sprite_items_smash_block_mini.h"
+#include "bn_sprite_items_small_vase_orange.h"
+#include "bn_sprite_items_small_vase_green.h"
+#include "bn_sprite_items_small_vase_purple.h"
+#include "bn_sprite_items_large_vase_orange.h"
 
 // Enemy Object Assets
 #include "bn_sprite_items_ground_ghoul.h"
@@ -70,7 +76,9 @@
 
 #define GAME_OBJECT_MAX_ANIM_FRAMES 40
 
+#define PROP_Z_ORDER          2
 #define GAME_OBJECT_Z_ORDER   1
+#define ENEMY_Z_ORDER        -1
 #define HIT_EFFECT_Z_ORDER   -2
 #define SPLAT_EFFECT_Z_ORDER -3
 
@@ -149,6 +157,8 @@ enum ObjectType
 	PUSH_BLOCK,
 	PUSH_BLOCK_MINI,
 	AUTO_PLATFORM,
+	SMASH_BLOCK_LARGE,
+	SMASH_BLOCK_MINI,
 
 	// Level Enemies
 	THORN_COLUMN,
@@ -369,6 +379,8 @@ struct GameObject
 	virtual void resolvePushBlockCollision(GameObject& object);
 	virtual void resolvePushBlockMiniCollision(GameObject& object);
 	virtual void resolveAutoPlatformCollision(GameObject& object);
+	virtual void resolveSmashBlockLargeCollision(GameObject& object);
+	virtual void resolveSmashBlockMiniCollision(GameObject& object);
 
 	// Level Enemies
 	virtual void resolveThornColumnCollision(GameObject& object); 

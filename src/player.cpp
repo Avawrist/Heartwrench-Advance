@@ -322,17 +322,6 @@ void Player::createWallJumpEffect()
 																0, 1, 2, 3, 4, 5, 6, 7);
 }
 
-void Player::createLandEffect()
-{
-	jump_effect_sprite_ptr->set_visible(true);
-	jump_effect_sprite_ptr->set_position(x(), y());
-	jump_effect_sprite_ptr->set_rotation_angle(0);
-	jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
-																1,
-																bn::sprite_items::land_effect.tiles_item(),
-																0, 1, 2, 3, 4, 5, 6);
-}
-
 //////////////////////////
 // GameObject Overrides //
 //////////////////////////
@@ -1421,7 +1410,6 @@ void Player::setState(ObjectState new_state)
 	// Set animations & other state specific variables
 	switch(new_state)
 	{
-		
 		case NONE:
 		break;
 
@@ -1663,10 +1651,6 @@ void Player::resolveFallingPlatformWideCollision(GameObject& object)
 		if(test_collider.isCollision(object.collider) &&
 		   rigidbody.normalized_dir.y() >= 0)
 		{
-			if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-			   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-			{createLandEffect();}
-
 			grounded_detected = true;
 			rigidbody.removeYForces();
 			
@@ -1699,10 +1683,6 @@ void Player::resolveFallingPlatformThinCollision(GameObject& object)
 		if(test_collider.isCollision(object.collider) &&
 		   rigidbody.normalized_dir.y() >= 0)
 		{
-			if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-			   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-			{createLandEffect();}
-
 			grounded_detected = true;
 			rigidbody.removeYForces();
 			
@@ -1736,11 +1716,7 @@ void Player::resolvePushBlockCollision(GameObject& object)
 	// Test for, and log grounded collision
 	if(test_collider.isCollision(object.collider) && 
 	   rigidbody.normalized_dir.y() >= 0)
-	{
-		if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-		   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-		{createLandEffect();}
-		
+	{	
 		grounded_detected = true;
 		rigidbody.removeYForces();
 	}
@@ -1798,11 +1774,7 @@ void Player::resolvePushBlockMiniCollision(GameObject& object)
 	// Test for, and log grounded collision
 	if(test_collider.isCollision(object.collider) && 
 	   rigidbody.normalized_dir.y() >= 0)
-	{
-		if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-		   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-		{createLandEffect();}
-		
+	{		
 		grounded_detected = true;
 		rigidbody.removeYForces();
 	}
@@ -1859,14 +1831,104 @@ void Player::resolveAutoPlatformCollision(GameObject& object)
 		if(test_collider.isCollision(object.collider) &&
 			rigidbody.normalized_dir.y() >= 0)
 		{
-			if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-			   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-			{createLandEffect();}
-
 			grounded_detected = true;
 			rigidbody.removeYForces();
 		}
 
+	}
+}
+
+void Player::resolveSmashBlockLargeCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(object.collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(object.collider);
+
+        // If there is still collision somehow, must be corner case //
+        resolveCornerCollision(object.collider);
+    }
+
+	updateTestColliders();
+
+	// Test for, and log grounded collision
+	if(test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{	
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
+	
+	// Test for wall riding on right side
+	if(test_collider_right.isCollision(object.collider))
+	{
+		right_wj_eligible = true;
+
+		if(rigidbody.normalized_dir.y() >= 0 &&
+		   bn::keypad::right_held() && !bn::keypad::down_held())
+		{wall_right_detected = true;}
+	}
+
+	// Test for wall riding on left side
+	if(test_collider_left.isCollision(object.collider))
+	{
+		left_wj_eligible = true;
+
+		if(rigidbody.normalized_dir.y() >= 0 &&
+			bn::keypad::left_held() && !bn::keypad::down_held()) 
+		{wall_left_detected = true;}
+	}
+}
+
+void Player::resolveSmashBlockMiniCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+	
+	if(collider.isCollision(object.collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(object.collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(object.collider);
+
+        // If there is still collision somehow, must be corner case //
+        resolveCornerCollision(object.collider);
+    }
+
+	updateTestColliders();
+
+	// Test for, and log grounded collision
+	if(test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{	
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
+	
+	// Test for wall riding on right side
+	if(test_collider_right.isCollision(object.collider))
+	{
+		right_wj_eligible = true;
+
+		if(rigidbody.normalized_dir.y() >= 0 &&
+		   bn::keypad::right_held() && !bn::keypad::down_held())
+		{wall_right_detected = true;}
+	}
+
+	// Test for wall riding on left side
+	if(test_collider_left.isCollision(object.collider))
+	{
+		left_wj_eligible = true;
+
+		if(rigidbody.normalized_dir.y() >= 0 &&
+			bn::keypad::left_held() && !bn::keypad::down_held()) 
+		{wall_left_detected = true;}
 	}
 }
 
@@ -2298,10 +2360,6 @@ void Player::resolveHardBlockCollision(const Collider& other_collider)
 	if(test_collider.isCollision(other_collider) &&
 		rigidbody.normalized_dir.y() >= 0)
 	{
-		if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-		   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-		{createLandEffect();}
-
 		grounded_detected = true;
 		rigidbody.removeYForces();
 	}
@@ -2346,10 +2404,6 @@ void Player::resolveOneWayBlockCollision(const Collider& other_collider)
 		// Test for, and log grounded collision
 		if(test_collider.isCollision(other_collider))
 		{
-			if(air_frames_elapsed >= PLAYER_SQUISH_FRAMES_REQUIRED &&
-			   rigidbody.final_dir.y() >= PLAYER_SQUISH_SPEED_REQUIRED)
-			{createLandEffect();}
-
 			grounded_detected = true;
 			rigidbody.removeYForces();
 		}

@@ -93,6 +93,8 @@ player.o: G:/game/src/player.cpp G:/game/include/player.h \
  G:/game/build/bn_sprite_items_push_block.h \
  G:/game/build/bn_sprite_items_push_block_mini.h \
  G:/game/build/bn_sprite_items_auto_platform.h \
+ G:/game/build/bn_sprite_items_smash_block_large.h \
+ G:/game/build/bn_sprite_items_smash_block_mini.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h \
  G:/game/build/bn_sprite_items_thorn_column.h \
  G:/game/build/bn_sprite_items_thorn_bar.h \
@@ -199,6 +201,8 @@ G:/game/build/bn_sprite_items_falling_platform_thin.h:
 G:/game/build/bn_sprite_items_push_block.h:
 G:/game/build/bn_sprite_items_push_block_mini.h:
 G:/game/build/bn_sprite_items_auto_platform.h:
+G:/game/build/bn_sprite_items_smash_block_large.h:
+G:/game/build/bn_sprite_items_smash_block_mini.h:
 G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/build/bn_sprite_items_thorn_column.h:
 G:/game/build/bn_sprite_items_thorn_bar.h:

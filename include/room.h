@@ -29,6 +29,8 @@
 #include "push_block.h"
 #include "push_block_mini.h"
 #include "auto_platform.h"
+#include "smash_block_large.h"
+#include "smash_block_mini.h"
 
 // Enemies
 #include "ground_ghoul.h"

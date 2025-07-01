@@ -565,8 +565,6 @@ void Level::drawObjects()
             current_room.game_objects.data()[i]->draw();
         }   
     }
-
-    BN_LOG(global_tiles_in_VRAM);
 }
 
 void Level::updateFade()

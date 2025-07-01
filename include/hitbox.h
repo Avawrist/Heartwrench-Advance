@@ -84,9 +84,11 @@ struct Hitbox : GameObject
     void resolvePushBlockMiniCollision(GameObject& object) override;
 
     // Level Enemies
-    void resolveThornColumnCollision(GameObject& object) override;
-    void resolveThornBarCollision(GameObject& object)    override;
-    void resolveGroundGhoulCollision(GameObject& object) override;
+    void resolveThornColumnCollision(GameObject& object)     override;
+    void resolveThornBarCollision(GameObject& object)        override;
+    void resolveGroundGhoulCollision(GameObject& object)     override;
+    void resolveSmashBlockLargeCollision(GameObject& object) override;
+    void resolveSmashBlockMiniCollision(GameObject& object)  override;
 
     // Tiles
     void resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 

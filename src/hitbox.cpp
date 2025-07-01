@@ -236,6 +236,22 @@ void Hitbox::resolveGroundGhoulCollision(GameObject& object)
     {applyHit(object);}
 }
 
+void Hitbox::resolveSmashBlockLargeCollision(GameObject& object)
+{
+    if(object.state == OBJECT_DEATH) {return;}
+
+    if(collider.isCollision(object.collider))
+    {applyHit(object);}
+}
+
+void Hitbox::resolveSmashBlockMiniCollision(GameObject& object)
+{
+    if(object.state == OBJECT_DEATH) {return;}
+
+    if(collider.isCollision(object.collider))
+    {applyHit(object);}
+}
+
 // Tiles
 void Hitbox::resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
                                   const bn::span<const bn::regular_bg_map_cell>& cells,

@@ -4,8 +4,6 @@
 #include "game_object.h"
 #include "hitbox.h"
 
-#define ENEMY_Z_ORDER -1
-
 #define ENEMY_DAMAGE 1
 
 struct Enemy : GameObject
@@ -43,6 +41,8 @@ struct Enemy : GameObject
     void resolvePushBlockCollision(GameObject& object)           override;
     void resolvePushBlockMiniCollision(GameObject& object)       override;
     void resolveAutoPlatformCollision(GameObject& object)        override;
+    void resolveSmashBlockLargeCollision(GameObject& object)     override;
+    void resolveSmashBlockMiniCollision(GameObject& object)      override;
 
     // Level Enemies
     void resolveThornColumnCollision(GameObject& object) override;

@@ -13,7 +13,6 @@
 // Struct Prop //
 /////////////////
 
-#define PROP_Z_ORDER    2
 #define PROP_HITPOINTS  0
 #define PROP_DAMAGE     0
 

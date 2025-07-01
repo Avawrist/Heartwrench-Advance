@@ -1,0 +1,1 @@
+smash_block_mini_bn_gfx.o: smash_block_mini_bn_gfx.s

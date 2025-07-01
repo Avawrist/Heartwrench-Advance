@@ -203,6 +203,14 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             priority_object = true;
         break;
 
+        case SMASH_BLOCK_LARGE:
+            temp_object_ptr = new SmashBlockLarge();
+        break;
+
+        case SMASH_BLOCK_MINI:
+            temp_object_ptr = new SmashBlockMini();
+        break;
+
         ///////////////////
 	    // Level Enemies //
 	    ///////////////////

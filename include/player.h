@@ -215,7 +215,6 @@ struct Player : GameObject {
 	void createJumpEffect();
 	void createAirJumpEffect();
 	void createWallJumpEffect();
-	void createLandEffect();
 
 	//////////////////////////
 	// GameObject Overrides //
@@ -268,6 +267,8 @@ struct Player : GameObject {
 	void resolvePushBlockCollision(GameObject& object)           override;
 	void resolvePushBlockMiniCollision(GameObject& object)       override;
 	void resolveAutoPlatformCollision(GameObject& object)        override;
+	void resolveSmashBlockLargeCollision(GameObject& object)     override;
+	void resolveSmashBlockMiniCollision(GameObject& object)      override;
 
 	// Level Enemies
 	void resolveThornColumnCollision(GameObject& object) override; 
