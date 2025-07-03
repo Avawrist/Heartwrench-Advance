@@ -52,10 +52,8 @@
 #include "bn_sprite_items_auto_platform.h"
 #include "bn_sprite_items_smash_block_large.h"
 #include "bn_sprite_items_smash_block_mini.h"
-#include "bn_sprite_items_small_vase_orange.h"
-#include "bn_sprite_items_small_vase_green.h"
-#include "bn_sprite_items_small_vase_purple.h"
-#include "bn_sprite_items_large_vase_orange.h"
+#include "bn_sprite_items_large_vase.h"
+#include "bn_sprite_items_small_vase.h"
 
 // Enemy Object Assets
 #include "bn_sprite_items_ground_ghoul.h"
@@ -159,6 +157,8 @@ enum ObjectType
 	AUTO_PLATFORM,
 	SMASH_BLOCK_LARGE,
 	SMASH_BLOCK_MINI,
+	LARGE_VASE,
+	SMALL_VASE,
 
 	// Level Enemies
 	THORN_COLUMN,
@@ -314,7 +314,7 @@ struct GameObject
 
 	virtual void updateHitstunState();
 
-	virtual void udpateDeathState();
+	virtual void updateDeathState();
 
 	virtual void updateTestColliders();
 
@@ -381,6 +381,8 @@ struct GameObject
 	virtual void resolveAutoPlatformCollision(GameObject& object);
 	virtual void resolveSmashBlockLargeCollision(GameObject& object);
 	virtual void resolveSmashBlockMiniCollision(GameObject& object);
+	virtual void resolveLargeVaseCollision(GameObject& object);
+	virtual void resolveSmallVaseCollision(GameObject& object);
 
 	// Level Enemies
 	virtual void resolveThornColumnCollision(GameObject& object); 

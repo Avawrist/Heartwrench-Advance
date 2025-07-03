@@ -31,6 +31,8 @@
 #include "auto_platform.h"
 #include "smash_block_large.h"
 #include "smash_block_mini.h"
+#include "large_vase.h"
+#include "small_vase.h"
 
 // Enemies
 #include "ground_ghoul.h"

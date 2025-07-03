@@ -211,6 +211,14 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             temp_object_ptr = new SmashBlockMini();
         break;
 
+        case LARGE_VASE:
+            temp_object_ptr = new LargeVase();
+        break;
+
+        case SMALL_VASE:
+            temp_object_ptr = new SmallVase();
+        break;
+
         ///////////////////
 	    // Level Enemies //
 	    ///////////////////

@@ -100,6 +100,8 @@ room.o: G:/game/src/room.cpp G:/game/include/room.h \
  G:/game/build/bn_sprite_items_auto_platform.h \
  G:/game/build/bn_sprite_items_smash_block_large.h \
  G:/game/build/bn_sprite_items_smash_block_mini.h \
+ G:/game/build/bn_sprite_items_large_vase.h \
+ G:/game/build/bn_sprite_items_small_vase.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h \
  G:/game/build/bn_sprite_items_thorn_column.h \
  G:/game/build/bn_sprite_items_thorn_bar.h \
@@ -112,6 +114,7 @@ room.o: G:/game/src/room.cpp G:/game/include/room.h \
  G:/game/include/falling_platform_thin.h G:/game/include/push_block.h \
  G:/game/include/push_block_mini.h G:/game/include/auto_platform.h \
  G:/game/include/smash_block_large.h G:/game/include/smash_block_mini.h \
+ G:/game/include/large_vase.h G:/game/include/small_vase.h \
  G:/game/include/ground_ghoul.h G:/game/include/enemy.h \
  G:/game/include/hitbox.h G:/game/include/thorn_column.h \
  G:/game/include/thorn_bar.h G:/game/include/candelabra.h \
@@ -222,6 +225,8 @@ G:/game/build/bn_sprite_items_push_block_mini.h:
 G:/game/build/bn_sprite_items_auto_platform.h:
 G:/game/build/bn_sprite_items_smash_block_large.h:
 G:/game/build/bn_sprite_items_smash_block_mini.h:
+G:/game/build/bn_sprite_items_large_vase.h:
+G:/game/build/bn_sprite_items_small_vase.h:
 G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/build/bn_sprite_items_thorn_column.h:
 G:/game/build/bn_sprite_items_thorn_bar.h:
@@ -238,6 +243,8 @@ G:/game/include/push_block_mini.h:
 G:/game/include/auto_platform.h:
 G:/game/include/smash_block_large.h:
 G:/game/include/smash_block_mini.h:
+G:/game/include/large_vase.h:
+G:/game/include/small_vase.h:
 G:/game/include/ground_ghoul.h:
 G:/game/include/enemy.h:
 G:/game/include/hitbox.h:

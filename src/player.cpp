@@ -1346,7 +1346,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 		case OBJECT_DEATH:
 
-			udpateDeathState();
+			updateDeathState();
 
 		break;
 		

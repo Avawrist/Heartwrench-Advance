@@ -255,6 +255,26 @@ void PushBlock::resolveSmashBlockMiniCollision(GameObject& object)
 	}
 }
 
+void PushBlock::resolveLargeVaseCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+	{
+		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
+	}
+}
+
+void PushBlock::resolveSmallVaseCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+	{
+		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
+	}
+}
+
 // Enemy Objects
 void PushBlock::resolveGroundGhoulCollision(GameObject& object)
 {

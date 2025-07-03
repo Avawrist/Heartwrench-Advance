@@ -497,7 +497,7 @@ void GameObject::updateHitstunState()
     {rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
 }
 
-void GameObject::udpateDeathState()
+void GameObject::updateDeathState()
 {
     if(animate_action_ptr->done())
     {is_dead = true;}
@@ -737,6 +737,14 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
                     resolveSmashBlockMiniCollision(*game_objects.at(i));
                 break;
 
+                case LARGE_VASE:
+                    resolveLargeVaseCollision(*game_objects.at(i));
+                break;
+
+                case SMALL_VASE:
+                    resolveSmallVaseCollision(*game_objects.at(i));
+                break;
+
                 // Level Enemies
                 case THORN_COLUMN:
                     resolveThornColumnCollision(*game_objects.at(i));
@@ -787,6 +795,8 @@ void GameObject::resolvePushBlockMiniCollision(GameObject& object)       {}
 void GameObject::resolveAutoPlatformCollision(GameObject& object)        {}
 void GameObject::resolveSmashBlockLargeCollision(GameObject& object)     {}
 void GameObject::resolveSmashBlockMiniCollision(GameObject& object)      {}
+void GameObject::resolveLargeVaseCollision(GameObject& object)           {}
+void GameObject::resolveSmallVaseCollision(GameObject& object)           {}
 
 // Level Enemies
 void GameObject::resolveThornColumnCollision(GameObject& object) {}

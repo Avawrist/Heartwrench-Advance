@@ -129,7 +129,7 @@ void GroundGhoul::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
 
         case OBJECT_DEATH:
 
-            udpateDeathState();
+            updateDeathState();
 
         break;
 

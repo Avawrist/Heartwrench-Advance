@@ -1,0 +1,1 @@
+large_vase_orange_bn_gfx.o: large_vase_orange_bn_gfx.s

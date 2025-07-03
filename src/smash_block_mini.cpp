@@ -86,6 +86,14 @@ void SmashBlockMini::update(const RoomBounds& 							   room_bounds,
 	updateInactiveState(camera);
 }
 
+void SmashBlockMini::updateDeathState()
+{
+    if(animate_action_ptr->current_index() == SMASH_BLOCK_MINI_HIT_STOP_TRIGGER_FRAME)
+    {global_hitstop_frames = SMASH_BLOCK_MINI_HIT_STOP_FRAMES;}
+
+    GameObject::updateDeathState();
+}
+
 //////////////////////////////
 // State Function Overrides //
 //////////////////////////////
@@ -100,7 +108,7 @@ void SmashBlockMini::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS
     {
 		case OBJECT_DEATH:
 
-			udpateDeathState();
+			updateDeathState();
 
 		break;
 		
