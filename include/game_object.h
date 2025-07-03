@@ -77,6 +77,7 @@
 #define PROP_Z_ORDER          2
 #define GAME_OBJECT_Z_ORDER   1
 #define ENEMY_Z_ORDER        -1
+#define SMASHABLE_Z_ORDER    -1
 #define HIT_EFFECT_Z_ORDER   -2
 #define SPLAT_EFFECT_Z_ORDER -3
 

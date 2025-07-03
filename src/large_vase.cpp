@@ -9,7 +9,7 @@ LargeVase::LargeVase()
     // Init Assets //
     object_type = LARGE_VASE;
     sprite_ptr  = bn::sprite_items::large_vase.create_sprite(0, 0);
-    sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
+    sprite_ptr->set_z_order(PROP_Z_ORDER);
     default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								                                   0,
@@ -126,6 +126,7 @@ void LargeVase::setState(ObjectState new_state)
 	{
 		case OBJECT_DEATH:
 
+            sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 																	   1,
 																	   bn::sprite_items::large_vase.tiles_item(),
