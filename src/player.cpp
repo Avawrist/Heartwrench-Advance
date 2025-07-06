@@ -10,14 +10,15 @@ Player::Player()
 	object_type = PLAYER;
 	x_dir       = RIGHT;
 	y_dir       = UP;
+
     sprite_ptr  = bn::sprite_items::player.create_sprite(0, 0);
 	sprite_ptr->set_z_order(PLAYER_Z_ORDER);
-	default_palette_ptr = sprite_ptr->palette();
 	animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								  								  0,
-								  								  bn::sprite_items::player.tiles_item(),
-								  								  0,
-								  								  0);
+																0,
+																bn::sprite_items::player.tiles_item(),
+																0,
+																0);
+	default_palette_ptr = sprite_ptr->palette();
 
 	collider            = Collider(x(), y(), PLAYER_COLLIDER_WIDTH, PLAYER_COLLIDER_HEIGHT);
 	collider_x_axis     = collider;
@@ -28,10 +29,15 @@ Player::Player()
 	collider_offset_y   = PLAYER_COLLIDER_OFFSET_Y;
     
 	state             	 = PLAYER_AIR_NEUTRAL;
+
+	prior_frame_1_pos = bn::point(0, 0);
+	prior_frame_2_pos = bn::point(0, 0);
+	//prior_frame_3_pos = bn::point(0, 0);
+
     x_speed        	  	 = PLAYER_MIN_X_SPEED;
 	phase_destination    = bn::fixed_point(0, 0);
 	
-	hitpoints                        = PLAYER_MAX_HITPOINTS;
+	hitpoints                        = PLAYER_STARTING_HITPOINTS;
 	attack_buffered_frames           = 0;
 	roll_buffered_frames             = 0;
 	jump_buffered_frames             = 0;
@@ -42,7 +48,9 @@ Player::Player()
 	late_roll_jump_grace_frames      = 0;
 	current_phase_frame              = 0;
 	hitstop_frames                   = 0;
+	update_timer                     = 0;
 	
+	overdrive                = false;
 	wall_right_detected      = false;
     wall_left_detected       = false;
 	grounded_owp_detected    = false;
@@ -66,11 +74,30 @@ Player::Player()
 	jump_effect_sprite_ptr = bn::sprite_items::jump_effect.create_sprite(0, 0);
 	jump_effect_sprite_ptr->set_z_order(PLAYER_Z_ORDER);
 	jump_effect_sprite_ptr->set_visible(false);
-	
+
+	od_sprite_1_ptr = bn::sprite_items::player.create_sprite(0, 0);
+	od_sprite_1_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
+	od_sprite_1_ptr->set_visible(false);
+
+	od_sprite_2_ptr = bn::sprite_items::player.create_sprite(0, 0);
+	od_sprite_2_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
+	od_sprite_2_ptr->set_visible(false);
+
+	//od_sprite_3_ptr = bn::sprite_items::player.create_sprite(0, 0);
+	//od_sprite_3_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
+	//od_sprite_3_ptr->set_visible(false);
+
+	bn::sprite_palette_ptr sprite_od_palette = bn::sprite_palette_items::sprite_od_palette.create_palette();
+	od_sprite_1_ptr->set_palette(sprite_od_palette);
+	od_sprite_2_ptr->set_palette(sprite_od_palette);
+	//od_sprite_3_ptr->set_palette(sprite_od_palette);
 }
 
 Player::Player(const Player& other) : GameObject(other)
 {
+	prior_frame_1_pos = other.prior_frame_1_pos;
+	prior_frame_2_pos = other.prior_frame_2_pos;
+	//prior_frame_3_pos = other.prior_frame_3_pos;
 
     x_speed        	  	 = other.x_speed;
 	phase_destination    = other.phase_destination;
@@ -85,7 +112,9 @@ Player::Player(const Player& other) : GameObject(other)
 	late_roll_jump_grace_frames      = other.late_roll_jump_grace_frames;
 	current_phase_frame              = other.current_phase_frame;
 	hitstop_frames                   = other.hitstop_frames;
+	update_timer                     = other.update_timer;
 
+	overdrive                = other.overdrive;
 	wall_right_detected      = other.wall_right_detected;
     wall_left_detected       = other.wall_left_detected;
 	grounded_owp_detected    = other.grounded_owp_detected;
@@ -93,65 +122,6 @@ Player::Player(const Player& other) : GameObject(other)
 	right_wj_eligible        = other.right_wj_eligible;
 	is_dead                  = other.is_dead;
 
-	roll_requested   = other.roll_requested;
-	jump_requested   = other.jump_requested;
-	attack_requested = other.attack_requested;
-
-	test_collider_right   = other.test_collider_right;
-	test_collider_left    = other.test_collider_left;
-
-	if(other.hitbox_1_ptr == NULL) {hitbox_1_ptr = NULL;}
-	else {hitbox_1_ptr = new Hitbox(*(other.hitbox_1_ptr));}
-
-	if(other.hitbox_2_ptr == NULL) {hitbox_2_ptr = NULL;}
-	else {hitbox_2_ptr = new Hitbox(*(other.hitbox_2_ptr));}	
-	
-	if(other.hitbox_3_ptr == NULL) {hitbox_3_ptr = NULL;}
-	else {hitbox_3_ptr = new Hitbox(*(other.hitbox_3_ptr));}
-
-	phase_dir              = other.phase_dir;
-	pm_sprite_ptr          = other.pm_sprite_ptr;
-	jump_effect_sprite_ptr = other.jump_effect_sprite_ptr;
-	jump_effect_anim_ptr  = other.jump_effect_anim_ptr;
-	
-}
-
-Player::~Player()
-{
-	delete hitbox_1_ptr;
-	delete hitbox_2_ptr;
-	delete hitbox_3_ptr;	
-
-	// Free the phase marker sprite
-	pm_sprite_ptr.reset();
-	jump_effect_sprite_ptr.reset();
-	jump_effect_anim_ptr.reset();
-
-}
-
-Player& Player::operator =(const Player& other)
-{
-    x_speed        	  	 = other.x_speed;
-	phase_destination    = other.phase_destination;
-	
-	attack_buffered_frames           = other.attack_buffered_frames;
-	roll_buffered_frames             = other.roll_buffered_frames;
-	jump_buffered_frames             = other.jump_buffered_frames;
-	remaining_jump_input_frames      = other.remaining_jump_input_frames;
-	air_frames_elapsed               = other.air_frames_elapsed;
-	v_collision_grace_frames         = other.v_collision_grace_frames;
-	late_jump_grace_frames           = other.late_jump_grace_frames;
-	late_roll_jump_grace_frames      = other.late_roll_jump_grace_frames;
-	current_phase_frame              = other.current_phase_frame;
-	hitstop_frames                   = other.hitstop_frames;
-
-	wall_right_detected      = other.wall_right_detected;
-    wall_left_detected       = other.wall_left_detected;
-	grounded_owp_detected    = other.grounded_owp_detected;
-	left_wj_eligible         = other.left_wj_eligible;
-	right_wj_eligible        = other.right_wj_eligible;
-	is_dead                  = other.is_dead;
-	
 	roll_requested   = other.roll_requested;
 	jump_requested   = other.jump_requested;
 	attack_requested = other.attack_requested;
@@ -172,6 +142,79 @@ Player& Player::operator =(const Player& other)
 	pm_sprite_ptr          = other.pm_sprite_ptr;
 	jump_effect_sprite_ptr = other.jump_effect_sprite_ptr;
 	jump_effect_anim_ptr   = other.jump_effect_anim_ptr;
+	od_sprite_1_ptr        = other.od_sprite_1_ptr;
+	od_sprite_2_ptr        = other.od_sprite_2_ptr;
+	//od_sprite_3_ptr        = other.od_sprite_3_ptr;
+	
+}
+
+Player::~Player()
+{
+	delete hitbox_1_ptr;
+	delete hitbox_2_ptr;
+	delete hitbox_3_ptr;	
+
+	// Free the phase marker sprite
+	pm_sprite_ptr.reset();
+	jump_effect_sprite_ptr.reset();
+	jump_effect_anim_ptr.reset();
+	od_sprite_1_ptr.reset();
+	od_sprite_2_ptr.reset();
+	//od_sprite_3_ptr.reset();
+}
+
+Player& Player::operator =(const Player& other)
+{
+	prior_frame_1_pos = other.prior_frame_1_pos;
+	prior_frame_2_pos = other.prior_frame_2_pos;
+	//prior_frame_3_pos = other.prior_frame_3_pos;
+
+    x_speed        	  	 = other.x_speed;
+	phase_destination    = other.phase_destination;
+	
+	attack_buffered_frames           = other.attack_buffered_frames;
+	roll_buffered_frames             = other.roll_buffered_frames;
+	jump_buffered_frames             = other.jump_buffered_frames;
+	remaining_jump_input_frames      = other.remaining_jump_input_frames;
+	air_frames_elapsed               = other.air_frames_elapsed;
+	v_collision_grace_frames         = other.v_collision_grace_frames;
+	late_jump_grace_frames           = other.late_jump_grace_frames;
+	late_roll_jump_grace_frames      = other.late_roll_jump_grace_frames;
+	current_phase_frame              = other.current_phase_frame;
+	hitstop_frames                   = other.hitstop_frames;
+	update_timer                     = other.update_timer;
+
+	overdrive                = other.overdrive;
+	wall_right_detected      = other.wall_right_detected;
+    wall_left_detected       = other.wall_left_detected;
+	grounded_owp_detected    = other.grounded_owp_detected;
+	left_wj_eligible         = other.left_wj_eligible;
+	right_wj_eligible        = other.right_wj_eligible;
+	is_dead                  = other.is_dead;
+
+	roll_requested   = other.roll_requested;
+	jump_requested   = other.jump_requested;
+	attack_requested = other.attack_requested;
+
+	test_collider_right   = other.test_collider_right;
+	test_collider_left    = other.test_collider_left;
+
+	if(other.hitbox_1_ptr == NULL) {hitbox_1_ptr = NULL;}
+	else {hitbox_1_ptr = new Hitbox(*(other.hitbox_1_ptr));}
+
+	if(other.hitbox_2_ptr == NULL) {hitbox_2_ptr = NULL;}
+	else {hitbox_2_ptr = new Hitbox(*(other.hitbox_2_ptr));}	
+	
+	if(other.hitbox_3_ptr == NULL) {hitbox_3_ptr = NULL;}
+	else {hitbox_3_ptr = new Hitbox(*(other.hitbox_3_ptr));}
+
+	phase_dir              = other.phase_dir;
+	pm_sprite_ptr          = other.pm_sprite_ptr;
+	jump_effect_sprite_ptr = other.jump_effect_sprite_ptr;
+	jump_effect_anim_ptr   = other.jump_effect_anim_ptr;
+	od_sprite_1_ptr        = other.od_sprite_1_ptr;
+	od_sprite_2_ptr        = other.od_sprite_2_ptr;
+	//od_sprite_3_ptr        = other.od_sprite_3_ptr;
 
 	return *this;
 }
@@ -210,7 +253,8 @@ void Player::wallJump()
 
 	rigidbody.removeForces();
 	rigidbody.addForce(PLAYER_WALL_JUMP_FORCE);
-	remaining_jump_input_frames      = PLAYER_MAX_WALL_JUMP_INPUT_FRAMES;
+	remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
+	air_frames_elapsed = 0;
 	
 	//setVerticalStretch();
 	createWallJumpEffect();
@@ -224,9 +268,13 @@ void Player::fastFall()
 }
 
 void Player::createGroundedAttackHitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
-	                                       const bn::camera_ptr&                      camera)
+	                                      const bn::camera_ptr&                      camera)
 {
 	if(game_objects.size() >= MAX_GAME_OBJECTS) {return;}
+
+	int32 x_knockback;
+	if(overdrive) {x_knockback = PLAYER_ATTACK_GROUND_1_X_KNOCKBACK_OD;}
+	else          {x_knockback = PLAYER_ATTACK_GROUND_1_X_KNOCKBACK;}
 
 	delete hitbox_1_ptr;
 	hitbox_1_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_ATTACK_GROUND_1_X_OFFSET * x_dir),
@@ -235,7 +283,7 @@ void Player::createGroundedAttackHitboxes(bn::vector<GameObject*, MAX_GAME_OBJEC
 								  PLAYER_ATTACK_GROUND_1_HITSTUN_FRAMES,
 								  PLAYER_ATTACK_GROUND_1_SCREENSHAKE_FRAMES,
 								  PLAYER_ATTACK_GROUND_1_HB_LIFESPAN_FRAMES,
-								  PLAYER_ATTACK_GROUND_1_X_KNOCKBACK,
+								  x_knockback,
 								  PLAYER_ATTACK_GROUND_1_Y_KNOCKBACK,	
 								  PLAYER_ATTACK_GROUND_1_KNOCKBACK_DECAY,
 								  PLAYER_ATTACK_GROUND_1_HB_WIDTH,
@@ -256,6 +304,10 @@ void Player::createAirAttack1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>&
 {
 	if(game_objects.size() >= MAX_GAME_OBJECTS) {return;}
 
+	int32 x_knockback;
+	if(overdrive) {x_knockback = PLAYER_ATTACK_AIR_1_X_KNOCKBACK_OD;}
+	else          {x_knockback = PLAYER_ATTACK_AIR_1_X_KNOCKBACK;}
+
 	delete hitbox_1_ptr;
 	hitbox_1_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_ATTACK_AIR_1_X_OFFSET * x_dir),
 								  y().integer() + PLAYER_ATTACK_AIR_1_Y_OFFSET),
@@ -263,7 +315,7 @@ void Player::createAirAttack1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>&
 								  PLAYER_ATTACK_AIR_1_HITSTUN_FRAMES,
 								  PLAYER_ATTACK_AIR_1_SCREENSHAKE_FRAMES,
 								  PLAYER_ATTACK_AIR_1_HB_LIFESPAN_FRAMES,
-								  PLAYER_ATTACK_AIR_1_X_KNOCKBACK,
+								  x_knockback,
 								  PLAYER_ATTACK_AIR_1_Y_KNOCKBACK,	
 								  PLAYER_ATTACK_AIR_1_KNOCKBACK_DECAY,
 								  PLAYER_ATTACK_AIR_1_HB_WIDTH,
@@ -301,9 +353,9 @@ void Player::createAirJumpEffect()
 	jump_effect_sprite_ptr->set_position(x(), y());
 	jump_effect_sprite_ptr->set_rotation_angle(0);
 	jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
-																1,
+																0,
 																bn::sprite_items::air_jump_effect.tiles_item(),
-																0, 1, 2, 3, 4, 5, 6, 7, 8);
+																0, 1, 2, 3, 4, 5, 5, 6, 6, 7, 7, 8, 8);
 }
 
 void Player::createWallJumpEffect()
@@ -317,9 +369,50 @@ void Player::createWallJumpEffect()
 	if(x_dir == LEFT) {jump_effect_sprite_ptr->set_rotation_angle(90);}
 	else              {jump_effect_sprite_ptr->set_rotation_angle(270);}
 	jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
-																1,
-																bn::sprite_items::jump_effect.tiles_item(),
-																0, 1, 2, 3, 4, 5, 6, 7);
+																0,
+																bn::sprite_items::air_jump_effect.tiles_item(),
+																0, 1, 2, 3, 4, 5, 5, 6, 6, 7, 7, 8, 8);
+}
+
+void Player::drawOverdriveEffect()
+{
+	if(update_timer % 3 == 0)
+	{
+		//prior_frame_3_pos = prior_frame_2_pos;
+		prior_frame_2_pos = prior_frame_1_pos;
+		prior_frame_1_pos.set_x((x() - rigidbody.final_dir.x()).integer());
+		prior_frame_1_pos.set_y((y() - rigidbody.final_dir.y()).integer());
+
+		//od_sprite_3_ptr->set_tiles(od_sprite_2_ptr->tiles());
+		//od_sprite_3_ptr->set_horizontal_flip(od_sprite_2_ptr->horizontal_flip());
+		//od_sprite_3_ptr->set_vertical_flip(od_sprite_2_ptr->vertical_flip());
+
+		od_sprite_2_ptr->set_tiles(od_sprite_1_ptr->tiles());
+		od_sprite_2_ptr->set_horizontal_flip(od_sprite_1_ptr->horizontal_flip());
+		od_sprite_2_ptr->set_vertical_flip(od_sprite_1_ptr->vertical_flip());
+		
+		od_sprite_1_ptr->set_tiles(sprite_ptr->tiles());
+		od_sprite_1_ptr->set_horizontal_flip(sprite_ptr->horizontal_flip());
+		od_sprite_1_ptr->set_vertical_flip(sprite_ptr->vertical_flip());
+	}
+
+	if(overdrive)
+	{
+		od_sprite_1_ptr->set_position(prior_frame_1_pos.x(), prior_frame_1_pos.y());
+		od_sprite_1_ptr->set_visible(true);
+
+		od_sprite_2_ptr->set_position(prior_frame_2_pos.x(), prior_frame_2_pos.y());
+		od_sprite_2_ptr->set_visible(true);
+
+		//od_sprite_3_ptr->set_position(prior_frame_3_pos.x(), prior_frame_3_pos.y());
+		//od_sprite_3_ptr->set_visible(true);
+	}
+	else 
+	{
+		od_sprite_1_ptr->set_visible(false);
+		od_sprite_2_ptr->set_visible(false);
+		//od_sprite_3_ptr->set_visible(false);
+	}
 }
 
 //////////////////////////
@@ -398,6 +491,9 @@ void Player::updateHitboxes(const RoomBounds& 							   room_bounds,
 
 void Player::updateTimers()
 {
+	update_timer++;
+	if(update_timer >= 60) {update_timer = 0;}
+
 	invulnerability_frames--;
     if(invulnerability_frames < 0) {invulnerability_frames = 0;}
 
@@ -457,25 +553,99 @@ void Player::updateTestColliders()
 
 void Player::draw()
 {
-	GameObject::draw();
+	// Draw Player
+	if(animate_action_ptr.has_value() && !animate_action_ptr->done())
+    {
+		animate_action_ptr->update();
 
+		// Draw OD Effect
+		drawOverdriveEffect();
+    }
+	global_tiles_in_VRAM += sprite_ptr->tiles().tiles_count();
+
+	// Draw Hit Effect
 	if(global_tiles_in_VRAM > MAX_SPRITE_TILES) {return;}
+	if(hit_effect_animate_action_ptr.has_value())
+    {
+        if(!hit_effect_animate_action_ptr->done())
+        {
+            hit_effect_animate_action_ptr->update();
+            hit_effect_sprite_ptr->set_visible(true);
+        }
+        else
+        {
+            hit_effect_sprite_ptr->set_visible(false);
+        }
+    }
+	global_tiles_in_VRAM += hit_effect_sprite_ptr->tiles().tiles_count();
 
-	// Jump effect
+	// Draw Splat Effect
+	if(global_tiles_in_VRAM > MAX_SPRITE_TILES) {return;}
+    if(splat_effect_animate_action_ptr.has_value())
+    {
+        if(!splat_effect_animate_action_ptr->done())
+        {
+            splat_effect_animate_action_ptr->update();
+            splat_effect_sprite_ptr->set_visible(true);
+        }
+        else
+        {
+            splat_effect_sprite_ptr->set_visible(false);
+        }
+    }
+	global_tiles_in_VRAM += splat_effect_sprite_ptr->tiles().tiles_count();
+
+	// Draw Jump effect
+	if(global_tiles_in_VRAM > MAX_SPRITE_TILES) {return;}
 	if(jump_effect_anim_ptr.has_value())
 	{
 		if(!jump_effect_anim_ptr->done())
 		{jump_effect_anim_ptr->update();}
 	}
-
 	global_tiles_in_VRAM += jump_effect_sprite_ptr->tiles().tiles_count();
 }
 
 void Player::setCamera(const bn::camera_ptr& camera)
 {
 	GameObject::setCamera(camera);
+
 	pm_sprite_ptr->set_camera(camera);
 	jump_effect_sprite_ptr->set_camera(camera);
+	od_sprite_1_ptr->set_camera(camera);
+	od_sprite_2_ptr->set_camera(camera);
+	//od_sprite_3_ptr->set_camera(camera);
+}
+
+void Player::applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_dir)
+{
+	if(invulnerability_frames) {return;}
+    
+    // Object invuln:
+	invulnerability_frames = PLAYER_HIT_INVULNERABILITY_FRAMES;
+
+    // Global juice
+    global_bg_hitflash_frames   = GENERIC_HIT_HITSTOP_FRAMES;
+    global_hitstop_frames       = GENERIC_HIT_HITSTOP_FRAMES;
+    global_screenshake_frames   = GENERIC_HIT_SCREENSHAKE_FRAMES;
+    global_screenshake_severity = GENERIC_HIT_SCREENSHAKE_SEVERITY;
+
+    // Object physics:
+    rigidbody.removeForces();
+    rigidbody.addForce(Force(bn::fixed_point_t<12>(GENERIC_HIT_X_KNOCKBACK * knockback_x_dir, 
+                                                   GENERIC_HIT_Y_KNOCKBACK * knockback_y_dir), 
+                                                   GENERIC_HIT_KNOCKBACK_DECAY));
+
+    // Object damage:
+    applyDamage(_damage);
+
+    // Object hitstun state:
+    hitstun_frames = GENERIC_HIT_HITSTUN_FRAMES;
+    setState(OBJECT_HITSTUN);
+
+    // Object juice:
+    setHitFlash();
+    applyHitEffect(x().integer(),
+                   y().integer());
 }
 
 //////////////////////////////
@@ -529,6 +699,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 																		   0,
 																		   bn::sprite_items::player.tiles_item(),
 																		   PLAYER_NEUTRAL_FRAME, PLAYER_NEUTRAL_FRAME);
+
 			}
 
 			// Attack Ground 1
@@ -583,7 +754,11 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if((bn::keypad::left_held() || bn::keypad::right_held()))  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
+
+				if(overdrive)
+				{x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED_OD, x_speed);}
+				else
+				{x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);}
 			}
 			
 			// Walk
@@ -642,6 +817,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 								  								  bn::sprite_items::player.tiles_item(),
 								  								  PLAYER_AIR_FRAME_2,
 								  								  PLAYER_AIR_FRAME_2);
+
 			}
 
 			// Update drift speed //
@@ -649,7 +825,11 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if((bn::keypad::left_held() || bn::keypad::right_held()))  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
+
+				if(overdrive)
+				{x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED_OD, x_speed);}
+				else
+				{x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);}
 			}
 
 			// Simulate momentum
@@ -751,7 +931,11 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if(bn::keypad::left_held())  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
+
+				if(overdrive)
+				{x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED_OD, x_speed);}
+				else
+				{x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);}
 			}
 	
 			// Drift
@@ -766,7 +950,8 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			}
 			
 			// Add Gravity //
-			rigidbody.addForce(PLAYER_WALL_GRAVITY_FORCE);
+			if(update_timer % 2 == 0)
+			{rigidbody.addForce(PLAYER_WALL_GRAVITY_FORCE);}
 			
 		break;
 		
@@ -784,7 +969,11 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if(bn::keypad::right_held())  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
+
+				if(overdrive)
+				{x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED_OD, x_speed);}
+				else
+				{x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);}
 			}
 
 			// Drift
@@ -799,7 +988,8 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			}
 			
 			// Add Gravity //
-			rigidbody.addForce(PLAYER_WALL_GRAVITY_FORCE);
+			if(update_timer % 2 == 0)
+			{rigidbody.addForce(PLAYER_WALL_GRAVITY_FORCE);}
 					
 		break;
 
@@ -1149,7 +1339,11 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if((bn::keypad::left_held() || bn::keypad::right_held()))  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
+
+				if(overdrive)
+				{x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED_OD, x_speed);}
+				else
+				{x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);}
 			}
 			
 			// Walk
@@ -1217,7 +1411,11 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if((bn::keypad::left_held() || bn::keypad::right_held()))  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
+
+				if(overdrive)
+				{x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED_OD, x_speed);}
+				else
+				{x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);}
 			}
 
 			// Simulate momentum
@@ -1400,6 +1598,10 @@ void Player::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_obj
 		// set the new state.
 		if(new_state != state) {setState(new_state);}
 	}
+
+	// Update Overdrive state
+	if(hitpoints >= PLAYER_OD_MIN_HP_REQUIRED) {overdrive = true;}
+	else                                       {overdrive = false;}
 }
 
 void Player::setState(ObjectState new_state)
@@ -1468,10 +1670,10 @@ void Player::setState(ObjectState new_state)
 		case PLAYER_AIR_NEUTRAL:
 
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								  								  0,
-								  								  bn::sprite_items::player.tiles_item(),
-								  								  PLAYER_AIR_FRAME_1,
-								  								  PLAYER_AIR_FRAME_1);
+																		  0,
+																		  bn::sprite_items::player.tiles_item(),
+																		  PLAYER_AIR_FRAME_1,
+																		  PLAYER_AIR_FRAME_1);
 
 		break;
 
@@ -1487,6 +1689,7 @@ void Player::setState(ObjectState new_state)
 																		  3,
 																		  bn::sprite_items::player.tiles_item(),
 																		  21, 22, 23, 24);
+
 			setHorizontalStretch();
 
 			pm_sprite_ptr->set_position(phase_destination.x(), phase_destination.y());
@@ -1540,7 +1743,6 @@ void Player::setState(ObjectState new_state)
 																		bn::sprite_items::player.tiles_item(),
 																		25, 26, 27, 28, 29, 30, 31, 32, 33, 
 																		34, 35, 36, 37, 38, 39, 40, 41, 42);
-
 
 		break;
 
@@ -1967,30 +2169,16 @@ void Player::resolveThornBarCollision(GameObject& object)
 void Player::resolveGroundGhoulCollision(GameObject& object)
 {
 	if(object.state == OBJECT_HITSTUN || object.state == OBJECT_DEATH) {return;}
+	
+	if(hitpoints > 0 && 
+	   state != PLAYER_ROLL &&
+	   collider.isCollision(object.collider))
+	{
+		int32 knockback_x_dir;
 
-	int32 ghoul_collision_x_offset = 0; 
-	
-	if(rigidbody.normalized_dir.x() == 0)
-	{
-		if(object.rigidbody.normalized_dir.x() == 0)
-		{
-			ghoul_collision_x_offset = collider.getCollisionXOffset(object.collider, x_dir).integer();
-		}
-		else
-		{
-			ghoul_collision_x_offset = collider.getCollisionXOffset(object.collider, object.rigidbody.normalized_dir.x() * -1).integer();
-		}
-	}
-	else
-	{
-		ghoul_collision_x_offset = collider.getCollisionXOffset(object.collider, rigidbody.normalized_dir.x()).integer();
-	}
-	
-	if(state != PLAYER_ROLL && 
-	   ghoul_collision_x_offset != 0 && 
-	   hitpoints > 0)
-	{
-		int32 knockback_x_dir = abs(ghoul_collision_x_offset) / ghoul_collision_x_offset;
+		if(x() > object.x()) {knockback_x_dir = 1;}
+		else				 {knockback_x_dir = -1;}
+
 		applyHit(object.damage, knockback_x_dir, 0);
 	}
 }

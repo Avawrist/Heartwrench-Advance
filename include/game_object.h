@@ -31,6 +31,7 @@
 
 // Flash Palette
 #include "bn_sprite_palette_items_sprite_flash_palette.h"
+#include "bn_sprite_palette_items_sprite_od_palette.h"
 
 // Effect Assets
 #include "bn_sprite_items_jump_effect.h"

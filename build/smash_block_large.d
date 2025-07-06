@@ -76,6 +76,7 @@ smash_block_large.o: G:/game/src/smash_block_large.cpp \
  G:/game/include/collider.h \
  G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
+ G:/game/build/bn_sprite_palette_items_sprite_od_palette.h \
  G:/game/build/bn_sprite_items_jump_effect.h \
  G:/butano-master/butano/include/bn_sprite_item.h \
  G:/butano-master/butano/include/bn_sprite_shape_size.h \
@@ -185,6 +186,7 @@ G:/game/include/math.h:
 G:/game/include/collider.h:
 G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
+G:/game/build/bn_sprite_palette_items_sprite_od_palette.h:
 G:/game/build/bn_sprite_items_jump_effect.h:
 G:/butano-master/butano/include/bn_sprite_item.h:
 G:/butano-master/butano/include/bn_sprite_shape_size.h:

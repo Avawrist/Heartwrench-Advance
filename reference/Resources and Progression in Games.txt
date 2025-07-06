@@ -1,20 +1,115 @@
-* 1st Gen Consoles *
+** ////////////////////////////////////////////// **
+   // Introduction of Popular Resource Systems //
+   //////////////////////////////////////////////
+
+* STA (Short-term Aid)
+* LTP (Long-term  Progression)
+
+//////////////////////
+// 1st Gen Consoles //
+//////////////////////
+
 Not Applicable
 
-* 2nd Gen Consoles & Arcade *
-Score Points
+///////////////////////////////
+// 2nd Gen Consoles & Arcade //
+///////////////////////////////
 
-* 3rd Gen Console Era (NES/Famicom, Sega Master System, Atari 7800) *
-Experience Points
-Hit Points
-Mana Points
-Ammo
-Power ups (temporary) or Weapon changes
-Extra lives
-Pieces of extra life
-Key Items / Quest Items
+STA - Pieces of extra life
+LTP - Score Points
 
-* 4th Gen Console Era (SNES/Super Famicom, Sega Genesis, SNK Neo Geo) *
+///////////////////////////////////////////////////////////////////////
+// 3rd Gen Console Era (NES/Famicom, Sega Master System, Atari 7800) //
+///////////////////////////////////////////////////////////////////////
 
+// Consumables (Temporary):
+STA - Extra lives
+STA - Hit Points * 
+STA - Damage Points
+STA - Mana Points
+STA - Ammo
+STA - Movement & Weapon Abilities
+
+// Ability Upgrades + Equipment (Permanent):
+LTP - Hit Points, Damage Points, Mana Points, Ammo, Movement & Weapon Abilities
+
+// Other:
+LTP - Key Items / Quest Items
+LTP - Keys
+LTP - Experience Points
+LTP - Collectables
+LTP/STA - Currency - stored and redeemable for: consumables, 
+						ability upgrades/equipment, 
+						information,
+						& visual change.
+
+/////////////////////////////////////////////////////////////////////////
+// 4th Gen Console Era (SNES/Super Famicom, Sega Genesis, SNK Neo Geo) //
+/////////////////////////////////////////////////////////////////////////
+
+LTP/STA - Crafting Resources - Resources that can be combined to receive consumables, 
+                               ability upgrades/equipment, & other.
+
+			       Resources may be currency, consumables, equipment, or key items.
+
+                               A + A -> B 
+			       B > A + A
+
+			       A + B -> C
+			       C > A + B
+
+//////////////////////////////////////////////////////////////////////////////////
+// 5th Gen Console Era (Sega Saturn, Sony Playstation, Nintendo 64)             //
+// 6th Gen Console Era (Sega Dreamcast, Microsoft Xbox, Sony PS2, GCN)          //
+// 7th Gen Console Era (Microsoft Xbox 360, Sony PS3, Nintendo Wii)             //
+// 8th Gen Console Era (Microsoft Xbox One, Sony PS4, Nintendo Switch)          //
+// 9th Gen Console Era (Microsoft Xbox Series X/S, Sony PS5, Nintendo Switch 2) //
+//////////////////////////////////////////////////////////////////////////////////
+
+No developments
+
+//////////////////////////////
+// Resources in Video Games //
+//////////////////////////////
+
+-Time
+-Space
+-Currency
+-Experience Points
+-Hit Points
+-Mana Points
+-Ammunition
+-Consumables
+-Tools
+-Crafting Materials
+-Equipment
+
+///////////////////////
+// Resources in Life //
+///////////////////////
+
+-Time
+-Space
+-Chemical Elements & Compounds
+-Nutrients
+-Energy
+-Currency
+-Knowledge/Skills
+-Tools
+-Beauty
+-Attention
+
+////////////////////////////////
+// Resources in Shovel Knight //
+////////////////////////////////
+
+STA - Hit points
+STA - Mana points
+LTP/STA - Currency - stored and redeemable for: new abilities, HP & MP upgrades
+LTP - Collectables (redeemable for currency)
+
+//////////////////////////
+// Resources in My Game //
+//////////////////////////
 
 

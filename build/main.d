@@ -61,7 +61,9 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/butano-master/butano/include/bn_regular_bg_map_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h \
- G:/game/include/level.h G:/butano-master/butano/include/bn_random.h \
+ G:/game/include/game_state.h G:/game/include/math.h \
+ G:/game/include/utility.h G:/game/include/level.h \
+ G:/butano-master/butano/include/bn_random.h \
  G:/butano-master/butano/include/bn_limits.h \
  G:/butano-master/butano/include/bn_math.h \
  G:/butano-master/butano/include/bn_sin_lut.h \
@@ -75,9 +77,8 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/game/build/bn_regular_bg_items_test_level.h \
  G:/game/build/bn_regular_bg_items_test_painted_bg.h \
  G:/game/build/bn_regular_bg_items_test_object_bg.h \
- G:/game/include/math.h G:/game/include/utility.h G:/game/include/room.h \
- G:/game/include/room_bounds.h G:/game/include/collider.h \
- G:/butano-master/butano/include/bn_optional.h \
+ G:/game/include/room.h G:/game/include/room_bounds.h \
+ G:/game/include/collider.h G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_sprite_ptr.h \
  G:/butano-master/butano/include/bn_sprite_animate_actions.h \
  G:/butano-master/butano/include/bn_vector.h \
@@ -93,6 +94,7 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/game/include/physics.h \
  G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
+ G:/game/build/bn_sprite_palette_items_sprite_od_palette.h \
  G:/game/build/bn_sprite_items_jump_effect.h \
  G:/butano-master/butano/include/bn_sprite_item.h \
  G:/butano-master/butano/include/bn_sprite_shape_size.h \
@@ -195,6 +197,9 @@ G:/butano-master/butano/include/bn_tile.h:
 G:/butano-master/butano/include/bn_regular_bg_map_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_map_cell.h:
 G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h:
+G:/game/include/game_state.h:
+G:/game/include/math.h:
+G:/game/include/utility.h:
 G:/game/include/level.h:
 G:/butano-master/butano/include/bn_random.h:
 G:/butano-master/butano/include/bn_limits.h:
@@ -210,8 +215,6 @@ G:/butano-master/butano/include/bn_bg_palette_item.h:
 G:/game/build/bn_regular_bg_items_test_level.h:
 G:/game/build/bn_regular_bg_items_test_painted_bg.h:
 G:/game/build/bn_regular_bg_items_test_object_bg.h:
-G:/game/include/math.h:
-G:/game/include/utility.h:
 G:/game/include/room.h:
 G:/game/include/room_bounds.h:
 G:/game/include/collider.h:
@@ -231,6 +234,7 @@ G:/butano-master/butano/include/bn_value_template_actions.h:
 G:/game/include/physics.h:
 G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
+G:/game/build/bn_sprite_palette_items_sprite_od_palette.h:
 G:/game/build/bn_sprite_items_jump_effect.h:
 G:/butano-master/butano/include/bn_sprite_item.h:
 G:/butano-master/butano/include/bn_sprite_shape_size.h:

@@ -12,21 +12,28 @@
 
 // My Libs
 #include "utility.h"
+#include "game_state.h"
 #include "level.h"
 
 int main()
 {   
     bn::core::init();
     
+    // Initialize GameState
+    GameState game_state;
+
     // Create Test Level
     Level current_level(LEVEL_TEST);
 
     // Game Loop
     while(true)
     {
-        // Update Levels
+        // Update Level
         if(current_level.cam_is_scrolling) {current_level.updateCamera();}
         else                               {current_level.updateAll();}
+
+        // Update GameState
+        game_state.update();
        
         bn::core::update();
     }

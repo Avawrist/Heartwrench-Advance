@@ -76,6 +76,7 @@ falling_platform_wide.o: G:/game/src/falling_platform_wide.cpp \
  G:/game/include/room_bounds.h \
  G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
+ G:/game/build/bn_sprite_palette_items_sprite_od_palette.h \
  G:/game/build/bn_sprite_items_jump_effect.h \
  G:/butano-master/butano/include/bn_sprite_item.h \
  G:/butano-master/butano/include/bn_sprite_shape_size.h \
@@ -185,6 +186,7 @@ G:/butano-master/butano/include/bn_value_template_actions.h:
 G:/game/include/room_bounds.h:
 G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
+G:/game/build/bn_sprite_palette_items_sprite_od_palette.h:
 G:/game/build/bn_sprite_items_jump_effect.h:
 G:/butano-master/butano/include/bn_sprite_item.h:
 G:/butano-master/butano/include/bn_sprite_shape_size.h:

@@ -22,6 +22,11 @@ int32 global_hitstop_frames                     = 0;
 int32 global_screenshake_frames                 = 0;
 ScreenShakeSeverity global_screenshake_severity = NO_SHAKE;
 
+int32 current_displayed_level_currency = 0;
+int32 current_displayed_world_currency = 0;
+int32 current_level_currency           = 0;
+int32 current_world_currency           = 0;
+
 // Functions
 
 int32 getTileAtBGIndex(uint32 x, uint32 y, 
