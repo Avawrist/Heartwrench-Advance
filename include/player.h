@@ -16,6 +16,10 @@
 // Struct Player //
 ///////////////////
 
+#define PLAYER_OD_LEVEL_0 0
+#define PLAYER_OD_LEVEL_1 1
+#define PLAYER_OD_LEVEL_2 2
+
 #define PLAYER_Z_ORDER 0
 
 #define PLAYER_COLLIDER_WIDTH  14
@@ -30,8 +34,10 @@
 #define PLAYER_FALL_STRETCH_H 0.75
 
 #define PLAYER_MAX_HITPOINTS      4
-#define PLAYER_STARTING_HITPOINTS 3
-#define PLAYER_OD_MIN_HP_REQUIRED 3
+#define PLAYER_STARTING_HITPOINTS 4
+
+#define PLAYER_OD_1_HP_REQUIRED   3
+#define PLAYER_OD_2_HP_REQUIRED   4
 
 #define PLAYER_HIT_INVULNERABILITY_FRAMES 120
 
@@ -40,8 +46,7 @@
 #define PLAYER_JUMP_BUFFER_FRAMES   12
 
 #define PLAYER_MIN_X_SPEED    0
-#define PLAYER_MAX_X_SPEED    2
-#define PLAYER_MAX_X_SPEED_OD 4
+#define PLAYER_MAX_X_SPEED    2 + overdrive
 #define PLAYER_X_DECAY        1
 #define X_SPEED_ACC_RATE      0.2
 #define X_SPEED_DECAY_RATE    0.1
@@ -87,11 +92,11 @@
 #define PLAYER_ATTACK_GROUND_1_HB_HEIGHT          32
 #define PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME    18
 #define PLAYER_ATTACK_GROUND_1_HB_LIFESPAN_FRAMES 8
-#define PLAYER_ATTACK_GROUND_1_X_KNOCKBACK        6
-#define PLAYER_ATTACK_GROUND_1_X_KNOCKBACK_OD     15
+#define PLAYER_ATTACK_GROUND_1_BASE_X_KNOCKBACK   5
+#define PLAYER_ATTACK_GROUND_1_X_KNOCKBACK        PLAYER_ATTACK_GROUND_1_BASE_X_KNOCKBACK + (PLAYER_ATTACK_GROUND_1_BASE_X_KNOCKBACK * overdrive)
 #define PLAYER_ATTACK_GROUND_1_Y_KNOCKBACK        0
 #define PLAYER_ATTACK_GROUND_1_KNOCKBACK_DECAY    0.05
-#define PLAYER_ATTACK_GROUND_1_DAMAGE             1
+#define PLAYER_ATTACK_GROUND_1_DAMAGE             1 + overdrive
 #define PLAYER_ATTACK_GROUND_1_HITSTOP_FRAMES     8
 #define PLAYER_ATTACK_GROUND_1_HITSTUN_FRAMES     30
 #define PLAYER_ATTACK_GROUND_1_SCREENSHAKE_FRAMES 10
@@ -103,11 +108,11 @@
 #define PLAYER_ATTACK_AIR_1_HB_HEIGHT          32
 #define PLAYER_ATTACK_AIR_1_CREATE_HB_FRAME    18
 #define PLAYER_ATTACK_AIR_1_HB_LIFESPAN_FRAMES 8
-#define PLAYER_ATTACK_AIR_1_X_KNOCKBACK        6
-#define PLAYER_ATTACK_AIR_1_X_KNOCKBACK_OD     15
+#define PLAYER_ATTACK_AIR_1_BASE_X_KNOCKBACK   5
+#define PLAYER_ATTACK_AIR_1_X_KNOCKBACK        PLAYER_ATTACK_AIR_1_BASE_X_KNOCKBACK + (PLAYER_ATTACK_AIR_1_BASE_X_KNOCKBACK * overdrive)
 #define PLAYER_ATTACK_AIR_1_Y_KNOCKBACK        0
 #define PLAYER_ATTACK_AIR_1_KNOCKBACK_DECAY    0.05
-#define PLAYER_ATTACK_AIR_1_DAMAGE             1
+#define PLAYER_ATTACK_AIR_1_DAMAGE             1 + overdrive
 #define PLAYER_ATTACK_AIR_1_HITSTOP_FRAMES     8
 #define PLAYER_ATTACK_AIR_1_HITSTUN_FRAMES     30
 #define PLAYER_ATTACK_AIR_1_SCREENSHAKE_FRAMES 10
@@ -173,7 +178,7 @@ struct Player : GameObject {
 
 	bn::point prior_frame_1_pos;
 	bn::point prior_frame_2_pos;
-	//bn::point prior_frame_3_pos;
+	bn::point prior_frame_3_pos;
 
 	bn::fixed       x_speed;
 	bn::fixed_point phase_destination;
@@ -189,8 +194,7 @@ struct Player : GameObject {
 	int32 current_phase_frame;
 	int32 hitstop_frames;
 	int32 update_timer;
-	
-	bool overdrive;
+
 	bool wall_right_detected;
     bool wall_left_detected;
 	bool grounded_owp_detected;
@@ -216,7 +220,7 @@ struct Player : GameObject {
 
 	bn::optional<bn::sprite_ptr>                                         od_sprite_1_ptr;
 	bn::optional<bn::sprite_ptr>                                         od_sprite_2_ptr;
-	//bn::optional<bn::sprite_ptr>                                         od_sprite_3_ptr;
+	bn::optional<bn::sprite_ptr>                                         od_sprite_3_ptr;
 
 	Player();
 	Player(const Player& other);
@@ -224,6 +228,7 @@ struct Player : GameObject {
 
 	Player& operator =(const Player& other);
 
+	void updateOverdriveState();
 	void jump();
 	void rollJump();
 	void wallJump();

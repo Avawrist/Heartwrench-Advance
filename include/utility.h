@@ -149,6 +149,8 @@ extern int32               global_hitstop_frames;
 extern int32               global_screenshake_frames;
 extern ScreenShakeSeverity global_screenshake_severity;
 
+extern int32 overdrive;
+
 // Debug Mode
 #define DEBUG_BUILD false
 
