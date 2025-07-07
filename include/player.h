@@ -237,7 +237,6 @@ struct Player : GameObject {
 		                              const bn::camera_ptr&                      camera);
 	void createAirAttack1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
 								  const bn::camera_ptr&                      camera);
-	void createJumpEffect();
 	void createAirJumpEffect();
 	void createWallJumpEffect();
 	void drawOverdriveEffect();

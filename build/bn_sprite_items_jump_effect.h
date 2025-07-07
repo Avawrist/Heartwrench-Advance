@@ -7,12 +7,12 @@
 
 //======================================================================
 //
-//	jump_effect_bn_gfx, 64x512@4, 
+//	jump_effect_bn_gfx, 32x192@4, 
 //	+ palette 16 entries, not compressed
-//	+ 512 tiles not compressed
-//	Total size: 32 + 16384 = 16416
+//	+ 96 tiles not compressed
+//	Total size: 32 + 3072 = 3104
 //
-//	Time-stamp: 2025-06-30, 15:37:53
+//	Time-stamp: 2025-07-06, 17:34:36
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -21,8 +21,8 @@
 #ifndef GRIT_JUMP_EFFECT_BN_GFX_H
 #define GRIT_JUMP_EFFECT_BN_GFX_H
 
-#define jump_effect_bn_gfxTilesLen 16384
-extern const bn::tile jump_effect_bn_gfxTiles[512];
+#define jump_effect_bn_gfxTilesLen 3072
+extern const bn::tile jump_effect_bn_gfxTiles[96];
 
 #define jump_effect_bn_gfxPalLen 32
 extern const bn::color jump_effect_bn_gfxPal[16];
@@ -33,8 +33,8 @@ extern const bn::color jump_effect_bn_gfxPal[16];
 
 namespace bn::sprite_items
 {
-    constexpr inline sprite_item jump_effect(sprite_shape_size(sprite_shape::SQUARE, sprite_size::HUGE), 
-            sprite_tiles_item(span<const tile>(jump_effect_bn_gfxTiles, 512), bpp_mode::BPP_4, compression_type::NONE, 8), 
+    constexpr inline sprite_item jump_effect(sprite_shape_size(sprite_shape::SQUARE, sprite_size::BIG), 
+            sprite_tiles_item(span<const tile>(jump_effect_bn_gfxTiles, 96), bpp_mode::BPP_4, compression_type::NONE, 6), 
             sprite_palette_item(span<const color>(jump_effect_bn_gfxPal, 16), bpp_mode::BPP_4, compression_type::NONE));
 }
 

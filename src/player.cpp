@@ -70,7 +70,7 @@ Player::Player()
 	pm_sprite_ptr->set_z_order(PLAYER_Z_ORDER);
 	pm_sprite_ptr->set_visible(false);
 
-	jump_effect_sprite_ptr = bn::sprite_items::jump_effect.create_sprite(0, 0);
+	jump_effect_sprite_ptr = bn::sprite_items::air_jump_effect.create_sprite(0, 0);
 	jump_effect_sprite_ptr->set_z_order(PLAYER_Z_ORDER);
 	jump_effect_sprite_ptr->set_visible(false);
 
@@ -237,8 +237,7 @@ void Player::jump()
 	//setVerticalStretch();
 
 	// Jump Effect
-	if(grounded_detected) {createJumpEffect();}
-	else                  {createAirJumpEffect();}
+	if(!grounded_detected) {createAirJumpEffect();}
 }
 
 void Player::rollJump()
@@ -253,8 +252,7 @@ void Player::rollJump()
 	//setVerticalStretch();
 
 	// Jump Effect
-	if(grounded_detected) {createJumpEffect();}
-	else                  {createAirJumpEffect();}
+	if(!grounded_detected) {createAirJumpEffect();}
 }
 
 void Player::wallJump()
@@ -333,53 +331,41 @@ void Player::createAirAttack1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>&
 	// Add more hitboxes...
 }
 
-void Player::createJumpEffect()
-{
-    if(global_tiles_in_VRAM > MAX_SPRITE_TILES) {return;}
-
-	#define POOF_Y_OFFSET 1 
-	jump_effect_sprite_ptr->set_visible(true);
-	jump_effect_sprite_ptr->set_position(x(), y() - POOF_Y_OFFSET); 
-	jump_effect_sprite_ptr->set_rotation_angle(0);
-	jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
-																1,
-																bn::sprite_items::jump_effect.tiles_item(),
-																0, 1, 2, 3, 4, 5, 6, 7);
-}
-
 void Player::createAirJumpEffect()
 {
     if(global_tiles_in_VRAM > MAX_SPRITE_TILES) {return;}
 
+	#define AIR_JUMP_EFFECT_OFFSET -1
+
 	jump_effect_sprite_ptr->set_visible(true);
-	jump_effect_sprite_ptr->set_position(x(), y());
+	jump_effect_sprite_ptr->set_position(x(), y() + AIR_JUMP_EFFECT_OFFSET);
 	jump_effect_sprite_ptr->set_rotation_angle(0);
 	jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
-																0,
+																1,
 																bn::sprite_items::air_jump_effect.tiles_item(),
-																0, 1, 2, 3, 4, 5, 5, 6, 6, 7, 7, 8, 8);
+																0, 1, 2, 3, 4, 5, 5, 6, 6);
 }
 
 void Player::createWallJumpEffect()
 {
 	if(global_tiles_in_VRAM > MAX_SPRITE_TILES) {return;}
 
-	#define WALL_JUMP_EFFECT_OFFSET 8
+	#define WALL_JUMP_EFFECT_OFFSET -8
 
 	jump_effect_sprite_ptr->set_visible(true);
 	jump_effect_sprite_ptr->set_position(x() + ((int32)x_dir * WALL_JUMP_EFFECT_OFFSET), y());
 	if(x_dir == LEFT) {jump_effect_sprite_ptr->set_rotation_angle(90);}
 	else              {jump_effect_sprite_ptr->set_rotation_angle(270);}
 	jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
-																0,
-																bn::sprite_items::air_jump_effect.tiles_item(),
-																0, 1, 2, 3, 4, 5, 5, 6, 6, 7, 7, 8, 8);
+																 1,
+																 bn::sprite_items::air_jump_effect.tiles_item(),
+																 0, 1, 2, 3, 4, 5, 5, 6, 6);
 }
 
 void Player::drawOverdriveEffect()
 {
-	if(update_timer % 1 == 0)
-	{
+	//if(update_timer % 1 == 0)
+	//{
 		prior_frame_3_pos = prior_frame_2_pos;
 		prior_frame_2_pos = prior_frame_1_pos;
 		prior_frame_1_pos.set_x((x() - rigidbody.final_dir.x()).integer());
@@ -396,7 +382,7 @@ void Player::drawOverdriveEffect()
 		od_sprite_1_ptr->set_tiles(sprite_ptr->tiles());
 		od_sprite_1_ptr->set_horizontal_flip(sprite_ptr->horizontal_flip());
 		od_sprite_1_ptr->set_vertical_flip(sprite_ptr->vertical_flip());
-	}
+	//}
 
 	if(overdrive > 0)
 	{
