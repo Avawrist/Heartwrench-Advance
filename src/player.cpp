@@ -364,8 +364,8 @@ void Player::createWallJumpEffect()
 
 void Player::drawOverdriveEffect()
 {
-	//if(update_timer % 1 == 0)
-	//{
+	if(update_timer % 3 == 0)
+	{
 		prior_frame_3_pos = prior_frame_2_pos;
 		prior_frame_2_pos = prior_frame_1_pos;
 		prior_frame_1_pos.set_x((x() - rigidbody.final_dir.x()).integer());
@@ -382,7 +382,7 @@ void Player::drawOverdriveEffect()
 		od_sprite_1_ptr->set_tiles(sprite_ptr->tiles());
 		od_sprite_1_ptr->set_horizontal_flip(sprite_ptr->horizontal_flip());
 		od_sprite_1_ptr->set_vertical_flip(sprite_ptr->vertical_flip());
-	//}
+	}
 
 	if(overdrive > 0)
 	{
