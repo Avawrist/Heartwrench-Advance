@@ -7,6 +7,8 @@
 Enemy::Enemy()
 {
 	damage = ENEMY_DAMAGE;
+
+	hp_sprite_ptr->set_visible(true);
 }
 
 Enemy::Enemy(const Enemy& other) : GameObject(other)
@@ -22,7 +24,7 @@ Enemy::~Enemy()
 void Enemy::wallSplatCheck()
 {
 	if(col_x_offset != 0 &&
-	   state == OBJECT_HITSTUN &&
+	   (state == OBJECT_HITSTUN || state == OBJECT_DEATH) &&
 	   abs(rigidbody.final_dir.x().integer()) >= GAME_OBJECT_REQUIRED_SPLAT_SPEED)
 	{
 
@@ -53,7 +55,16 @@ void Enemy::wallSplatCheck()
 // GameObject Overrides //
 //////////////////////////
 
-// None..
+void Enemy::updateHPBar()
+{
+	if(hitpoints > ENEMY_MAX_HP) {return;}
+
+	hp_sprite_ptr->set_position(x() + ENEMY_HP_BAR_X_OFFSET, y() + ENEMY_HP_BAR_Y_OFFSET);
+	hp_animate_action_ptr = bn::create_sprite_animate_action_forever(hp_sprite_ptr.value(),
+																	 0,
+																	 bn::sprite_items::enemy_hp_bar.tiles_item(),
+																	 hitpoints, hitpoints);
+}
 
 //////////////////////////////
 // State Function Overrides //

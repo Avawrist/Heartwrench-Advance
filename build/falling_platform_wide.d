@@ -84,6 +84,7 @@ falling_platform_wide.o: G:/game/src/falling_platform_wide.cpp \
  G:/game/build/bn_sprite_items_land_effect.h \
  G:/game/build/bn_sprite_items_hit_effect.h \
  G:/game/build/bn_sprite_items_wall_splat_effect.h \
+ G:/game/build/bn_sprite_items_enemy_hp_bar.h \
  G:/game/build/bn_sprite_items_tile_passage.h \
  G:/game/build/bn_sprite_items_phase_orb_up.h \
  G:/game/build/bn_sprite_items_phase_orb_down.h \
@@ -193,6 +194,7 @@ G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/game/build/bn_sprite_items_land_effect.h:
 G:/game/build/bn_sprite_items_hit_effect.h:
 G:/game/build/bn_sprite_items_wall_splat_effect.h:
+G:/game/build/bn_sprite_items_enemy_hp_bar.h:
 G:/game/build/bn_sprite_items_tile_passage.h:
 G:/game/build/bn_sprite_items_phase_orb_up.h:
 G:/game/build/bn_sprite_items_phase_orb_down.h:

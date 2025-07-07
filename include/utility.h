@@ -25,8 +25,8 @@ typedef int   int32;
 #define SCREEN_W 240
 #define SCREEN_H 160
 #define SCREEN_LOAD_PADDING 64
-#define LOAD_RANGE_W SCREEN_W + (3 * SCREEN_LOAD_PADDING)
-#define LOAD_RANGE_H SCREEN_H + (3 * SCREEN_LOAD_PADDING)
+#define LOAD_RANGE_W SCREEN_W + (1.5 * SCREEN_LOAD_PADDING)
+#define LOAD_RANGE_H SCREEN_H + (1.5 * SCREEN_LOAD_PADDING)
 
 #define CAM_PLAYER_Y_OFFSET -24
 #define CAM_MAX_LOOK_Y       16
@@ -148,8 +148,6 @@ extern int32               global_bg_hitflash_frames;
 extern int32               global_hitstop_frames;
 extern int32               global_screenshake_frames;
 extern ScreenShakeSeverity global_screenshake_severity;
-
-extern int32 overdrive;
 
 // Debug Mode
 #define DEBUG_BUILD false

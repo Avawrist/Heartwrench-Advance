@@ -570,25 +570,29 @@ void Level::drawObjects()
 void Level::updateFade()
 {
     bn::bg_palette_ptr main_bg_palette = main_bg_ptr->palette();
-    bn::fixed fade_intensity = main_bg_palette.fade_intensity();
+    bn::fixed fade_intensity           = main_bg_palette.fade_intensity();
 
     if(fade_in)
     {
         // Fade objects in
         for(int32 i = 0; i < current_room.game_objects.size(); i++)
         {
-            GameObject* object_ptr = current_room.game_objects.at(i);
-            bn::sprite_palette_ptr object_palette = object_ptr->sprite_ptr->palette();
+            GameObject* object_ptr                = current_room.game_objects.at(i);
+
+            bn::sprite_palette_ptr object_palette       = object_ptr->sprite_ptr->palette();
+            bn::sprite_palette_ptr hit_effect_palette   = object_ptr->hit_effect_sprite_ptr->palette();
+            bn::sprite_palette_ptr splat_effect_palette = object_ptr->splat_effect_sprite_ptr->palette();
+            bn::sprite_palette_ptr hp_bar_palette       = object_ptr->hp_sprite_ptr->palette();
 
             object_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+            hit_effect_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+            splat_effect_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+            hp_bar_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
         }
 
         // Fade BGs in
-        main_bg_palette.set_fade(bn::colors::black, 
-            max(0, fade_intensity - LEVEL_FADE_INCREMENT));
-
-        default_painted_palette_ptr->set_fade(bn::colors::black, 
-            max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+        main_bg_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+        default_painted_palette_ptr->set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
 
         if(main_bg_palette.fade_intensity() == 0) {fade_in = false;}
     }
@@ -598,26 +602,36 @@ void Level::updateFade()
         for(int32 i = 0; i < current_room.game_objects.size(); i++)
         {
             GameObject* object_ptr = current_room.game_objects.at(i);
-            bn::sprite_palette_ptr object_palette = object_ptr->sprite_ptr->palette();
+            
+            bn::sprite_palette_ptr object_palette       = object_ptr->sprite_ptr->palette();
+            bn::sprite_palette_ptr hit_effect_palette   = object_ptr->hit_effect_sprite_ptr->palette();
+            bn::sprite_palette_ptr splat_effect_palette = object_ptr->splat_effect_sprite_ptr->palette();
+            bn::sprite_palette_ptr hp_bar_palette       = object_ptr->hp_sprite_ptr->palette();
 
             object_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+            hit_effect_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+            splat_effect_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+            hp_bar_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
 
             // If fully faded out, stop drawing it and restore the palette.
             // This method assumes a fully faded out GameObject will be deleted. 
             if(object_palette.fade_intensity() == 1) 
             {
                 object_palette.set_fade(bn::colors::black, 0);
+                hit_effect_palette.set_fade(bn::colors::black, 0);
+                splat_effect_palette.set_fade(bn::colors::black, 0);
+                hp_bar_palette.set_fade(bn::colors::black, 0);
+
                 object_ptr->sprite_ptr->set_visible(false);
+                object_ptr->hit_effect_sprite_ptr->set_visible(false);
+                object_ptr->splat_effect_sprite_ptr->set_visible(false);
+                object_ptr->hp_sprite_ptr->set_visible(false);
             }
         }
 
-
         // Fade BGs out
-        main_bg_palette.set_fade(bn::colors::black, 
-            min(1, fade_intensity + LEVEL_FADE_INCREMENT));
-
-        default_painted_palette_ptr->set_fade(bn::colors::black, 
-            min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+        main_bg_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+        default_painted_palette_ptr->set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
 
         if(main_bg_palette.fade_intensity() == 1) {fade_out = false;}
     }

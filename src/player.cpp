@@ -14,10 +14,9 @@ Player::Player()
     sprite_ptr  = bn::sprite_items::player.create_sprite(0, 0);
 	sprite_ptr->set_z_order(PLAYER_Z_ORDER);
 	animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-																0,
-																bn::sprite_items::player.tiles_item(),
-																0,
-																0);
+																  0,
+																  bn::sprite_items::player.tiles_item(),
+																  0, 0);
 	default_palette_ptr = sprite_ptr->palette();
 
 	collider            = Collider(x(), y(), PLAYER_COLLIDER_WIDTH, PLAYER_COLLIDER_HEIGHT);
@@ -49,6 +48,8 @@ Player::Player()
 	current_phase_frame              = 0;
 	hitstop_frames                   = 0;
 	update_timer                     = 0;
+
+	overdrive_level = PLAYER_OD_LEVEL_0;
 	
 	wall_right_detected      = false;
     wall_left_detected       = false;
@@ -112,6 +113,8 @@ Player::Player(const Player& other) : GameObject(other)
 	current_phase_frame              = other.current_phase_frame;
 	hitstop_frames                   = other.hitstop_frames;
 	update_timer                     = other.update_timer;
+
+	overdrive_level = other.overdrive_level;
 
 	wall_right_detected      = other.wall_right_detected;
     wall_left_detected       = other.wall_left_detected;
@@ -182,6 +185,8 @@ Player& Player::operator =(const Player& other)
 	hitstop_frames                   = other.hitstop_frames;
 	update_timer                     = other.update_timer;
 
+	overdrive_level = other.overdrive_level;
+
 	wall_right_detected      = other.wall_right_detected;
     wall_left_detected       = other.wall_left_detected;
 	grounded_owp_detected    = other.grounded_owp_detected;
@@ -221,12 +226,12 @@ void Player::updateOverdriveState()
 	// Update Overdrive state
 	if(hitpoints >= PLAYER_OD_1_HP_REQUIRED) 
 	{
-		overdrive = PLAYER_OD_LEVEL_1;
+		overdrive_level = PLAYER_OD_LEVEL_1;
 
 		if(hitpoints >= PLAYER_OD_2_HP_REQUIRED)
-		{overdrive = PLAYER_OD_LEVEL_2;}
+		{overdrive_level = PLAYER_OD_LEVEL_2;}
 	}
-	else {overdrive = PLAYER_OD_LEVEL_0;}
+	else {overdrive_level = PLAYER_OD_LEVEL_0;}
 }
 
 void Player::jump()
@@ -287,7 +292,7 @@ void Player::createGroundedAttackHitboxes(bn::vector<GameObject*, MAX_GAME_OBJEC
 								  PLAYER_ATTACK_GROUND_1_HITSTUN_FRAMES,
 								  PLAYER_ATTACK_GROUND_1_SCREENSHAKE_FRAMES,
 								  PLAYER_ATTACK_GROUND_1_HB_LIFESPAN_FRAMES,
-								  PLAYER_ATTACK_GROUND_1_X_KNOCKBACK,
+								  PLAYER_ATTACK_GROUND_1_X_KNOCKBACK + (overdrive_level * PLAYER_ATTACK_GROUND_1_X_KNOCKBACK),
 								  PLAYER_ATTACK_GROUND_1_Y_KNOCKBACK,	
 								  PLAYER_ATTACK_GROUND_1_KNOCKBACK_DECAY,
 								  PLAYER_ATTACK_GROUND_1_HB_WIDTH,
@@ -315,7 +320,7 @@ void Player::createAirAttack1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>&
 								  PLAYER_ATTACK_AIR_1_HITSTUN_FRAMES,
 								  PLAYER_ATTACK_AIR_1_SCREENSHAKE_FRAMES,
 								  PLAYER_ATTACK_AIR_1_HB_LIFESPAN_FRAMES,
-								  PLAYER_ATTACK_AIR_1_X_KNOCKBACK,
+								  PLAYER_ATTACK_AIR_1_X_KNOCKBACK + (overdrive_level * PLAYER_ATTACK_AIR_1_X_KNOCKBACK),
 								  PLAYER_ATTACK_AIR_1_Y_KNOCKBACK,	
 								  PLAYER_ATTACK_AIR_1_KNOCKBACK_DECAY,
 								  PLAYER_ATTACK_AIR_1_HB_WIDTH,
@@ -384,7 +389,7 @@ void Player::drawOverdriveEffect()
 		od_sprite_1_ptr->set_vertical_flip(sprite_ptr->vertical_flip());
 	}
 
-	if(overdrive > 0)
+	if(overdrive_level > 0)
 	{
 		od_sprite_1_ptr->set_position(prior_frame_1_pos.x(), prior_frame_1_pos.y());
 		od_sprite_1_ptr->set_visible(true);
@@ -392,7 +397,7 @@ void Player::drawOverdriveEffect()
 		od_sprite_2_ptr->set_position(prior_frame_2_pos.x(), prior_frame_2_pos.y());
 		od_sprite_2_ptr->set_visible(true);
 
-		if(overdrive > 1)
+		if(overdrive_level > 1)
 		{
 			od_sprite_3_ptr->set_position(prior_frame_3_pos.x(), prior_frame_3_pos.y());
 			od_sprite_3_ptr->set_visible(true);
@@ -719,7 +724,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if((bn::keypad::left_held() || bn::keypad::right_held()))  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED + overdrive_level, x_speed);
 			}
 			
 			// Walk
@@ -775,7 +780,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if((bn::keypad::left_held() || bn::keypad::right_held()))  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED + overdrive_level, x_speed);
 			}
 
 			// Simulate momentum
@@ -877,7 +882,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if(bn::keypad::left_held())  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED + overdrive_level, x_speed);
 			}
 	
 			// Drift
@@ -911,7 +916,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if(bn::keypad::right_held())  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED + overdrive_level, x_speed);
 			}
 
 			// Drift
@@ -1277,7 +1282,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if((bn::keypad::left_held() || bn::keypad::right_held()))  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED + overdrive_level, x_speed);
 			}
 			
 			// Walk
@@ -1345,7 +1350,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if((bn::keypad::left_held() || bn::keypad::right_held()))  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED + overdrive_level, x_speed);
 			}
 
 			// Simulate momentum
@@ -1427,7 +1432,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 				late_roll_jump_grace_frames = PLAYER_LATE_ROLL_JUMP_GRACE_FRAMES;
 
 				// Exit Momentum
-				x_speed = PLAYER_MAX_X_SPEED;
+				x_speed = PLAYER_MAX_X_SPEED + overdrive_level;
 
 				if((bn::keypad::left_held()  && x_dir == RIGHT) || 
 			       (bn::keypad::right_held() && x_dir == LEFT))
@@ -1665,7 +1670,7 @@ void Player::setState(ObjectState new_state)
 																		0,
 																		bn::sprite_items::player.tiles_item(),
 																		21, 22, 23, 24, 25, 26, 27, 28, 29, 
-																		28, 29, 30, 31, 32, 33, 34, 35, 36);
+																		30, 31, 32, 33, 34, 35, 36, 37, 38);
 
 		break;
 

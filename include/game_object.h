@@ -38,6 +38,7 @@
 #include "bn_sprite_items_land_effect.h"
 #include "bn_sprite_items_hit_effect.h"
 #include "bn_sprite_items_wall_splat_effect.h"
+#include "bn_sprite_items_enemy_hp_bar.h"
 
 // Level Object Assets
 #include "bn_sprite_items_tile_passage.h"
@@ -245,6 +246,9 @@ struct GameObject
 	bn::optional<bn::sprite_ptr>                                         splat_effect_sprite_ptr;
 	bn::optional<bn::sprite_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> splat_effect_animate_action_ptr;
 
+	bn::optional<bn::sprite_ptr>                                         hp_sprite_ptr;
+	bn::optional<bn::sprite_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> hp_animate_action_ptr;
+
 	ObjectType  object_type;
 	ObjectState state;
 
@@ -318,6 +322,8 @@ struct GameObject
 	virtual void updateDeathState();
 
 	virtual void updateTestColliders();
+
+	virtual void updateHPBar();
 
 	virtual void setCamera(const bn::camera_ptr& camera);
 

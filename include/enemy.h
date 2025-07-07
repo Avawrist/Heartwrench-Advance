@@ -6,6 +6,11 @@
 
 #define ENEMY_DAMAGE 1
 
+#define ENEMY_MAX_HP 5
+
+#define ENEMY_HP_BAR_X_OFFSET  16
+#define ENEMY_HP_BAR_Y_OFFSET -16
+
 struct Enemy : GameObject
 {
     //////////////////
@@ -22,7 +27,7 @@ struct Enemy : GameObject
     // GameObject Overrides //
     //////////////////////////
 
-    // None..
+    void updateHPBar() override;
 
     //////////////////////////////
     // State Function Overrides //

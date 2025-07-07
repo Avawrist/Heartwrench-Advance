@@ -13,6 +13,10 @@ GameObject::GameObject()
     splat_effect_sprite_ptr = bn::sprite_items::wall_splat_effect.create_sprite(0, 0);
     splat_effect_sprite_ptr->set_z_order(SPLAT_EFFECT_Z_ORDER);
     splat_effect_sprite_ptr->set_visible(false);
+
+    hp_sprite_ptr = bn::sprite_items::enemy_hp_bar.create_sprite(0, 0);
+	hp_sprite_ptr->set_z_order(HIT_EFFECT_Z_ORDER);
+    hp_sprite_ptr->set_visible(false);
     
     collider = Collider(x() + collider_offset_x, 
                         y() + collider_offset_y, 
@@ -49,6 +53,9 @@ GameObject::GameObject(const GameObject& other)
 
     splat_effect_sprite_ptr         = other.splat_effect_sprite_ptr;
     splat_effect_animate_action_ptr = other.splat_effect_animate_action_ptr;
+
+    hp_sprite_ptr         = other.hp_sprite_ptr;
+    hp_animate_action_ptr = other.hp_animate_action_ptr;
 
     rigidbody = other.rigidbody;
 
@@ -92,6 +99,9 @@ GameObject::~GameObject()
 
     splat_effect_sprite_ptr.reset();
     splat_effect_animate_action_ptr.reset();
+
+    hp_sprite_ptr.reset();
+	hp_animate_action_ptr.reset();
     
     if(object_type != PLAYER)
     {rigidbody.removeForces();}
@@ -112,6 +122,9 @@ GameObject& GameObject::operator =(const GameObject& other)
 
     splat_effect_sprite_ptr         = other.splat_effect_sprite_ptr;
     splat_effect_animate_action_ptr = other.splat_effect_animate_action_ptr;
+
+    hp_sprite_ptr         = other.hp_sprite_ptr;
+    hp_animate_action_ptr = other.hp_animate_action_ptr;
 
     rigidbody = other.rigidbody;
 
@@ -207,6 +220,12 @@ void GameObject::update(const RoomBounds& 							   room_bounds,
 	
     updateSpriteOffsets();
 
+    //////////////////////////
+    // Update HP Bar Visual //
+    //////////////////////////
+
+    updateHPBar();
+
 	//////////////////////
 	// Update Hit Flash //
 	//////////////////////
@@ -245,7 +264,8 @@ void GameObject::updateHitboxes(const RoomBounds& 							   room_bounds,
                                 const bn::regular_bg_ptr&                      bg_ptr, 
                                 const bn::span<const bn::regular_bg_map_cell>& cells,
                                 const bn::regular_bg_item&                     bg_item,
-                                const bn::camera_ptr&                          camera) {}
+                                const bn::camera_ptr&                          camera) 
+{}
 
 void GameObject::updateTimers() 
 {
@@ -295,9 +315,7 @@ void GameObject::draw()
     if(animate_action_ptr.has_value())
     {
         if(!animate_action_ptr->done())
-        {
-            animate_action_ptr->update();
-        }
+        {animate_action_ptr->update();}
     }
 
     if(hit_effect_animate_action_ptr.has_value())
@@ -307,10 +325,7 @@ void GameObject::draw()
             hit_effect_animate_action_ptr->update();
             hit_effect_sprite_ptr->set_visible(true);
         }
-        else
-        {
-            hit_effect_sprite_ptr->set_visible(false);
-        }
+        else {hit_effect_sprite_ptr->set_visible(false);}
     }
 
     if(splat_effect_animate_action_ptr.has_value())
@@ -321,14 +336,19 @@ void GameObject::draw()
             splat_effect_sprite_ptr->set_visible(true);
         }
         else
-        {
-            splat_effect_sprite_ptr->set_visible(false);
-        }
+        {splat_effect_sprite_ptr->set_visible(false);}
+    }
+
+    if(hp_animate_action_ptr.has_value())
+    {
+        if(!hp_animate_action_ptr->done())
+        {hp_animate_action_ptr->update();}
     }
 
     global_tiles_in_VRAM += sprite_ptr->tiles().tiles_count();
     global_tiles_in_VRAM += hit_effect_sprite_ptr->tiles().tiles_count();
     global_tiles_in_VRAM += splat_effect_sprite_ptr->tiles().tiles_count();
+    global_tiles_in_VRAM += hp_sprite_ptr->tiles().tiles_count();
 }
 
 void GameObject::setCamera(const bn::camera_ptr& camera)
@@ -341,6 +361,9 @@ void GameObject::setCamera(const bn::camera_ptr& camera)
 
     if(splat_effect_sprite_ptr.has_value())
     {splat_effect_sprite_ptr->set_camera(camera);}
+
+    if(hp_sprite_ptr.has_value())
+    {hp_sprite_ptr->set_camera(camera);}
     
     collider.setCamera(camera);
 }
@@ -508,6 +531,9 @@ void GameObject::updateTestColliders()
     // Update test colliders to the object's position.
 	test_collider.setPos(bn::point(collider.pos().x().integer(), collider.pos().y().integer() + GAME_OBJECT_GROUND_RAY_LENGTH));
 }
+
+void GameObject::updateHPBar()
+{}
 
 void GameObject::clampPosition(const bn::regular_bg_ptr& bg_ptr)
 {
