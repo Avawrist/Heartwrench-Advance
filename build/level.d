@@ -63,6 +63,11 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/build/bn_regular_bg_items_test_level.h \
  G:/game/build/bn_regular_bg_items_test_painted_bg.h \
  G:/game/build/bn_regular_bg_items_test_object_bg.h \
+ G:/game/build/bn_sprite_items_hud_hp_bar.h \
+ G:/butano-master/butano/include/bn_sprite_item.h \
+ G:/butano-master/butano/include/bn_sprite_shape_size.h \
+ G:/butano-master/butano/include/bn_sprite_tiles_item.h \
+ G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/game/include/math.h G:/butano-master/butano/include/bn_fixed.h \
  G:/butano-master/butano/include/bn_fixed_point.h \
  G:/game/include/utility.h G:/game/include/room.h \
@@ -76,7 +81,6 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/butano-master/butano/include/bn_vector.h \
  G:/butano-master/butano/include/bn_sprite_ptr.h \
  G:/butano-master/butano/include/bn_sprite_tiles_ptr.h \
- G:/butano-master/butano/include/bn_sprite_tiles_item.h \
  G:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h \
  G:/game/include/game_object.h \
  G:/butano-master/butano/include/bn_keypad.h \
@@ -92,9 +96,6 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/game/build/bn_sprite_palette_items_sprite_od_palette.h \
  G:/game/build/bn_sprite_items_air_jump_effect.h \
- G:/butano-master/butano/include/bn_sprite_item.h \
- G:/butano-master/butano/include/bn_sprite_shape_size.h \
- G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/game/build/bn_sprite_items_land_effect.h \
  G:/game/build/bn_sprite_items_hit_effect.h \
  G:/game/build/bn_sprite_items_wall_splat_effect.h \
@@ -195,6 +196,11 @@ G:/butano-master/butano/include/bn_bg_palette_item.h:
 G:/game/build/bn_regular_bg_items_test_level.h:
 G:/game/build/bn_regular_bg_items_test_painted_bg.h:
 G:/game/build/bn_regular_bg_items_test_object_bg.h:
+G:/game/build/bn_sprite_items_hud_hp_bar.h:
+G:/butano-master/butano/include/bn_sprite_item.h:
+G:/butano-master/butano/include/bn_sprite_shape_size.h:
+G:/butano-master/butano/include/bn_sprite_tiles_item.h:
+G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/game/include/math.h:
 G:/butano-master/butano/include/bn_fixed.h:
 G:/butano-master/butano/include/bn_fixed_point.h:
@@ -211,7 +217,6 @@ G:/butano-master/butano/include/bn_sprite_animate_actions.h:
 G:/butano-master/butano/include/bn_vector.h:
 G:/butano-master/butano/include/bn_sprite_ptr.h:
 G:/butano-master/butano/include/bn_sprite_tiles_ptr.h:
-G:/butano-master/butano/include/bn_sprite_tiles_item.h:
 G:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h:
 G:/game/include/game_object.h:
 G:/butano-master/butano/include/bn_keypad.h:
@@ -227,9 +232,6 @@ G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/game/build/bn_sprite_palette_items_sprite_od_palette.h:
 G:/game/build/bn_sprite_items_air_jump_effect.h:
-G:/butano-master/butano/include/bn_sprite_item.h:
-G:/butano-master/butano/include/bn_sprite_shape_size.h:
-G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/game/build/bn_sprite_items_land_effect.h:
 G:/game/build/bn_sprite_items_hit_effect.h:
 G:/game/build/bn_sprite_items_wall_splat_effect.h:

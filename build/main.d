@@ -77,6 +77,11 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/game/build/bn_regular_bg_items_test_level.h \
  G:/game/build/bn_regular_bg_items_test_painted_bg.h \
  G:/game/build/bn_regular_bg_items_test_object_bg.h \
+ G:/game/build/bn_sprite_items_hud_hp_bar.h \
+ G:/butano-master/butano/include/bn_sprite_item.h \
+ G:/butano-master/butano/include/bn_sprite_shape_size.h \
+ G:/butano-master/butano/include/bn_sprite_tiles_item.h \
+ G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/game/include/room.h G:/game/include/room_bounds.h \
  G:/game/include/collider.h G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_sprite_ptr.h \
@@ -84,7 +89,6 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/butano-master/butano/include/bn_vector.h \
  G:/butano-master/butano/include/bn_sprite_ptr.h \
  G:/butano-master/butano/include/bn_sprite_tiles_ptr.h \
- G:/butano-master/butano/include/bn_sprite_tiles_item.h \
  G:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h \
  G:/game/include/game_object.h \
  G:/butano-master/butano/include/bn_sprite_palette_ptr.h \
@@ -96,9 +100,6 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/game/build/bn_sprite_palette_items_sprite_od_palette.h \
  G:/game/build/bn_sprite_items_air_jump_effect.h \
- G:/butano-master/butano/include/bn_sprite_item.h \
- G:/butano-master/butano/include/bn_sprite_shape_size.h \
- G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/game/build/bn_sprite_items_land_effect.h \
  G:/game/build/bn_sprite_items_hit_effect.h \
  G:/game/build/bn_sprite_items_wall_splat_effect.h \
@@ -215,6 +216,11 @@ G:/butano-master/butano/include/bn_bg_palette_item.h:
 G:/game/build/bn_regular_bg_items_test_level.h:
 G:/game/build/bn_regular_bg_items_test_painted_bg.h:
 G:/game/build/bn_regular_bg_items_test_object_bg.h:
+G:/game/build/bn_sprite_items_hud_hp_bar.h:
+G:/butano-master/butano/include/bn_sprite_item.h:
+G:/butano-master/butano/include/bn_sprite_shape_size.h:
+G:/butano-master/butano/include/bn_sprite_tiles_item.h:
+G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/game/include/room.h:
 G:/game/include/room_bounds.h:
 G:/game/include/collider.h:
@@ -224,7 +230,6 @@ G:/butano-master/butano/include/bn_sprite_animate_actions.h:
 G:/butano-master/butano/include/bn_vector.h:
 G:/butano-master/butano/include/bn_sprite_ptr.h:
 G:/butano-master/butano/include/bn_sprite_tiles_ptr.h:
-G:/butano-master/butano/include/bn_sprite_tiles_item.h:
 G:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h:
 G:/game/include/game_object.h:
 G:/butano-master/butano/include/bn_sprite_palette_ptr.h:
@@ -236,9 +241,6 @@ G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/game/build/bn_sprite_palette_items_sprite_od_palette.h:
 G:/game/build/bn_sprite_items_air_jump_effect.h:
-G:/butano-master/butano/include/bn_sprite_item.h:
-G:/butano-master/butano/include/bn_sprite_shape_size.h:
-G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/game/build/bn_sprite_items_land_effect.h:
 G:/game/build/bn_sprite_items_hit_effect.h:
 G:/game/build/bn_sprite_items_wall_splat_effect.h:

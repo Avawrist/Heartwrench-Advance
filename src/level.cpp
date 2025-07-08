@@ -25,6 +25,9 @@ Level::Level(const Level& other)
 
     default_painted_palette_ptr = other.default_painted_palette_ptr;
 
+    hud_hp_sprite_ptr         = other.hud_hp_sprite_ptr;
+    hud_hp_animate_action_ptr = other.hud_hp_animate_action_ptr;
+
     tile_width  = other.tile_width;
     tile_height = other.tile_height;
 
@@ -63,6 +66,9 @@ void Level::operator =(const Level& other)
 
     default_painted_palette_ptr = other.default_painted_palette_ptr;
 
+    hud_hp_sprite_ptr         = other.hud_hp_sprite_ptr;
+    hud_hp_animate_action_ptr = other.hud_hp_animate_action_ptr;
+
     tile_width  = other.tile_width;
     tile_height = other.tile_height;
 
@@ -89,6 +95,9 @@ void Level::clear()
     main_bg_ptr.reset();
     painted_bg_ptr.reset();
     object_bg_ptr.reset();
+
+    hud_hp_sprite_ptr.reset();
+    hud_hp_animate_action_ptr.reset();
 
     bg_item.reset();
     object_bg_item.reset();
@@ -166,11 +175,21 @@ void Level::load(LevelName level_name)
     main_bg_ptr->set_z_order(MAIN_BG_ORDER);
     object_bg_ptr->set_z_order(OBJECT_BG_ORDER);
 
+    // Initialize HUD elements
+    hud_hp_sprite_ptr         = bn::sprite_items::hud_hp_bar.create_sprite(0, 0);
+    hud_hp_animate_action_ptr = bn::create_sprite_animate_action_forever(hud_hp_sprite_ptr.value(),
+                                                                         0,
+                                                                         bn::sprite_items::hud_hp_bar.tiles_item(),
+                                                                         0, 0);
+    hud_hp_sprite_ptr->set_z_order(HUD_Z_LAYER);
+
     // Set Camera
     main_bg_ptr->set_camera(camera.value());
     painted_bg_ptr->set_camera(camera.value());
     object_bg_ptr->set_camera(camera.value());
     object_bg_ptr->set_visible(false);
+
+    hud_hp_sprite_ptr->set_camera(camera.value());
 
     // Set black screen
     bn::bg_palette_ptr main_bg_palette = main_bg_ptr->palette();
@@ -332,6 +351,7 @@ void Level::updateCamera()
         ////////////////////////////
         // Set the final position //
         ////////////////////////////
+
         camera.value().set_position(new_cam_x, new_cam_y);
 
         ///////////////////////
@@ -364,6 +384,10 @@ void Level::updateCamera()
     cam_update_timer++;
     if(cam_update_timer >= 60) {cam_update_timer = 0;}
 
+    ////////////////
+    // Update HUD //
+    ////////////////  
+    drawHUD();
 
 }
 
@@ -555,6 +579,29 @@ void Level::transitionRoom()
     }
 }
 
+void Level::drawHUD()
+{
+    // Get temp player pointer
+    GameObject* temp_player_ptr = current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+    
+    if(temp_player_ptr != NULL)
+    {
+        if(hud_hp_animate_action_ptr.has_value())
+        {
+            // Set Position
+            hud_hp_sprite_ptr->set_position(camera->x() + HUD_HP_X_OFFSET, camera->y() + HUD_HP_Y_OFFSET);
+
+            // Update Graphic
+            hud_hp_animate_action_ptr = bn::create_sprite_animate_action_forever(hud_hp_sprite_ptr.value(),
+																                 0,
+                                                                                 bn::sprite_items::hud_hp_bar.tiles_item(),
+                                                                                 temp_player_ptr->hitpoints, temp_player_ptr->hitpoints);
+
+            hud_hp_animate_action_ptr->update();
+        }
+    }
+}
+
 void Level::drawObjects()
 {
     global_tiles_in_VRAM = 0;
@@ -596,6 +643,11 @@ void Level::updateFade()
         main_bg_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
         default_painted_palette_ptr->set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
 
+        // Fade HUD in
+        bn::sprite_palette_ptr hud_hp_palette = hud_hp_sprite_ptr->palette();
+        hud_hp_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+
+        // End condition
         if(main_bg_palette.fade_intensity() == 0) {fade_in = false;}
     }
     else if(fade_out)
@@ -635,6 +687,17 @@ void Level::updateFade()
         main_bg_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
         default_painted_palette_ptr->set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
 
+        // Fade HUD out
+        bn::sprite_palette_ptr hud_hp_palette = hud_hp_sprite_ptr->palette();
+        hud_hp_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+
+        if(hud_hp_palette.fade_intensity() == 1)
+        {
+            hud_hp_palette.set_fade(bn::colors::black, 0);
+            hud_hp_sprite_ptr->set_visible(false);
+        }
+
+        // End condition
         if(main_bg_palette.fade_intensity() == 1) {fade_out = false;}
     }
 }

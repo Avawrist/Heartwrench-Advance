@@ -25,6 +25,9 @@
 #include "bn_regular_bg_items_test_painted_bg.h"
 #include "bn_regular_bg_items_test_object_bg.h"
 
+// HUD
+#include "bn_sprite_items_hud_hp_bar.h"
+
 // My Libs
 #include "math.h"
 #include "room.h"
@@ -49,6 +52,12 @@
 #define MAIN_BG_ORDER    2
 #define OBJECT_BG_ORDER  1
 
+// HUD Macros
+#define HUD_Z_LAYER -4
+
+#define HUD_HP_X_OFFSET -86 
+#define HUD_HP_Y_OFFSET -61
+
 // Fade 
 #define LEVEL_FADE_INCREMENT 0.05
 
@@ -62,6 +71,7 @@ struct Level
 {
     Room current_room;
 
+    // BGs
     bn::optional<bn::camera_ptr>            camera;
     bn::optional<bn::regular_bg_ptr>        main_bg_ptr;
     bn::optional<bn::regular_bg_ptr>        painted_bg_ptr;
@@ -74,6 +84,10 @@ struct Level
     
     bn::optional<bn::regular_bg_item>       object_bg_item;
     bn::span<const bn::regular_bg_map_cell> object_cells;
+
+    // HUD
+    bn::optional<bn::sprite_ptr>                                         hud_hp_sprite_ptr;
+	bn::optional<bn::sprite_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> hud_hp_animate_action_ptr;
 
     uint32 tile_width;
     uint32 tile_height;
@@ -114,6 +128,7 @@ struct Level
     void reloadOnDeath();
     void freeObjects();
     void transitionRoom();
+    void drawHUD();
     void drawObjects();
     void updateFade();
     void storePlayerInputs();

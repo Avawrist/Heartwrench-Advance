@@ -13,7 +13,7 @@
 //	+ regular map (flat), not compressed, 1280x640 
 //	Total size: 32 + 1216 + 1638400 = 1639648
 //
-//	Time-stamp: 2025-07-08, 12:34:38
+//	Time-stamp: 2025-07-08, 16:15:32
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
