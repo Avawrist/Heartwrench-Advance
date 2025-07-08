@@ -310,7 +310,9 @@ void Level::updateCamera()
             }
         }
 
-        cam_look_x_offset = clamp(-CAM_MAX_LOOK_X, CAM_MAX_LOOK_X, cam_look_x_offset);
+        int32 od_multiplier = ((Player*)temp_player_ptr)->overdrive_level + 1;
+
+        cam_look_x_offset = clamp(-CAM_MAX_LOOK_X * od_multiplier, CAM_MAX_LOOK_X * od_multiplier, cam_look_x_offset);
         cam_look_dir_x_offset = clamp(-CAM_MAX_DIR_LOOK_X, CAM_MAX_DIR_LOOK_X, cam_look_dir_x_offset);
         cam_look_y_offset = clamp(-CAM_MAX_LOOK_Y, CAM_MAX_LOOK_Y, cam_look_y_offset);
 
@@ -320,7 +322,7 @@ void Level::updateCamera()
         new_cam_x = clamp(current_room.room_bounds.left_bound  + HALF_SCREEN_WIDTH,  
                           current_room.room_bounds.right_bound - HALF_SCREEN_WIDTH, 
                           new_cam_x + cam_look_x_offset + cam_look_dir_x_offset);
-        new_cam_y = clamp(current_room.room_bounds.top_bound    + HALF_SCREEN_HEIGHT, 
+        new_cam_y = clamp(current_room.room_bounds.top_bound   + HALF_SCREEN_HEIGHT, 
                           current_room.room_bounds.bottom_bound - HALF_SCREEN_HEIGHT,
                           new_cam_y);
 

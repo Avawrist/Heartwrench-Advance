@@ -267,7 +267,7 @@ void GameObject::updateHitboxes(const RoomBounds& 							   room_bounds,
                                 const bn::camera_ptr&                          camera) 
 {}
 
-void GameObject::updateTimers() 
+void GameObject::updateTimers()
 {
     // Invuln frames
     invulnerability_frames -= 1;
