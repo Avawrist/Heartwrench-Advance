@@ -626,7 +626,7 @@ void Level::updateFade()
         // Fade objects in
         for(int32 i = 0; i < current_room.game_objects.size(); i++)
         {
-            GameObject* object_ptr                = current_room.game_objects.at(i);
+            GameObject* object_ptr = current_room.game_objects.at(i);
 
             bn::sprite_palette_ptr object_palette       = object_ptr->sprite_ptr->palette();
             bn::sprite_palette_ptr hit_effect_palette   = object_ptr->hit_effect_sprite_ptr->palette();
