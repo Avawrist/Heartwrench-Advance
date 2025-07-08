@@ -981,155 +981,77 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 						}		
 						
-						else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
+						else if(tile_index == SHALLOW_SLOPE_1_INDEX)
 						{
 
 							other_collider = Collider(world_x, 
-														world_y + 3, 
-														TILE_WIDTH, 
-														TILE_HEIGHT / 4);
+													  world_y + 3, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT / 4);
 
 							if(collider.isCollision(other_collider))
 							{clear_to_jump = false;}
 
 						}
 							
-						else if(tile_index == LEFT_SHALLOW_SLOPE_2_INDEX)
+						else if(tile_index == SHALLOW_SLOPE_2_INDEX)
 						{
 							other_collider = Collider(world_x, 
-														world_y + 2, 
-														TILE_WIDTH, 
-														TILE_HEIGHT / 2);
+													  world_y + 2, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT / 2);
 
 							if(collider.isCollision(other_collider))
 							{clear_to_jump = false;}
 
 						}
 
-						else if(tile_index == LEFT_SHALLOW_SLOPE_3_INDEX)
+						else if(tile_index == SHALLOW_SLOPE_3_INDEX)
 						{
 
 							other_collider = Collider(world_x, 
-														world_y + 1, 
-														TILE_WIDTH, 
-														TILE_HEIGHT - 2);
+													  world_y + 1, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT - 2);
 
 							if(collider.isCollision(other_collider))
 							{clear_to_jump = false;}
 
 						}
 
-						else if(tile_index == LEFT_SHALLOW_SLOPE_4_INDEX)
+						else if(tile_index == SHALLOW_SLOPE_4_INDEX)
 						{
 
 							other_collider = Collider(world_x, 
-														world_y, 
-														TILE_WIDTH, 
-														TILE_HEIGHT);
+													  world_y, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT);
 
 							if(collider.isCollision(other_collider))
 							{clear_to_jump = false;}
 
 						}
 
-						else if(tile_index == LEFT_STEEP_SLOPE_1_INDEX)
+						else if(tile_index == STEEP_SLOPE_1_INDEX)
 						{
 							
 							other_collider = Collider(world_x, 
-														world_y + 2, 
-														TILE_WIDTH, 
-														TILE_HEIGHT / 2);
+													  world_y + 2, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT / 2);
 
 							if(collider.isCollision(other_collider))
 							{clear_to_jump = false;}
 
 						}
 
-						else if(tile_index == LEFT_STEEP_SLOPE_2_INDEX)
+						else if(tile_index == STEEP_SLOPE_2_INDEX)
 						{
 
 							other_collider = Collider(world_x, 
-														world_y, 
-														TILE_WIDTH, 
-														TILE_HEIGHT);
-
-							if(collider.isCollision(other_collider))
-							{clear_to_jump = false;}
-
-						}
-
-						else if(tile_index == RIGHT_SHALLOW_SLOPE_1_INDEX)
-						{
-
-							other_collider = Collider(world_x, 
-														world_y + 3, 
-														TILE_WIDTH, 
-														TILE_HEIGHT / 4);
-
-							if(collider.isCollision(other_collider))
-							{clear_to_jump = false;}
-
-						}
-
-						else if(tile_index == RIGHT_SHALLOW_SLOPE_2_INDEX)
-						{
-
-							other_collider = Collider(world_x, 
-														world_y + 2, 
-														TILE_WIDTH, 
-														TILE_HEIGHT / 2);
-
-							if(collider.isCollision(other_collider))
-							{clear_to_jump = false;}
-
-						}
-
-						else if(tile_index == RIGHT_SHALLOW_SLOPE_3_INDEX)
-						{
-
-							other_collider = Collider(world_x, 
-														world_y + 1,
-														TILE_WIDTH, 
-														TILE_HEIGHT - 2);
-
-							if(collider.isCollision(other_collider))
-							{clear_to_jump = false;}
-
-						}
-						
-						else if(tile_index == RIGHT_SHALLOW_SLOPE_4_INDEX)
-						{
-
-							other_collider = Collider(world_x, 
-														world_y,
-														TILE_WIDTH, 
-														TILE_HEIGHT);
-
-							if(collider.isCollision(other_collider))
-							{clear_to_jump = false;}
-
-						}
-						
-						else if(tile_index == RIGHT_STEEP_SLOPE_1_INDEX)
-						{
-						
-							other_collider = Collider(world_x, 
-														world_y + 2,
-														TILE_WIDTH, 
-														TILE_HEIGHT / 2);
-
-							if(collider.isCollision(other_collider))
-							{clear_to_jump = false;}
-
-						}
-						
-						else if(tile_index == RIGHT_STEEP_SLOPE_2_INDEX)
-						{
-
-							other_collider = Collider(world_x, 
-														world_y,
-														TILE_WIDTH, 
-														TILE_HEIGHT);
+													  world_y, 
+													  TILE_WIDTH, 
+													  TILE_HEIGHT);
 
 							if(collider.isCollision(other_collider))
 							{clear_to_jump = false;}
@@ -2274,91 +2196,58 @@ void Player::resolveTileCollision(const bn::regular_bg_ptr&                     
 					resolveVGearBottomCollision(other_collider);
 				}
 
-				else if(tile_index == UP_SPIKE_BLOCK_1_INDEX ||
-                    	tile_index == UP_SPIKE_BLOCK_2_INDEX)
+				else if(tile_index >= SPIKE_MIN_INDEX &&
+                    	tile_index <= SPIKE_MAX_INDEX)
 				{
 					other_collider = Collider(world_x,
 											  world_y, 
 											  TILE_WIDTH, 
 											  TILE_HEIGHT);
 					
-					resolveUpSpikeCollision(other_collider);
-				}
-
-				else if(tile_index == DOWN_SPIKE_BLOCK_1_INDEX ||
-						tile_index == DOWN_SPIKE_BLOCK_2_INDEX)
-				{
-					other_collider = Collider(world_x,
-											world_y, 
-											TILE_WIDTH, 
-											TILE_HEIGHT);
-					
-					resolveDownSpikeCollision(other_collider);
-				}
-
-				else if(tile_index == LEFT_SPIKE_BLOCK_1_INDEX ||
-						tile_index == LEFT_SPIKE_BLOCK_2_INDEX)
-				{
-					other_collider = Collider(world_x,
-											world_y, 
-											TILE_WIDTH, 
-											TILE_HEIGHT);
-					
-					resolveLeftSpikeCollision(other_collider);
-				}
-
-				else if(tile_index == RIGHT_SPIKE_BLOCK_1_INDEX || 
-						tile_index == RIGHT_SPIKE_BLOCK_2_INDEX)
-				{
-					other_collider = Collider(world_x,
-											world_y, 
-											TILE_WIDTH,
-											TILE_HEIGHT);
-					
-					resolveRightSpikeCollision(other_collider);
+					resolveSpikeCollision(other_collider);
 				}
 				
-				else if(tile_index == LEFT_SHALLOW_SLOPE_1_INDEX)
+				else if(tile_index == SHALLOW_SLOPE_1_INDEX)
 				{
 					other_collider = Collider(world_x, 
 											  world_y + 3, 
 											  TILE_WIDTH, 
 											  TILE_HEIGHT / 4);
 
-					resolveLeftShallowSlope1Collision(other_collider, world_y);
+					resolveShallowSlope1Collision(other_collider, world_y);
 				}
 					
-				else if(tile_index == LEFT_SHALLOW_SLOPE_2_INDEX)
+				else if(tile_index == SHALLOW_SLOPE_2_INDEX)
 				{
 					other_collider = Collider(world_x, 
 												world_y + 2, 
 												TILE_WIDTH, 
 												TILE_HEIGHT / 2);
 
-					resolveLeftShallowSlope2Collision(other_collider, world_y);
+					resolveShallowSlope2Collision(other_collider, world_y);
 				}
 
-				else if(tile_index == LEFT_SHALLOW_SLOPE_3_INDEX)
+				else if(tile_index == SHALLOW_SLOPE_3_INDEX)
 				{
 					other_collider = Collider(world_x, 
 												world_y + 1, 
 												TILE_WIDTH, 
 												TILE_HEIGHT - 2);
 
-					resolveLeftShallowSlope3Collision(other_collider, world_y);
+					resolveShallowSlope3Collision(other_collider, world_y);
 				}
 
-				else if(tile_index == LEFT_SHALLOW_SLOPE_4_INDEX)
+				else if(tile_index == SHALLOW_SLOPE_4_INDEX)
 				{
 					other_collider = Collider(world_x, 
 												world_y, 
 												TILE_WIDTH, 
 												TILE_HEIGHT);
 
-					resolveLeftShallowSlope4Collision(other_collider, world_y);
+					resolveShallowSlope4Collision(other_collider, world_y);
 				}
 
-				else if(tile_index == LEFT_STEEP_SLOPE_1_INDEX)
+				else if(tile_index == STEEP_SLOPE_1_INDEX)
 				{
 					
 					other_collider = Collider(world_x, 
@@ -2366,77 +2255,17 @@ void Player::resolveTileCollision(const bn::regular_bg_ptr&                     
 											TILE_WIDTH, 
 											TILE_HEIGHT / 2);
 
-					resolveLeftSteepSlope1Collision(other_collider, world_y);
+					resolveSteepSlope1Collision(other_collider, world_y);
 				}
 
-				else if(tile_index == LEFT_STEEP_SLOPE_2_INDEX)
+				else if(tile_index == STEEP_SLOPE_2_INDEX)
 				{
 					other_collider = Collider(world_x, 
 											world_y, 
 											TILE_WIDTH, 
 											TILE_HEIGHT);
 
-					resolveLeftSteepSlope2Collision(other_collider, world_y);
-				}
-
-				else if(tile_index == RIGHT_SHALLOW_SLOPE_1_INDEX)
-				{
-					other_collider = Collider(world_x, 
-												world_y + 3, 
-												TILE_WIDTH, 
-												TILE_HEIGHT / 4);
-
-					resolveRightShallowSlope1Collision(other_collider, world_y);
-				}
-
-				else if(tile_index == RIGHT_SHALLOW_SLOPE_2_INDEX)
-				{
-					other_collider = Collider(world_x, 
-												world_y + 2, 
-												TILE_WIDTH, 
-												TILE_HEIGHT / 2);
-
-					resolveRightShallowSlope2Collision(other_collider, world_y);
-				}
-
-				else if(tile_index == RIGHT_SHALLOW_SLOPE_3_INDEX)
-				{
-					other_collider = Collider(world_x, 
-												world_y + 1,
-												TILE_WIDTH, 
-												TILE_HEIGHT - 2);
-
-					resolveRightShallowSlope3Collision(other_collider, world_y);
-				}
-				
-				else if(tile_index == RIGHT_SHALLOW_SLOPE_4_INDEX)
-				{
-					other_collider = Collider(world_x, 
-												world_y,
-												TILE_WIDTH, 
-												TILE_HEIGHT);
-
-					resolveRightShallowSlope4Collision(other_collider, world_y);
-				}
-				
-				else if(tile_index == RIGHT_STEEP_SLOPE_1_INDEX)
-				{
-					other_collider = Collider(world_x, 
-												world_y + 2,
-												TILE_WIDTH, 
-												TILE_HEIGHT / 2);
-
-					resolveRightSteepSlope1Collision(other_collider, world_y);
-				}
-				
-				else if(tile_index == RIGHT_STEEP_SLOPE_2_INDEX)
-				{
-					other_collider = Collider(world_x, 
-											  world_y,
-											  TILE_WIDTH, 
-											  TILE_HEIGHT);
-
-					resolveRightSteepSlope2Collision(other_collider, world_y);
+					resolveSteepSlope2Collision(other_collider, world_y);
 				}
 				
 				else if(tile_index >= ONEWAY_BLOCK_MIN_INDEX &&

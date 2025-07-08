@@ -282,20 +282,11 @@ void AutoPlatform::resolveVGearBottomCollision(const Collider& other_collider)
     }
 }
 
-void AutoPlatform::resolveUpSpikeCollision(const Collider& other_collider) {}
-void AutoPlatform::resolveDownSpikeCollision(const Collider& other_collider) {}
-void AutoPlatform::resolveLeftSpikeCollision(const Collider& other_collider) {}
-void AutoPlatform::resolveRightSpikeCollision(const Collider& other_collider) {}
-void AutoPlatform::resolveLeftShallowSlope1Collision(const Collider& other_collider, int32 world_y) {}
-void AutoPlatform::resolveLeftShallowSlope2Collision(const Collider& other_collider, int32 world_y) {}
-void AutoPlatform::resolveLeftShallowSlope3Collision(const Collider& other_collider, int32 world_y) {}
-void AutoPlatform::resolveLeftShallowSlope4Collision(const Collider& other_collider, int32 world_y) {}
-void AutoPlatform::resolveLeftSteepSlope1Collision(const Collider& other_collider, int32 world_y) {}
-void AutoPlatform::resolveLeftSteepSlope2Collision(const Collider& other_collider, int32 world_y) {}
-void AutoPlatform::resolveRightShallowSlope1Collision(const Collider& other_collider, int32 world_y) {}
-void AutoPlatform::resolveRightShallowSlope2Collision(const Collider& other_collider, int32 world_y) {}
-void AutoPlatform::resolveRightShallowSlope3Collision(const Collider& other_collider, int32 world_y) {}
-void AutoPlatform::resolveRightShallowSlope4Collision(const Collider& other_collider, int32 world_y) {}
-void AutoPlatform::resolveRightSteepSlope1Collision(const Collider& other_collider, int32 world_y) {}
-void AutoPlatform::resolveRightSteepSlope2Collision(const Collider& other_collider, int32 world_y) {}
+void AutoPlatform::resolveSpikeCollision(const Collider& other_collider) {}
+void AutoPlatform::resolveShallowSlope1Collision(const Collider& other_collider, int32 world_y) {}
+void AutoPlatform::resolveShallowSlope2Collision(const Collider& other_collider, int32 world_y) {}
+void AutoPlatform::resolveShallowSlope3Collision(const Collider& other_collider, int32 world_y) {}
+void AutoPlatform::resolveShallowSlope4Collision(const Collider& other_collider, int32 world_y) {}
+void AutoPlatform::resolveSteepSlope1Collision(const Collider& other_collider, int32 world_y) {}
+void AutoPlatform::resolveSteepSlope2Collision(const Collider& other_collider, int32 world_y) {}
 void AutoPlatform::resolveOneWayBlockCollision(const Collider& other_collider) {}
