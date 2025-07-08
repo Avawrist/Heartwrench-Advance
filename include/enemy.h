@@ -8,8 +8,8 @@
 
 #define ENEMY_MAX_HP 5
 
-#define ENEMY_HP_BAR_X_OFFSET  16
-#define ENEMY_HP_BAR_Y_OFFSET -16
+#define ENEMY_HP_BAR_X_OFFSET  20
+#define ENEMY_HP_BAR_Y_OFFSET -8
 
 struct Enemy : GameObject
 {

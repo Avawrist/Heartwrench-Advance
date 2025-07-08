@@ -131,7 +131,7 @@ void SmashBlockLarge::setState(ObjectState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 																		1,
 																		bn::sprite_items::smash_block_large.tiles_item(),
-																		1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5);
+																		1, 1, 2, 2, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5);
 
 		break;
 
