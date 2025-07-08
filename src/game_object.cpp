@@ -703,7 +703,7 @@ void GameObject::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&    
 
 void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
 {
-    //if(state == OBJECT_DEATH) {return;}
+    if(state == OBJECT_DEATH) {return;}
 
     for(int32 i = 0; i < game_objects.size(); i++)
     {   
