@@ -355,7 +355,7 @@ void Player::createWallJumpEffect()
 {
 	if(global_tiles_in_VRAM > MAX_SPRITE_TILES) {return;}
 
-	#define WALL_JUMP_EFFECT_OFFSET -8
+	#define WALL_JUMP_EFFECT_OFFSET -4
 
 	jump_effect_sprite_ptr->set_visible(true);
 	jump_effect_sprite_ptr->set_position(x() + ((int32)x_dir * WALL_JUMP_EFFECT_OFFSET), y());

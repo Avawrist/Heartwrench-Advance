@@ -1,0 +1,20 @@
+** Minish Cap Spritework Notes **
+
+The Workflow:
+1. Start by finding the biggest shapes
+2. Using these big shapes, build a silhouette with shape appeal
+3. Now begin to describe the forms using primarily round subshapes
+4. Small details can be added in now, taking care not to overcrowd the sprite.
+5. For rounder forms, a soft edge can be added to the outline.
+   Outlines are lighter near the top of the sprite and darker near the base,
+   indicating a top light.
+6. A full black outline can be used for areas that require higher contrast to stand out.
+
+Essential Tips:
+* Work off of a public color palette until you are comfortable picking colors
+* The Minish Cap art is all in top-down perspective. 
+* Do not try to describe each unique surface normal with a different color.
+  Changes in surface can be implied, and contained within a single color. 
+* Avoid blocky forms with sharp angles, these are harder to describe at a low
+  resolution. Sharp angles usually require an explicit color change to describe,
+  and can crowd a small sprite with too many noisy patches of color. 

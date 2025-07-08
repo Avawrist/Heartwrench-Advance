@@ -168,6 +168,10 @@ void Enemy::resolvePushBlockCollision(GameObject& object)
 
         	// If there is still collision somehow, must be corner case //
         	resolveCornerCollision(object.collider);
+
+			// Push the block
+			if(state == OBJECT_HITSTUN || state == OBJECT_DEATH)
+			{object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);}
 		}
     }
 
@@ -198,6 +202,10 @@ void Enemy::resolvePushBlockMiniCollision(GameObject& object)
 
         	// If there is still collision somehow, must be corner case //
         	resolveCornerCollision(object.collider);
+
+			// Push the block
+			if(state == OBJECT_HITSTUN || state == OBJECT_DEATH)
+			{object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);}
 		}
     }
 
