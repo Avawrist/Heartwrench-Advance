@@ -253,7 +253,7 @@ void Player::rollJump()
 
 	remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
 	late_jump_grace_frames      = 0;
-	rigidbody.addForce(Force(bn::fixed_point_t<12>((PLAYER_ROLL_JUMP_X_FORCE + (int32)(overdrive_level > 0)) * (int32)x_dir, PLAYER_ROLL_JUMP_Y_FORCE), 
+	rigidbody.addForce(Force(bn::fixed_point_t<12>((PLAYER_ROLL_JUMP_X_FORCE + overdrive_level) * (int32)x_dir, PLAYER_ROLL_JUMP_Y_FORCE), 
 	                                                PLAYER_ROLL_JUMP_DECAY));
 	//setVerticalStretch();
 
@@ -1343,7 +1343,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 		case PLAYER_ROLL:
 
 			// Add Roll Force
-			rigidbody.addForce(Force(bn::fixed_point_t<12>(((PLAYER_ROLL_X_FORCE + (int32)(overdrive_level > 0)) * (int32)x_dir), 0), 
+			rigidbody.addForce(Force(bn::fixed_point_t<12>(((PLAYER_ROLL_X_FORCE + overdrive_level) * (int32)x_dir), 0), 
 			                                               PLAYER_ROLL_DECAY));
 
 			// End condition
