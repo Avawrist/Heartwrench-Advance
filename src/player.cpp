@@ -253,7 +253,8 @@ void Player::rollJump()
 
 	remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
 	late_jump_grace_frames      = 0;
-	rigidbody.addForce(PLAYER_ROLL_JUMP_FORCE);
+	rigidbody.addForce(Force(bn::fixed_point_t<12>((PLAYER_ROLL_JUMP_X_FORCE + (int32)(overdrive_level > 0)) * (int32)x_dir, PLAYER_ROLL_JUMP_Y_FORCE), 
+	                                                PLAYER_ROLL_JUMP_DECAY));
 	//setVerticalStretch();
 
 	// Jump Effect
@@ -389,7 +390,7 @@ void Player::drawOverdriveEffect()
 		od_sprite_1_ptr->set_vertical_flip(sprite_ptr->vertical_flip());
 	}
 
-	if(overdrive_level > 0)
+	if(state == PLAYER_ROLL) //overdrive_level > 0
 	{
 		od_sprite_1_ptr->set_position(prior_frame_1_pos.x(), prior_frame_1_pos.y());
 		od_sprite_1_ptr->set_visible(true);
@@ -397,11 +398,11 @@ void Player::drawOverdriveEffect()
 		od_sprite_2_ptr->set_position(prior_frame_2_pos.x(), prior_frame_2_pos.y());
 		od_sprite_2_ptr->set_visible(true);
 
-		if(overdrive_level > 1)
-		{
-			od_sprite_3_ptr->set_position(prior_frame_3_pos.x(), prior_frame_3_pos.y());
-			od_sprite_3_ptr->set_visible(true);
-		}
+		//if(overdrive_level > 1)
+		//{
+		od_sprite_3_ptr->set_position(prior_frame_3_pos.x(), prior_frame_3_pos.y());
+		od_sprite_3_ptr->set_visible(true);
+		//}
 	}
 	else 
 	{
@@ -724,7 +725,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if((bn::keypad::left_held() || bn::keypad::right_held()))  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED + overdrive_level, x_speed);
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
 			}
 			
 			// Walk
@@ -780,7 +781,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if((bn::keypad::left_held() || bn::keypad::right_held()))  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED + overdrive_level, x_speed);
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
 			}
 
 			// Simulate momentum
@@ -882,7 +883,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if(bn::keypad::left_held())  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED + overdrive_level, x_speed);
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
 			}
 	
 			// Drift
@@ -916,7 +917,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if(bn::keypad::right_held())  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED + overdrive_level, x_speed);
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
 			}
 
 			// Drift
@@ -1204,7 +1205,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if((bn::keypad::left_held() || bn::keypad::right_held()))  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED + overdrive_level, x_speed);
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
 			}
 			
 			// Walk
@@ -1272,7 +1273,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if((bn::keypad::left_held() || bn::keypad::right_held()))  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED + overdrive_level, x_speed);
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
 			}
 
 			// Simulate momentum
@@ -1342,7 +1343,8 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 		case PLAYER_ROLL:
 
 			// Add Roll Force
-			rigidbody.addForce(PLAYER_ROLL_FORCE);
+			rigidbody.addForce(Force(bn::fixed_point_t<12>(((PLAYER_ROLL_X_FORCE + (int32)(overdrive_level > 0)) * (int32)x_dir), 0), 
+			                                               PLAYER_ROLL_DECAY));
 
 			// End condition
 			if(animate_action_ptr->done())
@@ -1354,7 +1356,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 				late_roll_jump_grace_frames = PLAYER_LATE_ROLL_JUMP_GRACE_FRAMES;
 
 				// Exit Momentum
-				x_speed = PLAYER_MAX_X_SPEED + overdrive_level;
+				x_speed = PLAYER_MAX_X_SPEED;
 
 				if((bn::keypad::left_held()  && x_dir == RIGHT) || 
 			       (bn::keypad::right_held() && x_dir == LEFT))
