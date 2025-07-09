@@ -243,6 +243,8 @@ void Enemy::resolveAutoPlatformCollision(GameObject& object)
 
 void Enemy::resolveSmashBlockLargeCollision(GameObject& object)
 {
+	if(object.state == OBJECT_DEATH) {return;}
+
 	if(collider.isCollision(object.collider))
     {
         // Resolve X Axis Collision //
@@ -272,6 +274,8 @@ void Enemy::resolveSmashBlockLargeCollision(GameObject& object)
 
 void Enemy::resolveSmashBlockMiniCollision(GameObject& object)
 {
+	if(object.state == OBJECT_DEATH) {return;}
+
 	if(collider.isCollision(object.collider))
     {
         // Resolve X Axis Collision //
