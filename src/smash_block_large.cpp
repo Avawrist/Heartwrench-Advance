@@ -62,6 +62,12 @@ void SmashBlockLarge::update(const RoomBounds& 							   room_bounds,
     updateStateMachine(game_objects, bg_ptr, cells, bg_item, camera);
 
     ///////////////////
+    // Update Timers //
+    ///////////////////
+
+    updateTimers();
+
+    ///////////////////
     // Check if dead //
     ///////////////////
 

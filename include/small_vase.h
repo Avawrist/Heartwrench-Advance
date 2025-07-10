@@ -44,8 +44,6 @@ struct SmallVase : GameObject {
                 const bn::regular_bg_item&                     bg_item,
                 const bn::camera_ptr&                          camera) override;
 
-    void updateDeathState() override;
-
     //////////////////////////////
     // State Function Overrides //
     //////////////////////////////

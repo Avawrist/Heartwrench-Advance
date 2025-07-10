@@ -98,6 +98,7 @@ large_vase.o: G:/game/src/large_vase.cpp G:/game/include/large_vase.h \
  G:/game/build/bn_sprite_items_smash_block_mini.h \
  G:/game/build/bn_sprite_items_large_vase.h \
  G:/game/build/bn_sprite_items_small_vase.h \
+ G:/game/build/bn_sprite_items_hp_totem.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h \
  G:/game/build/bn_sprite_items_thorn_column.h \
  G:/game/build/bn_sprite_items_thorn_bar.h \
@@ -208,6 +209,7 @@ G:/game/build/bn_sprite_items_smash_block_large.h:
 G:/game/build/bn_sprite_items_smash_block_mini.h:
 G:/game/build/bn_sprite_items_large_vase.h:
 G:/game/build/bn_sprite_items_small_vase.h:
+G:/game/build/bn_sprite_items_hp_totem.h:
 G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/build/bn_sprite_items_thorn_column.h:
 G:/game/build/bn_sprite_items_thorn_bar.h:

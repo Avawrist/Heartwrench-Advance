@@ -36,8 +36,8 @@
 #define PLAYER_MAX_HITPOINTS      3
 #define PLAYER_STARTING_HITPOINTS 3
 
-#define PLAYER_OD_1_HP_REQUIRED   3
-#define PLAYER_OD_2_HP_REQUIRED   4
+#define PLAYER_OD_1_HP_REQUIRED   2
+#define PLAYER_OD_2_HP_REQUIRED   3
 
 #define PLAYER_HIT_INVULNERABILITY_FRAMES 120
 
@@ -48,7 +48,7 @@
 #define PLAYER_MIN_X_SPEED    0
 #define PLAYER_MAX_X_SPEED    2
 #define PLAYER_X_DECAY        1
-#define X_SPEED_ACC_RATE      0.15
+#define X_SPEED_ACC_RATE      0.125
 #define X_SPEED_DECAY_RATE    0.075
 
 #define PLAYER_BASE_JUMP_FORCE            -7 // 2 block height at 0.033 decay rate
@@ -92,7 +92,7 @@
 #define PLAYER_ATTACK_GROUND_1_HB_HEIGHT          32
 #define PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME    18
 #define PLAYER_ATTACK_GROUND_1_HB_LIFESPAN_FRAMES 8
-#define PLAYER_ATTACK_GROUND_1_X_KNOCKBACK        5
+#define PLAYER_ATTACK_GROUND_1_X_KNOCKBACK        4
 #define PLAYER_ATTACK_GROUND_1_Y_KNOCKBACK        0
 #define PLAYER_ATTACK_GROUND_1_KNOCKBACK_DECAY    0.05
 #define PLAYER_ATTACK_GROUND_1_DAMAGE             1
@@ -107,7 +107,7 @@
 #define PLAYER_ATTACK_AIR_1_HB_HEIGHT          32
 #define PLAYER_ATTACK_AIR_1_CREATE_HB_FRAME    18
 #define PLAYER_ATTACK_AIR_1_HB_LIFESPAN_FRAMES 8
-#define PLAYER_ATTACK_AIR_1_X_KNOCKBACK        5
+#define PLAYER_ATTACK_AIR_1_X_KNOCKBACK        4
 #define PLAYER_ATTACK_AIR_1_Y_KNOCKBACK        0
 #define PLAYER_ATTACK_AIR_1_KNOCKBACK_DECAY    0.05
 #define PLAYER_ATTACK_AIR_1_DAMAGE             1
@@ -120,12 +120,12 @@
 #define PLAYER_LATE_JUMP_GRACE_FRAMES       6
 #define PLAYER_LATE_ROLL_JUMP_GRACE_FRAMES  8
 
-#define PLAYER_ROLL_X_FORCE 2
+#define PLAYER_ROLL_X_FORCE 1
 #define PLAYER_ROLL_DECAY   0.75
 #define PLAYER_ROLL_X_SPEED 1
 #define PLAYER_MAX_ROLL_EFFECT_FRAMES 35
 
-#define PLAYER_ROLL_JUMP_X_FORCE  4
+#define PLAYER_ROLL_JUMP_X_FORCE  3
 #define PLAYER_ROLL_JUMP_Y_FORCE -7
 #define PLAYER_ROLL_JUMP_DECAY    0.033
 
@@ -295,6 +295,7 @@ struct Player : GameObject {
 	void resolveAutoPlatformCollision(GameObject& object)        override;
 	void resolveSmashBlockLargeCollision(GameObject& object)     override;
 	void resolveSmashBlockMiniCollision(GameObject& object)      override;
+	void resolveHPTotemCollision(GameObject& object)             override;
 
 	// Level Enemies
 	void resolveThornColumnCollision(GameObject& object) override; 

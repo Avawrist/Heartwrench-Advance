@@ -27,6 +27,7 @@ LargeVase::LargeVase()
     collider_y_axis   = collider;
 
     hitpoints = LARGE_VASE_HITPOINTS;
+    max_hp    = LARGE_VASE_HITPOINTS;
 }
 
 LargeVase::LargeVase(const LargeVase& other) : GameObject(other)
@@ -62,6 +63,12 @@ void LargeVase::update(const RoomBounds& 							   room_bounds,
     updateStateMachine(game_objects, bg_ptr, cells, bg_item, camera);
 
     ///////////////////
+    // Update Timers //
+    ///////////////////
+
+    updateTimers();
+
+    ///////////////////
     // Check if dead //
     ///////////////////
 
@@ -86,13 +93,6 @@ void LargeVase::update(const RoomBounds& 							   room_bounds,
 	updateInactiveState(camera);
 }
 
-void LargeVase::updateDeathState()
-{
-    // Spawn an item?
-
-    GameObject::updateDeathState();
-}
-
 //////////////////////////////
 // State Function Overrides //
 //////////////////////////////
@@ -108,6 +108,8 @@ void LargeVase::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   
 		case OBJECT_DEATH:
 
 			updateDeathState();
+
+            // Drop an item?
 
 		break;
 		

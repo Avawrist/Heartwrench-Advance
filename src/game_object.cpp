@@ -85,6 +85,7 @@ GameObject::GameObject(const GameObject& other)
     invulnerability_frames = other.invulnerability_frames;
     hitpoints              = other.hitpoints;
     damage                 = other.damage;
+    max_hp                 = other.max_hp;
 
 }
 
@@ -154,6 +155,7 @@ GameObject& GameObject::operator =(const GameObject& other)
     invulnerability_frames = other.invulnerability_frames;
     hitpoints              = other.hitpoints;
     damage                 = other.damage;
+    max_hp                 = other.max_hp;
 
     return *this;
 }
@@ -629,6 +631,12 @@ void GameObject::applyDamage(int32 _damage)
     if(hitpoints < 0) {hitpoints = 0;}
 }
 
+void GameObject::applyHP(int32 points)
+{
+    hitpoints += points;
+    hitpoints = clamp(0, max_hp, hitpoints);
+}
+
 void GameObject::applyHitEffect(int32 x, int32 y)
 {   
     if(global_tiles_in_VRAM > MAX_SPRITE_TILES) {return;}
@@ -770,6 +778,10 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
                     resolveSmallVaseCollision(*game_objects.at(i));
                 break;
 
+                case HP_TOTEM:
+                    resolveHPTotemCollision(*game_objects.at(i));
+                break;
+
                 // Level Enemies
                 case THORN_COLUMN:
                     resolveThornColumnCollision(*game_objects.at(i));
@@ -822,6 +834,7 @@ void GameObject::resolveSmashBlockLargeCollision(GameObject& object)     {}
 void GameObject::resolveSmashBlockMiniCollision(GameObject& object)      {}
 void GameObject::resolveLargeVaseCollision(GameObject& object)           {}
 void GameObject::resolveSmallVaseCollision(GameObject& object)           {}
+void GameObject::resolveHPTotemCollision(GameObject& object)             {}
 
 // Level Enemies
 void GameObject::resolveThornColumnCollision(GameObject& object) {}

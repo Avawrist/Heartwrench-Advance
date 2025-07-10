@@ -8,7 +8,7 @@
 
 #define ENEMY_MAX_HP 5
 
-#define ENEMY_HP_BAR_X_OFFSET  20
+#define ENEMY_HP_BAR_X_OFFSET  12
 #define ENEMY_HP_BAR_Y_OFFSET -8
 
 struct Enemy : GameObject
@@ -48,10 +48,12 @@ struct Enemy : GameObject
     void resolveAutoPlatformCollision(GameObject& object)        override;
     void resolveSmashBlockLargeCollision(GameObject& object)     override;
     void resolveSmashBlockMiniCollision(GameObject& object)      override;
+    void resolveHPTotemCollision(GameObject& object)             override;
 
     // Level Enemies
     void resolveThornColumnCollision(GameObject& object) override;
     void resolveThornBarCollision(GameObject& object)    override;
+	void resolveGroundGhoulCollision(GameObject& object) override;
 
     // Tiles
     void resolveXAxisCollision(const Collider& other_collider) override;

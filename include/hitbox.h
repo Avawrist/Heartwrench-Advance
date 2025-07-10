@@ -91,6 +91,7 @@ struct Hitbox : GameObject
     void resolveSmashBlockMiniCollision(GameObject& object)  override;
     void resolveLargeVaseCollision(GameObject& object)       override;
     void resolveSmallVaseCollision(GameObject& object)       override;
+    void resolveHPTotemCollision(GameObject& object)         override;
 
     // Tiles
     void resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 

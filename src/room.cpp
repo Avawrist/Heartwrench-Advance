@@ -219,6 +219,10 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             temp_object_ptr = new SmallVase();
         break;
 
+        case HP_TOTEM:
+            temp_object_ptr = new HPTotem();
+        break;
+
         ///////////////////
 	    // Level Enemies //
 	    ///////////////////
@@ -353,7 +357,7 @@ void Room::load(RoomName                                       room_name,
 
             room_bounds.top_bound    = -2256;
             room_bounds.right_bound  = -4400;
-            room_bounds.bottom_bound = -1824;
+            room_bounds.bottom_bound = -1776;
             room_bounds.left_bound   = -5104;
 
             // Add any special objects //
@@ -370,7 +374,7 @@ void Room::load(RoomName                                       room_name,
 
             room_bounds.top_bound    = -2256;
             room_bounds.right_bound  = -3952;
-            room_bounds.bottom_bound = -1824;
+            room_bounds.bottom_bound = -1776;
             room_bounds.left_bound   = -4400;
 
             // Add any special objects //

@@ -33,6 +33,7 @@
 #include "smash_block_mini.h"
 #include "large_vase.h"
 #include "small_vase.h"
+#include "hp_totem.h"
 
 // Enemies
 #include "ground_ghoul.h"

@@ -20,7 +20,7 @@ typedef int   int32;
 #define MAX_GAME_OBJECTS     10
 #define MAX_UNLOADED_OBJECTS 25
 
-#define MAX_SPRITE_TILES 1300
+#define MAX_SPRITE_TILES 1350
 
 #define SCREEN_W 240
 #define SCREEN_H 160

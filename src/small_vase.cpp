@@ -27,6 +27,7 @@ SmallVase::SmallVase()
     collider_y_axis   = collider;
 
     hitpoints = SMALL_VASE_HITPOINTS;
+    max_hp    = SMALL_VASE_HITPOINTS;
 }
 
 SmallVase::SmallVase(const SmallVase& other) : GameObject(other)
@@ -62,6 +63,12 @@ void SmallVase::update(const RoomBounds& 							   room_bounds,
     updateStateMachine(game_objects, bg_ptr, cells, bg_item, camera);
 
     ///////////////////
+    // Update Timers //
+    ///////////////////
+
+    updateTimers();
+
+    ///////////////////
     // Check if dead //
     ///////////////////
 
@@ -86,13 +93,6 @@ void SmallVase::update(const RoomBounds& 							   room_bounds,
 	updateInactiveState(camera);
 }
 
-void SmallVase::updateDeathState()
-{
-    // Spawn an item?
-
-    GameObject::updateDeathState();
-}
-
 //////////////////////////////
 // State Function Overrides //
 //////////////////////////////
@@ -108,6 +108,8 @@ void SmallVase::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   
 		case OBJECT_DEATH:
 
 			updateDeathState();
+
+            // Drop an item?
 
 		break;
 		

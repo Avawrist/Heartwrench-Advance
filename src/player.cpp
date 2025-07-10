@@ -46,6 +46,7 @@ Player::Player()
 	update_timer                     = 0;
 	roll_effect_frames               = 0;
 	roll_effect_offset_multiplier    = 0;
+	max_hp                           = PLAYER_MAX_HITPOINTS;
 
 	overdrive_level = PLAYER_OD_LEVEL_0;
 	
@@ -294,7 +295,7 @@ void Player::createGroundedAttackHitboxes(bn::vector<GameObject*, MAX_GAME_OBJEC
 								  PLAYER_ATTACK_GROUND_1_KNOCKBACK_DECAY,
 								  PLAYER_ATTACK_GROUND_1_HB_WIDTH,
 								  PLAYER_ATTACK_GROUND_1_HB_HEIGHT,
-								  PLAYER_ATTACK_GROUND_1_DAMAGE + overdrive_level,
+								  PLAYER_ATTACK_GROUND_1_DAMAGE,
 								  x_dir,
 								  y_dir,
 								  HITBOX_ATTACK_GROUND_1,
@@ -322,7 +323,7 @@ void Player::createAirAttack1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>&
 								  PLAYER_ATTACK_AIR_1_KNOCKBACK_DECAY,
 								  PLAYER_ATTACK_AIR_1_HB_WIDTH,
 								  PLAYER_ATTACK_AIR_1_HB_HEIGHT,
-								  PLAYER_ATTACK_AIR_1_DAMAGE + overdrive_level,
+								  PLAYER_ATTACK_AIR_1_DAMAGE,
 								  x_dir,
 								  y_dir,
 								  HITBOX_ATTACK_AIR_1,
@@ -368,7 +369,7 @@ void Player::drawRollEffect()
 {	
 	if(roll_effect_frames)
 	{
-		if(update_timer % 4 == 0)
+		if(update_timer % (4 - overdrive_level) == 0)
 		{roll_effect_offset_multiplier++;}
 
 		od_sprite_1_ptr->set_visible(true);
@@ -377,7 +378,7 @@ void Player::drawRollEffect()
 	}
 	else 
 	{
-		if(update_timer % 4 == 0)
+		if(update_timer % (4 - overdrive_level) == 0)
 		{roll_effect_offset_multiplier--;}
 
 		if(roll_effect_offset_multiplier <= 1)
@@ -392,10 +393,10 @@ void Player::drawRollEffect()
 	#define MAX_EFFECT_OFFSET_MULTIPLIER 3
 
 	roll_effect_offset_multiplier = clamp(MIN_EFFECT_OFFSET_MULTIPLIER, 
-		                                  MAX_EFFECT_OFFSET_MULTIPLIER, 
+		                                  MAX_EFFECT_OFFSET_MULTIPLIER,
 										  roll_effect_offset_multiplier);
 	
-	if(update_timer % roll_effect_offset_multiplier == 0)
+	if(update_timer % (roll_effect_offset_multiplier + overdrive_level) == 0)
 	{
 		od_sprite_3_ptr->set_position(od_sprite_2_ptr->position());
 		od_sprite_3_ptr->set_tiles(od_sprite_2_ptr->tiles());
@@ -1351,7 +1352,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 			// Add Roll Force
 			rigidbody.addForce(Force(bn::fixed_point_t<12>(((PLAYER_ROLL_X_FORCE + overdrive_level) * (int32)x_dir), 0), 
-			                                               PLAYER_ROLL_DECAY));
+			                                                 PLAYER_ROLL_DECAY));
 
 			// End condition
 			if(animate_action_ptr->done())
@@ -1948,6 +1949,53 @@ void Player::resolveSmashBlockLargeCollision(GameObject& object)
 }
 
 void Player::resolveSmashBlockMiniCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+	
+	if(collider.isCollision(object.collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(object.collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(object.collider);
+
+        // If there is still collision somehow, must be corner case //
+        resolveCornerCollision(object.collider);
+    }
+
+	updateTestColliders();
+
+	// Test for, and log grounded collision
+	if(test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{	
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
+	
+	// Test for wall riding on right side
+	if(test_collider_right.isCollision(object.collider))
+	{
+		right_wj_eligible = true;
+
+		if(rigidbody.normalized_dir.y() >= 0 &&
+		   bn::keypad::right_held() && !bn::keypad::down_held())
+		{wall_right_detected = true;}
+	}
+
+	// Test for wall riding on left side
+	if(test_collider_left.isCollision(object.collider))
+	{
+		left_wj_eligible = true;
+
+		if(rigidbody.normalized_dir.y() >= 0 &&
+			bn::keypad::left_held() && !bn::keypad::down_held()) 
+		{wall_left_detected = true;}
+	}
+}
+
+void Player::resolveHPTotemCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 	

@@ -55,6 +55,7 @@
 #include "bn_sprite_items_smash_block_mini.h"
 #include "bn_sprite_items_large_vase.h"
 #include "bn_sprite_items_small_vase.h"
+#include "bn_sprite_items_hp_totem.h"
 
 // Enemy Object Assets
 #include "bn_sprite_items_ground_ghoul.h"
@@ -162,6 +163,7 @@ enum ObjectType
 	SMASH_BLOCK_MINI,
 	LARGE_VASE,
 	SMALL_VASE,
+	HP_TOTEM,
 
 	// Level Enemies
 	THORN_COLUMN,
@@ -275,6 +277,7 @@ struct GameObject
 	int32 hitstun_frames         = 0;
 	int32 hitpoints              = 1;
 	int32 damage                 = 0;
+	int32 max_hp                 = 0;
 
 	bool is_inactive             = false;
 	bool is_dead                 = false;
@@ -347,6 +350,7 @@ struct GameObject
 	void setHitFlash(int32 frames);
 	void applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_dir);
 	void applyDamage(int32 _damage);
+	void applyHP(int32 points);
 	void applyHitEffect(int32 x, int32 y);
 	void applySplatEffect(int32 x, int32 y);
 
@@ -391,6 +395,7 @@ struct GameObject
 	virtual void resolveSmashBlockMiniCollision(GameObject& object);
 	virtual void resolveLargeVaseCollision(GameObject& object);
 	virtual void resolveSmallVaseCollision(GameObject& object);
+	virtual void resolveHPTotemCollision(GameObject& object);
 
 	// Level Enemies
 	virtual void resolveThornColumnCollision(GameObject& object); 

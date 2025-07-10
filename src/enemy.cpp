@@ -7,6 +7,7 @@
 Enemy::Enemy()
 {
 	damage = ENEMY_DAMAGE;
+	max_hp = ENEMY_MAX_HP;
 
 	hp_sprite_ptr->set_visible(true);
 }
@@ -303,6 +304,34 @@ void Enemy::resolveSmashBlockMiniCollision(GameObject& object)
 	}
 }
 
+void Enemy::resolveHPTotemCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(object.collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(object.collider);
+
+        // If there is still collision somehow, must be corner case //
+        resolveCornerCollision(object.collider);
+    }
+
+	updateTestColliders();
+
+	// Test for, and log grounded collision
+	if(test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{	
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
+}
+
+
 // Level Enemies
 void Enemy::resolveThornColumnCollision(GameObject& object)
 {
@@ -328,6 +357,17 @@ void Enemy::resolveThornBarCollision(GameObject& object)
 	   hitpoints > 0)
 	{
 		GameObject::applyHit(object.damage, 0, 0);
+	}
+}
+
+void Enemy::resolveGroundGhoulCollision(GameObject& object)
+{
+	if(object.state == OBJECT_HITSTUN || object.state == OBJECT_DEATH) {return;}
+	
+	if(collider.isCollision(object.collider) &&
+       (state == OBJECT_HITSTUN || state == OBJECT_DEATH))
+	{
+		object.applyHit(object.damage, rigidbody.normalized_dir.x().integer(), 0);
 	}
 }
 
