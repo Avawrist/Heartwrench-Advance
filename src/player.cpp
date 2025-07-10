@@ -29,10 +29,6 @@ Player::Player()
     
 	state             	 = PLAYER_AIR_NEUTRAL;
 
-	prior_frame_1_pos = bn::point(0, 0);
-	prior_frame_2_pos = bn::point(0, 0);
-	prior_frame_3_pos = bn::point(0, 0);
-
     x_speed        	  	 = PLAYER_MIN_X_SPEED;
 	phase_destination    = bn::fixed_point(0, 0);
 	
@@ -48,6 +44,8 @@ Player::Player()
 	current_phase_frame              = 0;
 	hitstop_frames                   = 0;
 	update_timer                     = 0;
+	roll_effect_frames               = 0;
+	roll_effect_offset_multiplier    = 0;
 
 	overdrive_level = PLAYER_OD_LEVEL_0;
 	
@@ -80,11 +78,11 @@ Player::Player()
 	od_sprite_1_ptr->set_visible(false);
 
 	od_sprite_2_ptr = bn::sprite_items::player.create_sprite(0, 0);
-	od_sprite_2_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
+	od_sprite_2_ptr->set_z_order(PROP_Z_ORDER);
 	od_sprite_2_ptr->set_visible(false);
 
 	od_sprite_3_ptr = bn::sprite_items::player.create_sprite(0, 0);
-	od_sprite_3_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
+	od_sprite_3_ptr->set_z_order(BG_Z_ORDER);
 	od_sprite_3_ptr->set_visible(false);
 
 	bn::sprite_palette_ptr sprite_od_palette = bn::sprite_palette_items::sprite_od_palette.create_palette();
@@ -95,10 +93,6 @@ Player::Player()
 
 Player::Player(const Player& other) : GameObject(other)
 {
-	prior_frame_1_pos = other.prior_frame_1_pos;
-	prior_frame_2_pos = other.prior_frame_2_pos;
-	prior_frame_3_pos = other.prior_frame_3_pos;
-
     x_speed        	  	 = other.x_speed;
 	phase_destination    = other.phase_destination;
 	
@@ -113,6 +107,8 @@ Player::Player(const Player& other) : GameObject(other)
 	current_phase_frame              = other.current_phase_frame;
 	hitstop_frames                   = other.hitstop_frames;
 	update_timer                     = other.update_timer;
+	roll_effect_frames               = other.roll_effect_frames;
+	roll_effect_offset_multiplier    = other.roll_effect_offset_multiplier;
 
 	overdrive_level = other.overdrive_level;
 
@@ -157,8 +153,10 @@ Player::~Player()
 
 	// Free the phase marker sprite
 	pm_sprite_ptr.reset();
+
 	jump_effect_sprite_ptr.reset();
 	jump_effect_anim_ptr.reset();
+
 	od_sprite_1_ptr.reset();
 	od_sprite_2_ptr.reset();
 	od_sprite_3_ptr.reset();
@@ -166,10 +164,6 @@ Player::~Player()
 
 Player& Player::operator =(const Player& other)
 {
-	prior_frame_1_pos = other.prior_frame_1_pos;
-	prior_frame_2_pos = other.prior_frame_2_pos;
-	prior_frame_3_pos = other.prior_frame_3_pos;
-
     x_speed        	  	 = other.x_speed;
 	phase_destination    = other.phase_destination;
 	
@@ -184,6 +178,8 @@ Player& Player::operator =(const Player& other)
 	current_phase_frame              = other.current_phase_frame;
 	hitstop_frames                   = other.hitstop_frames;
 	update_timer                     = other.update_timer;
+	roll_effect_frames               = other.roll_effect_frames;
+	roll_effect_offset_multiplier    = other.roll_effect_offset_multiplier;
 
 	overdrive_level = other.overdrive_level;
 
@@ -368,47 +364,54 @@ void Player::createWallJumpEffect()
 																 0, 1, 2, 3, 4, 5, 5, 6, 6);
 }
 
-void Player::drawOverdriveEffect()
-{
-	if(update_timer % 3 == 0)
+void Player::drawRollEffect()
+{	
+	if(roll_effect_frames)
 	{
-		prior_frame_3_pos = prior_frame_2_pos;
-		prior_frame_2_pos = prior_frame_1_pos;
-		prior_frame_1_pos.set_x((x() - rigidbody.final_dir.x()).integer());
-		prior_frame_1_pos.set_y((y() - rigidbody.final_dir.y()).integer());
+		if(update_timer % 4 == 0)
+		{roll_effect_offset_multiplier++;}
 
+		od_sprite_1_ptr->set_visible(true);
+		od_sprite_2_ptr->set_visible(true);
+		od_sprite_3_ptr->set_visible(true);
+	}
+	else 
+	{
+		if(update_timer % 4 == 0)
+		{roll_effect_offset_multiplier--;}
+
+		if(roll_effect_offset_multiplier <= 1)
+		{
+			od_sprite_1_ptr->set_visible(false);
+			od_sprite_2_ptr->set_visible(false);
+			od_sprite_3_ptr->set_visible(false);
+		}
+	}
+	
+	#define MIN_EFFECT_OFFSET_MULTIPLIER 1
+	#define MAX_EFFECT_OFFSET_MULTIPLIER 6
+
+	roll_effect_offset_multiplier = clamp(MIN_EFFECT_OFFSET_MULTIPLIER, 
+		                                  MAX_EFFECT_OFFSET_MULTIPLIER, 
+										  roll_effect_offset_multiplier);
+	
+	if(update_timer % roll_effect_offset_multiplier == 0)
+	{
+		od_sprite_3_ptr->set_position(od_sprite_2_ptr->position());
 		od_sprite_3_ptr->set_tiles(od_sprite_2_ptr->tiles());
 		od_sprite_3_ptr->set_horizontal_flip(od_sprite_2_ptr->horizontal_flip());
 		od_sprite_3_ptr->set_vertical_flip(od_sprite_2_ptr->vertical_flip());
 
+		od_sprite_2_ptr->set_position(od_sprite_1_ptr->position());
 		od_sprite_2_ptr->set_tiles(od_sprite_1_ptr->tiles());
 		od_sprite_2_ptr->set_horizontal_flip(od_sprite_1_ptr->horizontal_flip());
 		od_sprite_2_ptr->set_vertical_flip(od_sprite_1_ptr->vertical_flip());
-		
+
+		od_sprite_1_ptr->set_x((x()).integer());
+		od_sprite_1_ptr->set_y((y()).integer());
 		od_sprite_1_ptr->set_tiles(sprite_ptr->tiles());
 		od_sprite_1_ptr->set_horizontal_flip(sprite_ptr->horizontal_flip());
 		od_sprite_1_ptr->set_vertical_flip(sprite_ptr->vertical_flip());
-	}
-
-	if(state == PLAYER_ROLL) //overdrive_level > 0
-	{
-		od_sprite_1_ptr->set_position(prior_frame_1_pos.x(), prior_frame_1_pos.y());
-		od_sprite_1_ptr->set_visible(true);
-
-		od_sprite_2_ptr->set_position(prior_frame_2_pos.x(), prior_frame_2_pos.y());
-		od_sprite_2_ptr->set_visible(true);
-
-		//if(overdrive_level > 1)
-		//{
-		od_sprite_3_ptr->set_position(prior_frame_3_pos.x(), prior_frame_3_pos.y());
-		od_sprite_3_ptr->set_visible(true);
-		//}
-	}
-	else 
-	{
-		od_sprite_1_ptr->set_visible(false);
-		od_sprite_2_ptr->set_visible(false);
-		od_sprite_3_ptr->set_visible(false);
 	}
 }
 
@@ -523,6 +526,10 @@ void Player::updateTimers()
 	air_frames_elapsed = clamp(0, 
 							   PLAYER_MAX_AIR_FRAMES, 
 							   air_frames_elapsed);
+	roll_effect_frames--;
+	roll_effect_frames = clamp(0, 
+		                       PLAYER_MAX_ROLL_EFFECT_FRAMES, 
+							   roll_effect_frames);
 							   
 	if(grounded_detected) {air_frames_elapsed = 0;}
 
@@ -554,9 +561,6 @@ void Player::draw()
 	if(animate_action_ptr.has_value() && !animate_action_ptr->done())
     {
 		animate_action_ptr->update();
-
-		// Draw OD Effect
-		drawOverdriveEffect();
     }
 	global_tiles_in_VRAM += sprite_ptr->tiles().tiles_count();
 
@@ -600,6 +604,9 @@ void Player::draw()
 		{jump_effect_anim_ptr->update();}
 	}
 	global_tiles_in_VRAM += jump_effect_sprite_ptr->tiles().tiles_count();
+
+	// Draw Roll Effect
+	drawRollEffect();
 }
 
 void Player::setCamera(const bn::camera_ptr& camera)
@@ -610,7 +617,7 @@ void Player::setCamera(const bn::camera_ptr& camera)
 	jump_effect_sprite_ptr->set_camera(camera);
 	od_sprite_1_ptr->set_camera(camera);
 	od_sprite_2_ptr->set_camera(camera);
-	//od_sprite_3_ptr->set_camera(camera);
+	od_sprite_3_ptr->set_camera(camera);
 }
 
 void Player::applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_dir)
@@ -1474,7 +1481,7 @@ void Player::setState(ObjectState new_state)
 
 		case PLAYER_GROUNDED_NEUTRAL:
 
-			late_jump_grace_frames           = PLAYER_LATE_JUMP_GRACE_FRAMES;
+			late_jump_grace_frames = PLAYER_LATE_JUMP_GRACE_FRAMES;
 			
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  		  0,
@@ -1486,7 +1493,7 @@ void Player::setState(ObjectState new_state)
 
 		case PLAYER_WALK:
 
-			late_jump_grace_frames           = PLAYER_LATE_JUMP_GRACE_FRAMES;
+			late_jump_grace_frames = PLAYER_LATE_JUMP_GRACE_FRAMES;
 
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 																	      1,
@@ -1579,7 +1586,8 @@ void Player::setState(ObjectState new_state)
 
 		case PLAYER_ROLL: 
 
-			x_speed = PLAYER_ROLL_X_SPEED;
+			x_speed            = PLAYER_ROLL_X_SPEED;
+			roll_effect_frames = PLAYER_MAX_ROLL_EFFECT_FRAMES;
 
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 																	   2,

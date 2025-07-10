@@ -75,6 +75,7 @@
 
 #define GAME_OBJECT_MAX_ANIM_FRAMES 40
 
+#define BG_Z_ORDER            3
 #define PROP_Z_ORDER          2
 #define GAME_OBJECT_Z_ORDER   1
 #define ENEMY_Z_ORDER        -1

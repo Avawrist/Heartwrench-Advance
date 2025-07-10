@@ -572,12 +572,11 @@ void GameObject::setHitFlash(int32 frames)
 
 void GameObject::updateHitFlash()
 {
-    
     if(hit_flash_frames || (invulnerability_frames && (invulnerability_frames % 3 == 0)))
     {
-        bn::sprite_palette_ptr sprite_palette = bn::sprite_palette_items::sprite_flash_palette.create_palette();
+        bn::sprite_palette_ptr flash_palette = bn::sprite_palette_items::sprite_flash_palette.create_palette();
         if(sprite_ptr.has_value())
-        {sprite_ptr->set_palette(sprite_palette);}
+        {sprite_ptr->set_palette(flash_palette);}
     }
     else
     {

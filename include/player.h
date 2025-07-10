@@ -48,8 +48,8 @@
 #define PLAYER_MIN_X_SPEED    0
 #define PLAYER_MAX_X_SPEED    2
 #define PLAYER_X_DECAY        1
-#define X_SPEED_ACC_RATE      0.2
-#define X_SPEED_DECAY_RATE    0.1
+#define X_SPEED_ACC_RATE      0.15
+#define X_SPEED_DECAY_RATE    0.075
 
 #define PLAYER_BASE_JUMP_FORCE            -7 // 2 block height at 0.033 decay rate
 #define PLAYER_JUMP_DECAY                  0.033
@@ -92,7 +92,7 @@
 #define PLAYER_ATTACK_GROUND_1_HB_HEIGHT          32
 #define PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME    18
 #define PLAYER_ATTACK_GROUND_1_HB_LIFESPAN_FRAMES 8
-#define PLAYER_ATTACK_GROUND_1_X_KNOCKBACK        4 
+#define PLAYER_ATTACK_GROUND_1_X_KNOCKBACK        5
 #define PLAYER_ATTACK_GROUND_1_Y_KNOCKBACK        0
 #define PLAYER_ATTACK_GROUND_1_KNOCKBACK_DECAY    0.05
 #define PLAYER_ATTACK_GROUND_1_DAMAGE             1
@@ -107,7 +107,7 @@
 #define PLAYER_ATTACK_AIR_1_HB_HEIGHT          32
 #define PLAYER_ATTACK_AIR_1_CREATE_HB_FRAME    18
 #define PLAYER_ATTACK_AIR_1_HB_LIFESPAN_FRAMES 8
-#define PLAYER_ATTACK_AIR_1_X_KNOCKBACK        4
+#define PLAYER_ATTACK_AIR_1_X_KNOCKBACK        5
 #define PLAYER_ATTACK_AIR_1_Y_KNOCKBACK        0
 #define PLAYER_ATTACK_AIR_1_KNOCKBACK_DECAY    0.05
 #define PLAYER_ATTACK_AIR_1_DAMAGE             1
@@ -123,6 +123,7 @@
 #define PLAYER_ROLL_X_FORCE 2
 #define PLAYER_ROLL_DECAY   0.75
 #define PLAYER_ROLL_X_SPEED 1
+#define PLAYER_MAX_ROLL_EFFECT_FRAMES 35
 
 #define PLAYER_ROLL_JUMP_X_FORCE  4
 #define PLAYER_ROLL_JUMP_Y_FORCE -7
@@ -174,10 +175,6 @@ struct Player : GameObject {
 	// Struct Player //
 	///////////////////
 
-	bn::point prior_frame_1_pos;
-	bn::point prior_frame_2_pos;
-	bn::point prior_frame_3_pos;
-
 	bn::fixed       x_speed;
 	bn::fixed_point phase_destination;
 
@@ -192,6 +189,8 @@ struct Player : GameObject {
 	int32 current_phase_frame;
 	int32 hitstop_frames;
 	int32 update_timer;
+	int32 roll_effect_frames;
+	int32 roll_effect_offset_multiplier;
 
 	int32 overdrive_level;
 
@@ -239,7 +238,7 @@ struct Player : GameObject {
 								  const bn::camera_ptr&                      camera);
 	void createAirJumpEffect();
 	void createWallJumpEffect();
-	void drawOverdriveEffect();
+	void drawRollEffect();
 
 	//////////////////////////
 	// GameObject Overrides //
