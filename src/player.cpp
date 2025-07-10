@@ -389,7 +389,7 @@ void Player::drawRollEffect()
 	}
 	
 	#define MIN_EFFECT_OFFSET_MULTIPLIER 1
-	#define MAX_EFFECT_OFFSET_MULTIPLIER 6
+	#define MAX_EFFECT_OFFSET_MULTIPLIER 3
 
 	roll_effect_offset_multiplier = clamp(MIN_EFFECT_OFFSET_MULTIPLIER, 
 		                                  MAX_EFFECT_OFFSET_MULTIPLIER, 

@@ -1087,7 +1087,8 @@ void GameObject::resolveCornerCollision(const Collider& other_collider)
     while(collider.isCollision(other_collider))
 	{
 		// We always resolve diagonal corner collisions with a horizontal shift. 
-		setX(this->x() - rigidbody.normalized_dir.x());
+        if(rigidbody.normalized_dir.x() != 0) {setX(this->x() - rigidbody.normalized_dir.x());}
+        else                                  {setX(this->x() - 1);}
 	}
 }
 
