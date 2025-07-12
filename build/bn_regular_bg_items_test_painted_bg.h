@@ -7,13 +7,13 @@
 
 //======================================================================
 //
-//	test_painted_bg_bn_gfx, 10240x5120@4, 
-//	+ palette 16 entries, not compressed
-//	+ 118 tiles (t|f|p reduced) not compressed
+//	test_painted_bg_bn_gfx, 10240x5120@8, 
+//	+ palette 80 entries, not compressed
+//	+ 18 tiles (t|f reduced) not compressed
 //	+ regular map (flat), not compressed, 1280x640 
-//	Total size: 32 + 3776 + 1638400 = 1642208
+//	Total size: 160 + 1152 + 1638400 = 1639712
 //
-//	Time-stamp: 2025-07-11, 19:00:01
+//	Time-stamp: 2025-07-12, 01:27:48
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -22,14 +22,14 @@
 #ifndef GRIT_TEST_PAINTED_BG_BN_GFX_H
 #define GRIT_TEST_PAINTED_BG_BN_GFX_H
 
-#define test_painted_bg_bn_gfxTilesLen 3776
-extern const bn::tile test_painted_bg_bn_gfxTiles[118];
+#define test_painted_bg_bn_gfxTilesLen 1152
+extern const bn::tile test_painted_bg_bn_gfxTiles[36];
 
 #define test_painted_bg_bn_gfxMapLen 1638400
 extern const bn::regular_bg_map_cell test_painted_bg_bn_gfxMap[819200];
 
-#define test_painted_bg_bn_gfxPalLen 32
-extern const bn::color test_painted_bg_bn_gfxPal[16];
+#define test_painted_bg_bn_gfxPalLen 160
+extern const bn::color test_painted_bg_bn_gfxPal[80];
 
 #endif // GRIT_TEST_PAINTED_BG_BN_GFX_H
 
@@ -38,8 +38,8 @@ extern const bn::color test_painted_bg_bn_gfxPal[16];
 namespace bn::regular_bg_items
 {
     constexpr inline regular_bg_item test_painted_bg(
-            regular_bg_tiles_item(span<const tile>(test_painted_bg_bn_gfxTiles, 118), bpp_mode::BPP_4, compression_type::NONE), 
-            bg_palette_item(span<const color>(test_painted_bg_bn_gfxPal, 16), bpp_mode::BPP_4, compression_type::NONE),
+            regular_bg_tiles_item(span<const tile>(test_painted_bg_bn_gfxTiles, 36), bpp_mode::BPP_8, compression_type::NONE), 
+            bg_palette_item(span<const color>(test_painted_bg_bn_gfxPal, 80), bpp_mode::BPP_8, compression_type::NONE),
             regular_bg_map_item(test_painted_bg_bn_gfxMap[0], size(1280, 640), compression_type::NONE, 1, true));
 }
 

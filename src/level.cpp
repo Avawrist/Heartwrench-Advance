@@ -168,7 +168,7 @@ void Level::load(LevelName level_name)
                         object_cells);
 
     // Store default painted bg palette
-    default_painted_palette_ptr = painted_bg_ptr->palette();
+    default_painted_palette_ptr = main_bg_ptr->palette();
     
     // Set draw priority for BGs
     painted_bg_ptr->set_z_order(PAINTED_BG_ORDER);
@@ -396,13 +396,11 @@ void Level::updateBGFlash()
         // Set flash palette
         bn::bg_palette_ptr flash_palette = bn::bg_palette_items::bg_flash_palette.create_palette();
         main_bg_ptr->set_palette(flash_palette);
-        painted_bg_ptr->set_palette(flash_palette);
     }
     else
     {
         // Set default palette
         main_bg_ptr->set_palette(default_painted_palette_ptr.value());
-        painted_bg_ptr->set_palette(default_painted_palette_ptr.value());
     }
 
     // Update bg hitflash frames

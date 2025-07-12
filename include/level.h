@@ -73,6 +73,7 @@ struct Level
 
     // BGs
     bn::optional<bn::camera_ptr>            camera;
+    
     bn::optional<bn::regular_bg_ptr>        main_bg_ptr;
     bn::optional<bn::regular_bg_ptr>        painted_bg_ptr;
     bn::optional<bn::regular_bg_ptr>        object_bg_ptr;
