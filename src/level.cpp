@@ -329,9 +329,7 @@ void Level::updateCamera()
             }
         }
 
-        int32 od_multiplier = ((Player*)temp_player_ptr)->overdrive_level + 1;
-
-        cam_look_x_offset = clamp(-CAM_MAX_LOOK_X * od_multiplier, CAM_MAX_LOOK_X * od_multiplier, cam_look_x_offset);
+        cam_look_x_offset = clamp(-CAM_MAX_LOOK_X, CAM_MAX_LOOK_X, cam_look_x_offset);
         cam_look_dir_x_offset = clamp(-CAM_MAX_DIR_LOOK_X, CAM_MAX_DIR_LOOK_X, cam_look_dir_x_offset);
         cam_look_y_offset = clamp(-CAM_MAX_LOOK_Y, CAM_MAX_LOOK_Y, cam_look_y_offset);
 
@@ -411,6 +409,14 @@ void Level::updateBGFlash()
     global_bg_hitflash_frames--;
     if(global_bg_hitflash_frames < 0)
     {global_bg_hitflash_frames = 0;}
+}
+
+void Level::updateGlobalTimer()
+{
+    #define TIMER_MAX 60
+
+    global_timer++;
+    if(global_timer >= TIMER_MAX) {global_timer = 0;}
 }
 
 void Level::reloadOnDeath()

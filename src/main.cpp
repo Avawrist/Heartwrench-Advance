@@ -32,6 +32,9 @@ int main()
         if(current_level.cam_is_scrolling) {current_level.updateCamera();}
         else                               {current_level.updateAll();}
 
+        // Update Global Timer
+        current_level.updateGlobalTimer();
+
         // Update GameState
         game_state.update();
        

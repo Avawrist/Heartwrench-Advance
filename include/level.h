@@ -125,6 +125,7 @@ struct Level
     void updateObjects();
     void updateCamera();
     void updateBGFlash();
+    void updateGlobalTimer();
     void reloadOnDeath();
     void freeObjects();
     void transitionRoom();

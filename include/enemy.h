@@ -27,7 +27,10 @@ struct Enemy : GameObject
     // GameObject Overrides //
     //////////////////////////
 
-    void updateHPBar() override;
+	void updateHitFlash()          override;
+    void updateHPBar()             override;
+    void setHitFlash()             override;
+	void setHitFlash(int32 frames) override;
 
     //////////////////////////////
     // State Function Overrides //

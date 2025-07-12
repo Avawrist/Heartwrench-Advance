@@ -75,6 +75,7 @@ prop.o: G:/game/src/prop.cpp G:/game/include/prop.h \
  G:/game/include/collider.h \
  G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
+ G:/game/build/bn_sprite_palette_items_player_flash_palette.h \
  G:/game/build/bn_sprite_palette_items_sprite_od_palette.h \
  G:/game/build/bn_sprite_items_air_jump_effect.h \
  G:/butano-master/butano/include/bn_sprite_item.h \
@@ -186,6 +187,7 @@ G:/game/include/math.h:
 G:/game/include/collider.h:
 G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
+G:/game/build/bn_sprite_palette_items_player_flash_palette.h:
 G:/game/build/bn_sprite_palette_items_sprite_od_palette.h:
 G:/game/build/bn_sprite_items_air_jump_effect.h:
 G:/butano-master/butano/include/bn_sprite_item.h:

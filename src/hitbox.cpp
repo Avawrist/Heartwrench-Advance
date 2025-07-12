@@ -142,10 +142,12 @@ void Hitbox::applyHit(GameObject& object)
 
 void Hitbox::applyWallHit(GameObject& object)
 {
+    #define SPLAT_SPRITE_X_OFFSET 16
+
     // Determine splat effect offset
     int32 splat_x_offset = 0;
-    if     (x_dir == LEFT)  {splat_x_offset =  object.collider.width / 2;}
-    else if(x_dir == RIGHT) {splat_x_offset = -object.collider.width / 2;}
+    if     (x_dir == LEFT)  {splat_x_offset = (object.collider.width / 2) - SPLAT_SPRITE_X_OFFSET;}
+    else if(x_dir == RIGHT) {splat_x_offset = (-object.collider.width / 2) + SPLAT_SPRITE_X_OFFSET;}
 
     // Global juice
     if(object.hitpoints - damage <= 0)

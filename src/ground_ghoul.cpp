@@ -166,20 +166,14 @@ void GroundGhoul::setState(ObjectState new_state)
         break;
 
         case OBJECT_HITSTUN:
-
-            animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-                                 0,
-                                 bn::sprite_items::ground_ghoul.tiles_item(),
-                                 31, 31);
-
         break;
 
         case OBJECT_DEATH:
 
             animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-                                 0,
+                                 1,
                                  bn::sprite_items::ground_ghoul.tiles_item(),
-                                 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30);
+                                 12, 13, 14, 15, 16, 17, 18, 19, 20, 21);
 
         break;
 

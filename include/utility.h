@@ -30,7 +30,7 @@ typedef int   int32;
 
 #define CAM_PLAYER_Y_OFFSET -24
 #define CAM_MAX_LOOK_Y       16
-#define CAM_MAX_LOOK_X       12
+#define CAM_MAX_LOOK_X       16
 #define CAM_MAX_DIR_LOOK_X   16
 
 #define ROOM_MAX_COLLIDERS 1800
@@ -43,34 +43,34 @@ typedef int   int32;
 // === Tile Indexes === //
 #define NO_BLOCK_INDEX              0
 #define HARD_BLOCK_MIN_INDEX        1
-#define HARD_BLOCK_MAX_INDEX        153
+#define HARD_BLOCK_MAX_INDEX        155
 
-#define H_GEAR_LEFT    160
-#define H_GEAR_MID_MIN 161
-#define H_GEAR_MID_MAX 163
-#define H_GEAR_RIGHT   164
+#define H_GEAR_LEFT    163
+#define H_GEAR_MID_MIN 164
+#define H_GEAR_MID_MAX 166
+#define H_GEAR_RIGHT   167
 
-#define V_GEAR_TOP    165
-#define V_GEAR_MID_1  177
-#define V_GEAR_MID_2  167
-#define V_GEAR_MID_3  168
-#define V_GEAR_BOTTOM 166
+#define V_GEAR_TOP    168
+#define V_GEAR_MID_1  184
+#define V_GEAR_MID_2  170
+#define V_GEAR_MID_3  172
+#define V_GEAR_BOTTOM 186
 
-#define SPIKE_MIN_INDEX 179
-#define SPIKE_MAX_INDEX 182
+#define SPIKE_MIN_INDEX 188
+#define SPIKE_MAX_INDEX 195
 
-#define ONEWAY_BLOCK_MIN_INDEX 183
-#define ONEWAY_BLOCK_MAX_INDEX 185
+#define ONEWAY_BLOCK_MIN_INDEX 196
+#define ONEWAY_BLOCK_MAX_INDEX 199
 
-#define SHALLOW_SLOPE_1_INDEX  186
-#define SHALLOW_SLOPE_2_INDEX  187
-#define SHALLOW_SLOPE_3_INDEX  188
-#define SHALLOW_SLOPE_4_INDEX  189
+#define SHALLOW_SLOPE_1_INDEX  200
+#define SHALLOW_SLOPE_2_INDEX  201
+#define SHALLOW_SLOPE_3_INDEX  202
+#define SHALLOW_SLOPE_4_INDEX  203
 
-#define STEEP_SLOPE_1_INDEX 190
-#define STEEP_SLOPE_2_INDEX 191
+#define STEEP_SLOPE_1_INDEX 204
+#define STEEP_SLOPE_2_INDEX 205
 
-#define TILE_TOTAL_COUNT 191
+#define TILE_TOTAL_COUNT 205
 
 // Tile Dimensions //
 #define TILE_WIDTH  8
@@ -132,6 +132,8 @@ extern int32               global_bg_hitflash_frames;
 extern int32               global_hitstop_frames;
 extern int32               global_screenshake_frames;
 extern ScreenShakeSeverity global_screenshake_severity;
+
+extern int32 global_timer;
 
 // Debug Mode
 #define DEBUG_BUILD false

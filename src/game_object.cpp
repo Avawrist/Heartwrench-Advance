@@ -550,46 +550,13 @@ void GameObject::clampPosition(const bn::regular_bg_ptr& bg_ptr)
 }
 
 void GameObject::setHitFlash()
-{
-    hit_flash_frames = GAME_OBJECT_MAX_HIT_FLASH_FRAMES;
-
-    bn::sprite_palette_ptr sprite_palette = bn::sprite_palette_items::sprite_flash_palette.create_palette();
-
-    if(sprite_ptr.has_value())
-    {sprite_ptr->set_palette(sprite_palette);}
-}
+{}
 
 void GameObject::setHitFlash(int32 frames)
-{
-    if(frames > GAME_OBJECT_MAX_HIT_FLASH_FRAMES) 
-    {frames = GAME_OBJECT_MAX_HIT_FLASH_FRAMES;}
-
-    hit_flash_frames = frames;
-
-    bn::sprite_palette_ptr sprite_palette = bn::sprite_palette_items::sprite_flash_palette.create_palette();
-    
-    if(sprite_ptr.has_value())
-    {sprite_ptr->set_palette(sprite_palette);}
-}
+{}
 
 void GameObject::updateHitFlash()
-{
-    if(hit_flash_frames || (invulnerability_frames && (invulnerability_frames % 3 == 0)))
-    {
-        bn::sprite_palette_ptr flash_palette = bn::sprite_palette_items::sprite_flash_palette.create_palette();
-        if(sprite_ptr.has_value())
-        {sprite_ptr->set_palette(flash_palette);}
-    }
-    else
-    {
-        if(sprite_ptr.has_value())
-        {sprite_ptr->set_palette(default_palette_ptr.value());}
-    }
-
-    hit_flash_frames--;
-    if(hit_flash_frames < 0)
-    {hit_flash_frames = 0;}
-}
+{}
 
 void GameObject::applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_dir)
 {
@@ -646,7 +613,7 @@ void GameObject::applyHitEffect(int32 x, int32 y)
     hit_effect_animate_action_ptr = bn::create_sprite_animate_action_once(hit_effect_sprite_ptr.value(), 
                                                                           0, 
                                                                           bn::sprite_items::hit_effect.tiles_item(),
-                                                                          0, 1, 2, 3, 4, 5, 6, 7);
+                                                                          0, 1, 2, 3, 4, 5, 5, 6, 6, 7, 7);
 }
 
 void GameObject::applySplatEffect(int32 x, int32 y)
@@ -658,7 +625,7 @@ void GameObject::applySplatEffect(int32 x, int32 y)
     splat_effect_animate_action_ptr = bn::create_sprite_animate_action_once(splat_effect_sprite_ptr.value(),
                                                                             0, 
                                                                             bn::sprite_items::wall_splat_effect.tiles_item(),
-                                                                            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+                                                                            0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7);
 
     if(col_x_offset < 0) {splat_effect_sprite_ptr->set_horizontal_flip(true);}
     else                 {splat_effect_sprite_ptr->set_horizontal_flip(false);}

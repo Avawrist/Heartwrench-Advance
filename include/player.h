@@ -92,11 +92,11 @@
 #define PLAYER_ATTACK_GROUND_1_HB_HEIGHT          32
 #define PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME    18
 #define PLAYER_ATTACK_GROUND_1_HB_LIFESPAN_FRAMES 8
-#define PLAYER_ATTACK_GROUND_1_X_KNOCKBACK        4
+#define PLAYER_ATTACK_GROUND_1_X_KNOCKBACK        8
 #define PLAYER_ATTACK_GROUND_1_Y_KNOCKBACK        0
 #define PLAYER_ATTACK_GROUND_1_KNOCKBACK_DECAY    0.05
 #define PLAYER_ATTACK_GROUND_1_DAMAGE             1
-#define PLAYER_ATTACK_GROUND_1_HITSTOP_FRAMES     8
+#define PLAYER_ATTACK_GROUND_1_HITSTOP_FRAMES     5
 #define PLAYER_ATTACK_GROUND_1_HITSTUN_FRAMES     30
 #define PLAYER_ATTACK_GROUND_1_SCREENSHAKE_FRAMES 10
 #define PLAYER_ATTACK_GROUND_1_SCREENSHAKE_SEVERITY STRONG_SHAKE
@@ -107,11 +107,11 @@
 #define PLAYER_ATTACK_AIR_1_HB_HEIGHT          32
 #define PLAYER_ATTACK_AIR_1_CREATE_HB_FRAME    18
 #define PLAYER_ATTACK_AIR_1_HB_LIFESPAN_FRAMES 8
-#define PLAYER_ATTACK_AIR_1_X_KNOCKBACK        4
+#define PLAYER_ATTACK_AIR_1_X_KNOCKBACK        8
 #define PLAYER_ATTACK_AIR_1_Y_KNOCKBACK        0
 #define PLAYER_ATTACK_AIR_1_KNOCKBACK_DECAY    0.05
 #define PLAYER_ATTACK_AIR_1_DAMAGE             1
-#define PLAYER_ATTACK_AIR_1_HITSTOP_FRAMES     8
+#define PLAYER_ATTACK_AIR_1_HITSTOP_FRAMES     5
 #define PLAYER_ATTACK_AIR_1_HITSTUN_FRAMES     30
 #define PLAYER_ATTACK_AIR_1_SCREENSHAKE_FRAMES 10
 #define PLAYER_ATTACK_AIR_1_SCREENSHAKE_SEVERITY STRONG_SHAKE
@@ -120,8 +120,8 @@
 #define PLAYER_LATE_JUMP_GRACE_FRAMES       6
 #define PLAYER_LATE_ROLL_JUMP_GRACE_FRAMES  8
 
-#define PLAYER_ROLL_X_FORCE 1
-#define PLAYER_ROLL_DECAY   0.75
+#define PLAYER_ROLL_X_FORCE 3
+#define PLAYER_ROLL_DECAY   0.7
 #define PLAYER_ROLL_X_SPEED 1
 #define PLAYER_MAX_ROLL_EFFECT_FRAMES 35
 
@@ -188,7 +188,6 @@ struct Player : GameObject {
 	int32 late_roll_jump_grace_frames;
 	int32 current_phase_frame;
 	int32 hitstop_frames;
-	int32 update_timer;
 	int32 roll_effect_frames;
 	int32 roll_effect_offset_multiplier;
 
@@ -253,11 +252,17 @@ struct Player : GameObject {
 
 	void updateTimers() override;
 
+	void updateHitFlash() override;
+
 	void updateTestColliders() override;
 
 	void draw() override;
 
 	void setCamera(const bn::camera_ptr& camera) override;
+
+	void setHitFlash() override;
+
+	void setHitFlash(int32 frames) override;
 
 	void applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_dir);
 

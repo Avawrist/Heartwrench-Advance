@@ -1,1 +1,0 @@
-small_vase_green_bn_gfx.o: small_vase_green_bn_gfx.s

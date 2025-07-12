@@ -31,6 +31,7 @@
 
 // Flash Palette
 #include "bn_sprite_palette_items_sprite_flash_palette.h"
+#include "bn_sprite_palette_items_player_flash_palette.h"
 #include "bn_sprite_palette_items_sprite_od_palette.h"
 
 // Effect Assets
@@ -78,11 +79,11 @@
 
 #define BG_Z_ORDER            3
 #define PROP_Z_ORDER          2
+#define SPLAT_EFFECT_Z_ORDER  2
 #define GAME_OBJECT_Z_ORDER   1
 #define ENEMY_Z_ORDER        -1
 #define SMASHABLE_Z_ORDER    -1
 #define HIT_EFFECT_Z_ORDER   -2
-#define SPLAT_EFFECT_Z_ORDER -3
 
 #define GAME_OBJECT_COLLIDER_WIDTH  8
 #define GAME_OBJECT_COLLIDER_HEIGHT 8
@@ -313,7 +314,7 @@ struct GameObject
 
 	virtual void checkIfDead();
 
-	void updateHitFlash();
+	virtual void updateHitFlash();
 
 	virtual void updateSpriteDirection();
 
@@ -346,8 +347,8 @@ struct GameObject
 	void setVerticalStretch();
 	void setHorizontalStretch();
 	void clampPosition(const bn::regular_bg_ptr& bg_ptr);
-	void setHitFlash();
-	void setHitFlash(int32 frames);
+	virtual void setHitFlash();
+	virtual void setHitFlash(int32 frames);
 	void applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_dir);
 	void applyDamage(int32 _damage);
 	void applyHP(int32 points);

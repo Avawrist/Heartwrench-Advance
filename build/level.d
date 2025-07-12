@@ -94,6 +94,7 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/include/physics.h \
  G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
+ G:/game/build/bn_sprite_palette_items_player_flash_palette.h \
  G:/game/build/bn_sprite_palette_items_sprite_od_palette.h \
  G:/game/build/bn_sprite_items_air_jump_effect.h \
  G:/game/build/bn_sprite_items_land_effect.h \
@@ -232,6 +233,7 @@ G:/butano-master/butano/include/bn_value_template_actions.h:
 G:/game/include/physics.h:
 G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
+G:/game/build/bn_sprite_palette_items_player_flash_palette.h:
 G:/game/build/bn_sprite_palette_items_sprite_od_palette.h:
 G:/game/build/bn_sprite_items_air_jump_effect.h:
 G:/game/build/bn_sprite_items_land_effect.h:

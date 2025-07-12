@@ -7,12 +7,12 @@
 
 //======================================================================
 //
-//	wall_splat_effect_bn_gfx, 64x768@4, 
+//	wall_splat_effect_bn_gfx, 32x256@4, 
 //	+ palette 16 entries, not compressed
-//	+ 768 tiles not compressed
-//	Total size: 32 + 24576 = 24608
+//	+ 128 tiles not compressed
+//	Total size: 32 + 4096 = 4128
 //
-//	Time-stamp: 2025-07-09, 19:50:14
+//	Time-stamp: 2025-07-11, 19:00:00
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -21,8 +21,8 @@
 #ifndef GRIT_WALL_SPLAT_EFFECT_BN_GFX_H
 #define GRIT_WALL_SPLAT_EFFECT_BN_GFX_H
 
-#define wall_splat_effect_bn_gfxTilesLen 24576
-extern const bn::tile wall_splat_effect_bn_gfxTiles[768];
+#define wall_splat_effect_bn_gfxTilesLen 4096
+extern const bn::tile wall_splat_effect_bn_gfxTiles[128];
 
 #define wall_splat_effect_bn_gfxPalLen 32
 extern const bn::color wall_splat_effect_bn_gfxPal[16];
@@ -33,8 +33,8 @@ extern const bn::color wall_splat_effect_bn_gfxPal[16];
 
 namespace bn::sprite_items
 {
-    constexpr inline sprite_item wall_splat_effect(sprite_shape_size(sprite_shape::SQUARE, sprite_size::HUGE), 
-            sprite_tiles_item(span<const tile>(wall_splat_effect_bn_gfxTiles, 768), bpp_mode::BPP_4, compression_type::NONE, 12), 
+    constexpr inline sprite_item wall_splat_effect(sprite_shape_size(sprite_shape::SQUARE, sprite_size::BIG), 
+            sprite_tiles_item(span<const tile>(wall_splat_effect_bn_gfxTiles, 128), bpp_mode::BPP_4, compression_type::NONE, 8), 
             sprite_palette_item(span<const color>(wall_splat_effect_bn_gfxPal, 16), bpp_mode::BPP_4, compression_type::NONE));
 }
 

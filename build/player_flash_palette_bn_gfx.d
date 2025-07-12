@@ -1,0 +1,1 @@
+player_flash_palette_bn_gfx.o: player_flash_palette_bn_gfx.s

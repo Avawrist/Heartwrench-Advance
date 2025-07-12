@@ -43,7 +43,6 @@ Player::Player()
 	late_roll_jump_grace_frames      = 0;
 	current_phase_frame              = 0;
 	hitstop_frames                   = 0;
-	update_timer                     = 0;
 	roll_effect_frames               = 0;
 	roll_effect_offset_multiplier    = 0;
 	max_hp                           = PLAYER_MAX_HITPOINTS;
@@ -107,7 +106,6 @@ Player::Player(const Player& other) : GameObject(other)
 	late_roll_jump_grace_frames      = other.late_roll_jump_grace_frames;
 	current_phase_frame              = other.current_phase_frame;
 	hitstop_frames                   = other.hitstop_frames;
-	update_timer                     = other.update_timer;
 	roll_effect_frames               = other.roll_effect_frames;
 	roll_effect_offset_multiplier    = other.roll_effect_offset_multiplier;
 
@@ -178,7 +176,6 @@ Player& Player::operator =(const Player& other)
 	late_roll_jump_grace_frames      = other.late_roll_jump_grace_frames;
 	current_phase_frame              = other.current_phase_frame;
 	hitstop_frames                   = other.hitstop_frames;
-	update_timer                     = other.update_timer;
 	roll_effect_frames               = other.roll_effect_frames;
 	roll_effect_offset_multiplier    = other.roll_effect_offset_multiplier;
 
@@ -250,7 +247,7 @@ void Player::rollJump()
 
 	remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
 	late_jump_grace_frames      = 0;
-	rigidbody.addForce(Force(bn::fixed_point_t<12>((PLAYER_ROLL_JUMP_X_FORCE + overdrive_level) * (int32)x_dir, PLAYER_ROLL_JUMP_Y_FORCE), 
+	rigidbody.addForce(Force(bn::fixed_point_t<12>((PLAYER_ROLL_JUMP_X_FORCE) * (int32)x_dir, PLAYER_ROLL_JUMP_Y_FORCE), 
 	                                                PLAYER_ROLL_JUMP_DECAY));
 	//setVerticalStretch();
 
@@ -290,7 +287,7 @@ void Player::createGroundedAttackHitboxes(bn::vector<GameObject*, MAX_GAME_OBJEC
 								  PLAYER_ATTACK_GROUND_1_HITSTUN_FRAMES,
 								  PLAYER_ATTACK_GROUND_1_SCREENSHAKE_FRAMES,
 								  PLAYER_ATTACK_GROUND_1_HB_LIFESPAN_FRAMES,
-								  PLAYER_ATTACK_GROUND_1_X_KNOCKBACK + (overdrive_level * PLAYER_ATTACK_GROUND_1_X_KNOCKBACK),
+								  PLAYER_ATTACK_GROUND_1_X_KNOCKBACK,
 								  PLAYER_ATTACK_GROUND_1_Y_KNOCKBACK,	
 								  PLAYER_ATTACK_GROUND_1_KNOCKBACK_DECAY,
 								  PLAYER_ATTACK_GROUND_1_HB_WIDTH,
@@ -318,7 +315,7 @@ void Player::createAirAttack1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>&
 								  PLAYER_ATTACK_AIR_1_HITSTUN_FRAMES,
 								  PLAYER_ATTACK_AIR_1_SCREENSHAKE_FRAMES,
 								  PLAYER_ATTACK_AIR_1_HB_LIFESPAN_FRAMES,
-								  PLAYER_ATTACK_AIR_1_X_KNOCKBACK + (overdrive_level * PLAYER_ATTACK_AIR_1_X_KNOCKBACK),
+								  PLAYER_ATTACK_AIR_1_X_KNOCKBACK,
 								  PLAYER_ATTACK_AIR_1_Y_KNOCKBACK,	
 								  PLAYER_ATTACK_AIR_1_KNOCKBACK_DECAY,
 								  PLAYER_ATTACK_AIR_1_HB_WIDTH,
@@ -346,7 +343,7 @@ void Player::createAirJumpEffect()
 	jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
 																1,
 																bn::sprite_items::air_jump_effect.tiles_item(),
-																0, 1, 2, 3, 4, 5, 5, 6, 6);
+																0, 1, 2, 2, 3, 3, 4, 4);
 }
 
 void Player::createWallJumpEffect()
@@ -362,14 +359,14 @@ void Player::createWallJumpEffect()
 	jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
 																 1,
 																 bn::sprite_items::air_jump_effect.tiles_item(),
-																 0, 1, 2, 3, 4, 5, 5, 6, 6);
+																 0, 1, 2, 2, 3, 3, 4, 4);
 }
 
 void Player::drawRollEffect()
 {	
 	if(roll_effect_frames)
 	{
-		if(update_timer % (4 - overdrive_level) == 0)
+		if(global_timer % 2 == 0)
 		{roll_effect_offset_multiplier++;}
 
 		od_sprite_1_ptr->set_visible(true);
@@ -378,7 +375,7 @@ void Player::drawRollEffect()
 	}
 	else 
 	{
-		if(update_timer % (4 - overdrive_level) == 0)
+		if(global_timer % 2 == 0)
 		{roll_effect_offset_multiplier--;}
 
 		if(roll_effect_offset_multiplier <= 1)
@@ -390,13 +387,13 @@ void Player::drawRollEffect()
 	}
 	
 	#define MIN_EFFECT_OFFSET_MULTIPLIER 1
-	#define MAX_EFFECT_OFFSET_MULTIPLIER 3
+	#define MAX_EFFECT_OFFSET_MULTIPLIER 5
 
 	roll_effect_offset_multiplier = clamp(MIN_EFFECT_OFFSET_MULTIPLIER, 
 		                                  MAX_EFFECT_OFFSET_MULTIPLIER,
 										  roll_effect_offset_multiplier);
 	
-	if(update_timer % (roll_effect_offset_multiplier + overdrive_level) == 0)
+	if(global_timer % roll_effect_offset_multiplier == 0)
 	{
 		od_sprite_3_ptr->set_position(od_sprite_2_ptr->position());
 		od_sprite_3_ptr->set_tiles(od_sprite_2_ptr->tiles());
@@ -492,9 +489,6 @@ void Player::updateHitboxes(const RoomBounds& 							   room_bounds,
 
 void Player::updateTimers()
 {
-	update_timer++;
-	if(update_timer >= 60) {update_timer = 0;}
-
 	invulnerability_frames--;
     if(invulnerability_frames < 0) {invulnerability_frames = 0;}
 
@@ -545,6 +539,22 @@ void Player::updateTimers()
 		if(jump_effect_anim_ptr->done())
 		{jump_effect_sprite_ptr->set_visible(false);}
 	}
+}
+
+void Player::updateHitFlash()
+{
+    if(hit_flash_frames || (invulnerability_frames && (invulnerability_frames % 3 == 0)))
+    {
+        bn::sprite_palette_ptr new_palette = bn::sprite_palette_items::player_flash_palette.create_palette();
+
+        if(sprite_ptr.has_value())
+        {sprite_ptr->set_palette(new_palette);}
+    }
+    else {if(sprite_ptr.has_value()) {sprite_ptr->set_palette(default_palette_ptr.value());}}
+
+    hit_flash_frames--;
+    if(hit_flash_frames < 0)
+    {hit_flash_frames = 0;}
 }
 
 void Player::updateTestColliders()
@@ -651,6 +661,29 @@ void Player::applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_di
     setHitFlash();
     applyHitEffect(x().integer(),
                    y().integer());
+}
+
+void Player::setHitFlash()
+{
+	hit_flash_frames = GAME_OBJECT_MAX_HIT_FLASH_FRAMES;
+
+    bn::sprite_palette_ptr sprite_palette = bn::sprite_palette_items::player_flash_palette.create_palette();
+
+    if(sprite_ptr.has_value())
+    {sprite_ptr->set_palette(sprite_palette);}
+}
+
+void Player::setHitFlash(int32 frames)
+{
+    if(frames > GAME_OBJECT_MAX_HIT_FLASH_FRAMES) 
+    {frames = GAME_OBJECT_MAX_HIT_FLASH_FRAMES;}
+
+    hit_flash_frames = frames;
+
+    bn::sprite_palette_ptr sprite_palette = bn::sprite_palette_items::player_flash_palette.create_palette();
+    
+    if(sprite_ptr.has_value())
+    {sprite_ptr->set_palette(sprite_palette);}
 }
 
 //////////////////////////////
@@ -906,7 +939,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			}
 			
 			// Add Gravity //
-			if(update_timer % 2 == 0)
+			if(global_timer % 2 == 0)
 			{rigidbody.addForce(PLAYER_WALL_GRAVITY_FORCE);}
 			
 		break;
@@ -940,7 +973,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			}
 			
 			// Add Gravity //
-			if(update_timer % 2 == 0)
+			if(global_timer % 2 == 0)
 			{rigidbody.addForce(PLAYER_WALL_GRAVITY_FORCE);}
 					
 		break;
@@ -1351,7 +1384,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 		case PLAYER_ROLL:
 
 			// Add Roll Force
-			rigidbody.addForce(Force(bn::fixed_point_t<12>(((PLAYER_ROLL_X_FORCE + overdrive_level) * (int32)x_dir), 0), 
+			rigidbody.addForce(Force(bn::fixed_point_t<12>(((PLAYER_ROLL_X_FORCE) * (int32)x_dir), 0), 
 			                                                 PLAYER_ROLL_DECAY));
 
 			// End condition
