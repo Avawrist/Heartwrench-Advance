@@ -246,7 +246,7 @@ void GameObject::update(const RoomBounds& 							   room_bounds,
     // Clamp Position //
     ////////////////////
 
-    clampPosition(bg_ptr);
+    clampPosition(room_bounds);
 
 	//////////////////////////////
     // Monitor unloading bounds //
@@ -545,14 +545,12 @@ void GameObject::updateTestColliders()
 void GameObject::updateHPBar()
 {}
 
-void GameObject::clampPosition(const bn::regular_bg_ptr& bg_ptr)
+void GameObject::clampPosition(const RoomBounds& room_bounds)
 {
-    int32 half_level_width_pixels  = bg_ptr.dimensions().width() / 2;
-	int32 half_level_height_pixels = bg_ptr.dimensions().height() / 2;
     bn::fixed new_x = x();
 	bn::fixed new_y = y();
-	new_x = clamp(-half_level_width_pixels,  half_level_width_pixels,  new_x);
-	new_y = clamp(-half_level_height_pixels, half_level_height_pixels, new_y);
+	new_x = clamp(room_bounds.left_bound - 1, room_bounds.right_bound + 1, new_x);
+	new_y = clamp(room_bounds.top_bound - 1, room_bounds.bottom_bound + 1, new_y);
 
 	setPos(new_x, new_y);
 }

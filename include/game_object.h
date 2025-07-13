@@ -347,7 +347,7 @@ struct GameObject
 	void setHitStretch();
 	void setVerticalStretch();
 	void setHorizontalStretch();
-	void clampPosition(const bn::regular_bg_ptr& bg_ptr);
+	void clampPosition(const RoomBounds& room_bounds);
 	virtual void setHitFlash();
 	virtual void setHitFlash(int32 frames);
 	void applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_dir);

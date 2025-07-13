@@ -91,7 +91,7 @@ void SmashBlockMini::update(const RoomBounds& 							   room_bounds,
     // Clamp Position //
     ////////////////////
 
-    clampPosition(bg_ptr);
+    clampPosition(room_bounds);
 
 	//////////////////////////////
     // Monitor unloading bounds //
