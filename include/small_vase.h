@@ -21,6 +21,8 @@
 
 #define SMALL_VASE_HITPOINTS 1
 
+#define SMALL_VASE_30_FPS true
+
 struct SmallVase : GameObject {
 
     //////////////////////

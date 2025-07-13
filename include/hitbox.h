@@ -14,6 +14,8 @@
 // Struct Hitbox //
 ///////////////////
 
+#define HITBOX_30_FPS true
+
 #define HITBOX_KNOCKBACK_FORCE Force(bn::fixed_point_t<12>(x_knockback * x_dir, y_knockback * y_dir), knockback_decay)
 
 struct Hitbox : GameObject

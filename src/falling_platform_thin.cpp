@@ -30,6 +30,8 @@ FallingPlatformThin::FallingPlatformThin()
 
     hitpoints = FALLING_PLATFORM_THIN_HITPOINTS;
 
+    thirty_fps = FALLING_PLATFORM_THIN_30_FPS;
+
     fall_timer = 0;
 }
 

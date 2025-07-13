@@ -36,6 +36,8 @@ Hitbox::Hitbox(bn::point pos,
     collider_offset_x = 0;
 	collider_offset_y = 0;
 
+    thirty_fps = HITBOX_30_FPS;
+
     hitstop_frames         = _hitstop_frames;
     hitstun_frames         = _hitstun_frames;
     screenshake_frames     = _screenshake_frames;

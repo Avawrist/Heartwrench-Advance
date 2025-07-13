@@ -118,7 +118,6 @@
 
 #define PLAYER_V_COLLISION_MAX_GRACE_FRAMES 4
 #define PLAYER_LATE_JUMP_GRACE_FRAMES       6
-#define PLAYER_LATE_ROLL_JUMP_GRACE_FRAMES  8
 
 #define PLAYER_ROLL_X_FORCE 3
 #define PLAYER_ROLL_DECAY   0.7
@@ -191,8 +190,6 @@ struct Player : GameObject {
 	int32 roll_effect_frames;
 	int32 roll_effect_offset_multiplier;
 
-	int32 overdrive_level;
-
 	bool wall_right_detected;
     bool wall_left_detected;
 	bool grounded_owp_detected;
@@ -216,9 +213,9 @@ struct Player : GameObject {
 	bn::optional<bn::sprite_ptr>                                         jump_effect_sprite_ptr;
 	bn::optional<bn::sprite_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> jump_effect_anim_ptr;
 
-	bn::optional<bn::sprite_ptr>                                         od_sprite_1_ptr;
-	bn::optional<bn::sprite_ptr>                                         od_sprite_2_ptr;
-	bn::optional<bn::sprite_ptr>                                         od_sprite_3_ptr;
+	bn::optional<bn::sprite_ptr>                                         roll_sprite_1_ptr;
+	bn::optional<bn::sprite_ptr>                                         roll_sprite_2_ptr;
+	bn::optional<bn::sprite_ptr>                                         roll_sprite_3_ptr;
 
 	Player();
 	Player(const Player& other);
@@ -226,9 +223,7 @@ struct Player : GameObject {
 
 	Player& operator =(const Player& other);
 
-	void updateOverdriveState();
 	void jump();
-	void rollJump();
 	void wallJump();
 	void fastFall();
 	void createGroundedAttackHitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 

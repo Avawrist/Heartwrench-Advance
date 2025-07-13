@@ -29,6 +29,8 @@ AutoPlatform::AutoPlatform()
     state     = IDLE;
     hitpoints = AUTO_PLATFORM_HITPOINTS;
 
+    thirty_fps = AUTO_PLATFORM_30_FPS;
+
     changed_x_dir = false;
 }
 

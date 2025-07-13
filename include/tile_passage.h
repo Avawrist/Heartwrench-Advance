@@ -12,6 +12,8 @@
 #define TILE_PASSAGE_COLLIDER_WIDTH  32
 #define TILE_PASSAGE_COLLIDER_HEIGHT 16
 
+#define TILE_PASSAGE_30_FPS true
+
 struct TilePassage : GameObject {
 
 	////////////////////////

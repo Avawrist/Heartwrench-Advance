@@ -32,7 +32,7 @@
 // Flash Palette
 #include "bn_sprite_palette_items_sprite_flash_palette.h"
 #include "bn_sprite_palette_items_player_flash_palette.h"
-#include "bn_sprite_palette_items_sprite_od_palette.h"
+#include "bn_sprite_palette_items_sprite_roll_effect_palette.h"
 
 // Effect Assets
 #include "bn_sprite_items_air_jump_effect.h"
@@ -77,8 +77,8 @@
 
 #define GAME_OBJECT_MAX_ANIM_FRAMES 40
 
-#define BG_Z_ORDER            3
-#define PROP_Z_ORDER          2
+#define PROP_Z_ORDER          4
+#define ROLL_EFFECT_Z_ORDER   3
 #define SPLAT_EFFECT_Z_ORDER  2
 #define GAME_OBJECT_Z_ORDER   1
 #define ENEMY_Z_ORDER        -1
@@ -118,8 +118,8 @@
 #define WALL_SPLAT_SCREENSHAKE_FRAMES 8
 #define WALL_SPLAT_SCREENSHAKE_SEVERITY STRONG_SHAKE
 
-#define OBJECT_KNOCKBACK_X_FORCE      8
-#define OBJECT_KNOCKBACK_Y_FORCE      8
+#define OBJECT_KNOCKBACK_X_FORCE      5
+#define OBJECT_KNOCKBACK_Y_FORCE      5
 #define OBJECT_KNOCKBACK_DECAY        0.08
 
 #define GENERIC_HIT_X_OFFSET           0
@@ -280,6 +280,7 @@ struct GameObject
 	int32 damage                 = 0;
 	int32 max_hp                 = 0;
 
+	bool thirty_fps              = false;
 	bool is_inactive             = false;
 	bool is_dead                 = false;
 	bool is_persistent           = false;

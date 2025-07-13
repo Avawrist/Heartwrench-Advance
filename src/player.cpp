@@ -46,8 +46,6 @@ Player::Player()
 	roll_effect_frames               = 0;
 	roll_effect_offset_multiplier    = 0;
 	max_hp                           = PLAYER_MAX_HITPOINTS;
-
-	overdrive_level = PLAYER_OD_LEVEL_0;
 	
 	wall_right_detected      = false;
     wall_left_detected       = false;
@@ -73,22 +71,22 @@ Player::Player()
 	jump_effect_sprite_ptr->set_z_order(PLAYER_Z_ORDER);
 	jump_effect_sprite_ptr->set_visible(false);
 
-	od_sprite_1_ptr = bn::sprite_items::player.create_sprite(0, 0);
-	od_sprite_1_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
-	od_sprite_1_ptr->set_visible(false);
+	roll_sprite_1_ptr = bn::sprite_items::player.create_sprite(0, 0);
+	roll_sprite_1_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
+	roll_sprite_1_ptr->set_visible(false);
 
-	od_sprite_2_ptr = bn::sprite_items::player.create_sprite(0, 0);
-	od_sprite_2_ptr->set_z_order(PROP_Z_ORDER);
-	od_sprite_2_ptr->set_visible(false);
+	roll_sprite_2_ptr = bn::sprite_items::player.create_sprite(0, 0);
+	roll_sprite_2_ptr->set_z_order(SPLAT_EFFECT_Z_ORDER);
+	roll_sprite_2_ptr->set_visible(false);
 
-	od_sprite_3_ptr = bn::sprite_items::player.create_sprite(0, 0);
-	od_sprite_3_ptr->set_z_order(BG_Z_ORDER);
-	od_sprite_3_ptr->set_visible(false);
+	roll_sprite_3_ptr = bn::sprite_items::player.create_sprite(0, 0);
+	roll_sprite_3_ptr->set_z_order(ROLL_EFFECT_Z_ORDER);
+	roll_sprite_3_ptr->set_visible(false);
 
-	bn::sprite_palette_ptr sprite_od_palette = bn::sprite_palette_items::sprite_od_palette.create_palette();
-	od_sprite_1_ptr->set_palette(sprite_od_palette);
-	od_sprite_2_ptr->set_palette(sprite_od_palette);
-	od_sprite_3_ptr->set_palette(sprite_od_palette);
+	bn::sprite_palette_ptr sprite_roll_effect_palette = bn::sprite_palette_items::sprite_roll_effect_palette.create_palette();
+	roll_sprite_1_ptr->set_palette(sprite_roll_effect_palette);
+	roll_sprite_2_ptr->set_palette(sprite_roll_effect_palette);
+	roll_sprite_3_ptr->set_palette(sprite_roll_effect_palette);
 }
 
 Player::Player(const Player& other) : GameObject(other)
@@ -109,8 +107,6 @@ Player::Player(const Player& other) : GameObject(other)
 	roll_effect_frames               = other.roll_effect_frames;
 	roll_effect_offset_multiplier    = other.roll_effect_offset_multiplier;
 
-	overdrive_level = other.overdrive_level;
-
 	wall_right_detected      = other.wall_right_detected;
     wall_left_detected       = other.wall_left_detected;
 	grounded_owp_detected    = other.grounded_owp_detected;
@@ -138,9 +134,9 @@ Player::Player(const Player& other) : GameObject(other)
 	pm_sprite_ptr          = other.pm_sprite_ptr;
 	jump_effect_sprite_ptr = other.jump_effect_sprite_ptr;
 	jump_effect_anim_ptr   = other.jump_effect_anim_ptr;
-	od_sprite_1_ptr        = other.od_sprite_1_ptr;
-	od_sprite_2_ptr        = other.od_sprite_2_ptr;
-	od_sprite_3_ptr        = other.od_sprite_3_ptr;
+	roll_sprite_1_ptr        = other.roll_sprite_1_ptr;
+	roll_sprite_2_ptr        = other.roll_sprite_2_ptr;
+	roll_sprite_3_ptr        = other.roll_sprite_3_ptr;
 	
 }
 
@@ -156,9 +152,9 @@ Player::~Player()
 	jump_effect_sprite_ptr.reset();
 	jump_effect_anim_ptr.reset();
 
-	od_sprite_1_ptr.reset();
-	od_sprite_2_ptr.reset();
-	od_sprite_3_ptr.reset();
+	roll_sprite_1_ptr.reset();
+	roll_sprite_2_ptr.reset();
+	roll_sprite_3_ptr.reset();
 }
 
 Player& Player::operator =(const Player& other)
@@ -179,8 +175,6 @@ Player& Player::operator =(const Player& other)
 	roll_effect_frames               = other.roll_effect_frames;
 	roll_effect_offset_multiplier    = other.roll_effect_offset_multiplier;
 
-	overdrive_level = other.overdrive_level;
-
 	wall_right_detected      = other.wall_right_detected;
     wall_left_detected       = other.wall_left_detected;
 	grounded_owp_detected    = other.grounded_owp_detected;
@@ -208,48 +202,20 @@ Player& Player::operator =(const Player& other)
 	pm_sprite_ptr          = other.pm_sprite_ptr;
 	jump_effect_sprite_ptr = other.jump_effect_sprite_ptr;
 	jump_effect_anim_ptr   = other.jump_effect_anim_ptr;
-	od_sprite_1_ptr        = other.od_sprite_1_ptr;
-	od_sprite_2_ptr        = other.od_sprite_2_ptr;
-	od_sprite_3_ptr        = other.od_sprite_3_ptr;
+	roll_sprite_1_ptr        = other.roll_sprite_1_ptr;
+	roll_sprite_2_ptr        = other.roll_sprite_2_ptr;
+	roll_sprite_3_ptr        = other.roll_sprite_3_ptr;
 
 	return *this;
 }
 
-void Player::updateOverdriveState()
-{
-	// Update Overdrive state
-	if(hitpoints >= PLAYER_OD_1_HP_REQUIRED) 
-	{
-		overdrive_level = PLAYER_OD_LEVEL_1;
-
-		if(hitpoints >= PLAYER_OD_2_HP_REQUIRED)
-		{overdrive_level = PLAYER_OD_LEVEL_2;}
-	}
-	else {overdrive_level = PLAYER_OD_LEVEL_0;}
-}
-
 void Player::jump()
 {
+	if(!late_jump_grace_frames) {return;}
+
 	remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
 	late_jump_grace_frames      = 0;
 	rigidbody.addForce(PLAYER_JUMP_FORCE);
-	//setVerticalStretch();
-
-	// Jump Effect
-	if(!grounded_detected) {createAirJumpEffect();}
-}
-
-void Player::rollJump()
-{
-	x_speed = 0;
-	rigidbody.removeXForces();
-	setState(NONE);
-
-	remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
-	late_jump_grace_frames      = 0;
-	rigidbody.addForce(Force(bn::fixed_point_t<12>((PLAYER_ROLL_JUMP_X_FORCE) * (int32)x_dir, PLAYER_ROLL_JUMP_Y_FORCE), 
-	                                                PLAYER_ROLL_JUMP_DECAY));
-	//setVerticalStretch();
 
 	// Jump Effect
 	if(!grounded_detected) {createAirJumpEffect();}
@@ -264,7 +230,6 @@ void Player::wallJump()
 	remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
 	air_frames_elapsed = 0;
 	
-	//setVerticalStretch();
 	createWallJumpEffect();
 }
 
@@ -366,28 +331,28 @@ void Player::drawRollEffect()
 {	
 	if(roll_effect_frames)
 	{
-		if(global_timer % 2 == 0)
+		if(global_timer % 3 == 0)
 		{roll_effect_offset_multiplier++;}
 
-		od_sprite_1_ptr->set_visible(true);
-		od_sprite_2_ptr->set_visible(true);
-		od_sprite_3_ptr->set_visible(true);
+		roll_sprite_1_ptr->set_visible(true);
+		roll_sprite_2_ptr->set_visible(true);
+		roll_sprite_3_ptr->set_visible(true);
 	}
 	else 
 	{
-		if(global_timer % 2 == 0)
+		if(global_timer % 3 == 0)
 		{roll_effect_offset_multiplier--;}
 
-		if(roll_effect_offset_multiplier <= 1)
+		if(roll_effect_offset_multiplier <= 0)
 		{
-			od_sprite_1_ptr->set_visible(false);
-			od_sprite_2_ptr->set_visible(false);
-			od_sprite_3_ptr->set_visible(false);
+			roll_sprite_1_ptr->set_visible(false);
+			roll_sprite_2_ptr->set_visible(false);
+			roll_sprite_3_ptr->set_visible(false);
 		}
 	}
 	
 	#define MIN_EFFECT_OFFSET_MULTIPLIER 1
-	#define MAX_EFFECT_OFFSET_MULTIPLIER 5
+	#define MAX_EFFECT_OFFSET_MULTIPLIER 4
 
 	roll_effect_offset_multiplier = clamp(MIN_EFFECT_OFFSET_MULTIPLIER, 
 		                                  MAX_EFFECT_OFFSET_MULTIPLIER,
@@ -395,21 +360,21 @@ void Player::drawRollEffect()
 	
 	if(global_timer % roll_effect_offset_multiplier == 0)
 	{
-		od_sprite_3_ptr->set_position(od_sprite_2_ptr->position());
-		od_sprite_3_ptr->set_tiles(od_sprite_2_ptr->tiles());
-		od_sprite_3_ptr->set_horizontal_flip(od_sprite_2_ptr->horizontal_flip());
-		od_sprite_3_ptr->set_vertical_flip(od_sprite_2_ptr->vertical_flip());
+		roll_sprite_3_ptr->set_position(roll_sprite_2_ptr->position());
+		roll_sprite_3_ptr->set_tiles(roll_sprite_2_ptr->tiles());
+		roll_sprite_3_ptr->set_horizontal_flip(roll_sprite_2_ptr->horizontal_flip());
+		roll_sprite_3_ptr->set_vertical_flip(roll_sprite_2_ptr->vertical_flip());
 
-		od_sprite_2_ptr->set_position(od_sprite_1_ptr->position());
-		od_sprite_2_ptr->set_tiles(od_sprite_1_ptr->tiles());
-		od_sprite_2_ptr->set_horizontal_flip(od_sprite_1_ptr->horizontal_flip());
-		od_sprite_2_ptr->set_vertical_flip(od_sprite_1_ptr->vertical_flip());
+		roll_sprite_2_ptr->set_position(roll_sprite_1_ptr->position());
+		roll_sprite_2_ptr->set_tiles(roll_sprite_1_ptr->tiles());
+		roll_sprite_2_ptr->set_horizontal_flip(roll_sprite_1_ptr->horizontal_flip());
+		roll_sprite_2_ptr->set_vertical_flip(roll_sprite_1_ptr->vertical_flip());
 
-		od_sprite_1_ptr->set_x((x()).integer());
-		od_sprite_1_ptr->set_y((y()).integer());
-		od_sprite_1_ptr->set_tiles(sprite_ptr->tiles());
-		od_sprite_1_ptr->set_horizontal_flip(sprite_ptr->horizontal_flip());
-		od_sprite_1_ptr->set_vertical_flip(sprite_ptr->vertical_flip());
+		roll_sprite_1_ptr->set_x((x()).integer());
+		roll_sprite_1_ptr->set_y((y()).integer());
+		roll_sprite_1_ptr->set_tiles(sprite_ptr->tiles());
+		roll_sprite_1_ptr->set_horizontal_flip(sprite_ptr->horizontal_flip());
+		roll_sprite_1_ptr->set_vertical_flip(sprite_ptr->vertical_flip());
 	}
 }
 
@@ -492,6 +457,25 @@ void Player::updateTimers()
 	invulnerability_frames--;
     if(invulnerability_frames < 0) {invulnerability_frames = 0;}
 
+	// Update grace frames for a late jump //
+	if(!grounded_detected)
+	{
+		late_jump_grace_frames--;
+		late_jump_grace_frames = clamp(0, 
+									   PLAYER_LATE_JUMP_GRACE_FRAMES, 
+									   late_jump_grace_frames);
+	}
+	else
+	{
+		late_jump_grace_frames = PLAYER_LATE_JUMP_GRACE_FRAMES;
+	}
+
+	// Update Remaining Jump Input Frames //
+	remaining_jump_input_frames--;
+	remaining_jump_input_frames = clamp(0, 
+										PLAYER_MAX_JUMP_INPUT_FRAMES, 
+										remaining_jump_input_frames);
+
 	attack_buffered_frames--;
 	attack_buffered_frames = clamp(0, 
 		 						   PLAYER_ATTACK_BUFFER_FRAMES, 
@@ -511,12 +495,6 @@ void Player::updateTimers()
 	v_collision_grace_frames = clamp(0, 
 									 PLAYER_V_COLLISION_MAX_GRACE_FRAMES,
 									 v_collision_grace_frames);
-
-	late_roll_jump_grace_frames--;
-	late_roll_jump_grace_frames = clamp(0, 
-		                                PLAYER_LATE_ROLL_JUMP_GRACE_FRAMES, 
-										late_roll_jump_grace_frames);
-
 	air_frames_elapsed++;
 	air_frames_elapsed = clamp(0, 
 							   PLAYER_MAX_AIR_FRAMES, 
@@ -626,9 +604,9 @@ void Player::setCamera(const bn::camera_ptr& camera)
 
 	pm_sprite_ptr->set_camera(camera);
 	jump_effect_sprite_ptr->set_camera(camera);
-	od_sprite_1_ptr->set_camera(camera);
-	od_sprite_2_ptr->set_camera(camera);
-	od_sprite_3_ptr->set_camera(camera);
+	roll_sprite_1_ptr->set_camera(camera);
+	roll_sprite_2_ptr->set_camera(camera);
+	roll_sprite_3_ptr->set_camera(camera);
 }
 
 void Player::applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_dir)
@@ -720,10 +698,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 			// Jump
 			else if(bn::keypad::a_pressed() || jump_buffered_frames)
-			{
-				if(late_roll_jump_grace_frames) {rollJump();}
-				else {jump();}
-			}
+			{jump();}
 
 			// Roll
 			else if(bn::keypad::r_pressed() || roll_buffered_frames) 
@@ -787,11 +762,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			{setState(PLAYER_ATTACK_GROUND_1);}
 
 			// Jump
-			else if(bn::keypad::a_pressed() || jump_buffered_frames) 
-			{
-				if(late_roll_jump_grace_frames) {rollJump();}
-				else {jump();}
-			}
+			else if(bn::keypad::a_pressed() || jump_buffered_frames) {jump();}
 
 			// Roll
 			else if(bn::keypad::r_pressed() || roll_buffered_frames) {setState(PLAYER_ROLL);}
@@ -847,38 +818,34 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			// Attack Air 1
 			if(bn::keypad::b_pressed() || attack_buffered_frames)
 			{setState(PLAYER_ATTACK_AIR_1);}
-
-			// Fast Fall
-			if(bn::keypad::down_held() && 
-			   rigidbody.normalized_dir.y() > 0 && 
-			   air_frames_elapsed >= PLAYER_MIN_FAST_FALL_FRAMES)
-			{fastFall();}
 	
 			// Jumps
 			if(bn::keypad::a_pressed()) 
 			{
-				// Wall Jump
+				// Right Wall Jump
 				if(right_wj_eligible)
 				{
 					x_dir = LEFT;
 					wallJump();
 				}
+
+				// Left Wall Jump
 				else if(left_wj_eligible)
 				{
 					x_dir = RIGHT;
 					wallJump();
 				}
-				// Late Roll Jump
-				else if(late_roll_jump_grace_frames) {rollJump();}
+
 				// Late Jump
 				else if(late_jump_grace_frames) {jump();}
+
 				// Buffer Jump
 				else {jump_buffered_frames = PLAYER_JUMP_BUFFER_FRAMES;}
 			}
 
-			// Buffer Roll
-			if(bn::keypad::r_pressed())
-			{roll_buffered_frames = PLAYER_ROLL_BUFFER_FRAMES;}
+			// Roll
+			else if(bn::keypad::r_pressed() || roll_buffered_frames)
+			{setState(PLAYER_ROLL);}
 
 			// High Jump
 			if(bn::keypad::a_held() && remaining_jump_input_frames > 0)
@@ -895,18 +862,6 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			rigidbody.addForce(PLAYER_GRAVITY_FORCE);
 			if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
 			{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
-
-			// Update Remaining Jump Input Frames //
-			remaining_jump_input_frames--;
-			remaining_jump_input_frames = clamp(0, 
-												PLAYER_MAX_JUMP_INPUT_FRAMES, 
-												remaining_jump_input_frames);
-
-			// Update grace frames for a late jump //
-			late_jump_grace_frames--;
-			late_jump_grace_frames = clamp(0, 
-										PLAYER_LATE_JUMP_GRACE_FRAMES, 
-										late_jump_grace_frames);
 
 		break;
 
@@ -1346,14 +1301,6 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			else if(bn::keypad::a_released()) 
 			{remaining_jump_input_frames = 0;}
 
-			// Roll Cancel
-			/*
-			if((roll_requested) && 
-			        animate_action_ptr->current_index() >= PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME && 
-					grounded_detected)
-			{setState(PLAYER_ROLL);}
-			*/
-
 			// Buffer Roll
 			if(bn::keypad::r_pressed())
 			{roll_buffered_frames = PLAYER_ROLL_BUFFER_FRAMES;}
@@ -1366,18 +1313,6 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 				if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
 				{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
 			}
-
-			// Update Remaining Jump Input Frames //
-			remaining_jump_input_frames--;
-			remaining_jump_input_frames = clamp(0, 
-												PLAYER_MAX_JUMP_INPUT_FRAMES, 
-												remaining_jump_input_frames);
-
-			// Update grace frames for a late jump //
-			late_jump_grace_frames--;
-			late_jump_grace_frames = clamp(0, 
-										PLAYER_LATE_JUMP_GRACE_FRAMES, 
-										late_jump_grace_frames);
 
 		break;
 
@@ -1393,9 +1328,6 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 				// Reset state
 				setState(NONE);
 
-				// Set roll jump grace frames
-				late_roll_jump_grace_frames = PLAYER_LATE_ROLL_JUMP_GRACE_FRAMES;
-
 				// Exit Momentum
 				x_speed = PLAYER_MAX_X_SPEED;
 
@@ -1409,20 +1341,39 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			///////////////
 			
 			// Distance Influence
-
 			if(bn::keypad::left_held())       
-			{
-				rigidbody.addForce(PLAYER_X_LEFT_FORCE);
-			}
+			{rigidbody.addForce(PLAYER_X_LEFT_FORCE);}
 
 			else if(bn::keypad::right_held()) 
-			{
-				rigidbody.addForce(PLAYER_X_RIGHT_FORCE); 
-			}
+			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE);}
 
-			// Roll Jump
+			// Jumps
 			if(bn::keypad::a_pressed()) 
-			{rollJump();}
+			{
+				// Right Wall Jump
+				if(right_wj_eligible && !grounded_detected)
+				{
+					x_dir = LEFT;
+					wallJump();
+
+					setState(NONE);
+				}
+
+				// Left Wall Jump
+				else if(left_wj_eligible && !grounded_detected)
+				{
+					x_dir = RIGHT;
+					wallJump();
+
+					setState(NONE);
+				}
+
+				// Late Jump
+				else if(late_jump_grace_frames) {jump();}
+
+				// Buffer Jump
+				else {jump_buffered_frames = PLAYER_JUMP_BUFFER_FRAMES;}
+			}
 
 			// Buffer Roll
 			if(bn::keypad::r_pressed())
@@ -1431,6 +1382,17 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			// Buffer Attack
 			if(bn::keypad::b_pressed())
 			{attack_buffered_frames = PLAYER_ATTACK_BUFFER_FRAMES;}
+
+			// High Jump
+			if(bn::keypad::a_held() && remaining_jump_input_frames > 0)
+			{rigidbody.addForce(PLAYER_SECONDARY_JUMP_FORCE);}
+
+			else if(bn::keypad::a_released()) 
+			{remaining_jump_input_frames = 0;}
+
+			// Tertiary Jump
+			if(bn::keypad::a_held() && !bn::keypad::down_held())
+			{rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);}
 
 			// Add Gravity //
 			if(!grounded_detected)
@@ -1498,8 +1460,6 @@ void Player::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_obj
 		// set the new state.
 		if(new_state != state) {setState(new_state);}
 	}
-
-	updateOverdriveState();
 }
 
 void Player::setState(ObjectState new_state)
@@ -1514,8 +1474,6 @@ void Player::setState(ObjectState new_state)
 		break;
 
 		case PLAYER_GROUNDED_NEUTRAL:
-
-			late_jump_grace_frames = PLAYER_LATE_JUMP_GRACE_FRAMES;
 			
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								  								  		  0,
@@ -1526,8 +1484,6 @@ void Player::setState(ObjectState new_state)
 		break;
 
 		case PLAYER_WALK:
-
-			late_jump_grace_frames = PLAYER_LATE_JUMP_GRACE_FRAMES;
 
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 																	      1,

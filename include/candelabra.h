@@ -19,12 +19,14 @@
 #define CANDELABRA_COLLIDER_OFFSET_X 0
 #define CANDELABRA_COLLIDER_OFFSET_Y 0
 
+#define CANDELABRA_30_FPS true
+
 struct Candelabra : Prop 
 {
 
-    //////////////////////
+    ///////////////////////
     // Struct Candelabra //
-    //////////////////////
+    ///////////////////////
 
     Candelabra();
     Candelabra(const Candelabra& other);

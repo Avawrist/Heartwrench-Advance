@@ -28,6 +28,8 @@ SmallVase::SmallVase()
 
     hitpoints = SMALL_VASE_HITPOINTS;
     max_hp    = SMALL_VASE_HITPOINTS;
+
+    thirty_fps = SMALL_VASE_30_FPS;
 }
 
 SmallVase::SmallVase(const SmallVase& other) : GameObject(other)
@@ -56,6 +58,12 @@ void SmallVase::update(const RoomBounds& 							   room_bounds,
                         const bn::regular_bg_item&                     bg_item,
                         const bn::camera_ptr&                          camera)
 {
+    /////////////////////////////////
+    // Early out for 30FPS Objects //
+    /////////////////////////////////
+
+    if(thirty_fps && (global_timer % 2 == 0)) {return;}
+
     //////////////////
     // Update State //
     //////////////////

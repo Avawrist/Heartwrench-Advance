@@ -73,6 +73,7 @@ GameObject::GameObject(const GameObject& other)
 	x_dir = other.x_dir;
     y_dir = other.y_dir;
 
+    thirty_fps        = other.thirty_fps;
 	is_inactive       = other.is_inactive;
     is_dead           = other.is_dead;
     is_persistent     = other.is_persistent;
@@ -143,6 +144,7 @@ GameObject& GameObject::operator =(const GameObject& other)
 	x_dir = other.x_dir;
     y_dir = other.y_dir;
 
+    thirty_fps        = other.thirty_fps;
 	is_inactive       = other.is_inactive;
     is_dead           = other.is_dead;
     is_persistent     = other.is_persistent;
@@ -168,6 +170,12 @@ void GameObject::update(const RoomBounds& 							   room_bounds,
                         const bn::camera_ptr&                          camera)
 {
     
+    /////////////////////////////////
+    // Early out for 30FPS Objects //
+    /////////////////////////////////
+
+    if(thirty_fps && (global_timer % 2 == 0)) {return;}
+
     //////////////////
     // Update State //
     //////////////////

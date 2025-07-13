@@ -21,6 +21,8 @@
 
 #define HP_TOTEM_HITPOINTS 1
 
+#define HP_TOTEM_30_FPS true
+
 #define HP_TOTEM_HP_VALUE 1
 
 struct HPTotem : GameObject {

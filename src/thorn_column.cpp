@@ -28,6 +28,8 @@ ThornColumn::ThornColumn()
     collider_y_axis   = collider;
 
     hitpoints = THORN_COLUMN_HITPOINTS;
+
+    thirty_fps = THORN_COLUMN_30_FPS;
 }
 
 ThornColumn::ThornColumn(const ThornColumn& other) : Enemy(other)

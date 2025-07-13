@@ -21,6 +21,8 @@
 
 #define LARGE_VASE_HITPOINTS 1
 
+#define LARGE_VASE_30_FPS true;
+
 struct LargeVase : GameObject {
 
     //////////////////////

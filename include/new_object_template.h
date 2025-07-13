@@ -21,6 +21,8 @@
 
 #define NEW_OBJECT_HITPOINTS 0
 
+#define NEW_OBJECT_30_FPS false
+
 struct NewObject : GameObject {
 
     //////////////////////

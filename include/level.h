@@ -78,6 +78,7 @@ struct Level
     bn::optional<bn::regular_bg_ptr>        painted_bg_ptr;
     bn::optional<bn::regular_bg_ptr>        object_bg_ptr;
 
+    bn::optional<bn::bg_palette_ptr>        default_main_palette_ptr;
     bn::optional<bn::bg_palette_ptr>        default_painted_palette_ptr;
     
     bn::optional<bn::regular_bg_item>       bg_item;

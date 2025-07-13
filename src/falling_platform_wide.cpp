@@ -30,6 +30,8 @@ FallingPlatformWide::FallingPlatformWide()
 
     hitpoints = FALLING_PLATFORM_WIDE_HITPOINTS;
 
+    thirty_fps = FALLING_PLATFORM_WIDE_30_FPS;
+
     fall_timer = 0;
 }
 

@@ -23,6 +23,8 @@ TilePassage::TilePassage()
 	collider_offset_x = 0;
 	collider_offset_y = 0;
 
+    thirty_fps = TILE_PASSAGE_30_FPS;
+
 }
 
 TilePassage::TilePassage(const TilePassage& other) : GameObject(other)

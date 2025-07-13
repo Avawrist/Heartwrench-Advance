@@ -28,6 +28,8 @@ LargeVase::LargeVase()
 
     hitpoints = LARGE_VASE_HITPOINTS;
     max_hp    = LARGE_VASE_HITPOINTS;
+
+    thirty_fps = LARGE_VASE_30_FPS;
 }
 
 LargeVase::LargeVase(const LargeVase& other) : GameObject(other)
@@ -56,6 +58,12 @@ void LargeVase::update(const RoomBounds& 							   room_bounds,
                         const bn::regular_bg_item&                     bg_item,
                         const bn::camera_ptr&                          camera)
 {
+    /////////////////////////////////
+    // Early out for 30FPS Objects //
+    /////////////////////////////////
+
+    if(thirty_fps && (global_timer % 2 == 0)) {return;}
+
     //////////////////
     // Update State //
     //////////////////

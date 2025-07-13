@@ -32,6 +32,8 @@ GroundGhoul::GroundGhoul()
 
         hitpoints = GROUND_GHOUL_HITPOINTS;
 
+        thirty_fps = GROUND_GHOUL_30_FPS;
+
         action_timer   = GROUND_GHOUL_ACTION_TIMER;
         next_crawl_dir = LEFT;
 }

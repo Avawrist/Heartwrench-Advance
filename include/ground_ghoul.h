@@ -28,6 +28,8 @@
 
 #define GROUND_GHOUL_HITPOINTS 2
 
+#define GROUND_GHOUL_30_FPS false
+
 struct GroundGhoul : Enemy {
 
 	////////////////////////

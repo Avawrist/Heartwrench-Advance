@@ -367,6 +367,10 @@ void Enemy::resolveHPTotemCollision(GameObject& object)
 
         // If there is still collision somehow, must be corner case //
         resolveCornerCollision(object.collider);
+
+		// Smash the block
+		if(state == OBJECT_HITSTUN || state == OBJECT_DEATH)
+		{object.applyHit(damage, 0, 0);}
     }
 
 	updateTestColliders();

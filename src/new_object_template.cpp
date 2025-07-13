@@ -27,6 +27,8 @@ NewObject::NewObject()
     collider_y_axis   = collider;
 
     hitpoints = NEW_OBJECT_HITPOINTS;
+
+    thirty_fps = NEW_OBJECT_30_FPS;
 }
 
 NewObject::NewObject(const NewObject& other) : GameObject(other)

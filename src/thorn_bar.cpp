@@ -28,6 +28,8 @@ ThornBar::ThornBar()
     collider_y_axis   = collider;
 
     hitpoints = THORN_BAR_HITPOINTS;
+
+    thirty_fps = THORN_BAR_30_FPS;
 }
 
 ThornBar::ThornBar(const ThornBar& other) : Enemy(other)

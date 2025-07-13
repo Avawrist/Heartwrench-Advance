@@ -34,10 +34,13 @@ PushBlock::PushBlock()
     hitpoints = PUSH_BLOCK_HITPOINTS;
 	damage    = PUSH_BLOCK_DAMAGE;
 
+	thirty_fps = PUSH_BLOCK_30_FPS;
+
 	frame_start_pos = bn::fixed_point(0, 0);
-	hit_h_wall 			  = 0;
-	hit_v_wall 			  = 0;
-	received_track_force  = false;
+	hit_h_wall 			    = 0;
+	hit_v_wall 			    = 0;
+	received_h_track_force  = false;
+	received_v_track_force  = false;
 }
 
 PushBlock::PushBlock(const PushBlock& other) : GameObject(other)
@@ -45,7 +48,8 @@ PushBlock::PushBlock(const PushBlock& other) : GameObject(other)
 	frame_start_pos = other.frame_start_pos;
 	hit_h_wall = other.hit_h_wall;
 	hit_v_wall = other.hit_v_wall;
-	received_track_force  = other.received_track_force;
+	received_h_track_force  = other.received_h_track_force;
+	received_v_track_force  = other.received_v_track_force;
 }
 
 PushBlock::~PushBlock()
@@ -58,7 +62,8 @@ PushBlock& PushBlock::operator =(const PushBlock& other)
 	frame_start_pos = other.frame_start_pos;
 	hit_h_wall = other.hit_h_wall;
 	hit_v_wall = other.hit_v_wall;
-	received_track_force  = other.received_track_force;
+	received_h_track_force  = other.received_h_track_force;
+	received_v_track_force  = other.received_v_track_force;
 
     return *this;
 }
@@ -139,7 +144,8 @@ void PushBlock::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_
 							const bn::span<const bn::regular_bg_map_cell>& cells,
 							const bn::regular_bg_item&                     bg_item)
 {
-	if(state == IDLE) {received_track_force = false;}
+	if(state == IDLE) {received_h_track_force = false;}
+	if(rigidbody.normalized_dir.y() >= 0) {received_v_track_force = false;}
 
 	ObjectState new_state = state;
 
@@ -487,7 +493,7 @@ void PushBlock::resolveTileCollision(const bn::regular_bg_ptr&                  
             else if(tile_index == SHALLOW_SLOPE_1_INDEX)
             {
                 other_collider = Collider(world_x, 
-                                          world_y + 3, 
+                                          world_y + 3,
                                           TILE_WIDTH, 
                                           TILE_HEIGHT / 4);
 
@@ -568,9 +574,9 @@ void PushBlock::resolveHGearLeftCollision(const Collider& other_collider)
 		setY(other_collider.y() + ((TILE_HEIGHT / 2) * 3));
 
 		// Bonus friction 
-		if(!received_track_force)
+		if(!received_h_track_force)
 		{
-			received_track_force = true;
+			received_h_track_force = true;
 			rigidbody.addForce(PUSH_BLOCK_TRACK_FRICTION_H_FORCE);
 		}
 
@@ -593,9 +599,9 @@ void PushBlock::resolveHGearMidCollision(const Collider& other_collider)
 		setY(other_collider.y() + ((TILE_HEIGHT / 2) * 3));
 
 		// Bonus friction 
-		if(!received_track_force)
+		if(!received_h_track_force)
 		{
-			received_track_force = true;
+			received_h_track_force = true;
 			rigidbody.addForce(PUSH_BLOCK_TRACK_FRICTION_H_FORCE);
 		}
 	}
@@ -610,9 +616,9 @@ void PushBlock::resolveHGearRightCollision(const Collider& other_collider)
 		setY(other_collider.y() + ((TILE_HEIGHT / 2) * 3));
 
 		// Bonus friction 
-		if(!received_track_force)
+		if(!received_h_track_force)
 		{
-			received_track_force = true;
+			received_h_track_force = true;
 			rigidbody.addForce(PUSH_BLOCK_TRACK_FRICTION_H_FORCE);
 		}
 
@@ -650,7 +656,11 @@ void PushBlock::resolveVGearMidCollision(const Collider& other_collider)
 		setX(other_collider.x() + (TILE_WIDTH / 2));
 
 		// Convert x force to y force
-		rigidbody.addForce(Force(bn::fixed_point_t<12>(0, abs(rigidbody.final_dir.x()) * -1), 1));
+		if(!received_v_track_force)
+		{
+			rigidbody.addForce(Force(bn::fixed_point_t<12>(0, abs(rigidbody.final_dir.x()) * PUSH_BLOCK_V_TRACK_FORCE_MULTIPLIER), PUSH_BLOCK_V_TRACK_FORCE_DECAY));
+			received_v_track_force = true;
+		}
 	}
 }
 
@@ -660,6 +670,13 @@ void PushBlock::resolveVGearBottomCollision(const Collider& other_collider)
 	{
 		// Snap to track
 		setX(other_collider.x() + (TILE_WIDTH / 2));
+
+		// Convert x force to y force
+		if(!received_v_track_force)
+		{
+			rigidbody.addForce(Force(bn::fixed_point_t<12>(0, abs(rigidbody.final_dir.x()) * PUSH_BLOCK_V_TRACK_FORCE_MULTIPLIER), PUSH_BLOCK_V_TRACK_FORCE_DECAY));
+			received_v_track_force = true;
+		}
 
 		// Apply bottom endcap
 		if(rigidbody.normalized_dir.y() > 0 && y() > (other_collider.y() + (TILE_HEIGHT / 2)))

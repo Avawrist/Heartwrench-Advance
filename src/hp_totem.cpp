@@ -29,6 +29,8 @@ HPTotem::HPTotem()
     hitpoints = HP_TOTEM_HITPOINTS;
     max_hp    = HP_TOTEM_HITPOINTS;
 
+    thirty_fps = HP_TOTEM_30_FPS;
+
     dropped_hp = false;
 }
 
@@ -60,6 +62,12 @@ void HPTotem::update(const RoomBounds& 							    room_bounds,
                      const bn::regular_bg_item&                     bg_item,
                      const bn::camera_ptr&                          camera)
 {
+    /////////////////////////////////
+    // Early out for 30FPS Objects //
+    /////////////////////////////////
+
+    if(thirty_fps && (global_timer % 2 == 0)) {return;}
+
     //////////////////
     // Update State //
     //////////////////

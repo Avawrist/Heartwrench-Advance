@@ -13,6 +13,8 @@ PhaseOrb::PhaseOrb()
 	collider_offset_x = PHASE_ORB_COLLIDER_OFFSET_X;
 	collider_offset_y = PHASE_ORB_COLLIDER_OFFSET_Y;
 
+    thirty_fps = PHASE_ORB_30_FPS;
+
     phase_destination = bn::fixed_point(0, 0);
 }
 

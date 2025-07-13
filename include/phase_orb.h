@@ -19,6 +19,8 @@
 #define PHASE_ORB_COLLIDER_OFFSET_X 0
 #define PHASE_ORB_COLLIDER_OFFSET_Y 0
 
+#define PHASE_ORB_30_FPS true
+
 #define PHASE_DISTANCE 156
 
 struct PhaseOrb : GameObject {

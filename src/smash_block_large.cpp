@@ -26,6 +26,8 @@ SmashBlockLarge::SmashBlockLarge()
     collider_x_axis   = collider;
     collider_y_axis   = collider;
 
+    thirty_fps = SMASH_BLOCK_LARGE_30_FPS;
+
     hitpoints = SMASH_BLOCK_LARGE_HITPOINTS;
 }
 
@@ -55,6 +57,12 @@ void SmashBlockLarge::update(const RoomBounds& 							   room_bounds,
                              const bn::regular_bg_item&                     bg_item,
                              const bn::camera_ptr&                          camera)
 {
+    /////////////////////////////////
+    // Early out for 30FPS Objects //
+    /////////////////////////////////
+
+    if(thirty_fps && (global_timer % 2 == 0)) {return;}
+
     //////////////////
     // Update State //
     //////////////////

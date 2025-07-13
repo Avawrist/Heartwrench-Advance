@@ -26,6 +26,8 @@ Candelabra::Candelabra()
     collider_x_axis   = collider;
     collider_y_axis   = collider;
 
+    thirty_fps = CANDELABRA_30_FPS;
+
 }
 
 Candelabra::Candelabra(const Candelabra& other) : Prop(other)

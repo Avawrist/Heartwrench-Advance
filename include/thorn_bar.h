@@ -21,6 +21,8 @@
 
 #define THORN_BAR_HITPOINTS 0
 
+#define THORN_BAR_30_FPS true
+
 struct ThornBar : Enemy {
 
     /////////////////////

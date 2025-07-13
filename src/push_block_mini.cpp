@@ -34,6 +34,8 @@ PushBlockMini::PushBlockMini()
     hitpoints = PUSH_BLOCK_MINI_HITPOINTS;
 	damage    = PUSH_BLOCK_MINI_DAMAGE;
 
+	thirty_fps = PUSH_BLOCK_MINI_30_FPS;
+
 	frame_start_pos = bn::fixed_point(0, 0);
 	hit_h_wall 			  = 0;
 	hit_v_wall 			  = 0;

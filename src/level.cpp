@@ -23,6 +23,7 @@ Level::Level(const Level& other)
     object_bg_item = other.object_bg_item;
     object_cells   = other.object_cells;
 
+    default_main_palette_ptr    = other.default_main_palette_ptr;
     default_painted_palette_ptr = other.default_painted_palette_ptr;
 
     hud_hp_sprite_ptr         = other.hud_hp_sprite_ptr;
@@ -64,6 +65,7 @@ void Level::operator =(const Level& other)
     object_bg_item = other.object_bg_item;
     object_cells   = other.object_cells;
 
+    default_main_palette_ptr    = other.default_main_palette_ptr;
     default_painted_palette_ptr = other.default_painted_palette_ptr;
 
     hud_hp_sprite_ptr         = other.hud_hp_sprite_ptr;
@@ -95,6 +97,9 @@ void Level::clear()
     main_bg_ptr.reset();
     painted_bg_ptr.reset();
     object_bg_ptr.reset();
+
+    default_main_palette_ptr.reset();
+    default_painted_palette_ptr.reset();
 
     hud_hp_sprite_ptr.reset();
     hud_hp_animate_action_ptr.reset();
@@ -168,7 +173,8 @@ void Level::load(LevelName level_name)
                         object_cells);
 
     // Store default painted bg palette
-    default_painted_palette_ptr = main_bg_ptr->palette();
+    default_main_palette_ptr    = main_bg_ptr->palette();
+    default_painted_palette_ptr = painted_bg_ptr->palette();
     
     // Set draw priority for BGs
     painted_bg_ptr->set_z_order(PAINTED_BG_ORDER);
@@ -192,8 +198,7 @@ void Level::load(LevelName level_name)
     hud_hp_sprite_ptr->set_camera(camera.value());
 
     // Set black screen
-    bn::bg_palette_ptr main_bg_palette = main_bg_ptr->palette();
-    main_bg_palette.set_fade(bn::colors::black, 1);
+    default_main_palette_ptr->set_fade(bn::colors::black, 1);
     default_painted_palette_ptr->set_fade(bn::colors::black, 1);
 
     // Trigger fade in
@@ -400,7 +405,7 @@ void Level::updateBGFlash()
     else
     {
         // Set default palette
-        main_bg_ptr->set_palette(default_painted_palette_ptr.value());
+        main_bg_ptr->set_palette(default_main_palette_ptr.value());
     }
 
     // Update bg hitflash frames
@@ -622,8 +627,8 @@ void Level::drawObjects()
 
 void Level::updateFade()
 {
-    bn::bg_palette_ptr main_bg_palette = main_bg_ptr->palette();
-    bn::fixed fade_intensity           = main_bg_palette.fade_intensity();
+   //bn::bg_palette_ptr main_bg_palette = main_bg_ptr->palette();
+    bn::fixed fade_intensity = default_main_palette_ptr->fade_intensity();
 
     if(fade_in)
     {
@@ -644,7 +649,7 @@ void Level::updateFade()
         }
 
         // Fade BGs in
-        main_bg_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+        default_main_palette_ptr->set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
         default_painted_palette_ptr->set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
 
         // Fade HUD in
@@ -652,7 +657,7 @@ void Level::updateFade()
         hud_hp_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
 
         // End condition
-        if(main_bg_palette.fade_intensity() == 0) {fade_in = false;}
+        if(default_main_palette_ptr->fade_intensity() == 0) {fade_in = false;}
     }
     else if(fade_out)
     {
@@ -688,7 +693,7 @@ void Level::updateFade()
         }
 
         // Fade BGs out
-        main_bg_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+        default_main_palette_ptr->set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
         default_painted_palette_ptr->set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
 
         // Fade HUD out
@@ -702,7 +707,7 @@ void Level::updateFade()
         }
 
         // End condition
-        if(main_bg_palette.fade_intensity() == 1) {fade_out = false;}
+        if(default_main_palette_ptr->fade_intensity() == 1) {fade_out = false;}
     }
 }
 

@@ -19,8 +19,13 @@
 #define PUSH_BLOCK_COLLIDER_OFFSET_X 0
 #define PUSH_BLOCK_COLLIDER_OFFSET_Y 0
 
+#define PUSH_BLOCK_V_TRACK_FORCE_MULTIPLIER -1.5
+#define PUSH_BLOCK_V_TRACK_FORCE_DECAY       0.05
+
 #define PUSH_BLOCK_HITPOINTS 0
 #define PUSH_BLOCK_DAMAGE    10
+
+#define PUSH_BLOCK_30_FPS false
 
 #define PUSH_BLOCK_ROOF_OFFSET          ((PUSH_BLOCK_COLLIDER_HEIGHT / 2) * -1)
 #define PUSH_BLOCK_ROOF_COLLIDER_HEIGHT 64
@@ -48,7 +53,8 @@ struct PushBlock : GameObject {
 
     int32 hit_h_wall;
     int32 hit_v_wall;
-    bool received_track_force;
+    bool received_h_track_force;
+    bool received_v_track_force;
 
     PushBlock();
     PushBlock(const PushBlock& other);
