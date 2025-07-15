@@ -140,7 +140,7 @@ void LargeVase::setState(ObjectState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 																	   1,
 																	   bn::sprite_items::large_vase.tiles_item(),
-																	   1, 1, 2, 2, 3, 3, 3, 4, 4, 4);
+																	   1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5);
 
 		break;
 

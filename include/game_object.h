@@ -57,6 +57,7 @@
 #include "bn_sprite_items_large_vase.h"
 #include "bn_sprite_items_small_vase.h"
 #include "bn_sprite_items_hp_totem.h"
+#include "bn_sprite_items_hp_drop.h"
 
 // Enemy Object Assets
 #include "bn_sprite_items_ground_ghoul.h"
@@ -165,6 +166,7 @@ enum ObjectType
 	LARGE_VASE,
 	SMALL_VASE,
 	HP_TOTEM,
+	HP_DROP,
 
 	// Level Enemies
 	THORN_COLUMN,
@@ -398,6 +400,7 @@ struct GameObject
 	virtual void resolveLargeVaseCollision(GameObject& object);
 	virtual void resolveSmallVaseCollision(GameObject& object);
 	virtual void resolveHPTotemCollision(GameObject& object);
+	virtual void resolveHPDropCollision(GameObject& object);
 
 	// Level Enemies
 	virtual void resolveThornColumnCollision(GameObject& object); 

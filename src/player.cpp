@@ -2031,6 +2031,19 @@ void Player::resolveHPTotemCollision(GameObject& object)
 	}
 }
 
+void Player::resolveHPDropCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+	
+	if(collider.isCollision(object.collider))
+    {
+		global_hitstop_frames = PLAYER_GET_HP_HITSTOP_FRAMES;
+		
+		applyHP(object.damage);
+		object.setState(OBJECT_DEATH);
+	}
+}
+
 // Level Enemies
 void Player::resolveThornColumnCollision(GameObject& object)  
 {

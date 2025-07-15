@@ -433,21 +433,6 @@ void Level::updatePaintedBG()
     #define PARALLAX_REDUCTION_FACTOR -32 // The larger the number, the slower the BG will scroll.
     bn::fixed x_offset = (current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->x() - current_room.center().x()) / PARALLAX_REDUCTION_FACTOR;
     painted_bg_ptr->set_position(current_room.center().x() + x_offset, current_room.center().y());
-
-    // Animate
-    if(painted_bg_anim_ptr.get() != NULL)
-    {
-        if(global_timer % GLOBAL_TIMER_MAX == 0)
-        {
-            painted_bg_anim_ptr.reset();
-            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_once(painted_bg_ptr.value(),
-                                                                            2,
-                                                                            bn::regular_bg_items::test_painted_bg.map_item(),
-                                                                            1, 1, 2, 2, 3, 3, 4, 4, 0, 0);
-        }
-
-        if(!painted_bg_anim_ptr->done()) {painted_bg_anim_ptr->update();}
-    }
 }
 
 void Level::updateGlobalTimer()

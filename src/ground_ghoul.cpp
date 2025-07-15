@@ -87,7 +87,6 @@ void GroundGhoul::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
                                         const bn::regular_bg_item&                     bg_item,
                                         const bn::camera_ptr&                          camera)
 {
-
     switch(state)
     {
         case IDLE:

@@ -755,6 +755,10 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
                     resolveHPTotemCollision(*game_objects.at(i));
                 break;
 
+                case HP_DROP:
+                    resolveHPDropCollision(*game_objects.at(i));
+                break;
+
                 // Level Enemies
                 case THORN_COLUMN:
                     resolveThornColumnCollision(*game_objects.at(i));
@@ -808,6 +812,7 @@ void GameObject::resolveSmashBlockMiniCollision(GameObject& object)      {}
 void GameObject::resolveLargeVaseCollision(GameObject& object)           {}
 void GameObject::resolveSmallVaseCollision(GameObject& object)           {}
 void GameObject::resolveHPTotemCollision(GameObject& object)             {}
+void GameObject::resolveHPDropCollision(GameObject& object)              {}
 
 // Level Enemies
 void GameObject::resolveThornColumnCollision(GameObject& object) {}

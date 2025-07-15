@@ -123,7 +123,9 @@ void Hitbox::applyHit(GameObject& object)
 
     // Object physics:
     object.rigidbody.removeForces();
-    object.rigidbody.addForce(HITBOX_KNOCKBACK_FORCE);
+
+    // Only add knockback if the recipient will survive the damage:
+    if(object.hitpoints - damage > 0) {object.rigidbody.addForce(HITBOX_KNOCKBACK_FORCE);}
 
     // Object Dir:
     object.x_dir = (XDirection)(x_dir * -1);
@@ -273,6 +275,14 @@ void Hitbox::resolveSmallVaseCollision(GameObject& object)
 }
 
 void Hitbox::resolveHPTotemCollision(GameObject& object)
+{
+    if(object.state == OBJECT_DEATH) {return;}
+
+    if(collider.isCollision(object.collider))
+    {applyHit(object);}
+}
+
+void Hitbox::resolveHPDropCollision(GameObject& object)
 {
     if(object.state == OBJECT_DEATH) {return;}
 

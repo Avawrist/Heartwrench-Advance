@@ -39,6 +39,8 @@
 #define PLAYER_OD_1_HP_REQUIRED   2
 #define PLAYER_OD_2_HP_REQUIRED   3
 
+#define PLAYER_GET_HP_HITSTOP_FRAMES 8
+
 #define PLAYER_HIT_INVULNERABILITY_FRAMES 120
 
 #define PLAYER_ATTACK_BUFFER_FRAMES 12
@@ -293,6 +295,7 @@ struct Player : GameObject {
 	void resolveSmashBlockLargeCollision(GameObject& object)     override;
 	void resolveSmashBlockMiniCollision(GameObject& object)      override;
 	void resolveHPTotemCollision(GameObject& object)             override;
+	void resolveHPDropCollision(GameObject& object)              override;
 
 	// Level Enemies
 	void resolveThornColumnCollision(GameObject& object) override; 
