@@ -45,7 +45,9 @@ Player::Player()
 	hitstop_frames                   = 0;
 	roll_effect_frames               = 0;
 	roll_effect_offset_multiplier    = 0;
-	max_hp                           = PLAYER_MAX_HITPOINTS;
+	currency_collected				 = 0;
+
+	max_hp = PLAYER_MAX_HITPOINTS;
 	
 	wall_right_detected      = false;
     wall_left_detected       = false;
@@ -106,6 +108,7 @@ Player::Player(const Player& other) : GameObject(other)
 	hitstop_frames                   = other.hitstop_frames;
 	roll_effect_frames               = other.roll_effect_frames;
 	roll_effect_offset_multiplier    = other.roll_effect_offset_multiplier;
+	currency_collected               = other.currency_collected;
 
 	wall_right_detected      = other.wall_right_detected;
     wall_left_detected       = other.wall_left_detected;
@@ -174,6 +177,7 @@ Player& Player::operator =(const Player& other)
 	hitstop_frames                   = other.hitstop_frames;
 	roll_effect_frames               = other.roll_effect_frames;
 	roll_effect_offset_multiplier    = other.roll_effect_offset_multiplier;
+	currency_collected               = other.currency_collected;
 
 	wall_right_detected      = other.wall_right_detected;
     wall_left_detected       = other.wall_left_detected;
@@ -2040,6 +2044,17 @@ void Player::resolveHPDropCollision(GameObject& object)
 		global_hitstop_frames = PLAYER_GET_HP_HITSTOP_FRAMES;
 		
 		applyHP(object.damage);
+		object.setState(OBJECT_DEATH);
+	}
+}
+
+void Player::resolveMoonDropCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+	
+	if(collider.isCollision(object.collider))
+    {	
+		currency_collected += object.damage;
 		object.setState(OBJECT_DEATH);
 	}
 }

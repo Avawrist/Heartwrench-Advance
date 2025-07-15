@@ -62,6 +62,9 @@
 // Fade 
 #define LEVEL_FADE_INCREMENT 0.05
 
+// Currency
+#define LEVEL_MAX_CURRENCY 100
+
 enum LevelName 
 {
     NO_LEVEL = 0,
@@ -115,6 +118,9 @@ struct Level
 
     bn::random random_engine;
 
+    uint32 displayed_currency;
+    uint32 currency;
+
     Level();
     Level(LevelName level_name);
     Level(const Level& other);
@@ -132,6 +138,7 @@ struct Level
     void updateBGFlash();
     void updatePaintedBG();
     void updateGlobalTimer();
+    void updateCurrency();
     void reloadOnDeath();
     void freeObjects();
     void transitionRoom();

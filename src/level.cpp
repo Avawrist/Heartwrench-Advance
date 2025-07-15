@@ -47,6 +47,9 @@ Level::Level(const Level& other)
     cam_update_timer      = other.cam_update_timer;
 
     random_engine = other.random_engine;
+
+    displayed_currency = other.displayed_currency;
+    currency           = other.currency;
 }
 
 Level::~Level()
@@ -91,6 +94,9 @@ void Level::operator =(const Level& other)
     cam_update_timer      = other.cam_update_timer;
 
     random_engine = other.random_engine;
+
+    displayed_currency = other.displayed_currency;
+    currency           = other.currency;
 }
 
 void Level::clear()
@@ -134,6 +140,9 @@ void Level::load(LevelName level_name)
     cam_look_dir_x_offset = 0;
     cam_look_y_offset     = 0;
     cam_update_timer      = 0;
+
+    displayed_currency = 0;
+    currency           = 0;
 
     // Record current level & pos
     current_level_name = level_name;
@@ -239,6 +248,7 @@ void Level::updateAll()
 
     reloadOnDeath();
     updateObjects();
+    updateCurrency();
     updateCamera();
     updateBGFlash();
     updatePaintedBG();
@@ -448,6 +458,21 @@ void Level::updateGlobalTimer()
     if(global_timer >= GLOBAL_TIMER_MAX) {global_timer = 0;}
 }
 
+void Level::updateCurrency()
+{
+    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) == NULL) {return;}
+
+    // Apply currency
+    currency += ((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->currency_collected;
+    ((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->currency_collected = 0;
+
+    // Cap currency
+    if(currency > LEVEL_MAX_CURRENCY) {currency = LEVEL_MAX_CURRENCY;}
+
+    // Update currency ticks
+    if(global_timer % 2 && displayed_currency < currency) {displayed_currency++;}
+}
+
 void Level::reloadOnDeath()
 {
     // If player died, reload the level
@@ -625,6 +650,7 @@ void Level::drawHUD()
     
     if(temp_player_ptr != NULL)
     {
+        // Draw HP 
         if(hud_hp_animate_action_ptr.has_value())
         {
             // Set Position
@@ -638,6 +664,9 @@ void Level::drawHUD()
 
             hud_hp_animate_action_ptr->update();
         }
+
+        // Draw Currency
+        
     }
 }
 

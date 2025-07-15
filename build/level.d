@@ -121,6 +121,7 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/build/bn_sprite_items_small_vase.h \
  G:/game/build/bn_sprite_items_hp_totem.h \
  G:/game/build/bn_sprite_items_hp_drop.h \
+ G:/game/build/bn_sprite_items_moon_drop.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h \
  G:/game/build/bn_sprite_items_thorn_column.h \
  G:/game/build/bn_sprite_items_thorn_bar.h \
@@ -135,10 +136,11 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/include/smash_block_large.h G:/game/include/smash_block_mini.h \
  G:/game/include/large_vase.h G:/game/include/small_vase.h \
  G:/game/include/hp_totem.h G:/game/include/hp_drop.h \
- G:/game/include/ground_ghoul.h G:/game/include/enemy.h \
- G:/game/include/hitbox.h G:/game/include/thorn_column.h \
- G:/game/include/thorn_bar.h G:/game/include/candelabra.h \
- G:/game/include/prop.h G:/game/include/player.h
+ G:/game/include/moon_drop.h G:/game/include/ground_ghoul.h \
+ G:/game/include/enemy.h G:/game/include/hitbox.h \
+ G:/game/include/thorn_column.h G:/game/include/thorn_bar.h \
+ G:/game/include/candelabra.h G:/game/include/prop.h \
+ G:/game/include/player.h
 G:/game/include/level.h:
 G:/butano-master/butano/include/bn_log.h:
 G:/butano-master/butano/include/bn_config_log.h:
@@ -265,6 +267,7 @@ G:/game/build/bn_sprite_items_large_vase.h:
 G:/game/build/bn_sprite_items_small_vase.h:
 G:/game/build/bn_sprite_items_hp_totem.h:
 G:/game/build/bn_sprite_items_hp_drop.h:
+G:/game/build/bn_sprite_items_moon_drop.h:
 G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/build/bn_sprite_items_thorn_column.h:
 G:/game/build/bn_sprite_items_thorn_bar.h:
@@ -285,6 +288,7 @@ G:/game/include/large_vase.h:
 G:/game/include/small_vase.h:
 G:/game/include/hp_totem.h:
 G:/game/include/hp_drop.h:
+G:/game/include/moon_drop.h:
 G:/game/include/ground_ghoul.h:
 G:/game/include/enemy.h:
 G:/game/include/hitbox.h:

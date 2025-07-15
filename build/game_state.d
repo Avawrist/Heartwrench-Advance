@@ -44,7 +44,8 @@ game_state.o: G:/game/src/game_state.cpp G:/game/include/game_state.h \
  G:/butano-master/butano/include/bn_tile.h \
  G:/butano-master/butano/include/bn_regular_bg_map_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell.h \
- G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h
+ G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h \
+ G:/game/include/game_state.h
 G:/game/include/game_state.h:
 G:/game/include/math.h:
 G:/butano-master/butano/include/bn_fixed.h:
@@ -94,3 +95,4 @@ G:/butano-master/butano/include/bn_tile.h:
 G:/butano-master/butano/include/bn_regular_bg_map_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_map_cell.h:
 G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h:
+G:/game/include/game_state.h:

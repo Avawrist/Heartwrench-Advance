@@ -26,6 +26,13 @@
 #define HP_DROP_VALUE         1
 #define HP_DROP_MIN_HIT_SPEED 1
 
+#define HP_DROP_STARTING_INVULN_FRAMES 30
+
+#define HP_DROP_SPAWN_Y_FORCE    -8
+#define HP_DROP_SPAWN_FORCE_DECAY 0.1
+
+#define HP_DROP_SPAWN_FORCE Force(bn::fixed_point_t<12>(0, HP_DROP_SPAWN_Y_FORCE), HP_DROP_SPAWN_FORCE_DECAY)
+
 struct HPDrop : GameObject {
 
     ///////////////////

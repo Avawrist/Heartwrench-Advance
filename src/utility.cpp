@@ -24,11 +24,6 @@ ScreenShakeSeverity global_screenshake_severity = NO_SHAKE;
 
 int32 global_timer = 0;
 
-int32 current_displayed_level_currency = 0;
-int32 current_displayed_world_currency = 0;
-int32 current_level_currency           = 0;
-int32 current_world_currency           = 0;
-
 // Functions
 
 int32 getTileAtBGIndex(uint32 x, uint32 y, 

@@ -188,6 +188,7 @@ struct Player : GameObject {
 	int32 hitstop_frames;
 	int32 roll_effect_frames;
 	int32 roll_effect_offset_multiplier;
+	int32 currency_collected;
 
 	bool wall_right_detected;
     bool wall_left_detected;
@@ -296,6 +297,7 @@ struct Player : GameObject {
 	void resolveSmashBlockMiniCollision(GameObject& object)      override;
 	void resolveHPTotemCollision(GameObject& object)             override;
 	void resolveHPDropCollision(GameObject& object)              override;
+	void resolveMoonDropCollision(GameObject& object)            override;
 
 	// Level Enemies
 	void resolveThornColumnCollision(GameObject& object) override; 

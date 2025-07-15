@@ -61,9 +61,7 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/butano-master/butano/include/bn_regular_bg_map_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h \
- G:/game/include/game_state.h G:/game/include/math.h \
- G:/game/include/utility.h G:/game/include/level.h \
- G:/butano-master/butano/include/bn_random.h \
+ G:/game/include/level.h G:/butano-master/butano/include/bn_random.h \
  G:/butano-master/butano/include/bn_limits.h \
  G:/butano-master/butano/include/bn_math.h \
  G:/butano-master/butano/include/bn_sin_lut.h \
@@ -87,8 +85,9 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/butano-master/butano/include/bn_sprite_shape_size.h \
  G:/butano-master/butano/include/bn_sprite_tiles_item.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
- G:/game/include/room.h G:/game/include/room_bounds.h \
- G:/game/include/collider.h G:/butano-master/butano/include/bn_optional.h \
+ G:/game/include/math.h G:/game/include/utility.h G:/game/include/room.h \
+ G:/game/include/room_bounds.h G:/game/include/collider.h \
+ G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_sprite_ptr.h \
  G:/butano-master/butano/include/bn_sprite_animate_actions.h \
  G:/butano-master/butano/include/bn_sprite_ptr.h \
@@ -125,6 +124,7 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/game/build/bn_sprite_items_small_vase.h \
  G:/game/build/bn_sprite_items_hp_totem.h \
  G:/game/build/bn_sprite_items_hp_drop.h \
+ G:/game/build/bn_sprite_items_moon_drop.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h \
  G:/game/build/bn_sprite_items_thorn_column.h \
  G:/game/build/bn_sprite_items_thorn_bar.h \
@@ -139,10 +139,11 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/game/include/smash_block_large.h G:/game/include/smash_block_mini.h \
  G:/game/include/large_vase.h G:/game/include/small_vase.h \
  G:/game/include/hp_totem.h G:/game/include/hp_drop.h \
- G:/game/include/ground_ghoul.h G:/game/include/enemy.h \
- G:/game/include/hitbox.h G:/game/include/thorn_column.h \
- G:/game/include/thorn_bar.h G:/game/include/candelabra.h \
- G:/game/include/prop.h G:/game/include/player.h
+ G:/game/include/moon_drop.h G:/game/include/ground_ghoul.h \
+ G:/game/include/enemy.h G:/game/include/hitbox.h \
+ G:/game/include/thorn_column.h G:/game/include/thorn_bar.h \
+ G:/game/include/candelabra.h G:/game/include/prop.h \
+ G:/game/include/player.h
 G:/butano-master/butano/include/bn_sprites.h:
 G:/butano-master/butano/hw/include/bn_hw_sprites_constants.h:
 G:/butano-master/butano/include/bn_common.h:
@@ -206,9 +207,6 @@ G:/butano-master/butano/include/bn_tile.h:
 G:/butano-master/butano/include/bn_regular_bg_map_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_map_cell.h:
 G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h:
-G:/game/include/game_state.h:
-G:/game/include/math.h:
-G:/game/include/utility.h:
 G:/game/include/level.h:
 G:/butano-master/butano/include/bn_random.h:
 G:/butano-master/butano/include/bn_limits.h:
@@ -234,6 +232,8 @@ G:/butano-master/butano/include/bn_sprite_item.h:
 G:/butano-master/butano/include/bn_sprite_shape_size.h:
 G:/butano-master/butano/include/bn_sprite_tiles_item.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
+G:/game/include/math.h:
+G:/game/include/utility.h:
 G:/game/include/room.h:
 G:/game/include/room_bounds.h:
 G:/game/include/collider.h:
@@ -274,6 +274,7 @@ G:/game/build/bn_sprite_items_large_vase.h:
 G:/game/build/bn_sprite_items_small_vase.h:
 G:/game/build/bn_sprite_items_hp_totem.h:
 G:/game/build/bn_sprite_items_hp_drop.h:
+G:/game/build/bn_sprite_items_moon_drop.h:
 G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/build/bn_sprite_items_thorn_column.h:
 G:/game/build/bn_sprite_items_thorn_bar.h:
@@ -294,6 +295,7 @@ G:/game/include/large_vase.h:
 G:/game/include/small_vase.h:
 G:/game/include/hp_totem.h:
 G:/game/include/hp_drop.h:
+G:/game/include/moon_drop.h:
 G:/game/include/ground_ghoul.h:
 G:/game/include/enemy.h:
 G:/game/include/hitbox.h:

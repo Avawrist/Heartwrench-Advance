@@ -188,6 +188,10 @@ int32 Room::addObject(ObjectRequest& object_request, const bn::camera_ptr& camer
             temp_object_ptr = new HPDrop();
         break;
 
+        case MOON_DROP:
+            temp_object_ptr = new MoonDrop();
+        break;
+
         ///////////////////
 	    // Level Enemies //
 	    ///////////////////
@@ -360,6 +364,10 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
 
         case HP_DROP:
             temp_object_ptr = new HPDrop();
+        break;
+
+        case MOON_DROP:
+            temp_object_ptr = new MoonDrop();
         break;
 
         ///////////////////
