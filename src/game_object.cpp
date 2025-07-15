@@ -1,5 +1,40 @@
 #include "game_object.h"
 
+//////////////////////////
+// Struct ObjectRequest //
+//////////////////////////
+
+ObjectRequest::ObjectRequest()
+{
+    object_type = NO_TYPE;
+    position    = bn::fixed_point(0, 0);
+}
+
+ObjectRequest::ObjectRequest(ObjectType _object_type, bn::fixed_point _position)
+{
+    object_type = _object_type;
+    position    = _position;
+}
+
+ObjectRequest::ObjectRequest(const ObjectRequest& other)
+{
+    object_type = other.object_type;
+    position    = other.position;
+}
+
+ObjectRequest::~ObjectRequest()
+{
+
+}
+
+ObjectRequest& ObjectRequest::operator =(const ObjectRequest& other)
+{
+    object_type = other.object_type;
+    position    = other.position;
+
+    return *this;
+}
+
 ///////////////////////
 // Struct GameObject //
 ///////////////////////
@@ -87,7 +122,6 @@ GameObject::GameObject(const GameObject& other)
     hitpoints              = other.hitpoints;
     damage                 = other.damage;
     max_hp                 = other.max_hp;
-
 }
 
 GameObject::~GameObject()
@@ -158,6 +192,8 @@ GameObject& GameObject::operator =(const GameObject& other)
     hitpoints              = other.hitpoints;
     damage                 = other.damage;
     max_hp                 = other.max_hp;
+
+    object_request = other.object_request;
 
     return *this;
 }

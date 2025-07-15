@@ -235,6 +235,23 @@ enum ObjectState
 	OBJECT_DEATH,
 };
 
+//////////////////////////
+// Struct ObjectRequest //
+//////////////////////////
+
+struct ObjectRequest
+{
+	bn::fixed_point position;
+	ObjectType      object_type;
+
+	ObjectRequest();
+	ObjectRequest(ObjectType _object_type, bn::fixed_point _position);
+	ObjectRequest(const ObjectRequest& other);
+	~ObjectRequest();
+
+	ObjectRequest& operator =(const ObjectRequest& other);
+};
+
 struct GameObject 
 {
 	///////////////////////
@@ -288,6 +305,8 @@ struct GameObject
 	bool is_persistent           = false;
 	bool received_platform_force = false;
 	bool grounded_detected       = false;
+
+	ObjectRequest object_request;
 
 	void applyForces();
 

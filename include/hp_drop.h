@@ -23,7 +23,8 @@
 
 #define HP_DROP_30_FPS true
 
-#define HP_DROP_VALUE 1
+#define HP_DROP_VALUE         1
+#define HP_DROP_MIN_HIT_SPEED 1
 
 struct HPDrop : GameObject {
 

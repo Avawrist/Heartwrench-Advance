@@ -123,7 +123,7 @@ void Level::load(LevelName level_name)
     if(level_name == NO_LEVEL) {return;}
 
     camera       = bn::camera_ptr::create(0, 0);
-    player_spawn = bn::point(0, 0);
+    player_spawn = bn::fixed_point(0, 0);
 
     fade_in               = false;
     fade_out              = false;
@@ -146,6 +146,9 @@ void Level::load(LevelName level_name)
     {
         case LEVEL_TEST:
             
+            // Player Spawn //
+            player_spawn = bn::fixed_point(-5056, -1968);
+
             // Load BGs //
             painted_bg_ptr = bn::regular_bg_items::test_painted_bg.create_bg(0, 0);
 
@@ -176,7 +179,8 @@ void Level::load(LevelName level_name)
                         camera.value(), 
                         object_bg_ptr.value(), 
                         object_bg_item.value(),
-                        object_cells);
+                        object_cells,
+                        player_spawn);
 
     // Store default painted bg palette
     default_main_palette_ptr    = main_bg_ptr->palette();
@@ -260,7 +264,10 @@ void Level::updateObjects()
         }   
     } 
 
-    // Load unloaded objects if needed - Is it appropriate to have this here? 
+    // Review object requests
+    current_room.monitorObjectRequests(camera.value());
+
+    // Load unloaded objects if needed
     current_room.monitorUnloadedObjects(camera.value());
 }
 
@@ -514,7 +521,8 @@ void Level::transitionRoom()
                                 camera.value(),
                                 object_bg_ptr.value(), 
                                 object_bg_item.value(), 
-                                object_cells);
+                                object_cells,
+                                player_spawn);
 
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room
@@ -540,7 +548,8 @@ void Level::transitionRoom()
                                 camera.value(),
                                 object_bg_ptr.value(), 
                                 object_bg_item.value(), 
-                                object_cells);
+                                object_cells,
+                                player_spawn);
 
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room
@@ -565,7 +574,8 @@ void Level::transitionRoom()
                                 camera.value(),
                                 object_bg_ptr.value(), 
                                 object_bg_item.value(), 
-                                object_cells);
+                                object_cells,
+                                player_spawn);
 
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room
@@ -590,7 +600,8 @@ void Level::transitionRoom()
                                 camera.value(),
                                 object_bg_ptr.value(), 
                                 object_bg_item.value(),
-                                object_cells);
+                                object_cells,
+                                player_spawn);
 
             // Free up the default player object that came with the new room,
             // and replace with the player object from the previous room

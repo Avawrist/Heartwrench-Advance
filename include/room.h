@@ -63,7 +63,6 @@ enum RoomName
 
 struct Room
 {
-
     bn::vector<GameObject*,    MAX_GAME_OBJECTS>     game_objects;
     bn::vector<UnloadedObject, MAX_UNLOADED_OBJECTS> unloaded_objects;
     
@@ -81,13 +80,14 @@ struct Room
          bn::camera_ptr                                 camera_ptr,                
          const bn::regular_bg_ptr&                      object_bg_ptr, 
          const bn::regular_bg_item&                     object_bg_item,
-         const bn::span<const bn::regular_bg_map_cell>& object_cells);
+         const bn::span<const bn::regular_bg_map_cell>& object_cells,
+         const bn::fixed_point                          player_spawn);
     Room(const Room& other);
     ~Room();
 
     void operator =(const Room& other);
 
-    int32 addObject(GameObject* object_ptr, const bn::camera_ptr& camera_ptr);
+    int32 addObject(ObjectRequest& object_request, const bn::camera_ptr& camera_ptr);
     int32 addObject(const UnloadedObject& object, const bn::camera_ptr& camera_ptr);
     int32 addUnloadedObject(const UnloadedObject& new_object, bool is_persistent); // This will be called when the room is loaded.
     int32 findUnloadedObjectIndex(int32 object_id);
@@ -96,10 +96,12 @@ struct Room
                const bn::camera_ptr&                          camera_ptr, 
                const bn::regular_bg_ptr&                      object_bg_ptr, 
                const bn::regular_bg_item&                     object_bg_item,
-               const bn::span<const bn::regular_bg_map_cell>& object_cells);
+               const bn::span<const bn::regular_bg_map_cell>& object_cells,
+               const bn::fixed_point                          player_spawn);
     void prepObjects(const bn::regular_bg_ptr&                       object_bg_ptr, 
                       const bn::regular_bg_item&                     object_bg_item,
                       const bn::span<const bn::regular_bg_map_cell>& object_cells);
+    void monitorObjectRequests(const bn::camera_ptr& camera_ptr);
     void monitorUnloadedObjects(const bn::camera_ptr& camera_ptr); // This will be called every frame to 
                                                                     // test for objects that should be loaded.
     void updateIndexes();

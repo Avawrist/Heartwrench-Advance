@@ -126,7 +126,7 @@ void HPTotem::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     
                 dropped_hp = true;
 
                 // Add HP Gem Object
-                // ...
+                object_request = ObjectRequest(HP_DROP, bn::fixed_point(x(), y()));
             }
 
 		break;

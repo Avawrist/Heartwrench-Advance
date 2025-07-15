@@ -201,7 +201,7 @@ void HPDrop::resolvePushBlockCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
-	if(collider.isCollision(object.collider))
+	if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED && collider.isCollision(object.collider))
 	{
 		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
 	}
@@ -211,7 +211,7 @@ void HPDrop::resolvePushBlockMiniCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
-	if(collider.isCollision(object.collider))
+	if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED && collider.isCollision(object.collider))
 	{
 		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
 	}
@@ -245,7 +245,7 @@ void HPDrop::resolveSmashBlockLargeCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
-	if(collider.isCollision(object.collider))
+	if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED && collider.isCollision(object.collider))
 	{
 		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
 	}
@@ -255,7 +255,7 @@ void HPDrop::resolveSmashBlockMiniCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
-	if(collider.isCollision(object.collider))
+	if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED && collider.isCollision(object.collider))
 	{
 		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
 	}
@@ -265,7 +265,7 @@ void HPDrop::resolveLargeVaseCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
-	if(collider.isCollision(object.collider))
+	if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED && collider.isCollision(object.collider))
 	{
 		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
 	}
@@ -275,7 +275,7 @@ void HPDrop::resolveSmallVaseCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
-	if(collider.isCollision(object.collider))
+	if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED && collider.isCollision(object.collider))
 	{
 		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
 	}
@@ -285,7 +285,7 @@ void HPDrop::resolveHPTotemCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
-	if(collider.isCollision(object.collider))
+	if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED && collider.isCollision(object.collider))
 	{
 		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
 	}
@@ -296,7 +296,7 @@ void HPDrop::resolveThornColumnCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
-	if(collider.isCollision(object.collider))
+	if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED && collider.isCollision(object.collider))
 	{
 		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
 	}
@@ -306,7 +306,7 @@ void HPDrop::resolveThornBarCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
-	if(collider.isCollision(object.collider))
+	if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED && collider.isCollision(object.collider))
 	{
 		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
 	}
@@ -316,7 +316,7 @@ void HPDrop::resolveGroundGhoulCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
-	if(collider.isCollision(object.collider))
+	if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED && collider.isCollision(object.collider))
 	{
 		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
 	}

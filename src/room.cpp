@@ -13,13 +13,15 @@ Room::Room(RoomName                                       room_name,
            bn::camera_ptr                                 camera_ptr,                
            const bn::regular_bg_ptr&                      object_bg_ptr, 
            const bn::regular_bg_item&                     object_bg_item,
-           const bn::span<const bn::regular_bg_map_cell>& object_cells)
+           const bn::span<const bn::regular_bg_map_cell>& object_cells,
+           const bn::fixed_point                          player_spawn)
 {
     load(room_name, 
          camera_ptr,
          object_bg_ptr,
          object_bg_item,
-         object_cells);
+         object_cells,
+         player_spawn);
 }
 
 Room::Room(const Room& other)
@@ -99,29 +101,159 @@ void Room::operator =(const Room& other)
     
 }
 
-int32 Room::addObject(GameObject* object_ptr, const bn::camera_ptr& camera_ptr)
+int32 Room::addObject(ObjectRequest& object_request, const bn::camera_ptr& camera_ptr)
 {
     if(game_objects.size() >= MAX_GAME_OBJECTS) {return -1;}
 
-    if(object_ptr->object_type == FALLING_PLATFORM_WIDE ||
-       object_ptr->object_type == FALLING_PLATFORM_THIN ||
-       object_ptr->object_type == PUSH_BLOCK ||
-       object_ptr->object_type == PUSH_BLOCK_MINI ||
-       object_ptr->object_type == AUTO_PLATFORM)
+    GameObject* temp_object_ptr = NULL;
+
+    bool priority_object = false;
+
+    // Allocate object based on type
+    // NOTE: All object types should be represented here. When adding object types
+    //       this list must be updated.
+    
+    switch(object_request.object_type)
     {
-        game_objects.push_back(object_ptr);
+        ///////////////////
+	    // Level Objects //
+	    ///////////////////
+
+        case PHASE_ORB_UP:
+            temp_object_ptr = new PhaseOrbUp();
+        break;
+
+        case PHASE_ORB_DOWN:
+            temp_object_ptr = new PhaseOrbDown();
+        break;
+
+        case PHASE_ORB_LEFT:
+            temp_object_ptr = new PhaseOrbLeft();
+        break;
+
+        case PHASE_ORB_RIGHT:
+            temp_object_ptr = new PhaseOrbRight();
+        break;
+
+        case TILE_PASSAGE:
+            temp_object_ptr = new TilePassage();
+        break;
+
+        case FALLING_PLATFORM_WIDE:
+            temp_object_ptr = new FallingPlatformWide();
+            priority_object = true;
+        break;
+
+        case FALLING_PLATFORM_THIN:
+            temp_object_ptr = new FallingPlatformThin();
+            priority_object = true;
+        break;
+
+        case PUSH_BLOCK:
+            temp_object_ptr = new PushBlock();
+            priority_object = true;
+        break;
+
+        case PUSH_BLOCK_MINI:
+            temp_object_ptr = new PushBlockMini();
+            priority_object = true;
+        break;
+
+        case AUTO_PLATFORM:
+            temp_object_ptr = new AutoPlatform();
+            priority_object = true;
+        break;
+
+        case SMASH_BLOCK_LARGE:
+            temp_object_ptr = new SmashBlockLarge();
+        break;
+
+        case SMASH_BLOCK_MINI:
+            temp_object_ptr = new SmashBlockMini();
+        break;
+
+        case LARGE_VASE:
+            temp_object_ptr = new LargeVase();
+        break;
+
+        case SMALL_VASE:
+            temp_object_ptr = new SmallVase();
+        break;
+
+        case HP_TOTEM:
+            temp_object_ptr = new HPTotem();
+        break;
+
+        case HP_DROP:
+            temp_object_ptr = new HPDrop();
+        break;
+
+        ///////////////////
+	    // Level Enemies //
+	    ///////////////////
+
+        case GROUND_GHOUL:
+            temp_object_ptr = new GroundGhoul();
+        break;
+
+        case THORN_COLUMN:
+            temp_object_ptr = new ThornColumn();
+        break;
+
+        case THORN_BAR:
+            temp_object_ptr = new ThornBar();
+        break;
+
+        ///////////
+        // Props //
+        ///////////
+
+        case CANDELABRA:
+            temp_object_ptr = new Candelabra();
+        break;
+
+        /////////////////////
+	    // Special Objects //
+	    /////////////////////
+
+        case HITBOX_ATTACK_GROUND_1:
+        case HITBOX_ATTACK_AIR_1:
+            BN_LOG("Loading object of type ", object_request.object_type);
+            BN_LOG("is not supported by function Room::addObject");
+        break;
+
+        case PLAYER:
+            temp_object_ptr = new Player();
+        break;
+
+        case NO_TYPE:
+        default:
+            BN_LOG("Failed to load object - No type provided.");
+            return -1;
+        break;
+    }
+
+    if(priority_object)
+    {
+        game_objects.push_back(temp_object_ptr);
         game_objects.back()->setCamera(camera_ptr);
+        game_objects.back()->setPos(object_request.position);
         game_objects.back()->object_id = game_objects.size() - 1;
+
+        object_request = ObjectRequest();
 
         return game_objects.back()->object_id;
     }
-    else if(object_ptr->object_type == PLAYER)
+    else if(object_request.object_type == PLAYER)
     {
         bn::vector<GameObject*, MAX_GAME_OBJECTS>::iterator insert_index = game_objects.begin();
 
-        game_objects.insert(insert_index, object_ptr);
+        game_objects.insert(insert_index, temp_object_ptr);
         (*insert_index)->setCamera(camera_ptr);
+        (*insert_index)->setPos(object_request.position);
         (*insert_index)->object_id = 0;
+
+        object_request = ObjectRequest();
 
         return (*insert_index)->object_id;
     }
@@ -130,11 +262,14 @@ int32 Room::addObject(GameObject* object_ptr, const bn::camera_ptr& camera_ptr)
         bn::vector<GameObject*, MAX_GAME_OBJECTS>::iterator insert_index = game_objects.begin();
         insert_index++;
 
-        game_objects.insert(insert_index, object_ptr);
+        game_objects.insert(insert_index, temp_object_ptr);
         (*insert_index)->setCamera(camera_ptr);
+        (*insert_index)->setPos(object_request.position);
         (*insert_index)->object_id = 1;
 
         updateIndexes();
+
+        object_request = ObjectRequest();
 
         return (*insert_index)->object_id;
     }
@@ -339,14 +474,10 @@ void Room::load(RoomName                                       room_name,
                 const bn::camera_ptr&                          camera_ptr, 
                 const bn::regular_bg_ptr&                      object_bg_ptr, 
                 const bn::regular_bg_item&                     object_bg_item,
-                const bn::span<const bn::regular_bg_map_cell>& object_cells)
+                const bn::span<const bn::regular_bg_map_cell>& object_cells,
+                const bn::fixed_point                          player_spawn)
 {
     if(room_name == NO_ROOM) {return;}
-
-    // Init Player FIRST. Player will always be updated last.
-    Player* player_ptr = new Player();
-    addObject(player_ptr, camera_ptr);
-    game_objects.back()->setPos(-5056, -1968);
 
     // Initialize Objects
     switch(room_name)
@@ -388,6 +519,10 @@ void Room::load(RoomName                                       room_name,
         break;
     }
 
+    // Init Player. Player will always be updated last.
+    ObjectRequest player_request(ObjectRequest(PLAYER, player_spawn));
+    addObject(player_request, camera_ptr);
+
     // Add all object stubs 
     prepObjects(object_bg_ptr, 
                 object_bg_item, 
@@ -428,6 +563,18 @@ void Room::prepObjects(const bn::regular_bg_ptr&                      object_bg_
         }
     }
     
+}
+
+void Room::monitorObjectRequests(const bn::camera_ptr& camera_ptr)
+{
+    for(int32 i = game_objects.size() - 1; i >= 0; i--)
+    {
+        if(game_objects.at(i)->object_request.object_type != NO_TYPE)
+        {
+            // Add the requested object
+            addObject(game_objects.at(i)->object_request, camera_ptr);
+        }
+    }
 }
 
 void Room::monitorUnloadedObjects(const bn::camera_ptr& camera_ptr)

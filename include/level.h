@@ -99,7 +99,7 @@ struct Level
 
     LevelName current_level_name;
 
-    bn::point player_spawn;
+    bn::fixed_point player_spawn;
     
     bool  fade_in;
     bool  fade_out;
