@@ -23,6 +23,8 @@ struct RoomBounds
     RoomBounds(const RoomBounds& other);
 
     RoomBounds& operator =(const RoomBounds& other);
+
+    bn::point center();
 };
 
 #endif

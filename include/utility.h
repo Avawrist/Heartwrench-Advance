@@ -17,6 +17,8 @@ typedef short int16;
 typedef int   int32;
 
 // Global Macros
+#define GLOBAL_TIMER_MAX 600
+
 #define MAX_GAME_OBJECTS     10
 #define MAX_UNLOADED_OBJECTS 25
 

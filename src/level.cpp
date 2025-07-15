@@ -23,6 +23,8 @@ Level::Level(const Level& other)
     object_bg_item = other.object_bg_item;
     object_cells   = other.object_cells;
 
+    painted_bg_anim_ptr = other.painted_bg_anim_ptr;
+
     default_main_palette_ptr    = other.default_main_palette_ptr;
     default_painted_palette_ptr = other.default_painted_palette_ptr;
 
@@ -65,6 +67,8 @@ void Level::operator =(const Level& other)
     object_bg_item = other.object_bg_item;
     object_cells   = other.object_cells;
 
+    painted_bg_anim_ptr = other.painted_bg_anim_ptr;
+
     default_main_palette_ptr    = other.default_main_palette_ptr;
     default_painted_palette_ptr = other.default_painted_palette_ptr;
 
@@ -97,6 +101,8 @@ void Level::clear()
     main_bg_ptr.reset();
     painted_bg_ptr.reset();
     object_bg_ptr.reset();
+
+    painted_bg_anim_ptr.reset();
 
     default_main_palette_ptr.reset();
     default_painted_palette_ptr.reset();
@@ -169,7 +175,7 @@ void Level::load(LevelName level_name)
     current_room = Room(temp_room_name, 
                         camera.value(), 
                         object_bg_ptr.value(), 
-                        object_bg_item.value(), 
+                        object_bg_item.value(),
                         object_cells);
 
     // Store default painted bg palette
@@ -231,6 +237,7 @@ void Level::updateAll()
     updateObjects();
     updateCamera();
     updateBGFlash();
+    updatePaintedBG();
     updateFade();
     freeObjects();
     transitionRoom();
@@ -414,12 +421,39 @@ void Level::updateBGFlash()
     {global_bg_hitflash_frames = 0;}
 }
 
+void Level::updatePaintedBG()
+{   
+    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) == NULL) 
+    {    
+        painted_bg_ptr->set_position(current_room.center());
+        return;
+    }
+
+    // Parallax Effect
+    #define PARALLAX_REDUCTION_FACTOR -32 // The larger the number, the slower the BG will scroll.
+    bn::fixed x_offset = (current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->x() - current_room.center().x()) / PARALLAX_REDUCTION_FACTOR;
+    painted_bg_ptr->set_position(current_room.center().x() + x_offset, current_room.center().y());
+
+    // Animate
+    if(painted_bg_anim_ptr.get() != NULL)
+    {
+        if(global_timer % GLOBAL_TIMER_MAX == 0)
+        {
+            painted_bg_anim_ptr.reset();
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_once(painted_bg_ptr.value(),
+                                                                            2,
+                                                                            bn::regular_bg_items::test_painted_bg.map_item(),
+                                                                            1, 1, 2, 2, 3, 3, 4, 4, 0, 0);
+        }
+
+        if(!painted_bg_anim_ptr->done()) {painted_bg_anim_ptr->update();}
+    }
+}
+
 void Level::updateGlobalTimer()
 {
-    #define TIMER_MAX 60
-
     global_timer++;
-    if(global_timer >= TIMER_MAX) {global_timer = 0;}
+    if(global_timer >= GLOBAL_TIMER_MAX) {global_timer = 0;}
 }
 
 void Level::reloadOnDeath()
@@ -627,7 +661,6 @@ void Level::drawObjects()
 
 void Level::updateFade()
 {
-   //bn::bg_palette_ptr main_bg_palette = main_bg_ptr->palette();
     bn::fixed fade_intensity = default_main_palette_ptr->fade_intensity();
 
     if(fade_in)

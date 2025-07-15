@@ -72,6 +72,11 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/butano-master/butano/include/bn_span.h \
  G:/butano-master/butano/include/bn_bg_palette_ptr.h \
  G:/butano-master/butano/include/bn_colors.h \
+ G:/butano-master/butano/include/bn_regular_bg_animate_actions.h \
+ G:/butano-master/butano/include/bn_vector.h \
+ G:/butano-master/butano/include/bn_regular_bg_ptr.h \
+ G:/butano-master/butano/include/bn_regular_bg_map_ptr.h \
+ G:/butano-master/butano/include/bn_regular_bg_animate_actions_fwd.h \
  G:/game/build/bn_bg_palette_items_bg_flash_palette.h \
  G:/butano-master/butano/include/bn_bg_palette_item.h \
  G:/game/build/bn_regular_bg_items_test_level.h \
@@ -86,7 +91,6 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/game/include/collider.h G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_sprite_ptr.h \
  G:/butano-master/butano/include/bn_sprite_animate_actions.h \
- G:/butano-master/butano/include/bn_vector.h \
  G:/butano-master/butano/include/bn_sprite_ptr.h \
  G:/butano-master/butano/include/bn_sprite_tiles_ptr.h \
  G:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h \
@@ -214,6 +218,11 @@ G:/butano-master/butano/include/bn_rule_of_three_approximation.h:
 G:/butano-master/butano/include/bn_span.h:
 G:/butano-master/butano/include/bn_bg_palette_ptr.h:
 G:/butano-master/butano/include/bn_colors.h:
+G:/butano-master/butano/include/bn_regular_bg_animate_actions.h:
+G:/butano-master/butano/include/bn_vector.h:
+G:/butano-master/butano/include/bn_regular_bg_ptr.h:
+G:/butano-master/butano/include/bn_regular_bg_map_ptr.h:
+G:/butano-master/butano/include/bn_regular_bg_animate_actions_fwd.h:
 G:/game/build/bn_bg_palette_items_bg_flash_palette.h:
 G:/butano-master/butano/include/bn_bg_palette_item.h:
 G:/game/build/bn_regular_bg_items_test_level.h:
@@ -230,7 +239,6 @@ G:/game/include/collider.h:
 G:/butano-master/butano/include/bn_optional.h:
 G:/butano-master/butano/include/bn_sprite_ptr.h:
 G:/butano-master/butano/include/bn_sprite_animate_actions.h:
-G:/butano-master/butano/include/bn_vector.h:
 G:/butano-master/butano/include/bn_sprite_ptr.h:
 G:/butano-master/butano/include/bn_sprite_tiles_ptr.h:
 G:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h:

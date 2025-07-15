@@ -29,8 +29,15 @@ int main()
     while(true)
     {
         // Update Level
-        if(current_level.cam_is_scrolling) {current_level.updateCamera();}
-        else                               {current_level.updateAll();}
+        if(current_level.cam_is_scrolling) 
+        {
+            current_level.updateCamera();
+            current_level.updateFade();
+        }
+        else                             
+        {
+            current_level.updateAll();
+        }
 
         // Update Global Timer
         current_level.updateGlobalTimer();

@@ -102,7 +102,8 @@ struct Room
     void monitorUnloadedObjects(const bn::camera_ptr& camera_ptr); // This will be called every frame to 
                                                                     // test for objects that should be loaded.
     void updateIndexes();
-                                 
+    
+    bn::point center();
 };
 
 #endif

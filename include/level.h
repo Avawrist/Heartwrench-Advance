@@ -16,6 +16,7 @@
 #include "bn_regular_bg_map_cell_info.h"
 #include "bn_bg_palette_ptr.h"
 #include "bn_colors.h"
+#include "bn_regular_bg_animate_actions.h"
 
 // Flash Palette
 #include "bn_bg_palette_items_bg_flash_palette.h"
@@ -78,6 +79,8 @@ struct Level
     bn::optional<bn::regular_bg_ptr>        painted_bg_ptr;
     bn::optional<bn::regular_bg_ptr>        object_bg_ptr;
 
+	bn::optional<bn::regular_bg_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> painted_bg_anim_ptr;
+
     bn::optional<bn::bg_palette_ptr>        default_main_palette_ptr;
     bn::optional<bn::bg_palette_ptr>        default_painted_palette_ptr;
     
@@ -127,6 +130,7 @@ struct Level
     void updateObjects();
     void updateCamera();
     void updateBGFlash();
+    void updatePaintedBG();
     void updateGlobalTimer();
     void reloadOnDeath();
     void freeObjects();

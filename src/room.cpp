@@ -515,3 +515,8 @@ void Room::updateIndexes()
         game_objects.data()[i]->object_id = i;
     }
 }
+
+bn::point Room::center()
+{
+    return(room_bounds.center());
+}

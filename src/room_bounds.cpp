@@ -40,3 +40,8 @@ RoomBounds& RoomBounds::operator =(const RoomBounds& other)
 
     return *this;
 }
+
+bn::point RoomBounds::center()
+{
+    return(bn::point(left_bound + ((right_bound - left_bound) * 0.5), top_bound + ((bottom_bound - top_bound) * 0.5)));
+}
