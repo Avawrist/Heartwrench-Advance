@@ -498,7 +498,7 @@ void Level::updateCurrency()
     if(currency > LEVEL_MAX_CURRENCY) {currency = LEVEL_MAX_CURRENCY;}
 
     // Update currency ticks
-    if(global_timer % 2 && displayed_currency < currency) {displayed_currency++;}
+    if(global_timer % 4 == 0 && displayed_currency < currency) {displayed_currency++;}
 }
 
 void Level::reloadOnDeath()
@@ -716,7 +716,6 @@ void Level::drawHUD()
 
         currency_num_1_animate_action_ptr->update();
         currency_num_2_animate_action_ptr->update();
-
     }
 }
 
