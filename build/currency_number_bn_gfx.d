@@ -1,0 +1,1 @@
+currency_number_bn_gfx.o: currency_number_bn_gfx.s

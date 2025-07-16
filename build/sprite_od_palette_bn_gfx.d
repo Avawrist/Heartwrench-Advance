@@ -1,1 +1,0 @@
-sprite_od_palette_bn_gfx.o: sprite_od_palette_bn_gfx.s

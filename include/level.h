@@ -21,13 +21,14 @@
 // Flash Palette
 #include "bn_bg_palette_items_bg_flash_palette.h"
 
-// Assets
+// BGs
 #include "bn_regular_bg_items_test_level.h"
 #include "bn_regular_bg_items_test_painted_bg.h"
 #include "bn_regular_bg_items_test_object_bg.h"
 
-// HUD
+// HUD Elements
 #include "bn_sprite_items_hud_hp_bar.h"
+#include "bn_sprite_items_currency_number.h"
 
 // My Libs
 #include "math.h"
@@ -56,8 +57,14 @@
 // HUD Macros
 #define HUD_Z_LAYER -4
 
-#define HUD_HP_X_OFFSET -86 
+#define HUD_HP_X_OFFSET -86
 #define HUD_HP_Y_OFFSET -61
+
+#define HUD_CURRENCY_NUM_1_X_OFFSET -34
+#define HUD_CURRENCY_NUM_1_Y_OFFSET -70
+
+#define HUD_CURRENCY_NUM_2_X_OFFSET -26
+#define HUD_CURRENCY_NUM_2_Y_OFFSET -70
 
 // Fade 
 #define LEVEL_FADE_INCREMENT 0.05
@@ -96,6 +103,12 @@ struct Level
     // HUD
     bn::optional<bn::sprite_ptr>                                         hud_hp_sprite_ptr;
 	bn::optional<bn::sprite_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> hud_hp_animate_action_ptr;
+
+    bn::optional<bn::sprite_ptr>                                         currency_num_1_sprite_ptr;
+	bn::optional<bn::sprite_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> currency_num_1_animate_action_ptr;
+
+    bn::optional<bn::sprite_ptr>                                         currency_num_2_sprite_ptr;
+	bn::optional<bn::sprite_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> currency_num_2_animate_action_ptr;
 
     uint32 tile_width;
     uint32 tile_height;

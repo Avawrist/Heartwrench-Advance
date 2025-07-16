@@ -29,6 +29,7 @@ int main()
         {
             current_level.updateCamera();
             current_level.updateFade();
+            current_level.drawHUD();
         }
         else                             
         {

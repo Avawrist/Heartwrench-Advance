@@ -31,6 +31,12 @@ Level::Level(const Level& other)
     hud_hp_sprite_ptr         = other.hud_hp_sprite_ptr;
     hud_hp_animate_action_ptr = other.hud_hp_animate_action_ptr;
 
+    currency_num_1_sprite_ptr         = other.currency_num_1_sprite_ptr;
+	currency_num_1_animate_action_ptr = other.currency_num_1_animate_action_ptr;
+
+    currency_num_2_sprite_ptr         = other.currency_num_2_sprite_ptr;
+	currency_num_2_animate_action_ptr = other.currency_num_2_animate_action_ptr;
+
     tile_width  = other.tile_width;
     tile_height = other.tile_height;
 
@@ -78,6 +84,12 @@ void Level::operator =(const Level& other)
     hud_hp_sprite_ptr         = other.hud_hp_sprite_ptr;
     hud_hp_animate_action_ptr = other.hud_hp_animate_action_ptr;
 
+    currency_num_1_sprite_ptr         = other.currency_num_1_sprite_ptr;
+	currency_num_1_animate_action_ptr = other.currency_num_1_animate_action_ptr;
+
+    currency_num_2_sprite_ptr         = other.currency_num_2_sprite_ptr;
+	currency_num_2_animate_action_ptr = other.currency_num_2_animate_action_ptr;
+
     tile_width  = other.tile_width;
     tile_height = other.tile_height;
 
@@ -115,6 +127,12 @@ void Level::clear()
 
     hud_hp_sprite_ptr.reset();
     hud_hp_animate_action_ptr.reset();
+
+    currency_num_1_sprite_ptr.reset();
+	currency_num_1_animate_action_ptr.reset();
+
+    currency_num_2_sprite_ptr.reset();
+	currency_num_2_animate_action_ptr.reset();
 
     bg_item.reset();
     object_bg_item.reset();
@@ -208,6 +226,18 @@ void Level::load(LevelName level_name)
                                                                          0, 0);
     hud_hp_sprite_ptr->set_z_order(HUD_Z_LAYER);
 
+    currency_num_1_sprite_ptr         = bn::sprite_items::currency_number.create_sprite(0, 0);
+	currency_num_1_animate_action_ptr = bn::create_sprite_animate_action_forever(currency_num_1_sprite_ptr.value(),
+                                                                                 0,
+                                                                                 bn::sprite_items::currency_number.tiles_item(),
+                                                                                 0, 0);
+
+    currency_num_2_sprite_ptr         = bn::sprite_items::currency_number.create_sprite(0, 0);
+	currency_num_2_animate_action_ptr = bn::create_sprite_animate_action_forever(currency_num_1_sprite_ptr.value(),
+                                                                                 0,
+                                                                                 bn::sprite_items::currency_number.tiles_item(),
+                                                                                 0, 0);
+
     // Set Camera
     main_bg_ptr->set_camera(camera.value());
     painted_bg_ptr->set_camera(camera.value());
@@ -215,6 +245,9 @@ void Level::load(LevelName level_name)
     object_bg_ptr->set_visible(false);
 
     hud_hp_sprite_ptr->set_camera(camera.value());
+
+    currency_num_1_sprite_ptr->set_camera(camera.value());
+    currency_num_2_sprite_ptr->set_camera(camera.value());
 
     // Set black screen
     default_main_palette_ptr->set_fade(bn::colors::black, 1);
@@ -256,6 +289,7 @@ void Level::updateAll()
     freeObjects();
     transitionRoom();
     drawObjects();
+    drawHUD();
 }
 
 void Level::updateObjects()
@@ -410,12 +444,6 @@ void Level::updateCamera()
     /////////////////////////
     cam_update_timer++;
     if(cam_update_timer >= 60) {cam_update_timer = 0;}
-
-    ////////////////
-    // Update HUD //
-    ////////////////  
-    drawHUD();
-
 }
 
 void Level::updateBGFlash()
@@ -650,7 +678,9 @@ void Level::drawHUD()
     
     if(temp_player_ptr != NULL)
     {
-        // Draw HP 
+        /////////////
+        // Draw HP //
+        /////////////
         if(hud_hp_animate_action_ptr.has_value())
         {
             // Set Position
@@ -665,8 +695,28 @@ void Level::drawHUD()
             hud_hp_animate_action_ptr->update();
         }
 
-        // Draw Currency
-        
+        ///////////////////
+        // Draw Currency //
+        ///////////////////
+
+        currency_num_1_sprite_ptr->set_position(camera->x() + HUD_CURRENCY_NUM_1_X_OFFSET, camera->y() + HUD_CURRENCY_NUM_1_Y_OFFSET );
+        bn::fixed unrounded_num_1 = displayed_currency / 10;
+        int32 num_1               = clamp(0, 9, unrounded_num_1.floor_integer());
+	    currency_num_1_animate_action_ptr = bn::create_sprite_animate_action_once(currency_num_1_sprite_ptr.value(),
+                                                                                  0,
+                                                                                  bn::sprite_items::currency_number.tiles_item(),
+                                                                                  num_1, num_1);
+
+        currency_num_2_sprite_ptr->set_position(camera->x() + HUD_CURRENCY_NUM_2_X_OFFSET, camera->y() + HUD_CURRENCY_NUM_2_Y_OFFSET );
+        int32 num_2 = displayed_currency % 10;
+	    currency_num_2_animate_action_ptr = bn::create_sprite_animate_action_once(currency_num_2_sprite_ptr.value(),
+                                                                                  0,
+                                                                                  bn::sprite_items::currency_number.tiles_item(),
+                                                                                  num_2, num_2);
+
+        currency_num_1_animate_action_ptr->update();
+        currency_num_2_animate_action_ptr->update();
+
     }
 }
 

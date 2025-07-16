@@ -73,7 +73,8 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/butano-master/butano/include/bn_sprite_shape_size.h \
  G:/butano-master/butano/include/bn_sprite_tiles_item.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
- G:/game/include/math.h G:/butano-master/butano/include/bn_fixed.h \
+ G:/game/build/bn_sprite_items_currency_number.h G:/game/include/math.h \
+ G:/butano-master/butano/include/bn_fixed.h \
  G:/butano-master/butano/include/bn_fixed_point.h \
  G:/game/include/utility.h G:/game/include/room.h \
  G:/butano-master/butano/include/bn_memory.h \
@@ -216,6 +217,7 @@ G:/butano-master/butano/include/bn_sprite_item.h:
 G:/butano-master/butano/include/bn_sprite_shape_size.h:
 G:/butano-master/butano/include/bn_sprite_tiles_item.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
+G:/game/build/bn_sprite_items_currency_number.h:
 G:/game/include/math.h:
 G:/butano-master/butano/include/bn_fixed.h:
 G:/butano-master/butano/include/bn_fixed_point.h:

@@ -85,7 +85,8 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/butano-master/butano/include/bn_sprite_shape_size.h \
  G:/butano-master/butano/include/bn_sprite_tiles_item.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
- G:/game/include/math.h G:/game/include/utility.h G:/game/include/room.h \
+ G:/game/build/bn_sprite_items_currency_number.h G:/game/include/math.h \
+ G:/game/include/utility.h G:/game/include/room.h \
  G:/game/include/room_bounds.h G:/game/include/collider.h \
  G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_sprite_ptr.h \
@@ -232,6 +233,7 @@ G:/butano-master/butano/include/bn_sprite_item.h:
 G:/butano-master/butano/include/bn_sprite_shape_size.h:
 G:/butano-master/butano/include/bn_sprite_tiles_item.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
+G:/game/build/bn_sprite_items_currency_number.h:
 G:/game/include/math.h:
 G:/game/include/utility.h:
 G:/game/include/room.h:
