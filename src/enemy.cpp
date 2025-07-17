@@ -354,6 +354,30 @@ void Enemy::resolveSmashBlockMiniCollision(GameObject& object)
 	}
 }
 
+void Enemy::resolveLargeVaseCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+    {
+		// Smash the block
+		if(state == OBJECT_HITSTUN || state == OBJECT_DEATH)
+		{object.applyHit(damage, 0, 0);}
+    }
+}
+
+void Enemy::resolveSmallVaseCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+    {
+		// Smash the block
+		if(state == OBJECT_HITSTUN || state == OBJECT_DEATH)
+		{object.applyHit(damage, 0, 0);}
+    }
+}
+
 void Enemy::resolveHPTotemCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}

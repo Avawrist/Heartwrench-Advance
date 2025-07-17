@@ -77,12 +77,11 @@ player.o: G:/game/src/player.cpp G:/game/include/player.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/game/build/bn_sprite_palette_items_player_flash_palette.h \
  G:/game/build/bn_sprite_palette_items_sprite_roll_effect_palette.h \
- G:/game/build/bn_sprite_items_air_jump_effect.h \
+ G:/game/build/bn_sprite_items_hit_effect.h \
  G:/butano-master/butano/include/bn_sprite_item.h \
  G:/butano-master/butano/include/bn_sprite_shape_size.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
- G:/game/build/bn_sprite_items_land_effect.h \
- G:/game/build/bn_sprite_items_hit_effect.h \
+ G:/game/build/bn_sprite_items_wall_jump_effect.h \
  G:/game/build/bn_sprite_items_wall_splat_effect.h \
  G:/game/build/bn_sprite_items_enemy_hp_bar.h \
  G:/game/build/bn_sprite_items_tile_passage.h \
@@ -192,12 +191,11 @@ G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/game/build/bn_sprite_palette_items_player_flash_palette.h:
 G:/game/build/bn_sprite_palette_items_sprite_roll_effect_palette.h:
-G:/game/build/bn_sprite_items_air_jump_effect.h:
+G:/game/build/bn_sprite_items_hit_effect.h:
 G:/butano-master/butano/include/bn_sprite_item.h:
 G:/butano-master/butano/include/bn_sprite_shape_size.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
-G:/game/build/bn_sprite_items_land_effect.h:
-G:/game/build/bn_sprite_items_hit_effect.h:
+G:/game/build/bn_sprite_items_wall_jump_effect.h:
 G:/game/build/bn_sprite_items_wall_splat_effect.h:
 G:/game/build/bn_sprite_items_enemy_hp_bar.h:
 G:/game/build/bn_sprite_items_tile_passage.h:

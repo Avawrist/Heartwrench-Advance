@@ -481,15 +481,9 @@ void Level::updateBGFlash()
 
 void Level::updatePaintedBG()
 {   
-    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) == NULL) 
-    {    
-        painted_bg_ptr->set_position(current_room.center());
-        return;
-    }
-
     // Parallax Effect
     #define PARALLAX_REDUCTION_FACTOR -32 // The larger the number, the slower the BG will scroll.
-    bn::fixed x_offset = (current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->x() - current_room.center().x()) / PARALLAX_REDUCTION_FACTOR;
+    bn::fixed x_offset = (camera->x() - current_room.center().x()) / PARALLAX_REDUCTION_FACTOR;
     painted_bg_ptr->set_position(current_room.center().x() + x_offset, current_room.center().y());
 }
 

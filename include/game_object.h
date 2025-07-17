@@ -35,9 +35,8 @@
 #include "bn_sprite_palette_items_sprite_roll_effect_palette.h"
 
 // Effect Assets
-#include "bn_sprite_items_air_jump_effect.h"
-#include "bn_sprite_items_land_effect.h"
 #include "bn_sprite_items_hit_effect.h"
+#include "bn_sprite_items_wall_jump_effect.h"
 #include "bn_sprite_items_wall_splat_effect.h"
 #include "bn_sprite_items_enemy_hp_bar.h"
 

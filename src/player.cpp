@@ -69,7 +69,7 @@ Player::Player()
 	pm_sprite_ptr->set_z_order(PLAYER_Z_ORDER);
 	pm_sprite_ptr->set_visible(false);
 
-	jump_effect_sprite_ptr = bn::sprite_items::air_jump_effect.create_sprite(0, 0);
+	jump_effect_sprite_ptr = bn::sprite_items::wall_jump_effect.create_sprite(0, 0);
 	jump_effect_sprite_ptr->set_z_order(PLAYER_Z_ORDER);
 	jump_effect_sprite_ptr->set_visible(false);
 
@@ -220,9 +220,6 @@ void Player::jump()
 	remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
 	late_jump_grace_frames      = 0;
 	rigidbody.addForce(PLAYER_JUMP_FORCE);
-
-	// Jump Effect
-	if(!grounded_detected) {createAirJumpEffect();}
 }
 
 void Player::wallJump()
@@ -300,21 +297,6 @@ void Player::createAirAttack1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>&
 	// Add more hitboxes...
 }
 
-void Player::createAirJumpEffect()
-{
-    if(global_tiles_in_VRAM > MAX_SPRITE_TILES) {return;}
-
-	#define AIR_JUMP_EFFECT_OFFSET -1
-
-	jump_effect_sprite_ptr->set_visible(true);
-	jump_effect_sprite_ptr->set_position(x(), y() + AIR_JUMP_EFFECT_OFFSET);
-	jump_effect_sprite_ptr->set_rotation_angle(0);
-	jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
-																1,
-																bn::sprite_items::air_jump_effect.tiles_item(),
-																0, 1, 2, 2, 3, 3, 4, 4);
-}
-
 void Player::createWallJumpEffect()
 {
 	if(global_tiles_in_VRAM > MAX_SPRITE_TILES) {return;}
@@ -323,12 +305,10 @@ void Player::createWallJumpEffect()
 
 	jump_effect_sprite_ptr->set_visible(true);
 	jump_effect_sprite_ptr->set_position(x() + ((int32)x_dir * WALL_JUMP_EFFECT_OFFSET), y());
-	if(x_dir == LEFT) {jump_effect_sprite_ptr->set_rotation_angle(90);}
-	else              {jump_effect_sprite_ptr->set_rotation_angle(270);}
 	jump_effect_anim_ptr = bn::create_sprite_animate_action_once(jump_effect_sprite_ptr.value(),
 																 1,
-																 bn::sprite_items::air_jump_effect.tiles_item(),
-																 0, 1, 2, 2, 3, 3, 4, 4);
+																 bn::sprite_items::wall_jump_effect.tiles_item(),
+																 0, 0, 1, 1, 2, 2, 3, 3, 4, 4);
 }
 
 void Player::drawRollEffect()

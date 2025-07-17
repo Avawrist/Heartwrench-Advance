@@ -1,0 +1,1 @@
+wall_jump_effect_bn_gfx.o: wall_jump_effect_bn_gfx.s

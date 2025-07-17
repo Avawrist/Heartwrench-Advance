@@ -364,7 +364,7 @@ void HPDrop::resolveLargeVaseCollision(GameObject& object)
 
 	if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED && collider.isCollision(object.collider))
 	{
-		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
+		object.applyHit(damage, 0, 0);
 	}
 }
 
@@ -374,7 +374,7 @@ void HPDrop::resolveSmallVaseCollision(GameObject& object)
 
 	if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED && collider.isCollision(object.collider))
 	{
-		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
+		object.applyHit(damage, 0, 0);
 	}
 }
 

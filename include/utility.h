@@ -30,7 +30,7 @@ typedef int   int32;
 #define LOAD_RANGE_W SCREEN_W + (3 * SCREEN_LOAD_PADDING)
 #define LOAD_RANGE_H SCREEN_H + (3 * SCREEN_LOAD_PADDING)
 
-#define CAM_PLAYER_Y_OFFSET -24
+#define CAM_PLAYER_Y_OFFSET -32
 #define CAM_MAX_LOOK_Y       16
 #define CAM_MAX_LOOK_X       16
 #define CAM_MAX_DIR_LOOK_X   16
