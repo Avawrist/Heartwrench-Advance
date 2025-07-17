@@ -77,9 +77,9 @@ void HPDrop::setState(ObjectState new_state)
         case OBJECT_DEATH:
 
             animate_action_ptr  = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-                                                                        2,
+                                                                        0,
                                                                         bn::sprite_items::hp_drop.tiles_item(),
-                                                                        4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7);
+                                                                        0, 0);
 
         break;
 

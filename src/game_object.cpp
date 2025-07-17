@@ -112,6 +112,7 @@ GameObject::GameObject(const GameObject& other)
 	is_inactive       = other.is_inactive;
     is_dead           = other.is_dead;
     is_persistent     = other.is_persistent;
+    is_frozen         = other.is_frozen;
     grounded_detected = other.grounded_detected;
 
 	received_platform_force = other.received_platform_force;
@@ -182,6 +183,7 @@ GameObject& GameObject::operator =(const GameObject& other)
 	is_inactive       = other.is_inactive;
     is_dead           = other.is_dead;
     is_persistent     = other.is_persistent;
+    is_frozen         = other.is_frozen;
     grounded_detected = other.grounded_detected;
 
 	received_platform_force = other.received_platform_force;
@@ -294,6 +296,8 @@ void GameObject::update(const RoomBounds& 							   room_bounds,
 
 void GameObject::updatePhysics()
 {
+    if(is_frozen) {return;}
+
     // Apply Decay to Forces
 	rigidbody.applyDecay();
 
@@ -703,6 +707,8 @@ void GameObject::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&    
                                   const bn::span<const bn::regular_bg_map_cell>& cells,
                                   const bn::regular_bg_item&                     bg_item)
 {
+    if(is_frozen) {return;}
+
     ////////////////////////////
     // Resolve Tile Collision //
     ////////////////////////////

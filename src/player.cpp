@@ -2055,6 +2055,7 @@ void Player::resolveMoonDropCollision(GameObject& object)
 	if(collider.isCollision(object.collider))
     {	
 		currency_collected += object.damage;
+		global_hitstop_frames = PLAYER_GET_MOON_HITSTOP_FRAMES;
 		object.setState(OBJECT_DEATH);
 	}
 }

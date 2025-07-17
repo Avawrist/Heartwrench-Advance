@@ -34,9 +34,9 @@
 
 struct MoonDrop : GameObject {
 
-    ///////////////////
+    /////////////////////
     // Struct MoonDrop //
-    ///////////////////
+    /////////////////////
 
     MoonDrop();
     MoonDrop(const MoonDrop& other);

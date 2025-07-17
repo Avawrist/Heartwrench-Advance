@@ -305,6 +305,7 @@ struct GameObject
 	bool is_inactive             = false;
 	bool is_dead                 = false;
 	bool is_persistent           = false;
+	bool is_frozen               = false;
 	bool received_platform_force = false;
 	bool grounded_detected       = false;
 

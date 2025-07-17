@@ -1,0 +1,1 @@
+hud_currency_icon_bn_gfx.o: hud_currency_icon_bn_gfx.s

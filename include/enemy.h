@@ -21,6 +21,8 @@ struct Enemy : GameObject
 	Enemy(const Enemy& other);
 	virtual ~Enemy();
 
+    Enemy& operator =(const Enemy& other);
+
     void wallSplatCheck();
 
     //////////////////////////

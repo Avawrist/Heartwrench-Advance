@@ -12,9 +12,10 @@ MoonDrop::MoonDrop()
     sprite_ptr->set_z_order(ENEMY_Z_ORDER);
     default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								                                   0,
+								                                   2,
 								                                   bn::sprite_items::moon_drop.tiles_item(),
-								                                   0, 0);
+								                                   0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3,
+																   4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7);
 
     // Init Variables //
     collider_offset_x = MOON_DROP_COLLIDER_OFFSET_X;
@@ -64,10 +65,11 @@ void MoonDrop::setState(ObjectState new_state)
     {
         case IDLE:
 
-            animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-                                                                            0,
-                                                                            bn::sprite_items::moon_drop.tiles_item(),
-                                                                            0, 0);
+			animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+																		2,
+																		bn::sprite_items::moon_drop.tiles_item(),
+																		0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3,
+																		4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7);
 
         break;
 

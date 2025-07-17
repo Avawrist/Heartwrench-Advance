@@ -364,10 +364,22 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
 
         case HP_DROP:
             temp_object_ptr = new HPDrop();
+
+            // Special Case: 
+            // HP Drops added in through the Level Editor are "frozen"
+            // and don't receive physics updates
+            temp_object_ptr->is_frozen = true;
+
         break;
 
         case MOON_DROP:
             temp_object_ptr = new MoonDrop();
+
+            // Special Case: 
+            // HP Drops added in through the Level Editor are "frozen"
+            // and don't receive physics updates
+            temp_object_ptr->is_frozen = true;
+
         break;
 
         ///////////////////

@@ -123,9 +123,7 @@ void Hitbox::applyHit(GameObject& object)
 
     // Object physics:
     object.rigidbody.removeForces();
-
-    // Only add knockback if the recipient will survive the damage:
-    if(object.hitpoints - damage > 0) {object.rigidbody.addForce(HITBOX_KNOCKBACK_FORCE);}
+    object.rigidbody.addForce(HITBOX_KNOCKBACK_FORCE);
 
     // Object Dir:
     object.x_dir = (XDirection)(x_dir * -1);

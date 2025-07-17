@@ -13,14 +13,15 @@ Enemy::Enemy()
 }
 
 Enemy::Enemy(const Enemy& other) : GameObject(other)
-{
-
-}
+{}
 
 Enemy::~Enemy()
 {
 
 }
+
+Enemy& Enemy::operator =(const Enemy& other)
+{return *this;}
 
 void Enemy::wallSplatCheck()
 {

@@ -37,6 +37,8 @@ Level::Level(const Level& other)
     currency_num_2_sprite_ptr         = other.currency_num_2_sprite_ptr;
 	currency_num_2_animate_action_ptr = other.currency_num_2_animate_action_ptr;
 
+    currency_icon_sprite_ptr = other.currency_icon_sprite_ptr;
+
     tile_width  = other.tile_width;
     tile_height = other.tile_height;
 
@@ -90,6 +92,8 @@ void Level::operator =(const Level& other)
     currency_num_2_sprite_ptr         = other.currency_num_2_sprite_ptr;
 	currency_num_2_animate_action_ptr = other.currency_num_2_animate_action_ptr;
 
+    currency_icon_sprite_ptr = other.currency_icon_sprite_ptr;
+
     tile_width  = other.tile_width;
     tile_height = other.tile_height;
 
@@ -133,6 +137,8 @@ void Level::clear()
 
     currency_num_2_sprite_ptr.reset();
 	currency_num_2_animate_action_ptr.reset();
+
+    currency_icon_sprite_ptr.reset();
 
     bg_item.reset();
     object_bg_item.reset();
@@ -219,24 +225,29 @@ void Level::load(LevelName level_name)
     object_bg_ptr->set_z_order(OBJECT_BG_ORDER);
 
     // Initialize HUD elements
-    hud_hp_sprite_ptr         = bn::sprite_items::hud_hp_bar.create_sprite(0, 0);
+    hud_hp_sprite_ptr = bn::sprite_items::hud_hp_bar.create_sprite(0, 0);
+    hud_hp_sprite_ptr->set_z_order(HUD_Z_LAYER);
     hud_hp_animate_action_ptr = bn::create_sprite_animate_action_forever(hud_hp_sprite_ptr.value(),
                                                                          0,
                                                                          bn::sprite_items::hud_hp_bar.tiles_item(),
                                                                          0, 0);
-    hud_hp_sprite_ptr->set_z_order(HUD_Z_LAYER);
 
-    currency_num_1_sprite_ptr         = bn::sprite_items::currency_number.create_sprite(0, 0);
+    currency_num_1_sprite_ptr = bn::sprite_items::currency_number.create_sprite(0, 0);
+    currency_num_1_sprite_ptr->set_z_order(HUD_Z_LAYER);
 	currency_num_1_animate_action_ptr = bn::create_sprite_animate_action_forever(currency_num_1_sprite_ptr.value(),
                                                                                  0,
                                                                                  bn::sprite_items::currency_number.tiles_item(),
                                                                                  0, 0);
 
-    currency_num_2_sprite_ptr         = bn::sprite_items::currency_number.create_sprite(0, 0);
+    currency_num_2_sprite_ptr = bn::sprite_items::currency_number.create_sprite(0, 0);
+    currency_num_2_sprite_ptr->set_z_order(HUD_Z_LAYER);
 	currency_num_2_animate_action_ptr = bn::create_sprite_animate_action_forever(currency_num_1_sprite_ptr.value(),
                                                                                  0,
                                                                                  bn::sprite_items::currency_number.tiles_item(),
                                                                                  0, 0);
+
+    currency_icon_sprite_ptr = bn::sprite_items::hud_currency_icon.create_sprite(0, 0);
+    currency_icon_sprite_ptr->set_z_order(HUD_Z_LAYER);
 
     // Set Camera
     main_bg_ptr->set_camera(camera.value());
@@ -248,6 +259,8 @@ void Level::load(LevelName level_name)
 
     currency_num_1_sprite_ptr->set_camera(camera.value());
     currency_num_2_sprite_ptr->set_camera(camera.value());
+
+    currency_icon_sprite_ptr->set_camera(camera.value());
 
     // Set black screen
     default_main_palette_ptr->set_fade(bn::colors::black, 1);
@@ -699,6 +712,7 @@ void Level::drawHUD()
         // Draw Currency //
         ///////////////////
 
+        // Numbers
         currency_num_1_sprite_ptr->set_position(camera->x() + HUD_CURRENCY_NUM_1_X_OFFSET, camera->y() + HUD_CURRENCY_NUM_1_Y_OFFSET );
         bn::fixed unrounded_num_1 = displayed_currency / 10;
         int32 num_1               = clamp(0, 9, unrounded_num_1.floor_integer());
@@ -716,6 +730,10 @@ void Level::drawHUD()
 
         currency_num_1_animate_action_ptr->update();
         currency_num_2_animate_action_ptr->update();
+
+        // Icon
+        currency_icon_sprite_ptr->set_position(camera->x() + HUD_CURRENCY_ICON_X_OFFSET, 
+                                               camera->y() + HUD_CURRENCY_ICON_Y_OFFSET);
     }
 }
 

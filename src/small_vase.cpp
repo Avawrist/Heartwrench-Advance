@@ -117,7 +117,8 @@ void SmallVase::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   
 
 			updateDeathState();
 
-            // Drop an item?
+            // Spawn a Moon Drop
+            if(animate_action_ptr->done()) {object_request = ObjectRequest(MOON_DROP, bn::fixed_point(x(), y()));}
 
 		break;
 		

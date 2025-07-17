@@ -29,6 +29,7 @@
 // HUD Elements
 #include "bn_sprite_items_hud_hp_bar.h"
 #include "bn_sprite_items_currency_number.h"
+#include "bn_sprite_items_hud_currency_icon.h"
 
 // My Libs
 #include "math.h"
@@ -61,10 +62,13 @@
 #define HUD_HP_Y_OFFSET -61
 
 #define HUD_CURRENCY_NUM_1_X_OFFSET -30
-#define HUD_CURRENCY_NUM_1_Y_OFFSET -58
+#define HUD_CURRENCY_NUM_1_Y_OFFSET -68
 
 #define HUD_CURRENCY_NUM_2_X_OFFSET -23
-#define HUD_CURRENCY_NUM_2_Y_OFFSET -58
+#define HUD_CURRENCY_NUM_2_Y_OFFSET -68
+
+#define HUD_CURRENCY_ICON_X_OFFSET -46
+#define HUD_CURRENCY_ICON_Y_OFFSET -66
 
 // Fade 
 #define LEVEL_FADE_INCREMENT 0.05
@@ -110,6 +114,9 @@ struct Level
     bn::optional<bn::sprite_ptr>                                         currency_num_2_sprite_ptr;
 	bn::optional<bn::sprite_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> currency_num_2_animate_action_ptr;
 
+    bn::optional<bn::sprite_ptr>                                         currency_icon_sprite_ptr;
+
+    // Other
     uint32 tile_width;
     uint32 tile_height;
 
