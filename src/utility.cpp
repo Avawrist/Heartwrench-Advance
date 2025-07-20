@@ -22,6 +22,9 @@ int32 global_hitstop_frames                     = 0;
 int32 global_screenshake_frames                 = 0;
 ScreenShakeSeverity global_screenshake_severity = NO_SHAKE;
 
+int32 global_hud_hp_flash_frames       = 0;
+int32 global_hud_currency_flash_frames = 0;
+
 int32 global_timer = 0;
 
 // Functions

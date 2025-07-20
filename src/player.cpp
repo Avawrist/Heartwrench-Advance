@@ -2021,8 +2021,9 @@ void Player::resolveHPDropCollision(GameObject& object)
 	
 	if(collider.isCollision(object.collider))
     {
-		global_hitstop_frames = PLAYER_GET_HP_HITSTOP_FRAMES;
-		
+		global_hitstop_frames      = PLAYER_GET_HP_HITSTOP_FRAMES;
+		global_hud_hp_flash_frames = HUD_FLASH_FRAMES;
+
 		applyHP(object.damage);
 		object.setState(OBJECT_DEATH);
 	}
@@ -2035,7 +2036,25 @@ void Player::resolveMoonDropCollision(GameObject& object)
 	if(collider.isCollision(object.collider))
     {	
 		currency_collected += object.damage;
-		global_hitstop_frames = PLAYER_GET_MOON_HITSTOP_FRAMES;
+
+		global_hitstop_frames            = PLAYER_GET_MOON_HITSTOP_FRAMES;
+		global_hud_currency_flash_frames = HUD_FLASH_FRAMES;
+
+		object.setState(OBJECT_DEATH);
+	}
+}
+
+void Player::resolveStarDropCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+	
+	if(collider.isCollision(object.collider))
+    {	
+		currency_collected += object.damage;
+
+		global_hitstop_frames            = PLAYER_GET_STAR_HITSTOP_FRAMES;
+		global_hud_currency_flash_frames = HUD_FLASH_FRAMES;
+
 		object.setState(OBJECT_DEATH);
 	}
 }

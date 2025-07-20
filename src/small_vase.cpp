@@ -33,9 +33,7 @@ SmallVase::SmallVase()
 }
 
 SmallVase::SmallVase(const SmallVase& other) : GameObject(other)
-{
-
-}
+{}
 
 SmallVase::~SmallVase()
 {
@@ -117,9 +115,6 @@ void SmallVase::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   
 
 			updateDeathState();
 
-            // Spawn a Moon Drop
-            if(animate_action_ptr->done()) {object_request = ObjectRequest(MOON_DROP, bn::fixed_point(x(), y()));}
-
 		break;
 		
 		default:
@@ -136,6 +131,8 @@ void SmallVase::setState(ObjectState new_state)
 	switch(new_state)
 	{
 		case OBJECT_DEATH:
+
+            object_request = ObjectRequest(MOON_DROP, bn::fixed_point(x(), y()));
 
             sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),

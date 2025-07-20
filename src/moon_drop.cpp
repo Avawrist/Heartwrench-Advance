@@ -81,7 +81,8 @@ void MoonDrop::setState(ObjectState new_state)
             animate_action_ptr  = bn::create_sprite_animate_action_once(sprite_ptr.value(),
                                                                         0,
                                                                         bn::sprite_items::moon_drop.tiles_item(),
-                                                                        0, 0);
+                                                                        8, 8, 9, 9, 10, 10, 
+																		11, 11, 12, 12, 13, 13);
 
         break;
 

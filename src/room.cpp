@@ -192,6 +192,10 @@ int32 Room::addObject(ObjectRequest& object_request, const bn::camera_ptr& camer
             temp_object_ptr = new MoonDrop();
         break;
 
+        case STAR_DROP:
+            temp_object_ptr = new StarDrop();
+        break;
+
         ///////////////////
 	    // Level Enemies //
 	    ///////////////////
@@ -376,7 +380,17 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             temp_object_ptr = new MoonDrop();
 
             // Special Case: 
-            // HP Drops added in through the Level Editor are "frozen"
+            // Moon Drops added in through the Level Editor are "frozen"
+            // and don't receive physics updates
+            temp_object_ptr->is_frozen = true;
+
+        break;
+
+        case STAR_DROP:
+            temp_object_ptr = new StarDrop();
+
+            // Special Case: 
+            // Star Drops added in through the Level Editor are "frozen"
             // and don't receive physics updates
             temp_object_ptr->is_frozen = true;
 

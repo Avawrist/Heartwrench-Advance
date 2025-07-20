@@ -105,6 +105,8 @@ struct Level
     bn::span<const bn::regular_bg_map_cell> object_cells;
 
     // HUD
+    bn::optional<bn::sprite_palette_ptr> default_hud_palette_ptr;
+
     bn::optional<bn::sprite_ptr>                                         hud_hp_sprite_ptr;
 	bn::optional<bn::sprite_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> hud_hp_animate_action_ptr;
 

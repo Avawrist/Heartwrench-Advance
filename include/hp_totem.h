@@ -25,11 +25,9 @@
 
 struct HPTotem : GameObject {
 
-    //////////////////////
+    ////////////////////
     // Struct HPTotem //
-    //////////////////////
-
-    bool dropped_hp;
+    ////////////////////
 
     HPTotem();
     HPTotem(const HPTotem& other);

@@ -813,6 +813,10 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
                     resolveMoonDropCollision(*game_objects.at(i));
                 break;
 
+                case STAR_DROP:
+                    resolveStarDropCollision(*game_objects.at(i));
+                break;
+
                 // Level Enemies
                 case THORN_COLUMN:
                     resolveThornColumnCollision(*game_objects.at(i));
@@ -868,6 +872,7 @@ void GameObject::resolveSmallVaseCollision(GameObject& object)           {}
 void GameObject::resolveHPTotemCollision(GameObject& object)             {}
 void GameObject::resolveHPDropCollision(GameObject& object)              {}
 void GameObject::resolveMoonDropCollision(GameObject& object)            {}
+void GameObject::resolveStarDropCollision(GameObject& object)            {}
 
 // Level Enemies
 void GameObject::resolveThornColumnCollision(GameObject& object) {}

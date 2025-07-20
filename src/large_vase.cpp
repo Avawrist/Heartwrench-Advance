@@ -33,9 +33,7 @@ LargeVase::LargeVase()
 }
 
 LargeVase::LargeVase(const LargeVase& other) : GameObject(other)
-{
-
-}
+{}
 
 LargeVase::~LargeVase()
 {
@@ -117,8 +115,6 @@ void LargeVase::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   
 
 			updateDeathState();
 
-            // Drop an item?
-
 		break;
 		
 		default:
@@ -135,6 +131,8 @@ void LargeVase::setState(ObjectState new_state)
 	switch(new_state)
 	{
 		case OBJECT_DEATH:
+
+            object_request = ObjectRequest(MOON_DROP, bn::fixed_point(x(), y()));
 
             sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),

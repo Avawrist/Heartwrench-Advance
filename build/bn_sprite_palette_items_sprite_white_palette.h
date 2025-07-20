@@ -1,0 +1,37 @@
+#ifndef BN_SPRITE_PALETTE_ITEMS_SPRITE_WHITE_PALETTE_H
+#define BN_SPRITE_PALETTE_ITEMS_SPRITE_WHITE_PALETTE_H
+
+#include "bn_sprite_palette_item.h"
+
+//{{BLOCK(sprite_white_palette_bn_gfx)
+
+//======================================================================
+//
+//	sprite_white_palette_bn_gfx, 32x32@4, 
+//	+ palette 16 entries, not compressed
+//	Total size: 32 = 32
+//
+//	Time-stamp: 2025-07-19, 14:15:02
+//	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
+//	( http://www.coranac.com/projects/#grit )
+//
+//======================================================================
+
+#ifndef GRIT_SPRITE_WHITE_PALETTE_BN_GFX_H
+#define GRIT_SPRITE_WHITE_PALETTE_BN_GFX_H
+
+#define sprite_white_palette_bn_gfxPalLen 32
+extern const bn::color sprite_white_palette_bn_gfxPal[16];
+
+#endif // GRIT_SPRITE_WHITE_PALETTE_BN_GFX_H
+
+//}}BLOCK(sprite_white_palette_bn_gfx)
+
+namespace bn::sprite_palette_items
+{
+    constexpr inline sprite_palette_item sprite_white_palette(span<const color>(sprite_white_palette_bn_gfxPal, 16), 
+            bpp_mode::BPP_4, compression_type::NONE);
+}
+
+#endif
+

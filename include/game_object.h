@@ -29,7 +29,8 @@
 #include "physics.h"
 #include "collider.h"  
 
-// Flash Palette
+// Palettes
+#include "bn_sprite_palette_items_sprite_white_palette.h"
 #include "bn_sprite_palette_items_sprite_flash_palette.h"
 #include "bn_sprite_palette_items_player_flash_palette.h"
 #include "bn_sprite_palette_items_sprite_roll_effect_palette.h"
@@ -58,6 +59,7 @@
 #include "bn_sprite_items_hp_totem.h"
 #include "bn_sprite_items_hp_drop.h"
 #include "bn_sprite_items_moon_drop.h"
+#include "bn_sprite_items_star_drop.h"
 
 // Enemy Object Assets
 #include "bn_sprite_items_ground_ghoul.h"
@@ -168,6 +170,7 @@ enum ObjectType
 	HP_TOTEM,
 	HP_DROP,
 	MOON_DROP,
+	STAR_DROP,
 
 	// Level Enemies
 	THORN_COLUMN,
@@ -423,6 +426,7 @@ struct GameObject
 	virtual void resolveHPTotemCollision(GameObject& object);
 	virtual void resolveHPDropCollision(GameObject& object);
 	virtual void resolveMoonDropCollision(GameObject& object);
+	virtual void resolveStarDropCollision(GameObject& object);
 
 	// Level Enemies
 	virtual void resolveThornColumnCollision(GameObject& object); 

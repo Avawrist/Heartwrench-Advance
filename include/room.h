@@ -36,6 +36,7 @@
 #include "hp_totem.h"
 #include "hp_drop.h"
 #include "moon_drop.h"
+#include "star_drop.h"
 
 // Enemies
 #include "ground_ghoul.h"

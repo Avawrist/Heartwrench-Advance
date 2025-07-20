@@ -86,6 +86,9 @@ typedef int   int32;
 #define ONEWAYBLOCK_COLLIDER_HEIGHT    1
 #define ONEWAYBLOCK_COLLIDER_Y_OFFSET -4
 
+// HUD
+#define HUD_FLASH_FRAMES 8
+
 // Tile Macros
 #define SPIKE_DAMAGE 10
 
@@ -134,6 +137,9 @@ extern int32               global_bg_hitflash_frames;
 extern int32               global_hitstop_frames;
 extern int32               global_screenshake_frames;
 extern ScreenShakeSeverity global_screenshake_severity;
+
+extern int32 global_hud_hp_flash_frames;
+extern int32 global_hud_currency_flash_frames;
 
 extern int32 global_timer;
 

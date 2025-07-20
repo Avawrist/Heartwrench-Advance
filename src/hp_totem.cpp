@@ -30,14 +30,10 @@ HPTotem::HPTotem()
     max_hp    = HP_TOTEM_HITPOINTS;
 
     thirty_fps = HP_TOTEM_30_FPS;
-
-    dropped_hp = false;
 }
 
 HPTotem::HPTotem(const HPTotem& other) : GameObject(other)
-{
-    dropped_hp = other.dropped_hp;
-}
+{}
 
 HPTotem::~HPTotem()
 {
@@ -46,8 +42,6 @@ HPTotem::~HPTotem()
 
 HPTotem& HPTotem::operator =(const HPTotem& other)
 {
-    dropped_hp = other.dropped_hp;
-
     return *this;
 }
 
@@ -121,14 +115,6 @@ void HPTotem::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     
 
 			updateDeathState();
 
-            if(!dropped_hp)
-            {
-                dropped_hp = true;
-
-                // Add HP Gem Object
-                object_request = ObjectRequest(HP_DROP, bn::fixed_point(x(), y()));
-            }
-
 		break;
 		
 		default:
@@ -145,6 +131,8 @@ void HPTotem::setState(ObjectState new_state)
 	switch(new_state)
 	{
 		case OBJECT_DEATH:
+
+            object_request = ObjectRequest(HP_DROP, bn::fixed_point(x(), y()));
 
             sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),

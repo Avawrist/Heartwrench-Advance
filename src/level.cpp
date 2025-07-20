@@ -39,6 +39,8 @@ Level::Level(const Level& other)
 
     currency_icon_sprite_ptr = other.currency_icon_sprite_ptr;
 
+    default_hud_palette_ptr = other.default_hud_palette_ptr;
+
     tile_width  = other.tile_width;
     tile_height = other.tile_height;
 
@@ -94,6 +96,8 @@ void Level::operator =(const Level& other)
 
     currency_icon_sprite_ptr = other.currency_icon_sprite_ptr;
 
+    default_hud_palette_ptr = other.default_hud_palette_ptr;
+
     tile_width  = other.tile_width;
     tile_height = other.tile_height;
 
@@ -139,6 +143,8 @@ void Level::clear()
 	currency_num_2_animate_action_ptr.reset();
 
     currency_icon_sprite_ptr.reset();
+
+    default_hud_palette_ptr.reset();
 
     bg_item.reset();
     object_bg_item.reset();
@@ -248,6 +254,8 @@ void Level::load(LevelName level_name)
 
     currency_icon_sprite_ptr = bn::sprite_items::hud_currency_icon.create_sprite(0, 0);
     currency_icon_sprite_ptr->set_z_order(HUD_Z_LAYER);
+
+    default_hud_palette_ptr = hud_hp_sprite_ptr->palette();
 
     // Set Camera
     main_bg_ptr->set_camera(camera.value());
@@ -688,6 +696,13 @@ void Level::drawHUD()
         /////////////
         // Draw HP //
         /////////////
+
+        // Update palette
+        bn::sprite_palette_ptr white_palette = bn::sprite_palette_items::sprite_white_palette.create_palette();
+
+        if(global_hud_hp_flash_frames) {hud_hp_sprite_ptr->set_palette(white_palette);}
+        else                           {hud_hp_sprite_ptr->set_palette(default_hud_palette_ptr.value());}
+
         if(hud_hp_animate_action_ptr.has_value())
         {
             // Set Position
@@ -705,6 +720,10 @@ void Level::drawHUD()
         ///////////////////
         // Draw Currency //
         ///////////////////
+
+        // Update palette
+        if(global_hud_currency_flash_frames) {currency_icon_sprite_ptr->set_palette(white_palette);}
+        else                                 {currency_icon_sprite_ptr->set_palette(default_hud_palette_ptr.value());}
 
         // Numbers
         currency_num_1_sprite_ptr->set_position(camera->x() + HUD_CURRENCY_NUM_1_X_OFFSET, camera->y() + HUD_CURRENCY_NUM_1_Y_OFFSET );
@@ -729,6 +748,19 @@ void Level::drawHUD()
         currency_icon_sprite_ptr->set_position(camera->x() + HUD_CURRENCY_ICON_X_OFFSET, 
                                                camera->y() + HUD_CURRENCY_ICON_Y_OFFSET);
     }
+
+        /////////////////////////////
+        // Update HUD Flash Frames //
+        /////////////////////////////
+
+        global_hud_hp_flash_frames--;
+        global_hud_hp_flash_frames = clamp(0, HUD_FLASH_FRAMES, global_hud_hp_flash_frames);
+
+        global_hud_currency_flash_frames--;
+        global_hud_currency_flash_frames = clamp(0, HUD_FLASH_FRAMES, global_hud_currency_flash_frames);
+
+        BN_LOG(global_hud_hp_flash_frames);
+
 }
 
 void Level::drawObjects()
@@ -775,6 +807,15 @@ void Level::updateFade()
         bn::sprite_palette_ptr hud_hp_palette = hud_hp_sprite_ptr->palette();
         hud_hp_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
 
+        bn::sprite_palette_ptr hud_currency_num_1_palette = currency_num_1_sprite_ptr->palette();
+        hud_currency_num_1_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+
+        bn::sprite_palette_ptr hud_currency_num_2_palette = currency_num_1_sprite_ptr->palette();
+        hud_currency_num_2_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+
+        bn::sprite_palette_ptr hud_currency_icon_palette = currency_icon_sprite_ptr->palette();
+        hud_currency_icon_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+
         // End condition
         if(default_main_palette_ptr->fade_intensity() == 0) {fade_in = false;}
     }
@@ -819,10 +860,28 @@ void Level::updateFade()
         bn::sprite_palette_ptr hud_hp_palette = hud_hp_sprite_ptr->palette();
         hud_hp_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
 
+        bn::sprite_palette_ptr hud_currency_num_1_palette = currency_num_1_sprite_ptr->palette();
+        hud_currency_num_1_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+
+        bn::sprite_palette_ptr hud_currency_num_2_palette = currency_num_1_sprite_ptr->palette();
+        hud_currency_num_2_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+
+        bn::sprite_palette_ptr hud_currency_icon_palette = currency_icon_sprite_ptr->palette();
+        hud_currency_icon_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+
         if(hud_hp_palette.fade_intensity() == 1)
         {
             hud_hp_palette.set_fade(bn::colors::black, 0);
             hud_hp_sprite_ptr->set_visible(false);
+
+            hud_currency_num_1_palette.set_fade(bn::colors::black, 0);
+            currency_num_1_sprite_ptr->set_visible(false);
+
+            hud_currency_num_2_palette.set_fade(bn::colors::black, 0);
+            currency_num_2_sprite_ptr->set_visible(false);
+
+            hud_currency_icon_palette.set_fade(bn::colors::black, 0);
+            currency_icon_sprite_ptr->set_visible(false);
         }
 
         // End condition

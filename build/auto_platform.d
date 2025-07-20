@@ -74,8 +74,9 @@ auto_platform.o: G:/game/src/auto_platform.cpp \
  G:/game/include/room_bounds.h G:/game/include/physics.h \
  G:/butano-master/butano/include/bn_vector.h G:/game/include/math.h \
  G:/game/include/collider.h \
- G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h \
+ G:/game/build/bn_sprite_palette_items_sprite_white_palette.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
+ G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h \
  G:/game/build/bn_sprite_palette_items_player_flash_palette.h \
  G:/game/build/bn_sprite_palette_items_sprite_roll_effect_palette.h \
  G:/game/build/bn_sprite_items_hit_effect.h \
@@ -102,6 +103,7 @@ auto_platform.o: G:/game/src/auto_platform.cpp \
  G:/game/build/bn_sprite_items_hp_totem.h \
  G:/game/build/bn_sprite_items_hp_drop.h \
  G:/game/build/bn_sprite_items_moon_drop.h \
+ G:/game/build/bn_sprite_items_star_drop.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h \
  G:/game/build/bn_sprite_items_thorn_column.h \
  G:/game/build/bn_sprite_items_thorn_bar.h \
@@ -187,8 +189,9 @@ G:/game/include/physics.h:
 G:/butano-master/butano/include/bn_vector.h:
 G:/game/include/math.h:
 G:/game/include/collider.h:
-G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h:
+G:/game/build/bn_sprite_palette_items_sprite_white_palette.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
+G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h:
 G:/game/build/bn_sprite_palette_items_player_flash_palette.h:
 G:/game/build/bn_sprite_palette_items_sprite_roll_effect_palette.h:
 G:/game/build/bn_sprite_items_hit_effect.h:
@@ -215,6 +218,7 @@ G:/game/build/bn_sprite_items_small_vase.h:
 G:/game/build/bn_sprite_items_hp_totem.h:
 G:/game/build/bn_sprite_items_hp_drop.h:
 G:/game/build/bn_sprite_items_moon_drop.h:
+G:/game/build/bn_sprite_items_star_drop.h:
 G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/build/bn_sprite_items_thorn_column.h:
 G:/game/build/bn_sprite_items_thorn_bar.h:
