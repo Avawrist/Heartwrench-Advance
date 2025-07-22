@@ -220,6 +220,10 @@ void Level::load(LevelName level_name)
             object_bg_item = bn::regular_bg_items::title_screen_object_bg;
 
             painted_bg_ptr = bn::regular_bg_items::title_screen_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               6,
+                                                                               bn::regular_bg_items::title_screen_painted_bg.map_item(),
+                                                                               0, 0, 0, 0, 0, 1, 1, 1, 1);
 
             // Update cells
             cells        = main_bg_ptr->map().cells_ref().value();
@@ -1044,7 +1048,15 @@ void Level::updateTitleScreen()
         // Start Fade and Level Transition
         fade_out = true;
         transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+
+        painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                           0,
+                                                                           bn::regular_bg_items::title_screen_painted_bg.map_item(),
+                                                                           0, 0, 1, 1);
     }
+
+    // Draw Screen
+    painted_bg_anim_ptr->update();
 
     // Transition
     updateLevelTransition(LEVEL_ZIGGURAT_1);
