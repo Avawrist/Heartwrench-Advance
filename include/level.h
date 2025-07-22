@@ -79,6 +79,11 @@
 #define HUD_CURRENCY_ICON_X_OFFSET -46
 #define HUD_CURRENCY_ICON_Y_OFFSET -66
 
+// Pause Menu
+#define CURSOR_CONTINUE      0
+#define CURSOR_RETURN_TO_MAP 1
+#define CURSOR_QUIT_GAME     2
+
 // Fade 
 #define LEVEL_FADE_INCREMENT 0.05
 
@@ -161,6 +166,8 @@ struct Level
     uint32 displayed_currency;
     uint32 currency;
 
+    int32 cursor_index;
+
     // Transitions
     int32 transition_frames;
 
@@ -174,7 +181,7 @@ struct Level
     void clear();
     void load(LevelName level_name);
     void reload();
-    void load_new(LevelName level_name);
+    void loadNew(LevelName level_name);
 
     void update();
     void updateAll();
@@ -194,6 +201,7 @@ struct Level
     void updateTitleScreen();
     void togglePauseScreen();
     void updatePauseScreen();
+    void updateLevelTransition(LevelName level_index);
 };
 
 #endif

@@ -250,6 +250,10 @@ struct Player : GameObject {
 
 	void draw() override;
 
+	void hideSprites() override;
+	
+	void revealSprites() override;
+
 	void setCamera(const bn::camera_ptr& camera) override;
 
 	void setHitFlash() override;

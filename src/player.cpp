@@ -582,6 +582,28 @@ void Player::draw()
 	drawRollEffect();
 }
 
+void Player::hideSprites()
+{
+	GameObject::hideSprites();
+
+	pm_sprite_ptr->set_visible(false);
+	jump_effect_sprite_ptr->set_visible(false);
+	roll_sprite_1_ptr->set_visible(false);
+	roll_sprite_2_ptr->set_visible(false);
+	roll_sprite_3_ptr->set_visible(false);
+}
+	
+void Player::revealSprites()
+{
+	GameObject::revealSprites();
+
+	pm_sprite_ptr->set_visible(true);
+	jump_effect_sprite_ptr->set_visible(true);
+	roll_sprite_1_ptr->set_visible(true);
+	roll_sprite_2_ptr->set_visible(true);
+	roll_sprite_3_ptr->set_visible(true);
+}
+
 void Player::setCamera(const bn::camera_ptr& camera)
 {
 	GameObject::setCamera(camera);

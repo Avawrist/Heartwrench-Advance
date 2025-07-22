@@ -401,6 +401,22 @@ void GameObject::draw()
     global_tiles_in_VRAM += hp_sprite_ptr->tiles().tiles_count();
 }
 
+void GameObject::hideSprites()
+{
+    sprite_ptr->set_visible(false);
+	hit_effect_sprite_ptr->set_visible(false);
+	splat_effect_sprite_ptr->set_visible(false);
+	hp_sprite_ptr->set_visible(false);
+}
+
+void GameObject::revealSprites()
+{
+    sprite_ptr->set_visible(true);
+	hit_effect_sprite_ptr->set_visible(true);
+	splat_effect_sprite_ptr->set_visible(true);
+	hp_sprite_ptr->set_visible(true);
+}
+
 void GameObject::setCamera(const bn::camera_ptr& camera)
 {
     if(sprite_ptr.has_value())

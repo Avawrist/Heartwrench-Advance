@@ -66,6 +66,8 @@ Level::Level(const Level& other)
     currency           = other.currency;
 
     transition_frames = other.transition_frames;
+
+    cursor_index = other.cursor_index;
 }
 
 Level::~Level()
@@ -129,6 +131,8 @@ void Level::operator =(const Level& other)
     currency           = other.currency;
 
     transition_frames = other.transition_frames;
+
+    cursor_index = other.cursor_index;
 }
 
 void Level::clear()
@@ -191,6 +195,8 @@ void Level::load(LevelName level_name)
     currency           = 0;
 
     transition_frames = 0;
+
+    cursor_index = 0;
 
     // Record current level & pos
     current_level_name = level_name;
@@ -261,6 +267,10 @@ void Level::load(LevelName level_name)
                         object_bg_item.value(),
                         object_cells,
                         player_spawn);
+
+    // Hide Player on the title screen
+    if(current_level_name == LEVEL_TITLE_SCREEN)
+    {current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->hideSprites();}
 
     // Store default painted bg palette
     default_main_palette_ptr    = main_bg_ptr->palette();
@@ -345,7 +355,7 @@ void Level::reload()
     load(current_level_name);
 }
 
-void Level::load_new(LevelName level_name)
+void Level::loadNew(LevelName level_name)
 {
     clear(); 
     load(level_name);
@@ -375,7 +385,6 @@ void Level::updateAll()
     }
 
     reloadOnDeath();
-    togglePauseScreen();
     updateObjects();
     updateCurrency();
     updateCamera();
@@ -407,6 +416,9 @@ void Level::updateObjects()
 
     // Load unloaded objects if needed
     current_room.monitorUnloadedObjects(camera.value());
+
+    // Toggle Pause Menu
+    if(bn::keypad::start_pressed()) {togglePauseScreen();}
 }
 
 void Level::updateCamera()
@@ -837,13 +849,12 @@ void Level::updateHUD()
 
         global_hud_currency_flash_frames--;
         global_hud_currency_flash_frames = clamp(0, HUD_FLASH_FRAMES, global_hud_currency_flash_frames);
-
-        BN_LOG(global_hud_hp_flash_frames);
-
 }
 
 void Level::drawObjects()
 {
+    if(menu_open || current_level_name == LEVEL_TITLE_SCREEN) {return;}
+
     global_tiles_in_VRAM = 0;
 
     // Update & draw all objects
@@ -902,6 +913,10 @@ void Level::updateFade()
 
         bn::sprite_palette_ptr hud_currency_icon_palette = currency_icon_sprite_ptr->palette();
         hud_currency_icon_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+
+        // Fade Pause Screen in
+        bn::bg_palette_ptr pause_screen_palette = pause_screen_bg_ptr->palette();
+        pause_screen_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
 
         // End condition
         if(default_main_palette_ptr->fade_intensity() == 0) {fade_in = false;}
@@ -974,6 +989,10 @@ void Level::updateFade()
             currency_icon_sprite_ptr->set_visible(false);
         }
 
+        // Fade Pause Screen out
+        bn::bg_palette_ptr pause_screen_palette = pause_screen_bg_ptr->palette();
+        pause_screen_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+
         // End condition
         if(default_main_palette_ptr->fade_intensity() == 1) {fade_out = false;}
     }
@@ -1027,40 +1046,120 @@ void Level::updateTitleScreen()
         transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
     }
 
-    // Transition Level
-    if(transition_frames)
-    {
-        transition_frames--;
-        transition_frames = clamp(0, LEVEL_TITLE_SCREEN_TRANSITION_FRAMES, transition_frames);
-
-        if(transition_frames == 0)
-        {load_new(LEVEL_ZIGGURAT_1);}
-    }
+    // Transition
+    updateLevelTransition(LEVEL_ZIGGURAT_1);
 }
 
 void Level::togglePauseScreen()
 {
-    if(bn::keypad::start_pressed())
+    if(menu_open) 
     {
-        if(menu_open) 
+        menu_open = false;
+        pause_screen_bg_ptr->set_visible(false);
+
+        // Reveal HUD Sprites //
+        hud_hp_sprite_ptr->set_visible(true);
+        currency_num_1_sprite_ptr->set_visible(true);
+        currency_num_2_sprite_ptr->set_visible(true);
+        currency_icon_sprite_ptr->set_visible(true);
+
+        // Reveal GameObjects //
+        for(int32 i = 0; i < current_room.game_objects.size(); i++)
         {
-            menu_open = false;
-            pause_screen_bg_ptr->set_visible(false);
+            if(current_room.game_objects.at(i) != NULL)
+            {
+                current_room.game_objects.at(i)->revealSprites();
+            }
         }
+    }
 
-        else          
+    else          
+    {
+        menu_open    = true;
+        cursor_index = CURSOR_CONTINUE;
+        pause_screen_bg_ptr->set_visible(true);
+
+        // Update Position //
+        pause_screen_bg_ptr->set_position(camera.value().x(), camera.value().y());
+
+        // Hide HUD Sprites //
+        hud_hp_sprite_ptr->set_visible(false);
+        currency_num_1_sprite_ptr->set_visible(false);
+        currency_num_2_sprite_ptr->set_visible(false);
+        currency_icon_sprite_ptr->set_visible(false);
+
+        // Hide GameObjects //
+        for(int32 i = 0; i < current_room.game_objects.size(); i++)
         {
-            menu_open = true;
-            pause_screen_bg_ptr->set_visible(true);
-
-            // Update Position //
-            pause_screen_bg_ptr->set_position(camera.value().x(), camera.value().y());
+            if(current_room.game_objects.at(i) != NULL)
+            {current_room.game_objects.at(i)->hideSprites();}
         }
     }
 }
 
 void Level::updatePauseScreen()
 {
-    // Toggle //
-    togglePauseScreen();
+    // Update Fade //
+    updateFade();
+
+    // Get Input
+    if(bn::keypad::up_pressed())   {cursor_index--;}
+    if(bn::keypad::down_pressed()) {cursor_index++;}
+
+    if(cursor_index > CURSOR_QUIT_GAME)     {cursor_index = CURSOR_CONTINUE;}
+    else if(cursor_index < CURSOR_CONTINUE) {cursor_index = CURSOR_QUIT_GAME;}
+    
+    if(bn::keypad::b_pressed()) {togglePauseScreen();}
+
+    else if(bn::keypad::a_pressed() || bn::keypad::start_pressed())
+    {
+        switch(cursor_index)
+        {
+            case CURSOR_CONTINUE:
+
+                togglePauseScreen();
+
+            break;
+
+            case CURSOR_RETURN_TO_MAP:
+            break;
+
+            case CURSOR_QUIT_GAME:
+
+                // Start Fade and Level Transition
+                fade_out          = true;
+                transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+
+            break;
+
+            default:
+            break;
+        }
+    }
+
+    // Draw Pause Screen //
+    pause_screen_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(pause_screen_bg_ptr.value(),
+                                                                            0,
+                                                                            bn::regular_bg_items::pause_screen.map_item(),
+                                                                            cursor_index, cursor_index);
+    pause_screen_bg_anim_ptr->update();
+
+    // Transition
+    updateLevelTransition(LEVEL_TITLE_SCREEN);
+}
+
+void Level::updateLevelTransition(LevelName level_index)
+{
+    if(level_index < LEVEL_TITLE_SCREEN || level_index > LEVEL_ZIGGURAT_1)
+    {return;}
+
+    // Transition Level //
+    if(transition_frames)
+    {
+        transition_frames--;
+        transition_frames = clamp(0, LEVEL_TITLE_SCREEN_TRANSITION_FRAMES, transition_frames);
+
+        if(transition_frames == 0)
+        {loadNew(level_index);}
+    }
 }

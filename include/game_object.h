@@ -363,6 +363,10 @@ struct GameObject
 
 	virtual void draw();
 
+	virtual void hideSprites();
+	
+	virtual void revealSprites();
+
 	bn::fixed x() const;
 	bn::fixed y() const;
 	bn::fixed_point pos() const;
