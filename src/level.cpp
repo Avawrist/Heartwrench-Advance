@@ -28,6 +28,9 @@ Level::Level(const Level& other)
     default_main_palette_ptr    = other.default_main_palette_ptr;
     default_painted_palette_ptr = other.default_painted_palette_ptr;
 
+    pause_screen_bg_ptr = other.pause_screen_bg_ptr;
+    pause_screen_bg_anim_ptr = other.pause_screen_bg_anim_ptr;
+
     hud_hp_sprite_ptr         = other.hud_hp_sprite_ptr;
     hud_hp_animate_action_ptr = other.hud_hp_animate_action_ptr;
 
@@ -49,6 +52,7 @@ Level::Level(const Level& other)
     fade_in               = other.fade_in;
     fade_out              = other.fade_out;
     cam_is_scrolling      = other.cam_is_scrolling;
+    menu_open             = other.menu_open;
     cam_x_offset          = other.cam_x_offset;
     cam_y_offset          = other.cam_y_offset;
     cam_look_x_offset     = other.cam_look_x_offset;
@@ -60,6 +64,8 @@ Level::Level(const Level& other)
 
     displayed_currency = other.displayed_currency;
     currency           = other.currency;
+
+    transition_frames = other.transition_frames;
 }
 
 Level::~Level()
@@ -85,6 +91,9 @@ void Level::operator =(const Level& other)
     default_main_palette_ptr    = other.default_main_palette_ptr;
     default_painted_palette_ptr = other.default_painted_palette_ptr;
 
+    pause_screen_bg_ptr = other.pause_screen_bg_ptr;
+    pause_screen_bg_anim_ptr = other.pause_screen_bg_anim_ptr;
+
     hud_hp_sprite_ptr         = other.hud_hp_sprite_ptr;
     hud_hp_animate_action_ptr = other.hud_hp_animate_action_ptr;
 
@@ -106,6 +115,7 @@ void Level::operator =(const Level& other)
     fade_in               = other.fade_in;
     fade_out              = other.fade_out;
     cam_is_scrolling      = other.cam_is_scrolling;
+    menu_open             = other.menu_open;
     cam_x_offset          = other.cam_x_offset;
     cam_y_offset          = other.cam_y_offset;
     cam_look_x_offset     = other.cam_look_x_offset;
@@ -117,6 +127,8 @@ void Level::operator =(const Level& other)
 
     displayed_currency = other.displayed_currency;
     currency           = other.currency;
+
+    transition_frames = other.transition_frames;
 }
 
 void Level::clear()
@@ -132,6 +144,9 @@ void Level::clear()
 
     default_main_palette_ptr.reset();
     default_painted_palette_ptr.reset();
+
+    pause_screen_bg_ptr.reset();
+    pause_screen_bg_anim_ptr.reset();
 
     hud_hp_sprite_ptr.reset();
     hud_hp_animate_action_ptr.reset();
@@ -164,6 +179,7 @@ void Level::load(LevelName level_name)
     fade_in               = false;
     fade_out              = false;
     cam_is_scrolling      = false;
+    menu_open             = false;
     cam_x_offset          = 0;
     cam_y_offset          = 0;
     cam_look_x_offset     = 0;
@@ -174,6 +190,8 @@ void Level::load(LevelName level_name)
     displayed_currency = 0;
     currency           = 0;
 
+    transition_frames = 0;
+
     // Record current level & pos
     current_level_name = level_name;
 
@@ -183,19 +201,42 @@ void Level::load(LevelName level_name)
     // Initialize Variables
     switch(level_name)
     {
-        case LEVEL_TEST:
-            
+        case LEVEL_TITLE_SCREEN:
+
             // Player Spawn //
-            player_spawn = bn::fixed_point(-5056, -1968);
+            player_spawn = bn::fixed_point(0, 0);
 
             // Load BGs //
-            painted_bg_ptr = bn::regular_bg_items::test_painted_bg.create_bg(0, 0);
+            main_bg_ptr    = bn::regular_bg_items::title_screen_level_bg.create_bg(0, 0);
+            bg_item        = bn::regular_bg_items::title_screen_level_bg;
 
-            main_bg_ptr    = bn::regular_bg_items::test_level.create_bg(0, 0);
-            bg_item        = bn::regular_bg_items::test_level;
+            object_bg_ptr  = bn::regular_bg_items::title_screen_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::title_screen_object_bg;
 
-            object_bg_ptr  = bn::regular_bg_items::test_object_bg.create_bg(0, 0);
-            object_bg_item = bn::regular_bg_items::test_object_bg;
+            painted_bg_ptr = bn::regular_bg_items::title_screen_painted_bg.create_bg(0, 0);
+
+            // Update cells
+            cells        = main_bg_ptr->map().cells_ref().value();
+            object_cells = object_bg_ptr->map().cells_ref().value();
+
+            // Set Room //
+            temp_room_name = ROOM_TITLE_SCREEN;
+
+        break;
+
+        case LEVEL_ZIGGURAT_1:
+            
+            // Player Spawn //
+            player_spawn = bn::fixed_point(-5056, -1952);
+
+            // Load BGs //
+            main_bg_ptr    = bn::regular_bg_items::ziggurat_1_level_bg.create_bg(0, 0);
+            bg_item        = bn::regular_bg_items::ziggurat_1_level_bg;
+
+            object_bg_ptr  = bn::regular_bg_items::ziggurat_1_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::ziggurat_1_object_bg;
+
+            painted_bg_ptr = bn::regular_bg_items::ziggurat_1_painted_bg.create_bg(0, 0);
 
             // Update cells
             cells        = main_bg_ptr->map().cells_ref().value();
@@ -230,30 +271,44 @@ void Level::load(LevelName level_name)
     main_bg_ptr->set_z_order(MAIN_BG_ORDER);
     object_bg_ptr->set_z_order(OBJECT_BG_ORDER);
 
+    // Initialize Pause Menu
+    pause_screen_bg_ptr = bn::regular_bg_items::pause_screen.create_bg(0, 0);
+    pause_screen_bg_ptr->set_z_order(PAUSE_BG_ORDER);
+    pause_screen_bg_ptr->set_visible(false);
+
+    pause_screen_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(pause_screen_bg_ptr.value(),
+                                                                            0,
+                                                                            bn::regular_bg_items::pause_screen.map_item(),
+                                                                            0, 0);
+
     // Initialize HUD elements
-    hud_hp_sprite_ptr = bn::sprite_items::hud_hp_bar.create_sprite(0, 0);
+    hud_hp_sprite_ptr = bn::sprite_items::hud_hp_bar.create_sprite(HUD_HP_X_OFFSET, HUD_HP_Y_OFFSET);
     hud_hp_sprite_ptr->set_z_order(HUD_Z_LAYER);
+    hud_hp_sprite_ptr->set_visible(false);
     hud_hp_animate_action_ptr = bn::create_sprite_animate_action_forever(hud_hp_sprite_ptr.value(),
                                                                          0,
                                                                          bn::sprite_items::hud_hp_bar.tiles_item(),
                                                                          0, 0);
 
-    currency_num_1_sprite_ptr = bn::sprite_items::currency_number.create_sprite(0, 0);
+    currency_num_1_sprite_ptr = bn::sprite_items::currency_number.create_sprite(HUD_CURRENCY_NUM_1_X_OFFSET, HUD_CURRENCY_NUM_1_Y_OFFSET);
     currency_num_1_sprite_ptr->set_z_order(HUD_Z_LAYER);
+    currency_num_1_sprite_ptr->set_visible(false);
 	currency_num_1_animate_action_ptr = bn::create_sprite_animate_action_forever(currency_num_1_sprite_ptr.value(),
                                                                                  0,
                                                                                  bn::sprite_items::currency_number.tiles_item(),
                                                                                  0, 0);
 
-    currency_num_2_sprite_ptr = bn::sprite_items::currency_number.create_sprite(0, 0);
+    currency_num_2_sprite_ptr = bn::sprite_items::currency_number.create_sprite(HUD_CURRENCY_NUM_2_X_OFFSET, HUD_CURRENCY_NUM_2_Y_OFFSET);
     currency_num_2_sprite_ptr->set_z_order(HUD_Z_LAYER);
+    currency_num_2_sprite_ptr->set_visible(false);
 	currency_num_2_animate_action_ptr = bn::create_sprite_animate_action_forever(currency_num_1_sprite_ptr.value(),
                                                                                  0,
                                                                                  bn::sprite_items::currency_number.tiles_item(),
                                                                                  0, 0);
 
-    currency_icon_sprite_ptr = bn::sprite_items::hud_currency_icon.create_sprite(0, 0);
+    currency_icon_sprite_ptr = bn::sprite_items::hud_currency_icon.create_sprite(HUD_CURRENCY_ICON_X_OFFSET, HUD_CURRENCY_ICON_Y_OFFSET);
     currency_icon_sprite_ptr->set_z_order(HUD_Z_LAYER);
+    currency_icon_sprite_ptr->set_visible(false);
 
     default_hud_palette_ptr = hud_hp_sprite_ptr->palette();
 
@@ -262,6 +317,8 @@ void Level::load(LevelName level_name)
     painted_bg_ptr->set_camera(camera.value());
     object_bg_ptr->set_camera(camera.value());
     object_bg_ptr->set_visible(false);
+
+    pause_screen_bg_ptr->set_camera(camera.value());
 
     hud_hp_sprite_ptr->set_camera(camera.value());
 
@@ -288,6 +345,23 @@ void Level::reload()
     load(current_level_name);
 }
 
+void Level::load_new(LevelName level_name)
+{
+    clear(); 
+    load(level_name);
+}
+
+void Level::update()
+{
+    if(current_level_name == LEVEL_TITLE_SCREEN) {updateTitleScreen();}
+    else if(menu_open)                           {updatePauseScreen();}
+    else if(cam_is_scrolling)                    {updateCamera();}
+    else                                         {updateAll();}
+
+    // Update Global Timer
+    updateGlobalTimer();
+}
+
 void Level::updateAll()
 {
     if(global_hitstop_frames) 
@@ -301,16 +375,15 @@ void Level::updateAll()
     }
 
     reloadOnDeath();
+    togglePauseScreen();
     updateObjects();
     updateCurrency();
     updateCamera();
     updateBGFlash();
     updatePaintedBG();
-    updateFade();
     freeObjects();
     transitionRoom();
     drawObjects();
-    drawHUD();
 }
 
 void Level::updateObjects()
@@ -465,6 +538,12 @@ void Level::updateCamera()
     /////////////////////////
     cam_update_timer++;
     if(cam_update_timer >= 60) {cam_update_timer = 0;}
+
+    // Update Fade //
+    updateFade();
+
+    // Update HUD //
+    updateHUD();
 }
 
 void Level::updateBGFlash()
@@ -686,7 +765,7 @@ void Level::transitionRoom()
     }
 }
 
-void Level::drawHUD()
+void Level::updateHUD()
 {
     // Get temp player pointer
     GameObject* temp_player_ptr = current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
@@ -726,7 +805,7 @@ void Level::drawHUD()
         else                                 {currency_icon_sprite_ptr->set_palette(default_hud_palette_ptr.value());}
 
         // Numbers
-        currency_num_1_sprite_ptr->set_position(camera->x() + HUD_CURRENCY_NUM_1_X_OFFSET, camera->y() + HUD_CURRENCY_NUM_1_Y_OFFSET );
+        currency_num_1_sprite_ptr->set_position(camera->x() + HUD_CURRENCY_NUM_1_X_OFFSET, camera->y() + HUD_CURRENCY_NUM_1_Y_OFFSET);
         bn::fixed unrounded_num_1 = displayed_currency / 10;
         int32 num_1               = clamp(0, 9, unrounded_num_1.floor_integer());
 	    currency_num_1_animate_action_ptr = bn::create_sprite_animate_action_once(currency_num_1_sprite_ptr.value(),
@@ -734,7 +813,7 @@ void Level::drawHUD()
                                                                                   bn::sprite_items::currency_number.tiles_item(),
                                                                                   num_1, num_1);
 
-        currency_num_2_sprite_ptr->set_position(camera->x() + HUD_CURRENCY_NUM_2_X_OFFSET, camera->y() + HUD_CURRENCY_NUM_2_Y_OFFSET );
+        currency_num_2_sprite_ptr->set_position(camera->x() + HUD_CURRENCY_NUM_2_X_OFFSET, camera->y() + HUD_CURRENCY_NUM_2_Y_OFFSET);
         int32 num_2 = displayed_currency % 10;
 	    currency_num_2_animate_action_ptr = bn::create_sprite_animate_action_once(currency_num_2_sprite_ptr.value(),
                                                                                   0,
@@ -783,20 +862,28 @@ void Level::updateFade()
 
     if(fade_in)
     {
+        // Reveal HUD
+        hud_hp_sprite_ptr->set_visible(true);
+        currency_num_1_sprite_ptr->set_visible(true);
+        currency_num_2_sprite_ptr->set_visible(true);
+        currency_icon_sprite_ptr->set_visible(true);
+
         // Fade objects in
         for(int32 i = 0; i < current_room.game_objects.size(); i++)
         {
             GameObject* object_ptr = current_room.game_objects.at(i);
+            if(object_ptr != NULL)
+            {
+                bn::sprite_palette_ptr object_palette       = object_ptr->sprite_ptr->palette();
+                bn::sprite_palette_ptr hit_effect_palette   = object_ptr->hit_effect_sprite_ptr->palette();
+                bn::sprite_palette_ptr splat_effect_palette = object_ptr->splat_effect_sprite_ptr->palette();
+                bn::sprite_palette_ptr hp_bar_palette       = object_ptr->hp_sprite_ptr->palette();
 
-            bn::sprite_palette_ptr object_palette       = object_ptr->sprite_ptr->palette();
-            bn::sprite_palette_ptr hit_effect_palette   = object_ptr->hit_effect_sprite_ptr->palette();
-            bn::sprite_palette_ptr splat_effect_palette = object_ptr->splat_effect_sprite_ptr->palette();
-            bn::sprite_palette_ptr hp_bar_palette       = object_ptr->hp_sprite_ptr->palette();
-
-            object_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
-            hit_effect_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
-            splat_effect_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
-            hp_bar_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+                object_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+                hit_effect_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+                splat_effect_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+                hp_bar_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+            }
         }
 
         // Fade BGs in
@@ -826,29 +913,32 @@ void Level::updateFade()
         {
             GameObject* object_ptr = current_room.game_objects.at(i);
             
-            bn::sprite_palette_ptr object_palette       = object_ptr->sprite_ptr->palette();
-            bn::sprite_palette_ptr hit_effect_palette   = object_ptr->hit_effect_sprite_ptr->palette();
-            bn::sprite_palette_ptr splat_effect_palette = object_ptr->splat_effect_sprite_ptr->palette();
-            bn::sprite_palette_ptr hp_bar_palette       = object_ptr->hp_sprite_ptr->palette();
-
-            object_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
-            hit_effect_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
-            splat_effect_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
-            hp_bar_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
-
-            // If fully faded out, stop drawing it and restore the palette.
-            // This method assumes a fully faded out GameObject will be deleted. 
-            if(object_palette.fade_intensity() == 1) 
+            if(object_ptr != NULL)
             {
-                object_palette.set_fade(bn::colors::black, 0);
-                hit_effect_palette.set_fade(bn::colors::black, 0);
-                splat_effect_palette.set_fade(bn::colors::black, 0);
-                hp_bar_palette.set_fade(bn::colors::black, 0);
+                bn::sprite_palette_ptr object_palette       = object_ptr->sprite_ptr->palette();
+                bn::sprite_palette_ptr hit_effect_palette   = object_ptr->hit_effect_sprite_ptr->palette();
+                bn::sprite_palette_ptr splat_effect_palette = object_ptr->splat_effect_sprite_ptr->palette();
+                bn::sprite_palette_ptr hp_bar_palette       = object_ptr->hp_sprite_ptr->palette();
 
-                object_ptr->sprite_ptr->set_visible(false);
-                object_ptr->hit_effect_sprite_ptr->set_visible(false);
-                object_ptr->splat_effect_sprite_ptr->set_visible(false);
-                object_ptr->hp_sprite_ptr->set_visible(false);
+                object_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+                hit_effect_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+                splat_effect_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+                hp_bar_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+
+                // If fully faded out, stop drawing it and restore the palette.
+                // This method assumes a fully faded out GameObject will be deleted. 
+                if(object_palette.fade_intensity() == 1) 
+                {
+                    object_palette.set_fade(bn::colors::black, 0);
+                    hit_effect_palette.set_fade(bn::colors::black, 0);
+                    splat_effect_palette.set_fade(bn::colors::black, 0);
+                    hp_bar_palette.set_fade(bn::colors::black, 0);
+
+                    object_ptr->sprite_ptr->set_visible(false);
+                    object_ptr->hit_effect_sprite_ptr->set_visible(false);
+                    object_ptr->splat_effect_sprite_ptr->set_visible(false);
+                    object_ptr->hp_sprite_ptr->set_visible(false);
+                }
             }
         }
 
@@ -906,4 +996,71 @@ void Level::storePlayerInputs()
 
     if(bn::keypad::b_pressed())
     {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->attack_requested = true;}
+}
+
+void Level::updateTitleScreen()
+{
+    // Update fade
+    updateFade();
+
+    // Hide HUD
+    hud_hp_sprite_ptr->set_visible(false);
+    currency_num_1_sprite_ptr->set_visible(false);
+    currency_num_2_sprite_ptr->set_visible(false);
+    currency_icon_sprite_ptr->set_visible(false);
+
+    // Delete Player
+    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) != NULL)
+    {
+        delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+        current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = NULL;
+    }
+
+    // Center Camera
+    camera.value().set_position(0, 0);
+
+    // Get Input //
+    if(bn::keypad::start_pressed() || bn::keypad::a_pressed())
+    {
+        // Start Fade and Level Transition
+        fade_out = true;
+        transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+    }
+
+    // Transition Level
+    if(transition_frames)
+    {
+        transition_frames--;
+        transition_frames = clamp(0, LEVEL_TITLE_SCREEN_TRANSITION_FRAMES, transition_frames);
+
+        if(transition_frames == 0)
+        {load_new(LEVEL_ZIGGURAT_1);}
+    }
+}
+
+void Level::togglePauseScreen()
+{
+    if(bn::keypad::start_pressed())
+    {
+        if(menu_open) 
+        {
+            menu_open = false;
+            pause_screen_bg_ptr->set_visible(false);
+        }
+
+        else          
+        {
+            menu_open = true;
+            pause_screen_bg_ptr->set_visible(true);
+
+            // Update Position //
+            pause_screen_bg_ptr->set_position(camera.value().x(), camera.value().y());
+        }
+    }
+}
+
+void Level::updatePauseScreen()
+{
+    // Toggle //
+    togglePauseScreen();
 }

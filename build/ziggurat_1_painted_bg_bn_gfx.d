@@ -1,0 +1,1 @@
+ziggurat_1_painted_bg_bn_gfx.o: ziggurat_1_painted_bg_bn_gfx.s

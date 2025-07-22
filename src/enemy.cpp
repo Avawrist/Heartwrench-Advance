@@ -59,7 +59,7 @@ void Enemy::wallSplatCheck()
 
 void Enemy::updateHitFlash()
 {
-    if((hit_flash_frames || invulnerability_frames) && state != OBJECT_DEATH)
+    if((hit_flash_frames || invulnerability_frames) || state == OBJECT_DEATH)
     {
         bn::sprite_palette_ptr new_palette = bn::sprite_palette_items::sprite_flash_palette.create_palette();
 

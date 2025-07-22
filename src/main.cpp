@@ -18,27 +18,16 @@ int main()
 {   
     bn::core::init();
     
-    // Create Test Level
-    Level current_level(LEVEL_TEST);
+    // Initialize Level
+    Level current_level(LEVEL_TITLE_SCREEN);
 
     // Game Loop
     while(true)
     {
         // Update Level
-        if(current_level.cam_is_scrolling) 
-        {
-            current_level.updateCamera();
-            current_level.updateFade();
-            current_level.drawHUD();
-        }
-        else                             
-        {
-            current_level.updateAll();
-        }
-
-        // Update Global Timer
-        current_level.updateGlobalTimer();
+        current_level.update();
        
+        // Update Butano
         bn::core::update();
     }
 }

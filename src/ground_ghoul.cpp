@@ -174,7 +174,7 @@ void GroundGhoul::setState(ObjectState new_state)
             animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
                                  1,
                                  bn::sprite_items::ground_ghoul.tiles_item(),
-                                 12, 13, 14, 15, 16, 17, 18, 19, 20, 21);
+                                 12, 12, 12, 13, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 18);
 
         break;
 

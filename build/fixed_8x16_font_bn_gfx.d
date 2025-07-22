@@ -1,1 +1,0 @@
-fixed_8x16_font_bn_gfx.o: fixed_8x16_font_bn_gfx.s

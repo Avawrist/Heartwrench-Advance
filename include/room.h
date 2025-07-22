@@ -56,11 +56,8 @@
 enum RoomName 
 {
     NO_ROOM = 0,
+    ROOM_TITLE_SCREEN,
     ROOM_TEST_1,
-    ROOM_TEST_2,
-    ROOM_TEST_3,
-    ROOM_TEST_4,
-    ROOM_TEST_5,
 };
 
 struct Room

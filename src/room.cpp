@@ -516,7 +516,26 @@ void Room::load(RoomName                                       room_name,
     // Initialize Objects
     switch(room_name)
     {
+        case ROOM_TITLE_SCREEN:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.top_bound    = 0;
+            room_bounds.right_bound  = 0;
+            room_bounds.bottom_bound = 0;
+            room_bounds.left_bound   = 0;
+
+            // Add any special objects //
+            
+        break;
+
         case ROOM_TEST_1:
+
+            // Update Player Spawn //
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
@@ -531,18 +550,6 @@ void Room::load(RoomName                                       room_name,
 
             // Add any special objects //
             
-        break;
-
-        case ROOM_TEST_2:   
-        break;
-
-        case ROOM_TEST_3:       
-        break;
-
-        case ROOM_TEST_4:
-        break;
-
-        case ROOM_TEST_5:
         break;
 
         default:
@@ -561,7 +568,7 @@ void Room::load(RoomName                                       room_name,
     prepObjects(object_bg_ptr, 
                 object_bg_item, 
                 object_cells);
-
+    
 }
 
 void Room::prepObjects(const bn::regular_bg_ptr&                      object_bg_ptr, 

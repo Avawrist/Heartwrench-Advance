@@ -22,9 +22,16 @@
 #include "bn_bg_palette_items_bg_flash_palette.h"
 
 // BGs
-#include "bn_regular_bg_items_test_level.h"
-#include "bn_regular_bg_items_test_painted_bg.h"
-#include "bn_regular_bg_items_test_object_bg.h"
+#include "bn_regular_bg_items_title_screen_level_bg.h"
+#include "bn_regular_bg_items_title_screen_object_bg.h"
+#include "bn_regular_bg_items_title_screen_painted_bg.h"
+
+#include "bn_regular_bg_items_ziggurat_1_level_bg.h"
+#include "bn_regular_bg_items_ziggurat_1_object_bg.h"
+#include "bn_regular_bg_items_ziggurat_1_painted_bg.h"
+
+// Pause Menu
+#include "bn_regular_bg_items_pause_screen.h"
 
 // HUD Elements
 #include "bn_sprite_items_hud_hp_bar.h"
@@ -55,6 +62,8 @@
 #define MAIN_BG_ORDER    2
 #define OBJECT_BG_ORDER  1
 
+#define PAUSE_BG_ORDER  -5
+
 // HUD Macros
 #define HUD_Z_LAYER -4
 
@@ -76,10 +85,14 @@
 // Currency
 #define LEVEL_MAX_CURRENCY 100
 
+// Transitions
+#define LEVEL_TITLE_SCREEN_TRANSITION_FRAMES 60
+
 enum LevelName 
 {
     NO_LEVEL = 0,
-    LEVEL_TEST,
+    LEVEL_TITLE_SCREEN,
+    LEVEL_ZIGGURAT_1
 };
 
 struct Level
@@ -87,11 +100,11 @@ struct Level
     Room current_room;
 
     // BGs
-    bn::optional<bn::camera_ptr>            camera;
+    bn::optional<bn::camera_ptr> camera;
     
-    bn::optional<bn::regular_bg_ptr>        main_bg_ptr;
-    bn::optional<bn::regular_bg_ptr>        painted_bg_ptr;
-    bn::optional<bn::regular_bg_ptr>        object_bg_ptr;
+    bn::optional<bn::regular_bg_ptr> main_bg_ptr;
+    bn::optional<bn::regular_bg_ptr> painted_bg_ptr;
+    bn::optional<bn::regular_bg_ptr> object_bg_ptr;
 
 	bn::optional<bn::regular_bg_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> painted_bg_anim_ptr;
 
@@ -103,6 +116,10 @@ struct Level
     
     bn::optional<bn::regular_bg_item>       object_bg_item;
     bn::span<const bn::regular_bg_map_cell> object_cells;
+
+    // Pause Menu
+    bn::optional<bn::regular_bg_ptr> pause_screen_bg_ptr;
+    bn::optional<bn::regular_bg_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> pause_screen_bg_anim_ptr;
 
     // HUD
     bn::optional<bn::sprite_palette_ptr> default_hud_palette_ptr;
@@ -129,6 +146,7 @@ struct Level
     bool  fade_in;
     bool  fade_out;
     bool  cam_is_scrolling;
+    bool  menu_open;
 
     int32 cam_x_offset;
     int32 cam_y_offset;
@@ -143,6 +161,9 @@ struct Level
     uint32 displayed_currency;
     uint32 currency;
 
+    // Transitions
+    int32 transition_frames;
+
     Level();
     Level(LevelName level_name);
     Level(const Level& other);
@@ -150,10 +171,12 @@ struct Level
 
     void operator =(const Level& other);
 
-    void load(LevelName level_name);
     void clear();
+    void load(LevelName level_name);
     void reload();
+    void load_new(LevelName level_name);
 
+    void update();
     void updateAll();
     void updateObjects();
     void updateCamera();
@@ -164,10 +187,13 @@ struct Level
     void reloadOnDeath();
     void freeObjects();
     void transitionRoom();
-    void drawHUD();
+    void updateHUD();
     void drawObjects();
     void updateFade();
     void storePlayerInputs();
+    void updateTitleScreen();
+    void togglePauseScreen();
+    void updatePauseScreen();
 };
 
 #endif

@@ -1,0 +1,1 @@
+title_screen_object_bg_bn_gfx.o: title_screen_object_bg_bn_gfx.s
