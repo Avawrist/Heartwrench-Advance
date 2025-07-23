@@ -14,7 +14,7 @@ SmallVase::SmallVase()
     animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								                                   0,
 								                                   bn::sprite_items::small_vase.tiles_item(),
-								                                   0, 0);
+								                                   1, 1);
 
     // Init Variables //
     collider_offset_x = SMALL_VASE_COLLIDER_OFFSET_X;
