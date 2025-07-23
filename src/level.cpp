@@ -237,7 +237,7 @@ void Level::load(LevelName level_name)
         case LEVEL_ZIGGURAT_1:
             
             // Player Spawn //
-            player_spawn = bn::fixed_point(-5056, -1952);
+            player_spawn = bn::fixed_point(-5056, -1936);
 
             // Load BGs //
             main_bg_ptr    = bn::regular_bg_items::ziggurat_1_level_bg.create_bg(0, 0);

@@ -49,6 +49,7 @@ void Enemy::wallSplatCheck()
 							y_dir,
 							HITBOX_WALL_SPLAT,
 							WALL_SPLAT_SCREENSHAKE_SEVERITY);
+
 		temp_hitbox.applyWallHit(*this);
 	}
 }
@@ -439,13 +440,11 @@ void Enemy::resolveThornBarCollision(GameObject& object)
 }
 
 void Enemy::resolveGroundGhoulCollision(GameObject& object)
-{
-	if(object.state == OBJECT_HITSTUN || object.state == OBJECT_DEATH) {return;}
-	
+{	
 	if(collider.isCollision(object.collider) &&
-       (state == OBJECT_HITSTUN || state == OBJECT_DEATH))
+       (object.state == OBJECT_HITSTUN || object.state == OBJECT_DEATH))
 	{
-		object.applyHit(object.damage, rigidbody.normalized_dir.x().integer(), 0);
+		applyHit(object.damage, object.rigidbody.normalized_dir.x().integer(), 0);
 	}
 }
 

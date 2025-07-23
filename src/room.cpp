@@ -535,8 +535,6 @@ void Room::load(RoomName                                       room_name,
 
         case ROOM_TEST_1:
 
-            // Update Player Spawn //
-
             // Init Variables //
             top_neighbor    = NO_ROOM;
             right_neighbor  = NO_ROOM;
@@ -545,7 +543,7 @@ void Room::load(RoomName                                       room_name,
 
             room_bounds.top_bound    = -2256;
             room_bounds.right_bound  = -4000;
-            room_bounds.bottom_bound = -1776;
+            room_bounds.bottom_bound = -1648;
             room_bounds.left_bound   = -5104;
 
             // Add any special objects //

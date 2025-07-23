@@ -829,21 +829,21 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if(bn::keypad::a_pressed()) 
 			{
 				// Right Wall Jump
-				if(right_wj_eligible)
-				{
-					x_dir = LEFT;
-					wallJump();
-				}
+				//if(right_wj_eligible)
+				//{
+					//x_dir = LEFT;
+					//wallJump();
+				//}
 
 				// Left Wall Jump
-				else if(left_wj_eligible)
-				{
-					x_dir = RIGHT;
-					wallJump();
-				}
+				//else if(left_wj_eligible)
+				//{
+					//x_dir = RIGHT;
+					//wallJump();
+				//}
 
 				// Late Jump
-				else if(late_jump_grace_frames) {jump();}
+				if(late_jump_grace_frames) {jump();}
 
 				// Buffer Jump
 				else {jump_buffered_frames = PLAYER_JUMP_BUFFER_FRAMES;}
@@ -1357,25 +1357,25 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if(bn::keypad::a_pressed()) 
 			{
 				// Right Wall Jump
-				if(right_wj_eligible && !grounded_detected)
-				{
-					x_dir = LEFT;
-					wallJump();
+				//if(right_wj_eligible && !grounded_detected)
+				//{
+					//x_dir = LEFT;
+					//wallJump();
 
-					setState(NONE);
-				}
+					//setState(NONE);
+				//}
 
 				// Left Wall Jump
-				else if(left_wj_eligible && !grounded_detected)
-				{
-					x_dir = RIGHT;
-					wallJump();
+				//else if(left_wj_eligible && !grounded_detected)
+				//{
+					//x_dir = RIGHT;
+					//wallJump();
 
-					setState(NONE);
-				}
+					//setState(NONE);
+				//}
 
 				// Late Jump
-				else if(late_jump_grace_frames) {jump();}
+				if(late_jump_grace_frames) {jump();}
 
 				// Buffer Jump
 				else {jump_buffered_frames = PLAYER_JUMP_BUFFER_FRAMES;}
@@ -1451,11 +1451,11 @@ void Player::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_obj
 			{new_state = PLAYER_WALK;}
 		}
 	
-		else if(wall_right_detected) 
-		{new_state = PLAYER_WALL_SLIDE_RIGHT;}
+		//else if(wall_right_detected) 
+		//{new_state = PLAYER_WALL_SLIDE_RIGHT;}
 	
-		else if(wall_left_detected)  
-		{new_state = PLAYER_WALL_SLIDE_LEFT;}
+		//else if(wall_left_detected)  
+		//{new_state = PLAYER_WALL_SLIDE_LEFT;}
 	
 		else 
 		{new_state = PLAYER_AIR_NEUTRAL;}
