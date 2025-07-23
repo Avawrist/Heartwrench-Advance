@@ -134,7 +134,7 @@ void HPTotem::setState(ObjectState new_state)
 
             object_request = ObjectRequest(HP_DROP, bn::fixed_point(x(), y()));
 
-            sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
+            sprite_ptr->set_z_order(ENEMY_Z_ORDER);
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 																		1,
 																		bn::sprite_items::hp_totem.tiles_item(),

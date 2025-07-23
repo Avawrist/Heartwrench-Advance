@@ -219,7 +219,7 @@ void Level::load(LevelName level_name)
             object_bg_ptr  = bn::regular_bg_items::title_screen_object_bg.create_bg(0, 0);
             object_bg_item = bn::regular_bg_items::title_screen_object_bg;
 
-            painted_bg_ptr = bn::regular_bg_items::title_screen_painted_bg.create_bg(0, 0);
+            painted_bg_ptr      = bn::regular_bg_items::title_screen_painted_bg.create_bg(0, 0);
             painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
                                                                                6,
                                                                                bn::regular_bg_items::title_screen_painted_bg.map_item(),
@@ -246,7 +246,11 @@ void Level::load(LevelName level_name)
             object_bg_ptr  = bn::regular_bg_items::ziggurat_1_object_bg.create_bg(0, 0);
             object_bg_item = bn::regular_bg_items::ziggurat_1_object_bg;
 
-            painted_bg_ptr = bn::regular_bg_items::ziggurat_1_painted_bg.create_bg(0, 0);
+            painted_bg_ptr      = bn::regular_bg_items::ziggurat_1_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                    4,
+                                                                    bn::regular_bg_items::title_screen_painted_bg.map_item(),
+                                                                    0, 0, 0, 1, 1, 1, 2, 2, 2);
 
             // Update cells
             cells        = main_bg_ptr->map().cells_ref().value();
@@ -585,8 +589,8 @@ void Level::updateBGFlash()
 void Level::updatePaintedBG()
 {   
     // Parallax Effect
-    #define PARALLAX_REDUCTION_FACTOR -32 // The larger the number, the slower the BG will scroll.
-    bn::fixed x_offset = (camera->x() - current_room.center().x()) / PARALLAX_REDUCTION_FACTOR;
+    #define PARALLAX_REDUCTION_FACTOR -128 // The larger the number, the slower the BG will scroll.
+    bn::fixed x_offset = (camera->x() - current_room.center().x()) + ((camera->x() - current_room.center().x()) / PARALLAX_REDUCTION_FACTOR);
     painted_bg_ptr->set_position(current_room.center().x() + x_offset, current_room.center().y());
 }
 

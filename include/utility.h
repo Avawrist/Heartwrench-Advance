@@ -30,7 +30,7 @@ typedef int   int32;
 #define LOAD_RANGE_W SCREEN_W + (3 * SCREEN_LOAD_PADDING)
 #define LOAD_RANGE_H SCREEN_H + (3 * SCREEN_LOAD_PADDING)
 
-#define CAM_PLAYER_Y_OFFSET -32
+#define CAM_PLAYER_Y_OFFSET -16
 #define CAM_MAX_LOOK_Y       16
 #define CAM_MAX_LOOK_X       16
 #define CAM_MAX_DIR_LOOK_X   16
@@ -45,34 +45,34 @@ typedef int   int32;
 // === Tile Indexes === //
 #define NO_BLOCK_INDEX              0
 #define HARD_BLOCK_MIN_INDEX        1
-#define HARD_BLOCK_MAX_INDEX        155
+#define HARD_BLOCK_MAX_INDEX        159
 
-#define H_GEAR_LEFT    163
-#define H_GEAR_MID_MIN 164
-#define H_GEAR_MID_MAX 166
-#define H_GEAR_RIGHT   167
+#define H_GEAR_LEFT    167
+#define H_GEAR_MID_MIN 168
+#define H_GEAR_MID_MAX 170
+#define H_GEAR_RIGHT   171
 
-#define V_GEAR_TOP    168
-#define V_GEAR_MID_1  184
-#define V_GEAR_MID_2  170
-#define V_GEAR_MID_3  172
-#define V_GEAR_BOTTOM 186
+#define V_GEAR_TOP    172
+#define V_GEAR_MID_1  188
+#define V_GEAR_MID_2  174
+#define V_GEAR_MID_3  176
+#define V_GEAR_BOTTOM 190
 
-#define SPIKE_MIN_INDEX 188
-#define SPIKE_MAX_INDEX 195
+#define SPIKE_MIN_INDEX 192
+#define SPIKE_MAX_INDEX 199
 
-#define ONEWAY_BLOCK_MIN_INDEX 196
-#define ONEWAY_BLOCK_MAX_INDEX 199
+#define ONEWAY_BLOCK_MIN_INDEX 200
+#define ONEWAY_BLOCK_MAX_INDEX 203
 
-#define SHALLOW_SLOPE_1_INDEX  200
-#define SHALLOW_SLOPE_2_INDEX  201
-#define SHALLOW_SLOPE_3_INDEX  202
-#define SHALLOW_SLOPE_4_INDEX  203
+#define SHALLOW_SLOPE_1_INDEX  204
+#define SHALLOW_SLOPE_2_INDEX  205
+#define SHALLOW_SLOPE_3_INDEX  206
+#define SHALLOW_SLOPE_4_INDEX  207
 
-#define STEEP_SLOPE_1_INDEX 204
-#define STEEP_SLOPE_2_INDEX 205
+#define STEEP_SLOPE_1_INDEX 208
+#define STEEP_SLOPE_2_INDEX 209
 
-#define TILE_TOTAL_COUNT 205
+#define TILE_TOTAL_COUNT 209
 
 // Tile Dimensions //
 #define TILE_WIDTH  8
