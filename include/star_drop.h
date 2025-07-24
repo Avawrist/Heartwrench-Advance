@@ -23,7 +23,7 @@
 
 #define STAR_DROP_30_FPS true
 
-#define STAR_DROP_VALUE 5
+#define STAR_DROP_VALUE 1
 
 #define STAR_DROP_STARTING_INVULN_FRAMES 30
 

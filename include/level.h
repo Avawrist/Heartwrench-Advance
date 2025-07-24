@@ -88,7 +88,7 @@
 #define LEVEL_FADE_INCREMENT 0.05
 
 // Currency
-#define LEVEL_MAX_CURRENCY 100
+#define LEVEL_MAX_CURRENCY 99
 
 // Transitions
 #define LEVEL_TITLE_SCREEN_TRANSITION_FRAMES 60
@@ -113,8 +113,8 @@ struct Level
 
 	bn::optional<bn::regular_bg_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> painted_bg_anim_ptr;
 
-    bn::optional<bn::bg_palette_ptr>        default_main_palette_ptr;
-    bn::optional<bn::bg_palette_ptr>        default_painted_palette_ptr;
+    bn::optional<bn::bg_palette_ptr> default_main_palette_ptr;
+    bn::optional<bn::bg_palette_ptr> default_painted_palette_ptr;
     
     bn::optional<bn::regular_bg_item>       bg_item;
     bn::span<const bn::regular_bg_map_cell> cells;

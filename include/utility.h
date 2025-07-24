@@ -32,8 +32,8 @@ typedef int   int32;
 
 #define CAM_PLAYER_Y_OFFSET -16
 #define CAM_MAX_LOOK_Y       16
-#define CAM_MAX_LOOK_X       16
-#define CAM_MAX_DIR_LOOK_X   16
+#define CAM_MAX_LOOK_X       0
+#define CAM_MAX_DIR_LOOK_X   32
 
 #define ROOM_MAX_COLLIDERS 1800
 #define ROOM_MAX_WIDTH     128

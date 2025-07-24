@@ -475,36 +475,34 @@ void Level::updateCamera()
         int32 new_cam_x = current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos().x().integer();
         int32 new_cam_y = current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->pos().y().integer() + CAM_PLAYER_Y_OFFSET;
 
-        if(cam_update_timer % 2 == 0)
+        ////////////////////////////////////
+        // Determine camera X look offset //
+        ////////////////////////////////////
+        if(temp_player_ptr->rigidbody.final_dir.x() >= PLAYER_MAX_X_SPEED)       {cam_look_x_offset++;}
+        else if(temp_player_ptr->rigidbody.final_dir.x() <= -PLAYER_MAX_X_SPEED) {cam_look_x_offset--;}
+        else
         {
-            ////////////////////////////////////
-            // Determine camera X look offset //
-            ////////////////////////////////////
-            if(temp_player_ptr->rigidbody.final_dir.x() >= PLAYER_MAX_X_SPEED)       {cam_look_x_offset++;}
-            else if(temp_player_ptr->rigidbody.final_dir.x() <= -PLAYER_MAX_X_SPEED) {cam_look_x_offset--;}
-            else
-            {
-                if(cam_look_x_offset > 0)      {cam_look_x_offset--;}
-                else if(cam_look_x_offset < 0) {cam_look_x_offset++;}
-            }
-
-            ///////////////////////////////////
-            // Determine camera X dir offset //
-            ///////////////////////////////////
-            if(temp_player_ptr->x_dir == RIGHT)     {cam_look_dir_x_offset++;}
-            else if(temp_player_ptr->x_dir == LEFT) {cam_look_dir_x_offset--;}
-
-            ////////////////////////////////////
-            // Determine camera Y look offset //
-            ////////////////////////////////////
-            if(bn::keypad::up_held())                                              {cam_look_y_offset--;}
-            else if(bn::keypad::down_held() && temp_player_ptr->grounded_detected) {cam_look_y_offset++;}
-            else
-            {
-                if(cam_look_y_offset > 0)      {cam_look_y_offset--;}
-                else if(cam_look_y_offset < 0) {cam_look_y_offset++;}
-            }
+            if(cam_look_x_offset > 0)      {cam_look_x_offset--;}
+            else if(cam_look_x_offset < 0) {cam_look_x_offset++;}
         }
+
+        ///////////////////////////////////
+        // Determine camera X dir offset //
+        ///////////////////////////////////
+        if(temp_player_ptr->x_dir == RIGHT)     {cam_look_dir_x_offset++;}
+        else if(temp_player_ptr->x_dir == LEFT) {cam_look_dir_x_offset--;}
+
+        ////////////////////////////////////
+        // Determine camera Y look offset //
+        ////////////////////////////////////
+        if(bn::keypad::up_held())                                              {cam_look_y_offset--;}
+        else if(bn::keypad::down_held() && temp_player_ptr->grounded_detected) {cam_look_y_offset++;}
+        else
+        {
+            if(cam_look_y_offset > 0)      {cam_look_y_offset--;}
+            else if(cam_look_y_offset < 0) {cam_look_y_offset++;}
+        }
+        
 
         cam_look_x_offset = clamp(-CAM_MAX_LOOK_X, CAM_MAX_LOOK_X, cam_look_x_offset);
         cam_look_dir_x_offset = clamp(-CAM_MAX_DIR_LOOK_X, CAM_MAX_DIR_LOOK_X, cam_look_dir_x_offset);
@@ -589,7 +587,7 @@ void Level::updateBGFlash()
 void Level::updatePaintedBG()
 {   
     // Parallax Effect
-    #define PARALLAX_REDUCTION_FACTOR -128 // The larger the number, the slower the BG will scroll.
+    #define PARALLAX_REDUCTION_FACTOR -4 // The larger the number, the slower the BG will scroll.
     bn::fixed x_offset = (camera->x() - current_room.center().x()) + ((camera->x() - current_room.center().x()) / PARALLAX_REDUCTION_FACTOR);
     painted_bg_ptr->set_position(current_room.center().x() + x_offset, current_room.center().y());
 }
