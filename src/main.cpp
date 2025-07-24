@@ -19,7 +19,7 @@ int main()
     bn::core::init();
     
     // Initialize Level
-    Level current_level(LEVEL_TITLE_SCREEN);
+    Level current_level(LEVEL_ZIGGURAT_1);
 
     // Game Loop
     while(true)

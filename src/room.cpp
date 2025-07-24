@@ -577,12 +577,12 @@ void Room::prepObjects(const bn::regular_bg_ptr&                      object_bg_
     int32 half_level_width_pixels  = object_bg_ptr.dimensions().width()  / 2;
 	int32 half_level_height_pixels = object_bg_ptr.dimensions().height() / 2;
     
-    for(int32 x  = room_bounds.left_bound  + half_level_width_pixels + (TILE_WIDTH / 2); 
-              x <= room_bounds.right_bound + half_level_width_pixels - (TILE_WIDTH / 2); 
+    for(int32 x  = room_bounds.left_bound  + half_level_width_pixels; 
+              x <= room_bounds.right_bound + half_level_width_pixels; 
               x += TILE_WIDTH)
     {
-        for(int32 y =  room_bounds.top_bound    + half_level_height_pixels + (TILE_HEIGHT / 2); 
-                  y <= room_bounds.bottom_bound + half_level_height_pixels - (TILE_HEIGHT / 2);
+        for(int32 y =  room_bounds.top_bound    + half_level_height_pixels; 
+                  y <= room_bounds.bottom_bound + half_level_height_pixels;
                   y += TILE_HEIGHT)
         {
             bn::point cell_index = bn::point((x / TILE_WIDTH), (y / TILE_HEIGHT));
@@ -594,8 +594,8 @@ void Room::prepObjects(const bn::regular_bg_ptr&                      object_bg_
 
             if(type > NO_TYPE && type < HITBOX_ATTACK_GROUND_1)
             {
-                addUnloadedObject(UnloadedObject(bn::point(x - half_level_width_pixels  + (TILE_WIDTH / 2), 
-                                                           y - half_level_height_pixels + (TILE_HEIGHT / 2) - 1), 
+                addUnloadedObject(UnloadedObject(bn::point(x - half_level_width_pixels  + TILE_WIDTH, 
+                                                           y - half_level_height_pixels + TILE_HEIGHT - 1), 
                                                            type), 
                                   false);
             }
@@ -629,7 +629,7 @@ void Room::monitorUnloadedObjects(const bn::camera_ptr& camera_ptr)
                                  LOAD_RANGE_H);
     Collider screen_range_collider(camera_center.x(), 
                                    camera_center.y(), 
-                                   SCREEN_W + SCREEN_LOAD_PADDING, 
+                                   SCREEN_W + SCREEN_LOAD_PADDING,
                                    SCREEN_H + SCREEN_LOAD_PADDING);
 
     if(first_frame)
