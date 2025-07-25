@@ -45,34 +45,34 @@ typedef int   int32;
 // === Tile Indexes === //
 #define NO_BLOCK_INDEX              0
 #define HARD_BLOCK_MIN_INDEX        1
-#define HARD_BLOCK_MAX_INDEX        159
+#define HARD_BLOCK_MAX_INDEX        90
 
-#define H_GEAR_LEFT    167
-#define H_GEAR_MID_MIN 168
-#define H_GEAR_MID_MAX 170
-#define H_GEAR_RIGHT   171
+#define H_GEAR_LEFT    98
+#define H_GEAR_MID_MIN 99
+#define H_GEAR_MID_MAX 101
+#define H_GEAR_RIGHT   102
 
-#define V_GEAR_TOP    172
-#define V_GEAR_MID_1  188
-#define V_GEAR_MID_2  174
-#define V_GEAR_MID_3  176
-#define V_GEAR_BOTTOM 190
+#define V_GEAR_TOP    103
+#define V_GEAR_MID_1  119
+#define V_GEAR_MID_2  105
+#define V_GEAR_MID_3  107
+#define V_GEAR_BOTTOM 121
 
-#define SPIKE_MIN_INDEX 192
-#define SPIKE_MAX_INDEX 199
+#define SPIKE_MIN_INDEX 123
+#define SPIKE_MAX_INDEX 130
 
-#define ONEWAY_BLOCK_MIN_INDEX 200
-#define ONEWAY_BLOCK_MAX_INDEX 203
+#define ONEWAY_BLOCK_MIN_INDEX 131
+#define ONEWAY_BLOCK_MAX_INDEX 134
 
-#define SHALLOW_SLOPE_1_INDEX  204
-#define SHALLOW_SLOPE_2_INDEX  205
-#define SHALLOW_SLOPE_3_INDEX  206
-#define SHALLOW_SLOPE_4_INDEX  207
+#define SHALLOW_SLOPE_1_INDEX  135
+#define SHALLOW_SLOPE_2_INDEX  136
+#define SHALLOW_SLOPE_3_INDEX  137
+#define SHALLOW_SLOPE_4_INDEX  138
 
-#define STEEP_SLOPE_1_INDEX 208
-#define STEEP_SLOPE_2_INDEX 209
+#define STEEP_SLOPE_1_INDEX 139
+#define STEEP_SLOPE_2_INDEX 140
 
-#define TILE_TOTAL_COUNT 209
+#define TILE_TOTAL_COUNT 140
 
 // Tile Dimensions //
 #define TILE_WIDTH  8
