@@ -9,11 +9,11 @@
 //
 //	ziggurat_1_level_bg_bn_gfx, 10240x5120@4, 
 //	+ palette 16 entries, not compressed
-//	+ 225 tiles (t|p reduced) not compressed
+//	+ 230 tiles (t|p reduced) not compressed
 //	+ regular map (flat), not compressed, 1280x640 
-//	Total size: 32 + 7200 + 1638400 = 1645632
+//	Total size: 32 + 7360 + 1638400 = 1645792
 //
-//	Time-stamp: 2025-07-25, 14:59:32
+//	Time-stamp: 2025-07-26, 15:24:58
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -22,8 +22,8 @@
 #ifndef GRIT_ZIGGURAT_1_LEVEL_BG_BN_GFX_H
 #define GRIT_ZIGGURAT_1_LEVEL_BG_BN_GFX_H
 
-#define ziggurat_1_level_bg_bn_gfxTilesLen 7200
-extern const bn::tile ziggurat_1_level_bg_bn_gfxTiles[225];
+#define ziggurat_1_level_bg_bn_gfxTilesLen 7360
+extern const bn::tile ziggurat_1_level_bg_bn_gfxTiles[230];
 
 #define ziggurat_1_level_bg_bn_gfxMapLen 1638400
 extern const bn::regular_bg_map_cell ziggurat_1_level_bg_bn_gfxMap[819200];
@@ -38,7 +38,7 @@ extern const bn::color ziggurat_1_level_bg_bn_gfxPal[16];
 namespace bn::regular_bg_items
 {
     constexpr inline regular_bg_item ziggurat_1_level_bg(
-            regular_bg_tiles_item(span<const tile>(ziggurat_1_level_bg_bn_gfxTiles, 225), bpp_mode::BPP_4, compression_type::NONE), 
+            regular_bg_tiles_item(span<const tile>(ziggurat_1_level_bg_bn_gfxTiles, 230), bpp_mode::BPP_4, compression_type::NONE), 
             bg_palette_item(span<const color>(ziggurat_1_level_bg_bn_gfxPal, 16), bpp_mode::BPP_4, compression_type::NONE),
             regular_bg_map_item(ziggurat_1_level_bg_bn_gfxMap[0], size(1280, 640), compression_type::NONE, 1, true));
 }

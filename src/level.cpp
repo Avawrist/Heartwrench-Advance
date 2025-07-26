@@ -248,9 +248,9 @@ void Level::load(LevelName level_name)
 
             painted_bg_ptr      = bn::regular_bg_items::ziggurat_1_painted_bg.create_bg(0, 0);
             painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
-                                                                                4,
+                                                                                2,
                                                                                 bn::regular_bg_items::ziggurat_1_painted_bg.map_item(),
-                                                                                0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2);
+                                                                                0, 0, 1, 1, 2, 2);
 
             // Update cells
             cells        = main_bg_ptr->map().cells_ref().value();
