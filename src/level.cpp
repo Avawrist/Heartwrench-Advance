@@ -248,9 +248,9 @@ void Level::load(LevelName level_name)
 
             painted_bg_ptr      = bn::regular_bg_items::ziggurat_1_painted_bg.create_bg(0, 0);
             painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
-                                                                    4,
-                                                                    bn::regular_bg_items::title_screen_painted_bg.map_item(),
-                                                                    0, 0, 0, 1, 1, 1, 2, 2, 2);
+                                                                                4,
+                                                                                bn::regular_bg_items::ziggurat_1_painted_bg.map_item(),
+                                                                                0, 0);
 
             // Update cells
             cells        = main_bg_ptr->map().cells_ref().value();
@@ -397,7 +397,6 @@ void Level::updateAll()
     updateCurrency();
     updateCamera();
     updateBGFlash();
-    updatePaintedBG();
     freeObjects();
     transitionRoom();
     drawObjects();
@@ -562,6 +561,9 @@ void Level::updateCamera()
 
     // Update HUD //
     updateHUD();
+
+    // Update Painted BG //
+    updatePaintedBG();
 }
 
 void Level::updateBGFlash()
@@ -588,8 +590,10 @@ void Level::updatePaintedBG()
 {   
     // Parallax Effect
     #define PARALLAX_REDUCTION_FACTOR -4 // The larger the number, the slower the BG will scroll.
-    bn::fixed x_offset = (camera->x() - current_room.center().x()) + ((camera->x() - current_room.center().x()) / PARALLAX_REDUCTION_FACTOR);
-    painted_bg_ptr->set_position(current_room.center().x() + x_offset, current_room.center().y());
+    bn::fixed x_offset = camera->x() / PARALLAX_REDUCTION_FACTOR;
+    painted_bg_ptr->set_position(camera->x() + x_offset, current_room.room_bounds.center().y());
+
+    painted_bg_anim_ptr->update();
 }
 
 void Level::updateGlobalTimer()
@@ -1058,7 +1062,7 @@ void Level::updateTitleScreen()
     }
 
     // Draw Screen
-    painted_bg_anim_ptr->update();
+    updatePaintedBG();
 
     // Transition
     updateLevelTransition(LEVEL_ZIGGURAT_1);
