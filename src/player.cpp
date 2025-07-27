@@ -1387,14 +1387,14 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			{attack_buffered_frames = PLAYER_ATTACK_BUFFER_FRAMES;}
 
 			// High Jump
-			if(bn::keypad::a_held() && remaining_jump_input_frames > 0)
+			if(bn::keypad::a_held() && remaining_jump_input_frames > 0 && !grounded_detected)
 			{rigidbody.addForce(PLAYER_SECONDARY_JUMP_FORCE);}
 
 			else if(bn::keypad::a_released()) 
 			{remaining_jump_input_frames = 0;}
 
 			// Tertiary Jump
-			if(bn::keypad::a_held() && !bn::keypad::down_held())
+			if(bn::keypad::a_held() && !bn::keypad::down_held() && !grounded_detected)
 			{rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);}
 
 			// Add Gravity //
@@ -1904,6 +1904,14 @@ void Player::resolveSmashBlockLargeCollision(GameObject& object)
 
         // Resolve Y Axis Collision //
         resolveYAxisCollision(object.collider);
+		
+		// Smash block with player head //
+		if(col_y_offset > 0) 
+		{
+			object.applyHit(object.hitpoints, 0, 0);
+			rigidbody.removeYForces();
+			sprite_ptr->set_horizontal_scale(PLAYER_HEAD_BONK_H_STRETCH);
+		}		
 
         // If there is still collision somehow, must be corner case //
         resolveCornerCollision(object.collider);
@@ -1951,6 +1959,14 @@ void Player::resolveSmashBlockMiniCollision(GameObject& object)
 
         // Resolve Y Axis Collision //
         resolveYAxisCollision(object.collider);
+
+		// Smash block with player head //
+		if(col_y_offset > 0) 
+		{
+			object.applyHit(object.hitpoints, 0, 0);
+			rigidbody.removeYForces();
+			sprite_ptr->set_horizontal_scale(1.5);
+		}
 
         // If there is still collision somehow, must be corner case //
         resolveCornerCollision(object.collider);

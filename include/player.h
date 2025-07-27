@@ -66,6 +66,8 @@
 
 #define PLAYER_MAX_JUMP_INPUT_FRAMES       6
 
+#define PLAYER_HEAD_BONK_H_STRETCH 1.4
+
 #define PLAYER_GRAVITY       	             3
 #define PLAYER_PROLONGED_GRAVITY             1
 #define PLAYER_PROLONGED_AIR_FRAMES_REQUIRED 16
