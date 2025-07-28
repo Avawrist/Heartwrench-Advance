@@ -1216,7 +1216,7 @@ void GameObject::resolveVGearBottomCollision(const Collider& other_collider)
 
 void GameObject::resolveSpikeCollision(const Collider& other_collider)
 {
-    if(collider.isCollision(other_collider) && hitpoints > 0)
+    if(test_collider.isCollision(other_collider) && hitpoints > 0)
     {applyHit(SPIKE_DAMAGE, 0, 0);}
 
     if(collider.isCollision(other_collider))
