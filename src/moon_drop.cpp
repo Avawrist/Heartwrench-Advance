@@ -363,3 +363,30 @@ void MoonDrop::resolveHPTotemCollision(GameObject& object)
 		rigidbody.removeYForces();
 	}
 }
+
+// Tiles
+
+void MoonDrop::resolveSpikeCollision(const Collider& other_collider)
+{
+    if(collider.isCollision(other_collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(other_collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(other_collider);
+
+        // If there is still collision somehow, must be corner case //
+        resolveCornerCollision(other_collider);
+    }
+
+    updateTestColliders();
+
+	// Test for, and log grounded collision
+	if(test_collider.isCollision(other_collider) &&
+		rigidbody.normalized_dir.y() >= 0)
+	{
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
+}

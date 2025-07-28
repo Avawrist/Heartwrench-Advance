@@ -109,7 +109,7 @@ small_vase.o: G:/game/src/small_vase.cpp G:/game/include/small_vase.h \
  G:/game/build/bn_sprite_items_candelabra.h \
  G:/game/build/bn_sprite_items_hitbox.h \
  G:/game/build/bn_sprite_items_player.h \
- G:/game/build/bn_sprite_items_phase_marker.h
+ G:/game/build/bn_sprite_items_phase_marker.h G:/game/include/hitbox.h
 G:/game/include/small_vase.h:
 G:/game/include/utility.h:
 G:/butano-master/butano/include/bn_log.h:
@@ -225,3 +225,4 @@ G:/game/build/bn_sprite_items_candelabra.h:
 G:/game/build/bn_sprite_items_hitbox.h:
 G:/game/build/bn_sprite_items_player.h:
 G:/game/build/bn_sprite_items_phase_marker.h:
+G:/game/include/hitbox.h:

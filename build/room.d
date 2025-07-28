@@ -121,10 +121,10 @@ room.o: G:/game/src/room.cpp G:/game/include/room.h \
  G:/game/include/push_block_mini.h G:/game/include/auto_platform.h \
  G:/game/include/smash_block_large.h G:/game/include/smash_block_mini.h \
  G:/game/include/large_vase.h G:/game/include/small_vase.h \
- G:/game/include/hp_totem.h G:/game/include/hp_drop.h \
- G:/game/include/moon_drop.h G:/game/include/star_drop.h \
- G:/game/include/ground_ghoul.h G:/game/include/enemy.h \
- G:/game/include/hitbox.h G:/game/include/thorn_column.h \
+ G:/game/include/hitbox.h G:/game/include/hp_totem.h \
+ G:/game/include/hp_drop.h G:/game/include/moon_drop.h \
+ G:/game/include/star_drop.h G:/game/include/ground_ghoul.h \
+ G:/game/include/enemy.h G:/game/include/thorn_column.h \
  G:/game/include/thorn_bar.h G:/game/include/candelabra.h \
  G:/game/include/prop.h G:/game/include/player.h
 G:/game/include/room.h:
@@ -259,13 +259,13 @@ G:/game/include/smash_block_large.h:
 G:/game/include/smash_block_mini.h:
 G:/game/include/large_vase.h:
 G:/game/include/small_vase.h:
+G:/game/include/hitbox.h:
 G:/game/include/hp_totem.h:
 G:/game/include/hp_drop.h:
 G:/game/include/moon_drop.h:
 G:/game/include/star_drop.h:
 G:/game/include/ground_ghoul.h:
 G:/game/include/enemy.h:
-G:/game/include/hitbox.h:
 G:/game/include/thorn_column.h:
 G:/game/include/thorn_bar.h:
 G:/game/include/candelabra.h:
