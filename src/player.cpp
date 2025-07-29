@@ -14,9 +14,9 @@ Player::Player()
     sprite_ptr  = bn::sprite_items::player.create_sprite(0, 0);
 	sprite_ptr->set_z_order(PLAYER_Z_ORDER);
 	animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-																  0,
-																  bn::sprite_items::player.tiles_item(),
-																  0, 0);
+																2,
+																bn::sprite_items::player.tiles_item(),
+																0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3);
 	default_palette_ptr = sprite_ptr->palette();
 
 	collider            = Collider(x(), y(), PLAYER_COLLIDER_WIDTH, PLAYER_COLLIDER_HEIGHT);
@@ -1479,20 +1479,18 @@ void Player::setState(ObjectState new_state)
 		case PLAYER_GROUNDED_NEUTRAL:
 			
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								  								  		  0,
-								  								  		  bn::sprite_items::player.tiles_item(),
-								  								  		  PLAYER_NEUTRAL_FRAME,
-								  								  		  PLAYER_NEUTRAL_FRAME);
+																		2,
+																		bn::sprite_items::player.tiles_item(),
+																		0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3);
 
 		break;
 
 		case PLAYER_WALK:
 
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-																	      1,
+																	      0,
 																	      bn::sprite_items::player.tiles_item(),
-																	      1, 2, 3, 4, 5, 6, 7, 8, 9, 
-																	      10, 11, 12, 13, 14, 15, 16, 17, 18);
+																	      0, 0);
 
 		break;
 
@@ -1504,9 +1502,9 @@ void Player::setState(ObjectState new_state)
 			x_dir                            = LEFT;
 
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								  								  2,
+								  								  0,
 								  								  bn::sprite_items::player.tiles_item(),
-								  								  42, 42, 42, 43, 43, 43, 44, 44, 44);
+								  								  0, 0);
 
 		break;
 
@@ -1518,9 +1516,9 @@ void Player::setState(ObjectState new_state)
 			x_dir                            = RIGHT;
 
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								  								  2,
+								  								  0,
 								  								  bn::sprite_items::player.tiles_item(),
-								  								  42, 42, 42, 43, 43, 43, 44, 44, 44);
+								  								  0, 0);
 
 		break;
 
@@ -1529,8 +1527,7 @@ void Player::setState(ObjectState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 																		  0,
 																		  bn::sprite_items::player.tiles_item(),
-																		  PLAYER_AIR_FRAME_1,
-																		  PLAYER_AIR_FRAME_1);
+																		  0, 0);
 
 		break;
 
@@ -1554,12 +1551,7 @@ void Player::setState(ObjectState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 																		0,
 																		bn::sprite_items::player.tiles_item(),
-																		56, 56, 56, 56, 56, 56,
-																	    57, 57, 57, 57, 57, 57,
-																	    58, 58, 58, 58, 58, 58,
-																	    59, 59, 59, 59,
-																	    60, 60, 60,
-																	    61, 61, 61, 61, 61, 61, 61, 61);
+																		0, 0);
 
 		break;
 
@@ -1568,12 +1560,7 @@ void Player::setState(ObjectState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 																		0,
 																		bn::sprite_items::player.tiles_item(),
-																		56, 56, 56, 56, 56, 56,
-																	    57, 57, 57, 57, 57, 57,
-																	    58, 58, 58, 58, 58, 58,
-																	    59, 59, 59, 59,
-																	    60, 60, 60,
-																	    61, 61, 61, 61, 61, 61, 61, 61);
+																		0, 0);
 
 		break;
 
@@ -1583,9 +1570,9 @@ void Player::setState(ObjectState new_state)
 			roll_effect_frames = PLAYER_MAX_ROLL_EFFECT_FRAMES;
 
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-																	   2,
+																	   0,
 																	   bn::sprite_items::player.tiles_item(),
-																	   45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55);
+																	   0, 0);
 
 		break;
 
@@ -1594,8 +1581,7 @@ void Player::setState(ObjectState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 																		0,
 																		bn::sprite_items::player.tiles_item(),
-																		21, 22, 23, 24, 25, 26, 27, 28, 29, 
-																		30, 31, 32, 33, 34, 35, 36, 37, 38);
+																		0, 0);
 
 		break;
 

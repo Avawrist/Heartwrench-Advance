@@ -9,7 +9,7 @@
 @	+ regular map (in SBBs), not compressed, 64x192 
 @	Total size: 32 + 6336 + 24576 = 30944
 @
-@	Time-stamp: 2025-07-26, 16:15:52
+@	Time-stamp: 2025-07-29, 10:49:38
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -1982,6 +1982,6 @@ ziggurat_1_painted_bg_bn_gfxMap:
 	.hidden ziggurat_1_painted_bg_bn_gfxPal
 ziggurat_1_painted_bg_bn_gfxPal:
 	.hword 0x1485,0x5AB3,0x6B78,0x7FFF,0x1CA8,0x2CCB,0x38ED,0x452F
-	.hword 0x1CD1,0x1D13,0x1D56,0x1DB9,0x4621,0x4E61,0x4EA1,0x5703
+	.hword 0x1D13,0x1DB9,0x265C,0x2AFF,0x4621,0x4E61,0x4EA1,0x5703
 
 @}}BLOCK(ziggurat_1_painted_bg_bn_gfx)
