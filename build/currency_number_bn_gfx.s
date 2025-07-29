@@ -8,7 +8,7 @@
 @	+ 40 tiles not compressed
 @	Total size: 32 + 1280 = 1312
 @
-@	Time-stamp: 2025-07-21, 17:28:37
+@	Time-stamp: 2025-07-29, 14:28:00
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -69,7 +69,7 @@ currency_number_bn_gfxTiles:
 	.global currency_number_bn_gfxPal		@ 32 unsigned chars
 	.hidden currency_number_bn_gfxPal
 currency_number_bn_gfxPal:
-	.hword 0x1485,0x3161,0x4621,0x4EA1,0x5F86,0x73F1,0x2898,0x3D3E
+	.hword 0x1485,0x28C6,0x3929,0x5989,0x7269,0x7F51,0x2898,0x3D3E
 	.hword 0x421E,0x4A9F,0x1DB9,0x265C,0x2AFF,0x7FFF,0x0000,0x0000
 
 @}}BLOCK(currency_number_bn_gfx)

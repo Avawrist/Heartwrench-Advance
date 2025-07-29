@@ -8,7 +8,7 @@
 @	+ 224 tiles not compressed
 @	Total size: 32 + 7168 = 7200
 @
-@	Time-stamp: 2025-07-21, 17:28:37
+@	Time-stamp: 2025-07-29, 14:23:58
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -276,7 +276,7 @@ moon_drop_bn_gfxTiles:
 	.global moon_drop_bn_gfxPal		@ 32 unsigned chars
 	.hidden moon_drop_bn_gfxPal
 moon_drop_bn_gfxPal:
-	.hword 0x1485,0x3161,0x4621,0x4EA1,0x5F86,0x73F1,0x0000,0x5AB3
+	.hword 0x1485,0x28C6,0x3929,0x5989,0x7269,0x7F51,0x0000,0x5AB3
 	.hword 0x6B78,0x7FFF,0x108D,0x18F6,0x193D,0x25FE,0x1895,0x1CFD
 
 @}}BLOCK(moon_drop_bn_gfx)
