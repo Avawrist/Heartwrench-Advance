@@ -18,7 +18,7 @@
 
 #define PLAYER_Z_ORDER 0
 
-#define PLAYER_COLLIDER_WIDTH  16
+#define PLAYER_COLLIDER_WIDTH  8
 #define PLAYER_COLLIDER_HEIGHT 16
 
 #define PLAYER_COLLIDER_OFFSET_X 0
@@ -42,13 +42,13 @@
 #define PLAYER_HIT_INVULNERABILITY_FRAMES 80
 
 #define PLAYER_ATTACK_BUFFER_FRAMES 12
-#define PLAYER_ROLL_BUFFER_FRAMES   12
+#define PLAYER_SPIN_BUFFER_FRAMES   12
 #define PLAYER_JUMP_BUFFER_FRAMES   12
 
 #define PLAYER_MIN_X_SPEED    0
 #define PLAYER_MAX_X_SPEED    2
 #define PLAYER_X_DECAY        1
-#define X_SPEED_ACC_RATE      0.125
+#define X_SPEED_ACC_RATE      0.1
 #define X_SPEED_DECAY_RATE    0.075
 
 #define PLAYER_BASE_JUMP_FORCE            -7 // 2 block height at 0.033 decay rate
@@ -57,24 +57,23 @@
 #define PLAYER_SECOND_JUMP_Y_FORCE        -1 // 1 extra block height if jump held all possible frames
 #define PLAYER_SECONDARY_JUMP_DECAY        1
 
-#define PLAYER_TERTIARY_JUMP_Y_FORCE      -1 // Slows fall if jump held
+#define PLAYER_TERTIARY_JUMP_Y_FORCE      -2 // Slows fall if jump held
 #define PLAYER_TERTIARY_JUMP_DECAY         1
 
-#define PLAYER_WALL_JUMP_X_FORCE           2
-#define PLAYER_WALL_JUMP_Y_FORCE          -7
-#define PLAYER_WALL_JUMP_DECAY             0.033
+//#define PLAYER_WALL_JUMP_X_FORCE           2
+//#define PLAYER_WALL_JUMP_Y_FORCE          -7
+//#define PLAYER_WALL_JUMP_DECAY             0.033
 
-#define PLAYER_MAX_JUMP_INPUT_FRAMES       6
+#define PLAYER_MAX_JUMP_INPUT_FRAMES       18
 
 #define PLAYER_HEAD_BONK_H_STRETCH 1.4
 
 #define PLAYER_GRAVITY       	             3
-#define PLAYER_PROLONGED_GRAVITY             1
-#define PLAYER_PROLONGED_AIR_FRAMES_REQUIRED 16
+#define PLAYER_PROLONGED_GRAVITY             2
+#define PLAYER_PROLONGED_AIR_FRAMES_REQUIRED 18
 #define PLAYER_FAST_FALL_GRAVITY             2
 #define PLAYER_MIN_FAST_FALL_FRAMES          3
 #define PLAYER_WALL_RIDE_GRAVITY             1
-#define PLAYER_ATTACK_GRAVITY                1
 #define PLAYER_GRAVITY_DECAY 	             1
 
 #define PLAYER_SQUISH_SPEED_REQUIRED  PLAYER_GRAVITY
@@ -88,47 +87,43 @@
 #define PLAYER_PHASE_STEP_EXIT_DECAY   0.05
 #define PLAYER_PHASE_JUMP_LOCKOUT_FRAMES 5
 
-#define PLAYER_ATTACK_GROUND_1_X_OFFSET           24
-#define PLAYER_ATTACK_GROUND_1_Y_OFFSET           0
-#define PLAYER_ATTACK_GROUND_1_HB_WIDTH           32
-#define PLAYER_ATTACK_GROUND_1_HB_HEIGHT          32
-#define PLAYER_ATTACK_GROUND_1_CREATE_HB_FRAME    18
-#define PLAYER_ATTACK_GROUND_1_HB_LIFESPAN_FRAMES 8
-#define PLAYER_ATTACK_GROUND_1_X_KNOCKBACK        8
-#define PLAYER_ATTACK_GROUND_1_Y_KNOCKBACK        0
-#define PLAYER_ATTACK_GROUND_1_KNOCKBACK_DECAY    0.05
-#define PLAYER_ATTACK_GROUND_1_DAMAGE             1
-#define PLAYER_ATTACK_GROUND_1_HITSTOP_FRAMES     8
-#define PLAYER_ATTACK_GROUND_1_HITSTUN_FRAMES     30
-#define PLAYER_ATTACK_GROUND_1_SCREENSHAKE_FRAMES 8
-#define PLAYER_ATTACK_GROUND_1_SCREENSHAKE_SEVERITY STRONG_SHAKE
+#define PLAYER_SPIN_X_FORCE 4
+#define PLAYER_SPIN_DECAY   0.02
 
-#define PLAYER_ATTACK_AIR_1_X_OFFSET           24
-#define PLAYER_ATTACK_AIR_1_Y_OFFSET           0
-#define PLAYER_ATTACK_AIR_1_HB_WIDTH           32
-#define PLAYER_ATTACK_AIR_1_HB_HEIGHT          32
-#define PLAYER_ATTACK_AIR_1_CREATE_HB_FRAME    18
-#define PLAYER_ATTACK_AIR_1_HB_LIFESPAN_FRAMES 8
-#define PLAYER_ATTACK_AIR_1_X_KNOCKBACK        8
-#define PLAYER_ATTACK_AIR_1_Y_KNOCKBACK        0
-#define PLAYER_ATTACK_AIR_1_KNOCKBACK_DECAY    0.05
-#define PLAYER_ATTACK_AIR_1_DAMAGE             1
-#define PLAYER_ATTACK_AIR_1_HITSTOP_FRAMES     8
-#define PLAYER_ATTACK_AIR_1_HITSTUN_FRAMES     30
-#define PLAYER_ATTACK_AIR_1_SCREENSHAKE_FRAMES 8
-#define PLAYER_ATTACK_AIR_1_SCREENSHAKE_SEVERITY STRONG_SHAKE
+#define PLAYER_MAX_SPIN_EFFECT_FRAMES 35
+
+#define PLAYER_SPIN_1_X_OFFSET           24
+#define PLAYER_SPIN_1_Y_OFFSET           0
+#define PLAYER_SPIN_1_HB_WIDTH           32
+#define PLAYER_SPIN_1_HB_HEIGHT          32
+#define PLAYER_SPIN_1_CREATE_HB_FRAME    18
+#define PLAYER_SPIN_1_HB_LIFESPAN_FRAMES 8
+#define PLAYER_SPIN_1_X_KNOCKBACK        8
+#define PLAYER_SPIN_1_Y_KNOCKBACK        0
+#define PLAYER_SPIN_1_KNOCKBACK_DECAY    0.05
+#define PLAYER_SPIN_1_DAMAGE             1
+#define PLAYER_SPIN_1_HITSTOP_FRAMES     8
+#define PLAYER_SPIN_1_HITSTUN_FRAMES     30
+#define PLAYER_SPIN_1_SCREENSHAKE_FRAMES 8
+#define PLAYER_SPIN_1_SCREENSHAKE_SEVERITY STRONG_SHAKE
+
+#define PLAYER_SPIN_2_X_OFFSET           24
+#define PLAYER_SPIN_2_Y_OFFSET           0
+#define PLAYER_SPIN_2_HB_WIDTH           32
+#define PLAYER_SPIN_2_HB_HEIGHT          32
+#define PLAYER_SPIN_2_CREATE_HB_FRAME    18
+#define PLAYER_SPIN_2_HB_LIFESPAN_FRAMES 8
+#define PLAYER_SPIN_2_X_KNOCKBACK        8
+#define PLAYER_SPIN_2_Y_KNOCKBACK        0
+#define PLAYER_SPIN_2_KNOCKBACK_DECAY    0.05
+#define PLAYER_SPIN_2_DAMAGE             1
+#define PLAYER_SPIN_2_HITSTOP_FRAMES     8
+#define PLAYER_SPIN_2_HITSTUN_FRAMES     30
+#define PLAYER_SPIN_2_SCREENSHAKE_FRAMES 8
+#define PLAYER_SPIN_2_SCREENSHAKE_SEVERITY STRONG_SHAKE
 
 #define PLAYER_V_COLLISION_MAX_GRACE_FRAMES 4
 #define PLAYER_LATE_JUMP_GRACE_FRAMES       6
-
-#define PLAYER_ROLL_X_FORCE 3
-#define PLAYER_ROLL_DECAY   0.7
-#define PLAYER_ROLL_X_SPEED 1
-#define PLAYER_MAX_ROLL_EFFECT_FRAMES 35
-
-#define PLAYER_ROLL_JUMP_X_FORCE  3
-#define PLAYER_ROLL_JUMP_Y_FORCE -7
-#define PLAYER_ROLL_JUMP_DECAY    0.033
 
 #define PLAYER_MIN_PASSAGE_SPEED PLAYER_GRAVITY + PLAYER_PROLONGED_GRAVITY + PLAYER_FAST_FALL_GRAVITY
 
@@ -146,13 +141,12 @@
 #define PLAYER_JUMP_FORCE              Force(bn::fixed_point_t<12>(0, PLAYER_BASE_JUMP_FORCE), PLAYER_JUMP_DECAY)
 #define PLAYER_SECONDARY_JUMP_FORCE    Force(bn::fixed_point_t<12>(0, PLAYER_SECOND_JUMP_Y_FORCE), PLAYER_SECONDARY_JUMP_DECAY)
 #define PLAYER_TERTIARY_JUMP_FORCE     Force(bn::fixed_point_t<12>(0, PLAYER_TERTIARY_JUMP_Y_FORCE), PLAYER_TERTIARY_JUMP_DECAY)
-#define PLAYER_WALL_JUMP_FORCE         Force(bn::fixed_point_t<12>(PLAYER_WALL_JUMP_X_FORCE * (int32)x_dir, PLAYER_WALL_JUMP_Y_FORCE), PLAYER_WALL_JUMP_DECAY)
+//#define PLAYER_WALL_JUMP_FORCE         Force(bn::fixed_point_t<12>(PLAYER_WALL_JUMP_X_FORCE * (int32)x_dir, PLAYER_WALL_JUMP_Y_FORCE), PLAYER_WALL_JUMP_DECAY)
 
 #define PLAYER_GRAVITY_FORCE           Force(bn::fixed_point_t<12>(0, PLAYER_GRAVITY), 			 PLAYER_GRAVITY_DECAY)
 #define PLAYER_PROLONGED_GRAVITY_FORCE Force(bn::fixed_point_t<12>(0, PLAYER_PROLONGED_GRAVITY), PLAYER_GRAVITY_DECAY)
 #define PLAYER_FAST_GRAVITY_FORCE      Force(bn::fixed_point_t<12>(0, PLAYER_FAST_FALL_GRAVITY), PLAYER_GRAVITY_DECAY)
 #define PLAYER_WALL_GRAVITY_FORCE      Force(bn::fixed_point_t<12>(0, PLAYER_WALL_RIDE_GRAVITY), PLAYER_GRAVITY_DECAY)
-#define PLAYER_ATTACK_GRAVITY_FORCE    Force(bn::fixed_point_t<12>(0, PLAYER_ATTACK_GRAVITY),    PLAYER_GRAVITY_DECAY)
 
 #define PLAYER_PHASE_STEP_EXIT_FORCE_UP    Force(bn::fixed_point_t<12>(0, -PLAYER_PHASE_STEP_EXIT_Y_FORCE), PLAYER_PHASE_STEP_EXIT_DECAY)
 #define PLAYER_PHASE_STEP_EXIT_FORCE_DOWN  Force(bn::fixed_point_t<12>(0,  PLAYER_PHASE_STEP_EXIT_Y_FORCE), PLAYER_PHASE_STEP_EXIT_DECAY)
@@ -176,18 +170,17 @@ struct Player : GameObject {
 	bn::fixed       x_speed;
 	bn::fixed_point phase_destination;
 
-	int32 attack_buffered_frames;
-	int32 roll_buffered_frames;
+	int32 spin_buffered_frames;
 	int32 jump_buffered_frames;
 	int32 remaining_jump_input_frames;
 	int32 air_frames_elapsed;
 	int32 v_collision_grace_frames;
 	int32 late_jump_grace_frames;
-	int32 late_roll_jump_grace_frames;
+	int32 late_spin_jump_grace_frames;
 	int32 current_phase_frame;
 	int32 hitstop_frames;
-	int32 roll_effect_frames;
-	int32 roll_effect_offset_multiplier;
+	int32 spin_effect_frames;
+	int32 spin_effect_offset_multiplier;
 	int32 currency_collected;
 
 	bool wall_right_detected;
@@ -195,10 +188,8 @@ struct Player : GameObject {
 	bool grounded_owp_detected;
 	bool left_wj_eligible;
 	bool right_wj_eligible;
-
-	bool roll_requested;
+	bool spin_requested;
 	bool jump_requested;
-	bool attack_requested;
 
 	Collider test_collider_right;
 	Collider test_collider_left;
@@ -213,9 +204,9 @@ struct Player : GameObject {
 	bn::optional<bn::sprite_ptr>                                         jump_effect_sprite_ptr;
 	bn::optional<bn::sprite_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> jump_effect_anim_ptr;
 
-	bn::optional<bn::sprite_ptr>                                         roll_sprite_1_ptr;
-	bn::optional<bn::sprite_ptr>                                         roll_sprite_2_ptr;
-	bn::optional<bn::sprite_ptr>                                         roll_sprite_3_ptr;
+	bn::optional<bn::sprite_ptr>                                         spin_effect_sprite_1_ptr;
+	bn::optional<bn::sprite_ptr>                                         spin_effect_sprite_2_ptr;
+	bn::optional<bn::sprite_ptr>                                         spin_effect_sprite_3_ptr;
 
 	Player();
 	Player(const Player& other);
@@ -224,14 +215,15 @@ struct Player : GameObject {
 	Player& operator =(const Player& other);
 
 	void jump();
-	void wallJump();
+	void spinJump();
+	//void wallJump();
 	void fastFall();
-	void createGroundedAttackHitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
-		                              const bn::camera_ptr&                      camera);
-	void createAirAttack1Hitboxes(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
-								  const bn::camera_ptr&                      camera);
+	void createSpinAttack1Hitbox(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
+								 const bn::camera_ptr&                      camera);
+	void createSpinAttack2Hitbox(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
+								const bn::camera_ptr&                      camera);
 	void createWallJumpEffect();
-	void drawRollEffect();
+	void drawSpinEffect();
 
 	//////////////////////////
 	// GameObject Overrides //

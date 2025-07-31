@@ -1017,14 +1017,11 @@ void Level::storePlayerInputs()
     if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) == NULL)
     {return;}
 
-    if(bn::keypad::r_pressed())
-    {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->roll_requested = true;}
-
     if(bn::keypad::a_pressed())
     {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->jump_requested = true;}
 
     if(bn::keypad::b_pressed())
-    {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->attack_requested = true;}
+    {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->spin_requested = true;}
 }
 
 void Level::updateTitleScreen()

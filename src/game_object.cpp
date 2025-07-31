@@ -847,12 +847,12 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
                 break; 
 
                 // Special Objects
-                case HITBOX_ATTACK_GROUND_1:
-                    resolveHitboxAttackGround1Collision(*game_objects.at(i));
+                case HITBOX_SPIN_1:
+                    resolveHitboxSpin1Collision(*game_objects.at(i));
                 break;
 
-                case HITBOX_ATTACK_AIR_1:
-                    resolveHitboxAir1Collision(*game_objects.at(i));
+                case HITBOX_SPIN_2:
+                    resolveHitboxSpin2Collision(*game_objects.at(i));
                 break;
 
                 case HITBOX_WALL_SPLAT:
@@ -896,8 +896,8 @@ void GameObject::resolveThornBarCollision(GameObject& object)    {}
 void GameObject::resolveGroundGhoulCollision(GameObject& object) {}
 
 // Special Objects
-void GameObject::resolveHitboxAttackGround1Collision(GameObject& object) {}
-void GameObject::resolveHitboxAir1Collision(GameObject& object)          {}
+void GameObject::resolveHitboxSpin1Collision(GameObject& object)         {}
+void GameObject::resolveHitboxSpin2Collision(GameObject& object)         {}
 void GameObject::resolveHitboxWallSplatCollision(GameObject& object)     {}
 void GameObject::resolvePlayerCollision(GameObject& object)              {}
 

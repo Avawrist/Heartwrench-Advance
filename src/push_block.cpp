@@ -321,7 +321,7 @@ void PushBlock::resolvePlayerCollision(GameObject& object)
 		object.rigidbody.addForce(Force(bn::fixed_point_t<12>(pixels_moved_x, 0), 1));
 		object.setY(object.y() + pixels_moved_y);
 
-		if(hit_h_wall && (object.state == PLAYER_ROLL || object.state == PLAYER_AIR_NEUTRAL))
+		if(hit_h_wall && (object.state == PLAYER_SPIN_ATTACK || object.state == PLAYER_AIR_NEUTRAL))
 		{object.rigidbody.addForce(PUSH_BLOCK_MOMENTUM_TRANSFER_H_FORCE); hit_h_wall = 0;}
 
 		if(hit_v_wall && object.state == PLAYER_AIR_NEUTRAL)

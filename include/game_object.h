@@ -33,7 +33,7 @@
 #include "bn_sprite_palette_items_sprite_white_palette.h"
 #include "bn_sprite_palette_items_sprite_flash_palette.h"
 #include "bn_sprite_palette_items_player_flash_palette.h"
-#include "bn_sprite_palette_items_sprite_roll_effect_palette.h"
+#include "bn_sprite_palette_items_sprite_spin_effect_palette.h"
 
 // Effect Assets
 #include "bn_sprite_items_hit_effect.h"
@@ -81,7 +81,7 @@
 #define GAME_OBJECT_MAX_ANIM_FRAMES 40
 
 #define PROP_Z_ORDER          4
-#define ROLL_EFFECT_Z_ORDER   3
+#define SPIN_EFFECT_Z_ORDER   3
 #define SPLAT_EFFECT_Z_ORDER  2
 #define GAME_OBJECT_Z_ORDER   1
 #define ENEMY_Z_ORDER        -1
@@ -181,8 +181,8 @@ enum ObjectType
 	CANDELABRA,
 
 	// Special Objects
-	HITBOX_ATTACK_GROUND_1,
-	HITBOX_ATTACK_AIR_1,
+	HITBOX_SPIN_1,
+	HITBOX_SPIN_2,
 	HITBOX_WALL_SPLAT,
 	PLAYER,
 };
@@ -227,9 +227,7 @@ enum ObjectState
 	PLAYER_WALL_SLIDE_RIGHT,
 	PLAYER_WALL_SLIDE_LEFT,
 	PLAYER_PHASE_STEP,
-	PLAYER_ATTACK_GROUND_1,
-	PLAYER_ATTACK_AIR_1,
-	PLAYER_ROLL,
+	PLAYER_SPIN_ATTACK,
 
 	/////////////
 	// Generic //
@@ -438,8 +436,8 @@ struct GameObject
 	virtual void resolveGroundGhoulCollision(GameObject& object);
 
 	// Special Objects
-	virtual void resolveHitboxAttackGround1Collision(GameObject& object);
-	virtual void resolveHitboxAir1Collision(GameObject& object); 
+	virtual void resolveHitboxSpin1Collision(GameObject& object);
+	virtual void resolveHitboxSpin2Collision(GameObject& object); 
 	virtual void resolveHitboxWallSplatCollision(GameObject& object);
 	virtual void resolvePlayerCollision(GameObject& object);
 
