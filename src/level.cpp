@@ -1018,10 +1018,13 @@ void Level::storePlayerInputs()
     {return;}
 
     if(bn::keypad::a_pressed())
-    {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->jump_requested = true;}
+    {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->a_requested = true;}
 
     if(bn::keypad::b_pressed())
-    {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->spin_requested = true;}
+    {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->b_requested = true;}
+
+    if(bn::keypad::r_pressed())
+    {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->r_requested = true;}
 }
 
 void Level::updateTitleScreen()

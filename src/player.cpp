@@ -58,8 +58,9 @@ Player::Player()
 	right_wj_eligible        = false;
 	is_dead                  = false;
 
-	spin_requested   = false;
-	jump_requested   = false;
+	a_requested   = false;
+	b_requested   = false;
+	r_requested   = false;
 
 	hitbox_1_ptr = NULL;
 	hitbox_2_ptr = NULL;
@@ -117,8 +118,9 @@ Player::Player(const Player& other) : GameObject(other)
 	right_wj_eligible        = other.right_wj_eligible;
 	is_dead                  = other.is_dead;
 
-	spin_requested   = other.spin_requested;
-	jump_requested   = other.jump_requested;
+	a_requested   = other.a_requested;
+	b_requested   = other.b_requested;
+	r_requested   = other.r_requested;
 
 	test_collider_right   = other.test_collider_right;
 	test_collider_left    = other.test_collider_left;
@@ -136,6 +138,7 @@ Player::Player(const Player& other) : GameObject(other)
 	pm_sprite_ptr          = other.pm_sprite_ptr;
 	jump_effect_sprite_ptr = other.jump_effect_sprite_ptr;
 	jump_effect_anim_ptr   = other.jump_effect_anim_ptr;
+
 	spin_effect_sprite_1_ptr        = other.spin_effect_sprite_1_ptr;
 	spin_effect_sprite_2_ptr        = other.spin_effect_sprite_2_ptr;
 	spin_effect_sprite_3_ptr        = other.spin_effect_sprite_3_ptr;
@@ -184,8 +187,9 @@ Player& Player::operator =(const Player& other)
 	right_wj_eligible        = other.right_wj_eligible;
 	is_dead                  = other.is_dead;
 
-	spin_requested   = other.spin_requested;
-	jump_requested   = other.jump_requested;
+	a_requested   = other.a_requested;
+	b_requested   = other.b_requested;
+	r_requested   = other.r_requested;
 
 	test_collider_right   = other.test_collider_right;
 	test_collider_left    = other.test_collider_left;
@@ -499,8 +503,9 @@ void Player::updateTimers()
 
 	received_platform_force = false;
 
-	spin_requested   = false;
-	jump_requested   = false;
+	a_requested   = false;
+	b_requested   = false;
+	r_requested   = false;
 
 	if(jump_effect_anim_ptr.has_value())
 	{
@@ -1196,7 +1201,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			///////////////
 			
 			// Spin Jump
-			if((jump_requested || bn::keypad::a_pressed())) {spinJump();}
+			if((a_requested || bn::keypad::a_pressed())) {spinJump();}
 
 			// Spin Buffer
 			else if(bn::keypad::b_pressed())

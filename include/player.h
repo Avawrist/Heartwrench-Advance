@@ -188,8 +188,9 @@ struct Player : GameObject {
 	bool grounded_owp_detected;
 	bool left_wj_eligible;
 	bool right_wj_eligible;
-	bool spin_requested;
-	bool jump_requested;
+	bool a_requested;
+	bool b_requested;
+	bool r_requested;
 
 	Collider test_collider_right;
 	Collider test_collider_left;
