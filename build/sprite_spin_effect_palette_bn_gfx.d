@@ -1,0 +1,1 @@
+sprite_spin_effect_palette_bn_gfx.o: sprite_spin_effect_palette_bn_gfx.s

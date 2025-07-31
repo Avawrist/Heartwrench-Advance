@@ -77,7 +77,7 @@ candelabra.o: G:/game/src/candelabra.cpp G:/game/include/candelabra.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h \
  G:/game/build/bn_sprite_palette_items_player_flash_palette.h \
- G:/game/build/bn_sprite_palette_items_sprite_roll_effect_palette.h \
+ G:/game/build/bn_sprite_palette_items_sprite_spin_effect_palette.h \
  G:/game/build/bn_sprite_items_hit_effect.h \
  G:/butano-master/butano/include/bn_sprite_item.h \
  G:/butano-master/butano/include/bn_sprite_shape_size.h \
@@ -193,7 +193,7 @@ G:/game/build/bn_sprite_palette_items_sprite_white_palette.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h:
 G:/game/build/bn_sprite_palette_items_player_flash_palette.h:
-G:/game/build/bn_sprite_palette_items_sprite_roll_effect_palette.h:
+G:/game/build/bn_sprite_palette_items_sprite_spin_effect_palette.h:
 G:/game/build/bn_sprite_items_hit_effect.h:
 G:/butano-master/butano/include/bn_sprite_item.h:
 G:/butano-master/butano/include/bn_sprite_shape_size.h:
