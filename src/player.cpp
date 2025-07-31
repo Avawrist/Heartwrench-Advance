@@ -1481,16 +1481,24 @@ void Player::setState(ObjectState new_state)
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 																		2,
 																		bn::sprite_items::player.tiles_item(),
-																		0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3);
+																		0, 0, 0, 0, 
+																		1, 1, 1, 
+																		2, 2, 2, 2, 
+																		3, 3, 3);
 
 		break;
 
 		case PLAYER_WALK:
 
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-																	      0,
+																	      2,
 																	      bn::sprite_items::player.tiles_item(),
-																	      0, 0);
+																	      4, 4, 4, 
+																		  5, 5, 5,
+																		  6, 6, 6,
+																		  7, 7, 7,
+																		  8, 8, 8,
+																		  9, 9, 9);
 
 		break;
 
