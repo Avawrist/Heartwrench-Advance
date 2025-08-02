@@ -96,7 +96,7 @@
 #define PLAYER_SPIN_1_X_OFFSET           16
 #define PLAYER_SPIN_1_Y_OFFSET           -8
 #define PLAYER_SPIN_1_HB_WIDTH           32
-#define PLAYER_SPIN_1_HB_HEIGHT          20
+#define PLAYER_SPIN_1_HB_HEIGHT          22
 #define PLAYER_SPIN_1_CREATE_HB_FRAME    1
 #define PLAYER_SPIN_1_HB_LIFESPAN_FRAMES 5
 #define PLAYER_SPIN_1_X_KNOCKBACK        8
@@ -111,7 +111,7 @@
 #define PLAYER_SPIN_2_X_OFFSET           16
 #define PLAYER_SPIN_2_Y_OFFSET           -8
 #define PLAYER_SPIN_2_HB_WIDTH           32
-#define PLAYER_SPIN_2_HB_HEIGHT          20
+#define PLAYER_SPIN_2_HB_HEIGHT          22
 #define PLAYER_SPIN_2_CREATE_HB_FRAME    21
 #define PLAYER_SPIN_2_HB_LIFESPAN_FRAMES 5
 #define PLAYER_SPIN_2_X_KNOCKBACK        8
