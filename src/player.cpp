@@ -863,10 +863,25 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if(bn::keypad::a_held() && rigidbody.normalized_dir.y() > 0)
 			{rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);}
 
+			/////////////////
 			// Add Gravity //
+			/////////////////
+
 			rigidbody.addForce(PLAYER_GRAVITY_FORCE);
 			if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
 			{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
+
+			//////////////////////
+			// Update Air Frame //
+			//////////////////////
+
+			if(animate_action_ptr->done())
+			{
+				animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+																		   0,
+																		   bn::sprite_items::player.tiles_item(),
+																		   12, 12);
+			}
 
 		break;
 		
@@ -1200,6 +1215,38 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			// Get Input //
 			///////////////
 			
+			// Update walk speed //
+			if(bn::keypad::left_released())        
+			{
+				rigidbody.addForce(PLAYER_X_LEFT_DECAY_FORCE);
+				x_speed = PLAYER_MIN_X_SPEED;
+			}
+			else if (bn::keypad::right_released()) 
+			{
+				rigidbody.addForce(PLAYER_X_RIGHT_DECAY_FORCE);
+				x_speed = PLAYER_MIN_X_SPEED;
+			}
+
+			// Simulate friction/momentum
+			if((bn::keypad::left_held() || bn::keypad::right_held()))  
+			{
+				x_speed += X_SPEED_ACC_RATE;
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED + (int32)(bn::keypad::b_held()), x_speed);
+			}
+			
+			// Walk
+			if(bn::keypad::left_held())       
+			{
+				rigidbody.addForce(PLAYER_X_LEFT_FORCE);
+				if(!late_spin_jump_grace_frames) {x_dir = LEFT;}
+			}
+
+			else if(bn::keypad::right_held()) 
+			{
+				rigidbody.addForce(PLAYER_X_RIGHT_FORCE); 
+				if(!late_spin_jump_grace_frames) {x_dir = RIGHT;}
+			}
+
 			// Spin Jump
 			if((a_requested || bn::keypad::a_pressed())) {spinJump();}
 
@@ -1222,13 +1269,9 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			// Add Gravity //
 			/////////////////
 
-			if(!grounded_detected)
-			{
-				rigidbody.addForce(PLAYER_GRAVITY_FORCE);
-
-				if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
-				{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
-			}
+			rigidbody.addForce(PLAYER_GRAVITY_FORCE);
+			if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
+			{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
 
 		break;
 
@@ -1376,12 +1419,14 @@ void Player::setState(ObjectState new_state)
 		case PLAYER_SPIN_ATTACK:
 
 			spin_effect_frames = PLAYER_MAX_SPIN_EFFECT_FRAMES;
-			rigidbody.addForce(Force(bn::fixed_point_t<12>(PLAYER_SPIN_X_FORCE * (int32)(x_dir), 0), PLAYER_SPIN_DECAY));
+			rigidbody.addForce(PLAYER_SPIN_FORCE);
 
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-																		0,
-																		bn::sprite_items::player.tiles_item(),
-																		0, 0);
+																	   0,
+																	   bn::sprite_items::player.tiles_item(),
+																	   13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15, 16, 16, 16, 16, 16,
+																	   13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15, 16, 16, 16, 16, 16,
+																	   13, 13, 13, 13, 13);
 
 		break;
 
@@ -1706,6 +1751,7 @@ void Player::resolveSmashBlockLargeCollision(GameObject& object)
 			object.applyHit(object.hitpoints, 0, 0);
 			rigidbody.removeYForces();
 			sprite_ptr->set_horizontal_scale(PLAYER_HEAD_BONK_H_STRETCH);
+			sprite_ptr->set_vertical_scale(PLAYER_HEAD_BONK_V_STRETCH);
 		}		
 
         // If there is still collision somehow, must be corner case //
@@ -1760,7 +1806,8 @@ void Player::resolveSmashBlockMiniCollision(GameObject& object)
 		{
 			object.applyHit(object.hitpoints, 0, 0);
 			rigidbody.removeYForces();
-			sprite_ptr->set_horizontal_scale(1.5);
+			sprite_ptr->set_horizontal_scale(PLAYER_HEAD_BONK_H_STRETCH);
+			sprite_ptr->set_vertical_scale(PLAYER_HEAD_BONK_V_STRETCH);
 		}
 
         // If there is still collision somehow, must be corner case //

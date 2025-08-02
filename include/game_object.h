@@ -78,7 +78,7 @@
 // Struct GameObject //
 ///////////////////////
 
-#define GAME_OBJECT_MAX_ANIM_FRAMES 40
+#define GAME_OBJECT_MAX_ANIM_FRAMES 48
 
 #define PROP_Z_ORDER          4
 #define SPIN_EFFECT_Z_ORDER   3
