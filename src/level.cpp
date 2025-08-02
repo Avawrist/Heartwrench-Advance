@@ -371,27 +371,21 @@ void Level::loadNew(LevelName level_name)
 
 void Level::update()
 {
-    if(current_level_name == LEVEL_TITLE_SCREEN) {updateTitleScreen();}
-    else if(menu_open)                           {updatePauseScreen();}
-    else if(cam_is_scrolling)                    {updateCamera();}
-    else                                         {updateAll();}
+    if(global_hitstop_frames <= 0)
+    {
+        if(current_level_name == LEVEL_TITLE_SCREEN) {updateTitleScreen();}
+        else if(menu_open)                           {updatePauseScreen();}
+        else if(cam_is_scrolling)                    {updateCamera();}
+        else                                         {updateAll();}
+    }
 
     // Update Global Timer
+    updateGlobalHitstop();
     updateGlobalTimer();
 }
 
 void Level::updateAll()
 {
-    if(global_hitstop_frames) 
-    {
-        global_hitstop_frames--;
-        if(global_hitstop_frames < 0) {global_hitstop_frames = 0;}
-
-        storePlayerInputs();
-
-        return;
-    }
-
     reloadOnDeath();
     updateObjects();
     updateCurrency();
@@ -430,7 +424,6 @@ void Level::updateObjects()
 
 void Level::updateCamera()
 {
-    if(global_hitstop_frames)                                          {return;}
     if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) == NULL) {return;}
 
     GameObject* temp_player_ptr = current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
@@ -513,7 +506,7 @@ void Level::updateCamera()
         new_cam_x = clamp(current_room.room_bounds.left_bound  + HALF_SCREEN_WIDTH,  
                           current_room.room_bounds.right_bound - HALF_SCREEN_WIDTH, 
                           new_cam_x + cam_look_x_offset + cam_look_dir_x_offset);
-        new_cam_y = clamp(current_room.room_bounds.top_bound   + HALF_SCREEN_HEIGHT, 
+        new_cam_y = clamp(current_room.room_bounds.top_bound    + HALF_SCREEN_HEIGHT, 
                           current_room.room_bounds.bottom_bound - HALF_SCREEN_HEIGHT,
                           new_cam_y);
 
@@ -564,6 +557,14 @@ void Level::updateCamera()
 
     // Update Painted BG //
     updatePaintedBG();
+}
+
+void Level::updateGlobalHitstop()
+{
+    global_hitstop_frames--;
+    if(global_hitstop_frames < 0) {global_hitstop_frames = 0;}
+
+    storePlayerInputs();
 }
 
 void Level::updateBGFlash()

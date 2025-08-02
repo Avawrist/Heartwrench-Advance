@@ -187,6 +187,7 @@ struct Level
     void updateAll();
     void updateObjects();
     void updateCamera();
+    void updateGlobalHitstop();
     void updateBGFlash();
     void updatePaintedBG();
     void updateGlobalTimer();

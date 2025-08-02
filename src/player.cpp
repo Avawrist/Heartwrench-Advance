@@ -1749,6 +1749,7 @@ void Player::resolveSmashBlockLargeCollision(GameObject& object)
 		if(col_y_offset > 0) 
 		{
 			object.applyHit(object.hitpoints, 0, 0);
+			
 			rigidbody.removeYForces();
 			sprite_ptr->set_horizontal_scale(PLAYER_HEAD_BONK_H_STRETCH);
 			sprite_ptr->set_vertical_scale(PLAYER_HEAD_BONK_V_STRETCH);
