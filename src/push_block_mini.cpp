@@ -545,6 +545,17 @@ void PushBlockMini::resolveTileCollision(const bn::regular_bg_ptr&              
                 resolveSteepSlope2Collision(other_collider, world_y);
             }
             
+			else if(tile_index >= CLIMBABLE_MIN_INDEX &&
+					tile_index <= CLIMBABLE_MAX_INDEX)
+			{
+				other_collider = Collider(world_x,
+										  world_y, 
+										  TILE_WIDTH, 
+										  TILE_HEIGHT);
+				
+				resolveClimbableCollision(other_collider);
+			}
+
             else if(tile_index >= ONEWAY_BLOCK_MIN_INDEX &&
                     tile_index <= ONEWAY_BLOCK_MAX_INDEX)
             {

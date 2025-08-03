@@ -228,6 +228,7 @@ enum ObjectState
 	PLAYER_WALL_SLIDE_LEFT,
 	PLAYER_PHASE_STEP,
 	PLAYER_SPIN_ATTACK,
+	PLAYER_CLIMB,
 
 	/////////////
 	// Generic //
@@ -464,6 +465,7 @@ struct GameObject
 	virtual void resolveShallowSlope4Collision(const Collider& other_collider, int32 world_y);
 	virtual void resolveSteepSlope1Collision(const Collider& other_collider, int32 world_y);
 	virtual void resolveSteepSlope2Collision(const Collider& other_collider, int32 world_y);
+	virtual void resolveClimbableCollision(const Collider& other_collider);
 	virtual void resolveOneWayBlockCollision(const Collider& other_collider);
 
 };

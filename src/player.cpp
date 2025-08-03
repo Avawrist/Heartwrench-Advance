@@ -53,6 +53,7 @@ Player::Player()
 	
 	wall_right_detected      = false;
     wall_left_detected       = false;
+	climbable_detected       = false;
 	grounded_owp_detected    = false;
 	left_wj_eligible         = false;
 	right_wj_eligible        = false;
@@ -113,6 +114,7 @@ Player::Player(const Player& other) : GameObject(other)
 
 	wall_right_detected      = other.wall_right_detected;
     wall_left_detected       = other.wall_left_detected;
+	climbable_detected       = other.climbable_detected;
 	grounded_owp_detected    = other.grounded_owp_detected;
 	left_wj_eligible         = other.left_wj_eligible;
 	right_wj_eligible        = other.right_wj_eligible;
@@ -182,6 +184,7 @@ Player& Player::operator =(const Player& other)
 
 	wall_right_detected      = other.wall_right_detected;
     wall_left_detected       = other.wall_left_detected;
+	climbable_detected       = other.climbable_detected;
 	grounded_owp_detected    = other.grounded_owp_detected;
 	left_wj_eligible         = other.left_wj_eligible;
 	right_wj_eligible        = other.right_wj_eligible;
@@ -216,8 +219,6 @@ Player& Player::operator =(const Player& other)
 
 void Player::jump()
 {
-	if(!late_jump_grace_frames) {return;}
-
 	remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
 	late_jump_grace_frames      = 0;
 	rigidbody.addForce(PLAYER_JUMP_FORCE);
@@ -499,7 +500,7 @@ void Player::updateTimers()
 		                       PLAYER_MAX_SPIN_EFFECT_FRAMES, 
 							   spin_effect_frames);
 							   
-	if(grounded_detected) {air_frames_elapsed = 0;}
+	if(grounded_detected || state == PLAYER_CLIMB) {air_frames_elapsed = 0;}
 
 	received_platform_force = false;
 
@@ -705,11 +706,11 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			///////////////
 
 			// Jump
-			if(bn::keypad::a_pressed() || jump_buffered_frames)
+			if(bn::keypad::a_pressed() || a_requested || jump_buffered_frames)
 			{jump();}
 
 			// Spin Attack
-			else if(bn::keypad::b_pressed() || spin_buffered_frames) 
+			else if(bn::keypad::b_pressed() || b_requested || spin_buffered_frames) 
 			{setState(PLAYER_SPIN_ATTACK);}
 
 			/////////////////
@@ -769,10 +770,10 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			}
 
 			// Jump
-			if(bn::keypad::a_pressed() || jump_buffered_frames) {jump();}
+			if(bn::keypad::a_pressed() || a_requested || jump_buffered_frames) {jump();}
 
 			// Spin Attack
-			else if(bn::keypad::b_pressed() || spin_buffered_frames) {setState(PLAYER_SPIN_ATTACK);}
+			else if(bn::keypad::b_pressed() || b_requested || spin_buffered_frames) {setState(PLAYER_SPIN_ATTACK);}
 
 			// Add Gravity 
 			if(!grounded_detected)
@@ -847,7 +848,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			}
 
 			// Spin
-			else if(bn::keypad::b_pressed() || spin_buffered_frames)
+			else if(bn::keypad::b_pressed() || b_requested || spin_buffered_frames)
 			{setState(PLAYER_SPIN_ATTACK);}
 
 			// High Jump
@@ -1084,7 +1085,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			///////////////
 
 			// Early jump breakout
-			if(bn::keypad::a_pressed() &&
+			if((bn::keypad::a_pressed() || a_requested || jump_buffered_frames) &&
 			   current_phase_frame >= PLAYER_PHASE_JUMP_LOCKOUT_FRAMES && 
 			   clear_to_jump)
 			{
@@ -1246,10 +1247,10 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			}
 
 			// Spin Jump
-			if((a_requested || bn::keypad::a_pressed())) {spinJump();}
+			if((bn::keypad::a_pressed() || a_requested || jump_buffered_frames)) {spinJump();}
 
 			// Spin Buffer
-			else if(bn::keypad::b_pressed())
+			else if(bn::keypad::b_pressed() || b_requested)
 			{spin_buffered_frames = PLAYER_SPIN_BUFFER_FRAMES;}
 
 			// High Jump
@@ -1273,6 +1274,43 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 		break;
 
+		case PLAYER_CLIMB:
+
+			///////////////
+			// Get Input //
+			///////////////
+
+			// X Axis climb
+			if(bn::keypad::left_held()) 	  {x_dir = LEFT;  rigidbody.addForce(PLAYER_CLIMB_LEFT_FORCE);}
+			else if(bn::keypad::right_held()) {x_dir = RIGHT; rigidbody.addForce(PLAYER_CLIMB_RIGHT_FORCE);}
+
+			// Y Axis climb
+			if(bn::keypad::up_held()) 		 {rigidbody.addForce(PLAYER_CLIMB_UP_FORCE);}
+			else if(bn::keypad::down_held()) {rigidbody.addForce(PLAYER_CLIMB_DOWN_FORCE);}
+
+			// Jump
+			if(bn::keypad::a_pressed() || a_requested || jump_buffered_frames)
+			{
+				jump(); 
+				setState(NONE);
+			}
+
+			/////////////
+			// Animate //
+			/////////////
+
+			///////////////
+			// End State //
+			///////////////
+
+			if(!climbable_detected)
+			{
+				late_jump_grace_frames = PLAYER_LATE_JUMP_GRACE_FRAMES; 
+				setState(NONE);
+			}
+
+		break;
+
 		case OBJECT_DEATH:
 
 			updateDeathState();
@@ -1286,6 +1324,9 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 	// Reset walljump variables
 	left_wj_eligible  = false;
 	right_wj_eligible = false;
+
+	// Reset climb variable
+	climbable_detected = false;
 }
 
 void Player::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
@@ -1298,6 +1339,7 @@ void Player::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_obj
 	//////////////////
 
 	if(state != PLAYER_SPIN_ATTACK     &&
+	   state != PLAYER_CLIMB           &&
 	   state != PLAYER_PHASE_STEP      &&
 	   state != OBJECT_DEATH)
 	{
@@ -1425,6 +1467,15 @@ void Player::setState(ObjectState new_state)
 																	   13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15, 16, 16, 16, 16, 16,
 																	   13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15, 16, 16, 16, 16, 16,
 																	   13, 13, 13, 13, 13);
+
+		break;
+
+		case PLAYER_CLIMB:
+
+			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+																	   0,
+																	   bn::sprite_items::player.tiles_item(),
+																	   0, 0);
 
 		break;
 
@@ -2212,6 +2263,17 @@ void Player::resolveTileCollision(const bn::regular_bg_ptr&                     
 					resolveSteepSlope2Collision(other_collider, world_y);
 				}
 				
+				else if(tile_index >= CLIMBABLE_MIN_INDEX &&
+						tile_index <= CLIMBABLE_MAX_INDEX)
+				{
+					other_collider = Collider(world_x,
+											  world_y, 
+											  TILE_WIDTH, 
+											  TILE_HEIGHT);
+					
+					resolveClimbableCollision(other_collider);
+				}
+
 				else if(tile_index >= ONEWAY_BLOCK_MIN_INDEX &&
 						tile_index <= ONEWAY_BLOCK_MAX_INDEX)
 				{
@@ -2274,6 +2336,24 @@ void Player::resolveHardBlockCollision(const Collider& other_collider)
 			!bn::keypad::down_held()) 
 		{wall_left_detected = true;}
 	}
+}
+
+void Player::resolveClimbableCollision(const Collider& other_collider)
+{
+	if(collider.isCollision(other_collider))
+    {
+		// Set bool
+		climbable_detected = true;
+
+		if((bn::keypad::up_held() || bn::keypad::down_held()) && state != PLAYER_CLIMB)
+		{
+			// Remove forces
+			rigidbody.removeForces();
+
+			// Set state
+			setState(PLAYER_CLIMB);
+		}
+    }
 }
 
 void Player::resolveOneWayBlockCollision(const Collider& other_collider)

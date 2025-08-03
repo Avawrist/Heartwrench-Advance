@@ -487,14 +487,13 @@ void Level::updateCamera()
         ////////////////////////////////////
         // Determine camera Y look offset //
         ////////////////////////////////////
-        if(bn::keypad::up_held())                                              {cam_look_y_offset--;}
+        if(bn::keypad::up_held()        && temp_player_ptr->grounded_detected) {cam_look_y_offset--;}
         else if(bn::keypad::down_held() && temp_player_ptr->grounded_detected) {cam_look_y_offset++;}
         else
         {
             if(cam_look_y_offset > 0)      {cam_look_y_offset--;}
             else if(cam_look_y_offset < 0) {cam_look_y_offset++;}
         }
-        
 
         cam_look_x_offset = clamp(-CAM_MAX_LOOK_X, CAM_MAX_LOOK_X, cam_look_x_offset);
         cam_look_dir_x_offset = clamp(-CAM_MAX_DIR_LOOK_X, CAM_MAX_DIR_LOOK_X, cam_look_dir_x_offset);

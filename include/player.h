@@ -51,6 +51,9 @@
 #define X_SPEED_ACC_RATE      0.1
 #define X_SPEED_DECAY_RATE    0.075
 
+#define PLAYER_CLIMB_SPEED 1
+#define PLAYER_CLIMB_DECAY 1
+
 #define PLAYER_BASE_JUMP_FORCE -7 // 2 block height at 0.033 decay rate
 #define PLAYER_JUMP_DECAY       0.033
 
@@ -154,6 +157,11 @@
 #define PLAYER_PHASE_STEP_EXIT_FORCE_LEFT  Force(bn::fixed_point_t<12>(-PLAYER_PHASE_STEP_EXIT_X_FORCE, 0), PLAYER_PHASE_STEP_EXIT_DECAY)
 #define PLAYER_PHASE_STEP_EXIT_FORCE_RIGHT Force(bn::fixed_point_t<12>(PLAYER_PHASE_STEP_EXIT_X_FORCE,  0), PLAYER_PHASE_STEP_EXIT_DECAY)
 
+#define PLAYER_CLIMB_UP_FORCE Force(bn::fixed_point_t<12>(0, -PLAYER_CLIMB_SPEED), PLAYER_CLIMB_DECAY)
+#define PLAYER_CLIMB_DOWN_FORCE Force(bn::fixed_point_t<12>(0, PLAYER_CLIMB_SPEED), PLAYER_CLIMB_DECAY)
+#define PLAYER_CLIMB_LEFT_FORCE Force(bn::fixed_point_t<12>(-PLAYER_CLIMB_SPEED, 0), PLAYER_CLIMB_DECAY)
+#define PLAYER_CLIMB_RIGHT_FORCE Force(bn::fixed_point_t<12>(PLAYER_CLIMB_SPEED, 0), PLAYER_CLIMB_DECAY)
+
 #define PLAYER_SPIN_FORCE Force(bn::fixed_point_t<12>(PLAYER_SPIN_X_FORCE * (int32)(x_dir), 0), PLAYER_SPIN_DECAY)
 
 enum PhaseDir
@@ -188,6 +196,7 @@ struct Player : GameObject {
 
 	bool wall_right_detected;
     bool wall_left_detected;
+	bool climbable_detected;
 	bool grounded_owp_detected;
 	bool left_wj_eligible;
 	bool right_wj_eligible;
@@ -310,6 +319,7 @@ struct Player : GameObject {
 							  const bn::regular_bg_item&                     bg_item) override;
 
 	void resolveHardBlockCollision(const Collider& other_collider)   override;
+	void resolveClimbableCollision(const Collider& other_collider)   override;
 	void resolveOneWayBlockCollision(const Collider& other_collider) override;
 };
 
