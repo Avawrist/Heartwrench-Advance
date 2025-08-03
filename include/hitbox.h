@@ -58,7 +58,7 @@ struct Hitbox : GameObject
 
     Hitbox& operator =(const Hitbox& other);
 
-    void applyHit(GameObject& object);
+    void applyHBHit(GameObject& object);
     void applyWallHit(GameObject& object);
 
     //////////////////////////

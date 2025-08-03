@@ -378,7 +378,7 @@ struct GameObject
 	void clampPosition(const RoomBounds& room_bounds);
 	virtual void setHitFlash();
 	virtual void setHitFlash(int32 frames);
-	void applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_dir);
+	virtual void applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_dir);
 	void applyDamage(int32 _damage);
 	void applyHP(int32 points);
 	void applyHitEffect(int32 x, int32 y);

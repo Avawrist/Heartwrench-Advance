@@ -43,9 +43,9 @@ typedef int   int32;
 #define PLAYER_OBJECT_LIST_INDEX 0
 
 // === Tile Indexes === //
-#define NO_BLOCK_INDEX              0
-#define HARD_BLOCK_MIN_INDEX        1
-#define HARD_BLOCK_MAX_INDEX        90
+#define NO_BLOCK_INDEX       0
+#define HARD_BLOCK_MIN_INDEX 1
+#define HARD_BLOCK_MAX_INDEX 90
 
 #define H_GEAR_LEFT    98
 #define H_GEAR_MID_MIN 99
@@ -53,26 +53,26 @@ typedef int   int32;
 #define H_GEAR_RIGHT   102
 
 #define V_GEAR_TOP    103
-#define V_GEAR_MID_1  119
+#define V_GEAR_MID_1  120
 #define V_GEAR_MID_2  105
 #define V_GEAR_MID_3  107
-#define V_GEAR_BOTTOM 121
+#define V_GEAR_BOTTOM 122
 
-#define SPIKE_MIN_INDEX 123
-#define SPIKE_MAX_INDEX 146
+#define SPIKE_MIN_INDEX 124
+#define SPIKE_MAX_INDEX 137
 
-#define ONEWAY_BLOCK_MIN_INDEX 147
-#define ONEWAY_BLOCK_MAX_INDEX 150
+#define ONEWAY_BLOCK_MIN_INDEX 138
+#define ONEWAY_BLOCK_MAX_INDEX 141
 
-#define SHALLOW_SLOPE_1_INDEX  151
-#define SHALLOW_SLOPE_2_INDEX  152
-#define SHALLOW_SLOPE_3_INDEX  153
-#define SHALLOW_SLOPE_4_INDEX  154
+#define SHALLOW_SLOPE_1_INDEX  142
+#define SHALLOW_SLOPE_2_INDEX  143
+#define SHALLOW_SLOPE_3_INDEX  144
+#define SHALLOW_SLOPE_4_INDEX  145
 
-#define STEEP_SLOPE_1_INDEX 155
-#define STEEP_SLOPE_2_INDEX 156
+#define STEEP_SLOPE_1_INDEX 146
+#define STEEP_SLOPE_2_INDEX 147
 
-#define TILE_TOTAL_COUNT 156
+#define TILE_TOTAL_COUNT 240
 
 // Tile Dimensions //
 #define TILE_WIDTH  8

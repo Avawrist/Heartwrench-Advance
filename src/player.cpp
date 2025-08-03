@@ -651,8 +651,6 @@ void Player::applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_di
 
     // Object juice:
     setHitFlash();
-    applyHitEffect(x().integer(),
-                   y().integer());
 }
 
 void Player::setHitFlash()
@@ -1433,9 +1431,10 @@ void Player::setState(ObjectState new_state)
 		case OBJECT_DEATH:
 
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-																		0,
+																		1,
 																		bn::sprite_items::player.tiles_item(),
-																		0, 0);
+																		17, 17, 17, 18, 18, 18, 19, 19, 19, 
+																		20, 20, 20, 21, 21, 21, 22, 22, 22);
 
 		break;
 

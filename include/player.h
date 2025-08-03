@@ -258,7 +258,7 @@ struct Player : GameObject {
 
 	void setHitFlash(int32 frames) override;
 
-	void applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_dir);
+	void applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_dir) override;
 
 	//////////////////////////////
 	// State Function Overrides //

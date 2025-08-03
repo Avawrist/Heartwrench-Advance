@@ -96,7 +96,7 @@ Hitbox& Hitbox::operator =(const Hitbox& other)
     return *this;
 }
 
-void Hitbox::applyHit(GameObject& object)
+void Hitbox::applyHBHit(GameObject& object)
 {
     if(object.invulnerability_frames) {return;}
     
@@ -210,26 +210,26 @@ void Hitbox::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&      
 void Hitbox::resolvePushBlockCollision(GameObject& object)
 {
     if(collider.isCollision(object.collider))
-    {applyHit(object);}
+    {applyHBHit(object);}
 }
 
 void Hitbox::resolvePushBlockMiniCollision(GameObject& object)
 {
     if(collider.isCollision(object.collider))
-    {applyHit(object);}
+    {applyHBHit(object);}
 }
 
 // Level Enemies
 void Hitbox::resolveThornColumnCollision(GameObject& object)
 {
     if(collider.isCollision(object.collider))
-    {applyHit(object);}
+    {applyHBHit(object);}
 }
 
 void Hitbox::resolveThornBarCollision(GameObject& object)
 {
     if(collider.isCollision(object.collider))
-    {applyHit(object);}
+    {applyHBHit(object);}
 }
 
 void Hitbox::resolveGroundGhoulCollision(GameObject& object)
@@ -237,7 +237,7 @@ void Hitbox::resolveGroundGhoulCollision(GameObject& object)
     if(object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
-    {applyHit(object);}
+    {applyHBHit(object);}
 }
 
 void Hitbox::resolveSmashBlockLargeCollision(GameObject& object)
@@ -245,7 +245,7 @@ void Hitbox::resolveSmashBlockLargeCollision(GameObject& object)
     if(object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
-    {applyHit(object);}
+    {applyHBHit(object);}
 }
 
 void Hitbox::resolveSmashBlockMiniCollision(GameObject& object)
@@ -253,7 +253,7 @@ void Hitbox::resolveSmashBlockMiniCollision(GameObject& object)
     if(object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
-    {applyHit(object);}
+    {applyHBHit(object);}
 }
 
 void Hitbox::resolveLargeVaseCollision(GameObject& object)
@@ -261,7 +261,7 @@ void Hitbox::resolveLargeVaseCollision(GameObject& object)
     if(object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
-    {applyHit(object);}
+    {applyHBHit(object);}
 }
 
 void Hitbox::resolveSmallVaseCollision(GameObject& object)
@@ -269,7 +269,7 @@ void Hitbox::resolveSmallVaseCollision(GameObject& object)
     if(object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
-    {applyHit(object);}
+    {applyHBHit(object);}
 }
 
 void Hitbox::resolveHPTotemCollision(GameObject& object)
@@ -277,7 +277,7 @@ void Hitbox::resolveHPTotemCollision(GameObject& object)
     if(object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
-    {applyHit(object);}
+    {applyHBHit(object);}
 }
 
 void Hitbox::resolveHPDropCollision(GameObject& object)
@@ -285,7 +285,7 @@ void Hitbox::resolveHPDropCollision(GameObject& object)
     if(object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
-    {applyHit(object);}
+    {applyHBHit(object);}
 }
 
 // Tiles

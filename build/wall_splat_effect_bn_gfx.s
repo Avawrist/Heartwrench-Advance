@@ -8,7 +8,7 @@
 @	+ 128 tiles not compressed
 @	Total size: 32 + 4096 = 4128
 @
-@	Time-stamp: 2025-08-01, 20:37:05
+@	Time-stamp: 2025-08-02, 17:07:13
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -168,7 +168,7 @@ wall_splat_effect_bn_gfxTiles:
 	.global wall_splat_effect_bn_gfxPal		@ 32 unsigned chars
 	.hidden wall_splat_effect_bn_gfxPal
 wall_splat_effect_bn_gfxPal:
-	.hword 0x1485,0x2C70,0x5AB3,0x1DB9,0x265C,0x2AFF,0x1CA8,0x38ED
+	.hword 0x1485,0x2C70,0x5AB3,0x3D3E,0x421E,0x4A9F,0x1CA8,0x38ED
 	.hword 0x5572,0x3161,0x4621,0x4EA1,0x5F86,0x1CFD,0x0DBF,0x0A5E
 
 @}}BLOCK(wall_splat_effect_bn_gfx)
