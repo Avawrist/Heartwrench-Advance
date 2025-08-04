@@ -48,6 +48,9 @@ Player::Player()
 	spin_effect_frames               = 0;
 	spin_effect_offset_multiplier    = 0;
 	currency_collected				 = 0;
+	climb_regrab_cooldown            = 0;
+
+	current_climb_index = 0;
 
 	max_hp = PLAYER_MAX_HITPOINTS;
 	
@@ -111,6 +114,9 @@ Player::Player(const Player& other) : GameObject(other)
 	spin_effect_frames               = other.spin_effect_frames;
 	spin_effect_offset_multiplier    = other.spin_effect_offset_multiplier;
 	currency_collected               = other.currency_collected;
+	climb_regrab_cooldown            = other.climb_regrab_cooldown;
+
+	current_climb_index              = other.current_climb_index;
 
 	wall_right_detected      = other.wall_right_detected;
     wall_left_detected       = other.wall_left_detected;
@@ -181,6 +187,9 @@ Player& Player::operator =(const Player& other)
 	spin_effect_frames               = other.spin_effect_frames;
 	spin_effect_offset_multiplier    = other.spin_effect_offset_multiplier;
 	currency_collected               = other.currency_collected;
+	climb_regrab_cooldown            = other.climb_regrab_cooldown;
+
+	current_climb_index              = other.current_climb_index;
 
 	wall_right_detected      = other.wall_right_detected;
     wall_left_detected       = other.wall_left_detected;
@@ -495,10 +504,16 @@ void Player::updateTimers()
 	air_frames_elapsed = clamp(0, 
 							   PLAYER_MAX_AIR_FRAMES, 
 							   air_frames_elapsed);
+
 	spin_effect_frames--;
 	spin_effect_frames = clamp(0, 
 		                       PLAYER_MAX_SPIN_EFFECT_FRAMES, 
 							   spin_effect_frames);
+
+	climb_regrab_cooldown--;
+	climb_regrab_cooldown = clamp(0, 
+		 						  PLAYER_CLIMB_REGRAB_CD_FRAMES, 
+								  climb_regrab_cooldown);
 							   
 	if(grounded_detected || state == PLAYER_CLIMB) {air_frames_elapsed = 0;}
 
@@ -1281,16 +1296,35 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			///////////////
 
 			// X Axis climb
-			if(bn::keypad::left_held()) 	  {x_dir = LEFT;  rigidbody.addForce(PLAYER_CLIMB_LEFT_FORCE);}
-			else if(bn::keypad::right_held()) {x_dir = RIGHT; rigidbody.addForce(PLAYER_CLIMB_RIGHT_FORCE);}
+			if(bn::keypad::left_held()) 	  
+			{
+				x_dir = LEFT;
+				current_climb_index += 0.25;  
+				rigidbody.addForce(PLAYER_CLIMB_LEFT_FORCE);
+			}
+			else if(bn::keypad::right_held()) 
+			{
+				x_dir = RIGHT; 
+				current_climb_index += 0.25;
+				rigidbody.addForce(PLAYER_CLIMB_RIGHT_FORCE);
+			}
 
 			// Y Axis climb
-			if(bn::keypad::up_held()) 		 {rigidbody.addForce(PLAYER_CLIMB_UP_FORCE);}
-			else if(bn::keypad::down_held()) {rigidbody.addForce(PLAYER_CLIMB_DOWN_FORCE);}
+			if(bn::keypad::up_held()) 		 
+			{
+				current_climb_index += 0.25;
+				rigidbody.addForce(PLAYER_CLIMB_UP_FORCE);
+			}
+			else if(bn::keypad::down_held()) 
+			{
+				current_climb_index += 0.25;
+				rigidbody.addForce(PLAYER_CLIMB_DOWN_FORCE);
+			}
 
 			// Jump
 			if(bn::keypad::a_pressed() || a_requested || jump_buffered_frames)
 			{
+				climb_regrab_cooldown = PLAYER_CLIMB_REGRAB_CD_FRAMES;
 				jump(); 
 				setState(NONE);
 			}
@@ -1298,6 +1332,16 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			/////////////
 			// Animate //
 			/////////////
+
+			// Wrap index
+			if(current_climb_index >= PLAYER_MAX_CLIMB_INDEX + 1)
+			{current_climb_index = PLAYER_MIN_CLIMB_INDEX;}
+
+			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+																	   0,
+																	   bn::sprite_items::player.tiles_item(),
+																	   current_climb_index.floor_integer(), 
+																	   current_climb_index.floor_integer());
 
 			///////////////
 			// End State //
@@ -1472,10 +1516,11 @@ void Player::setState(ObjectState new_state)
 
 		case PLAYER_CLIMB:
 
-			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-																	   0,
-																	   bn::sprite_items::player.tiles_item(),
-																	   0, 0);
+			current_climb_index = PLAYER_MIN_CLIMB_INDEX;
+			animate_action_ptr  = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+																	    0,
+																	    bn::sprite_items::player.tiles_item(),
+																	    23, 23);
 
 		break;
 
@@ -2345,7 +2390,9 @@ void Player::resolveClimbableCollision(const Collider& other_collider)
 		// Set bool
 		climbable_detected = true;
 
-		if((bn::keypad::up_held() || bn::keypad::down_held()) && state != PLAYER_CLIMB)
+		if((bn::keypad::up_held() || bn::keypad::down_held()) && 
+		   state != PLAYER_CLIMB &&
+		   climb_regrab_cooldown <= 0)
 		{
 			// Remove forces
 			rigidbody.removeForces();

@@ -53,6 +53,9 @@
 
 #define PLAYER_CLIMB_SPEED 1
 #define PLAYER_CLIMB_DECAY 1
+#define PLAYER_MIN_CLIMB_INDEX 24
+#define PLAYER_MAX_CLIMB_INDEX 27
+#define PLAYER_CLIMB_REGRAB_CD_FRAMES 20
 
 #define PLAYER_BASE_JUMP_FORCE -7 // 2 block height at 0.033 decay rate
 #define PLAYER_JUMP_DECAY       0.033
@@ -193,6 +196,9 @@ struct Player : GameObject {
 	int32 spin_effect_frames;
 	int32 spin_effect_offset_multiplier;
 	int32 currency_collected;
+	int32 climb_regrab_cooldown;
+	
+	bn::fixed current_climb_index;
 
 	bool wall_right_detected;
     bool wall_left_detected;
