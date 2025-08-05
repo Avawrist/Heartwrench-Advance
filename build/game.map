@@ -85,6 +85,18 @@ Discarded input sections
  .text          0x00000000        0x0 moon_drop_bn_gfx.o
  .data          0x00000000        0x0 moon_drop_bn_gfx.o
  .bss           0x00000000        0x0 moon_drop_bn_gfx.o
+ .text          0x00000000        0x0 name_card_level_bg_bn_gfx.o
+ .data          0x00000000        0x0 name_card_level_bg_bn_gfx.o
+ .bss           0x00000000        0x0 name_card_level_bg_bn_gfx.o
+ .rodata        0x00000000      0x860 name_card_level_bg_bn_gfx.o
+ .text          0x00000000        0x0 name_card_object_bg_bn_gfx.o
+ .data          0x00000000        0x0 name_card_object_bg_bn_gfx.o
+ .bss           0x00000000        0x0 name_card_object_bg_bn_gfx.o
+ .rodata        0x00000000      0x860 name_card_object_bg_bn_gfx.o
+ .text          0x00000000        0x0 name_card_painted_bg_bn_gfx.o
+ .data          0x00000000        0x0 name_card_painted_bg_bn_gfx.o
+ .bss           0x00000000        0x0 name_card_painted_bg_bn_gfx.o
+ .rodata        0x00000000      0xfe0 name_card_painted_bg_bn_gfx.o
  .text          0x00000000        0x0 pause_screen_bn_gfx.o
  .data          0x00000000        0x0 pause_screen_bn_gfx.o
  .bss           0x00000000        0x0 pause_screen_bn_gfx.o
@@ -11792,321 +11804,327 @@ Linker script and memory map
  .ARM.attributes
                 0x00000220       0x1a moon_drop_bn_gfx.o
  .ARM.attributes
-                0x0000023a       0x1a pause_screen_bn_gfx.o
+                0x0000023a       0x1a name_card_level_bg_bn_gfx.o
  .ARM.attributes
-                0x00000254       0x1a phase_marker_bn_gfx.o
+                0x00000254       0x1a name_card_object_bg_bn_gfx.o
  .ARM.attributes
-                0x0000026e       0x1a phase_orb_down_bn_gfx.o
+                0x0000026e       0x1a name_card_painted_bg_bn_gfx.o
  .ARM.attributes
-                0x00000288       0x1a phase_orb_left_bn_gfx.o
+                0x00000288       0x1a pause_screen_bn_gfx.o
  .ARM.attributes
-                0x000002a2       0x1a phase_orb_right_bn_gfx.o
+                0x000002a2       0x1a phase_marker_bn_gfx.o
  .ARM.attributes
-                0x000002bc       0x1a phase_orb_up_bn_gfx.o
+                0x000002bc       0x1a phase_orb_down_bn_gfx.o
  .ARM.attributes
-                0x000002d6       0x1a player_bn_gfx.o
+                0x000002d6       0x1a phase_orb_left_bn_gfx.o
  .ARM.attributes
-                0x000002f0       0x1a player_flash_palette_bn_gfx.o
+                0x000002f0       0x1a phase_orb_right_bn_gfx.o
  .ARM.attributes
-                0x0000030a       0x1a push_block_bn_gfx.o
+                0x0000030a       0x1a phase_orb_up_bn_gfx.o
  .ARM.attributes
-                0x00000324       0x1a push_block_mini_bn_gfx.o
+                0x00000324       0x1a player_bn_gfx.o
  .ARM.attributes
-                0x0000033e       0x1a small_vase_bn_gfx.o
+                0x0000033e       0x1a player_flash_palette_bn_gfx.o
  .ARM.attributes
-                0x00000358       0x1a smash_block_large_bn_gfx.o
+                0x00000358       0x1a push_block_bn_gfx.o
  .ARM.attributes
-                0x00000372       0x1a smash_block_mini_bn_gfx.o
+                0x00000372       0x1a push_block_mini_bn_gfx.o
  .ARM.attributes
-                0x0000038c       0x1a sprite_flash_palette_bn_gfx.o
+                0x0000038c       0x1a small_vase_bn_gfx.o
  .ARM.attributes
-                0x000003a6       0x1a sprite_spin_effect_palette_bn_gfx.o
+                0x000003a6       0x1a smash_block_large_bn_gfx.o
  .ARM.attributes
-                0x000003c0       0x1a sprite_white_palette_bn_gfx.o
+                0x000003c0       0x1a smash_block_mini_bn_gfx.o
  .ARM.attributes
-                0x000003da       0x1a star_drop_bn_gfx.o
+                0x000003da       0x1a sprite_flash_palette_bn_gfx.o
  .ARM.attributes
-                0x000003f4       0x1a thorn_bar_bn_gfx.o
+                0x000003f4       0x1a sprite_spin_effect_palette_bn_gfx.o
  .ARM.attributes
-                0x0000040e       0x1a thorn_column_bn_gfx.o
+                0x0000040e       0x1a sprite_white_palette_bn_gfx.o
  .ARM.attributes
-                0x00000428       0x1a tile_passage_bn_gfx.o
+                0x00000428       0x1a star_drop_bn_gfx.o
  .ARM.attributes
-                0x00000442       0x1a title_screen_level_bg_bn_gfx.o
+                0x00000442       0x1a thorn_bar_bn_gfx.o
  .ARM.attributes
-                0x0000045c       0x1a title_screen_object_bg_bn_gfx.o
+                0x0000045c       0x1a thorn_column_bn_gfx.o
  .ARM.attributes
-                0x00000476       0x1a title_screen_painted_bg_bn_gfx.o
+                0x00000476       0x1a tile_passage_bn_gfx.o
  .ARM.attributes
-                0x00000490       0x1a wall_jump_effect_bn_gfx.o
+                0x00000490       0x1a title_screen_level_bg_bn_gfx.o
  .ARM.attributes
-                0x000004aa       0x1a wall_splat_effect_bn_gfx.o
+                0x000004aa       0x1a title_screen_object_bg_bn_gfx.o
  .ARM.attributes
-                0x000004c4       0x1a ziggurat_1_level_bg_bn_gfx.o
+                0x000004c4       0x1a title_screen_painted_bg_bn_gfx.o
  .ARM.attributes
-                0x000004de       0x1a ziggurat_1_object_bg_bn_gfx.o
+                0x000004de       0x1a wall_jump_effect_bn_gfx.o
  .ARM.attributes
-                0x000004f8       0x1a ziggurat_1_painted_bg_bn_gfx.o
+                0x000004f8       0x1a wall_splat_effect_bn_gfx.o
  .ARM.attributes
-                0x00000512       0x26 auto_platform.o
+                0x00000512       0x1a ziggurat_1_level_bg_bn_gfx.o
  .ARM.attributes
-                0x00000538       0x26 candelabra.o
+                0x0000052c       0x1a ziggurat_1_object_bg_bn_gfx.o
  .ARM.attributes
-                0x0000055e       0x26 collider.o
+                0x00000546       0x1a ziggurat_1_painted_bg_bn_gfx.o
  .ARM.attributes
-                0x00000584       0x26 enemy.o
+                0x00000560       0x26 auto_platform.o
  .ARM.attributes
-                0x000005aa       0x26 falling_platform_thin.o
+                0x00000586       0x26 candelabra.o
  .ARM.attributes
-                0x000005d0       0x26 falling_platform_wide.o
+                0x000005ac       0x26 collider.o
  .ARM.attributes
-                0x000005f6       0x26 game_object.o
+                0x000005d2       0x26 enemy.o
  .ARM.attributes
-                0x0000061c       0x26 ground_ghoul.o
+                0x000005f8       0x26 falling_platform_thin.o
  .ARM.attributes
-                0x00000642       0x26 hitbox.o
+                0x0000061e       0x26 falling_platform_wide.o
  .ARM.attributes
-                0x00000668       0x26 hp_drop.o
+                0x00000644       0x26 game_object.o
  .ARM.attributes
-                0x0000068e       0x26 hp_totem.o
+                0x0000066a       0x26 ground_ghoul.o
  .ARM.attributes
-                0x000006b4       0x26 large_vase.o
+                0x00000690       0x26 hitbox.o
  .ARM.attributes
-                0x000006da       0x26 level.o
+                0x000006b6       0x26 hp_drop.o
  .ARM.attributes
-                0x00000700       0x26 main.o
+                0x000006dc       0x26 hp_totem.o
  .ARM.attributes
-                0x00000726       0x26 moon_drop.o
+                0x00000702       0x26 large_vase.o
  .ARM.attributes
-                0x0000074c       0x26 new_object_template.o
+                0x00000728       0x26 level.o
  .ARM.attributes
-                0x00000772       0x26 phase_orb.o
+                0x0000074e       0x26 main.o
  .ARM.attributes
-                0x00000798       0x26 physics.o
+                0x00000774       0x26 moon_drop.o
  .ARM.attributes
-                0x000007be       0x26 player.o
+                0x0000079a       0x26 new_object_template.o
  .ARM.attributes
-                0x000007e4       0x26 prop.o
+                0x000007c0       0x26 phase_orb.o
  .ARM.attributes
-                0x0000080a       0x26 push_block.o
+                0x000007e6       0x26 physics.o
  .ARM.attributes
-                0x00000830       0x26 push_block_mini.o
+                0x0000080c       0x26 player.o
  .ARM.attributes
-                0x00000856       0x26 room.o
+                0x00000832       0x26 prop.o
  .ARM.attributes
-                0x0000087c       0x26 room_bounds.o
+                0x00000858       0x26 push_block.o
  .ARM.attributes
-                0x000008a2       0x26 small_vase.o
+                0x0000087e       0x26 push_block_mini.o
  .ARM.attributes
-                0x000008c8       0x26 smash_block_large.o
+                0x000008a4       0x26 room.o
  .ARM.attributes
-                0x000008ee       0x26 smash_block_mini.o
+                0x000008ca       0x26 room_bounds.o
  .ARM.attributes
-                0x00000914       0x26 star_drop.o
+                0x000008f0       0x26 small_vase.o
  .ARM.attributes
-                0x0000093a       0x26 thorn_bar.o
+                0x00000916       0x26 smash_block_large.o
  .ARM.attributes
-                0x00000960       0x26 thorn_column.o
+                0x0000093c       0x26 smash_block_mini.o
  .ARM.attributes
-                0x00000986       0x26 tile_passage.o
+                0x00000962       0x26 star_drop.o
  .ARM.attributes
-                0x000009ac       0x26 utility.o
+                0x00000988       0x26 thorn_bar.o
  .ARM.attributes
-                0x000009d2       0x26 bn_affine_bg_animate_actions.o
+                0x000009ae       0x26 thorn_column.o
  .ARM.attributes
-                0x000009f8       0x26 bn_audio_manager.o
+                0x000009d4       0x26 tile_passage.o
  .ARM.attributes
-                0x00000a1e       0x26 bn_best_fit_allocator.o
+                0x000009fa       0x26 utility.o
  .ARM.attributes
-                0x00000a44       0x26 bn_bg_blocks_manager.o
+                0x00000a20       0x26 bn_affine_bg_animate_actions.o
  .ARM.attributes
-                0x00000a6a       0x26 bn_bgs_manager.o
+                0x00000a46       0x26 bn_audio_manager.o
  .ARM.attributes
-                0x00000a90       0x26 bn_cameras_manager.o
+                0x00000a6c       0x26 bn_best_fit_allocator.o
  .ARM.attributes
-                0x00000ab6       0x26 bn_core.o
+                0x00000a92       0x26 bn_bg_blocks_manager.o
  .ARM.attributes
-                0x00000adc       0x26 bn_display_manager.o
+                0x00000ab8       0x26 bn_bgs_manager.o
  .ARM.attributes
-                0x00000b02       0x26 bn_gpio_manager.o
+                0x00000ade       0x26 bn_cameras_manager.o
  .ARM.attributes
-                0x00000b28       0x26 bn_hblank_effects_manager.o
+                0x00000b04       0x26 bn_core.o
  .ARM.attributes
-                0x00000b4e       0x26 bn_hdma_manager.o
+                0x00000b2a       0x26 bn_display_manager.o
  .ARM.attributes
-                0x00000b74       0x26 bn_keypad_manager.o
+                0x00000b50       0x26 bn_gpio_manager.o
  .ARM.attributes
-                0x00000b9a       0x26 bn_link_manager.o
+                0x00000b76       0x26 bn_hblank_effects_manager.o
  .ARM.attributes
-                0x00000bc0       0x26 bn_memory_manager.o
+                0x00000b9c       0x26 bn_hdma_manager.o
  .ARM.attributes
-                0x00000be6       0x26 bn_palettes_manager.o
+                0x00000bc2       0x26 bn_keypad_manager.o
  .ARM.attributes
-                0x00000c0c       0x26 bn_profiler.o
+                0x00000be8       0x26 bn_link_manager.o
  .ARM.attributes
-                0x00000c32       0x26 bn_regular_bg_animate_actions.o
+                0x00000c0e       0x26 bn_memory_manager.o
  .ARM.attributes
-                0x00000c58       0x26 bn_sprite_affine_mats_manager.o
+                0x00000c34       0x26 bn_palettes_manager.o
  .ARM.attributes
-                0x00000c7e       0x26 bn_sprite_animate_actions.o
+                0x00000c5a       0x26 bn_profiler.o
  .ARM.attributes
-                0x00000ca4       0x26 bn_sprite_text_generator.o
+                0x00000c80       0x26 bn_regular_bg_animate_actions.o
  .ARM.attributes
-                0x00000cca       0x26 bn_sprite_tiles_manager.o
+                0x00000ca6       0x26 bn_sprite_affine_mats_manager.o
  .ARM.attributes
-                0x00000cf0       0x26 bn_sprites_manager.bn_iwram.o
+                0x00000ccc       0x26 bn_sprite_animate_actions.o
  .ARM.attributes
-                0x00000d16       0x26 bn_sprites_manager.o
+                0x00000cf2       0x26 bn_sprite_text_generator.o
  .ARM.attributes
-                0x00000d3c       0x26 bn_sstream.o
+                0x00000d18       0x26 bn_sprite_tiles_manager.o
  .ARM.attributes
-                0x00000d62       0x26 bn_translation_unit.o
+                0x00000d3e       0x26 bn_sprites_manager.bn_iwram.o
  .ARM.attributes
-                0x00000d88       0x26 bn_hw_audio.o
+                0x00000d64       0x26 bn_sprites_manager.o
  .ARM.attributes
-                0x00000dae       0x26 bn_hw_common.bn_noflto.o
+                0x00000d8a       0x26 bn_sstream.o
  .ARM.attributes
-                0x00000dd4       0x26 bn_hw_cstdlib.o
+                0x00000db0       0x26 bn_translation_unit.o
  .ARM.attributes
-                0x00000dfa       0x26 bn_hw_cstring.o
+                0x00000dd6       0x26 bn_hw_audio.o
  .ARM.attributes
-                0x00000e20       0x26 bn_hw_game_pak.bn_ewram.o
+                0x00000dfc       0x26 bn_hw_common.bn_noflto.o
  .ARM.attributes
-                0x00000e46       0x26 bn_hw_gpio.bn_noflto.o
+                0x00000e22       0x26 bn_hw_cstdlib.o
  .ARM.attributes
-                0x00000e6c       0x26 bn_hw_link.o
+                0x00000e48       0x26 bn_hw_cstring.o
  .ARM.attributes
-                0x00000e92       0x26 bn_hw_memory.o
+                0x00000e6e       0x26 bn_hw_game_pak.bn_ewram.o
  .ARM.attributes
-                0x00000eb8       0x26 bn_hw_palettes.bn_iwram.o
+                0x00000e94       0x26 bn_hw_gpio.bn_noflto.o
  .ARM.attributes
-                0x00000ede       0x26 bn_hw_palettes.o
+                0x00000eba       0x26 bn_hw_link.o
  .ARM.attributes
-                0x00000f04       0x26 bn_hw_show.o
+                0x00000ee0       0x26 bn_hw_memory.o
  .ARM.attributes
-                0x00000f2a       0x26 bn_hw_sprite_tiles.bn_iwram.o
+                0x00000f06       0x26 bn_hw_palettes.bn_iwram.o
  .ARM.attributes
-                0x00000f50       0x26 bn_hw_sram.bn_ewram.o
+                0x00000f2c       0x26 bn_hw_palettes.o
  .ARM.attributes
-                0x00000f76       0x26 bn_hw_sram.bn_noflto.o
+                0x00000f52       0x26 bn_hw_show.o
  .ARM.attributes
-                0x00000f9c       0x26 bn_hw_system_font.o
+                0x00000f78       0x26 bn_hw_sprite_tiles.bn_iwram.o
  .ARM.attributes
-                0x00000fc2       0x26 bn_hw_text.o
+                0x00000f9e       0x26 bn_hw_sram.bn_ewram.o
  .ARM.attributes
-                0x00000fe8       0x26 vgm.o
+                0x00000fc4       0x26 bn_hw_sram.bn_noflto.o
  .ARM.attributes
-                0x0000100e       0x26 tonc_color.o
+                0x00000fea       0x26 bn_hw_system_font.o
  .ARM.attributes
-                0x00001034       0x26 tonc_sbmp16.o
+                0x00001010       0x26 bn_hw_text.o
  .ARM.attributes
-                0x0000105a       0x26 tonc_schr4c.o
+                0x00001036       0x26 vgm.o
  .ARM.attributes
-                0x00001080       0x26 tonc_schr4r.o
+                0x0000105c       0x26 tonc_color.o
  .ARM.attributes
-                0x000010a6       0x26 tonc_surface.o
+                0x00001082       0x26 tonc_sbmp16.o
  .ARM.attributes
-                0x000010cc       0x26 bmp16_drawg_b1cs.o
+                0x000010a8       0x26 tonc_schr4c.o
  .ARM.attributes
-                0x000010f2       0x26 tte_init_bmp.o
+                0x000010ce       0x26 tonc_schr4r.o
  .ARM.attributes
-                0x00001118       0x26 tte_main.o
+                0x000010f4       0x26 tonc_surface.o
  .ARM.attributes
-                0x0000113e       0x26 interrupts_gba.o
+                0x0000111a       0x26 bmp16_drawg_b1cs.o
  .ARM.attributes
-                0x00001164       0x26 coroutine.o
+                0x00001140       0x26 tte_init_bmp.o
  .ARM.attributes
-                0x0000118a       0x26 rtc.o
+                0x00001166       0x26 tte_main.o
  .ARM.attributes
-                0x000011b0       0x26 gbt_player.o
+                0x0000118c       0x26 interrupts_gba.o
  .ARM.attributes
-                0x000011d6       0x1a bn_hw_bg_blocks.o
+                0x000011b2       0x26 coroutine.o
  .ARM.attributes
-                0x000011f0       0x1a bn_hw_core.o
+                0x000011d8       0x26 rtc.o
  .ARM.attributes
-                0x0000120a       0x1a bn_hw_hblank_effects.o
+                0x000011fe       0x26 gbt_player.o
  .ARM.attributes
-                0x00001224       0x1a bn_hw_palettes_asm.o
+                0x00001224       0x1a bn_hw_bg_blocks.o
  .ARM.attributes
-                0x0000123e       0x1a clr_blend_fast.o
+                0x0000123e       0x1a bn_hw_core.o
  .ARM.attributes
-                0x00001258       0x1a clr_fade_fast.o
+                0x00001258       0x1a bn_hw_hblank_effects.o
  .ARM.attributes
-                0x00001272       0x1a tonc_bios.o
+                0x00001272       0x1a bn_hw_palettes_asm.o
  .ARM.attributes
-                0x0000128c       0x1a tonc_memset.o
+                0x0000128c       0x1a clr_blend_fast.o
  .ARM.attributes
-                0x000012a6       0x1a tonc_nocash.o
+                0x000012a6       0x1a clr_fade_fast.o
  .ARM.attributes
-                0x000012c0       0x1a verdana9.o
+                0x000012c0       0x1a tonc_bios.o
  .ARM.attributes
-                0x000012da       0x1a irq_handler.o
+                0x000012da       0x1a tonc_memset.o
  .ARM.attributes
-                0x000012f4       0x1a posprintf.o
+                0x000012f4       0x1a tonc_nocash.o
  .ARM.attributes
-                0x0000130e       0x1a atan2.o
+                0x0000130e       0x1a verdana9.o
  .ARM.attributes
-                0x00001328       0x1a coroutine_asm.o
+                0x00001328       0x1a irq_handler.o
  .ARM.attributes
-                0x00001342       0x1a fiq_memcpy.o
+                0x00001342       0x1a posprintf.o
  .ARM.attributes
-                0x0000135c       0x1a lmul.o
+                0x0000135c       0x1a atan2.o
  .ARM.attributes
-                0x00001376       0x1a memcpy.o
+                0x00001376       0x1a coroutine_asm.o
  .ARM.attributes
-                0x00001390       0x1a memmove.o
+                0x00001390       0x1a fiq_memcpy.o
  .ARM.attributes
-                0x000013aa       0x1a memset.o
+                0x000013aa       0x1a lmul.o
  .ARM.attributes
-                0x000013c4       0x1a rmemcpy.o
+                0x000013c4       0x1a memcpy.o
  .ARM.attributes
-                0x000013de       0x1a clz.o
+                0x000013de       0x1a memmove.o
  .ARM.attributes
-                0x000013f8       0x1a sdiv32.o
+                0x000013f8       0x1a memset.o
  .ARM.attributes
-                0x00001412       0x1a sqrt32.o
+                0x00001412       0x1a rmemcpy.o
  .ARM.attributes
-                0x0000142c       0x1a udiv32.o
+                0x0000142c       0x1a clz.o
  .ARM.attributes
-                0x00001446       0x1a huffman.o
+                0x00001446       0x1a sdiv32.o
  .ARM.attributes
-                0x00001460       0x1a lz77.o
+                0x00001460       0x1a sqrt32.o
  .ARM.attributes
-                0x0000147a       0x1a running_length.o
+                0x0000147a       0x1a udiv32.o
  .ARM.attributes
-                0x00001494       0x1a mm_effect.o
+                0x00001494       0x1a huffman.o
  .ARM.attributes
-                0x000014ae       0x1a mm_main.o
+                0x000014ae       0x1a lz77.o
  .ARM.attributes
-                0x000014c8       0x1a mm_mas.o
+                0x000014c8       0x1a running_length.o
  .ARM.attributes
-                0x000014e2       0x1a mm_mas_arm.o
+                0x000014e2       0x1a mm_effect.o
  .ARM.attributes
-                0x000014fc       0x1a mm_init_default.o
+                0x000014fc       0x1a mm_main.o
  .ARM.attributes
-                0x00001516       0x1a mm_main_gba.o
+                0x00001516       0x1a mm_mas.o
  .ARM.attributes
-                0x00001530       0x1a mm_mixer_gba.o
+                0x00001530       0x1a mm_mas_arm.o
  .ARM.attributes
-                0x0000154a       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_arm_muldf3.o)
+                0x0000154a       0x1a mm_init_default.o
  .ARM.attributes
-                0x00001566       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_call_via_rX.o)
+                0x00001564       0x1a mm_main_gba.o
  .ARM.attributes
-                0x00001582       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_arm_addsubdf3.o)
+                0x0000157e       0x1a mm_mixer_gba.o
  .ARM.attributes
-                0x0000159e       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_arm_fixdfsi.o)
+                0x00001598       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_arm_muldf3.o)
  .ARM.attributes
-                0x000015ba       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_aeabi_ldivmod.o)
+                0x000015b4       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_call_via_rX.o)
  .ARM.attributes
-                0x000015d6       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_aeabi_uldivmod.o)
+                0x000015d0       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_arm_addsubdf3.o)
  .ARM.attributes
-                0x000015f2       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_sync_none.o)
+                0x000015ec       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_arm_fixdfsi.o)
  .ARM.attributes
-                0x0000160e       0x2a C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_udivmoddi4.o)
+                0x00001608       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_aeabi_ldivmod.o)
  .ARM.attributes
-                0x00001638       0x2a C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb/crtend.o
+                0x00001624       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_aeabi_uldivmod.o)
  .ARM.attributes
-                0x00001662       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb/crtn.o
+                0x00001640       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_sync_none.o)
+ .ARM.attributes
+                0x0000165c       0x2a C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb\libgcc.a(_udivmoddi4.o)
+ .ARM.attributes
+                0x00001686       0x2a C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb/crtend.o
+ .ARM.attributes
+                0x000016b0       0x1c C:/devkitPro/devkitARM/bin/../lib/gcc/arm-none-eabi/14.2.0/thumb/crtn.o
 
 /DISCARD/
  *(.note.GNU-stack)
@@ -12131,6 +12149,9 @@ LOAD hud_currency_icon_bn_gfx.o
 LOAD hud_hp_bar_bn_gfx.o
 LOAD large_vase_bn_gfx.o
 LOAD moon_drop_bn_gfx.o
+LOAD name_card_level_bg_bn_gfx.o
+LOAD name_card_object_bg_bn_gfx.o
+LOAD name_card_painted_bg_bn_gfx.o
 LOAD pause_screen_bn_gfx.o
 LOAD phase_marker_bn_gfx.o
 LOAD phase_orb_down_bn_gfx.o

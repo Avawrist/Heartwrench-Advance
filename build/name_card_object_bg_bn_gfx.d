@@ -1,0 +1,1 @@
+name_card_object_bg_bn_gfx.o: name_card_object_bg_bn_gfx.s
