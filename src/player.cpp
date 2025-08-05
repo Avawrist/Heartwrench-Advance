@@ -803,6 +803,18 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 		case PLAYER_AIR_NEUTRAL:
 
+			//////////////////////
+			// Update Air Frame //
+			//////////////////////
+
+			if(rigidbody.normalized_dir.y() > 0)
+			{
+				animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+																		   0,
+																		   bn::sprite_items::player.tiles_item(),
+																		   12, 12);
+			}
+
 			//////////////////////////////
 			// Player Air Neutral State //
 			//////////////////////////////
@@ -884,18 +896,6 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			rigidbody.addForce(PLAYER_GRAVITY_FORCE);
 			if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
 			{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
-
-			//////////////////////
-			// Update Air Frame //
-			//////////////////////
-
-			if(animate_action_ptr->done())
-			{
-				animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-																		   0,
-																		   bn::sprite_items::player.tiles_item(),
-																		   12, 12);
-			}
 
 		break;
 		
@@ -1291,6 +1291,20 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 		case PLAYER_CLIMB:
 
+			/////////////
+			// Animate //
+			/////////////
+
+			// Wrap index
+			if(current_climb_index >= PLAYER_MAX_CLIMB_INDEX + 1)
+			{current_climb_index = PLAYER_MIN_CLIMB_INDEX;}
+
+			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+																	   0,
+																	   bn::sprite_items::player.tiles_item(),
+																	   current_climb_index.floor_integer(), 
+																	   current_climb_index.floor_integer());
+
 			///////////////
 			// Get Input //
 			///////////////
@@ -1328,20 +1342,6 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 				jump(); 
 				setState(NONE);
 			}
-
-			/////////////
-			// Animate //
-			/////////////
-
-			// Wrap index
-			if(current_climb_index >= PLAYER_MAX_CLIMB_INDEX + 1)
-			{current_climb_index = PLAYER_MIN_CLIMB_INDEX;}
-
-			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-																	   0,
-																	   bn::sprite_items::player.tiles_item(),
-																	   current_climb_index.floor_integer(), 
-																	   current_climb_index.floor_integer());
 
 			///////////////
 			// End State //

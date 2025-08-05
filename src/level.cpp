@@ -62,6 +62,8 @@ Level::Level(const Level& other)
 
     random_engine = other.random_engine;
 
+    name_card_frame = other.name_card_frame;
+
     displayed_currency = other.displayed_currency;
     currency           = other.currency;
 
@@ -127,6 +129,8 @@ void Level::operator =(const Level& other)
 
     random_engine = other.random_engine;
 
+    name_card_frame = other.name_card_frame;
+
     displayed_currency = other.displayed_currency;
     currency           = other.currency;
 
@@ -191,10 +195,12 @@ void Level::load(LevelName level_name)
     cam_look_y_offset     = 0;
     cam_update_timer      = 0;
 
+    name_card_frame = 0;
+
     displayed_currency = 0;
     currency           = 0;
 
-    transition_frames = 0;
+    transition_frames = -1;
 
     cursor_index = 0;
 
@@ -207,6 +213,36 @@ void Level::load(LevelName level_name)
     // Initialize Variables
     switch(level_name)
     {
+        case LEVEL_NAME_CARD:
+
+            // Player Spawn //
+            player_spawn = bn::fixed_point(0, 0);
+
+            // Load BGs //
+            main_bg_ptr    = bn::regular_bg_items::name_card_level_bg.create_bg(0, 0);
+            bg_item        = bn::regular_bg_items::name_card_level_bg;
+
+            object_bg_ptr  = bn::regular_bg_items::name_card_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::name_card_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::name_card_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               0,
+                                                                               bn::regular_bg_items::name_card_painted_bg.map_item(),
+                                                                               0, 0);
+
+            // Update cells
+            cells        = main_bg_ptr->map().cells_ref().value();
+            object_cells = object_bg_ptr->map().cells_ref().value();
+
+            // Set Room //
+            temp_room_name = ROOM_NAME_CARD;
+
+            // Init name card frames
+            name_card_frame = LEVEL_NAME_CARD_FRAMES;
+
+        break;
+
         case LEVEL_TITLE_SCREEN:
 
             // Player Spawn //
@@ -373,10 +409,11 @@ void Level::update()
 {
     if(global_hitstop_frames <= 0)
     {
-        if(current_level_name == LEVEL_TITLE_SCREEN) {updateTitleScreen();}
-        else if(menu_open)                           {updatePauseScreen();}
-        else if(cam_is_scrolling)                    {updateCamera();}
-        else                                         {updateAll();}
+        if(current_level_name == LEVEL_NAME_CARD)         {updateNameCard();}
+        else if(current_level_name == LEVEL_TITLE_SCREEN) {updateTitleScreen();}
+        else if(menu_open)                                {updatePauseScreen();}
+        else if(cam_is_scrolling)                         {updateCamera();}
+        else                                              {updateAll();}
     }
 
     // Update Global Timer
@@ -1027,6 +1064,48 @@ void Level::storePlayerInputs()
     {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->r_requested = true;}
 }
 
+void Level::updateNameCard()
+{
+    // Update Name Card timer
+    name_card_frame--;
+    name_card_frame = clamp(0, LEVEL_NAME_CARD_FRAMES, name_card_frame);
+
+    // Update fade
+    updateFade();
+
+    // Hide HUD
+    hud_hp_sprite_ptr->set_visible(false);
+    currency_num_1_sprite_ptr->set_visible(false);
+    currency_num_2_sprite_ptr->set_visible(false);
+    currency_icon_sprite_ptr->set_visible(false);
+
+    // Delete Player
+    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) != NULL)
+    {
+        delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+        current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = NULL;
+    }
+
+    // Center Camera
+    camera.value().set_position(0, 0);
+
+    // Get Input //
+    if((bn::keypad::start_pressed() || bn::keypad::a_pressed() || name_card_frame <= 0) &&
+        transition_frames < 0)
+    {
+        BN_LOG("test");
+        // Start Fade and Level Transition
+        fade_out = true;
+        transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+    }
+
+    // Draw Screen
+    updatePaintedBG();
+
+    // Transition
+    updateLevelTransition(LEVEL_TITLE_SCREEN);
+}
+
 void Level::updateTitleScreen()
 {
     // Update fade
@@ -1049,7 +1128,7 @@ void Level::updateTitleScreen()
     camera.value().set_position(0, 0);
 
     // Get Input //
-    if(bn::keypad::start_pressed() || bn::keypad::a_pressed())
+    if((bn::keypad::start_pressed() || bn::keypad::a_pressed()) && transition_frames < 0)
     {
         // Start Fade and Level Transition
         fade_out = true;
@@ -1168,11 +1247,11 @@ void Level::updatePauseScreen()
 
 void Level::updateLevelTransition(LevelName level_index)
 {
-    if(level_index < LEVEL_TITLE_SCREEN || level_index > LEVEL_ZIGGURAT_1)
+    if(level_index < LEVEL_NAME_CARD || level_index > LEVEL_ZIGGURAT_1)
     {return;}
 
     // Transition Level //
-    if(transition_frames)
+    if(transition_frames > 0)
     {
         transition_frames--;
         transition_frames = clamp(0, LEVEL_TITLE_SCREEN_TRANSITION_FRAMES, transition_frames);

@@ -516,6 +516,23 @@ void Room::load(RoomName                                       room_name,
     // Initialize Objects
     switch(room_name)
     {
+        case ROOM_NAME_CARD:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.top_bound    = 0;
+            room_bounds.right_bound  = 0;
+            room_bounds.bottom_bound = 0;
+            room_bounds.left_bound   = 0;
+
+            // Add any special objects //
+            
+        break;
+
         case ROOM_TITLE_SCREEN:
 
             // Init Variables //

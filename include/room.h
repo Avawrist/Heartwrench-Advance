@@ -56,6 +56,7 @@
 enum RoomName 
 {
     NO_ROOM = 0,
+    ROOM_NAME_CARD,
     ROOM_TITLE_SCREEN,
     ROOM_TEST_1,
     ROOM_TEST_2

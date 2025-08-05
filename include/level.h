@@ -22,6 +22,10 @@
 #include "bn_bg_palette_items_bg_flash_palette.h"
 
 // BGs
+#include "bn_regular_bg_items_name_card_level_bg.h"
+#include "bn_regular_bg_items_name_card_object_bg.h"
+#include "bn_regular_bg_items_name_card_painted_bg.h"
+
 #include "bn_regular_bg_items_title_screen_level_bg.h"
 #include "bn_regular_bg_items_title_screen_object_bg.h"
 #include "bn_regular_bg_items_title_screen_painted_bg.h"
@@ -90,12 +94,16 @@
 // Currency
 #define LEVEL_MAX_CURRENCY 99
 
+// Name Card Screen
+#define LEVEL_NAME_CARD_FRAMES 120
+
 // Transitions
 #define LEVEL_TITLE_SCREEN_TRANSITION_FRAMES 60
 
 enum LevelName 
 {
     NO_LEVEL = 0,
+    LEVEL_NAME_CARD,
     LEVEL_TITLE_SCREEN,
     LEVEL_ZIGGURAT_1
 };
@@ -166,6 +174,8 @@ struct Level
     uint32 displayed_currency;
     uint32 currency;
 
+    int32 name_card_frame;
+
     int32 cursor_index;
 
     // Transitions
@@ -199,6 +209,7 @@ struct Level
     void drawObjects();
     void updateFade();
     void storePlayerInputs();
+    void updateNameCard();
     void updateTitleScreen();
     void togglePauseScreen();
     void updatePauseScreen();
