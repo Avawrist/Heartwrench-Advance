@@ -45,3 +45,23 @@ bn::point RoomBounds::center()
 {
     return(bn::point(left_bound + ((right_bound - left_bound) * 0.5), top_bound + ((bottom_bound - top_bound) * 0.5)));
 }
+
+void RoomBounds::setTopBoundAC(int32 value)
+{
+    top_bound = value - (LEVEL_HEIGHT / 2);
+}
+
+void RoomBounds::setBottomBoundAC(int32 value)
+{
+    bottom_bound = value - (LEVEL_HEIGHT / 2);
+}
+
+void RoomBounds::setLeftBoundAC(int32 value)
+{
+    left_bound = value - (LEVEL_WIDTH / 2);
+}
+
+void RoomBounds::setRightBoundAC(int32 value)
+{
+    right_bound = value - (LEVEL_WIDTH / 2);
+}

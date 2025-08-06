@@ -1679,3 +1679,8 @@ void UnloadedObject::operator =(const UnloadedObject& other)
     loaded_instance_id = other.loaded_instance_id;
     is_persistent      = other.is_persistent;
 }
+
+void UnloadedObject::removeSourceTile()
+{
+    
+}

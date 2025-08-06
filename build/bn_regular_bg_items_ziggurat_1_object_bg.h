@@ -7,13 +7,13 @@
 
 //======================================================================
 //
-//	ziggurat_1_object_bg_bn_gfx, 10240x5120@8, 
+//	ziggurat_1_object_bg_bn_gfx, 5120x2560@8, 
 //	+ palette 16 entries, not compressed
 //	+ 23 tiles (t reduced) not compressed
-//	+ regular map (flat), not compressed, 1280x640 
-//	Total size: 32 + 1472 + 1638400 = 1639904
+//	+ regular map (flat), not compressed, 640x320 
+//	Total size: 32 + 1472 + 409600 = 411104
 //
-//	Time-stamp: 2025-08-03, 11:33:14
+//	Time-stamp: 2025-08-05, 20:36:28
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -25,8 +25,8 @@
 #define ziggurat_1_object_bg_bn_gfxTilesLen 1472
 extern const bn::tile ziggurat_1_object_bg_bn_gfxTiles[46];
 
-#define ziggurat_1_object_bg_bn_gfxMapLen 1638400
-extern const bn::regular_bg_map_cell ziggurat_1_object_bg_bn_gfxMap[819200];
+#define ziggurat_1_object_bg_bn_gfxMapLen 409600
+extern const bn::regular_bg_map_cell ziggurat_1_object_bg_bn_gfxMap[204800];
 
 #define ziggurat_1_object_bg_bn_gfxPalLen 32
 extern const bn::color ziggurat_1_object_bg_bn_gfxPal[16];
@@ -40,7 +40,7 @@ namespace bn::regular_bg_items
     constexpr inline regular_bg_item ziggurat_1_object_bg(
             regular_bg_tiles_item(span<const tile>(ziggurat_1_object_bg_bn_gfxTiles, 46), bpp_mode::BPP_8, compression_type::NONE), 
             bg_palette_item(span<const color>(ziggurat_1_object_bg_bn_gfxPal, 16), bpp_mode::BPP_8, compression_type::NONE),
-            regular_bg_map_item(ziggurat_1_object_bg_bn_gfxMap[0], size(1280, 640), compression_type::NONE, 1, true));
+            regular_bg_map_item(ziggurat_1_object_bg_bn_gfxMap[0], size(640, 320), compression_type::NONE, 1, true));
 }
 
 #endif

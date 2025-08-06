@@ -35,6 +35,11 @@ typedef int   int32;
 #define CAM_MAX_LOOK_X       0
 #define CAM_MAX_DIR_LOOK_X   32
 
+#define LEVEL_WIDTH  5120
+#define LEVEL_HEIGHT 2560
+#define LEVEL_OBJECT_CELL_WIDTH  160
+#define LEVEL_OBJECT_CELL_HEIGHT 80
+
 #define ROOM_MAX_COLLIDERS 1800
 #define ROOM_MAX_WIDTH     128
 #define ROOM_MAX_HEIGHT    64
@@ -155,5 +160,10 @@ int32 getTileAtBGIndex(uint32 x, uint32 y,
                        bn::regular_bg_ptr                      bg_ptr, 
                        bn::span<const bn::regular_bg_map_cell> cells,
                        bn::regular_bg_item                     bg_item);
+
+uint8 getDynamicTileAtBGIndex(uint32 x, uint32 y, 
+                              bn::regular_bg_ptr  bg_ptr, 
+                              uint8               cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT],
+                              bn::regular_bg_item bg_item);
 
 #endif

@@ -81,7 +81,7 @@ struct Room
          bn::camera_ptr                                 camera_ptr,                
          const bn::regular_bg_ptr&                      object_bg_ptr, 
          const bn::regular_bg_item&                     object_bg_item,
-         const bn::span<const bn::regular_bg_map_cell>& object_cells,
+         uint8                                          object_cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT],
          const bn::fixed_point                          player_spawn);
     Room(const Room& other);
     ~Room();
@@ -97,11 +97,11 @@ struct Room
                const bn::camera_ptr&                          camera_ptr, 
                const bn::regular_bg_ptr&                      object_bg_ptr, 
                const bn::regular_bg_item&                     object_bg_item,
-               const bn::span<const bn::regular_bg_map_cell>& object_cells,
+               uint8                                          object_cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT],
                const bn::fixed_point                          player_spawn);
     void prepObjects(const bn::regular_bg_ptr&                       object_bg_ptr, 
                       const bn::regular_bg_item&                     object_bg_item,
-                      const bn::span<const bn::regular_bg_map_cell>& object_cells);
+                      uint8                                          object_cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT]);
     void monitorObjectRequests(const bn::camera_ptr& camera_ptr);
     void monitorUnloadedObjects(const bn::camera_ptr& camera_ptr); // This will be called every frame to 
                                                                     // test for objects that should be loaded.

@@ -127,8 +127,8 @@ struct Level
     bn::optional<bn::regular_bg_item>       bg_item;
     bn::span<const bn::regular_bg_map_cell> cells;
     
-    bn::optional<bn::regular_bg_item>       object_bg_item;
-    bn::span<const bn::regular_bg_map_cell> object_cells;
+    bn::optional<bn::regular_bg_item> object_bg_item;
+    uint8                             object_cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT] = {0};
 
     // Pause Menu
     bn::optional<bn::regular_bg_ptr> pause_screen_bg_ptr;
@@ -214,6 +214,7 @@ struct Level
     void togglePauseScreen();
     void updatePauseScreen();
     void updateLevelTransition(LevelName level_index);
+    void populateObjectCells();
 };
 
 #endif

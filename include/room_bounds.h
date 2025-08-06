@@ -25,6 +25,10 @@ struct RoomBounds
     RoomBounds& operator =(const RoomBounds& other);
 
     bn::point center();
+    void setTopBoundAC(int32 value);
+    void setBottomBoundAC(int32 value);
+    void setLeftBoundAC(int32 value);
+    void setRightBoundAC(int32 value);
 };
 
 #endif

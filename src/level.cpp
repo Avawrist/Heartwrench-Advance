@@ -21,7 +21,7 @@ Level::Level(const Level& other)
     bg_item        = other.bg_item;
     cells          = other.cells;
     object_bg_item = other.object_bg_item;
-    object_cells   = other.object_cells;
+    //object_cells   = other.object_cells;
 
     painted_bg_anim_ptr = other.painted_bg_anim_ptr;
 
@@ -88,7 +88,7 @@ void Level::operator =(const Level& other)
     bg_item        = other.bg_item;
     cells          = other.cells;
     object_bg_item = other.object_bg_item;
-    object_cells   = other.object_cells;
+    //object_cells   = other.object_cells;
 
     painted_bg_anim_ptr = other.painted_bg_anim_ptr;
 
@@ -233,7 +233,7 @@ void Level::load(LevelName level_name)
 
             // Update cells
             cells        = main_bg_ptr->map().cells_ref().value();
-            object_cells = object_bg_ptr->map().cells_ref().value();
+            //object_cells = object_bg_ptr->map().cells_ref().value();
 
             // Set Room //
             temp_room_name = ROOM_NAME_CARD;
@@ -263,7 +263,7 @@ void Level::load(LevelName level_name)
 
             // Update cells
             cells        = main_bg_ptr->map().cells_ref().value();
-            object_cells = object_bg_ptr->map().cells_ref().value();
+            //object_cells = object_bg_ptr->map().cells_ref().value();
 
             // Set Room //
             temp_room_name = ROOM_TITLE_SCREEN;
@@ -273,7 +273,7 @@ void Level::load(LevelName level_name)
         case LEVEL_ZIGGURAT_1:
             
             // Player Spawn //
-            player_spawn = bn::fixed_point(-5056, -1936);
+            player_spawn = bn::fixed_point(-2512, -688);
 
             // Load BGs //
             main_bg_ptr    = bn::regular_bg_items::ziggurat_1_level_bg.create_bg(0, 0);
@@ -290,7 +290,7 @@ void Level::load(LevelName level_name)
 
             // Update cells
             cells        = main_bg_ptr->map().cells_ref().value();
-            object_cells = object_bg_ptr->map().cells_ref().value();
+            //object_cells = object_bg_ptr->map().cells_ref().value();
 
             // Set Room //
             temp_room_name = ROOM_TEST_1;
@@ -305,6 +305,10 @@ void Level::load(LevelName level_name)
         break;
     }
 
+    // Populate object cells
+    populateObjectCells();
+
+    // Init room
     current_room = Room(temp_room_name, 
                         camera.value(), 
                         object_bg_ptr.value(), 
@@ -1258,5 +1262,19 @@ void Level::updateLevelTransition(LevelName level_index)
 
         if(transition_frames == 0)
         {loadNew(level_index);}
+    }
+}
+
+void Level::populateObjectCells()
+{
+    // Look at the object tile index of the UL corner of each 32x32 tile.
+    // Object tiles must be placed in the UL corner to be recorded.
+
+    for(uint32 x = 0; x < LEVEL_OBJECT_CELL_WIDTH; x++)
+    {
+        for(uint32 y = 0; y < LEVEL_OBJECT_CELL_HEIGHT; y++)
+        {
+            object_cells[x][y] = object_bg_item.value().map_item().cell(x * 2, y * 2);
+        }
     }
 }

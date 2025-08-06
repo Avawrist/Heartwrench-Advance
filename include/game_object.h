@@ -490,6 +490,8 @@ struct UnloadedObject
     ~UnloadedObject();
 
     void operator =(const UnloadedObject& other);
+
+	void removeSourceTile();
 };
 
 # endif

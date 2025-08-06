@@ -13,7 +13,7 @@ Room::Room(RoomName                                       room_name,
            bn::camera_ptr                                 camera_ptr,                
            const bn::regular_bg_ptr&                      object_bg_ptr, 
            const bn::regular_bg_item&                     object_bg_item,
-           const bn::span<const bn::regular_bg_map_cell>& object_cells,
+           uint8                                          object_cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT],
            const bn::fixed_point                          player_spawn)
 {
     load(room_name, 
@@ -508,7 +508,7 @@ void Room::load(RoomName                                       room_name,
                 const bn::camera_ptr&                          camera_ptr, 
                 const bn::regular_bg_ptr&                      object_bg_ptr, 
                 const bn::regular_bg_item&                     object_bg_item,
-                const bn::span<const bn::regular_bg_map_cell>& object_cells,
+                uint8                                          object_cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT],
                 const bn::fixed_point                          player_spawn)
 {
     if(room_name == NO_ROOM) {return;}
@@ -524,10 +524,10 @@ void Room::load(RoomName                                       room_name,
             bottom_neighbor = NO_ROOM;
             left_neighbor   = NO_ROOM;
 
-            room_bounds.top_bound    = 0;
-            room_bounds.right_bound  = 0;
-            room_bounds.bottom_bound = 0;
-            room_bounds.left_bound   = 0;
+            room_bounds.setTopBoundAC(LEVEL_HEIGHT);
+            room_bounds.setBottomBoundAC(LEVEL_HEIGHT);
+            room_bounds.setLeftBoundAC(LEVEL_WIDTH);
+            room_bounds.setRightBoundAC(LEVEL_WIDTH);
 
             // Add any special objects //
             
@@ -541,10 +541,10 @@ void Room::load(RoomName                                       room_name,
             bottom_neighbor = NO_ROOM;
             left_neighbor   = NO_ROOM;
 
-            room_bounds.top_bound    = 0;
-            room_bounds.right_bound  = 0;
-            room_bounds.bottom_bound = 0;
-            room_bounds.left_bound   = 0;
+            room_bounds.setTopBoundAC(LEVEL_HEIGHT);
+            room_bounds.setBottomBoundAC(LEVEL_HEIGHT);
+            room_bounds.setLeftBoundAC(LEVEL_WIDTH);
+            room_bounds.setRightBoundAC(LEVEL_WIDTH);
 
             // Add any special objects //
             
@@ -558,10 +558,10 @@ void Room::load(RoomName                                       room_name,
             bottom_neighbor = NO_ROOM;
             left_neighbor   = NO_ROOM;
 
-            room_bounds.top_bound    = -2256;
-            room_bounds.right_bound  = -4496;
-            room_bounds.bottom_bound = -1648;
-            room_bounds.left_bound   = -5104;
+            room_bounds.setTopBoundAC(304);
+            room_bounds.setBottomBoundAC(768);
+            room_bounds.setLeftBoundAC(0);
+            room_bounds.setRightBoundAC(626);
 
             // Add any special objects //
             
@@ -575,10 +575,10 @@ void Room::load(RoomName                                       room_name,
             bottom_neighbor = NO_ROOM;
             left_neighbor   = ROOM_TEST_1;
 
-            room_bounds.top_bound    = -2256;
-            room_bounds.right_bound  = -4128;
-            room_bounds.bottom_bound = -1648;
-            room_bounds.left_bound   = -4496;
+            room_bounds.setTopBoundAC(304);
+            room_bounds.setBottomBoundAC(768);
+            room_bounds.setLeftBoundAC(626);
+            room_bounds.setRightBoundAC(992);
 
             // Add any special objects //
             
@@ -605,7 +605,7 @@ void Room::load(RoomName                                       room_name,
 
 void Room::prepObjects(const bn::regular_bg_ptr&                      object_bg_ptr, 
                        const bn::regular_bg_item&                     object_bg_item,
-                       const bn::span<const bn::regular_bg_map_cell>& object_cells)
+                       uint8                                          object_cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT])
 {
     
     int32 half_level_width_pixels  = object_bg_ptr.dimensions().width()  / 2;
@@ -613,25 +613,24 @@ void Room::prepObjects(const bn::regular_bg_ptr&                      object_bg_
     
     for(int32 x  = room_bounds.left_bound  + half_level_width_pixels; 
               x <= room_bounds.right_bound + half_level_width_pixels; 
-              x += TILE_WIDTH)
+              x += TILE_WIDTH * 2)
     {
-        for(int32 y =  room_bounds.top_bound    + half_level_height_pixels; 
+        for(int32 y  = room_bounds.top_bound    + half_level_height_pixels; 
                   y <= room_bounds.bottom_bound + half_level_height_pixels;
-                  y += TILE_HEIGHT)
+                  y += TILE_HEIGHT * 2)
         {
-            bn::point cell_index = bn::point((x / TILE_WIDTH), (y / TILE_HEIGHT));
-            ObjectType type = (ObjectType)getTileAtBGIndex(cell_index.x(), 
-                                                           cell_index.y(), 
-                                                           object_bg_ptr,
-                                                           object_cells,
-                                                           object_bg_item);
+            bn::point cell_index = bn::point((x / TILE_WIDTH) / 2, (y / TILE_HEIGHT) / 2);
+            ObjectType type = (ObjectType)getDynamicTileAtBGIndex(cell_index.x(), 
+                                                                  cell_index.y(), 
+                                                                  object_bg_ptr,
+                                                                  object_cells,
+                                                                  object_bg_item);
 
             if(type > NO_TYPE && type < HITBOX_SPIN_1)
             {
-                addUnloadedObject(UnloadedObject(bn::point(x - half_level_width_pixels  + TILE_WIDTH, 
-                                                           y - half_level_height_pixels + TILE_HEIGHT - 1), 
-                                                           type), 
-                                  false);
+                addUnloadedObject(UnloadedObject(bn::point(x - half_level_width_pixels, 
+                                                           y - half_level_height_pixels - 1), 
+                                                           type), false);
             }
         }
     }
