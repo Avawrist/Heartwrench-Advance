@@ -567,7 +567,7 @@ void Room::load(RoomName                                       room_name,
 
             room_bounds.setTopBoundAC(320);
             room_bounds.setBottomBoundAC(768);
-            room_bounds.setLeftBoundAC(0);
+            room_bounds.setLeftBoundAC(16);
             room_bounds.setRightBoundAC(624);
 
             // Add any special objects //
