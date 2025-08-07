@@ -233,7 +233,6 @@ void Level::load(LevelName level_name)
 
             // Update cells
             cells        = main_bg_ptr->map().cells_ref().value();
-            //object_cells = object_bg_ptr->map().cells_ref().value();
 
             // Set Room //
             temp_room_name = ROOM_NAME_CARD;
@@ -263,7 +262,6 @@ void Level::load(LevelName level_name)
 
             // Update cells
             cells        = main_bg_ptr->map().cells_ref().value();
-            //object_cells = object_bg_ptr->map().cells_ref().value();
 
             // Set Room //
             temp_room_name = ROOM_TITLE_SCREEN;
@@ -290,8 +288,7 @@ void Level::load(LevelName level_name)
 
             // Update cells
             cells        = main_bg_ptr->map().cells_ref().value();
-            //object_cells = object_bg_ptr->map().cells_ref().value();
-
+            
             // Set Room //
             temp_room_name = ROOM_TEST_1;
 
@@ -1271,9 +1268,14 @@ void Level::populateObjectCells()
     // Look at the object tile index of the UL corner of each 32x32 tile.
     // Object tiles must be placed in the UL corner to be recorded.
 
-    for(uint32 x = 0; x < LEVEL_OBJECT_CELL_WIDTH; x++)
+    #define OBJECT_CELLS_REDUCTION_FACTOR 4
+
+    uint32 cell_width  = object_bg_ptr.value().dimensions().width()  / TILE_WIDTH / OBJECT_CELLS_REDUCTION_FACTOR;
+    uint32 cell_height = object_bg_ptr.value().dimensions().height() / TILE_HEIGHT / OBJECT_CELLS_REDUCTION_FACTOR;
+
+    for(uint32 x = 0; x < cell_width; x++)
     {
-        for(uint32 y = 0; y < LEVEL_OBJECT_CELL_HEIGHT; y++)
+        for(uint32 y = 0; y < cell_height; y++)
         {
             object_cells[x][y] = object_bg_item.value().map_item().cell(x * 2, y * 2);
         }

@@ -531,10 +531,10 @@ void Room::load(RoomName                                       room_name,
             bottom_neighbor = NO_ROOM;
             left_neighbor   = NO_ROOM;
 
-            room_bounds.setTopBoundAC(LEVEL_HEIGHT);
-            room_bounds.setBottomBoundAC(LEVEL_HEIGHT);
-            room_bounds.setLeftBoundAC(LEVEL_WIDTH);
-            room_bounds.setRightBoundAC(LEVEL_WIDTH);
+            room_bounds.setTopBoundAC(LEVEL_HEIGHT / 2);
+            room_bounds.setBottomBoundAC(LEVEL_HEIGHT / 2);
+            room_bounds.setLeftBoundAC(LEVEL_WIDTH / 2);
+            room_bounds.setRightBoundAC(LEVEL_WIDTH / 2);
 
             // Add any special objects //
             
@@ -548,10 +548,10 @@ void Room::load(RoomName                                       room_name,
             bottom_neighbor = NO_ROOM;
             left_neighbor   = NO_ROOM;
 
-            room_bounds.setTopBoundAC(LEVEL_HEIGHT);
-            room_bounds.setBottomBoundAC(LEVEL_HEIGHT);
-            room_bounds.setLeftBoundAC(LEVEL_WIDTH);
-            room_bounds.setRightBoundAC(LEVEL_WIDTH);
+            room_bounds.setTopBoundAC(LEVEL_HEIGHT / 2);
+            room_bounds.setBottomBoundAC(LEVEL_HEIGHT / 2);
+            room_bounds.setLeftBoundAC(LEVEL_WIDTH / 2);
+            room_bounds.setRightBoundAC(LEVEL_WIDTH / 2);
 
             // Add any special objects //
             
@@ -614,7 +614,6 @@ void Room::prepObjects(const bn::regular_bg_ptr&                      object_bg_
                        const bn::regular_bg_item&                     object_bg_item,
                        uint8                                          object_cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT])
 {
-    
     int32 half_level_width_pixels  = object_bg_ptr.dimensions().width()  / 2;
 	int32 half_level_height_pixels = object_bg_ptr.dimensions().height() / 2;
     
@@ -638,7 +637,6 @@ void Room::prepObjects(const bn::regular_bg_ptr&                      object_bg_
             }
         }
     }
-    
 }
 
 void Room::monitorObjectRequests(const bn::camera_ptr& camera_ptr)
