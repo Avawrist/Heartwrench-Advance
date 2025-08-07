@@ -215,6 +215,7 @@ struct Level
     void updatePauseScreen();
     void updateLevelTransition(LevelName level_index);
     void populateObjectCells();
+    void removeObjectCells();
 };
 
 #endif

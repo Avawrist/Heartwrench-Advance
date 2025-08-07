@@ -558,10 +558,10 @@ void Room::load(RoomName                                       room_name,
             bottom_neighbor = NO_ROOM;
             left_neighbor   = NO_ROOM;
 
-            room_bounds.setTopBoundAC(304);
+            room_bounds.setTopBoundAC(320);
             room_bounds.setBottomBoundAC(768);
             room_bounds.setLeftBoundAC(0);
-            room_bounds.setRightBoundAC(626);
+            room_bounds.setRightBoundAC(624);
 
             // Add any special objects //
             
@@ -575,9 +575,9 @@ void Room::load(RoomName                                       room_name,
             bottom_neighbor = NO_ROOM;
             left_neighbor   = ROOM_TEST_1;
 
-            room_bounds.setTopBoundAC(304);
+            room_bounds.setTopBoundAC(320);
             room_bounds.setBottomBoundAC(768);
-            room_bounds.setLeftBoundAC(626);
+            room_bounds.setLeftBoundAC(624);
             room_bounds.setRightBoundAC(992);
 
             // Add any special objects //
@@ -621,10 +621,8 @@ void Room::prepObjects(const bn::regular_bg_ptr&                      object_bg_
         {
             bn::point cell_index = bn::point((x / TILE_WIDTH) / 2, (y / TILE_HEIGHT) / 2);
             ObjectType type = (ObjectType)getDynamicTileAtBGIndex(cell_index.x(), 
-                                                                  cell_index.y(), 
-                                                                  object_bg_ptr,
-                                                                  object_cells,
-                                                                  object_bg_item);
+                                                                  cell_index.y(),
+                                                                  object_cells);
 
             if(type > NO_TYPE && type < HITBOX_SPIN_1)
             {

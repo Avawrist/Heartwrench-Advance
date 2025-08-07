@@ -162,8 +162,10 @@ int32 getTileAtBGIndex(uint32 x, uint32 y,
                        bn::regular_bg_item                     bg_item);
 
 uint8 getDynamicTileAtBGIndex(uint32 x, uint32 y, 
-                              bn::regular_bg_ptr  bg_ptr, 
-                              uint8               cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT],
-                              bn::regular_bg_item bg_item);
+                              uint8 cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT]);
+
+void setDynamicTileAtBGIndex(uint32 x, uint32 y,
+                             uint8 value,
+                             uint8 cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT]);
 
 #endif

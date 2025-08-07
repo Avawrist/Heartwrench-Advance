@@ -1313,25 +1313,25 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if(bn::keypad::left_held()) 	  
 			{
 				x_dir = LEFT;
-				current_climb_index += 0.25;  
+				current_climb_index += 0.1;  
 				rigidbody.addForce(PLAYER_CLIMB_LEFT_FORCE);
 			}
 			else if(bn::keypad::right_held()) 
 			{
 				x_dir = RIGHT; 
-				current_climb_index += 0.25;
+				current_climb_index += 0.1;
 				rigidbody.addForce(PLAYER_CLIMB_RIGHT_FORCE);
 			}
 
 			// Y Axis climb
 			if(bn::keypad::up_held()) 		 
 			{
-				current_climb_index += 0.25;
+				current_climb_index += 0.1;
 				rigidbody.addForce(PLAYER_CLIMB_UP_FORCE);
 			}
 			else if(bn::keypad::down_held()) 
 			{
-				current_climb_index += 0.25;
+				current_climb_index += 0.1;
 				rigidbody.addForce(PLAYER_CLIMB_DOWN_FORCE);
 			}
 

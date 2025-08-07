@@ -429,6 +429,7 @@ void Level::updateAll()
 {
     reloadOnDeath();
     updateObjects();
+    removeObjectCells();
     updateCurrency();
     updateCamera();
     updateBGFlash();
@@ -1275,6 +1276,36 @@ void Level::populateObjectCells()
         for(uint32 y = 0; y < LEVEL_OBJECT_CELL_HEIGHT; y++)
         {
             object_cells[x][y] = object_bg_item.value().map_item().cell(x * 2, y * 2);
+        }
+    }
+}
+
+void Level::removeObjectCells()
+{
+    int32 half_level_width_pixels  = object_bg_ptr.value().dimensions().width()  / 2;
+	int32 half_level_height_pixels = object_bg_ptr.value().dimensions().height() / 2;
+    int32 object_id;
+    int32 unloaded_index;
+    uint32 cell_x;
+    uint32 cell_y;
+
+    for(int32 i = 0; i < current_room.game_objects.size(); i++)
+    {
+        if(current_room.game_objects.at(i)->state == OBJECT_DEATH)
+        {
+            // Search for the unloaded object by index, if found, remove the object tile:
+            object_id      = current_room.game_objects.at(i)->object_id;
+            unloaded_index = current_room.findUnloadedObjectIndex(object_id);
+
+            if(unloaded_index > -1)
+            {
+                //unloaded_objects.at(unloaded_index)->room_pos;
+                cell_x = (current_room.unloaded_objects.at(unloaded_index).room_pos.x() + half_level_width_pixels)  / TILE_WIDTH  / 2;
+                cell_y = (current_room.unloaded_objects.at(unloaded_index).room_pos.y() + half_level_height_pixels + 1) / TILE_HEIGHT / 2;
+
+                setDynamicTileAtBGIndex(cell_x, cell_y, (uint8)NO_TYPE, object_cells);
+            }
+
         }
     }
 }
