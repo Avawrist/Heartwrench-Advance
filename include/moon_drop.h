@@ -21,7 +21,7 @@
 
 #define MOON_DROP_HITPOINTS 5
 
-#define MOON_DROP_30_FPS true
+#define MOON_DROP_30_FPS false
 
 #define MOON_DROP_VALUE 5
 

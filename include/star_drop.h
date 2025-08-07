@@ -13,7 +13,7 @@
 // Struct StarDrop //
 /////////////////////
 
-#define STAR_DROP_COLLIDER_WIDTH  16
+#define STAR_DROP_COLLIDER_WIDTH  12
 #define STAR_DROP_COLLIDER_HEIGHT 16
 
 #define STAR_DROP_COLLIDER_OFFSET_X 0
@@ -21,7 +21,7 @@
 
 #define STAR_DROP_HITPOINTS 5
 
-#define STAR_DROP_30_FPS true
+#define STAR_DROP_30_FPS false
 
 #define STAR_DROP_VALUE 1
 

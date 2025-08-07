@@ -21,7 +21,7 @@
 
 #define HP_DROP_HITPOINTS 5
 
-#define HP_DROP_30_FPS true
+#define HP_DROP_30_FPS false
 
 #define HP_DROP_VALUE         1
 #define HP_DROP_MIN_HIT_SPEED 1

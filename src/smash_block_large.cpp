@@ -141,6 +141,8 @@ void SmashBlockLarge::setState(ObjectState new_state)
 	{
 		case OBJECT_DEATH:
 
+            object_request = ObjectRequest(STAR_DROP, bn::fixed_point(x(), y()));
+
             sprite_ptr->set_z_order(ENEMY_Z_ORDER);
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 																		1,

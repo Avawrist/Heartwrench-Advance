@@ -2334,6 +2334,16 @@ void Player::resolveTileCollision(const bn::regular_bg_ptr&                     
 	}
 }
 
+void Player::resolveYAxisCollision(const Collider& other_collider)
+{
+	col_y_offset = collider_y_axis.getCollisionYOffset(other_collider, rigidbody.normalized_dir.y());
+	collider_y_axis.setY(collider_y_axis.y() + col_y_offset);
+	setY(this->y() + col_y_offset);
+
+	if(col_y_offset > 0) {rigidbody.removeYForces();}
+}
+
+
 void Player::resolveHardBlockCollision(const Collider& other_collider)
 {
 	if(collider.isCollision(other_collider))

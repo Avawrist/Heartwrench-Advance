@@ -94,7 +94,7 @@
 #define PLAYER_PHASE_STEP_EXIT_DECAY   0.05
 #define PLAYER_PHASE_JUMP_LOCKOUT_FRAMES 5
 
-#define PLAYER_SPIN_X_FORCE 4
+#define PLAYER_SPIN_X_FORCE 3
 #define PLAYER_SPIN_DECAY   0.02
 
 #define PLAYER_MAX_SPIN_EFFECT_FRAMES 35
@@ -323,7 +323,7 @@ struct Player : GameObject {
 	void resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
 							  const bn::span<const bn::regular_bg_map_cell>& cells,
 							  const bn::regular_bg_item&                     bg_item) override;
-
+	void resolveYAxisCollision(const Collider& other_collider) override;
 	void resolveHardBlockCollision(const Collider& other_collider)   override;
 	void resolveClimbableCollision(const Collider& other_collider)   override;
 	void resolveOneWayBlockCollision(const Collider& other_collider) override;
