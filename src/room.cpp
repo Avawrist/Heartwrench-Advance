@@ -290,6 +290,7 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
     GameObject* temp_object_ptr = NULL;
 
     bool priority_object = false;
+    bool _is_persistent  = false;
 
     // Allocate object based on type
     // NOTE: All object types should be represented here. When adding object types
@@ -348,37 +349,41 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
 
         case SMASH_BLOCK_LARGE:
             temp_object_ptr = new SmashBlockLarge();
+            _is_persistent  = true;
         break;
 
         case SMASH_BLOCK_MINI:
             temp_object_ptr = new SmashBlockMini();
+            _is_persistent  = true;
         break;
 
         case LARGE_VASE:
             temp_object_ptr = new LargeVase();
+            _is_persistent  = true;
         break;
 
         case SMALL_VASE:
             temp_object_ptr = new SmallVase();
+            _is_persistent  = true;
         break;
 
         case HP_TOTEM:
             temp_object_ptr = new HPTotem();
+            _is_persistent  = true;
         break;
 
         case HP_DROP:
             temp_object_ptr = new HPDrop();
-
+            _is_persistent  = true;
             // Special Case: 
             // HP Drops added in through the Level Editor are "frozen"
             // and don't receive physics updates
             temp_object_ptr->is_frozen = true;
-
         break;
 
         case MOON_DROP:
             temp_object_ptr = new MoonDrop();
-
+            _is_persistent   = true;
             // Special Case: 
             // Moon Drops added in through the Level Editor are "frozen"
             // and don't receive physics updates
@@ -388,7 +393,7 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
 
         case STAR_DROP:
             temp_object_ptr = new StarDrop();
-
+            _is_persistent   = true;
             // Special Case: 
             // Star Drops added in through the Level Editor are "frozen"
             // and don't receive physics updates
@@ -402,14 +407,17 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
 
         case GROUND_GHOUL:
             temp_object_ptr = new GroundGhoul();
+            _is_persistent  = true;
         break;
 
         case THORN_COLUMN:
             temp_object_ptr = new ThornColumn();
+            _is_persistent  = true;
         break;
 
         case THORN_BAR:
             temp_object_ptr = new ThornBar();
+            _is_persistent  = true;
         break;
 
         ///////////
@@ -447,7 +455,7 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
         game_objects.back()->setCamera(camera_ptr);
         game_objects.back()->setPos(object.room_pos);
         game_objects.back()->object_id = game_objects.size() - 1;
-        game_objects.back()->is_persistent = object.is_persistent;
+        game_objects.back()->is_persistent = _is_persistent;
 
         return game_objects.back()->object_id;
     }
@@ -460,7 +468,7 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
         (*insert_index)->setCamera(camera_ptr);
         (*insert_index)->setPos(object.room_pos);
         (*insert_index)->object_id = 1;
-        (*insert_index)->is_persistent = object.is_persistent;
+        (*insert_index)->is_persistent = _is_persistent;
 
         updateIndexes();
 
@@ -469,12 +477,11 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
 
 }
 
-int32 Room::addUnloadedObject(const UnloadedObject& new_object, bool is_persistent)
+int32 Room::addUnloadedObject(const UnloadedObject& new_object)
 {
     if(unloaded_objects.size() >= MAX_UNLOADED_OBJECTS) {return 0;}
 
     unloaded_objects.push_back(new_object);
-    unloaded_objects.back().is_persistent = is_persistent;
 
     return 1;
 }
@@ -627,8 +634,7 @@ void Room::prepObjects(const bn::regular_bg_ptr&                      object_bg_
             if(type > NO_TYPE && type < HITBOX_SPIN_1)
             {
                 addUnloadedObject(UnloadedObject(bn::point(x - half_level_width_pixels, 
-                                                           y - half_level_height_pixels - 1), 
-                                                           type), false);
+                                                           y - half_level_height_pixels - 1), type));
             }
         }
     }

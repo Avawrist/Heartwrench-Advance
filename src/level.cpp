@@ -1291,7 +1291,8 @@ void Level::removeObjectCells()
 
     for(int32 i = 0; i < current_room.game_objects.size(); i++)
     {
-        if(current_room.game_objects.at(i)->state == OBJECT_DEATH)
+        if(current_room.game_objects.at(i)->state == OBJECT_DEATH && 
+           current_room.game_objects.at(i)->is_persistent)
         {
             // Search for the unloaded object by index, if found, remove the object tile:
             object_id      = current_room.game_objects.at(i)->object_id;
@@ -1299,7 +1300,6 @@ void Level::removeObjectCells()
 
             if(unloaded_index > -1)
             {
-                //unloaded_objects.at(unloaded_index)->room_pos;
                 cell_x = (current_room.unloaded_objects.at(unloaded_index).room_pos.x() + half_level_width_pixels)  / TILE_WIDTH  / 2;
                 cell_y = (current_room.unloaded_objects.at(unloaded_index).room_pos.y() + half_level_height_pixels + 1) / TILE_HEIGHT / 2;
 

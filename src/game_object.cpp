@@ -1664,7 +1664,6 @@ UnloadedObject::UnloadedObject(const UnloadedObject& other)
     room_pos           = other.room_pos;
     object_type        = other.object_type;
     loaded_instance_id = other.loaded_instance_id;
-    is_persistent      = other.is_persistent;
 }
 
 UnloadedObject::~UnloadedObject()
@@ -1677,7 +1676,6 @@ void UnloadedObject::operator =(const UnloadedObject& other)
     room_pos           = other.room_pos;
     object_type        = other.object_type;
     loaded_instance_id = other.loaded_instance_id;
-    is_persistent      = other.is_persistent;
 }
 
 void UnloadedObject::removeSourceTile()

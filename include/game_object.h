@@ -482,7 +482,6 @@ struct UnloadedObject
     bn::point  room_pos;
     ObjectType object_type;
 	int32      loaded_instance_id;
-	bool       is_persistent = false;
 
     UnloadedObject();
     UnloadedObject(bn::point _room_pos, ObjectType _object_type);
