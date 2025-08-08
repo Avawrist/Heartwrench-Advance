@@ -60,6 +60,7 @@
 #include "bn_sprite_items_hp_drop.h"
 #include "bn_sprite_items_moon_drop.h"
 #include "bn_sprite_items_star_drop.h"
+#include "bn_sprite_items_checkpoint.h"
 
 // Enemy Object Assets
 #include "bn_sprite_items_ground_ghoul.h"
@@ -171,6 +172,7 @@ enum ObjectType
 	HP_DROP,
 	MOON_DROP,
 	STAR_DROP,
+	CHECKPOINT,
 
 	// Level Enemies
 	THORN_COLUMN,
@@ -208,6 +210,9 @@ enum ObjectState
 
 	// PushBlock
 	PUSH_BLOCK_ROLLING,
+
+	// Checkpoint
+	CHECKPOINT_ACTIVE,
 
 	///////////////////
 	// Level Enemies //
@@ -430,6 +435,7 @@ struct GameObject
 	virtual void resolveHPDropCollision(GameObject& object);
 	virtual void resolveMoonDropCollision(GameObject& object);
 	virtual void resolveStarDropCollision(GameObject& object);
+	virtual void resolveCheckpointCollision(GameObject& object);
 
 	// Level Enemies
 	virtual void resolveThornColumnCollision(GameObject& object); 

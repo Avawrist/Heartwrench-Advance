@@ -9,14 +9,14 @@ Room::Room()
 
 }
 
-Room::Room(RoomName                                       room_name, 
+Room::Room(RoomName                                       _room_name, 
            bn::camera_ptr                                 camera_ptr,                
            const bn::regular_bg_ptr&                      object_bg_ptr, 
            const bn::regular_bg_item&                     object_bg_item,
            uint8                                          object_cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT],
            const bn::fixed_point                          player_spawn)
 {
-    load(room_name, 
+    load(_room_name, 
          camera_ptr,
          object_bg_ptr,
          object_bg_item,
@@ -51,6 +51,7 @@ Room::Room(const Room& other)
 
     room_bounds = other.room_bounds;
 
+    room_name       = other.room_name;
     top_neighbor    = other.top_neighbor;
     right_neighbor  = other.right_neighbor;
     bottom_neighbor = other.bottom_neighbor;
@@ -92,6 +93,7 @@ void Room::operator =(const Room& other)
 
     room_bounds = other.room_bounds;
 
+    room_name       = other.room_name;
     top_neighbor    = other.top_neighbor;
     right_neighbor  = other.right_neighbor;
     bottom_neighbor = other.bottom_neighbor;
@@ -194,6 +196,10 @@ int32 Room::addObject(ObjectRequest& object_request, const bn::camera_ptr& camer
 
         case STAR_DROP:
             temp_object_ptr = new StarDrop();
+        break;
+
+        case CHECKPOINT:
+            temp_object_ptr = new Checkpoint();
         break;
 
         ///////////////////
@@ -401,6 +407,10 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
 
         break;
 
+        case CHECKPOINT:
+            temp_object_ptr = new Checkpoint();
+        break;
+
         ///////////////////
 	    // Level Enemies //
 	    ///////////////////
@@ -511,14 +521,16 @@ void Room::clear()
     game_objects.clear();
 }
 
-void Room::load(RoomName                                       room_name, 
+void Room::load(RoomName                                       _room_name, 
                 const bn::camera_ptr&                          camera_ptr, 
                 const bn::regular_bg_ptr&                      object_bg_ptr, 
                 const bn::regular_bg_item&                     object_bg_item,
                 uint8                                          object_cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT],
                 const bn::fixed_point                          player_spawn)
 {
-    if(room_name == NO_ROOM) {return;}
+    if(_room_name == NO_ROOM) {return;}
+
+    room_name = _room_name;
 
     // Initialize Objects
     switch(room_name)

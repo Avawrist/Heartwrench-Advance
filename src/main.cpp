@@ -19,13 +19,13 @@ int main()
     bn::core::init();
     
     // Initialize Level
-    Level current_level(LEVEL_ZIGGURAT_1);
+    Level level(LEVEL_NAME_CARD);
 
     // Game Loop
     while(true)
     {
         // Update Level
-        current_level.update();
+        level.update();
        
         // Update Butano
         bn::core::update();

@@ -1,5 +1,43 @@
 #include "level.h"
 
+//////////////////
+// Struct Spawn //
+//////////////////
+
+Spawn::Spawn()
+{
+    spawn_pos   = bn::fixed_point(0, 0);
+    spawn_room  = NO_ROOM;
+    spawn_level = NO_LEVEL;
+}
+
+Spawn::Spawn(const Spawn& other)
+{
+    spawn_pos   = other.spawn_pos;
+    spawn_room  = other.spawn_room;
+    spawn_level = other.spawn_level;
+}
+
+Spawn::~Spawn()
+{}
+
+void Spawn::operator =(const Spawn& other)
+{
+    spawn_pos   = other.spawn_pos;
+    spawn_room  = other.spawn_room;
+    spawn_level = other.spawn_level;
+}
+
+void Spawn::setSpawnPosAC(int32 spawn_x, int32 spawn_y)
+{
+    spawn_pos.set_x(spawn_x - (LEVEL_WIDTH / 2));
+    spawn_pos.set_y(spawn_y - (LEVEL_HEIGHT / 2));
+}
+
+//////////////////
+// Struct Level //
+//////////////////
+
 Level::Level()
 {
     
@@ -21,7 +59,6 @@ Level::Level(const Level& other)
     bg_item        = other.bg_item;
     cells          = other.cells;
     object_bg_item = other.object_bg_item;
-    //object_cells   = other.object_cells;
 
     painted_bg_anim_ptr = other.painted_bg_anim_ptr;
 
@@ -47,7 +84,6 @@ Level::Level(const Level& other)
     tile_width  = other.tile_width;
     tile_height = other.tile_height;
 
-    current_level_name    = other.current_level_name;
     player_spawn          = other.player_spawn;
     fade_in               = other.fade_in;
     fade_out              = other.fade_out;
@@ -88,7 +124,6 @@ void Level::operator =(const Level& other)
     bg_item        = other.bg_item;
     cells          = other.cells;
     object_bg_item = other.object_bg_item;
-    //object_cells   = other.object_cells;
 
     painted_bg_anim_ptr = other.painted_bg_anim_ptr;
 
@@ -114,7 +149,6 @@ void Level::operator =(const Level& other)
     tile_width  = other.tile_width;
     tile_height = other.tile_height;
 
-    current_level_name    = other.current_level_name;
     player_spawn          = other.player_spawn;
     fade_in               = other.fade_in;
     fade_out              = other.fade_out;
@@ -177,12 +211,11 @@ void Level::clear()
     
 }
 
-void Level::load(LevelName level_name)
+void Level::load()
 {
-    if(level_name == NO_LEVEL) {return;}
+    if(player_spawn.spawn_level == NO_LEVEL) {return;}
 
-    camera       = bn::camera_ptr::create(0, 0);
-    player_spawn = bn::fixed_point(0, 0);
+    camera = bn::camera_ptr::create(0, 0);
 
     fade_in               = false;
     fade_out              = false;
@@ -204,19 +237,10 @@ void Level::load(LevelName level_name)
 
     cursor_index = 0;
 
-    // Record current level & pos
-    current_level_name = level_name;
-
-    // Store room name before constructing
-    RoomName temp_room_name = NO_ROOM;
-
     // Initialize Variables
-    switch(level_name)
+    switch(player_spawn.spawn_level)
     {
         case LEVEL_NAME_CARD:
-
-            // Player Spawn //
-            player_spawn = bn::fixed_point(0, 0);
 
             // Load BGs //
             main_bg_ptr    = bn::regular_bg_items::name_card_level_bg.create_bg(0, 0);
@@ -234,18 +258,12 @@ void Level::load(LevelName level_name)
             // Update cells
             cells        = main_bg_ptr->map().cells_ref().value();
 
-            // Set Room //
-            temp_room_name = ROOM_NAME_CARD;
-
             // Init name card frames
             name_card_frame = LEVEL_NAME_CARD_FRAMES;
 
         break;
 
         case LEVEL_TITLE_SCREEN:
-
-            // Player Spawn //
-            player_spawn = bn::fixed_point(0, 0);
 
             // Load BGs //
             main_bg_ptr    = bn::regular_bg_items::title_screen_level_bg.create_bg(0, 0);
@@ -263,15 +281,216 @@ void Level::load(LevelName level_name)
             // Update cells
             cells        = main_bg_ptr->map().cells_ref().value();
 
-            // Set Room //
-            temp_room_name = ROOM_TITLE_SCREEN;
+        break;
+
+        case LEVEL_ZIGGURAT_1:
+            
+            // Load BGs //
+            main_bg_ptr    = bn::regular_bg_items::ziggurat_1_level_bg.create_bg(0, 0);
+            bg_item        = bn::regular_bg_items::ziggurat_1_level_bg;
+
+            object_bg_ptr  = bn::regular_bg_items::ziggurat_1_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::ziggurat_1_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::ziggurat_1_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                                3,
+                                                                                bn::regular_bg_items::ziggurat_1_painted_bg.map_item(),
+                                                                                0, 0, 0, 1, 1, 1, 2, 2, 2);
+
+            // Update cells
+            cells = main_bg_ptr->map().cells_ref().value();
+            
+        break;
+
+        default:
+
+            BN_LOG("Level creation failed - Level Name not found.");
+            return;
+
+        break;
+    }
+
+    // Populate object cells
+    populateObjectCells();
+
+    // Init room
+    current_room = Room(player_spawn.spawn_room, 
+                        camera.value(), 
+                        object_bg_ptr.value(), 
+                        object_bg_item.value(),
+                        object_cells,
+                        player_spawn.spawn_pos);
+
+    // Hide Player on the title screen
+    if(player_spawn.spawn_level == LEVEL_TITLE_SCREEN)
+    {current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->hideSprites();}
+
+    // Store default painted bg palette
+    default_main_palette_ptr    = main_bg_ptr->palette();
+    default_painted_palette_ptr = painted_bg_ptr->palette();
+    
+    // Set draw priority for BGs
+    painted_bg_ptr->set_z_order(PAINTED_BG_ORDER);
+    main_bg_ptr->set_z_order(MAIN_BG_ORDER);
+    object_bg_ptr->set_z_order(OBJECT_BG_ORDER);
+
+    // Initialize Pause Menu
+    pause_screen_bg_ptr = bn::regular_bg_items::pause_screen.create_bg(0, 0);
+    pause_screen_bg_ptr->set_z_order(PAUSE_BG_ORDER);
+    pause_screen_bg_ptr->set_visible(false);
+
+    pause_screen_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(pause_screen_bg_ptr.value(),
+                                                                            0,
+                                                                            bn::regular_bg_items::pause_screen.map_item(),
+                                                                            0, 0);
+
+    // Initialize HUD elements
+    hud_hp_sprite_ptr = bn::sprite_items::hud_hp_bar.create_sprite(HUD_HP_X_OFFSET, HUD_HP_Y_OFFSET);
+    hud_hp_sprite_ptr->set_z_order(HUD_Z_LAYER);
+    hud_hp_sprite_ptr->set_visible(false);
+    hud_hp_animate_action_ptr = bn::create_sprite_animate_action_forever(hud_hp_sprite_ptr.value(),
+                                                                         0,
+                                                                         bn::sprite_items::hud_hp_bar.tiles_item(),
+                                                                         0, 0);
+
+    currency_num_1_sprite_ptr = bn::sprite_items::currency_number.create_sprite(HUD_CURRENCY_NUM_1_X_OFFSET, HUD_CURRENCY_NUM_1_Y_OFFSET);
+    currency_num_1_sprite_ptr->set_z_order(HUD_Z_LAYER);
+    currency_num_1_sprite_ptr->set_visible(false);
+	currency_num_1_animate_action_ptr = bn::create_sprite_animate_action_forever(currency_num_1_sprite_ptr.value(),
+                                                                                 0,
+                                                                                 bn::sprite_items::currency_number.tiles_item(),
+                                                                                 0, 0);
+
+    currency_num_2_sprite_ptr = bn::sprite_items::currency_number.create_sprite(HUD_CURRENCY_NUM_2_X_OFFSET, HUD_CURRENCY_NUM_2_Y_OFFSET);
+    currency_num_2_sprite_ptr->set_z_order(HUD_Z_LAYER);
+    currency_num_2_sprite_ptr->set_visible(false);
+	currency_num_2_animate_action_ptr = bn::create_sprite_animate_action_forever(currency_num_1_sprite_ptr.value(),
+                                                                                 0,
+                                                                                 bn::sprite_items::currency_number.tiles_item(),
+                                                                                 0, 0);
+
+    currency_icon_sprite_ptr = bn::sprite_items::hud_currency_icon.create_sprite(HUD_CURRENCY_ICON_X_OFFSET, HUD_CURRENCY_ICON_Y_OFFSET);
+    currency_icon_sprite_ptr->set_z_order(HUD_Z_LAYER);
+    currency_icon_sprite_ptr->set_visible(false);
+
+    default_hud_palette_ptr = hud_hp_sprite_ptr->palette();
+
+    // Set Camera
+    main_bg_ptr->set_camera(camera.value());
+    painted_bg_ptr->set_camera(camera.value());
+    object_bg_ptr->set_camera(camera.value());
+    object_bg_ptr->set_visible(false);
+
+    pause_screen_bg_ptr->set_camera(camera.value());
+
+    hud_hp_sprite_ptr->set_camera(camera.value());
+
+    currency_num_1_sprite_ptr->set_camera(camera.value());
+    currency_num_2_sprite_ptr->set_camera(camera.value());
+
+    currency_icon_sprite_ptr->set_camera(camera.value());
+
+    // Set black screen
+    default_main_palette_ptr->set_fade(bn::colors::black, 1);
+    default_painted_palette_ptr->set_fade(bn::colors::black, 1);
+
+    // Trigger fade in
+    fade_in = true;
+
+    BN_LOG("=== Level loaded ===");
+    BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
+    
+}
+
+void Level::load(LevelName level_name)
+{
+    if(level_name == NO_LEVEL) {return;}
+
+    camera = bn::camera_ptr::create(0, 0);
+
+    player_spawn.spawn_pos   = bn::fixed_point(0, 0);
+    player_spawn.spawn_room  = NO_ROOM; 
+    player_spawn.spawn_level = level_name;
+
+    fade_in               = false;
+    fade_out              = false;
+    cam_is_scrolling      = false;
+    menu_open             = false;
+    cam_x_offset          = 0;
+    cam_y_offset          = 0;
+    cam_look_x_offset     = 0;
+    cam_look_dir_x_offset = 0;
+    cam_look_y_offset     = 0;
+    cam_update_timer      = 0;
+
+    name_card_frame = 0;
+
+    displayed_currency = 0;
+    currency           = 0;
+
+    transition_frames = -1;
+
+    cursor_index = 0;
+
+    // Initialize Variables
+    switch(player_spawn.spawn_level)
+    {
+        case LEVEL_NAME_CARD:
+
+            // Player Spawn //
+            player_spawn.spawn_room = ROOM_NAME_CARD;
+
+            // Load BGs //
+            main_bg_ptr    = bn::regular_bg_items::name_card_level_bg.create_bg(0, 0);
+            bg_item        = bn::regular_bg_items::name_card_level_bg;
+
+            object_bg_ptr  = bn::regular_bg_items::name_card_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::name_card_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::name_card_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               0,
+                                                                               bn::regular_bg_items::name_card_painted_bg.map_item(),
+                                                                               0, 0);
+
+            // Update cells
+            cells        = main_bg_ptr->map().cells_ref().value();
+
+            // Init name card frames
+            name_card_frame = LEVEL_NAME_CARD_FRAMES;
+
+        break;
+
+        case LEVEL_TITLE_SCREEN:
+
+            // Player Spawn //
+            player_spawn.spawn_room = ROOM_TITLE_SCREEN;
+
+            // Load BGs //
+            main_bg_ptr    = bn::regular_bg_items::title_screen_level_bg.create_bg(0, 0);
+            bg_item        = bn::regular_bg_items::title_screen_level_bg;
+
+            object_bg_ptr  = bn::regular_bg_items::title_screen_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::title_screen_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::title_screen_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               6,
+                                                                               bn::regular_bg_items::title_screen_painted_bg.map_item(),
+                                                                               0, 0, 0, 0, 0, 1, 1, 1, 1);
+
+            // Update cells
+            cells        = main_bg_ptr->map().cells_ref().value();
 
         break;
 
         case LEVEL_ZIGGURAT_1:
             
             // Player Spawn //
-            player_spawn = bn::fixed_point(-2512, -688);
+            player_spawn.setSpawnPosAC(64, 592);
+            //player_spawn.spawn_pos  = bn::fixed_point(-2512, -688);
+            player_spawn.spawn_room = ROOM_TEST_1;
 
             // Load BGs //
             main_bg_ptr    = bn::regular_bg_items::ziggurat_1_level_bg.create_bg(0, 0);
@@ -287,11 +506,8 @@ void Level::load(LevelName level_name)
                                                                                 0, 0, 0, 1, 1, 1, 2, 2, 2);
 
             // Update cells
-            cells        = main_bg_ptr->map().cells_ref().value();
+            cells = main_bg_ptr->map().cells_ref().value();
             
-            // Set Room //
-            temp_room_name = ROOM_TEST_1;
-
         break;
 
         default:
@@ -306,15 +522,15 @@ void Level::load(LevelName level_name)
     populateObjectCells();
 
     // Init room
-    current_room = Room(temp_room_name, 
+    current_room = Room(player_spawn.spawn_room, 
                         camera.value(), 
                         object_bg_ptr.value(), 
                         object_bg_item.value(),
                         object_cells,
-                        player_spawn);
+                        player_spawn.spawn_pos);
 
     // Hide Player on the title screen
-    if(current_level_name == LEVEL_TITLE_SCREEN)
+    if(player_spawn.spawn_level == LEVEL_TITLE_SCREEN)
     {current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->hideSprites();}
 
     // Store default painted bg palette
@@ -397,7 +613,7 @@ void Level::load(LevelName level_name)
 void Level::reload()
 {
     clear(); 
-    load(current_level_name);
+    load();
 }
 
 void Level::loadNew(LevelName level_name)
@@ -410,11 +626,11 @@ void Level::update()
 {
     if(global_hitstop_frames <= 0)
     {
-        if(current_level_name == LEVEL_NAME_CARD)         {updateNameCard();}
-        else if(current_level_name == LEVEL_TITLE_SCREEN) {updateTitleScreen();}
-        else if(menu_open)                                {updatePauseScreen();}
-        else if(cam_is_scrolling)                         {updateCamera();}
-        else                                              {updateAll();}
+        if(player_spawn.spawn_level == LEVEL_NAME_CARD)         {updateNameCard();}
+        else if(player_spawn.spawn_level == LEVEL_TITLE_SCREEN) {updateTitleScreen();}
+        else if(menu_open)                                      {updatePauseScreen();}
+        else if(cam_is_scrolling)                               {updateCamera();}
+        else                                                    {updateAll();}
     }
 
     // Update Global Timer
@@ -435,6 +651,88 @@ void Level::updateAll()
     drawObjects();
 }
 
+void Level::updateNameCard()
+{
+    // Update Name Card timer
+    name_card_frame--;
+    name_card_frame = clamp(0, LEVEL_NAME_CARD_FRAMES, name_card_frame);
+
+    // Update fade
+    updateFade();
+
+    // Hide HUD
+    hud_hp_sprite_ptr->set_visible(false);
+    currency_num_1_sprite_ptr->set_visible(false);
+    currency_num_2_sprite_ptr->set_visible(false);
+    currency_icon_sprite_ptr->set_visible(false);
+
+    // Delete Player
+    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) != NULL)
+    {
+        delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+        current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = NULL;
+    }
+
+    // Center Camera
+    camera.value().set_position(0, 0);
+
+    // Get Input //
+    if((bn::keypad::start_pressed() || bn::keypad::a_pressed() || name_card_frame <= 0) &&
+        transition_frames < 0)
+    {
+        // Start Fade and Level Transition
+        fade_out = true;
+        transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+    }
+
+    // Draw Screen
+    updatePaintedBG();
+
+    // Transition
+    updateLevelTransition(LEVEL_TITLE_SCREEN);
+}
+
+void Level::updateTitleScreen()
+{
+    // Update fade
+    updateFade();
+
+    // Hide HUD
+    hud_hp_sprite_ptr->set_visible(false);
+    currency_num_1_sprite_ptr->set_visible(false);
+    currency_num_2_sprite_ptr->set_visible(false);
+    currency_icon_sprite_ptr->set_visible(false);
+
+    // Delete Player
+    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) != NULL)
+    {
+        delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+        current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = NULL;
+    }
+
+    // Center Camera
+    camera.value().set_position(0, 0);
+
+    // Get Input //
+    if((bn::keypad::start_pressed() || bn::keypad::a_pressed()) && transition_frames < 0)
+    {
+        // Start Fade and Level Transition
+        fade_out = true;
+        transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+
+        painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                           0,
+                                                                           bn::regular_bg_items::title_screen_painted_bg.map_item(),
+                                                                           0, 0, 1, 1);
+    }
+
+    // Draw Screen
+    updatePaintedBG();
+
+    // Transition
+    updateLevelTransition(LEVEL_ZIGGURAT_1);
+}
+
 void Level::updateObjects()
 {
     // Update all objects
@@ -448,6 +746,13 @@ void Level::updateObjects()
                                                         cells,
                                                         bg_item.value(),
                                                         camera.value());
+            
+            // Update spawn point //
+            if(current_room.game_objects.data()[i]->state == CHECKPOINT_ACTIVE)
+            {
+                player_spawn.spawn_pos   = current_room.game_objects.data()[i]->pos();
+                player_spawn.spawn_room  = current_room.room_name;
+            }
         }   
     } 
 
@@ -509,7 +814,7 @@ void Level::updateCamera()
         ////////////////////////////////////
         // Determine camera X look offset //
         ////////////////////////////////////
-        if(temp_player_ptr->rigidbody.final_dir.x() >= PLAYER_MAX_X_SPEED)       {cam_look_x_offset++;}
+        if(temp_player_ptr->rigidbody.final_dir.x()      >=  PLAYER_MAX_X_SPEED) {cam_look_x_offset++;}
         else if(temp_player_ptr->rigidbody.final_dir.x() <= -PLAYER_MAX_X_SPEED) {cam_look_x_offset--;}
         else
         {
@@ -520,8 +825,11 @@ void Level::updateCamera()
         ///////////////////////////////////
         // Determine camera X dir offset //
         ///////////////////////////////////
-        if(temp_player_ptr->x_dir == RIGHT)     {cam_look_dir_x_offset++;}
-        else if(temp_player_ptr->x_dir == LEFT) {cam_look_dir_x_offset--;}
+        if(temp_player_ptr->rigidbody.normalized_dir.x() != 0)
+        {
+            if(temp_player_ptr->x_dir == RIGHT)     {cam_look_dir_x_offset++;}
+            else if(temp_player_ptr->x_dir == LEFT) {cam_look_dir_x_offset--;}
+        }
 
         ////////////////////////////////////
         // Determine camera Y look offset //
@@ -656,176 +964,6 @@ void Level::updateCurrency()
     if(global_timer % 4 == 0 && displayed_currency < currency) {displayed_currency++;}
 }
 
-void Level::reloadOnDeath()
-{
-    // If player died, reload the level
-    if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->is_dead)
-    {
-        // Trigger the fade out
-        fade_out = true;
-
-        // If fade out is done, we can reload.
-        if(default_painted_palette_ptr->fade_intensity() == 1)
-        {reload();}
-    }
-}
-
-void Level::freeObjects()
-{
-    #define INDEX_AFTER_PLAYER 1
-
-    int32 last_index = current_room.game_objects.size() - 1;
-    for(int32 i = INDEX_AFTER_PLAYER; i <= last_index; i++)
-    {
-        if(current_room.game_objects.at(i)->is_dead)
-        {
-            // 1. Update the UnloadedObject with the Unloaded ID:
-            int32 object_id = current_room.game_objects.at(i)->object_id;
-            int32 unloaded_index = current_room.findUnloadedObjectIndex(object_id);
-            if(unloaded_index > -1)
-            {current_room.unloaded_objects.at(unloaded_index).loaded_instance_id = UNLOADED_OBJECT_STATE_DEAD;}
-
-            // 2. Remove the dead object:
-            delete current_room.game_objects.at(i);
-            current_room.game_objects.at(i) = current_room.game_objects.at(last_index);
-            current_room.game_objects.pop_back();
-            last_index--;
-        }
-
-        else if(current_room.game_objects.at(i)->is_inactive)
-        {
-            // 1. Update the UnloadedObject with the Unloaded ID:
-            int32 object_id = current_room.game_objects.at(i)->object_id;
-            int32 unloaded_index = current_room.findUnloadedObjectIndex(object_id);
-            if(unloaded_index > -1)
-            {current_room.unloaded_objects.at(unloaded_index).loaded_instance_id = UNLOADED_OBJECT_STATE_UNLOADED;}
-
-            // 2. Remove the inactive object:
-            delete current_room.game_objects.at(i);
-            current_room.game_objects.at(i) = current_room.game_objects.at(last_index);
-            current_room.game_objects.pop_back();
-            last_index--;
-        }
-    }
-
-    current_room.updateIndexes();
-}
-
-void Level::transitionRoom()
-{
-    #define SCREEN_WIDTH  240
-    #define SCREEN_HEIGHT 160
-
-    if(current_room.game_objects.size() == 0) {return;}
-
-    Player temp_player = Player(*((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))));
-    
-    if(temp_player.pos().x() > current_room.room_bounds.right_bound)
-    {
-        if(current_room.right_neighbor != NO_ROOM)
-        {
-            // Create the neighbor room
-            current_room = Room(current_room.right_neighbor, 
-                                camera.value(),
-                                object_bg_ptr.value(), 
-                                object_bg_item.value(), 
-                                object_cells,
-                                player_spawn);
-
-            // Free up the default player object that came with the new room,
-            // and replace with the player object from the previous room
-            delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
-            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(temp_player);
-
-            // Set camera offsets
-            cam_is_scrolling = true;
-            cam_x_offset     = SCREEN_WIDTH;
-            cam_y_offset     = 0;
-
-            return;
-        }
-    }
-
-    else if(temp_player.pos().x() < current_room.room_bounds.left_bound)
-    {
-        if(current_room.left_neighbor != NO_ROOM)
-        {
-
-            // Create the neighbor room
-            current_room = Room(current_room.left_neighbor, 
-                                camera.value(),
-                                object_bg_ptr.value(), 
-                                object_bg_item.value(), 
-                                object_cells,
-                                player_spawn);
-
-            // Free up the default player object that came with the new room,
-            // and replace with the player object from the previous room
-            delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
-            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(temp_player);
-
-            // Set camera offsets
-            cam_is_scrolling = true;
-            cam_x_offset     = -SCREEN_WIDTH;
-            cam_y_offset     = 0;
-
-            return;
-        }
-    }
-
-    else if(temp_player.pos().y() < current_room.room_bounds.top_bound)
-    {
-        if(current_room.top_neighbor != NO_ROOM)
-        {
-            // Create the neighbor room
-            current_room = Room(current_room.top_neighbor, 
-                                camera.value(),
-                                object_bg_ptr.value(), 
-                                object_bg_item.value(), 
-                                object_cells,
-                                player_spawn);
-
-            // Free up the default player object that came with the new room,
-            // and replace with the player object from the previous room
-            delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
-            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(temp_player);
-
-            // Set camera offsets
-            cam_is_scrolling = true;
-            cam_x_offset     = 0;
-            cam_y_offset     = -SCREEN_HEIGHT;
-
-            return;
-        }
-    }
-
-    else if(temp_player.pos().y() > current_room.room_bounds.bottom_bound)
-    {
-        if(current_room.bottom_neighbor != NO_ROOM)
-        {
-            // Create the neighbor room
-            current_room = Room(current_room.bottom_neighbor, 
-                                camera.value(),
-                                object_bg_ptr.value(), 
-                                object_bg_item.value(),
-                                object_cells,
-                                player_spawn);
-
-            // Free up the default player object that came with the new room,
-            // and replace with the player object from the previous room
-            delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
-            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(temp_player);
-
-            // Set camera offsets
-            cam_is_scrolling = true;
-            cam_x_offset     = 0;
-            cam_y_offset     = SCREEN_HEIGHT;
-
-            return;
-        }
-    }
-}
-
 void Level::updateHUD()
 {
     // Get temp player pointer
@@ -898,22 +1036,6 @@ void Level::updateHUD()
 
         global_hud_currency_flash_frames--;
         global_hud_currency_flash_frames = clamp(0, HUD_FLASH_FRAMES, global_hud_currency_flash_frames);
-}
-
-void Level::drawObjects()
-{
-    if(menu_open || current_level_name == LEVEL_TITLE_SCREEN) {return;}
-
-    global_tiles_in_VRAM = 0;
-
-    // Update & draw all objects
-    for(int32 i = current_room.game_objects.size() - 1; i >= 0; i--)
-    {
-        if(current_room.game_objects.data()[i] != NULL)
-        {
-            current_room.game_objects.data()[i]->draw();
-        }   
-    }
 }
 
 void Level::updateFade()
@@ -1047,155 +1169,6 @@ void Level::updateFade()
     }
 }
 
-void Level::storePlayerInputs()
-{
-    // This function exists to take input from the player even during
-    // hitstop frames. This way, the player isnt locked out of input
-    // just for the sake of juice.
-
-    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) == NULL)
-    {return;}
-
-    if(bn::keypad::a_pressed())
-    {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->a_requested = true;}
-
-    if(bn::keypad::b_pressed())
-    {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->b_requested = true;}
-
-    if(bn::keypad::r_pressed())
-    {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->r_requested = true;}
-}
-
-void Level::updateNameCard()
-{
-    // Update Name Card timer
-    name_card_frame--;
-    name_card_frame = clamp(0, LEVEL_NAME_CARD_FRAMES, name_card_frame);
-
-    // Update fade
-    updateFade();
-
-    // Hide HUD
-    hud_hp_sprite_ptr->set_visible(false);
-    currency_num_1_sprite_ptr->set_visible(false);
-    currency_num_2_sprite_ptr->set_visible(false);
-    currency_icon_sprite_ptr->set_visible(false);
-
-    // Delete Player
-    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) != NULL)
-    {
-        delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
-        current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = NULL;
-    }
-
-    // Center Camera
-    camera.value().set_position(0, 0);
-
-    // Get Input //
-    if((bn::keypad::start_pressed() || bn::keypad::a_pressed() || name_card_frame <= 0) &&
-        transition_frames < 0)
-    {
-        BN_LOG("test");
-        // Start Fade and Level Transition
-        fade_out = true;
-        transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
-    }
-
-    // Draw Screen
-    updatePaintedBG();
-
-    // Transition
-    updateLevelTransition(LEVEL_TITLE_SCREEN);
-}
-
-void Level::updateTitleScreen()
-{
-    // Update fade
-    updateFade();
-
-    // Hide HUD
-    hud_hp_sprite_ptr->set_visible(false);
-    currency_num_1_sprite_ptr->set_visible(false);
-    currency_num_2_sprite_ptr->set_visible(false);
-    currency_icon_sprite_ptr->set_visible(false);
-
-    // Delete Player
-    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) != NULL)
-    {
-        delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
-        current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = NULL;
-    }
-
-    // Center Camera
-    camera.value().set_position(0, 0);
-
-    // Get Input //
-    if((bn::keypad::start_pressed() || bn::keypad::a_pressed()) && transition_frames < 0)
-    {
-        // Start Fade and Level Transition
-        fade_out = true;
-        transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
-
-        painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
-                                                                           0,
-                                                                           bn::regular_bg_items::title_screen_painted_bg.map_item(),
-                                                                           0, 0, 1, 1);
-    }
-
-    // Draw Screen
-    updatePaintedBG();
-
-    // Transition
-    updateLevelTransition(LEVEL_ZIGGURAT_1);
-}
-
-void Level::togglePauseScreen()
-{
-    if(menu_open) 
-    {
-        menu_open = false;
-        pause_screen_bg_ptr->set_visible(false);
-
-        // Reveal HUD Sprites //
-        hud_hp_sprite_ptr->set_visible(true);
-        currency_num_1_sprite_ptr->set_visible(true);
-        currency_num_2_sprite_ptr->set_visible(true);
-        currency_icon_sprite_ptr->set_visible(true);
-
-        // Reveal GameObjects //
-        for(int32 i = 0; i < current_room.game_objects.size(); i++)
-        {
-            if(current_room.game_objects.at(i) != NULL)
-            {
-                current_room.game_objects.at(i)->revealSprites();
-            }
-        }
-    }
-
-    else          
-    {
-        menu_open    = true;
-        cursor_index = CURSOR_CONTINUE;
-        pause_screen_bg_ptr->set_visible(true);
-
-        // Update Position //
-        pause_screen_bg_ptr->set_position(camera.value().x(), camera.value().y());
-
-        // Hide HUD Sprites //
-        hud_hp_sprite_ptr->set_visible(false);
-        currency_num_1_sprite_ptr->set_visible(false);
-        currency_num_2_sprite_ptr->set_visible(false);
-        currency_icon_sprite_ptr->set_visible(false);
-
-        // Hide GameObjects //
-        for(int32 i = 0; i < current_room.game_objects.size(); i++)
-        {
-            if(current_room.game_objects.at(i) != NULL)
-            {current_room.game_objects.at(i)->hideSprites();}
-        }
-    }
-}
-
 void Level::updatePauseScreen()
 {
     // Update Fade //
@@ -1260,6 +1233,258 @@ void Level::updateLevelTransition(LevelName level_index)
 
         if(transition_frames == 0)
         {loadNew(level_index);}
+    }
+}
+
+void Level::reloadOnDeath()
+{
+    // If player died, reload the level
+    if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->is_dead)
+    {
+        // Trigger the fade out
+        fade_out = true;
+
+        // If fade out is done, we can reload.
+        if(default_painted_palette_ptr->fade_intensity() == 1)
+        {reload();}
+    }
+}
+
+void Level::freeObjects()
+{
+    #define INDEX_AFTER_PLAYER 1
+
+    int32 last_index = current_room.game_objects.size() - 1;
+    for(int32 i = INDEX_AFTER_PLAYER; i <= last_index; i++)
+    {
+        if(current_room.game_objects.at(i)->is_dead)
+        {
+            // 1. Update the UnloadedObject with the Unloaded ID:
+            int32 object_id = current_room.game_objects.at(i)->object_id;
+            int32 unloaded_index = current_room.findUnloadedObjectIndex(object_id);
+            if(unloaded_index > -1)
+            {current_room.unloaded_objects.at(unloaded_index).loaded_instance_id = UNLOADED_OBJECT_STATE_DEAD;}
+
+            // 2. Remove the dead object:
+            delete current_room.game_objects.at(i);
+            current_room.game_objects.at(i) = current_room.game_objects.at(last_index);
+            current_room.game_objects.pop_back();
+            last_index--;
+        }
+
+        else if(current_room.game_objects.at(i)->is_inactive)
+        {
+            // 1. Update the UnloadedObject with the Unloaded ID:
+            int32 object_id = current_room.game_objects.at(i)->object_id;
+            int32 unloaded_index = current_room.findUnloadedObjectIndex(object_id);
+            if(unloaded_index > -1)
+            {current_room.unloaded_objects.at(unloaded_index).loaded_instance_id = UNLOADED_OBJECT_STATE_UNLOADED;}
+
+            // 2. Remove the inactive object:
+            delete current_room.game_objects.at(i);
+            current_room.game_objects.at(i) = current_room.game_objects.at(last_index);
+            current_room.game_objects.pop_back();
+            last_index--;
+        }
+    }
+
+    current_room.updateIndexes();
+}
+
+void Level::transitionRoom()
+{
+    #define SCREEN_WIDTH  240
+    #define SCREEN_HEIGHT 160
+
+    if(current_room.game_objects.size() == 0) {return;}
+
+    Player temp_player = Player(*((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))));
+    
+    if(temp_player.pos().x() > current_room.room_bounds.right_bound)
+    {
+        if(current_room.right_neighbor != NO_ROOM)
+        {
+            // Create the neighbor room
+            current_room = Room(current_room.right_neighbor, 
+                                camera.value(),
+                                object_bg_ptr.value(), 
+                                object_bg_item.value(), 
+                                object_cells,
+                                player_spawn.spawn_pos);
+
+            // Free up the default player object that came with the new room,
+            // and replace with the player object from the previous room
+            delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(temp_player);
+
+            // Set camera offsets
+            cam_is_scrolling = true;
+            cam_x_offset     = SCREEN_WIDTH;
+            cam_y_offset     = 0;
+
+            return;
+        }
+    }
+
+    else if(temp_player.pos().x() < current_room.room_bounds.left_bound)
+    {
+        if(current_room.left_neighbor != NO_ROOM)
+        {
+
+            // Create the neighbor room
+            current_room = Room(current_room.left_neighbor, 
+                                camera.value(),
+                                object_bg_ptr.value(), 
+                                object_bg_item.value(), 
+                                object_cells,
+                                player_spawn.spawn_pos);
+
+            // Free up the default player object that came with the new room,
+            // and replace with the player object from the previous room
+            delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(temp_player);
+
+            // Set camera offsets
+            cam_is_scrolling = true;
+            cam_x_offset     = -SCREEN_WIDTH;
+            cam_y_offset     = 0;
+
+            return;
+        }
+    }
+
+    else if(temp_player.pos().y() < current_room.room_bounds.top_bound)
+    {
+        if(current_room.top_neighbor != NO_ROOM)
+        {
+            // Create the neighbor room
+            current_room = Room(current_room.top_neighbor, 
+                                camera.value(),
+                                object_bg_ptr.value(), 
+                                object_bg_item.value(), 
+                                object_cells,
+                                player_spawn.spawn_pos);
+
+            // Free up the default player object that came with the new room,
+            // and replace with the player object from the previous room
+            delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(temp_player);
+
+            // Set camera offsets
+            cam_is_scrolling = true;
+            cam_x_offset     = 0;
+            cam_y_offset     = -SCREEN_HEIGHT;
+
+            return;
+        }
+    }
+
+    else if(temp_player.pos().y() > current_room.room_bounds.bottom_bound)
+    {
+        if(current_room.bottom_neighbor != NO_ROOM)
+        {
+            // Create the neighbor room
+            current_room = Room(current_room.bottom_neighbor, 
+                                camera.value(),
+                                object_bg_ptr.value(), 
+                                object_bg_item.value(),
+                                object_cells,
+                                player_spawn.spawn_pos);
+
+            // Free up the default player object that came with the new room,
+            // and replace with the player object from the previous room
+            delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(temp_player);
+
+            // Set camera offsets
+            cam_is_scrolling = true;
+            cam_x_offset     = 0;
+            cam_y_offset     = SCREEN_HEIGHT;
+
+            return;
+        }
+    }
+}
+
+void Level::drawObjects()
+{
+    if(menu_open || player_spawn.spawn_level == LEVEL_TITLE_SCREEN) {return;}
+
+    global_tiles_in_VRAM = 0;
+
+    // Update & draw all objects
+    for(int32 i = current_room.game_objects.size() - 1; i >= 0; i--)
+    {
+        if(current_room.game_objects.data()[i] != NULL)
+        {
+            current_room.game_objects.data()[i]->draw();
+        }   
+    }
+}
+
+void Level::storePlayerInputs()
+{
+    // This function exists to take input from the player even during
+    // hitstop frames. This way, the player isnt locked out of input
+    // just for the sake of juice.
+
+    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) == NULL)
+    {return;}
+
+    if(bn::keypad::a_pressed())
+    {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->a_requested = true;}
+
+    if(bn::keypad::b_pressed())
+    {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->b_requested = true;}
+
+    if(bn::keypad::r_pressed())
+    {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->r_requested = true;}
+}
+
+void Level::togglePauseScreen()
+{
+    if(menu_open) 
+    {
+        menu_open = false;
+        pause_screen_bg_ptr->set_visible(false);
+
+        // Reveal HUD Sprites //
+        hud_hp_sprite_ptr->set_visible(true);
+        currency_num_1_sprite_ptr->set_visible(true);
+        currency_num_2_sprite_ptr->set_visible(true);
+        currency_icon_sprite_ptr->set_visible(true);
+
+        // Reveal GameObjects //
+        for(int32 i = 0; i < current_room.game_objects.size(); i++)
+        {
+            if(current_room.game_objects.at(i) != NULL)
+            {
+                current_room.game_objects.at(i)->revealSprites();
+            }
+        }
+    }
+
+    else          
+    {
+        menu_open    = true;
+        cursor_index = CURSOR_CONTINUE;
+        pause_screen_bg_ptr->set_visible(true);
+
+        // Update Position //
+        pause_screen_bg_ptr->set_position(camera.value().x(), camera.value().y());
+
+        // Hide HUD Sprites //
+        hud_hp_sprite_ptr->set_visible(false);
+        currency_num_1_sprite_ptr->set_visible(false);
+        currency_num_2_sprite_ptr->set_visible(false);
+        currency_icon_sprite_ptr->set_visible(false);
+
+        // Hide GameObjects //
+        for(int32 i = 0; i < current_room.game_objects.size(); i++)
+        {
+            if(current_room.game_objects.at(i) != NULL)
+            {current_room.game_objects.at(i)->hideSprites();}
+        }
     }
 }
 

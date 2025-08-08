@@ -37,6 +37,7 @@
 #include "hp_drop.h"
 #include "moon_drop.h"
 #include "star_drop.h"
+#include "checkpoint.h"
 
 // Enemies
 #include "ground_ghoul.h"
@@ -69,6 +70,7 @@ struct Room
     
     RoomBounds room_bounds;
 
+    RoomName room_name;
     RoomName top_neighbor;
     RoomName right_neighbor;
     RoomName bottom_neighbor;
@@ -77,7 +79,7 @@ struct Room
     bool first_frame = true;
 
     Room();
-    Room(RoomName                                       room_name, 
+    Room(RoomName                                       _room_name, 
          bn::camera_ptr                                 camera_ptr,                
          const bn::regular_bg_ptr&                      object_bg_ptr, 
          const bn::regular_bg_item&                     object_bg_item,
@@ -93,7 +95,7 @@ struct Room
     int32 addUnloadedObject(const UnloadedObject& new_object); // This will be called when the room is loaded.
     int32 findUnloadedObjectIndex(int32 object_id);
     void clear();
-    void load(RoomName                                        room_name, 
+    void load(RoomName                                        _room_name, 
                const bn::camera_ptr&                          camera_ptr, 
                const bn::regular_bg_ptr&                      object_bg_ptr, 
                const bn::regular_bg_item&                     object_bg_item,

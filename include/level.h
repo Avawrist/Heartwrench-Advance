@@ -108,6 +108,29 @@ enum LevelName
     LEVEL_ZIGGURAT_1
 };
 
+//////////////////
+// Struct Spawn //
+//////////////////
+
+struct Spawn
+{
+    Spawn();
+    Spawn(const Spawn& other);
+    ~Spawn();
+
+    void operator =(const Spawn& other);
+
+    bn::fixed_point spawn_pos;
+    RoomName        spawn_room;
+    LevelName       spawn_level;
+
+    void setSpawnPosAC(int32 spawn_x, int32 spawn_y);
+};
+
+//////////////////
+// Struct Level //
+//////////////////
+
 struct Level
 {
     Room current_room;
@@ -152,9 +175,7 @@ struct Level
     uint32 tile_width;
     uint32 tile_height;
 
-    LevelName current_level_name;
-
-    bn::fixed_point player_spawn;
+    Spawn player_spawn;
     
     bool  fade_in;
     bool  fade_out;
@@ -189,12 +210,15 @@ struct Level
     void operator =(const Level& other);
 
     void clear();
+    void load();
     void load(LevelName level_name);
     void reload();
     void loadNew(LevelName level_name);
 
     void update();
     void updateAll();
+    void updateNameCard();
+    void updateTitleScreen();
     void updateObjects();
     void updateCamera();
     void updateGlobalHitstop();
@@ -202,18 +226,17 @@ struct Level
     void updatePaintedBG();
     void updateGlobalTimer();
     void updateCurrency();
+    void updateFade();
+    void updateHUD();
+    void updatePauseScreen();
+    void updateLevelTransition(LevelName level_index);
+
     void reloadOnDeath();
     void freeObjects();
     void transitionRoom();
-    void updateHUD();
     void drawObjects();
-    void updateFade();
     void storePlayerInputs();
-    void updateNameCard();
-    void updateTitleScreen();
     void togglePauseScreen();
-    void updatePauseScreen();
-    void updateLevelTransition(LevelName level_index);
     void populateObjectCells();
     void removeObjectCells();
 };

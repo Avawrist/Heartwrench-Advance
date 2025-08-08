@@ -2032,6 +2032,15 @@ void Player::resolveStarDropCollision(GameObject& object)
 	}
 }
 
+void Player::resolveCheckpointCollision(GameObject& object)
+{	
+	if(collider.isCollision(object.collider) && 
+	   object.state != CHECKPOINT_ACTIVE)
+    {	
+		object.setState(CHECKPOINT_ACTIVE);
+	}
+}
+
 // Level Enemies
 void Player::resolveThornColumnCollision(GameObject& object)  
 {

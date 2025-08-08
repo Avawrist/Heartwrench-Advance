@@ -104,7 +104,7 @@
 #define PLAYER_SPIN_1_HB_WIDTH           32
 #define PLAYER_SPIN_1_HB_HEIGHT          22
 #define PLAYER_SPIN_1_CREATE_HB_FRAME    1
-#define PLAYER_SPIN_1_HB_LIFESPAN_FRAMES 5
+#define PLAYER_SPIN_1_HB_LIFESPAN_FRAMES 11
 #define PLAYER_SPIN_1_X_KNOCKBACK        8
 #define PLAYER_SPIN_1_Y_KNOCKBACK        0
 #define PLAYER_SPIN_1_KNOCKBACK_DECAY    0.05
@@ -119,14 +119,14 @@
 #define PLAYER_SPIN_2_HB_WIDTH           32
 #define PLAYER_SPIN_2_HB_HEIGHT          22
 #define PLAYER_SPIN_2_CREATE_HB_FRAME    21
-#define PLAYER_SPIN_2_HB_LIFESPAN_FRAMES 5
-#define PLAYER_SPIN_2_X_KNOCKBACK        8
+#define PLAYER_SPIN_2_HB_LIFESPAN_FRAMES 12
+#define PLAYER_SPIN_2_X_KNOCKBACK        5
 #define PLAYER_SPIN_2_Y_KNOCKBACK        0
 #define PLAYER_SPIN_2_KNOCKBACK_DECAY    0.05
 #define PLAYER_SPIN_2_DAMAGE             1
-#define PLAYER_SPIN_2_HITSTOP_FRAMES     6
+#define PLAYER_SPIN_2_HITSTOP_FRAMES     5
 #define PLAYER_SPIN_2_HITSTUN_FRAMES     30
-#define PLAYER_SPIN_2_SCREENSHAKE_FRAMES 8
+#define PLAYER_SPIN_2_SCREENSHAKE_FRAMES 5
 #define PLAYER_SPIN_2_SCREENSHAKE_SEVERITY STRONG_SHAKE
 
 #define PLAYER_V_COLLISION_MAX_GRACE_FRAMES 4
@@ -313,6 +313,7 @@ struct Player : GameObject {
 	void resolveHPDropCollision(GameObject& object)              override;
 	void resolveMoonDropCollision(GameObject& object)            override;
 	void resolveStarDropCollision(GameObject& object)            override;
+	void resolveCheckpointCollision(GameObject& object)          override;
 
 	// Level Enemies
 	void resolveThornColumnCollision(GameObject& object) override; 

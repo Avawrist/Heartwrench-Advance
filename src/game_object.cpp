@@ -212,7 +212,7 @@ void GameObject::update(const RoomBounds& 							   room_bounds,
     // Early out for 30FPS Objects //
     /////////////////////////////////
 
-    if(thirty_fps && (global_timer % 2 == 0)) {return;}
+    if((thirty_fps || is_frozen) && (global_timer % 2 == 0)) {return;}
 
     //////////////////
     // Update State //
@@ -833,6 +833,10 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
                     resolveStarDropCollision(*game_objects.at(i));
                 break;
 
+                case CHECKPOINT:
+                    resolveCheckpointCollision(*game_objects.at(i));
+                break;
+
                 // Level Enemies
                 case THORN_COLUMN:
                     resolveThornColumnCollision(*game_objects.at(i));
@@ -889,6 +893,7 @@ void GameObject::resolveHPTotemCollision(GameObject& object)             {}
 void GameObject::resolveHPDropCollision(GameObject& object)              {}
 void GameObject::resolveMoonDropCollision(GameObject& object)            {}
 void GameObject::resolveStarDropCollision(GameObject& object)            {}
+void GameObject::resolveCheckpointCollision(GameObject& object)          {}
 
 // Level Enemies
 void GameObject::resolveThornColumnCollision(GameObject& object) {}

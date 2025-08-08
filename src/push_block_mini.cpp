@@ -97,6 +97,55 @@ void PushBlockMini::updateTimers()
 	hit_v_wall = clamp(0, PUSH_BLOCK_MINI_HIT_V_WALL_FRAMES, hit_v_wall);
 }
 
+void PushBlockMini::updateHitFlash()
+{
+    if((hit_flash_frames || invulnerability_frames) || state == OBJECT_DEATH)
+    {
+        bn::sprite_palette_ptr new_palette = bn::sprite_palette_items::sprite_flash_palette.create_palette();
+
+        int32 rotate_range = new_palette.rotate_range_size();
+        int32 rotate_count = new_palette.rotate_count();
+        
+        if(global_timer % 4 == 0)
+        {
+            rotate_count++;
+            if(rotate_count > rotate_range - 1) {rotate_count = 0;}
+        }
+
+        new_palette.set_rotate_count(rotate_count);
+
+        if(sprite_ptr.has_value()) {sprite_ptr->set_palette(new_palette);}
+    }
+    else {if(sprite_ptr.has_value()) {sprite_ptr->set_palette(default_palette_ptr.value());}}
+
+    hit_flash_frames--;
+    if(hit_flash_frames < 0)
+    {hit_flash_frames = 0;}
+}
+
+void PushBlockMini::setHitFlash()
+{
+	hit_flash_frames = GAME_OBJECT_MAX_HIT_FLASH_FRAMES;
+
+    bn::sprite_palette_ptr sprite_palette = bn::sprite_palette_items::sprite_flash_palette.create_palette();
+
+    if(sprite_ptr.has_value())
+    {sprite_ptr->set_palette(sprite_palette);}
+}
+
+void PushBlockMini::setHitFlash(int32 frames)
+{
+    if(frames > GAME_OBJECT_MAX_HIT_FLASH_FRAMES) 
+    {frames = GAME_OBJECT_MAX_HIT_FLASH_FRAMES;}
+
+    hit_flash_frames = frames;
+
+    bn::sprite_palette_ptr sprite_palette = bn::sprite_palette_items::sprite_flash_palette.create_palette();
+    
+    if(sprite_ptr.has_value())
+    {sprite_ptr->set_palette(sprite_palette);}
+}
+
 //////////////////////////////
 // State Function Overrides //
 //////////////////////////////

@@ -21,7 +21,7 @@
 
 #define THORN_COLUMN_HITPOINTS 0
 
-#define THORN_COLUMN_30_FPS true
+#define THORN_COLUMN_30_FPS false
 
 struct ThornColumn : Enemy {
 

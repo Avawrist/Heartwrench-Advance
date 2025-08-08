@@ -66,10 +66,13 @@ struct PushBlock : GameObject {
     // GameObject Overrides //
     //////////////////////////
 
-    void updatePhysics()         override;
-    void checkIfDead()           override;
-    void updateSpriteDirection() override;
-    void updateTimers()          override;
+    void updatePhysics()           override;
+    void checkIfDead()             override;
+    void updateSpriteDirection()   override;
+    void updateTimers()            override;
+    void updateHitFlash()          override;
+    void setHitFlash()             override;
+	void setHitFlash(int32 frames) override;
 
     //////////////////////////////
     // State Function Overrides //
