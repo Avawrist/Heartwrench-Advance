@@ -23,7 +23,7 @@
 
 #define CHECKPOINT_30_FPS true
 
-#define CHECKPOINT_COST 50
+#define CHECKPOINT_COST 15
 
 struct Checkpoint : GameObject {
 
@@ -37,7 +37,7 @@ struct Checkpoint : GameObject {
 
     Checkpoint& operator =(const Checkpoint& other);
 
-    int32 cost;
+    uint32 cost;
 
     //////////////////////////
     // GameObject Overrides //

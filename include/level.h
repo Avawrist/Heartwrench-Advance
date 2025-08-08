@@ -47,6 +47,7 @@
 #include "room.h"
 #include "utility.h"
 #include "player.h"
+#include "checkpoint.h"
 
 //////////////////
 // Struct Level //

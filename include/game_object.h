@@ -213,6 +213,7 @@ enum ObjectState
 
 	// Checkpoint
 	CHECKPOINT_ACTIVE,
+	CHECKPOINT_OVERWRITE,
 
 	///////////////////
 	// Level Enemies //

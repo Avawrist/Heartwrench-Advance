@@ -768,7 +768,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if((bn::keypad::left_held() || bn::keypad::right_held()))  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED + (int32)(bn::keypad::b_held()), x_speed);
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
 			}
 			
 			// Walk
@@ -828,7 +828,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if((bn::keypad::left_held() || bn::keypad::right_held()))  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED + (int32)(bn::keypad::b_held()), x_speed);
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
 			}
 
 			// Simulate momentum
@@ -1245,7 +1245,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if((bn::keypad::left_held() || bn::keypad::right_held()))  
 			{
 				x_speed += X_SPEED_ACC_RATE;
-				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED + (int32)(bn::keypad::b_held()), x_speed);
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
 			}
 			
 			// Walk
@@ -2035,7 +2035,7 @@ void Player::resolveStarDropCollision(GameObject& object)
 void Player::resolveCheckpointCollision(GameObject& object)
 {	
 	if(collider.isCollision(object.collider) && 
-	   object.state != CHECKPOINT_ACTIVE)
+	   object.state == IDLE)
     {	
 		object.setState(CHECKPOINT_ACTIVE);
 	}

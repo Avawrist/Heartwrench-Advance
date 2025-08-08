@@ -7,6 +7,7 @@
 Checkpoint::Checkpoint()
 {
     // Init Assets //
+    state       = IDLE;
     object_type = CHECKPOINT;
     sprite_ptr  = bn::sprite_items::checkpoint.create_sprite(0, 0);
     sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
@@ -111,6 +112,12 @@ void Checkpoint::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&  
 
         case CHECKPOINT_ACTIVE:
 
+            setState(IDLE);
+
+        break;
+
+        case CHECKPOINT_OVERWRITE:
+
             if(animate_action_ptr->done()) {setState(IDLE);}
 
         break;
@@ -127,6 +134,9 @@ void Checkpoint::setState(ObjectState new_state)
     switch(new_state)
     {
         case CHECKPOINT_ACTIVE:
+        break;
+
+        case CHECKPOINT_OVERWRITE:
 
             animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
                                                                        2,

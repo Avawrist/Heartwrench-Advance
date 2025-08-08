@@ -748,10 +748,19 @@ void Level::updateObjects()
                                                         camera.value());
             
             // Update spawn point //
-            if(current_room.game_objects.data()[i]->state == CHECKPOINT_ACTIVE)
+            if(current_room.game_objects.data()[i]->state == CHECKPOINT_ACTIVE      &&
+               player_spawn.spawn_pos != current_room.game_objects.data()[i]->pos() &&
+               currency >= ((Checkpoint*)current_room.game_objects.data()[i])->cost)
             {
+                // Take cost
+                currency -= ((Checkpoint*)current_room.game_objects.data()[i])->cost;
+
+                // Update spawn data
                 player_spawn.spawn_pos   = current_room.game_objects.data()[i]->pos();
                 player_spawn.spawn_room  = current_room.room_name;
+
+                // Animate checkpoint
+                current_room.game_objects.data()[i]->setState(CHECKPOINT_OVERWRITE);
             }
         }   
     } 
@@ -961,7 +970,11 @@ void Level::updateCurrency()
     if(currency > LEVEL_MAX_CURRENCY) {currency = LEVEL_MAX_CURRENCY;}
 
     // Update currency ticks
-    if(global_timer % 4 == 0 && displayed_currency < currency) {displayed_currency++;}
+    if(global_timer % 4 == 0) 
+    {
+        if(displayed_currency < currency)      {displayed_currency++;}
+        else if(displayed_currency > currency) {displayed_currency--;}
+    }
 }
 
 void Level::updateHUD()
