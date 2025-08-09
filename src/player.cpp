@@ -1539,8 +1539,9 @@ void Player::resolveTilePassageCollision(GameObject& object)
 		resolveYAxisCollision(object.collider);
 		v_collision_grace_frames = PLAYER_V_COLLISION_MAX_GRACE_FRAMES * col_y_offset.integer();
 
-		// Resolve Corner Collision // 
-        resolveCornerCollision(object.collider);
+		// Resolve Corner Collision //
+		if(col_y_offset == 0 && col_x_offset == 0)
+        {resolveCornerCollision(object.collider);}
 	}
 
 	updateTestColliders();
@@ -1678,8 +1679,9 @@ void Player::resolvePushBlockCollision(GameObject& object)
         // Resolve Y Axis Collision //
         resolveYAxisCollision(object.collider);
 
-        // Resolve Corner Collision // 
-        resolveCornerCollision(object.collider);
+        // Resolve Corner Collision //
+		if(col_y_offset == 0 && col_x_offset == 0)
+        {resolveCornerCollision(object.collider);}
     }
 
 	updateTestColliders();
@@ -1702,8 +1704,9 @@ void Player::resolvePushBlockMiniCollision(GameObject& object)
         // Resolve Y Axis Collision //
         resolveYAxisCollision(object.collider);
 
-        // Resolve Corner Collision // 
-        resolveCornerCollision(object.collider);
+        // Resolve Corner Collision //
+		if(col_y_offset == 0 && col_x_offset == 0)
+        {resolveCornerCollision(object.collider);}
     }
 
 	updateTestColliders();
@@ -1753,8 +1756,9 @@ void Player::resolveSmashBlockLargeCollision(GameObject& object)
         // Resolve Y Axis Collision //
         resolveYAxisCollision(object.collider);
 		
-        // Resolve Corner Collision // 
-        resolveCornerCollision(object.collider);
+        // Resolve Corner Collision //
+		if(col_y_offset == 0 && col_x_offset == 0)
+        {resolveCornerCollision(object.collider);}
 
 		// Smash block with player head //
 		if(col_y_offset > 0) 
@@ -1790,7 +1794,8 @@ void Player::resolveSmashBlockMiniCollision(GameObject& object)
         resolveYAxisCollision(object.collider);
 		
 		// Resolve Corner Collision // 
-        resolveCornerCollision(object.collider);
+		if(col_y_offset == 0 && col_x_offset == 0)
+        {resolveCornerCollision(object.collider);}
 
 		// Smash block with player head //
 		if(col_y_offset > 0) 
@@ -1824,8 +1829,9 @@ void Player::resolveHPTotemCollision(GameObject& object)
         // Resolve Y Axis Collision //
         resolveYAxisCollision(object.collider);
 
-        // Resolve Corner Collision // 
-        resolveCornerCollision(object.collider);
+        // Resolve Corner Collision //
+		if(col_y_offset == 0 && col_x_offset == 0)
+        {resolveCornerCollision(object.collider);}
     }
 
 	updateTestColliders();

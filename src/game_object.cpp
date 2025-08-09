@@ -1225,7 +1225,8 @@ void GameObject::resolveHardBlockCollision(const Collider& other_collider)
         resolveYAxisCollision(other_collider);
 
         // Resolve Corner Collision // 
-        resolveCornerCollision(other_collider);
+        if(col_y_offset == 0 && col_x_offset == 0)
+        {resolveCornerCollision(other_collider);}
     }
 }
 
@@ -1278,7 +1279,8 @@ void GameObject::resolveSpikeCollision(const Collider& other_collider)
         resolveYAxisCollision(other_collider);
 
         // Resolve Corner Collision // 
-        resolveCornerCollision(other_collider);
+        if(col_y_offset == 0 && col_x_offset == 0)
+        {resolveCornerCollision(other_collider);}
     }
 }
 
