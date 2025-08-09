@@ -12,7 +12,7 @@
 // Struct TestEnemy //
 //////////////////////
 
-#define GROUND_GHOUL_COLLIDER_WIDTH  12
+#define GROUND_GHOUL_COLLIDER_WIDTH  14
 #define GROUND_GHOUL_COLLIDER_HEIGHT 16
 
 #define GROUND_GHOUL_COLLIDER_OFFSET_X 0

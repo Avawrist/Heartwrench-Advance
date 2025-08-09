@@ -13,7 +13,7 @@
 // Struct SkullDrop //
 /////////////////////
 
-#define SKULL_DROP_COLLIDER_WIDTH  16
+#define SKULL_DROP_COLLIDER_WIDTH  14
 #define SKULL_DROP_COLLIDER_HEIGHT 12
 
 #define SKULL_DROP_COLLIDER_OFFSET_X 0

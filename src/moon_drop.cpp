@@ -176,7 +176,7 @@ void MoonDrop::setState(ObjectState new_state)
                                                                         0,
                                                                         bn::sprite_items::moon_drop.tiles_item(),
                                                                         8, 8, 9, 9, 10, 10, 
-																		11, 11, 12, 12, 13, 13);
+																		11, 11, 12, 12);
 
         break;
 
