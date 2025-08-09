@@ -1985,7 +1985,7 @@ void Player::resolveTileCollision(const bn::regular_bg_ptr&                     
 
 	for(int32 y = -1; y < 2; y++)
 	{
-		for(int32 x = 1 * (x_check_dir * -1); x != 2 * x_check_dir; x += x_check_dir)
+		for(int32 x = (x_check_dir * -1); x != 2 * x_check_dir; x += x_check_dir)
 		{
 			// 1. Get tile type at index //
 			int32 check_index_x = cell_index.x() + x;
@@ -2208,7 +2208,6 @@ void Player::resolveYAxisCollision(const Collider& other_collider)
 	if(col_y_offset > 0) {rigidbody.removeYForces();}
 }
 
-
 void Player::resolveHardBlockCollision(const Collider& other_collider)
 {
 	if(collider.isCollision(other_collider))
@@ -2221,7 +2220,8 @@ void Player::resolveHardBlockCollision(const Collider& other_collider)
         v_collision_grace_frames = PLAYER_V_COLLISION_MAX_GRACE_FRAMES * col_y_offset.integer();
 
 		// Resolve Corner Collision //
-		resolveCornerCollision(other_collider);
+		if(col_y_offset == 0 && col_x_offset == 0)
+		{resolveCornerCollision(other_collider);}
     }
 }
 

@@ -734,7 +734,7 @@ void GameObject::updateTileGrounded(const bn::regular_bg_ptr&                   
 
     bn::fixed index_x_p1 = (x() - (collider.width  / 2) + half_level_width_pixels  + collider_offset_x)                                 / TILE_WIDTH;
 	bn::fixed index_x_p2 = (x() + (collider.width  / 2) + half_level_width_pixels  + collider_offset_x - 1)                             / TILE_WIDTH;
-	bn::fixed index_y_p1 = (y() + (collider.height / 2) + half_level_height_pixels + collider_offset_y + GAME_OBJECT_GROUND_RAY_LENGTH) / TILE_HEIGHT;
+	bn::fixed index_y_p1 = (y() + (collider.height / 2) + half_level_height_pixels + collider_offset_y)                                 / TILE_HEIGHT;
 
 	uint32 tile_index_p1 = getTileAtBGIndex(index_x_p1.integer(), 
 										    index_y_p1.integer(), 
