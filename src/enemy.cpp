@@ -148,8 +148,8 @@ void Enemy::resolveTilePassageCollision(GameObject& object)
 
 	// Test for, and log grounded collision
 	if(object.state == TILE_PASSAGE_SHUT &&
-		test_collider.isCollision(object.collider) && 
-		rigidbody.normalized_dir.y() >= 0)
+	   test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
 	{grounded_detected = true;}
 }
 
@@ -229,10 +229,12 @@ void Enemy::resolvePushBlockCollision(GameObject& object)
 
 	updateTestColliders();
 
-	// Test for, and log grounded collision
 	if(test_collider.isCollision(object.collider) && 
-		rigidbody.normalized_dir.y() >= 0)
-	{grounded_detected = true;}
+	   rigidbody.normalized_dir.y() >= 0)
+	{
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
 }
 
 void Enemy::resolvePushBlockMiniCollision(GameObject& object)
@@ -263,10 +265,12 @@ void Enemy::resolvePushBlockMiniCollision(GameObject& object)
 
 	updateTestColliders();
 
-	// Test for, and log grounded collision
 	if(test_collider.isCollision(object.collider) && 
-		rigidbody.normalized_dir.y() >= 0)
-	{grounded_detected = true;}
+	   rigidbody.normalized_dir.y() >= 0)
+	{
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
 }
 
 void Enemy::resolveAutoPlatformCollision(GameObject& object)
@@ -315,10 +319,9 @@ void Enemy::resolveSmashBlockLargeCollision(GameObject& object)
 
 	updateTestColliders();
 
-	// Test for, and log grounded collision
 	if(test_collider.isCollision(object.collider) && 
 	   rigidbody.normalized_dir.y() >= 0)
-	{	
+	{
 		grounded_detected = true;
 		rigidbody.removeYForces();
 	}
@@ -346,10 +349,9 @@ void Enemy::resolveSmashBlockMiniCollision(GameObject& object)
 
 	updateTestColliders();
 
-	// Test for, and log grounded collision
 	if(test_collider.isCollision(object.collider) && 
 	   rigidbody.normalized_dir.y() >= 0)
-	{	
+	{
 		grounded_detected = true;
 		rigidbody.removeYForces();
 	}
@@ -401,10 +403,9 @@ void Enemy::resolveHPTotemCollision(GameObject& object)
 
 	updateTestColliders();
 
-	// Test for, and log grounded collision
 	if(test_collider.isCollision(object.collider) && 
 	   rigidbody.normalized_dir.y() >= 0)
-	{	
+	{
 		grounded_detected = true;
 		rigidbody.removeYForces();
 	}
@@ -416,26 +417,37 @@ void Enemy::resolveThornColumnCollision(GameObject& object)
 {
 	int32 thorn_collision_x_offset = collider.getCollisionXOffset(object.collider, rigidbody.normalized_dir.x()).integer();
 	
-	resolveXAxisCollision(object.collider);
-	resolveYAxisCollision(object.collider);
-
 	if(thorn_collision_x_offset != 0 &&
 	   hitpoints > 0)
 	{
-		int32 knockback_x_dir = abs(thorn_collision_x_offset) / thorn_collision_x_offset;
-		GameObject::applyHit(object.damage, knockback_x_dir, 0);
+		if(hitpoints > 0)
+		{
+			int32 knockback_x_dir = abs(thorn_collision_x_offset) / thorn_collision_x_offset;
+			GameObject::applyHit(object.damage, knockback_x_dir, 0);
+		}
+
+		resolveXAxisCollision(object.collider);
+		resolveYAxisCollision(object.collider);
 	}
 }
 
 void Enemy::resolveThornBarCollision(GameObject& object)
 {
-	resolveXAxisCollision(object.collider);
-	resolveYAxisCollision(object.collider);
-
-	if(collider.isCollision(object.collider) &&
-	   hitpoints > 0)
+	if(collider.isCollision(object.collider))
 	{
-		GameObject::applyHit(object.damage, 0, 0);
+		if(hitpoints > 0) {GameObject::applyHit(object.damage, 0, 0);}
+
+		resolveXAxisCollision(object.collider);
+		resolveYAxisCollision(object.collider);
+	}
+
+	updateTestColliders();
+
+	if(test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{
+		grounded_detected = true;
+		rigidbody.removeYForces();
 	}
 }
 

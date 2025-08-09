@@ -136,9 +136,9 @@
 #define GENERIC_HIT_Y_KNOCKBACK        6
 #define GENERIC_HIT_KNOCKBACK_DECAY    0.05
 #define GENERIC_HIT_DAMAGE             10
-#define GENERIC_HIT_HITSTOP_FRAMES     6
+#define GENERIC_HIT_HITSTOP_FRAMES     5
 #define GENERIC_HIT_HITSTUN_FRAMES     30
-#define GENERIC_HIT_SCREENSHAKE_FRAMES 8
+#define GENERIC_HIT_SCREENSHAKE_FRAMES 5
 #define GENERIC_HIT_SCREENSHAKE_SEVERITY STRONG_SHAKE
 
 #define GAME_OBJECT_GRAVITY       2
@@ -405,6 +405,10 @@ struct GameObject
 		                     const bn::regular_bg_ptr&                      bg_ptr, 
 							 const bn::span<const bn::regular_bg_map_cell>& cells,
 							 const bn::regular_bg_item&                     bg_item);
+
+	virtual void updateTileGrounded(const bn::regular_bg_ptr&                      bg_ptr, 
+                                    const bn::span<const bn::regular_bg_map_cell>& cells,
+                                    const bn::regular_bg_item&                     bg_item);
 	
 	/////////////////////////
 	// Collision functions //
@@ -466,14 +470,15 @@ struct GameObject
 	virtual void resolveVGearMidCollision(const Collider& other_collider);
 	virtual void resolveVGearBottomCollision(const Collider& other_collider);
 	virtual void resolveSpikeCollision(const Collider& other_collider);
-	virtual void resolveShallowSlope1Collision(const Collider& other_collider, int32 world_y);
-	virtual void resolveShallowSlope2Collision(const Collider& other_collider, int32 world_y);
-	virtual void resolveShallowSlope3Collision(const Collider& other_collider, int32 world_y);
-	virtual void resolveShallowSlope4Collision(const Collider& other_collider, int32 world_y);
-	virtual void resolveSteepSlope1Collision(const Collider& other_collider, int32 world_y);
-	virtual void resolveSteepSlope2Collision(const Collider& other_collider, int32 world_y);
 	virtual void resolveClimbableCollision(const Collider& other_collider);
 	virtual void resolveOneWayBlockCollision(const Collider& other_collider);
+	
+	//virtual void resolveShallowSlope1Collision(const Collider& other_collider, int32 world_y);
+	//virtual void resolveShallowSlope2Collision(const Collider& other_collider, int32 world_y);
+	//virtual void resolveShallowSlope3Collision(const Collider& other_collider, int32 world_y);
+	//virtual void resolveShallowSlope4Collision(const Collider& other_collider, int32 world_y);
+	//virtual void resolveSteepSlope1Collision(const Collider& other_collider, int32 world_y);
+	//virtual void resolveSteepSlope2Collision(const Collider& other_collider, int32 world_y);
 
 };
 

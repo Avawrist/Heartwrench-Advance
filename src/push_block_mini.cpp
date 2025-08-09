@@ -392,13 +392,8 @@ void PushBlockMini::resolveTileCollision(const bn::regular_bg_ptr&              
 	////////////////////////////////////////
     // Update Variables for state testing //
 	////////////////////////////////////////
+	
 	grounded_detected = false;
-
-	// Grounded test collider
-	test_collider = Collider(collider.x(), 
-	                         collider.y() + GAME_OBJECT_GROUND_RAY_LENGTH,
-							 collider.width, 
-							 collider.height);
 
     //////////////////////////////
 	// Init Collision Variables //
@@ -532,7 +527,8 @@ void PushBlockMini::resolveTileCollision(const bn::regular_bg_ptr&              
 
 				resolveVGearBottomCollision(other_collider);
 			}
-    
+
+			/*
             else if(tile_index == SHALLOW_SLOPE_1_INDEX)
             {
                 other_collider = Collider(world_x, 
@@ -593,6 +589,7 @@ void PushBlockMini::resolveTileCollision(const bn::regular_bg_ptr&              
 
                 resolveSteepSlope2Collision(other_collider, world_y);
             }
+			*/
             
 			else if(tile_index >= CLIMBABLE_MIN_INDEX &&
 					tile_index <= CLIMBABLE_MAX_INDEX)
@@ -617,6 +614,12 @@ void PushBlockMini::resolveTileCollision(const bn::regular_bg_ptr&              
             }
 		}
 	}
+
+	/////////////////////////////
+	// Test for Grounded State //
+	/////////////////////////////
+
+	updateTileGrounded(bg_ptr, cells, bg_item);
 }
 
 void PushBlockMini::resolveXAxisCollision(const Collider& other_collider)

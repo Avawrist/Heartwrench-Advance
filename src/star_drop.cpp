@@ -56,6 +56,100 @@ StarDrop& StarDrop::operator =(const StarDrop& other)
 // GameObject Overrides //
 //////////////////////////
 
+void StarDrop::update(const RoomBounds& 							 room_bounds,
+                      bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                      const bn::regular_bg_ptr&                      bg_ptr, 
+                      const bn::span<const bn::regular_bg_map_cell>& cells,
+                      const bn::regular_bg_item&                     bg_item,
+                      const bn::camera_ptr&                          camera)
+{
+    
+    /////////////////////////////////
+    // Early out for 30FPS Objects //
+    /////////////////////////////////
+
+    if((thirty_fps || is_frozen) && (global_timer % 2 == 0)) {return;}
+
+    //////////////////
+    // Update State //
+    //////////////////
+
+    updateStateMachine(game_objects, bg_ptr, cells, bg_item, camera);
+
+    ////////////////////
+    // Update Physics //
+    ////////////////////
+
+    updatePhysics();
+
+    ///////////////////////
+    // Resolve Collision //
+    ///////////////////////
+
+    resolveCollision(game_objects, bg_ptr, cells, bg_item);
+
+    //////////////////
+    // Update State //
+    //////////////////
+
+    //updateState(game_objects, bg_ptr, cells, bg_item);
+
+    /////////////////////
+    // Update Hitboxes //
+    /////////////////////
+
+    //updateHitboxes(room_bounds, game_objects, bg_ptr, cells, bg_item, camera);
+
+    ///////////////////
+    // Update Timers //
+    ///////////////////
+
+    //updateTimers();
+
+    ///////////////////
+    // Check if dead //
+    ///////////////////
+
+    //checkIfDead();
+
+    /////////////////////////////
+	// Update Sprite Direction //
+	/////////////////////////////
+	
+    //updateSpriteDirection();
+    
+    ////////////////////////////
+    // Correct Sprite Offsets //
+    ////////////////////////////
+	
+    //updateSpriteOffsets();
+
+    //////////////////////////
+    // Update HP Bar Visual //
+    //////////////////////////
+
+    //updateHPBar();
+
+	//////////////////////
+	// Update Hit Flash //
+	//////////////////////
+
+	//updateHitFlash();
+
+    ////////////////////
+    // Clamp Position //
+    ////////////////////
+
+    clampPosition(room_bounds);
+
+	//////////////////////////////
+    // Monitor unloading bounds //
+    //////////////////////////////
+    
+	updateInactiveState(camera);
+
+}
+
 void StarDrop::setState(ObjectState new_state)
 {
     state = new_state;
@@ -79,7 +173,7 @@ void StarDrop::setState(ObjectState new_state)
             animate_action_ptr  = bn::create_sprite_animate_action_once(sprite_ptr.value(),
                                                                         1,
                                                                         bn::sprite_items::star_drop.tiles_item(),
-                                                                        4, 4, 5, 5, 6, 6, 7, 7);
+                                                                        4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9);
 
         break;
 
@@ -142,7 +236,7 @@ void StarDrop::resolveTilePassageCollision(GameObject& object)
 		resolveYAxisCollision(object.collider);
 
 		// If there is still collision somehow, must be corner case //
-		resolveCornerCollision(object.collider);
+		//resolveCornerCollision(object.collider);
 	}
 
 	updateTestColliders();
@@ -215,7 +309,7 @@ void StarDrop::resolvePushBlockCollision(GameObject& object)
         resolveYAxisCollision(object.collider);
 
         // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(object.collider);
+        //resolveCornerCollision(object.collider);
     }
 
 	updateTestColliders();
@@ -242,7 +336,7 @@ void StarDrop::resolvePushBlockMiniCollision(GameObject& object)
         resolveYAxisCollision(object.collider);
 
         // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(object.collider);
+        //resolveCornerCollision(object.collider);
     }
 
 	updateTestColliders();
@@ -293,7 +387,7 @@ void StarDrop::resolveSmashBlockLargeCollision(GameObject& object)
         resolveYAxisCollision(object.collider);
 
         // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(object.collider);
+        //resolveCornerCollision(object.collider);
     }
 
 	updateTestColliders();
@@ -320,7 +414,7 @@ void StarDrop::resolveSmashBlockMiniCollision(GameObject& object)
         resolveYAxisCollision(object.collider);
 
         // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(object.collider);
+        //resolveCornerCollision(object.collider);
     }
 
 	updateTestColliders();
@@ -347,7 +441,7 @@ void StarDrop::resolveHPTotemCollision(GameObject& object)
         resolveYAxisCollision(object.collider);
 
         // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(object.collider);
+        //resolveCornerCollision(object.collider);
     }
 
 	updateTestColliders();
@@ -374,7 +468,7 @@ void StarDrop::resolveSpikeCollision(const Collider& other_collider)
         resolveYAxisCollision(other_collider);
 
         // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(other_collider);
+        //resolveCornerCollision(other_collider);
     }
 
     updateTestColliders();

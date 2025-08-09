@@ -284,11 +284,6 @@ void AutoPlatform::resolveVGearBottomCollision(const Collider& other_collider)
     }
 }
 
-void AutoPlatform::resolveSpikeCollision(const Collider& other_collider) {}
-void AutoPlatform::resolveShallowSlope1Collision(const Collider& other_collider, int32 world_y) {}
-void AutoPlatform::resolveShallowSlope2Collision(const Collider& other_collider, int32 world_y) {}
-void AutoPlatform::resolveShallowSlope3Collision(const Collider& other_collider, int32 world_y) {}
-void AutoPlatform::resolveShallowSlope4Collision(const Collider& other_collider, int32 world_y) {}
-void AutoPlatform::resolveSteepSlope1Collision(const Collider& other_collider, int32 world_y) {}
-void AutoPlatform::resolveSteepSlope2Collision(const Collider& other_collider, int32 world_y) {}
+void AutoPlatform::resolveSpikeCollision(const Collider& other_collider)       {}
+
 void AutoPlatform::resolveOneWayBlockCollision(const Collider& other_collider) {}

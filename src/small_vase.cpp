@@ -105,19 +105,19 @@ void SmallVase::update(const RoomBounds& 							   room_bounds,
     // Update Physics //
     ////////////////////
 
-    updatePhysics();
+    //updatePhysics();
 
     ///////////////////////
     // Resolve Collision //
     ///////////////////////
 
-    resolveCollision(game_objects, bg_ptr, cells, bg_item);
+    //resolveCollision(game_objects, bg_ptr, cells, bg_item);
 
     ///////////////////
     // Update Timers //
     ///////////////////
 
-    updateTimers();
+    //updateTimers();
 
     ///////////////////
     // Check if dead //
@@ -129,7 +129,7 @@ void SmallVase::update(const RoomBounds& 							   room_bounds,
 	// Update Hit Flash //
 	//////////////////////
 
-	updateHitFlash();
+	//updateHitFlash();
 
     ////////////////////
     // Clamp Position //
@@ -157,11 +157,6 @@ void SmallVase::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   
     switch(state)
     {
         case IDLE:
-
-            // Gravity
-            if(!grounded_detected)
-            {rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
-
         break;
 
         case OBJECT_HITSTUN:
@@ -223,7 +218,7 @@ void SmallVase::resolveTilePassageCollision(GameObject& object)
 		resolveYAxisCollision(object.collider);
 
 		// If there is still collision somehow, must be corner case //
-		resolveCornerCollision(object.collider);
+		//resolveCornerCollision(object.collider);
 	}
 
 	updateTestColliders();
@@ -301,7 +296,7 @@ void SmallVase::resolvePushBlockCollision(GameObject& object)
         	resolveYAxisCollision(object.collider);
 
         	// If there is still collision somehow, must be corner case //
-        	resolveCornerCollision(object.collider);
+        	//resolveCornerCollision(object.collider);
 
 			// Push the block
 			if(state == OBJECT_HITSTUN || state == OBJECT_DEATH)
@@ -335,7 +330,7 @@ void SmallVase::resolvePushBlockMiniCollision(GameObject& object)
         	resolveYAxisCollision(object.collider);
 
         	// If there is still collision somehow, must be corner case //
-        	resolveCornerCollision(object.collider);
+        	//resolveCornerCollision(object.collider);
 
 			// Push the block
 			if(state == OBJECT_HITSTUN || state == OBJECT_DEATH)
@@ -388,7 +383,7 @@ void SmallVase::resolveSmashBlockLargeCollision(GameObject& object)
         resolveYAxisCollision(object.collider);
 
         // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(object.collider);
+        //resolveCornerCollision(object.collider);
 
 		// Smash the block
 		if(state == OBJECT_HITSTUN || state == OBJECT_DEATH)
@@ -419,7 +414,7 @@ void SmallVase::resolveSmashBlockMiniCollision(GameObject& object)
         resolveYAxisCollision(object.collider);
 
         // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(object.collider);
+        //resolveCornerCollision(object.collider);
 
 		// Smash the block
 		if(state == OBJECT_HITSTUN || state == OBJECT_DEATH)
@@ -474,7 +469,7 @@ void SmallVase::resolveHPTotemCollision(GameObject& object)
         resolveYAxisCollision(object.collider);
 
         // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(object.collider);
+        //resolveCornerCollision(object.collider);
 
 		// Smash the block
 		if(state == OBJECT_HITSTUN || state == OBJECT_DEATH)
@@ -543,7 +538,7 @@ void SmallVase::resolveSpikeCollision(const Collider& other_collider)
         resolveYAxisCollision(other_collider);
 
         // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(other_collider);
+        //resolveCornerCollision(other_collider);
     }
 
     updateTestColliders();

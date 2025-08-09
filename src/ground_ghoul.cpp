@@ -26,10 +26,6 @@ GroundGhoul::GroundGhoul()
         x_dir = LEFT;
         y_dir = UP;
 
-        test_collider       = collider;
-        test_collider_right = collider;
-        test_collider_left  = collider;
-
         hitpoints = GROUND_GHOUL_HITPOINTS;
 
         thirty_fps = GROUND_GHOUL_30_FPS;
@@ -41,8 +37,6 @@ GroundGhoul::GroundGhoul()
 GroundGhoul::GroundGhoul(const GroundGhoul& other) : Enemy(other)
 {
     test_collider       = other.test_collider;
-    test_collider_right = other.test_collider_right;
-    test_collider_left  = other.test_collider_left;
 
     action_timer   = other.action_timer;
     next_crawl_dir = other.next_crawl_dir;
@@ -56,8 +50,6 @@ GroundGhoul::~GroundGhoul()
 GroundGhoul& GroundGhoul::operator =(const GroundGhoul& other)
 {
     test_collider       = other.test_collider;
-    test_collider_right = other.test_collider_right;
-    test_collider_left  = other.test_collider_left;
 
     action_timer   = other.action_timer;
     next_crawl_dir = other.next_crawl_dir;

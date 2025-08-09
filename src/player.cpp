@@ -25,8 +25,6 @@ Player::Player()
 	collider            = Collider(x(), y(), PLAYER_COLLIDER_WIDTH, PLAYER_COLLIDER_HEIGHT);
 	collider_x_axis     = collider;
 	collider_y_axis     = collider;
-	test_collider_right = collider;
-	test_collider_left  = collider;
 	collider_offset_x   = PLAYER_COLLIDER_OFFSET_X;
 	collider_offset_y   = PLAYER_COLLIDER_OFFSET_Y;
     
@@ -57,7 +55,6 @@ Player::Player()
 	wall_right_detected      = false;
     wall_left_detected       = false;
 	climbable_detected       = false;
-	grounded_owp_detected    = false;
 	left_wj_eligible         = false;
 	right_wj_eligible        = false;
 	is_dead                  = false;
@@ -121,7 +118,6 @@ Player::Player(const Player& other) : GameObject(other)
 	wall_right_detected      = other.wall_right_detected;
     wall_left_detected       = other.wall_left_detected;
 	climbable_detected       = other.climbable_detected;
-	grounded_owp_detected    = other.grounded_owp_detected;
 	left_wj_eligible         = other.left_wj_eligible;
 	right_wj_eligible        = other.right_wj_eligible;
 	is_dead                  = other.is_dead;
@@ -129,9 +125,6 @@ Player::Player(const Player& other) : GameObject(other)
 	a_requested   = other.a_requested;
 	b_requested   = other.b_requested;
 	r_requested   = other.r_requested;
-
-	test_collider_right   = other.test_collider_right;
-	test_collider_left    = other.test_collider_left;
 
 	if(other.hitbox_1_ptr == NULL) {hitbox_1_ptr = NULL;}
 	else {hitbox_1_ptr = new Hitbox(*(other.hitbox_1_ptr));}
@@ -194,7 +187,6 @@ Player& Player::operator =(const Player& other)
 	wall_right_detected      = other.wall_right_detected;
     wall_left_detected       = other.wall_left_detected;
 	climbable_detected       = other.climbable_detected;
-	grounded_owp_detected    = other.grounded_owp_detected;
 	left_wj_eligible         = other.left_wj_eligible;
 	right_wj_eligible        = other.right_wj_eligible;
 	is_dead                  = other.is_dead;
@@ -202,9 +194,6 @@ Player& Player::operator =(const Player& other)
 	a_requested   = other.a_requested;
 	b_requested   = other.b_requested;
 	r_requested   = other.r_requested;
-
-	test_collider_right   = other.test_collider_right;
-	test_collider_left    = other.test_collider_left;
 
 	if(other.hitbox_1_ptr == NULL) {hitbox_1_ptr = NULL;}
 	else {hitbox_1_ptr = new Hitbox(*(other.hitbox_1_ptr));}
@@ -546,15 +535,6 @@ void Player::updateHitFlash()
     {hit_flash_frames = 0;}
 }
 
-void Player::updateTestColliders()
-{
-	GameObject::updateTestColliders();
-
-	// Update wall right/left test colliders
-	test_collider_right.setPos(bn::point(collider.pos().x().integer() + PLAYER_WALL_TEST_RAY_LENGTH, collider.pos().y().integer()));
-	test_collider_left.setPos(bn::point(collider.pos().x().integer()  - PLAYER_WALL_TEST_RAY_LENGTH, collider.pos().y().integer()));
-}
-
 void Player::draw()
 {
 	// Draw Player
@@ -790,7 +770,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			// Spin Attack
 			else if(bn::keypad::b_pressed() || b_requested || spin_buffered_frames) {setState(PLAYER_SPIN_ATTACK);}
 
-			// Add Gravity 
+			// Add Gravity
 			if(!grounded_detected)
 			{
 				rigidbody.addForce(PLAYER_GRAVITY_FORCE);
@@ -803,6 +783,10 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 		case PLAYER_AIR_NEUTRAL:
 
+			//////////////////////////////
+			// Player Air Neutral State //
+			//////////////////////////////
+
 			//////////////////////
 			// Update Air Frame //
 			//////////////////////
@@ -814,10 +798,6 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 																		   bn::sprite_items::player.tiles_item(),
 																		   12, 12);
 			}
-
-			//////////////////////////////
-			// Player Air Neutral State //
-			//////////////////////////////
 
 			///////////////
 			// Get Input //
@@ -982,9 +962,9 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 				Collider other_collider;
 
 				// Check if player can cancel the phase:
-				for(int32 y = -2; y < 3; y++)
+				for(int32 y = -1; y < 2; y++)
 				{
-					for(int32 x = -2; x < 3; x++)
+					for(int32 x = -1; x < 2; x++)
 					{
 						
 						// 1. Get tile type at index //
@@ -1014,6 +994,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 						}		
 						
+						/*
 						else if(tile_index == SHALLOW_SLOPE_1_INDEX)
 						{
 
@@ -1090,7 +1071,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 							{clear_to_jump = false;}
 
 						}
-						
+						*/
 					}
 				}
 			}
@@ -1558,20 +1539,20 @@ void Player::resolveTilePassageCollision(GameObject& object)
 		resolveYAxisCollision(object.collider);
 		v_collision_grace_frames = PLAYER_V_COLLISION_MAX_GRACE_FRAMES * col_y_offset.integer();
 
-		// If there is still collision somehow, must be corner case //
-		resolveCornerCollision(object.collider);
+		// Resolve Corner Collision // 
+        resolveCornerCollision(object.collider);
 	}
 
 	updateTestColliders();
 
 	// Test for, and log grounded collision
 	if(object.state == TILE_PASSAGE_SHUT &&
-		test_collider.isCollision(object.collider) && 
-		rigidbody.normalized_dir.y() >= 0)
+	   test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
 	{
 		if(rigidbody.final_dir.y() >= PLAYER_MIN_PASSAGE_SPEED)
 		{object.setState(TILE_PASSAGE_OPEN);}
-		else 
+		else
 		{
 			grounded_detected = true;
 			rigidbody.removeYForces();
@@ -1655,7 +1636,7 @@ void Player::resolveFallingPlatformWideCollision(GameObject& object)
 	}
 }
 
-void Player::resolveFallingPlatformThinCollision(GameObject& object) 
+void Player::resolveFallingPlatformThinCollision(GameObject& object)
 {
 	if(rigidbody.normalized_dir.y() >= 0 &&
 	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
@@ -1697,52 +1678,18 @@ void Player::resolvePushBlockCollision(GameObject& object)
         // Resolve Y Axis Collision //
         resolveYAxisCollision(object.collider);
 
-        // If there is still collision somehow, must be corner case //
+        // Resolve Corner Collision // 
         resolveCornerCollision(object.collider);
     }
 
 	updateTestColliders();
 
-	// Test for, and log grounded collision
 	if(test_collider.isCollision(object.collider) && 
 	   rigidbody.normalized_dir.y() >= 0)
-	{	
+	{
 		grounded_detected = true;
 		rigidbody.removeYForces();
 	}
-	
-	// Test for wall riding on right side
-	if(test_collider_right.isCollision(object.collider))
-	{
-		right_wj_eligible = true;
-
-		if(rigidbody.normalized_dir.y() >= 0 &&
-		   bn::keypad::right_held() && !bn::keypad::down_held())
-		{
-			wall_right_detected = true;
-
-			// Add some Y force from the pushblock to the player if sliding
-			int32 y_force = object.rigidbody.normalized_dir.y().integer();
-			rigidbody.addForce(Force(bn::fixed_point_t<12>(0, y_force), 1));
-		}
-	}
-
-	// Test for wall riding on left side
-	if(test_collider_left.isCollision(object.collider))
-	{
-		left_wj_eligible = true;
-
-		if(rigidbody.normalized_dir.y() >= 0 &&
-			bn::keypad::left_held() && !bn::keypad::down_held()) 
-		{
-			wall_left_detected = true;
-
-			// Add some Y force from the pushblock to the player if sliding
-			int32 y_force = object.rigidbody.normalized_dir.y().integer();
-			rigidbody.addForce(Force(bn::fixed_point_t<12>(0, y_force), 1));
-		}
-	}
-	
 }
 
 void Player::resolvePushBlockMiniCollision(GameObject& object)
@@ -1755,52 +1702,18 @@ void Player::resolvePushBlockMiniCollision(GameObject& object)
         // Resolve Y Axis Collision //
         resolveYAxisCollision(object.collider);
 
-        // If there is still collision somehow, must be corner case //
+        // Resolve Corner Collision // 
         resolveCornerCollision(object.collider);
     }
 
 	updateTestColliders();
 
-	// Test for, and log grounded collision
 	if(test_collider.isCollision(object.collider) && 
 	   rigidbody.normalized_dir.y() >= 0)
-	{		
+	{
 		grounded_detected = true;
 		rigidbody.removeYForces();
 	}
-	
-	// Test for wall riding on right side
-	if(test_collider_right.isCollision(object.collider))
-	{
-		right_wj_eligible = true;
-
-		if(rigidbody.normalized_dir.y() >= 0 &&
-		   bn::keypad::right_held() && !bn::keypad::down_held())
-		{
-			wall_right_detected = true;
-
-			// Add some Y force from the pushblock to the player if sliding
-			int32 y_force = object.rigidbody.normalized_dir.y().integer();
-			rigidbody.addForce(Force(bn::fixed_point_t<12>(0, y_force), 1));
-		}
-	}
-
-	// Test for wall riding on left side
-	if(test_collider_left.isCollision(object.collider))
-	{
-		left_wj_eligible = true;
-
-		if(rigidbody.normalized_dir.y() >= 0 &&
-			bn::keypad::left_held() && !bn::keypad::down_held()) 
-		{
-			wall_left_detected = true;
-
-			// Add some Y force from the pushblock to the player if sliding
-			int32 y_force = object.rigidbody.normalized_dir.y().integer();
-			rigidbody.addForce(Force(bn::fixed_point_t<12>(0, y_force), 1));
-		}
-	}
-	
 }
 
 void Player::resolveAutoPlatformCollision(GameObject& object)
@@ -1840,6 +1753,9 @@ void Player::resolveSmashBlockLargeCollision(GameObject& object)
         // Resolve Y Axis Collision //
         resolveYAxisCollision(object.collider);
 		
+        // Resolve Corner Collision // 
+        resolveCornerCollision(object.collider);
+
 		// Smash block with player head //
 		if(col_y_offset > 0) 
 		{
@@ -1849,39 +1765,15 @@ void Player::resolveSmashBlockLargeCollision(GameObject& object)
 			sprite_ptr->set_horizontal_scale(PLAYER_HEAD_BONK_H_STRETCH);
 			sprite_ptr->set_vertical_scale(PLAYER_HEAD_BONK_V_STRETCH);
 		}		
-
-        // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(object.collider);
     }
 
 	updateTestColliders();
 
-	// Test for, and log grounded collision
 	if(test_collider.isCollision(object.collider) && 
 	   rigidbody.normalized_dir.y() >= 0)
-	{	
+	{
 		grounded_detected = true;
 		rigidbody.removeYForces();
-	}
-	
-	// Test for wall riding on right side
-	if(test_collider_right.isCollision(object.collider))
-	{
-		right_wj_eligible = true;
-
-		if(rigidbody.normalized_dir.y() >= 0 &&
-		   bn::keypad::right_held() && !bn::keypad::down_held())
-		{wall_right_detected = true;}
-	}
-
-	// Test for wall riding on left side
-	if(test_collider_left.isCollision(object.collider))
-	{
-		left_wj_eligible = true;
-
-		if(rigidbody.normalized_dir.y() >= 0 &&
-			bn::keypad::left_held() && !bn::keypad::down_held()) 
-		{wall_left_detected = true;}
 	}
 }
 
@@ -1896,6 +1788,9 @@ void Player::resolveSmashBlockMiniCollision(GameObject& object)
 
         // Resolve Y Axis Collision //
         resolveYAxisCollision(object.collider);
+		
+		// Resolve Corner Collision // 
+        resolveCornerCollision(object.collider);
 
 		// Smash block with player head //
 		if(col_y_offset > 0) 
@@ -1905,39 +1800,15 @@ void Player::resolveSmashBlockMiniCollision(GameObject& object)
 			sprite_ptr->set_horizontal_scale(PLAYER_HEAD_BONK_H_STRETCH);
 			sprite_ptr->set_vertical_scale(PLAYER_HEAD_BONK_V_STRETCH);
 		}
-
-        // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(object.collider);
     }
 
 	updateTestColliders();
 
-	// Test for, and log grounded collision
 	if(test_collider.isCollision(object.collider) && 
 	   rigidbody.normalized_dir.y() >= 0)
-	{	
+	{
 		grounded_detected = true;
 		rigidbody.removeYForces();
-	}
-	
-	// Test for wall riding on right side
-	if(test_collider_right.isCollision(object.collider))
-	{
-		right_wj_eligible = true;
-
-		if(rigidbody.normalized_dir.y() >= 0 &&
-		   bn::keypad::right_held() && !bn::keypad::down_held())
-		{wall_right_detected = true;}
-	}
-
-	// Test for wall riding on left side
-	if(test_collider_left.isCollision(object.collider))
-	{
-		left_wj_eligible = true;
-
-		if(rigidbody.normalized_dir.y() >= 0 &&
-			bn::keypad::left_held() && !bn::keypad::down_held()) 
-		{wall_left_detected = true;}
 	}
 }
 
@@ -1953,38 +1824,17 @@ void Player::resolveHPTotemCollision(GameObject& object)
         // Resolve Y Axis Collision //
         resolveYAxisCollision(object.collider);
 
-        // If there is still collision somehow, must be corner case //
+        // Resolve Corner Collision // 
         resolveCornerCollision(object.collider);
     }
 
 	updateTestColliders();
 
-	// Test for, and log grounded collision
 	if(test_collider.isCollision(object.collider) && 
 	   rigidbody.normalized_dir.y() >= 0)
-	{	
+	{
 		grounded_detected = true;
 		rigidbody.removeYForces();
-	}
-	
-	// Test for wall riding on right side
-	if(test_collider_right.isCollision(object.collider))
-	{
-		right_wj_eligible = true;
-
-		if(rigidbody.normalized_dir.y() >= 0 &&
-		   bn::keypad::right_held() && !bn::keypad::down_held())
-		{wall_right_detected = true;}
-	}
-
-	// Test for wall riding on left side
-	if(test_collider_left.isCollision(object.collider))
-	{
-		left_wj_eligible = true;
-
-		if(rigidbody.normalized_dir.y() >= 0 &&
-			bn::keypad::left_held() && !bn::keypad::down_held()) 
-		{wall_left_detected = true;}
 	}
 }
 
@@ -2046,25 +1896,38 @@ void Player::resolveThornColumnCollision(GameObject& object)
 {
 	int32 thorn_collision_x_offset = collider.getCollisionXOffset(object.collider, rigidbody.normalized_dir.x()).integer();
 	
-	if(collider.isCollision(object.collider) && 
-		hitpoints > 0)
+	if(collider.isCollision(object.collider))
 	{
-		int32 knockback_x_dir = abs(thorn_collision_x_offset) / thorn_collision_x_offset;
-		applyHit(object.damage, knockback_x_dir, 0);
-	}
+		if(hitpoints > 0)
+		{
+			int32 knockback_x_dir = abs(thorn_collision_x_offset) / thorn_collision_x_offset;
+			applyHit(object.damage, knockback_x_dir, 0);
+		}
 
-	resolveXAxisCollision(object.collider);
-	resolveYAxisCollision(object.collider);
+		resolveXAxisCollision(object.collider);
+		resolveYAxisCollision(object.collider);
+	}
 }
 
 void Player::resolveThornBarCollision(GameObject& object)       
 {		
 	if(collider.isCollision(object.collider) &&
 		hitpoints > 0)
-	{applyHit(object.damage, 0, 0);}
+	{
+		if(hitpoints > 0) {applyHit(object.damage, 0, 0);}
 
-	resolveXAxisCollision(object.collider);
-	resolveYAxisCollision(object.collider);
+		resolveXAxisCollision(object.collider);
+		resolveYAxisCollision(object.collider);
+	}
+
+	updateTestColliders();
+
+	if(test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
 }
 
 void Player::resolveGroundGhoulCollision(GameObject& object)
@@ -2091,10 +1954,8 @@ void Player::resolveTileCollision(const bn::regular_bg_ptr&                     
 	////////////////////////////////////////
     // Update Variables for state testing //
 	////////////////////////////////////////
-    wall_right_detected   = false;
-    wall_left_detected    = false;
-	grounded_owp_detected = false;
-	grounded_detected     = false;
+
+	grounded_detected = false;
 
 	///////////////////////////
 	// Update test colliders //
@@ -2104,243 +1965,238 @@ void Player::resolveTileCollision(const bn::regular_bg_ptr&                     
 	collider_x_axis.setPos(collider.x(), collider.y() - rigidbody.final_dir.y());
 	collider_y_axis.setPos(collider.x() - rigidbody.final_dir.x(), collider.y());
 
-	// Wall slide test colliders
-	test_collider_right.setPos(collider.x() + PLAYER_WALL_TEST_RAY_LENGTH,
-                               collider.y());
-	test_collider_left.setPos(collider.x() - PLAYER_WALL_TEST_RAY_LENGTH,
-                              collider.y());
-
-	// Grounded test collider
-	test_collider = Collider(collider.x(), 
-	                         collider.y() + GAME_OBJECT_GROUND_RAY_LENGTH,
-							 collider.width, 
-							 collider.height);
-
 	// Placeholder collider for other objects
 	Collider other_collider;
 
 	///////////////////////////////////////////////////
 	// Get current cell index that player resides in //
 	///////////////////////////////////////////////////
-	int32 half_level_width_pixels  = bg_ptr.dimensions().width() / 2;
+
+	int32 half_level_width_pixels  = bg_ptr.dimensions().width()  / 2;
 	int32 half_level_height_pixels = bg_ptr.dimensions().height() / 2;
-	bn::fixed index_x = (x() + half_level_width_pixels)  / TILE_WIDTH;
-	bn::fixed index_y = (y() + half_level_height_pixels) / TILE_HEIGHT;
+	bn::fixed index_x = (x() + half_level_width_pixels  + collider_offset_x) / TILE_WIDTH;
+	bn::fixed index_y = (y() + half_level_height_pixels + collider_offset_y) / TILE_HEIGHT;
 	bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
 
-	if(state != PLAYER_PHASE_STEP)
+	// Check cells for collision in the direction the player is facing
+	int32 x_check_dir; 
+	if(x_dir == LEFT) {x_check_dir = -1;}
+	else {x_check_dir = 1;}
+
+	for(int32 y = -1; y < 2; y++)
 	{
-		// Check cells for collision in the direction the player is facing
-		int32 x_check_dir; 
-		if(x_dir == LEFT) {x_check_dir = -1;}
-		else {x_check_dir = 1;}
-
-		for(int32 y = -2; y < 3; y++)
+		for(int32 x = 1 * (x_check_dir * -1); x != 2 * x_check_dir; x += x_check_dir)
 		{
-			for(int32 x = 1 * (x_check_dir * -1); x != 2 * x_check_dir; x += x_check_dir)
+			// 1. Get tile type at index //
+			int32 check_index_x = cell_index.x() + x;
+			int32 check_index_y = cell_index.y() + y;
+
+			// Determine world coords in case we need to make a collider.
+			int32 world_x = ((check_index_x * TILE_WIDTH)  - half_level_width_pixels)  + (TILE_WIDTH / 2);
+			int32 world_y = ((check_index_y * TILE_HEIGHT) - half_level_height_pixels) + (TILE_HEIGHT / 2);
+
+			uint32 tile_index = getTileAtBGIndex(check_index_x, 
+												 check_index_y, 
+												 bg_ptr, 
+												 cells, 
+												 bg_item);
+
+			// 2. If the tile is collidable make a temporary collider based on type //
+
+			if(tile_index >= HARD_BLOCK_MIN_INDEX && 
+				tile_index <= HARD_BLOCK_MAX_INDEX)
 			{
-				// 1. Get tile type at index //
-				int32 check_index_x = cell_index.x() + x;
-				int32 check_index_y = cell_index.y() + y;
+				// Prepare offsets in case they are needed for Block collision.
+				int32 block_w_offset = 0;
+				int32 block_x_offset = 0;
 
-				// Determine world coords in case we need to make a collider.
-				int32 world_x = ((check_index_x * TILE_WIDTH)  - half_level_width_pixels)  + (TILE_WIDTH / 2);
-				int32 world_y = ((check_index_y * TILE_HEIGHT) - half_level_height_pixels) + (TILE_HEIGHT / 2);
-
-				uint32 tile_index = getTileAtBGIndex(check_index_x, 
-													 check_index_y, 
-													 bg_ptr, 
-													 cells, 
-													 bg_item);
-	
-				// 2. If the tile is collidable make a temporary collider based on type //
-
-				if(tile_index >= HARD_BLOCK_MIN_INDEX && 
-				   tile_index <= HARD_BLOCK_MAX_INDEX)
+				// If the neighbor to the right is also a BLOCK, smooth over the corner.
+				// This is a hack to resolve collision since checks are always made from
+				// left to right. 
+				if(getTileAtBGIndex(check_index_x + x_check_dir, check_index_y, 
+									bg_ptr, cells, bg_item) >= HARD_BLOCK_MIN_INDEX && 
+					getTileAtBGIndex(check_index_x + x_check_dir, check_index_y, 
+									bg_ptr, cells, bg_item) <= HARD_BLOCK_MAX_INDEX)
 				{
-					// Prepare offsets in case they are needed for Block collision.
-					int32 block_w_offset = 0;
-					int32 block_x_offset = 0;
-
-					// If the neighbor to the right is also a BLOCK, smooth over the corner.
-					// This is a hack to resolve collision since checks are always made from
-					// left to right. 
-					if(getTileAtBGIndex(check_index_x + x_check_dir, check_index_y, 
-										bg_ptr, cells, bg_item) >= HARD_BLOCK_MIN_INDEX && 
-						getTileAtBGIndex(check_index_x + x_check_dir, check_index_y, 
-										bg_ptr, cells, bg_item) <= HARD_BLOCK_MAX_INDEX)
-					{
-						block_w_offset = TILE_WIDTH;
-						block_x_offset = (TILE_WIDTH / 2) * x_check_dir;
-					}
-
-					other_collider = Collider(world_x + block_x_offset, 
-											  world_y, 
-											  TILE_WIDTH + block_w_offset,
-											  TILE_HEIGHT);
-
-					resolveHardBlockCollision(other_collider);
+					block_w_offset = TILE_WIDTH;
+					block_x_offset = (TILE_WIDTH / 2) * x_check_dir;
 				}
 
-				else if(tile_index == H_GEAR_LEFT)
-				{
-					other_collider = Collider(world_x,
+				other_collider = Collider(world_x + block_x_offset, 
+											world_y, 
+											TILE_WIDTH + block_w_offset,
+											TILE_HEIGHT);
+
+				resolveHardBlockCollision(other_collider);
+			}
+
+			else if(tile_index == H_GEAR_LEFT)
+			{
+				other_collider = Collider(world_x,
 											world_y, 
 											TILE_WIDTH, 
 											TILE_HEIGHT);
-					
-					resolveHGearLeftCollision(other_collider);
-				}
-
-				else if(tile_index >= H_GEAR_MID_MIN &&
-						tile_index <= H_GEAR_MID_MAX)
-				{
-					other_collider = Collider(world_x,
-											world_y, 
-											TILE_WIDTH, 
-											TILE_HEIGHT);
-					
-					resolveHGearMidCollision(other_collider);
-				}
-
-				else if(tile_index == H_GEAR_RIGHT)
-				{
-					other_collider = Collider(world_x,
-											world_y, 
-											TILE_WIDTH, 
-											TILE_HEIGHT);
-					
-					resolveHGearRightCollision(other_collider);
-				}
-
-				else if(tile_index == V_GEAR_TOP)
-				{
-					other_collider = Collider(world_x,
-											  world_y, 
-											  TILE_WIDTH, 
-											  TILE_HEIGHT);
-
-					resolveVGearTopCollision(other_collider);
-				}
-
-				else if(tile_index == V_GEAR_MID_1 ||
-						tile_index == V_GEAR_MID_2 ||
-						tile_index == V_GEAR_MID_3)
-				{
-					other_collider = Collider(world_x,
-											  world_y, 
-											  TILE_WIDTH, 
-											  TILE_HEIGHT);
-
-					resolveVGearMidCollision(other_collider);
-				}
-
-				else if(tile_index == V_GEAR_BOTTOM)
-				{
-					other_collider = Collider(world_x,
-											  world_y, 
-											  TILE_WIDTH, 
-											  TILE_HEIGHT);
-
-					resolveVGearBottomCollision(other_collider);
-				}
-
-				else if(tile_index >= SPIKE_MIN_INDEX &&
-                    	tile_index <= SPIKE_MAX_INDEX)
-				{
-					other_collider = Collider(world_x,
-											  world_y, 
-											  TILE_WIDTH, 
-											  TILE_HEIGHT);
-					
-					resolveSpikeCollision(other_collider);
-				}
 				
-				else if(tile_index == SHALLOW_SLOPE_1_INDEX)
-				{
-					other_collider = Collider(world_x, 
-											  world_y + 3, 
-											  TILE_WIDTH, 
-											  TILE_HEIGHT / 4);
+				resolveHGearLeftCollision(other_collider);
+			}
 
-					resolveShallowSlope1Collision(other_collider, world_y);
-				}
-					
-				else if(tile_index == SHALLOW_SLOPE_2_INDEX)
-				{
-					other_collider = Collider(world_x, 
-												world_y + 2, 
-												TILE_WIDTH, 
-												TILE_HEIGHT / 2);
+			else if(tile_index >= H_GEAR_MID_MIN &&
+					tile_index <= H_GEAR_MID_MAX)
+			{
+				other_collider = Collider(world_x,
+										world_y, 
+										TILE_WIDTH, 
+										TILE_HEIGHT);
+				
+				resolveHGearMidCollision(other_collider);
+			}
 
-					resolveShallowSlope2Collision(other_collider, world_y);
-				}
+			else if(tile_index == H_GEAR_RIGHT)
+			{
+				other_collider = Collider(world_x,
+										world_y, 
+										TILE_WIDTH, 
+										TILE_HEIGHT);
+				
+				resolveHGearRightCollision(other_collider);
+			}
 
-				else if(tile_index == SHALLOW_SLOPE_3_INDEX)
-				{
-					other_collider = Collider(world_x, 
-												world_y + 1, 
-												TILE_WIDTH, 
-												TILE_HEIGHT - 2);
+			else if(tile_index == V_GEAR_TOP)
+			{
+				other_collider = Collider(world_x,
+											world_y, 
+											TILE_WIDTH, 
+											TILE_HEIGHT);
 
-					resolveShallowSlope3Collision(other_collider, world_y);
-				}
+				resolveVGearTopCollision(other_collider);
+			}
 
-				else if(tile_index == SHALLOW_SLOPE_4_INDEX)
-				{
-					other_collider = Collider(world_x, 
-												world_y, 
-												TILE_WIDTH, 
-												TILE_HEIGHT);
+			else if(tile_index == V_GEAR_MID_1 ||
+					tile_index == V_GEAR_MID_2 ||
+					tile_index == V_GEAR_MID_3)
+			{
+				other_collider = Collider(world_x,
+											world_y, 
+											TILE_WIDTH, 
+											TILE_HEIGHT);
 
-					resolveShallowSlope4Collision(other_collider, world_y);
-				}
+				resolveVGearMidCollision(other_collider);
+			}
 
-				else if(tile_index == STEEP_SLOPE_1_INDEX)
-				{
-					
-					other_collider = Collider(world_x, 
+			else if(tile_index == V_GEAR_BOTTOM)
+			{
+				other_collider = Collider(world_x,
+											world_y, 
+											TILE_WIDTH, 
+											TILE_HEIGHT);
+
+				resolveVGearBottomCollision(other_collider);
+			}
+
+			else if(tile_index >= SPIKE_MIN_INDEX &&
+					tile_index <= SPIKE_MAX_INDEX)
+			{
+				other_collider = Collider(world_x,
+											world_y, 
+											TILE_WIDTH, 
+											TILE_HEIGHT);
+				
+				resolveSpikeCollision(other_collider);
+			}
+			
+			/*
+			else if(tile_index == SHALLOW_SLOPE_1_INDEX)
+			{
+				other_collider = Collider(world_x, 
+											world_y + 3, 
+											TILE_WIDTH, 
+											TILE_HEIGHT / 4);
+
+				resolveShallowSlope1Collision(other_collider, world_y);
+			}
+				
+			else if(tile_index == SHALLOW_SLOPE_2_INDEX)
+			{
+				other_collider = Collider(world_x, 
 											world_y + 2, 
 											TILE_WIDTH, 
 											TILE_HEIGHT / 2);
 
-					resolveSteepSlope1Collision(other_collider, world_y);
-				}
+				resolveShallowSlope2Collision(other_collider, world_y);
+			}
 
-				else if(tile_index == STEEP_SLOPE_2_INDEX)
-				{
-					other_collider = Collider(world_x, 
+			else if(tile_index == SHALLOW_SLOPE_3_INDEX)
+			{
+				other_collider = Collider(world_x, 
+											world_y + 1, 
+											TILE_WIDTH, 
+											TILE_HEIGHT - 2);
+
+				resolveShallowSlope3Collision(other_collider, world_y);
+			}
+
+			else if(tile_index == SHALLOW_SLOPE_4_INDEX)
+			{
+				other_collider = Collider(world_x, 
 											world_y, 
 											TILE_WIDTH, 
 											TILE_HEIGHT);
 
-					resolveSteepSlope2Collision(other_collider, world_y);
-				}
+				resolveShallowSlope4Collision(other_collider, world_y);
+			}
+
+			else if(tile_index == STEEP_SLOPE_1_INDEX)
+			{
 				
-				else if(tile_index >= CLIMBABLE_MIN_INDEX &&
-						tile_index <= CLIMBABLE_MAX_INDEX)
-				{
-					other_collider = Collider(world_x,
-											  world_y, 
-											  TILE_WIDTH, 
-											  TILE_HEIGHT);
-					
-					resolveClimbableCollision(other_collider);
-				}
+				other_collider = Collider(world_x, 
+										world_y + 2, 
+										TILE_WIDTH, 
+										TILE_HEIGHT / 2);
 
-				else if(tile_index >= ONEWAY_BLOCK_MIN_INDEX &&
-						tile_index <= ONEWAY_BLOCK_MAX_INDEX)
-				{
-					other_collider = Collider(world_x, 
-											  world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
-											  TILE_WIDTH, 
-											  ONEWAYBLOCK_COLLIDER_HEIGHT);
+				resolveSteepSlope1Collision(other_collider, world_y);
+			}
 
-					resolveOneWayBlockCollision(other_collider);
-				}
+			else if(tile_index == STEEP_SLOPE_2_INDEX)
+			{
+				other_collider = Collider(world_x, 
+										world_y, 
+										TILE_WIDTH, 
+										TILE_HEIGHT);
+
+				resolveSteepSlope2Collision(other_collider, world_y);
+			}
+			*/
+			
+			else if(tile_index >= CLIMBABLE_MIN_INDEX &&
+					tile_index <= CLIMBABLE_MAX_INDEX)
+			{
+				other_collider = Collider(world_x,
+											world_y, 
+											TILE_WIDTH, 
+											TILE_HEIGHT);
+				
+				resolveClimbableCollision(other_collider);
+			}
+
+			else if(tile_index >= ONEWAY_BLOCK_MIN_INDEX &&
+					tile_index <= ONEWAY_BLOCK_MAX_INDEX)
+			{
+				other_collider = Collider(world_x, 
+											world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
+											TILE_WIDTH, 
+											ONEWAYBLOCK_COLLIDER_HEIGHT);
+
+				resolveOneWayBlockCollision(other_collider);
 			}
 		}
 	}
+
+	/////////////////////////////
+	// Test for Grounded State //
+	/////////////////////////////
+
+	updateTileGrounded(bg_ptr, cells, bg_item);
+
 }
 
 void Player::resolveYAxisCollision(const Collider& other_collider)
@@ -2364,42 +2220,9 @@ void Player::resolveHardBlockCollision(const Collider& other_collider)
         resolveYAxisCollision(other_collider);
         v_collision_grace_frames = PLAYER_V_COLLISION_MAX_GRACE_FRAMES * col_y_offset.integer();
 
-        // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(other_collider);
+		// Resolve Corner Collision //
+		resolveCornerCollision(other_collider);
     }
-
-	// Update test colliders since the player has moved.
-	updateTestColliders();
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		rigidbody.normalized_dir.y() >= 0)
-	{
-		grounded_detected = true;
-		rigidbody.removeYForces();
-	}
-
-	// Test for wall riding on right side
-	if(test_collider_right.isCollision(other_collider))
-	{
-		right_wj_eligible = true;
-
-		if(rigidbody.normalized_dir.y() >= 0 &&
-		   bn::keypad::right_held() && 
-		   !bn::keypad::down_held()) 
-		{wall_right_detected = true;}
-	}
-	
-	// Test for wall riding on left side
-	if(test_collider_left.isCollision(other_collider))
-	{
-		left_wj_eligible = true;
-
-		if(rigidbody.normalized_dir.y() >= 0 &&
-			bn::keypad::left_held() &&
-			!bn::keypad::down_held()) 
-		{wall_left_detected = true;}
-	}
 }
 
 void Player::resolveClimbableCollision(const Collider& other_collider)
@@ -2432,15 +2255,6 @@ void Player::resolveOneWayBlockCollision(const Collider& other_collider)
 		{
 			collider_y_axis.setY(collider_y_axis.y() - 1);
 			setY(this->y() - 1);
-		}
-
-		updateTestColliders();
-
-		// Test for, and log grounded collision
-		if(test_collider.isCollision(other_collider))
-		{
-			grounded_detected = true;
-			rigidbody.removeYForces();
 		}
 	}
 }

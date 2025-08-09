@@ -19,10 +19,10 @@
 #define PLAYER_Z_ORDER 0
 
 #define PLAYER_COLLIDER_WIDTH  8
-#define PLAYER_COLLIDER_HEIGHT 16
+#define PLAYER_COLLIDER_HEIGHT 14
 
 #define PLAYER_COLLIDER_OFFSET_X 0
-#define PLAYER_COLLIDER_OFFSET_Y 7
+#define PLAYER_COLLIDER_OFFSET_Y 8
 
 #define PLAYER_WALL_TEST_RAY_LENGTH 1
 
@@ -57,8 +57,8 @@
 #define PLAYER_MAX_CLIMB_INDEX 27
 #define PLAYER_CLIMB_REGRAB_CD_FRAMES 20
 
-#define PLAYER_BASE_JUMP_FORCE -7 // 2 block height at 0.033 decay rate
-#define PLAYER_JUMP_DECAY       0.033
+#define PLAYER_BASE_JUMP_FORCE -7 // 2 block height at 0.03 decay rate
+#define PLAYER_JUMP_DECAY       0.03
 
 #define PLAYER_SECOND_JUMP_Y_FORCE  -1 // 1 extra block height if jump held all possible frames
 #define PLAYER_SECONDARY_JUMP_DECAY  1
@@ -203,15 +203,11 @@ struct Player : GameObject {
 	bool wall_right_detected;
     bool wall_left_detected;
 	bool climbable_detected;
-	bool grounded_owp_detected;
 	bool left_wj_eligible;
 	bool right_wj_eligible;
 	bool a_requested;
 	bool b_requested;
 	bool r_requested;
-
-	Collider test_collider_right;
-	Collider test_collider_left;
 
 	Hitbox* hitbox_1_ptr;
 	Hitbox* hitbox_2_ptr;
@@ -234,13 +230,19 @@ struct Player : GameObject {
 	Player& operator =(const Player& other);
 
 	void jump();
+
 	void spinJump();
+
 	//void wallJump();
+
 	void fastFall();
+
 	void createSpinAttack1Hitbox(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
 								 const bn::camera_ptr&                      camera);
+
 	void createSpinAttack2Hitbox(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects, 
 								const bn::camera_ptr&                      camera);
+								
 	void createWallJumpEffect();
 	void drawSpinEffect();
 
@@ -258,8 +260,6 @@ struct Player : GameObject {
 	void updateTimers() override;
 
 	void updateHitFlash() override;
-
-	void updateTestColliders() override;
 
 	void draw() override;
 

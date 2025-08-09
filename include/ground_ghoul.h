@@ -40,8 +40,6 @@ struct GroundGhoul : Enemy {
 	XDirection next_crawl_dir;
 
 	Collider test_collider;
-	Collider test_collider_right;
-	Collider test_collider_left;
 
     GroundGhoul();
 	GroundGhoul(const GroundGhoul& other);

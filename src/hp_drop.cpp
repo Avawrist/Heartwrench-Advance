@@ -23,8 +23,8 @@ HPDrop::HPDrop()
                         y() + collider_offset_y, 
                         HP_DROP_COLLIDER_WIDTH, 
                         HP_DROP_COLLIDER_HEIGHT);
-    collider_x_axis   = collider;
-    collider_y_axis   = collider;
+    collider_x_axis = collider;
+    collider_y_axis = collider;
 
     setState(IDLE);
 
@@ -55,6 +55,100 @@ HPDrop& HPDrop::operator =(const HPDrop& other)
 //////////////////////////
 // GameObject Overrides //
 //////////////////////////
+
+void HPDrop::update(const RoomBounds& 							   room_bounds,
+                    bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                    const bn::regular_bg_ptr&                      bg_ptr, 
+                    const bn::span<const bn::regular_bg_map_cell>& cells,
+                    const bn::regular_bg_item&                     bg_item,
+                    const bn::camera_ptr&                          camera)
+{
+    
+    /////////////////////////////////
+    // Early out for 30FPS Objects //
+    /////////////////////////////////
+
+    if((thirty_fps || is_frozen) && (global_timer % 2 == 0)) {return;}
+
+    //////////////////
+    // Update State //
+    //////////////////
+
+    updateStateMachine(game_objects, bg_ptr, cells, bg_item, camera);
+
+    ////////////////////
+    // Update Physics //
+    ////////////////////
+
+    updatePhysics();
+
+    ///////////////////////
+    // Resolve Collision //
+    ///////////////////////
+
+    resolveCollision(game_objects, bg_ptr, cells, bg_item);
+
+    //////////////////
+    // Update State //
+    //////////////////
+
+    //updateState(game_objects, bg_ptr, cells, bg_item);
+
+    /////////////////////
+    // Update Hitboxes //
+    /////////////////////
+
+    //updateHitboxes(room_bounds, game_objects, bg_ptr, cells, bg_item, camera);
+
+    ///////////////////
+    // Update Timers //
+    ///////////////////
+
+    //updateTimers();
+
+    ///////////////////
+    // Check if dead //
+    ///////////////////
+
+    //checkIfDead();
+
+    /////////////////////////////
+	// Update Sprite Direction //
+	/////////////////////////////
+	
+    //updateSpriteDirection();
+    
+    ////////////////////////////
+    // Correct Sprite Offsets //
+    ////////////////////////////
+	
+    //updateSpriteOffsets();
+
+    //////////////////////////
+    // Update HP Bar Visual //
+    //////////////////////////
+
+    //updateHPBar();
+
+	//////////////////////
+	// Update Hit Flash //
+	//////////////////////
+
+	//updateHitFlash();
+
+    ////////////////////
+    // Clamp Position //
+    ////////////////////
+
+    clampPosition(room_bounds);
+
+	//////////////////////////////
+    // Monitor unloading bounds //
+    //////////////////////////////
+    
+	updateInactiveState(camera);
+
+}
 
 void HPDrop::setState(ObjectState new_state)
 {
@@ -141,7 +235,7 @@ void HPDrop::resolveTilePassageCollision(GameObject& object)
 		resolveYAxisCollision(object.collider);
 
 		// If there is still collision somehow, must be corner case //
-		resolveCornerCollision(object.collider);
+		//resolveCornerCollision(object.collider);
 	}
 
 	updateTestColliders();
@@ -214,7 +308,7 @@ void HPDrop::resolvePushBlockCollision(GameObject& object)
         resolveYAxisCollision(object.collider);
 
         // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(object.collider);
+        //resolveCornerCollision(object.collider);
 
 		// Smash the block
 		if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED)
@@ -247,7 +341,7 @@ void HPDrop::resolvePushBlockMiniCollision(GameObject& object)
         resolveYAxisCollision(object.collider);
 
         // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(object.collider);
+        //resolveCornerCollision(object.collider);
 
 		// Smash the block
 		if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED)
@@ -304,7 +398,7 @@ void HPDrop::resolveSmashBlockLargeCollision(GameObject& object)
         resolveYAxisCollision(object.collider);
 
         // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(object.collider);
+        //resolveCornerCollision(object.collider);
 
 		// Smash the block
 		if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED)
@@ -337,7 +431,7 @@ void HPDrop::resolveSmashBlockMiniCollision(GameObject& object)
         resolveYAxisCollision(object.collider);
 
         // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(object.collider);
+        //resolveCornerCollision(object.collider);
 
 		// Smash the block
 		if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED)
@@ -390,7 +484,7 @@ void HPDrop::resolveHPTotemCollision(GameObject& object)
         resolveYAxisCollision(object.collider);
 
         // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(object.collider);
+        //resolveCornerCollision(object.collider);
 
 		// Smash the block
 		if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED)

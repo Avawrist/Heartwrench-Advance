@@ -14,7 +14,7 @@
 /////////////////////
 
 #define STAR_DROP_COLLIDER_WIDTH  12
-#define STAR_DROP_COLLIDER_HEIGHT 16
+#define STAR_DROP_COLLIDER_HEIGHT 8
 
 #define STAR_DROP_COLLIDER_OFFSET_X 0
 #define STAR_DROP_COLLIDER_OFFSET_Y 0
@@ -47,6 +47,13 @@ struct StarDrop : GameObject {
     //////////////////////////
     // GameObject Overrides //
     //////////////////////////
+
+    void update(const RoomBounds& 							   room_bounds,
+                bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                const bn::regular_bg_ptr&                      bg_ptr, 
+                const bn::span<const bn::regular_bg_map_cell>& cells,
+                const bn::regular_bg_item&                     bg_item,
+                const bn::camera_ptr&                          camera) override;
 
     void setState(ObjectState new_state) override;
 

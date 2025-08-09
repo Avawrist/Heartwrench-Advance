@@ -80,12 +80,6 @@ struct AutoPlatform : GameObject {
 	void resolveVGearMidCollision(const Collider& other_collider) override;
 	void resolveVGearBottomCollision(const Collider& other_collider) override;
 	void resolveSpikeCollision(const Collider& other_collider) override;
-	void resolveShallowSlope1Collision(const Collider& other_collider, int32 world_y) override;
-	void resolveShallowSlope2Collision(const Collider& other_collider, int32 world_y) override;
-	void resolveShallowSlope3Collision(const Collider& other_collider, int32 world_y) override;
-	void resolveShallowSlope4Collision(const Collider& other_collider, int32 world_y) override;
-	void resolveSteepSlope1Collision(const Collider& other_collider, int32 world_y) override;
-	void resolveSteepSlope2Collision(const Collider& other_collider, int32 world_y) override;
 	void resolveOneWayBlockCollision(const Collider& other_collider) override;
 
 };

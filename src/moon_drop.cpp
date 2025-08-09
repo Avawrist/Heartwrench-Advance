@@ -57,6 +57,100 @@ MoonDrop& MoonDrop::operator =(const MoonDrop& other)
 // GameObject Overrides //
 //////////////////////////
 
+void MoonDrop::update(const RoomBounds& 							 room_bounds,
+                      bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                      const bn::regular_bg_ptr&                      bg_ptr, 
+                      const bn::span<const bn::regular_bg_map_cell>& cells,
+                      const bn::regular_bg_item&                     bg_item,
+                      const bn::camera_ptr&                          camera)
+{
+    
+    /////////////////////////////////
+    // Early out for 30FPS Objects //
+    /////////////////////////////////
+
+    if((thirty_fps || is_frozen) && (global_timer % 2 == 0)) {return;}
+
+    //////////////////
+    // Update State //
+    //////////////////
+
+    updateStateMachine(game_objects, bg_ptr, cells, bg_item, camera);
+
+    ////////////////////
+    // Update Physics //
+    ////////////////////
+
+    updatePhysics();
+
+    ///////////////////////
+    // Resolve Collision //
+    ///////////////////////
+
+    resolveCollision(game_objects, bg_ptr, cells, bg_item);
+
+    //////////////////
+    // Update State //
+    //////////////////
+
+    //updateState(game_objects, bg_ptr, cells, bg_item);
+
+    /////////////////////
+    // Update Hitboxes //
+    /////////////////////
+
+    //updateHitboxes(room_bounds, game_objects, bg_ptr, cells, bg_item, camera);
+
+    ///////////////////
+    // Update Timers //
+    ///////////////////
+
+    //updateTimers();
+
+    ///////////////////
+    // Check if dead //
+    ///////////////////
+
+    //checkIfDead();
+
+    /////////////////////////////
+	// Update Sprite Direction //
+	/////////////////////////////
+	
+    //updateSpriteDirection();
+    
+    ////////////////////////////
+    // Correct Sprite Offsets //
+    ////////////////////////////
+	
+    //updateSpriteOffsets();
+
+    //////////////////////////
+    // Update HP Bar Visual //
+    //////////////////////////
+
+    //updateHPBar();
+
+	//////////////////////
+	// Update Hit Flash //
+	//////////////////////
+
+	//updateHitFlash();
+
+    ////////////////////
+    // Clamp Position //
+    ////////////////////
+
+    clampPosition(room_bounds);
+
+	//////////////////////////////
+    // Monitor unloading bounds //
+    //////////////////////////////
+    
+	updateInactiveState(camera);
+
+}
+
 void MoonDrop::setState(ObjectState new_state)
 {
     state = new_state;
@@ -145,7 +239,7 @@ void MoonDrop::resolveTilePassageCollision(GameObject& object)
 		resolveYAxisCollision(object.collider);
 
 		// If there is still collision somehow, must be corner case //
-		resolveCornerCollision(object.collider);
+		//resolveCornerCollision(object.collider);
 	}
 
 	updateTestColliders();
@@ -218,7 +312,7 @@ void MoonDrop::resolvePushBlockCollision(GameObject& object)
         resolveYAxisCollision(object.collider);
 
         // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(object.collider);
+        //resolveCornerCollision(object.collider);
     }
 
 	updateTestColliders();
@@ -245,7 +339,7 @@ void MoonDrop::resolvePushBlockMiniCollision(GameObject& object)
         resolveYAxisCollision(object.collider);
 
         // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(object.collider);
+        //resolveCornerCollision(object.collider);
     }
 
 	updateTestColliders();
@@ -296,7 +390,7 @@ void MoonDrop::resolveSmashBlockLargeCollision(GameObject& object)
         resolveYAxisCollision(object.collider);
 
         // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(object.collider);
+        //resolveCornerCollision(object.collider);
     }
 
 	updateTestColliders();
@@ -323,7 +417,7 @@ void MoonDrop::resolveSmashBlockMiniCollision(GameObject& object)
         resolveYAxisCollision(object.collider);
 
         // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(object.collider);
+        //resolveCornerCollision(object.collider);
     }
 
 	updateTestColliders();
@@ -350,7 +444,7 @@ void MoonDrop::resolveHPTotemCollision(GameObject& object)
         resolveYAxisCollision(object.collider);
 
         // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(object.collider);
+        //resolveCornerCollision(object.collider);
     }
 
 	updateTestColliders();
@@ -377,7 +471,7 @@ void MoonDrop::resolveSpikeCollision(const Collider& other_collider)
         resolveYAxisCollision(other_collider);
 
         // If there is still collision somehow, must be corner case //
-        resolveCornerCollision(other_collider);
+        //resolveCornerCollision(other_collider);
     }
 
     updateTestColliders();

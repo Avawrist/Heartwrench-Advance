@@ -58,7 +58,7 @@ GameObject::GameObject()
                         GAME_OBJECT_COLLIDER_WIDTH, 
                         GAME_OBJECT_COLLIDER_HEIGHT);
 
-    test_collider = collider;
+    test_collider = Collider(0, 0, 0, 0);
 
     col_x_offset = 0;
 	col_y_offset = 0;
@@ -301,7 +301,7 @@ void GameObject::updatePhysics()
     // Apply Decay to Forces
 	rigidbody.applyDecay();
 
-	// Apply forces to player
+	// Apply forces to object
 	applyForces();
 
     // Update colliders for each axis. 
@@ -594,8 +594,10 @@ void GameObject::updateDeathState()
 
 void GameObject::updateTestColliders()
 {
-    // Update test colliders to the object's position.
-	test_collider.setPos(bn::point(collider.pos().x().integer(), collider.pos().y().integer() + GAME_OBJECT_GROUND_RAY_LENGTH));
+    test_collider = Collider(collider.x(), 
+                             collider.y() + GAME_OBJECT_GROUND_RAY_LENGTH, 
+                             collider.width, 
+                             collider.height);
 }
 
 void GameObject::updateHPBar()
@@ -722,6 +724,37 @@ void GameObject::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game
 
 }
 
+void GameObject::updateTileGrounded(const bn::regular_bg_ptr&                      bg_ptr, 
+                                    const bn::span<const bn::regular_bg_map_cell>& cells,
+                                    const bn::regular_bg_item&                     bg_item)
+{
+
+    int32 half_level_width_pixels  = bg_ptr.dimensions().width()  / 2;
+	int32 half_level_height_pixels = bg_ptr.dimensions().height() / 2;
+
+    bn::fixed index_x_p1 = (x() - (collider.width  / 2) + half_level_width_pixels  + collider_offset_x)                                 / TILE_WIDTH;
+	bn::fixed index_x_p2 = (x() + (collider.width  / 2) + half_level_width_pixels  + collider_offset_x - 1)                             / TILE_WIDTH;
+	bn::fixed index_y_p1 = (y() + (collider.height / 2) + half_level_height_pixels + collider_offset_y + GAME_OBJECT_GROUND_RAY_LENGTH) / TILE_HEIGHT;
+
+	uint32 tile_index_p1 = getTileAtBGIndex(index_x_p1.integer(), 
+										    index_y_p1.integer(), 
+										    bg_ptr, 
+										    cells, 
+										    bg_item);
+
+	uint32 tile_index_p2 = getTileAtBGIndex(index_x_p2.integer(), 
+											index_y_p1.integer(), 
+											bg_ptr, 
+											cells, 
+											bg_item);
+
+	if((tileIsSolid(tile_index_p1) || tileIsSolid(tile_index_p2)) && rigidbody.normalized_dir.y() >= 0)
+	{
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
+}
+
 /////////////////////////
 // Collision functions //
 /////////////////////////
@@ -755,120 +788,123 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
     {   
         if(game_objects.at(i)->object_id != object_id)
         {
-            switch(game_objects.at(i)->object_type)
+            if(abs(x().integer() - game_objects.at(i)->x().integer()) <= SCREEN_LOAD_PADDING)
             {
-                case NO_TYPE:
-                break;
+                switch(game_objects.at(i)->object_type)
+                {
+                    case NO_TYPE:
+                    break;
 
-                // Level Objects
-                case TILE_PASSAGE:
-                    resolveTilePassageCollision(*game_objects.at(i));
-                break;
+                    // Level Objects
+                    case TILE_PASSAGE:
+                        resolveTilePassageCollision(*game_objects.at(i));
+                    break;
 
-                case PHASE_ORB_UP:
-                    resolvePhaseOrbUpCollision(*game_objects.at(i));
-                break; 
+                    case PHASE_ORB_UP:
+                        resolvePhaseOrbUpCollision(*game_objects.at(i));
+                    break; 
 
-                case PHASE_ORB_DOWN:
-                    resolvePhaseOrbDownCollision(*game_objects.at(i));
-                break;
+                    case PHASE_ORB_DOWN:
+                        resolvePhaseOrbDownCollision(*game_objects.at(i));
+                    break;
 
-                case PHASE_ORB_LEFT:
-                    resolvePhaseOrbLeftCollision(*game_objects.at(i));
-                break;
+                    case PHASE_ORB_LEFT:
+                        resolvePhaseOrbLeftCollision(*game_objects.at(i));
+                    break;
 
-                case PHASE_ORB_RIGHT:
-                    resolvePhaseOrbRightCollision(*game_objects.at(i));
-                break;
+                    case PHASE_ORB_RIGHT:
+                        resolvePhaseOrbRightCollision(*game_objects.at(i));
+                    break;
 
-                case FALLING_PLATFORM_WIDE:
-                    resolveFallingPlatformWideCollision(*game_objects.at(i));
-                break;
+                    case FALLING_PLATFORM_WIDE:
+                        resolveFallingPlatformWideCollision(*game_objects.at(i));
+                    break;
 
-                case FALLING_PLATFORM_THIN:
-                    resolveFallingPlatformThinCollision(*game_objects.at(i));
-                break;
+                    case FALLING_PLATFORM_THIN:
+                        resolveFallingPlatformThinCollision(*game_objects.at(i));
+                    break;
 
-                case PUSH_BLOCK:
-                    resolvePushBlockCollision(*game_objects.at(i));
-                break;
+                    case PUSH_BLOCK:
+                        resolvePushBlockCollision(*game_objects.at(i));
+                    break;
 
-                case PUSH_BLOCK_MINI:
-                    resolvePushBlockMiniCollision(*game_objects.at(i));
-                break;
+                    case PUSH_BLOCK_MINI:
+                        resolvePushBlockMiniCollision(*game_objects.at(i));
+                    break;
 
-                case AUTO_PLATFORM:
-                    resolveAutoPlatformCollision(*game_objects.at(i));
-                break;
+                    case AUTO_PLATFORM:
+                        resolveAutoPlatformCollision(*game_objects.at(i));
+                    break;
 
-                case SMASH_BLOCK_LARGE:
-                    resolveSmashBlockLargeCollision(*game_objects.at(i));
-                break;
+                    case SMASH_BLOCK_LARGE:
+                        resolveSmashBlockLargeCollision(*game_objects.at(i));
+                    break;
 
-                case SMASH_BLOCK_MINI:
-                    resolveSmashBlockMiniCollision(*game_objects.at(i));
-                break;
+                    case SMASH_BLOCK_MINI:
+                        resolveSmashBlockMiniCollision(*game_objects.at(i));
+                    break;
 
-                case LARGE_VASE:
-                    resolveLargeVaseCollision(*game_objects.at(i));
-                break;
+                    case LARGE_VASE:
+                        resolveLargeVaseCollision(*game_objects.at(i));
+                    break;
 
-                case SMALL_VASE:
-                    resolveSmallVaseCollision(*game_objects.at(i));
-                break;
+                    case SMALL_VASE:
+                        resolveSmallVaseCollision(*game_objects.at(i));
+                    break;
 
-                case HP_TOTEM:
-                    resolveHPTotemCollision(*game_objects.at(i));
-                break;
+                    case HP_TOTEM:
+                        resolveHPTotemCollision(*game_objects.at(i));
+                    break;
 
-                case HP_DROP:
-                    resolveHPDropCollision(*game_objects.at(i));
-                break;
+                    case HP_DROP:
+                        resolveHPDropCollision(*game_objects.at(i));
+                    break;
 
-                case MOON_DROP:
-                    resolveMoonDropCollision(*game_objects.at(i));
-                break;
+                    case MOON_DROP:
+                        resolveMoonDropCollision(*game_objects.at(i));
+                    break;
 
-                case STAR_DROP:
-                    resolveStarDropCollision(*game_objects.at(i));
-                break;
+                    case STAR_DROP:
+                        resolveStarDropCollision(*game_objects.at(i));
+                    break;
 
-                case CHECKPOINT:
-                    resolveCheckpointCollision(*game_objects.at(i));
-                break;
+                    case CHECKPOINT:
+                        resolveCheckpointCollision(*game_objects.at(i));
+                    break;
 
-                // Level Enemies
-                case THORN_COLUMN:
-                    resolveThornColumnCollision(*game_objects.at(i));
-                break; 
-                
-                case THORN_BAR:
-                    resolveThornBarCollision(*game_objects.at(i));
-                break;
+                    // Level Enemies
+                    case THORN_COLUMN:
+                        resolveThornColumnCollision(*game_objects.at(i));
+                    break; 
+                    
+                    case THORN_BAR:
+                        resolveThornBarCollision(*game_objects.at(i));
+                    break;
 
-                case GROUND_GHOUL:
-                    resolveGroundGhoulCollision(*game_objects.at(i));
-                break; 
+                    case GROUND_GHOUL:
+                        resolveGroundGhoulCollision(*game_objects.at(i));
+                    break; 
 
-                // Special Objects
-                case HITBOX_SPIN_1:
-                    resolveHitboxSpin1Collision(*game_objects.at(i));
-                break;
+                    // Special Objects
+                    case HITBOX_SPIN_1:
+                        resolveHitboxSpin1Collision(*game_objects.at(i));
+                    break;
 
-                case HITBOX_SPIN_2:
-                    resolveHitboxSpin2Collision(*game_objects.at(i));
-                break;
+                    case HITBOX_SPIN_2:
+                        resolveHitboxSpin2Collision(*game_objects.at(i));
+                    break;
 
-                case HITBOX_WALL_SPLAT:
-                    resolveHitboxWallSplatCollision(*game_objects.at(i));
-                break;
+                    case HITBOX_WALL_SPLAT:
+                        resolveHitboxWallSplatCollision(*game_objects.at(i));
+                    break;
 
-                case PLAYER:
-                    resolvePlayerCollision(*game_objects.at(i));
-                break;
+                    case PLAYER:
+                        resolvePlayerCollision(*game_objects.at(i));
+                    break;
 
-                default:
-                break;
+                    default:
+                    break;
+                }
             }
         }
     }
@@ -918,13 +954,8 @@ void GameObject::resolveTileCollision(const bn::regular_bg_ptr&                 
 	////////////////////////////////////////
     // Update Variables for state testing //
 	////////////////////////////////////////
-	grounded_detected = false;
 
-	// Grounded test collider
-	test_collider = Collider(collider.x(), 
-	                         collider.y() + GAME_OBJECT_GROUND_RAY_LENGTH,
-							 collider.width, 
-							 collider.height);
+    grounded_detected = false;
 
     //////////////////////////////
 	// Init Collision Variables //
@@ -1063,7 +1094,30 @@ void GameObject::resolveTileCollision(const bn::regular_bg_ptr&                 
                 
                 resolveSpikeCollision(other_collider);
             }
-    
+            
+            else if(tile_index >= CLIMBABLE_MIN_INDEX &&
+                    tile_index <= CLIMBABLE_MAX_INDEX)
+            {
+                other_collider = Collider(world_x,
+                                          world_y, 
+                                          TILE_WIDTH, 
+                                          TILE_HEIGHT);
+                
+                resolveClimbableCollision(other_collider);
+            }
+
+            else if(tile_index >= ONEWAY_BLOCK_MIN_INDEX &&
+                    tile_index <= ONEWAY_BLOCK_MAX_INDEX)
+            {
+                other_collider = Collider(world_x, 
+                                            world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
+                                            TILE_WIDTH, 
+                                            ONEWAYBLOCK_COLLIDER_HEIGHT);
+
+                resolveOneWayBlockCollision(other_collider);
+            }
+
+            /*
             else if(tile_index == SHALLOW_SLOPE_1_INDEX)
             {
                 other_collider = Collider(world_x, 
@@ -1124,31 +1178,16 @@ void GameObject::resolveTileCollision(const bn::regular_bg_ptr&                 
 
                 resolveSteepSlope2Collision(other_collider, world_y);
             }
-            
-            else if(tile_index >= CLIMBABLE_MIN_INDEX &&
-                    tile_index <= CLIMBABLE_MAX_INDEX)
-            {
-                other_collider = Collider(world_x,
-                                          world_y, 
-                                          TILE_WIDTH, 
-                                          TILE_HEIGHT);
-                
-                resolveClimbableCollision(other_collider);
-            }
-
-            else if(tile_index >= ONEWAY_BLOCK_MIN_INDEX &&
-                    tile_index <= ONEWAY_BLOCK_MAX_INDEX)
-            {
-                other_collider = Collider(world_x, 
-                                            world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
-                                            TILE_WIDTH, 
-                                            ONEWAYBLOCK_COLLIDER_HEIGHT);
-
-                resolveOneWayBlockCollision(other_collider);
-            }
+            */
 
 		}
 	}
+
+    /////////////////////////////
+	// Test for Grounded State //
+	/////////////////////////////
+
+	updateTileGrounded(bg_ptr, cells, bg_item);
 }
 
 void GameObject::resolveXAxisCollision(const Collider& other_collider)
@@ -1185,19 +1224,9 @@ void GameObject::resolveHardBlockCollision(const Collider& other_collider)
         // Resolve Y Axis Collision //
         resolveYAxisCollision(other_collider);
 
-        // If there is still collision somehow, must be corner case //
+        // Resolve Corner Collision // 
         resolveCornerCollision(other_collider);
     }
-
-    updateTestColliders();
-
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		rigidbody.normalized_dir.y() >= 0)
-	{
-		grounded_detected = true;
-		rigidbody.removeYForces();
-	}
 }
 
 void GameObject::resolveHGearLeftCollision(const Collider& other_collider)
@@ -1232,6 +1261,11 @@ void GameObject::resolveVGearBottomCollision(const Collider& other_collider)
 
 void GameObject::resolveSpikeCollision(const Collider& other_collider)
 {
+    updateTestColliders();
+
+    // Move test collider down for spike test.
+    test_collider.setY(test_collider.y() + GAME_OBJECT_GROUND_RAY_LENGTH);
+
     if(test_collider.isCollision(other_collider) && hitpoints > 0)
     {applyHit(SPIKE_DAMAGE, 0, 0);}
 
@@ -1243,21 +1277,29 @@ void GameObject::resolveSpikeCollision(const Collider& other_collider)
         // Resolve Y Axis Collision //
         resolveYAxisCollision(other_collider);
 
-        // If there is still collision somehow, must be corner case //
+        // Resolve Corner Collision // 
         resolveCornerCollision(other_collider);
     }
+}
 
-    updateTestColliders();
+void GameObject::resolveClimbableCollision(const Collider& other_collider)
+{}
 
-	// Test for, and log grounded collision
-	if(test_collider.isCollision(other_collider) &&
-		rigidbody.normalized_dir.y() >= 0)
+void GameObject::resolveOneWayBlockCollision(const Collider& other_collider) 
+{
+    if(rigidbody.normalized_dir.y() >= 0 &&
+       collider_y_axis.p4.y() <= other_collider.p1.y() + rigidbody.final_dir.y())
 	{
-		grounded_detected = true;
-		rigidbody.removeYForces();
+        // Resolve Collision //
+        while(collider_y_axis.isCollision(other_collider))
+        {
+            collider_y_axis.setY(collider_y_axis.y() - 1);
+            setY(this->y() - 1);
+        }
 	}
 }
 
+/*
 void GameObject::resolveShallowSlope1Collision(const Collider& other_collider, int32 world_y)
 {
     // Derive slope height at object position:
@@ -1438,7 +1480,6 @@ void GameObject::resolveSteepSlope2Collision(const Collider& other_collider, int
 	}
 }
 
-/*
 void GameObject::resolveRightShallowSlope1Collision(const Collider& other_collider, int32 world_y)
 {
     // Derive slope height at object position:
@@ -1618,32 +1659,6 @@ void GameObject::resolveRightSteepSlope2Collision(const Collider& other_collider
 	}
 }
 */
-
-void GameObject::resolveClimbableCollision(const Collider& other_collider)
-{}
-
-void GameObject::resolveOneWayBlockCollision(const Collider& other_collider) 
-{
-    if(rigidbody.normalized_dir.y() >= 0 &&
-       collider_y_axis.p4.y() <= other_collider.p1.y() + rigidbody.final_dir.y())
-	{
-        // Resolve Collision //
-        while(collider_y_axis.isCollision(other_collider))
-        {
-            collider_y_axis.setY(collider_y_axis.y() - 1);
-            setY(this->y() - 1);
-        }
-
-        updateTestColliders();
-
-        // Test for, and log grounded collision
-		if(test_collider.isCollision(other_collider))
-		{
-			grounded_detected = true;
-			rigidbody.removeYForces();
-		}
-	}
-}
 
 ///////////////////////////
 // Struct UnloadedObject //

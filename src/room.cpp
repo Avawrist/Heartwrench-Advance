@@ -644,8 +644,20 @@ void Room::prepObjects(const bn::regular_bg_ptr&                      object_bg_
 
             if(type > NO_TYPE && type < HITBOX_SPIN_1)
             {
-                addUnloadedObject(UnloadedObject(bn::point(x - half_level_width_pixels, 
-                                                           y - half_level_height_pixels - 1), type));
+                int32 x_pos_offset = 0;
+                int32 y_pos_offset = 0;
+                
+                // Special case objects with unique positioning:
+                if(type == PUSH_BLOCK_MINI  ||
+                   type == SMASH_BLOCK_MINI ||
+                   type == AUTO_PLATFORM)
+                {
+                    x_pos_offset = TILE_WIDTH;
+                    y_pos_offset = TILE_HEIGHT;
+                }
+
+                addUnloadedObject(UnloadedObject(bn::point(x - half_level_width_pixels  + x_pos_offset, 
+                                                           y - half_level_height_pixels + y_pos_offset - 1), type));
             }
         }
     }
@@ -674,6 +686,7 @@ void Room::monitorUnloadedObjects(const bn::camera_ptr& camera_ptr)
                                  camera_center.y(), 
                                  LOAD_RANGE_W, 
                                  LOAD_RANGE_H);
+
     Collider screen_range_collider(camera_center.x(), 
                                    camera_center.y(), 
                                    SCREEN_W + SCREEN_LOAD_PADDING,
@@ -714,6 +727,7 @@ void Room::monitorUnloadedObjects(const bn::camera_ptr& camera_ptr)
                     // If there is not already a loaded instance, load one in:
                     if(unloaded_objects.at(i).loaded_instance_id == UNLOADED_OBJECT_STATE_UNLOADED)
                     {
+                        BN_LOG(unloaded_objects.at(i).object_type);
                         unloaded_objects.at(i).loaded_instance_id = addObject(unloaded_objects.at(i),
                                                                               camera_ptr);
                     }

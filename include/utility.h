@@ -19,16 +19,16 @@ typedef int   int32;
 // Global Macros
 #define GLOBAL_TIMER_MAX 600
 
-#define MAX_GAME_OBJECTS     15
+#define MAX_GAME_OBJECTS     20
 #define MAX_UNLOADED_OBJECTS 25
 
 #define MAX_SPRITE_TILES 1350
 
 #define SCREEN_W 240
 #define SCREEN_H 160
-#define SCREEN_LOAD_PADDING 64
-#define LOAD_RANGE_W SCREEN_W + (2 * SCREEN_LOAD_PADDING)
-#define LOAD_RANGE_H SCREEN_H + (2 * SCREEN_LOAD_PADDING)
+#define SCREEN_LOAD_PADDING 48
+#define LOAD_RANGE_W SCREEN_W + (SCREEN_LOAD_PADDING * 2)
+#define LOAD_RANGE_H SCREEN_H + (SCREEN_LOAD_PADDING * 2)
 
 #define CAM_PLAYER_Y_OFFSET -16
 #define CAM_MAX_LOOK_Y       16
@@ -58,12 +58,12 @@ typedef int   int32;
 #define H_GEAR_RIGHT   102
 
 #define V_GEAR_TOP    103
-#define V_GEAR_MID_1  120
+#define V_GEAR_MID_1  119
 #define V_GEAR_MID_2  105
 #define V_GEAR_MID_3  107
-#define V_GEAR_BOTTOM 122
+#define V_GEAR_BOTTOM 121
 
-#define SPIKE_MIN_INDEX 124
+#define SPIKE_MIN_INDEX 123
 #define SPIKE_MAX_INDEX 136
 
 #define CLIMBABLE_MIN_INDEX 137
@@ -72,13 +72,13 @@ typedef int   int32;
 #define ONEWAY_BLOCK_MIN_INDEX 153
 #define ONEWAY_BLOCK_MAX_INDEX 156
 
-#define SHALLOW_SLOPE_1_INDEX  157
-#define SHALLOW_SLOPE_2_INDEX  158
-#define SHALLOW_SLOPE_3_INDEX  159
-#define SHALLOW_SLOPE_4_INDEX  160
+//#define SHALLOW_SLOPE_1_INDEX  157
+//#define SHALLOW_SLOPE_2_INDEX  158
+//#define SHALLOW_SLOPE_3_INDEX  159
+//#define SHALLOW_SLOPE_4_INDEX  160
 
-#define STEEP_SLOPE_1_INDEX 161
-#define STEEP_SLOPE_2_INDEX 162
+//#define STEEP_SLOPE_1_INDEX 161
+//#define STEEP_SLOPE_2_INDEX 162
 
 #define TILE_TOTAL_COUNT 255
 
@@ -155,6 +155,8 @@ extern int32 global_timer;
 #define DEBUG_BUILD false
 
 // Functions
+
+bool tileIsSolid(uint32 tile_index);
 
 int32 getTileAtBGIndex(uint32 x, uint32 y, 
                        bn::regular_bg_ptr                      bg_ptr, 

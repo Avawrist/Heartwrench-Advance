@@ -29,6 +29,15 @@ int32 global_timer = 0;
 
 // Functions
 
+bool tileIsSolid(uint32 tile_index)
+{
+    if(tile_index >= HARD_BLOCK_MIN_INDEX   && tile_index <= HARD_BLOCK_MAX_INDEX)   {return true;}
+    if(tile_index >= SPIKE_MIN_INDEX        && tile_index <= SPIKE_MAX_INDEX)        {return true;}
+    if(tile_index >= ONEWAY_BLOCK_MIN_INDEX && tile_index <= ONEWAY_BLOCK_MAX_INDEX) {return true;}
+
+    return false;
+}
+
 int32 getTileAtBGIndex(uint32 x, uint32 y, 
                        bn::regular_bg_ptr                      bg_ptr, 
                        bn::span<const bn::regular_bg_map_cell> cells,
