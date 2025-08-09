@@ -1846,7 +1846,7 @@ void Player::resolveHPTotemCollision(GameObject& object)
 
 void Player::resolveHPDropCollision(GameObject& object)
 {
-	if(object.state == OBJECT_DEATH) {return;}
+	if(object.state == OBJECT_DEATH || object.invulnerability_frames) {return;}
 	
 	if(collider.isCollision(object.collider))
     {
@@ -1860,7 +1860,7 @@ void Player::resolveHPDropCollision(GameObject& object)
 
 void Player::resolveMoonDropCollision(GameObject& object)
 {
-	if(object.state == OBJECT_DEATH) {return;}
+	if(object.state == OBJECT_DEATH || object.invulnerability_frames) {return;}
 	
 	if(collider.isCollision(object.collider))
     {	
@@ -1873,9 +1873,24 @@ void Player::resolveMoonDropCollision(GameObject& object)
 	}
 }
 
+void Player::resolveSkullDropCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH || object.invulnerability_frames) {return;}
+	
+	if(collider.isCollision(object.collider))
+    {	
+		currency_collected += object.damage;
+
+		global_hitstop_frames            = PLAYER_GET_SKULL_HITSTOP_FRAMES;
+		global_hud_currency_flash_frames = HUD_FLASH_FRAMES;
+
+		object.setState(OBJECT_DEATH);
+	}
+}
+
 void Player::resolveStarDropCollision(GameObject& object)
 {
-	if(object.state == OBJECT_DEATH) {return;}
+	if(object.state == OBJECT_DEATH || object.invulnerability_frames) {return;}
 	
 	if(collider.isCollision(object.collider))
     {	

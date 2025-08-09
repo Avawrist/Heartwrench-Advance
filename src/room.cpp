@@ -194,6 +194,10 @@ int32 Room::addObject(ObjectRequest& object_request, const bn::camera_ptr& camer
             temp_object_ptr = new MoonDrop();
         break;
 
+        case SKULL_DROP:
+            temp_object_ptr = new SkullDrop();
+        break;
+
         case STAR_DROP:
             temp_object_ptr = new StarDrop();
         break;
@@ -388,8 +392,9 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
         break;
 
         case MOON_DROP:
+
             temp_object_ptr = new MoonDrop();
-            _is_persistent   = true;
+            _is_persistent  = true;
             // Special Case: 
             // Moon Drops added in through the Level Editor are "frozen"
             // and don't receive physics updates
@@ -397,9 +402,21 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
 
         break;
 
+        case SKULL_DROP:
+
+            temp_object_ptr = new SkullDrop();
+            _is_persistent  = true;
+            // Special Case: 
+            // Skull Drops added in through the Level Editor are "frozen"
+            // and don't receive physics updates
+            temp_object_ptr->is_frozen = true;
+            
+        break;
+
         case STAR_DROP:
+
             temp_object_ptr = new StarDrop();
-            _is_persistent   = true;
+            _is_persistent  = true;
             // Special Case: 
             // Star Drops added in through the Level Editor are "frozen"
             // and don't receive physics updates
@@ -696,16 +713,19 @@ void Room::monitorUnloadedObjects(const bn::camera_ptr& camera_ptr)
     {
         first_frame = false;
 
+        load_range_collider = Collider(camera_center.x(), camera_center.y(), LOAD_RANGE_W * 2, LOAD_RANGE_H * 2);
+
         // Look at all unloaded objects in the list. If the position is within the defined
         // camera boundaries, actually load the object.
         for(int i = 0; i < unloaded_objects.size(); i++)
         {
             // If object is within the load window:
-            if(load_range_collider.isCollision(unloaded_objects.at(i).room_pos))
+            if(load_range_collider.isCollision(unloaded_objects.at(i).room_pos)) // <-----
             {
                 // If there is not already a loaded instance, load one in:
                 if(unloaded_objects.at(i).loaded_instance_id == UNLOADED_OBJECT_STATE_UNLOADED)
                 {
+                    BN_LOG(unloaded_objects.at(i).object_type);
                     unloaded_objects.at(i).loaded_instance_id = addObject(unloaded_objects.at(i),
                                                                           camera_ptr);
                 }
@@ -727,7 +747,6 @@ void Room::monitorUnloadedObjects(const bn::camera_ptr& camera_ptr)
                     // If there is not already a loaded instance, load one in:
                     if(unloaded_objects.at(i).loaded_instance_id == UNLOADED_OBJECT_STATE_UNLOADED)
                     {
-                        BN_LOG(unloaded_objects.at(i).object_type);
                         unloaded_objects.at(i).loaded_instance_id = addObject(unloaded_objects.at(i),
                                                                               camera_ptr);
                     }

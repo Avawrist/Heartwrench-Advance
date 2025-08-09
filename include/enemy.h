@@ -33,6 +33,7 @@ struct Enemy : GameObject
     void updateHPBar()             override;
     void setHitFlash()             override;
 	void setHitFlash(int32 frames) override;
+    void updateDeathState()        override;
 
     //////////////////////////////
     // State Function Overrides //

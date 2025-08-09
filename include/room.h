@@ -36,6 +36,7 @@
 #include "hp_totem.h"
 #include "hp_drop.h"
 #include "moon_drop.h"
+#include "skull_drop.h"
 #include "star_drop.h"
 #include "checkpoint.h"
 

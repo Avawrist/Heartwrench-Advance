@@ -562,8 +562,6 @@ void GameObject::updateSpriteOffsets()
 
 void GameObject::updateInactiveState(const bn::camera_ptr& camera)
 {
-    if(is_persistent) {return;}
-
     Collider load_range_collider(camera.position().x(), 
                                  camera.position().y(), 
                                  LOAD_RANGE_W, 
@@ -864,6 +862,10 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
                         resolveMoonDropCollision(*game_objects.at(i));
                     break;
 
+                    case SKULL_DROP:
+                        resolveSkullDropCollision(*game_objects.at(i));
+                    break;
+
                     case STAR_DROP:
                         resolveStarDropCollision(*game_objects.at(i));
                     break;
@@ -928,6 +930,7 @@ void GameObject::resolveSmallVaseCollision(GameObject& object)           {}
 void GameObject::resolveHPTotemCollision(GameObject& object)             {}
 void GameObject::resolveHPDropCollision(GameObject& object)              {}
 void GameObject::resolveMoonDropCollision(GameObject& object)            {}
+void GameObject::resolveSkullDropCollision(GameObject& object)           {}
 void GameObject::resolveStarDropCollision(GameObject& object)            {}
 void GameObject::resolveCheckpointCollision(GameObject& object)          {}
 
@@ -1698,9 +1701,4 @@ void UnloadedObject::operator =(const UnloadedObject& other)
     room_pos           = other.room_pos;
     object_type        = other.object_type;
     loaded_instance_id = other.loaded_instance_id;
-}
-
-void UnloadedObject::removeSourceTile()
-{
-    
 }

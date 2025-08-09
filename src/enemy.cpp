@@ -118,6 +118,16 @@ void Enemy::setHitFlash(int32 frames)
     {sprite_ptr->set_palette(sprite_palette);}
 }
 
+void Enemy::updateDeathState()
+{
+    if(animate_action_ptr->done())
+    {
+		is_dead = true;
+		
+		object_request = ObjectRequest(SKULL_DROP, bn::fixed_point(x(), y()));
+	}
+}
+
 //////////////////////////////
 // State Function Overrides //
 //////////////////////////////

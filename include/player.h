@@ -35,9 +35,10 @@
 #define PLAYER_OD_1_HP_REQUIRED   2
 #define PLAYER_OD_2_HP_REQUIRED   3
 
-#define PLAYER_GET_HP_HITSTOP_FRAMES   5
-#define PLAYER_GET_MOON_HITSTOP_FRAMES 0
-#define PLAYER_GET_STAR_HITSTOP_FRAMES 0
+#define PLAYER_GET_HP_HITSTOP_FRAMES    5
+#define PLAYER_GET_MOON_HITSTOP_FRAMES  5
+#define PLAYER_GET_SKULL_HITSTOP_FRAMES 0
+#define PLAYER_GET_STAR_HITSTOP_FRAMES  0
 
 #define PLAYER_HIT_INVULNERABILITY_FRAMES 80
 
@@ -312,6 +313,7 @@ struct Player : GameObject {
 	void resolveHPTotemCollision(GameObject& object)             override;
 	void resolveHPDropCollision(GameObject& object)              override;
 	void resolveMoonDropCollision(GameObject& object)            override;
+	void resolveSkullDropCollision(GameObject& object)           override;
 	void resolveStarDropCollision(GameObject& object)            override;
 	void resolveCheckpointCollision(GameObject& object)          override;
 

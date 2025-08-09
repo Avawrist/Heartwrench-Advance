@@ -86,7 +86,7 @@ void HPDrop::update(const RoomBounds& 							   room_bounds,
     // Resolve Collision //
     ///////////////////////
 
-    resolveCollision(game_objects, bg_ptr, cells, bg_item);
+    if(!is_frozen) {resolveCollision(game_objects, bg_ptr, cells, bg_item);}
 
     //////////////////
     // Update State //
@@ -104,7 +104,7 @@ void HPDrop::update(const RoomBounds& 							   room_bounds,
     // Update Timers //
     ///////////////////
 
-    //updateTimers();
+    updateTimers();
 
     ///////////////////
     // Check if dead //
@@ -140,7 +140,7 @@ void HPDrop::update(const RoomBounds& 							   room_bounds,
     // Clamp Position //
     ////////////////////
 
-    clampPosition(room_bounds);
+    //clampPosition(room_bounds);
 
 	//////////////////////////////
     // Monitor unloading bounds //

@@ -12,10 +12,10 @@
 // My Libs
 #include "utility.h"
 
-#define MAX_ANIM_FRAMES 16
+//#define MAX_ANIM_FRAMES 16
 
 struct Collider {
-	
+
 	uint32 width;
 	uint32 height;
 	bn::fixed_point position;
