@@ -52,6 +52,7 @@ Player::Player()
 
 	max_hp = PLAYER_MAX_HITPOINTS;
 	
+	overdrive                = false;
 	wall_right_detected      = false;
     wall_left_detected       = false;
 	climbable_detected       = false;
@@ -115,6 +116,7 @@ Player::Player(const Player& other) : GameObject(other)
 
 	current_climb_index              = other.current_climb_index;
 
+	overdrive                = other.overdrive;
 	wall_right_detected      = other.wall_right_detected;
     wall_left_detected       = other.wall_left_detected;
 	climbable_detected       = other.climbable_detected;
@@ -184,6 +186,7 @@ Player& Player::operator =(const Player& other)
 
 	current_climb_index              = other.current_climb_index;
 
+	overdrive                = other.overdrive;
 	wall_right_detected      = other.wall_right_detected;
     wall_left_detected       = other.wall_left_detected;
 	climbable_detected       = other.climbable_detected;
@@ -328,6 +331,15 @@ void Player::createWallJumpEffect()
 
 void Player::drawSpinEffect()
 {	
+	if(!overdrive)
+	{
+		spin_effect_sprite_1_ptr->set_visible(false);
+		spin_effect_sprite_2_ptr->set_visible(false);
+		spin_effect_sprite_3_ptr->set_visible(false);
+
+		return;
+	}
+
 	if(spin_effect_frames)
 	{
 		if(global_timer % 3 == 0)
@@ -1363,6 +1375,9 @@ void Player::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_obj
 	// Update State //
 	//////////////////
 
+	overdrive = false;
+	if(global_level_currency >= PLAYER_OD_CURRENCY_REQUIRED) {overdrive = true;}
+
 	if(state != PLAYER_SPIN_ATTACK     &&
 	   state != PLAYER_CLIMB           &&
 	   state != PLAYER_PHASE_STEP      &&
@@ -1850,8 +1865,15 @@ void Player::resolveHPDropCollision(GameObject& object)
 	
 	if(collider.isCollision(object.collider))
     {
-		global_hitstop_frames      = PLAYER_GET_HP_HITSTOP_FRAMES;
-		global_hud_hp_flash_frames = HUD_FLASH_FRAMES;
+		if(hitpoints == PLAYER_MAX_HITPOINTS) 
+		{
+			global_level_currency += object.hitpoints;
+		}
+		else
+		{
+			global_hitstop_frames      = PLAYER_GET_HP_HITSTOP_FRAMES;
+			global_hud_hp_flash_frames = HUD_FLASH_FRAMES;
+		}
 
 		applyHP(object.damage);
 		object.setState(OBJECT_DEATH);
@@ -1864,7 +1886,7 @@ void Player::resolveMoonDropCollision(GameObject& object)
 	
 	if(collider.isCollision(object.collider))
     {	
-		currency_collected += object.damage;
+		global_level_currency += object.damage;
 
 		global_hitstop_frames            = PLAYER_GET_MOON_HITSTOP_FRAMES;
 		global_hud_currency_flash_frames = HUD_FLASH_FRAMES;
@@ -1879,7 +1901,7 @@ void Player::resolveSkullDropCollision(GameObject& object)
 	
 	if(collider.isCollision(object.collider))
     {	
-		currency_collected += object.damage;
+		global_level_currency += object.damage;
 
 		global_hitstop_frames            = PLAYER_GET_SKULL_HITSTOP_FRAMES;
 		global_hud_currency_flash_frames = HUD_FLASH_FRAMES;
@@ -1894,7 +1916,7 @@ void Player::resolveStarDropCollision(GameObject& object)
 	
 	if(collider.isCollision(object.collider))
     {	
-		currency_collected += object.damage;
+		global_level_currency += object.damage;
 
 		global_hitstop_frames            = PLAYER_GET_STAR_HITSTOP_FRAMES;
 		global_hud_currency_flash_frames = HUD_FLASH_FRAMES;

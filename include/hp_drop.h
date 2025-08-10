@@ -19,7 +19,7 @@
 #define HP_DROP_COLLIDER_OFFSET_X 0
 #define HP_DROP_COLLIDER_OFFSET_Y -1
 
-#define HP_DROP_HITPOINTS 5
+#define HP_DROP_HITPOINTS 20
 
 #define HP_DROP_30_FPS false
 

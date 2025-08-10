@@ -146,6 +146,9 @@ extern int32               global_hitstop_frames;
 extern int32               global_screenshake_frames;
 extern ScreenShakeSeverity global_screenshake_severity;
 
+extern uint32 global_level_currency;
+extern uint32 global_world_currency;
+
 extern int32 global_hud_hp_flash_frames;
 extern int32 global_hud_currency_flash_frames;
 

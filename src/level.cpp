@@ -98,14 +98,10 @@ Level::Level(const Level& other)
 
     random_engine = other.random_engine;
 
-    name_card_frame = other.name_card_frame;
-
+    name_card_frame    = other.name_card_frame;
     displayed_currency = other.displayed_currency;
-    currency           = other.currency;
-
-    transition_frames = other.transition_frames;
-
-    cursor_index = other.cursor_index;
+    transition_frames  = other.transition_frames;
+    cursor_index       = other.cursor_index;
 }
 
 Level::~Level()
@@ -163,14 +159,10 @@ void Level::operator =(const Level& other)
 
     random_engine = other.random_engine;
 
-    name_card_frame = other.name_card_frame;
-
+    name_card_frame    = other.name_card_frame;
     displayed_currency = other.displayed_currency;
-    currency           = other.currency;
-
-    transition_frames = other.transition_frames;
-
-    cursor_index = other.cursor_index;
+    transition_frames  = other.transition_frames;
+    cursor_index       = other.cursor_index;
 }
 
 void Level::clear()
@@ -228,14 +220,11 @@ void Level::load()
     cam_look_y_offset     = 0;
     cam_update_timer      = 0;
 
-    name_card_frame = 0;
-
-    displayed_currency = 0;
-    currency           = 0;
-
-    transition_frames = -1;
-
-    cursor_index = 0;
+    name_card_frame       = 0;
+    //global_level_currency = 0;
+    //displayed_currency    = 0;
+    transition_frames     = -1;
+    cursor_index          = 0;
 
     // Initialize Variables
     switch(player_spawn.spawn_level)
@@ -312,7 +301,7 @@ void Level::load()
     }
 
     // Populate object cells
-    populateObjectCells();
+    //populateObjectCells();
 
     // Init room
     current_room = Room(player_spawn.spawn_room, 
@@ -424,14 +413,11 @@ void Level::load(LevelName level_name)
     cam_look_y_offset     = 0;
     cam_update_timer      = 0;
 
-    name_card_frame = 0;
-
-    displayed_currency = 0;
-    currency           = 0;
-
-    transition_frames = -1;
-
-    cursor_index = 0;
+    name_card_frame       = 0;
+    global_level_currency = 0;
+    displayed_currency    = 0;
+    transition_frames     = -1;
+    cursor_index          = 0;
 
     // Initialize Variables
     switch(player_spawn.spawn_level)
@@ -751,10 +737,10 @@ void Level::updateObjects()
             // Update spawn point //
             if(current_room.game_objects.data()[i]->state == CHECKPOINT_ACTIVE      &&
                player_spawn.spawn_pos != current_room.game_objects.data()[i]->pos() &&
-               currency >= ((Checkpoint*)current_room.game_objects.data()[i])->cost)
+               global_level_currency >= ((Checkpoint*)current_room.game_objects.data()[i])->cost)
             {
                 // Take cost
-                currency -= ((Checkpoint*)current_room.game_objects.data()[i])->cost;
+                global_level_currency -= ((Checkpoint*)current_room.game_objects.data()[i])->cost;
 
                 // Update spawn data
                 player_spawn.spawn_pos   = current_room.game_objects.data()[i]->pos();
@@ -961,20 +947,14 @@ void Level::updateGlobalTimer()
 
 void Level::updateCurrency()
 {
-    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) == NULL) {return;}
-
-    // Apply currency
-    currency += ((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->currency_collected;
-    ((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->currency_collected = 0;
-
     // Cap currency
-    if(currency > LEVEL_MAX_CURRENCY) {currency = LEVEL_MAX_CURRENCY;}
+    if(global_level_currency > LEVEL_MAX_CURRENCY) {global_level_currency = LEVEL_MAX_CURRENCY;}
 
     // Update currency ticks
     if(global_timer % 4 == 0) 
     {
-        if(displayed_currency < currency)      {displayed_currency++;}
-        else if(displayed_currency > currency) {displayed_currency--;}
+        if(displayed_currency < global_level_currency)      {displayed_currency++;}
+        else if(displayed_currency > global_level_currency) {displayed_currency--;}
     }
 }
 
@@ -1032,6 +1012,20 @@ void Level::updateHUD()
                                                                                   0,
                                                                                   bn::sprite_items::currency_number.tiles_item(),
                                                                                   num_2, num_2);
+
+        // Use red nums if currency is maxed out
+        if(num_1 == 9 && num_2 == 9)
+        {
+            currency_num_1_animate_action_ptr = bn::create_sprite_animate_action_once(currency_num_1_sprite_ptr.value(),
+                                                                            0,
+                                                                            bn::sprite_items::currency_number.tiles_item(),
+                                                                            10, 10);
+
+            currency_num_2_animate_action_ptr = bn::create_sprite_animate_action_once(currency_num_2_sprite_ptr.value(),
+                                                                            0,
+                                                                            bn::sprite_items::currency_number.tiles_item(),
+                                                                            10, 10);
+        }
 
         currency_num_1_animate_action_ptr->update();
         currency_num_2_animate_action_ptr->update();

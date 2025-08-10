@@ -194,11 +194,8 @@ struct Level
     bn::random random_engine;
 
     uint32 displayed_currency;
-    uint32 currency;
-
-    int32 name_card_frame;
-
-    int32 cursor_index;
+    int32  name_card_frame;
+    int32  cursor_index;
 
     // Transitions
     int32 transition_frames;

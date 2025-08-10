@@ -52,11 +52,15 @@
 #define X_SPEED_ACC_RATE      0.1
 #define X_SPEED_DECAY_RATE    0.075
 
+// Climb Values
+
 #define PLAYER_CLIMB_SPEED 1
 #define PLAYER_CLIMB_DECAY 1
 #define PLAYER_MIN_CLIMB_INDEX 24
 #define PLAYER_MAX_CLIMB_INDEX 27
 #define PLAYER_CLIMB_REGRAB_CD_FRAMES 20
+
+// Air Values
 
 #define PLAYER_BASE_JUMP_FORCE -7 // 2 block height at 0.03 decay rate
 #define PLAYER_JUMP_DECAY       0.03
@@ -88,6 +92,8 @@
 #define PLAYER_SQUISH_FRAMES_REQUIRED 4
 #define PLAYER_MAX_AIR_FRAMES         100
 
+// Phase Step Values
+
 #define PLAYER_PHASE_STEP_MAX_DISTANCE PLAYER_COLLIDER_WIDTH * 6
 #define PLAYER_PHASE_STEP_SPEED        4
 #define PLAYER_PHASE_STEP_EXIT_X_FORCE 6
@@ -95,7 +101,14 @@
 #define PLAYER_PHASE_STEP_EXIT_DECAY   0.05
 #define PLAYER_PHASE_JUMP_LOCKOUT_FRAMES 5
 
-#define PLAYER_SPIN_X_FORCE 3
+// Overdrive Values
+
+#define PLAYER_OD_CURRENCY_REQUIRED 99
+#define PLAYER_OD_BONUS_KNOCKBACK   4
+
+// Spin Attack Values
+
+#define PLAYER_SPIN_X_FORCE (3 + (uint32)overdrive)
 #define PLAYER_SPIN_DECAY   0.02
 
 #define PLAYER_MAX_SPIN_EFFECT_FRAMES 35
@@ -106,10 +119,10 @@
 #define PLAYER_SPIN_1_HB_HEIGHT          22
 #define PLAYER_SPIN_1_CREATE_HB_FRAME    1
 #define PLAYER_SPIN_1_HB_LIFESPAN_FRAMES 11
-#define PLAYER_SPIN_1_X_KNOCKBACK        8
+#define PLAYER_SPIN_1_X_KNOCKBACK        (8 + ((uint32)overdrive * PLAYER_OD_BONUS_KNOCKBACK))
 #define PLAYER_SPIN_1_Y_KNOCKBACK        0
 #define PLAYER_SPIN_1_KNOCKBACK_DECAY    0.05
-#define PLAYER_SPIN_1_DAMAGE             1
+#define PLAYER_SPIN_1_DAMAGE             (1 + (uint32)overdrive)
 #define PLAYER_SPIN_1_HITSTOP_FRAMES     6
 #define PLAYER_SPIN_1_HITSTUN_FRAMES     30
 #define PLAYER_SPIN_1_SCREENSHAKE_FRAMES 8
@@ -121,10 +134,10 @@
 #define PLAYER_SPIN_2_HB_HEIGHT          22
 #define PLAYER_SPIN_2_CREATE_HB_FRAME    21
 #define PLAYER_SPIN_2_HB_LIFESPAN_FRAMES 12
-#define PLAYER_SPIN_2_X_KNOCKBACK        5
+#define PLAYER_SPIN_2_X_KNOCKBACK        (5 + ((uint32)overdrive * PLAYER_OD_BONUS_KNOCKBACK))
 #define PLAYER_SPIN_2_Y_KNOCKBACK        0
 #define PLAYER_SPIN_2_KNOCKBACK_DECAY    0.05
-#define PLAYER_SPIN_2_DAMAGE             1
+#define PLAYER_SPIN_2_DAMAGE             (1 + (uint32)overdrive)
 #define PLAYER_SPIN_2_HITSTOP_FRAMES     5
 #define PLAYER_SPIN_2_HITSTUN_FRAMES     30
 #define PLAYER_SPIN_2_SCREENSHAKE_FRAMES 5
@@ -201,6 +214,7 @@ struct Player : GameObject {
 	
 	bn::fixed current_climb_index;
 
+	bool overdrive;
 	bool wall_right_detected;
     bool wall_left_detected;
 	bool climbable_detected;

@@ -3,12 +3,12 @@
 
 @=======================================================================
 @
-@	currency_number_bn_gfx, 16x160@4, 
+@	currency_number_bn_gfx, 16x176@4, 
 @	+ palette 16 entries, not compressed
-@	+ 40 tiles not compressed
-@	Total size: 32 + 1280 = 1312
+@	+ 44 tiles not compressed
+@	Total size: 32 + 1408 = 1440
 @
-@	Time-stamp: 2025-08-01, 20:37:05
+@	Time-stamp: 2025-08-09, 17:50:17
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -16,7 +16,7 @@
 
 	.section .rodata
 	.align	2
-	.global currency_number_bn_gfxTiles		@ 1280 unsigned chars
+	.global currency_number_bn_gfxTiles		@ 1408 unsigned chars
 	.hidden currency_number_bn_gfxTiles
 currency_number_bn_gfxTiles:
 	.word 0x0EEEE000,0xEEDDEE00,0xEDEEDE00,0xEDEEDEE0,0xEDEEEDE0,0xEEDEEDE0,0x0EDEEDE0,0x0EEDDEE0
@@ -60,6 +60,11 @@ currency_number_bn_gfxTiles:
 	.word 0x0EEEEE00,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000
 	.word 0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000
 	.word 0x0EEEE000,0xEEDDEE00,0xEDEEDE00,0xEDEEDE00,0xEEDDEE00,0x0EDEE000,0x0EEDE000,0x00EDE000
+	.word 0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000
+	.word 0x00EEE000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000
+	.word 0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000
+
+	.word 0x0EEEE000,0xEE77EE00,0xE7EE7E00,0xE7EE7E00,0xEE77EE00,0x0E7EE000,0x0EE7E000,0x00E7E000
 	.word 0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000
 	.word 0x00EEE000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000
 	.word 0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000
