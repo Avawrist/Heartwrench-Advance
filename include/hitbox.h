@@ -65,7 +65,12 @@ struct Hitbox : GameObject
     // GameObject Overrides //
     //////////////////////////
 
-    // None..
+    void update(const RoomBounds& 				       room_bounds,
+	         bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+		  const bn::regular_bg_ptr&                      bg_ptr, 
+                const bn::span<const bn::regular_bg_map_cell>& cells,
+                const bn::regular_bg_item&                     bg_item,
+		  const bn::camera_ptr&                          camera) override;
 
     //////////////////////////////
     // State Function Overrides //
@@ -95,6 +100,7 @@ struct Hitbox : GameObject
     void resolveSmallVaseCollision(GameObject& object)       override;
     void resolveHPTotemCollision(GameObject& object)         override;
     void resolveHPDropCollision(GameObject& object)          override;
+    void resolveCheckpointCollision(GameObject& object)      override;
 
     // Tiles
     void resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 

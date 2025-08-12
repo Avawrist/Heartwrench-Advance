@@ -183,17 +183,109 @@ void Hitbox::applyWallHit(GameObject& object)
 // GameObject Overrides //
 //////////////////////////
 
-// None..
+void Hitbox::update(const RoomBounds& 							   room_bounds,
+                    bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                    const bn::regular_bg_ptr&                      bg_ptr, 
+                    const bn::span<const bn::regular_bg_map_cell>& cells,
+                    const bn::regular_bg_item&                     bg_item,
+                    const bn::camera_ptr&                          camera)
+{
+    
+    /////////////////////////////////
+    // Early out for 30FPS Objects //
+    /////////////////////////////////
+
+    //if((thirty_fps || is_frozen) && (global_timer % 2 == 0)) {return;}
+
+    //////////////////
+    // Update State //
+    //////////////////
+
+    updateStateMachine(game_objects, bg_ptr, cells, bg_item, camera);
+
+    ////////////////////
+    // Update Physics //
+    ////////////////////
+
+    //updatePhysics();
+
+    ///////////////////////
+    // Resolve Collision //
+    ///////////////////////
+
+    resolveCollision(game_objects, bg_ptr, cells, bg_item);
+
+    //////////////////
+    // Update State //
+    //////////////////
+
+    //updateState(game_objects, bg_ptr, cells, bg_item);
+
+    /////////////////////
+    // Update Hitboxes //
+    /////////////////////
+
+    //updateHitboxes(room_bounds, game_objects, bg_ptr, cells, bg_item, camera);
+
+    ///////////////////
+    // Update Timers //
+    ///////////////////
+
+    //updateTimers();
+
+    ///////////////////
+    // Check if dead //
+    ///////////////////
+
+    //checkIfDead();
+
+    /////////////////////////////
+	// Update Sprite Direction //
+	/////////////////////////////
+	
+    //updateSpriteDirection();
+    
+    ////////////////////////////
+    // Correct Sprite Offsets //
+    ////////////////////////////
+	
+    //updateSpriteOffsets();
+
+    //////////////////////////
+    // Update HP Bar Visual //
+    //////////////////////////
+
+    //updateHPBar();
+
+	//////////////////////
+	// Update Hit Flash //
+	//////////////////////
+
+	//updateHitFlash();
+
+    ////////////////////
+    // Clamp Position //
+    ////////////////////
+
+    //clampPosition(room_bounds);
+
+	//////////////////////////////
+    // Monitor unloading bounds //
+    //////////////////////////////
+    
+	//updateInactiveState(camera);
+
+}
 
 //////////////////////////////
 // State Function Overrides //
 //////////////////////////////
 
-void Hitbox::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&        game_objects,
-                                const bn::regular_bg_ptr&                         bg_ptr, 
-                                const bn::span<const bn::regular_bg_map_cell>&    cells,
-                                const bn::regular_bg_item&                        bg_item,
-                                const bn::camera_ptr&                             camera)
+void Hitbox::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+		                        const bn::regular_bg_ptr&                      bg_ptr, 
+                                const bn::span<const bn::regular_bg_map_cell>& cells,
+                                const bn::regular_bg_item&                     bg_item,
+		                        const bn::camera_ptr&                          camera)
 {
     // Udpate Frame Counter //
     current_lifespan_frame--;
@@ -286,6 +378,17 @@ void Hitbox::resolveHPDropCollision(GameObject& object)
 
     if(collider.isCollision(object.collider))
     {applyHBHit(object);}
+}
+
+void Hitbox::resolveCheckpointCollision(GameObject& object)
+{	
+	if(collider.isCollision(object.collider) && 
+      (object_type == HITBOX_SPIN_1 || object_type == HITBOX_SPIN_2) &&
+	   object.state == IDLE)
+    {	
+        applyHBHit(object);
+		object.setState(CHECKPOINT_ACTIVE);
+	}
 }
 
 // Tiles

@@ -134,7 +134,7 @@
 #define PLAYER_SPIN_2_HB_HEIGHT          22
 #define PLAYER_SPIN_2_CREATE_HB_FRAME    21
 #define PLAYER_SPIN_2_HB_LIFESPAN_FRAMES 12
-#define PLAYER_SPIN_2_X_KNOCKBACK        (5 + ((uint32)overdrive * PLAYER_OD_BONUS_KNOCKBACK))
+#define PLAYER_SPIN_2_X_KNOCKBACK        (4 + ((uint32)overdrive * PLAYER_OD_BONUS_KNOCKBACK))
 #define PLAYER_SPIN_2_Y_KNOCKBACK        0
 #define PLAYER_SPIN_2_KNOCKBACK_DECAY    0.05
 #define PLAYER_SPIN_2_DAMAGE             (1 + (uint32)overdrive)
@@ -329,7 +329,6 @@ struct Player : GameObject {
 	void resolveMoonDropCollision(GameObject& object)            override;
 	void resolveSkullDropCollision(GameObject& object)           override;
 	void resolveStarDropCollision(GameObject& object)            override;
-	void resolveCheckpointCollision(GameObject& object)          override;
 
 	// Level Enemies
 	void resolveThornColumnCollision(GameObject& object) override; 
