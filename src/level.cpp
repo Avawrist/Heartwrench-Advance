@@ -615,7 +615,7 @@ void Level::update()
         if(player_spawn.spawn_level == LEVEL_NAME_CARD)         {updateNameCard();}
         else if(player_spawn.spawn_level == LEVEL_TITLE_SCREEN) {updateTitleScreen();}
         else if(menu_open)                                      {updatePauseScreen();}
-        else if(cam_is_scrolling)                               {updateCamera();}
+        else if(cam_is_scrolling)                               {updateCamera(); updateCheckpoints();}
         else                                                    {updateAll();}
     }
 
@@ -1250,6 +1250,19 @@ void Level::updateCheckpoint(Checkpoint* checkpoint_ptr)
 
         // Animate checkpoint
         checkpoint_ptr->setState(CHECKPOINT_OVERWRITE);
+    }
+}
+
+void Level::updateCheckpoints()
+{
+    for(int32 i = current_room.game_objects.size() - 1; i > PLAYER_OBJECT_LIST_INDEX; i--)
+    {
+        if(current_room.game_objects.data()[i] != NULL &&
+           current_room.game_objects.data()[i]->object_type == CHECKPOINT)
+        {           
+            updateCheckpoint((Checkpoint*)current_room.game_objects.data()[i]);
+            current_room.game_objects.data()[i]->draw();
+        }
     }
 }
 

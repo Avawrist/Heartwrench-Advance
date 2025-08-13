@@ -228,8 +228,8 @@ struct Level
     void updateHUD();
     void updatePauseScreen();
     void updateLevelTransition(LevelName level_index);
-    void updateCheckpoints();
     void updateCheckpoint(Checkpoint* checkpoint_ptr);
+    void updateCheckpoints();
 
     void reloadOnDeath();
     void freeObjects();
