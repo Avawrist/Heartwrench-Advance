@@ -75,10 +75,10 @@
 #define HUD_HP_X_OFFSET -86
 #define HUD_HP_Y_OFFSET -61
 
-#define HUD_CURRENCY_NUM_1_X_OFFSET -21
+#define HUD_CURRENCY_NUM_1_X_OFFSET -19
 #define HUD_CURRENCY_NUM_1_Y_OFFSET -68
 
-#define HUD_CURRENCY_NUM_2_X_OFFSET -14
+#define HUD_CURRENCY_NUM_2_X_OFFSET -12
 #define HUD_CURRENCY_NUM_2_Y_OFFSET -68
 
 #define HUD_CURRENCY_ICON_X_OFFSET -42
@@ -228,6 +228,8 @@ struct Level
     void updateHUD();
     void updatePauseScreen();
     void updateLevelTransition(LevelName level_index);
+    void updateCheckpoints();
+    void updateCheckpoint(Checkpoint* checkpoint_ptr);
 
     void reloadOnDeath();
     void freeObjects();

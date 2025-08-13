@@ -735,20 +735,8 @@ void Level::updateObjects()
                                                         camera.value());
             
             // Update spawn point //
-            if(current_room.game_objects.data()[i]->state == CHECKPOINT_ACTIVE      &&
-               player_spawn.spawn_pos != current_room.game_objects.data()[i]->pos() &&
-               global_level_currency >= ((Checkpoint*)current_room.game_objects.data()[i])->cost)
-            {
-                // Take cost
-                global_level_currency -= ((Checkpoint*)current_room.game_objects.data()[i])->cost;
-
-                // Update spawn data
-                player_spawn.spawn_pos   = current_room.game_objects.data()[i]->pos();
-                player_spawn.spawn_room  = current_room.room_name;
-
-                // Animate checkpoint
-                current_room.game_objects.data()[i]->setState(CHECKPOINT_OVERWRITE);
-            }
+            if(current_room.game_objects.data()[i]->object_type == CHECKPOINT)
+            {updateCheckpoint((Checkpoint*)current_room.game_objects.data()[i]);}
         }   
     } 
 
@@ -1241,6 +1229,27 @@ void Level::updateLevelTransition(LevelName level_index)
 
         if(transition_frames == 0)
         {loadNew(level_index);}
+    }
+}
+
+void Level::updateCheckpoint(Checkpoint* checkpoint_ptr)
+{
+    if(checkpoint_ptr->state  == CHECKPOINT_IDLE_OFF && 
+       player_spawn.spawn_pos == checkpoint_ptr->pos())
+    {checkpoint_ptr->setState(CHECKPOINT_IDLE_ON);}
+
+    if(checkpoint_ptr->state == CHECKPOINT_ACTIVE &&
+       global_level_currency >= checkpoint_ptr->cost)
+    {
+        // Take cost
+        global_level_currency -= checkpoint_ptr->cost;
+
+        // Update spawn data
+        player_spawn.spawn_pos   = checkpoint_ptr->pos();
+        player_spawn.spawn_room  = current_room.room_name;
+
+        // Animate checkpoint
+        checkpoint_ptr->setState(CHECKPOINT_OVERWRITE);
     }
 }
 

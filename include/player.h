@@ -114,9 +114,9 @@
 #define PLAYER_MAX_SPIN_EFFECT_FRAMES 35
 
 #define PLAYER_SPIN_1_X_OFFSET           16
-#define PLAYER_SPIN_1_Y_OFFSET           -8
+#define PLAYER_SPIN_1_Y_OFFSET           -10
 #define PLAYER_SPIN_1_HB_WIDTH           32
-#define PLAYER_SPIN_1_HB_HEIGHT          22
+#define PLAYER_SPIN_1_HB_HEIGHT          18
 #define PLAYER_SPIN_1_CREATE_HB_FRAME    1
 #define PLAYER_SPIN_1_HB_LIFESPAN_FRAMES 11
 #define PLAYER_SPIN_1_X_KNOCKBACK        (8 + ((uint32)overdrive * PLAYER_OD_BONUS_KNOCKBACK))
@@ -129,9 +129,9 @@
 #define PLAYER_SPIN_1_SCREENSHAKE_SEVERITY STRONG_SHAKE
 
 #define PLAYER_SPIN_2_X_OFFSET           16
-#define PLAYER_SPIN_2_Y_OFFSET           -8
+#define PLAYER_SPIN_2_Y_OFFSET           -10
 #define PLAYER_SPIN_2_HB_WIDTH           32
-#define PLAYER_SPIN_2_HB_HEIGHT          22
+#define PLAYER_SPIN_2_HB_HEIGHT          18
 #define PLAYER_SPIN_2_CREATE_HB_FRAME    21
 #define PLAYER_SPIN_2_HB_LIFESPAN_FRAMES 12
 #define PLAYER_SPIN_2_X_KNOCKBACK        (4 + ((uint32)overdrive * PLAYER_OD_BONUS_KNOCKBACK))

@@ -382,9 +382,9 @@ void Hitbox::resolveHPDropCollision(GameObject& object)
 
 void Hitbox::resolveCheckpointCollision(GameObject& object)
 {	
-	if(collider.isCollision(object.collider) && 
+	if(collider.isCollision(object.collider)                         && 
       (object_type == HITBOX_SPIN_1 || object_type == HITBOX_SPIN_2) &&
-	   object.state == IDLE)
+	   object.state == CHECKPOINT_IDLE_OFF)
     {	
         applyHBHit(object);
 		object.setState(CHECKPOINT_ACTIVE);

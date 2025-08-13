@@ -7,15 +7,15 @@
 Checkpoint::Checkpoint()
 {
     // Init Assets //
-    state       = IDLE;
+    state       = CHECKPOINT_IDLE_OFF;
     object_type = CHECKPOINT;
     sprite_ptr  = bn::sprite_items::checkpoint.create_sprite(0, 0);
     sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
     default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								                                   0,
+								                                   2,
 								                                   bn::sprite_items::checkpoint.tiles_item(),
-								                                   0, 0);
+								                                   0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1);
 
     // Init Variables //
     collider_offset_x = CHECKPOINT_COLLIDER_OFFSET_X;
@@ -107,18 +107,15 @@ void Checkpoint::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&  
 {
     switch(state)
     {
-        case IDLE:
-        break;
-
         case CHECKPOINT_ACTIVE:
 
-            setState(IDLE);
+            setState(CHECKPOINT_IDLE_OFF);
 
         break;
 
         case CHECKPOINT_OVERWRITE:
 
-            if(animate_action_ptr->done()) {setState(IDLE);}
+            if(animate_action_ptr->done()) {setState(CHECKPOINT_IDLE_ON);}
 
         break;
 
@@ -133,6 +130,24 @@ void Checkpoint::setState(ObjectState new_state)
 
     switch(new_state)
     {
+        case CHECKPOINT_IDLE_OFF:
+
+            animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+                                                                           2,
+                                                                           bn::sprite_items::checkpoint.tiles_item(),
+                                                                           0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1);       
+
+        break;
+
+        case CHECKPOINT_IDLE_ON:
+
+            animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+                                                                           2,
+                                                                           bn::sprite_items::checkpoint.tiles_item(),
+                                                                           4, 4);
+
+        break;
+
         case CHECKPOINT_ACTIVE:
         break;
 
@@ -141,7 +156,9 @@ void Checkpoint::setState(ObjectState new_state)
             animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
                                                                        2,
                                                                        bn::sprite_items::checkpoint.tiles_item(),
-                                                                       1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0);
+                                                                       3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 
+                                                                       3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6,
+                                                                       3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6);
 
         break;
 
