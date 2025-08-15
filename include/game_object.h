@@ -54,6 +54,9 @@
 #include "bn_sprite_items_auto_platform.h"
 #include "bn_sprite_items_smash_block_large.h"
 #include "bn_sprite_items_smash_block_mini.h"
+#include "bn_sprite_items_smash_block_ziggurat_l.h"
+#include "bn_sprite_items_smash_block_ziggurat_c.h"
+#include "bn_sprite_items_smash_block_ziggurat_r.h"
 #include "bn_sprite_items_large_vase.h"
 #include "bn_sprite_items_small_vase.h"
 #include "bn_sprite_items_hp_totem.h"
@@ -167,6 +170,9 @@ enum ObjectType
 	AUTO_PLATFORM,
 	SMASH_BLOCK_LARGE,
 	SMASH_BLOCK_MINI,
+	SMASH_BLOCK_ZIGGURAT_L,
+	SMASH_BLOCK_ZIGGURAT_C,
+	SMASH_BLOCK_ZIGGURAT_R,
 	LARGE_VASE,
 	SMALL_VASE,
 	HP_TOTEM,
@@ -438,6 +444,9 @@ struct GameObject
 	virtual void resolveAutoPlatformCollision(GameObject& object);
 	virtual void resolveSmashBlockLargeCollision(GameObject& object);
 	virtual void resolveSmashBlockMiniCollision(GameObject& object);
+	virtual void resolveSmashBlockZigguratLCollision(GameObject& object);
+	virtual void resolveSmashBlockZigguratCCollision(GameObject& object);
+	virtual void resolveSmashBlockZigguratRCollision(GameObject& object);
 	virtual void resolveLargeVaseCollision(GameObject& object);
 	virtual void resolveSmallVaseCollision(GameObject& object);
 	virtual void resolveHPTotemCollision(GameObject& object);

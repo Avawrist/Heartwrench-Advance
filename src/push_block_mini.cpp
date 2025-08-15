@@ -306,6 +306,36 @@ void PushBlockMini::resolveSmashBlockMiniCollision(GameObject& object)
 	}
 }
 
+void PushBlockMini::resolveSmashBlockZigguratLCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+	{
+		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
+	}
+}
+
+void PushBlockMini::resolveSmashBlockZigguratCCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+	{
+		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
+	}
+}
+
+void PushBlockMini::resolveSmashBlockZigguratRCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+	{
+		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
+	}
+}
+
 void PushBlockMini::resolveLargeVaseCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
@@ -606,9 +636,9 @@ void PushBlockMini::resolveTileCollision(const bn::regular_bg_ptr&              
                     tile_index <= ONEWAY_BLOCK_MAX_INDEX)
             {
                 other_collider = Collider(world_x, 
-                                          world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET,
+                                          world_y + ONEWAY_BLOCK_COLLIDER_Y_OFFSET,
                                           TILE_WIDTH, 
-                                          ONEWAYBLOCK_COLLIDER_HEIGHT);
+                                          ONEWAY_BLOCK_COLLIDER_HEIGHT);
 
                 resolveOneWayBlockCollision(other_collider);
             }

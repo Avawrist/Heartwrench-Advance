@@ -348,6 +348,30 @@ void Hitbox::resolveSmashBlockMiniCollision(GameObject& object)
     {applyHBHit(object);}
 }
 
+void Hitbox::resolveSmashBlockZigguratLCollision(GameObject& object)
+{
+    if(object.state == OBJECT_DEATH) {return;}
+
+    if(collider.isCollision(object.collider))
+    {applyHBHit(object);}
+}
+
+void Hitbox::resolveSmashBlockZigguratCCollision(GameObject& object)
+{
+    if(object.state == OBJECT_DEATH) {return;}
+
+    if(collider.isCollision(object.collider))
+    {applyHBHit(object);}
+}
+
+void Hitbox::resolveSmashBlockZigguratRCollision(GameObject& object)
+{
+    if(object.state == OBJECT_DEATH) {return;}
+
+    if(collider.isCollision(object.collider))
+    {applyHBHit(object);}
+}
+
 void Hitbox::resolveLargeVaseCollision(GameObject& object)
 {
     if(object.state == OBJECT_DEATH) {return;}

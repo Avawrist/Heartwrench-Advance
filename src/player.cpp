@@ -1832,6 +1832,117 @@ void Player::resolveSmashBlockMiniCollision(GameObject& object)
 	}
 }
 
+void Player::resolveSmashBlockZigguratLCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(object.collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(object.collider);
+		
+        // Resolve Corner Collision //
+		if(col_y_offset == 0 && col_x_offset == 0)
+        {resolveCornerCollision(object.collider);}
+
+		// Smash block with player head //
+		if(col_y_offset > 0) 
+		{
+			object.applyHit(object.hitpoints, 0, 0);
+			
+			rigidbody.removeYForces();
+			sprite_ptr->set_horizontal_scale(PLAYER_HEAD_BONK_H_STRETCH);
+			sprite_ptr->set_vertical_scale(PLAYER_HEAD_BONK_V_STRETCH);
+		}		
+    }
+
+	updateTestColliders();
+
+	if(test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
+}
+
+void Player::resolveSmashBlockZigguratCCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(object.collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(object.collider);
+		
+        // Resolve Corner Collision //
+		if(col_y_offset == 0 && col_x_offset == 0)
+        {resolveCornerCollision(object.collider);}
+
+		// Smash block with player head //
+		if(col_y_offset > 0) 
+		{
+			object.applyHit(object.hitpoints, 0, 0);
+			
+			rigidbody.removeYForces();
+			sprite_ptr->set_horizontal_scale(PLAYER_HEAD_BONK_H_STRETCH);
+			sprite_ptr->set_vertical_scale(PLAYER_HEAD_BONK_V_STRETCH);
+		}		
+    }
+
+	updateTestColliders();
+
+	if(test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
+}
+
+void Player::resolveSmashBlockZigguratRCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(object.collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(object.collider);
+		
+        // Resolve Corner Collision //
+		if(col_y_offset == 0 && col_x_offset == 0)
+        {resolveCornerCollision(object.collider);}
+
+		// Smash block with player head //
+		if(col_y_offset > 0) 
+		{
+			object.applyHit(object.hitpoints, 0, 0);
+			
+			rigidbody.removeYForces();
+			sprite_ptr->set_horizontal_scale(PLAYER_HEAD_BONK_H_STRETCH);
+			sprite_ptr->set_vertical_scale(PLAYER_HEAD_BONK_V_STRETCH);
+		}		
+    }
+
+	updateTestColliders();
+
+	if(test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
+}
+
 void Player::resolveHPTotemCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
@@ -2216,9 +2327,9 @@ void Player::resolveTileCollision(const bn::regular_bg_ptr&                     
 					tile_index <= ONEWAY_BLOCK_MAX_INDEX)
 			{
 				other_collider = Collider(world_x, 
-											world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
-											TILE_WIDTH, 
-											ONEWAYBLOCK_COLLIDER_HEIGHT);
+										  world_y + ONEWAY_BLOCK_COLLIDER_Y_OFFSET, 
+										  TILE_WIDTH, 
+										  ONEWAY_BLOCK_COLLIDER_HEIGHT);
 
 				resolveOneWayBlockCollision(other_collider);
 			}
@@ -2281,14 +2392,24 @@ void Player::resolveClimbableCollision(const Collider& other_collider)
 
 void Player::resolveOneWayBlockCollision(const Collider& other_collider)
 {
-	if(rigidbody.normalized_dir.y() >= 0 &&
-		collider_y_axis.p4.y() <= other_collider.p1.y() + rigidbody.final_dir.y())
+    if(rigidbody.normalized_dir.y() >= 0 &&
+       collider_y_axis.p4.y() <= other_collider.p1.y() + rigidbody.final_dir.y())
 	{
-		// Resolve Collision //
-		while(collider_y_axis.isCollision(other_collider))
-		{
-			collider_y_axis.setY(collider_y_axis.y() - 1);
-			setY(this->y() - 1);
-		}
+        // Resolve Collision //
+        while(collider_y_axis.isCollision(other_collider))
+        {
+            collider_y_axis.setY(collider_y_axis.y() - 1);
+            setY(this->y() - 1);
+        }
+	}
+
+    updateTestColliders();
+
+	if(test_collider.isCollision(other_collider) &&
+	   rigidbody.normalized_dir.y() >= 0         &&
+       test_collider.p4.y() <= other_collider.p1.y() + rigidbody.final_dir.y())
+	{
+		grounded_detected = true;
+		rigidbody.removeYForces();
 	}
 }

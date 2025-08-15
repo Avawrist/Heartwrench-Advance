@@ -174,6 +174,18 @@ int32 Room::addObject(ObjectRequest& object_request, const bn::camera_ptr& camer
             temp_object_ptr = new SmashBlockMini();
         break;
 
+        case SMASH_BLOCK_ZIGGURAT_L:
+            temp_object_ptr = new SmashBlockZigguratL();
+        break;
+
+        case SMASH_BLOCK_ZIGGURAT_C:
+            temp_object_ptr = new SmashBlockZigguratC();
+        break;
+
+        case SMASH_BLOCK_ZIGGURAT_R:
+            temp_object_ptr = new SmashBlockZigguratR();
+        break;
+
         case LARGE_VASE:
             temp_object_ptr = new LargeVase();
         break;
@@ -365,6 +377,18 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
         case SMASH_BLOCK_MINI:
             temp_object_ptr = new SmashBlockMini();
             _is_persistent  = true;
+        break;
+
+        case SMASH_BLOCK_ZIGGURAT_L:
+            temp_object_ptr = new SmashBlockZigguratL();
+        break;
+
+        case SMASH_BLOCK_ZIGGURAT_C:
+            temp_object_ptr = new SmashBlockZigguratC();
+        break;
+
+        case SMASH_BLOCK_ZIGGURAT_R:
+            temp_object_ptr = new SmashBlockZigguratR();
         break;
 
         case LARGE_VASE:

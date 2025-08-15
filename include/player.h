@@ -36,7 +36,7 @@
 #define PLAYER_OD_2_HP_REQUIRED   3
 
 #define PLAYER_GET_HP_HITSTOP_FRAMES    10
-#define PLAYER_GET_MOON_HITSTOP_FRAMES  10
+#define PLAYER_GET_MOON_HITSTOP_FRAMES  0
 #define PLAYER_GET_SKULL_HITSTOP_FRAMES 0
 #define PLAYER_GET_STAR_HITSTOP_FRAMES  0
 
@@ -134,7 +134,7 @@
 #define PLAYER_SPIN_2_HB_HEIGHT          18
 #define PLAYER_SPIN_2_CREATE_HB_FRAME    21
 #define PLAYER_SPIN_2_HB_LIFESPAN_FRAMES 12
-#define PLAYER_SPIN_2_X_KNOCKBACK        (4 + ((uint32)overdrive * PLAYER_OD_BONUS_KNOCKBACK))
+#define PLAYER_SPIN_2_X_KNOCKBACK        (5 + ((uint32)overdrive * PLAYER_OD_BONUS_KNOCKBACK))
 #define PLAYER_SPIN_2_Y_KNOCKBACK        0
 #define PLAYER_SPIN_2_KNOCKBACK_DECAY    0.05
 #define PLAYER_SPIN_2_DAMAGE             (1 + (uint32)overdrive)
@@ -324,6 +324,9 @@ struct Player : GameObject {
 	void resolveAutoPlatformCollision(GameObject& object)        override;
 	void resolveSmashBlockLargeCollision(GameObject& object)     override;
 	void resolveSmashBlockMiniCollision(GameObject& object)      override;
+	void resolveSmashBlockZigguratLCollision(GameObject& object) override;
+    void resolveSmashBlockZigguratCCollision(GameObject& object) override;
+    void resolveSmashBlockZigguratRCollision(GameObject& object) override;
 	void resolveHPTotemCollision(GameObject& object)             override;
 	void resolveHPDropCollision(GameObject& object)              override;
 	void resolveMoonDropCollision(GameObject& object)            override;

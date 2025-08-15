@@ -1,0 +1,1 @@
+smash_block_ziggurat_l_bn_gfx.o: smash_block_ziggurat_l_bn_gfx.s

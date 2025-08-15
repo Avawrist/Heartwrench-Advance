@@ -97,6 +97,9 @@ hitbox.o: G:/game/src/hitbox.cpp G:/game/include/hitbox.h \
  G:/game/build/bn_sprite_items_auto_platform.h \
  G:/game/build/bn_sprite_items_smash_block_large.h \
  G:/game/build/bn_sprite_items_smash_block_mini.h \
+ G:/game/build/bn_sprite_items_smash_block_ziggurat_l.h \
+ G:/game/build/bn_sprite_items_smash_block_ziggurat_c.h \
+ G:/game/build/bn_sprite_items_smash_block_ziggurat_r.h \
  G:/game/build/bn_sprite_items_large_vase.h \
  G:/game/build/bn_sprite_items_small_vase.h \
  G:/game/build/bn_sprite_items_hp_totem.h \
@@ -214,6 +217,9 @@ G:/game/build/bn_sprite_items_push_block_mini.h:
 G:/game/build/bn_sprite_items_auto_platform.h:
 G:/game/build/bn_sprite_items_smash_block_large.h:
 G:/game/build/bn_sprite_items_smash_block_mini.h:
+G:/game/build/bn_sprite_items_smash_block_ziggurat_l.h:
+G:/game/build/bn_sprite_items_smash_block_ziggurat_c.h:
+G:/game/build/bn_sprite_items_smash_block_ziggurat_r.h:
 G:/game/build/bn_sprite_items_large_vase.h:
 G:/game/build/bn_sprite_items_small_vase.h:
 G:/game/build/bn_sprite_items_hp_totem.h:

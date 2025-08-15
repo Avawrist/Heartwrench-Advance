@@ -91,16 +91,19 @@ struct Hitbox : GameObject
     void resolvePushBlockMiniCollision(GameObject& object) override;
 
     // Level Enemies
-    void resolveThornColumnCollision(GameObject& object)     override;
-    void resolveThornBarCollision(GameObject& object)        override;
-    void resolveGroundGhoulCollision(GameObject& object)     override;
-    void resolveSmashBlockLargeCollision(GameObject& object) override;
-    void resolveSmashBlockMiniCollision(GameObject& object)  override;
-    void resolveLargeVaseCollision(GameObject& object)       override;
-    void resolveSmallVaseCollision(GameObject& object)       override;
-    void resolveHPTotemCollision(GameObject& object)         override;
-    void resolveHPDropCollision(GameObject& object)          override;
-    void resolveCheckpointCollision(GameObject& object)      override;
+    void resolveThornColumnCollision(GameObject& object)         override;
+    void resolveThornBarCollision(GameObject& object)            override;
+    void resolveGroundGhoulCollision(GameObject& object)         override;
+    void resolveSmashBlockLargeCollision(GameObject& object)     override;
+    void resolveSmashBlockMiniCollision(GameObject& object)      override;
+    void resolveSmashBlockZigguratLCollision(GameObject& object) override;
+    void resolveSmashBlockZigguratCCollision(GameObject& object) override;
+    void resolveSmashBlockZigguratRCollision(GameObject& object) override;
+    void resolveLargeVaseCollision(GameObject& object)           override;
+    void resolveSmallVaseCollision(GameObject& object)           override;
+    void resolveHPTotemCollision(GameObject& object)             override;
+    void resolveHPDropCollision(GameObject& object)              override;
+    void resolveCheckpointCollision(GameObject& object)          override;
 
     // Tiles
     void resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 

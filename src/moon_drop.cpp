@@ -436,6 +436,90 @@ void MoonDrop::resolveSmashBlockMiniCollision(GameObject& object)
 	}
 }
 
+void MoonDrop::resolveSmashBlockZigguratLCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(object.collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(object.collider);
+
+		// Corner collision //
+        if(col_x_offset == 0 && col_y_offset == 0)
+		{resolveCornerCollision(object.collider);}
+    }
+
+	updateTestColliders();
+
+	// Test for, and log grounded collision
+	if(test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{	
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
+}
+
+void MoonDrop::resolveSmashBlockZigguratCCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(object.collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(object.collider);
+
+		// Corner collision //
+        if(col_x_offset == 0 && col_y_offset == 0)
+		{resolveCornerCollision(object.collider);}
+    }
+
+	updateTestColliders();
+
+	// Test for, and log grounded collision
+	if(test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{	
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
+}
+
+void MoonDrop::resolveSmashBlockZigguratRCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(object.collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(object.collider);
+
+		// Corner collision //
+        if(col_x_offset == 0 && col_y_offset == 0)
+		{resolveCornerCollision(object.collider);}
+    }
+
+	updateTestColliders();
+
+	// Test for, and log grounded collision
+	if(test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{	
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
+}
+
 void MoonDrop::resolveHPTotemCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}

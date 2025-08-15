@@ -100,6 +100,9 @@ struct PushBlock : GameObject {
 	void resolveFallingPlatformThinCollision(GameObject& object) override;
     void resolveSmashBlockLargeCollision(GameObject& object)     override;
     void resolveSmashBlockMiniCollision(GameObject& object)      override;
+    void resolveSmashBlockZigguratLCollision(GameObject& object) override;
+    void resolveSmashBlockZigguratCCollision(GameObject& object) override;
+    void resolveSmashBlockZigguratRCollision(GameObject& object) override;
     void resolveLargeVaseCollision(GameObject& object)           override;
     void resolveSmallVaseCollision(GameObject& object)           override;
 

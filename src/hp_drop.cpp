@@ -451,6 +451,105 @@ void HPDrop::resolveSmashBlockMiniCollision(GameObject& object)
 	}
 }
 
+void HPDrop::resolveSmashBlockZigguratLCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(object.collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(object.collider);
+
+        // If there is still collision somehow, must be corner case //
+        //resolveCornerCollision(object.collider);
+
+		// Smash the block
+		if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED)
+		{
+			object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
+		}
+    }
+
+	updateTestColliders();
+
+	// Test for, and log grounded collision
+	if(test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{	
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
+}
+
+void HPDrop::resolveSmashBlockZigguratCCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(object.collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(object.collider);
+
+        // If there is still collision somehow, must be corner case //
+        //resolveCornerCollision(object.collider);
+
+		// Smash the block
+		if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED)
+		{
+			object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
+		}
+    }
+
+	updateTestColliders();
+
+	// Test for, and log grounded collision
+	if(test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{	
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
+}
+
+void HPDrop::resolveSmashBlockZigguratRCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(object.collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(object.collider);
+
+        // If there is still collision somehow, must be corner case //
+        //resolveCornerCollision(object.collider);
+
+		// Smash the block
+		if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED)
+		{
+			object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
+		}
+    }
+
+	updateTestColliders();
+
+	// Test for, and log grounded collision
+	if(test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{	
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
+}
+
 void HPDrop::resolveLargeVaseCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}

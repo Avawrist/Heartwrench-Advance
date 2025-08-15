@@ -367,6 +367,96 @@ void Enemy::resolveSmashBlockMiniCollision(GameObject& object)
 	}
 }
 
+void Enemy::resolveSmashBlockZigguratLCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(object.collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(object.collider);
+
+        // If there is still collision somehow, must be corner case //
+        resolveCornerCollision(object.collider);
+
+		// Smash the block
+		if(state == OBJECT_HITSTUN || state == OBJECT_DEATH)
+		{object.applyHit(damage, 0, 0);}
+    }
+
+	updateTestColliders();
+
+	if(test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
+}
+
+void Enemy::resolveSmashBlockZigguratCCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(object.collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(object.collider);
+
+        // If there is still collision somehow, must be corner case //
+        resolveCornerCollision(object.collider);
+
+		// Smash the block
+		if(state == OBJECT_HITSTUN || state == OBJECT_DEATH)
+		{object.applyHit(damage, 0, 0);}
+    }
+
+	updateTestColliders();
+
+	if(test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
+}
+
+void Enemy::resolveSmashBlockZigguratRCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+	if(collider.isCollision(object.collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(object.collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(object.collider);
+
+        // If there is still collision somehow, must be corner case //
+        resolveCornerCollision(object.collider);
+
+		// Smash the block
+		if(state == OBJECT_HITSTUN || state == OBJECT_DEATH)
+		{object.applyHit(damage, 0, 0);}
+    }
+
+	updateTestColliders();
+
+	if(test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}
+}
+
 void Enemy::resolveLargeVaseCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}

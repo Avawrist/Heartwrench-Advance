@@ -842,6 +842,18 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
                         resolveSmashBlockMiniCollision(*game_objects.at(i));
                     break;
 
+                    case SMASH_BLOCK_ZIGGURAT_L:
+                        resolveSmashBlockZigguratLCollision(*game_objects.at(i));
+                    break;
+
+                    case SMASH_BLOCK_ZIGGURAT_C:
+                        resolveSmashBlockZigguratCCollision(*game_objects.at(i));
+                    break;
+
+                    case SMASH_BLOCK_ZIGGURAT_R:
+                        resolveSmashBlockZigguratRCollision(*game_objects.at(i));
+                    break;
+
                     case LARGE_VASE:
                         resolveLargeVaseCollision(*game_objects.at(i));
                     break;
@@ -925,6 +937,9 @@ void GameObject::resolvePushBlockMiniCollision(GameObject& object)       {}
 void GameObject::resolveAutoPlatformCollision(GameObject& object)        {}
 void GameObject::resolveSmashBlockLargeCollision(GameObject& object)     {}
 void GameObject::resolveSmashBlockMiniCollision(GameObject& object)      {}
+void GameObject::resolveSmashBlockZigguratLCollision(GameObject& object) {}
+void GameObject::resolveSmashBlockZigguratCCollision(GameObject& object) {}
+void GameObject::resolveSmashBlockZigguratRCollision(GameObject& object) {}
 void GameObject::resolveLargeVaseCollision(GameObject& object)           {}
 void GameObject::resolveSmallVaseCollision(GameObject& object)           {}
 void GameObject::resolveHPTotemCollision(GameObject& object)             {}
@@ -1113,9 +1128,9 @@ void GameObject::resolveTileCollision(const bn::regular_bg_ptr&                 
                     tile_index <= ONEWAY_BLOCK_MAX_INDEX)
             {
                 other_collider = Collider(world_x, 
-                                            world_y + ONEWAYBLOCK_COLLIDER_Y_OFFSET, 
-                                            TILE_WIDTH, 
-                                            ONEWAYBLOCK_COLLIDER_HEIGHT);
+                                          world_y + ONEWAY_BLOCK_COLLIDER_Y_OFFSET, 
+                                          TILE_WIDTH, 
+                                          ONEWAY_BLOCK_COLLIDER_HEIGHT);
 
                 resolveOneWayBlockCollision(other_collider);
             }
@@ -1290,7 +1305,7 @@ void GameObject::resolveSpikeCollision(const Collider& other_collider)
 void GameObject::resolveClimbableCollision(const Collider& other_collider)
 {}
 
-void GameObject::resolveOneWayBlockCollision(const Collider& other_collider) 
+void GameObject::resolveOneWayBlockCollision(const Collider& other_collider)
 {
     if(rigidbody.normalized_dir.y() >= 0 &&
        collider_y_axis.p4.y() <= other_collider.p1.y() + rigidbody.final_dir.y())
@@ -1301,6 +1316,16 @@ void GameObject::resolveOneWayBlockCollision(const Collider& other_collider)
             collider_y_axis.setY(collider_y_axis.y() - 1);
             setY(this->y() - 1);
         }
+	}
+
+    updateTestColliders();
+
+	if(test_collider.isCollision(other_collider) &&
+	   rigidbody.normalized_dir.y() >= 0         &&
+       test_collider.p4.y() <= other_collider.p1.y() + rigidbody.final_dir.y())
+	{
+		grounded_detected = true;
+		rigidbody.removeYForces();
 	}
 }
 

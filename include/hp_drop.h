@@ -73,22 +73,25 @@ struct HPDrop : GameObject {
     /////////////////////////
 
     // Level Objects
-	void resolveTilePassageCollision(GameObject& object);
-	void resolveFallingPlatformWideCollision(GameObject& object);
-	void resolveFallingPlatformThinCollision(GameObject& object);
-	void resolvePushBlockCollision(GameObject& object);
-	void resolvePushBlockMiniCollision(GameObject& object);
-	void resolveAutoPlatformCollision(GameObject& object);
-	void resolveSmashBlockLargeCollision(GameObject& object);
-	void resolveSmashBlockMiniCollision(GameObject& object);
-	void resolveLargeVaseCollision(GameObject& object);
-	void resolveSmallVaseCollision(GameObject& object);
-	void resolveHPTotemCollision(GameObject& object);
+	void resolveTilePassageCollision(GameObject& object)         override;
+	void resolveFallingPlatformWideCollision(GameObject& object) override;
+	void resolveFallingPlatformThinCollision(GameObject& object) override;
+	void resolvePushBlockCollision(GameObject& object)           override;
+	void resolvePushBlockMiniCollision(GameObject& object)       override;
+	void resolveAutoPlatformCollision(GameObject& object)        override;
+	void resolveSmashBlockLargeCollision(GameObject& object)     override;
+	void resolveSmashBlockMiniCollision(GameObject& object)      override;
+    void resolveSmashBlockZigguratLCollision(GameObject& object) override;
+    void resolveSmashBlockZigguratCCollision(GameObject& object) override;
+    void resolveSmashBlockZigguratRCollision(GameObject& object) override;
+	void resolveLargeVaseCollision(GameObject& object)           override;
+	void resolveSmallVaseCollision(GameObject& object)           override;
+	void resolveHPTotemCollision(GameObject& object)             override;
 
 	// Level Enemies
-	void resolveThornColumnCollision(GameObject& object); 
-	void resolveThornBarCollision(GameObject& object); 
-	void resolveGroundGhoulCollision(GameObject& object);
+	void resolveThornColumnCollision(GameObject& object) override; 
+	void resolveThornBarCollision(GameObject& object)    override; 
+	void resolveGroundGhoulCollision(GameObject& object) override;
 
 
 };

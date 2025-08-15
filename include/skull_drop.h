@@ -72,15 +72,18 @@ struct SkullDrop : GameObject {
     /////////////////////////
 
     // Level Objects
-	void resolveTilePassageCollision(GameObject& object);
-	void resolveFallingPlatformWideCollision(GameObject& object);
-	void resolveFallingPlatformThinCollision(GameObject& object);
-	void resolvePushBlockCollision(GameObject& object);
-	void resolvePushBlockMiniCollision(GameObject& object);
-	void resolveAutoPlatformCollision(GameObject& object);
-	void resolveSmashBlockLargeCollision(GameObject& object);
-	void resolveSmashBlockMiniCollision(GameObject& object);
-	void resolveHPTotemCollision(GameObject& object);
+	void resolveTilePassageCollision(GameObject& object)         override;
+	void resolveFallingPlatformWideCollision(GameObject& object) override;
+	void resolveFallingPlatformThinCollision(GameObject& object) override;
+	void resolvePushBlockCollision(GameObject& object)           override;
+	void resolvePushBlockMiniCollision(GameObject& object)       override;
+	void resolveAutoPlatformCollision(GameObject& object)        override;
+	void resolveSmashBlockLargeCollision(GameObject& object)     override;
+	void resolveSmashBlockMiniCollision(GameObject& object)      override;
+    void resolveSmashBlockZigguratLCollision(GameObject& object) override;
+    void resolveSmashBlockZigguratCCollision(GameObject& object) override;
+    void resolveSmashBlockZigguratRCollision(GameObject& object) override;
+	void resolveHPTotemCollision(GameObject& object)             override;
 
     // Tiles
     void resolveSpikeCollision(const Collider& other_collider) override;

@@ -50,17 +50,17 @@ typedef int   int32;
 // === Tile Indexes === //
 #define NO_BLOCK_INDEX       0
 #define HARD_BLOCK_MIN_INDEX 1
-#define HARD_BLOCK_MAX_INDEX 90
+#define HARD_BLOCK_MAX_INDEX 102
 
-#define H_GEAR_LEFT    98
-#define H_GEAR_MID_MIN 99
-#define H_GEAR_MID_MAX 101
-#define H_GEAR_RIGHT   102
+#define H_GEAR_LEFT    103
+#define H_GEAR_MID_MIN 104
+#define H_GEAR_MID_MAX 106
+#define H_GEAR_RIGHT   107
 
-#define V_GEAR_TOP    103
+#define V_GEAR_TOP    108
 #define V_GEAR_MID_1  119
-#define V_GEAR_MID_2  105
-#define V_GEAR_MID_3  107
+#define V_GEAR_MID_2  110
+#define V_GEAR_MID_3  112
 #define V_GEAR_BOTTOM 121
 
 #define SPIKE_MIN_INDEX 123
@@ -70,7 +70,7 @@ typedef int   int32;
 #define CLIMBABLE_MAX_INDEX 152
 
 #define ONEWAY_BLOCK_MIN_INDEX 153
-#define ONEWAY_BLOCK_MAX_INDEX 156
+#define ONEWAY_BLOCK_MAX_INDEX 160
 
 //#define SHALLOW_SLOPE_1_INDEX  157
 //#define SHALLOW_SLOPE_2_INDEX  158
@@ -90,9 +90,9 @@ typedef int   int32;
 #define WORLD_Y_OFFSET 4
 
 // Collider Dimensions //
-#define ONEWAYBLOCK_COLLIDER_WIDTH     8
-#define ONEWAYBLOCK_COLLIDER_HEIGHT    1
-#define ONEWAYBLOCK_COLLIDER_Y_OFFSET -4
+#define ONEWAY_BLOCK_COLLIDER_WIDTH     8
+#define ONEWAY_BLOCK_COLLIDER_HEIGHT    1
+#define ONEWAY_BLOCK_COLLIDER_Y_OFFSET -4
 
 // HUD
 #define HUD_FLASH_FRAMES 8
