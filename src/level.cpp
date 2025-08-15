@@ -515,7 +515,7 @@ void Level::load(LevelName level_name)
             cells = main_bg_ptr->map().cells_ref().value();
 
             // Update HUD level name text box
-            hud_level_name.setSpritesFromString(" _ETERNAL ZIGGURAT", 18);
+            hud_level_name.setSpritesFromString(" ETERNAL_ ZIGGURAT", 18);
             
         break;
 
