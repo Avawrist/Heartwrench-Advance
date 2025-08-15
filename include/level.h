@@ -44,6 +44,7 @@
 
 // My Libs
 #include "math.h"
+#include "text_box.h"
 #include "room.h"
 #include "utility.h"
 #include "player.h"
@@ -83,6 +84,9 @@
 
 #define HUD_CURRENCY_ICON_X_OFFSET -42
 #define HUD_CURRENCY_ICON_Y_OFFSET -66
+
+#define HUD_LEVEL_NAME_X_OFFSET  45
+#define HUD_LEVEL_NAME_Y_OFFSET -68
 
 // Pause Menu
 #define CURSOR_CONTINUE      0
@@ -171,6 +175,8 @@ struct Level
 	bn::optional<bn::sprite_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> currency_num_2_animate_action_ptr;
 
     bn::optional<bn::sprite_ptr>                                         currency_icon_sprite_ptr;
+
+    TextBox hud_level_name;
 
     // Other
     uint32 tile_width;

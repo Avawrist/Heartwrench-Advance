@@ -81,6 +81,8 @@ Level::Level(const Level& other)
 
     default_hud_palette_ptr = other.default_hud_palette_ptr;
 
+    hud_level_name = other.hud_level_name;
+
     tile_width  = other.tile_width;
     tile_height = other.tile_height;
 
@@ -142,6 +144,8 @@ void Level::operator =(const Level& other)
 
     default_hud_palette_ptr = other.default_hud_palette_ptr;
 
+    hud_level_name = other.hud_level_name;
+
     tile_width  = other.tile_width;
     tile_height = other.tile_height;
 
@@ -197,6 +201,8 @@ void Level::clear()
 
     bg_item.reset();
     object_bg_item.reset();
+
+    hud_level_name.initSprites();
 
     BN_LOG("=== Level cleared ===");
     BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
@@ -289,6 +295,9 @@ void Level::load()
 
             // Update cells
             cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString(" _ETERNAL ZIGGURAT", 18);
             
         break;
 
@@ -365,6 +374,9 @@ void Level::load()
 
     default_hud_palette_ptr = hud_hp_sprite_ptr->palette();
 
+    hud_level_name.setPosUL(HUD_LEVEL_NAME_X_OFFSET, HUD_LEVEL_NAME_Y_OFFSET);
+    hud_level_name.setVisible(false);
+
     // Set Camera
     main_bg_ptr->set_camera(camera.value());
     painted_bg_ptr->set_camera(camera.value());
@@ -379,6 +391,8 @@ void Level::load()
     currency_num_2_sprite_ptr->set_camera(camera.value());
 
     currency_icon_sprite_ptr->set_camera(camera.value());
+
+    hud_level_name.setCamera(camera.value());
 
     // Set black screen
     default_main_palette_ptr->set_fade(bn::colors::black, 1);
@@ -446,6 +460,9 @@ void Level::load(LevelName level_name)
             // Init name card frames
             name_card_frame = LEVEL_NAME_CARD_FRAMES;
 
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("", 0);
+
         break;
 
         case LEVEL_TITLE_SCREEN:
@@ -469,6 +486,9 @@ void Level::load(LevelName level_name)
             // Update cells
             cells        = main_bg_ptr->map().cells_ref().value();
 
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("", 0);
+
         break;
 
         case LEVEL_ZIGGURAT_1:
@@ -487,12 +507,15 @@ void Level::load(LevelName level_name)
 
             painted_bg_ptr      = bn::regular_bg_items::ziggurat_1_painted_bg.create_bg(0, 0);
             painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
-                                                                                3,
-                                                                                bn::regular_bg_items::ziggurat_1_painted_bg.map_item(),
-                                                                                0, 0, 0, 1, 1, 1, 2, 2, 2);
+                                                                               3,
+                                                                               bn::regular_bg_items::ziggurat_1_painted_bg.map_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2);
 
             // Update cells
             cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString(" _ETERNAL ZIGGURAT", 18);
             
         break;
 
@@ -569,6 +592,9 @@ void Level::load(LevelName level_name)
 
     default_hud_palette_ptr = hud_hp_sprite_ptr->palette();
 
+    hud_level_name.setPosUL(HUD_LEVEL_NAME_X_OFFSET, HUD_LEVEL_NAME_Y_OFFSET);
+    hud_level_name.setVisible(false);
+
     // Set Camera
     main_bg_ptr->set_camera(camera.value());
     painted_bg_ptr->set_camera(camera.value());
@@ -583,6 +609,8 @@ void Level::load(LevelName level_name)
     currency_num_2_sprite_ptr->set_camera(camera.value());
 
     currency_icon_sprite_ptr->set_camera(camera.value());
+
+    hud_level_name.setCamera(camera.value());
 
     // Set black screen
     default_main_palette_ptr->set_fade(bn::colors::black, 1);
@@ -1021,6 +1049,14 @@ void Level::updateHUD()
         // Icon
         currency_icon_sprite_ptr->set_position(camera->x() + HUD_CURRENCY_ICON_X_OFFSET, 
                                                camera->y() + HUD_CURRENCY_ICON_Y_OFFSET);
+
+        /////////////////////
+        // Draw Level Name //
+        /////////////////////
+
+        hud_level_name.setPosUL(camera->x().integer() + HUD_LEVEL_NAME_X_OFFSET, 
+                                camera->y().integer() + HUD_LEVEL_NAME_Y_OFFSET);
+        hud_level_name.draw();
     }
 
         /////////////////////////////
@@ -1045,6 +1081,7 @@ void Level::updateFade()
         currency_num_1_sprite_ptr->set_visible(true);
         currency_num_2_sprite_ptr->set_visible(true);
         currency_icon_sprite_ptr->set_visible(true);
+        hud_level_name.setVisible(true);
 
         // Fade objects in
         for(int32 i = 0; i < current_room.game_objects.size(); i++)
@@ -1154,6 +1191,8 @@ void Level::updateFade()
 
             hud_currency_icon_palette.set_fade(bn::colors::black, 0);
             currency_icon_sprite_ptr->set_visible(false);
+
+            hud_level_name.setVisible(false);
         }
 
         // Fade Pause Screen out

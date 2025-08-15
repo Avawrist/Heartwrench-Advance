@@ -725,7 +725,6 @@ void Room::monitorUnloadedObjects(const bn::camera_ptr& camera_ptr)
                 // If there is not already a loaded instance, load one in:
                 if(unloaded_objects.at(i).loaded_instance_id == UNLOADED_OBJECT_STATE_UNLOADED)
                 {
-                    BN_LOG(unloaded_objects.at(i).object_type);
                     unloaded_objects.at(i).loaded_instance_id = addObject(unloaded_objects.at(i),
                                                                           camera_ptr);
                 }
