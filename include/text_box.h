@@ -22,11 +22,11 @@
 
 #define TEXT_BOX_Z_ORDER -3
 
-#define TEXT_BOX_SPAN     9
-#define TEXT_BOX_ROWS     2
+#define TEXT_BOX_SPAN     18
+#define TEXT_BOX_ROWS     1
 
-#define TEXT_BOX_LETTER_WIDTH  9
-#define TEXT_BOX_LETTER_HEIGHT 9
+#define TEXT_BOX_LETTER_WIDTH  7
+#define TEXT_BOX_LETTER_HEIGHT 7
 
 #define TEXT_BOX_MAX_ANIM_FRAMES 2
 
@@ -87,8 +87,8 @@ struct TextBox
 
     bn::fixed_point getPos() const;
 
-    void setPosUL(int32 new_x, int32 new_y);
-    void setPosUL(bn::fixed_point new_point);
+    void setPosUR(int32 new_x, int32 new_y);
+    void setPosUR(bn::fixed_point new_point);
 
     void initSprites();
     void setSpritesFromString(const char* char_string_ptr, int32 string_size);

@@ -297,7 +297,7 @@ void Level::load()
             cells = main_bg_ptr->map().cells_ref().value();
 
             // Update HUD level name text box
-            hud_level_name.setSpritesFromString(" _ETERNAL ZIGGURAT", 18);
+            hud_level_name.setSpritesFromString("ETERNAL_ZIGGURAT", 16);
             
         break;
 
@@ -374,7 +374,7 @@ void Level::load()
 
     default_hud_palette_ptr = hud_hp_sprite_ptr->palette();
 
-    hud_level_name.setPosUL(HUD_LEVEL_NAME_X_OFFSET, HUD_LEVEL_NAME_Y_OFFSET);
+    hud_level_name.setPosUR(HUD_LEVEL_NAME_X_OFFSET, HUD_LEVEL_NAME_Y_OFFSET);
     hud_level_name.setVisible(false);
 
     // Set Camera
@@ -515,7 +515,7 @@ void Level::load(LevelName level_name)
             cells = main_bg_ptr->map().cells_ref().value();
 
             // Update HUD level name text box
-            hud_level_name.setSpritesFromString(" ETERNAL_ ZIGGURAT", 18);
+            hud_level_name.setSpritesFromString("ETERNAL_ZIGGURAT", 16);
             
         break;
 
@@ -592,7 +592,7 @@ void Level::load(LevelName level_name)
 
     default_hud_palette_ptr = hud_hp_sprite_ptr->palette();
 
-    hud_level_name.setPosUL(HUD_LEVEL_NAME_X_OFFSET, HUD_LEVEL_NAME_Y_OFFSET);
+    hud_level_name.setPosUR(HUD_LEVEL_NAME_X_OFFSET, HUD_LEVEL_NAME_Y_OFFSET);
     hud_level_name.setVisible(false);
 
     // Set Camera
@@ -927,6 +927,8 @@ void Level::updateGlobalHitstop()
 
 void Level::updateBGFlash()
 {
+    if(fade_out) {return;}
+
     if(global_bg_hitflash_frames)
     {
         // Set flash palette
@@ -1054,7 +1056,7 @@ void Level::updateHUD()
         // Draw Level Name //
         /////////////////////
 
-        hud_level_name.setPosUL(camera->x().integer() + HUD_LEVEL_NAME_X_OFFSET, 
+        hud_level_name.setPosUR(camera->x().integer() + HUD_LEVEL_NAME_X_OFFSET, 
                                 camera->y().integer() + HUD_LEVEL_NAME_Y_OFFSET);
         hud_level_name.draw();
     }

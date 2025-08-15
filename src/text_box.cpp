@@ -58,7 +58,7 @@ bn::fixed_point TextBox::getPos() const
     return pos;
 }
 
-void TextBox::setPosUL(int32 new_x, int32 new_y)
+void TextBox::setPosUR(int32 new_x, int32 new_y)
 {
     pos.set_x(new_x);
     pos.set_y(new_y);
@@ -66,7 +66,7 @@ void TextBox::setPosUL(int32 new_x, int32 new_y)
     updateSpritePositions();
 }
 
-void TextBox::setPosUL(bn::fixed_point new_point)
+void TextBox::setPosUR(bn::fixed_point new_point)
 {
     pos = new_point;
 
@@ -391,7 +391,7 @@ void TextBox::updateSpritePositions()
 {
     for(int32 i = 0; i < sprite_vector.size(); i++)
     {
-        int32 x_offset = i;
+        int32 x_offset = (sprite_vector.size() - i) * -1;
         int32 y_offset = 0;
         if(x_offset >= TEXT_BOX_SPAN) 
         {
