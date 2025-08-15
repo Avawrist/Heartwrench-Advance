@@ -1524,6 +1524,7 @@ void Level::togglePauseScreen()
         currency_num_1_sprite_ptr->set_visible(true);
         currency_num_2_sprite_ptr->set_visible(true);
         currency_icon_sprite_ptr->set_visible(true);
+        hud_level_name.setVisible(true);
 
         // Reveal GameObjects //
         for(int32 i = 0; i < current_room.game_objects.size(); i++)
@@ -1549,6 +1550,7 @@ void Level::togglePauseScreen()
         currency_num_1_sprite_ptr->set_visible(false);
         currency_num_2_sprite_ptr->set_visible(false);
         currency_icon_sprite_ptr->set_visible(false);
+        hud_level_name.setVisible(false);
 
         // Hide GameObjects //
         for(int32 i = 0; i < current_room.game_objects.size(); i++)
