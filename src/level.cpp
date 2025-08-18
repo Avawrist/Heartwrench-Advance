@@ -92,6 +92,8 @@ Level::Level(const Level& other)
     fade_out              = other.fade_out;
     cam_is_scrolling      = other.cam_is_scrolling;
     menu_open             = other.menu_open;
+    pause_requested       = other.pause_requested;
+
     cam_x_offset          = other.cam_x_offset;
     cam_y_offset          = other.cam_y_offset;
     cam_look_x_offset     = other.cam_look_x_offset;
@@ -156,6 +158,8 @@ void Level::operator =(const Level& other)
     fade_out              = other.fade_out;
     cam_is_scrolling      = other.cam_is_scrolling;
     menu_open             = other.menu_open;
+    pause_requested       = other.pause_requested;
+
     cam_x_offset          = other.cam_x_offset;
     cam_y_offset          = other.cam_y_offset;
     cam_look_x_offset     = other.cam_look_x_offset;
@@ -234,6 +238,8 @@ void Level::load()
     //displayed_currency    = 0;
     transition_frames     = -1;
     cursor_index          = 0;
+
+    pause_requested = false;
 
     // Initialize Variables
     switch(player_spawn.spawn_level)
@@ -444,6 +450,8 @@ void Level::load(LevelName level_name)
     displayed_currency    = 0;
     transition_frames     = -1;
     cursor_index          = 0;
+
+    pause_requested = false;
 
     // Initialize Variables
     switch(player_spawn.spawn_level)
@@ -658,6 +666,10 @@ void Level::loadNew(LevelName level_name)
 
 void Level::update()
 {
+    // Update Global Timer
+    updateGlobalHitstop();
+    updateGlobalTimer();
+
     if(global_hitstop_frames <= 0)
     {
         if(player_spawn.spawn_level == LEVEL_NAME_CARD)         {updateNameCard();}
@@ -666,10 +678,6 @@ void Level::update()
         else if(cam_is_scrolling)                               {updateCamera(); updateCheckpoints();}
         else                                                    {updateAll();}
     }
-
-    // Update Global Timer
-    updateGlobalHitstop();
-    updateGlobalTimer();
 }
 
 void Level::updateAll()
@@ -795,7 +803,7 @@ void Level::updateObjects()
     current_room.monitorUnloadedObjects(camera.value());
 
     // Toggle Pause Menu
-    if(bn::keypad::start_pressed()) {togglePauseScreen();}
+    if(bn::keypad::start_pressed() || pause_requested) {togglePauseScreen();}
 }
 
 void Level::updateCamera()
@@ -1520,6 +1528,11 @@ void Level::storePlayerInputs()
     // This function exists to take input from the player even during
     // hitstop frames. This way, the player isnt locked out of input
     // just for the sake of juice.
+
+    pause_requested = false;
+
+    if(bn::keypad::start_pressed() && !menu_open)
+    {pause_requested = true;}
 
     if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) == NULL)
     {return;}

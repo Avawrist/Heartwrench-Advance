@@ -189,6 +189,7 @@ struct Level
     bool  fade_out;
     bool  cam_is_scrolling;
     bool  menu_open;
+    bool  pause_requested;
 
     int32 cam_x_offset;
     int32 cam_y_offset;
