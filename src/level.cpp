@@ -675,7 +675,8 @@ void Level::update()
         if(player_spawn.spawn_level == LEVEL_NAME_CARD)         {updateNameCard();}
         else if(player_spawn.spawn_level == LEVEL_TITLE_SCREEN) {updateTitleScreen();}
         else if(menu_open)                                      {updatePauseScreen();}
-        else if(cam_is_scrolling)                               {updateCamera(); updateCheckpoints();}
+        else if(cam_is_scrolling)                               {updateCamera(); 
+                                                                 updateCheckpoints();}
         else                                                    {updateAll();}
     }
 }
@@ -803,7 +804,11 @@ void Level::updateObjects()
     current_room.monitorUnloadedObjects(camera.value());
 
     // Toggle Pause Menu
-    if(bn::keypad::start_pressed() || pause_requested) {togglePauseScreen();}
+    if(bn::keypad::start_pressed() || pause_requested) 
+    {
+        pause_requested = false; 
+        togglePauseScreen();
+    }
 }
 
 void Level::updateCamera()
@@ -1242,37 +1247,40 @@ void Level::updatePauseScreen()
     updateFade();
 
     // Get Input
-    if(bn::keypad::up_pressed())   {cursor_index--;}
-    if(bn::keypad::down_pressed()) {cursor_index++;}
-
-    if(cursor_index > CURSOR_QUIT_GAME)     {cursor_index = CURSOR_CONTINUE;}
-    else if(cursor_index < CURSOR_CONTINUE) {cursor_index = CURSOR_QUIT_GAME;}
-    
-    if(bn::keypad::b_pressed()) {togglePauseScreen();}
-
-    else if(bn::keypad::a_pressed() || bn::keypad::start_pressed())
+    if(transition_frames < 0)
     {
-        switch(cursor_index)
+        if(bn::keypad::up_pressed())   {cursor_index--;}
+        if(bn::keypad::down_pressed()) {cursor_index++;}
+
+        if(cursor_index > CURSOR_QUIT_GAME)     {cursor_index = CURSOR_CONTINUE;}
+        else if(cursor_index < CURSOR_CONTINUE) {cursor_index = CURSOR_QUIT_GAME;}
+        
+        if(bn::keypad::b_pressed()) {togglePauseScreen();}
+
+        else if(bn::keypad::a_pressed() || bn::keypad::start_pressed())
         {
-            case CURSOR_CONTINUE:
+            switch(cursor_index)
+            {
+                case CURSOR_CONTINUE:
 
-                togglePauseScreen();
+                    togglePauseScreen();
 
-            break;
+                break;
 
-            case CURSOR_RETURN_TO_MAP:
-            break;
+                case CURSOR_RETURN_TO_MAP:
+                break;
 
-            case CURSOR_QUIT_GAME:
+                case CURSOR_QUIT_GAME:
 
-                // Start Fade and Level Transition
-                fade_out          = true;
-                transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+                    // Start Fade and Level Transition
+                    fade_out          = true;
+                    transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
 
-            break;
+                break;
 
-            default:
-            break;
+                default:
+                break;
+            }
         }
     }
 
@@ -1529,21 +1537,19 @@ void Level::storePlayerInputs()
     // hitstop frames. This way, the player isnt locked out of input
     // just for the sake of juice.
 
-    pause_requested = false;
+    // Store start input in level object:
+    if(bn::keypad::start_pressed() && !menu_open) {pause_requested = true;}
 
-    if(bn::keypad::start_pressed() && !menu_open)
-    {pause_requested = true;}
+    // Store all other inputs in Player object:
+    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) == NULL) {return;}
 
-    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) == NULL)
-    {return;}
-
-    if(bn::keypad::a_pressed())
+    if(bn::keypad::a_pressed() && !menu_open)
     {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->a_requested = true;}
 
-    if(bn::keypad::b_pressed())
+    if(bn::keypad::b_pressed() && !menu_open)
     {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->b_requested = true;}
 
-    if(bn::keypad::r_pressed())
+    if(bn::keypad::r_pressed() && !menu_open)
     {((Player*)current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))->r_requested = true;}
 }
 
