@@ -309,8 +309,6 @@ void Enemy::resolveAutoPlatformCollision(GameObject& object)
 
 void Enemy::resolveSmashBlockLargeCollision(GameObject& object)
 {
-	if(object.state == OBJECT_DEATH) {return;}
-
 	if(collider.isCollision(object.collider))
     {
         // Resolve X Axis Collision //
@@ -339,8 +337,6 @@ void Enemy::resolveSmashBlockLargeCollision(GameObject& object)
 
 void Enemy::resolveSmashBlockMiniCollision(GameObject& object)
 {
-	if(object.state == OBJECT_DEATH) {return;}
-
 	if(collider.isCollision(object.collider))
     {
         // Resolve X Axis Collision //
@@ -369,8 +365,6 @@ void Enemy::resolveSmashBlockMiniCollision(GameObject& object)
 
 void Enemy::resolveSmashBlockZigguratLCollision(GameObject& object)
 {
-	if(object.state == OBJECT_DEATH) {return;}
-
 	if(collider.isCollision(object.collider))
     {
         // Resolve X Axis Collision //
@@ -399,8 +393,6 @@ void Enemy::resolveSmashBlockZigguratLCollision(GameObject& object)
 
 void Enemy::resolveSmashBlockZigguratCCollision(GameObject& object)
 {
-	if(object.state == OBJECT_DEATH) {return;}
-
 	if(collider.isCollision(object.collider))
     {
         // Resolve X Axis Collision //
@@ -429,8 +421,6 @@ void Enemy::resolveSmashBlockZigguratCCollision(GameObject& object)
 
 void Enemy::resolveSmashBlockZigguratRCollision(GameObject& object)
 {
-	if(object.state == OBJECT_DEATH) {return;}
-
 	if(collider.isCollision(object.collider))
     {
         // Resolve X Axis Collision //
@@ -483,8 +473,6 @@ void Enemy::resolveSmallVaseCollision(GameObject& object)
 
 void Enemy::resolveHPTotemCollision(GameObject& object)
 {
-	if(object.state == OBJECT_DEATH) {return;}
-
 	if(collider.isCollision(object.collider))
     {
         // Resolve X Axis Collision //
@@ -566,5 +554,6 @@ void Enemy::resolveXAxisCollision(const Collider& other_collider)
 	GameObject::resolveXAxisCollision(other_collider);
 	
 	// Wall splat check
-	wallSplatCheck();
+	if(state != OBJECT_DEATH)
+	{wallSplatCheck();}
 }

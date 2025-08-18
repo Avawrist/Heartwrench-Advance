@@ -381,14 +381,17 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
 
         case SMASH_BLOCK_ZIGGURAT_L:
             temp_object_ptr = new SmashBlockZigguratL();
+            _is_persistent  = true;
         break;
 
         case SMASH_BLOCK_ZIGGURAT_C:
             temp_object_ptr = new SmashBlockZigguratC();
+            _is_persistent  = true;
         break;
 
         case SMASH_BLOCK_ZIGGURAT_R:
             temp_object_ptr = new SmashBlockZigguratR();
+            _is_persistent  = true;
         break;
 
         case LARGE_VASE:

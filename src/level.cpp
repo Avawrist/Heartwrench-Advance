@@ -64,6 +64,7 @@ Level::Level(const Level& other)
 
     default_main_palette_ptr    = other.default_main_palette_ptr;
     default_painted_palette_ptr = other.default_painted_palette_ptr;
+    default_flash_palette_ptr   = other.default_flash_palette_ptr;
 
     pause_screen_bg_ptr = other.pause_screen_bg_ptr;
     pause_screen_bg_anim_ptr = other.pause_screen_bg_anim_ptr;
@@ -127,6 +128,7 @@ void Level::operator =(const Level& other)
 
     default_main_palette_ptr    = other.default_main_palette_ptr;
     default_painted_palette_ptr = other.default_painted_palette_ptr;
+    default_flash_palette_ptr   = other.default_flash_palette_ptr;
 
     pause_screen_bg_ptr = other.pause_screen_bg_ptr;
     pause_screen_bg_anim_ptr = other.pause_screen_bg_anim_ptr;
@@ -182,6 +184,7 @@ void Level::clear()
 
     default_main_palette_ptr.reset();
     default_painted_palette_ptr.reset();
+    default_flash_palette_ptr.reset();
 
     pause_screen_bg_ptr.reset();
     pause_screen_bg_anim_ptr.reset();
@@ -250,8 +253,11 @@ void Level::load()
                                                                                bn::regular_bg_items::name_card_painted_bg.map_item(),
                                                                                0, 0);
 
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::ziggurat_1_bg_flash_palette.create_palette();
+
             // Update cells
-            cells        = main_bg_ptr->map().cells_ref().value();
+            cells = main_bg_ptr->map().cells_ref().value();
 
             // Init name card frames
             name_card_frame = LEVEL_NAME_CARD_FRAMES;
@@ -273,6 +279,9 @@ void Level::load()
                                                                                bn::regular_bg_items::title_screen_painted_bg.map_item(),
                                                                                0, 0, 0, 0, 0, 1, 1, 1, 1);
 
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::ziggurat_1_bg_flash_palette.create_palette();
+
             // Update cells
             cells        = main_bg_ptr->map().cells_ref().value();
 
@@ -292,6 +301,9 @@ void Level::load()
                                                                                 3,
                                                                                 bn::regular_bg_items::ziggurat_1_painted_bg.map_item(),
                                                                                 0, 0, 0, 1, 1, 1, 2, 2, 2);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::ziggurat_1_bg_flash_palette.create_palette();
 
             // Update cells
             cells = main_bg_ptr->map().cells_ref().value();
@@ -454,6 +466,9 @@ void Level::load(LevelName level_name)
                                                                                bn::regular_bg_items::name_card_painted_bg.map_item(),
                                                                                0, 0);
 
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::ziggurat_1_bg_flash_palette.create_palette();
+
             // Update cells
             cells        = main_bg_ptr->map().cells_ref().value();
 
@@ -483,6 +498,9 @@ void Level::load(LevelName level_name)
                                                                                bn::regular_bg_items::title_screen_painted_bg.map_item(),
                                                                                0, 0, 0, 0, 0, 1, 1, 1, 1);
 
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::ziggurat_1_bg_flash_palette.create_palette();
+
             // Update cells
             cells        = main_bg_ptr->map().cells_ref().value();
 
@@ -495,7 +513,6 @@ void Level::load(LevelName level_name)
             
             // Player Spawn //
             player_spawn.setSpawnPosAC(64, 592);
-            //player_spawn.spawn_pos  = bn::fixed_point(-2512, -688);
             player_spawn.spawn_room = ROOM_TEST_1;
 
             // Load BGs //
@@ -510,6 +527,9 @@ void Level::load(LevelName level_name)
                                                                                3,
                                                                                bn::regular_bg_items::ziggurat_1_painted_bg.map_item(),
                                                                                0, 0, 0, 1, 1, 1, 2, 2, 2);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::ziggurat_1_bg_flash_palette.create_palette();
 
             // Update cells
             cells = main_bg_ptr->map().cells_ref().value();
@@ -927,13 +947,12 @@ void Level::updateGlobalHitstop()
 
 void Level::updateBGFlash()
 {
-    if(fade_out) {return;}
+    if(fade_out) {main_bg_ptr->set_palette(default_main_palette_ptr.value()); return;}
 
     if(global_bg_hitflash_frames)
     {
         // Set flash palette
-        bn::bg_palette_ptr flash_palette = bn::bg_palette_items::bg_flash_palette.create_palette();
-        main_bg_ptr->set_palette(flash_palette);
+        main_bg_ptr->set_palette(default_flash_palette_ptr.value());
     }
     else
     {
@@ -1106,6 +1125,7 @@ void Level::updateFade()
         // Fade BGs in
         default_main_palette_ptr->set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
         default_painted_palette_ptr->set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+        default_flash_palette_ptr->set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
 
         // Fade HUD in
         bn::sprite_palette_ptr hud_hp_palette = hud_hp_sprite_ptr->palette();
@@ -1136,6 +1156,7 @@ void Level::updateFade()
             
             if(object_ptr != NULL)
             {
+
                 bn::sprite_palette_ptr object_palette       = object_ptr->sprite_ptr->palette();
                 bn::sprite_palette_ptr hit_effect_palette   = object_ptr->hit_effect_sprite_ptr->palette();
                 bn::sprite_palette_ptr splat_effect_palette = object_ptr->splat_effect_sprite_ptr->palette();
@@ -1166,6 +1187,7 @@ void Level::updateFade()
         // Fade BGs out
         default_main_palette_ptr->set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
         default_painted_palette_ptr->set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+        default_flash_palette_ptr->set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
 
         // Fade HUD out
         bn::sprite_palette_ptr hud_hp_palette = hud_hp_sprite_ptr->palette();

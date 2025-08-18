@@ -683,7 +683,8 @@ void GameObject::applyHitEffect(int32 x, int32 y)
                                                                           5, 5, 5,
                                                                           6, 6, 6, 6, 
                                                                           7, 7, 7, 7, 
-                                                                          8, 8, 8, 8);
+                                                                          8, 8, 8, 8,
+                                                                          9, 9, 9, 9);
 }
 
 void GameObject::applySplatEffect(int32 x, int32 y)
@@ -780,8 +781,6 @@ void GameObject::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&    
 
 void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects)
 {
-    if(state == OBJECT_DEATH) {return;}
-
     for(int32 i = 0; i < game_objects.size(); i++)
     {   
         if(game_objects.at(i)->object_id != object_id)

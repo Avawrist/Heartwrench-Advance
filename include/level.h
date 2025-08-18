@@ -18,8 +18,8 @@
 #include "bn_colors.h"
 #include "bn_regular_bg_animate_actions.h"
 
-// Flash Palette
-#include "bn_bg_palette_items_bg_flash_palette.h"
+// Flash Palettes
+#include "bn_bg_palette_items_ziggurat_1_bg_flash_palette.h"
 
 // BGs
 #include "bn_regular_bg_items_name_card_level_bg.h"
@@ -151,6 +151,7 @@ struct Level
 
     bn::optional<bn::bg_palette_ptr> default_main_palette_ptr;
     bn::optional<bn::bg_palette_ptr> default_painted_palette_ptr;
+    bn::optional<bn::bg_palette_ptr> default_flash_palette_ptr;
     
     bn::optional<bn::regular_bg_item>       bg_item;
     bn::span<const bn::regular_bg_map_cell> cells;

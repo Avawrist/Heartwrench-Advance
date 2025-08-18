@@ -75,7 +75,7 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/butano-master/butano/include/bn_regular_bg_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_map_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_animate_actions_fwd.h \
- G:/game/build/bn_bg_palette_items_bg_flash_palette.h \
+ G:/game/build/bn_bg_palette_items_ziggurat_1_bg_flash_palette.h \
  G:/butano-master/butano/include/bn_bg_palette_item.h \
  G:/game/build/bn_regular_bg_items_name_card_level_bg.h \
  G:/game/build/bn_regular_bg_items_name_card_object_bg.h \
@@ -241,7 +241,7 @@ G:/butano-master/butano/include/bn_vector.h:
 G:/butano-master/butano/include/bn_regular_bg_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_map_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_animate_actions_fwd.h:
-G:/game/build/bn_bg_palette_items_bg_flash_palette.h:
+G:/game/build/bn_bg_palette_items_ziggurat_1_bg_flash_palette.h:
 G:/butano-master/butano/include/bn_bg_palette_item.h:
 G:/game/build/bn_regular_bg_items_name_card_level_bg.h:
 G:/game/build/bn_regular_bg_items_name_card_object_bg.h:

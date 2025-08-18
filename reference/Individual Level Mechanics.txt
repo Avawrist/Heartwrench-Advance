@@ -1,0 +1,26 @@
+*** Level Idea ***
+
+// Platforming Mechanics:
+
+-Bounce Bells. Striking a bounce bell ends the player's attack state and lobs the player up in the air, even if they are out of jumps. 
+ Bounce Bells may or may not remove any forward momentum from the attack.
+
+-Track Bells. Bounce bells that follow horizontal and vertical tracks like an autoplatform.
+
+-Track Spikes. Spike obstacles that follow horizontal and vertical tracks like an autoplatform.
+
+// Enemies:
+
+-Shift Blocks. Move on the X and Y axis similar to Thwomps. Crushing the player will kill them. 
+ Player can touch all the sides safely and can ride the top. The eyes follow the player.
+
+-Ground Ghouls.
+
+*** Level Idea ***
+
+-Strikeable switches that move layer 2.
+-Puzzle box level that requires the player to move layer 2 in different directions to access new areas.
+
+*** Level Idea ***
+
+-Wall running ramps similar to those in SMW. Rotate the player along a wall and shift the player's center of gravity.

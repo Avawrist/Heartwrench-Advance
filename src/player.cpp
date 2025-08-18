@@ -294,8 +294,8 @@ void Player::createSpinAttack2Hitbox(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
 {
 	if(game_objects.size() >= MAX_GAME_OBJECTS) {return;}
 
-	delete hitbox_2_ptr;
-	hitbox_2_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SPIN_2_X_OFFSET * x_dir),
+	delete hitbox_1_ptr;
+	hitbox_1_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SPIN_2_X_OFFSET * x_dir),
 								  y().integer() + PLAYER_SPIN_2_Y_OFFSET),
 								  PLAYER_SPIN_2_HITSTOP_FRAMES,
 								  PLAYER_SPIN_2_HITSTUN_FRAMES,
@@ -312,7 +312,7 @@ void Player::createSpinAttack2Hitbox(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
 								  HITBOX_SPIN_2,
 								  PLAYER_SPIN_2_SCREENSHAKE_SEVERITY);
 
-	hitbox_2_ptr->setCamera(camera);
+	hitbox_1_ptr->setCamera(camera);
 }
 
 void Player::createWallJumpEffect()
