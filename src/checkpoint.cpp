@@ -149,12 +149,6 @@ void Checkpoint::setState(ObjectState new_state)
         break;
 
         case CHECKPOINT_ACTIVE:
-
-            animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-                                                                           2,
-                                                                           bn::sprite_items::checkpoint.tiles_item(),
-                                                                           4, 4);
-
         break;
 
         case CHECKPOINT_OVERWRITE:

@@ -241,6 +241,22 @@ void Player::spinJump()
 	rigidbody.addForce(PLAYER_JUMP_FORCE);
 }
 
+void Player::bellJump()
+{
+	rigidbody.removeForces();
+	air_frames_elapsed = 0;
+	setState(NONE);
+	resetHitboxes();
+
+	rigidbody.addForce(PLAYER_BELL_JUMP_FORCE);
+	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+																2,
+																bn::sprite_items::player.tiles_item(),
+																10, 10, 10, 
+																11, 11, 11, 
+																12, 12, 12);
+}
+
 /*
 void Player::wallJump()
 {
@@ -389,6 +405,18 @@ void Player::drawSpinEffect()
 	}
 }
 
+void Player::resetHitboxes()
+{
+	delete hitbox_1_ptr;
+	hitbox_1_ptr = NULL;
+
+	delete hitbox_2_ptr;
+	hitbox_2_ptr = NULL;
+
+	delete hitbox_3_ptr;
+	hitbox_3_ptr = NULL;
+}
+
 //////////////////////////
 // GameObject Overrides //
 //////////////////////////
@@ -413,12 +441,12 @@ void Player::updateHitboxes(const RoomBounds& 							   room_bounds,
 							 camera);
 		hitbox_1_ptr->draw();
 
-		if(hitbox_1_ptr->is_inactive) 
+		if(hitbox_1_ptr->bell_struck) {bellJump();}
+		else if(hitbox_1_ptr->is_inactive) 
 		{
 			delete hitbox_1_ptr;
 			hitbox_1_ptr = NULL;
-		}	
-
+		}
 	}
 	
 	if(hitbox_2_ptr != NULL) 
@@ -434,12 +462,12 @@ void Player::updateHitboxes(const RoomBounds& 							   room_bounds,
 							 camera);
 		hitbox_2_ptr->draw();
 
-		if(hitbox_2_ptr->is_inactive) 
+		if(hitbox_2_ptr->bell_struck) {bellJump();}
+		else if(hitbox_2_ptr->is_inactive) 
 		{
 			delete hitbox_2_ptr;
 			hitbox_2_ptr = NULL;
 		}
-
 	}
 	
 	if(hitbox_3_ptr != NULL)
@@ -455,7 +483,8 @@ void Player::updateHitboxes(const RoomBounds& 							   room_bounds,
 							 camera);
 		hitbox_3_ptr->draw();
 	
-		if(hitbox_3_ptr->is_inactive) 
+		if(hitbox_3_ptr->bell_struck) {bellJump();}
+		else if(hitbox_3_ptr->is_inactive) 
 		{
 			delete hitbox_3_ptr;
 			hitbox_3_ptr = NULL;

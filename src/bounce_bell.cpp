@@ -185,6 +185,9 @@ void BounceBell::setState(ObjectState new_state)
 	switch(new_state)
 	{
         case OBJECT_HITSTUN:
+
+            // Player hit sway animation once
+
         break;
 
 		case OBJECT_DEATH:

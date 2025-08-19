@@ -71,6 +71,9 @@
 #define PLAYER_TERTIARY_JUMP_Y_FORCE -2 // Slows fall if jump held
 #define PLAYER_TERTIARY_JUMP_DECAY    1
 
+#define PLAYER_BASE_BELL_JUMP_FORCE -9
+#define PLAYER_BELL_JUMP_DECAY       0.024
+
 //#define PLAYER_WALL_JUMP_X_FORCE           2
 //#define PLAYER_WALL_JUMP_Y_FORCE          -7
 //#define PLAYER_WALL_JUMP_DECAY             0.033
@@ -117,8 +120,8 @@
 #define PLAYER_SPIN_1_Y_OFFSET           -10
 #define PLAYER_SPIN_1_HB_WIDTH           32
 #define PLAYER_SPIN_1_HB_HEIGHT          18
-#define PLAYER_SPIN_1_CREATE_HB_FRAME    1
-#define PLAYER_SPIN_1_HB_LIFESPAN_FRAMES 11
+#define PLAYER_SPIN_1_CREATE_HB_FRAME    5
+#define PLAYER_SPIN_1_HB_LIFESPAN_FRAMES 21
 #define PLAYER_SPIN_1_X_KNOCKBACK        (8 + ((uint32)overdrive * PLAYER_OD_BONUS_KNOCKBACK))
 #define PLAYER_SPIN_1_Y_KNOCKBACK        0
 #define PLAYER_SPIN_1_KNOCKBACK_DECAY    0.05
@@ -132,8 +135,8 @@
 #define PLAYER_SPIN_2_Y_OFFSET           -10
 #define PLAYER_SPIN_2_HB_WIDTH           32
 #define PLAYER_SPIN_2_HB_HEIGHT          18
-#define PLAYER_SPIN_2_CREATE_HB_FRAME    21
-#define PLAYER_SPIN_2_HB_LIFESPAN_FRAMES 12
+#define PLAYER_SPIN_2_CREATE_HB_FRAME    25
+#define PLAYER_SPIN_2_HB_LIFESPAN_FRAMES 21
 #define PLAYER_SPIN_2_X_KNOCKBACK        (5 + ((uint32)overdrive * PLAYER_OD_BONUS_KNOCKBACK))
 #define PLAYER_SPIN_2_Y_KNOCKBACK        0
 #define PLAYER_SPIN_2_KNOCKBACK_DECAY    0.05
@@ -162,7 +165,9 @@
 #define PLAYER_JUMP_FORCE              Force(bn::fixed_point_t<12>(0, PLAYER_BASE_JUMP_FORCE), PLAYER_JUMP_DECAY)
 #define PLAYER_SECONDARY_JUMP_FORCE    Force(bn::fixed_point_t<12>(0, PLAYER_SECOND_JUMP_Y_FORCE), PLAYER_SECONDARY_JUMP_DECAY)
 #define PLAYER_TERTIARY_JUMP_FORCE     Force(bn::fixed_point_t<12>(0, PLAYER_TERTIARY_JUMP_Y_FORCE), PLAYER_TERTIARY_JUMP_DECAY)
-//#define PLAYER_WALL_JUMP_FORCE         Force(bn::fixed_point_t<12>(PLAYER_WALL_JUMP_X_FORCE * (int32)x_dir, PLAYER_WALL_JUMP_Y_FORCE), PLAYER_WALL_JUMP_DECAY)
+//#define PLAYER_WALL_JUMP_FORCE       Force(bn::fixed_point_t<12>(PLAYER_WALL_JUMP_X_FORCE * (int32)x_dir, PLAYER_WALL_JUMP_Y_FORCE), PLAYER_WALL_JUMP_DECAY)
+
+#define PLAYER_BELL_JUMP_FORCE         Force(bn::fixed_point_t<12>(0, PLAYER_BASE_BELL_JUMP_FORCE), PLAYER_BELL_JUMP_DECAY)
 
 #define PLAYER_GRAVITY_FORCE           Force(bn::fixed_point_t<12>(0, PLAYER_GRAVITY), 			 PLAYER_GRAVITY_DECAY)
 #define PLAYER_PROLONGED_GRAVITY_FORCE Force(bn::fixed_point_t<12>(0, PLAYER_PROLONGED_GRAVITY), PLAYER_GRAVITY_DECAY)
@@ -248,6 +253,8 @@ struct Player : GameObject {
 
 	void spinJump();
 
+	void bellJump();
+
 	//void wallJump();
 
 	void fastFall();
@@ -259,7 +266,10 @@ struct Player : GameObject {
 								const bn::camera_ptr&                      camera);
 								
 	void createWallJumpEffect();
+	
 	void drawSpinEffect();
+
+	void resetHitboxes();
 
 	//////////////////////////
 	// GameObject Overrides //

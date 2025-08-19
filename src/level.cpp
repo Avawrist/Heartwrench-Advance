@@ -545,7 +545,7 @@ void Level::load(LevelName level_name)
         case LEVEL_ZIGGURAT_1:
             
             // Player Spawn //
-            player_spawn.setSpawnPosAC(64, 592);
+            player_spawn.setSpawnPosAC(64, 640);
             player_spawn.spawn_room = ROOM_TEST_1;
 
             // Load BGs //

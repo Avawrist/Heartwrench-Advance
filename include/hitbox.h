@@ -14,7 +14,7 @@
 // Struct Hitbox //
 ///////////////////
 
-#define HITBOX_30_FPS true
+#define HITBOX_30_FPS false
 
 #define HITBOX_KNOCKBACK_FORCE Force(bn::fixed_point_t<12>(x_knockback * x_dir, y_knockback * y_dir), knockback_decay)
 
@@ -35,6 +35,8 @@ struct Hitbox : GameObject
     int32 width;
     int32 height;
     int32 damage;
+
+    bool bell_struck;
 
     ScreenShakeSeverity screenshake_severity;
 
@@ -105,6 +107,7 @@ struct Hitbox : GameObject
     void resolveHPDropCollision(GameObject& object)              override;
     void resolveCheckpointCollision(GameObject& object)          override;
     void resolveFinishSealCollision(GameObject& object)          override;
+    void resolveBounceBellCollision(GameObject& object)          override;
 
     // Tiles
     void resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
