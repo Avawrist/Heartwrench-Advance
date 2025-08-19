@@ -238,6 +238,7 @@ struct Level
     void updateCurrency();
     void updateFade();
     void updateHUD();
+    void updatePauseInputs();
     void updatePauseScreen();
     void updateLevelTransition(LevelName level_index);
     void updateCheckpoint(Checkpoint* checkpoint_ptr);

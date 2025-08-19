@@ -716,6 +716,7 @@ void Level::updateAll()
 {
     reloadOnDeath();
     updateObjects();
+    updatePauseInputs();
     removeObjectCells();
     updateCurrency();
     updateCamera();
@@ -824,7 +825,11 @@ void Level::updateObjects()
             else if(current_room.game_objects.data()[i]->object_type == FINISH_SEAL)
             {
                 if(((FinishSeal*)current_room.game_objects.data()[i])->level_complete) 
-                {level_complete = true;}
+                {
+                    if(menu_open) {togglePauseScreen();}
+
+                    level_complete = true;
+                }
             }
         }   
     } 
@@ -834,13 +839,6 @@ void Level::updateObjects()
 
     // Load unloaded objects if needed
     current_room.monitorUnloadedObjects(camera.value());
-
-    // Toggle Pause Menu
-    if(bn::keypad::start_pressed() || pause_requested) 
-    {
-        pause_requested = false; 
-        togglePauseScreen();
-    }
 }
 
 void Level::updateCamera()
@@ -1270,6 +1268,16 @@ void Level::updateFade()
 
         // End condition
         if(default_main_palette_ptr->fade_intensity() == 1) {fade_out = false;}
+    }
+}
+
+void Level::updatePauseInputs()
+{
+    // Toggle Pause Menu
+    if((bn::keypad::start_pressed() || pause_requested) && !level_complete)
+    {
+        pause_requested = false; 
+        togglePauseScreen();
     }
 }
 
