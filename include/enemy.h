@@ -60,6 +60,7 @@ struct Enemy : GameObject
     void resolveLargeVaseCollision(GameObject& object)           override;
     void resolveSmallVaseCollision(GameObject& object)           override;
     void resolveHPTotemCollision(GameObject& object)             override;
+    void resolveFinishSealCollision(GameObject& object)          override;
 
     // Level Enemies
     void resolveThornColumnCollision(GameObject& object) override;

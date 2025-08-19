@@ -332,6 +332,7 @@ struct Player : GameObject {
 	void resolveMoonDropCollision(GameObject& object)            override;
 	void resolveSkullDropCollision(GameObject& object)           override;
 	void resolveStarDropCollision(GameObject& object)            override;
+	void resolveFinishSealCollision(GameObject& object)          override;
 
 	// Level Enemies
 	void resolveThornColumnCollision(GameObject& object) override; 

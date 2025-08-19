@@ -2036,6 +2036,33 @@ void Player::resolveStarDropCollision(GameObject& object)
 	}
 }
 
+void Player::resolveFinishSealCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+	
+	if(collider.isCollision(object.collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(object.collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(object.collider);
+
+        // Resolve Corner Collision //
+		if(col_y_offset == 0 && col_x_offset == 0)
+        {resolveCornerCollision(object.collider);}
+    }
+
+	updateTestColliders();
+
+	if(test_collider.isCollision(object.collider) && 
+	   rigidbody.normalized_dir.y() >= 0)
+	{
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}	
+}
+
 // Level Enemies
 void Player::resolveThornColumnCollision(GameObject& object)  
 {
