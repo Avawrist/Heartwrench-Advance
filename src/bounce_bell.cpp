@@ -12,9 +12,9 @@ BounceBell::BounceBell()
     sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
     default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								                                   0,
+								                                   4,
 								                                   bn::sprite_items::bounce_bell.tiles_item(),
-								                                   0, 0);
+								                                   0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1);
 
     // Init Variables //
     collider_offset_x = BOUNCE_BELL_COLLIDER_OFFSET_X;
