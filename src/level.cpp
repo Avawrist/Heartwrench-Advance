@@ -794,6 +794,16 @@ void Level::updateObjects()
             // Update spawn point //
             if(current_room.game_objects.data()[i]->object_type == CHECKPOINT)
             {updateCheckpoint((Checkpoint*)current_room.game_objects.data()[i]);}
+
+            // Check if level complete //
+            else if(current_room.game_objects.data()[i]->object_type == FINISH_SEAL)
+            {
+                if(((FinishSeal*)current_room.game_objects.data()[i])->level_complete)
+                {
+                    fade_out          = true;
+                    transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+                }
+            }
         }   
     } 
 
@@ -809,6 +819,9 @@ void Level::updateObjects()
         pause_requested = false; 
         togglePauseScreen();
     }
+
+    // Update transition if level complete
+    updateLevelTransition(LEVEL_TITLE_SCREEN);
 }
 
 void Level::updateCamera()

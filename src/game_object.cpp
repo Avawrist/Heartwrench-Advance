@@ -885,6 +885,10 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
                         resolveCheckpointCollision(*game_objects.at(i));
                     break;
 
+                    case FINISH_SEAL:
+                        resolveFinishSealCollision(*game_objects.at(i));
+                    break;
+
                     // Level Enemies
                     case THORN_COLUMN:
                         resolveThornColumnCollision(*game_objects.at(i));
@@ -947,6 +951,7 @@ void GameObject::resolveMoonDropCollision(GameObject& object)            {}
 void GameObject::resolveSkullDropCollision(GameObject& object)           {}
 void GameObject::resolveStarDropCollision(GameObject& object)            {}
 void GameObject::resolveCheckpointCollision(GameObject& object)          {}
+void GameObject::resolveFinishSealCollision(GameObject& object)          {}
 
 // Level Enemies
 void GameObject::resolveThornColumnCollision(GameObject& object) {}

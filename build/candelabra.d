@@ -108,6 +108,7 @@ candelabra.o: G:/game/src/candelabra.cpp G:/game/include/candelabra.h \
  G:/game/build/bn_sprite_items_skull_drop.h \
  G:/game/build/bn_sprite_items_star_drop.h \
  G:/game/build/bn_sprite_items_checkpoint.h \
+ G:/game/build/bn_sprite_items_finish_seal.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h \
  G:/game/build/bn_sprite_items_thorn_column.h \
  G:/game/build/bn_sprite_items_thorn_bar.h \
@@ -229,6 +230,7 @@ G:/game/build/bn_sprite_items_moon_drop.h:
 G:/game/build/bn_sprite_items_skull_drop.h:
 G:/game/build/bn_sprite_items_star_drop.h:
 G:/game/build/bn_sprite_items_checkpoint.h:
+G:/game/build/bn_sprite_items_finish_seal.h:
 G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/build/bn_sprite_items_thorn_column.h:
 G:/game/build/bn_sprite_items_thorn_bar.h:

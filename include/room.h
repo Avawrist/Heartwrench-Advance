@@ -42,6 +42,7 @@
 #include "skull_drop.h"
 #include "star_drop.h"
 #include "checkpoint.h"
+#include "finish_seal.h"
 
 // Enemies
 #include "ground_ghoul.h"

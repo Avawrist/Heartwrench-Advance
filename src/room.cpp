@@ -218,6 +218,10 @@ int32 Room::addObject(ObjectRequest& object_request, const bn::camera_ptr& camer
             temp_object_ptr = new Checkpoint();
         break;
 
+        case FINISH_SEAL:
+            temp_object_ptr = new FinishSeal();
+        break;
+
         ///////////////////
 	    // Level Enemies //
 	    ///////////////////
@@ -453,6 +457,10 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
 
         case CHECKPOINT:
             temp_object_ptr = new Checkpoint();
+        break;
+
+        case FINISH_SEAL:
+            temp_object_ptr = new FinishSeal();
         break;
 
         ///////////////////

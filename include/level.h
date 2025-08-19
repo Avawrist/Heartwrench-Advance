@@ -49,6 +49,7 @@
 #include "utility.h"
 #include "player.h"
 #include "checkpoint.h"
+#include "finish_seal.h"
 
 //////////////////
 // Struct Level //

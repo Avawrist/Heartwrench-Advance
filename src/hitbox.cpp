@@ -415,6 +415,14 @@ void Hitbox::resolveCheckpointCollision(GameObject& object)
 	}
 }
 
+void Hitbox::resolveFinishSealCollision(GameObject& object)
+{
+    if(object.state == OBJECT_DEATH) {return;}
+
+    if(collider.isCollision(object.collider))
+    {applyHBHit(object);}
+}
+
 // Tiles
 void Hitbox::resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
                                   const bn::span<const bn::regular_bg_map_cell>& cells,

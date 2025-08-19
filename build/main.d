@@ -140,6 +140,7 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/game/build/bn_sprite_items_skull_drop.h \
  G:/game/build/bn_sprite_items_star_drop.h \
  G:/game/build/bn_sprite_items_checkpoint.h \
+ G:/game/build/bn_sprite_items_finish_seal.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h \
  G:/game/build/bn_sprite_items_thorn_column.h \
  G:/game/build/bn_sprite_items_thorn_bar.h \
@@ -159,10 +160,10 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/game/include/hp_totem.h G:/game/include/hp_drop.h \
  G:/game/include/moon_drop.h G:/game/include/skull_drop.h \
  G:/game/include/star_drop.h G:/game/include/checkpoint.h \
- G:/game/include/ground_ghoul.h G:/game/include/enemy.h \
- G:/game/include/thorn_column.h G:/game/include/thorn_bar.h \
- G:/game/include/candelabra.h G:/game/include/prop.h \
- G:/game/include/player.h
+ G:/game/include/finish_seal.h G:/game/include/ground_ghoul.h \
+ G:/game/include/enemy.h G:/game/include/thorn_column.h \
+ G:/game/include/thorn_bar.h G:/game/include/candelabra.h \
+ G:/game/include/prop.h G:/game/include/player.h
 G:/butano-master/butano/include/bn_sprites.h:
 G:/butano-master/butano/hw/include/bn_hw_sprites_constants.h:
 G:/butano-master/butano/include/bn_common.h:
@@ -311,6 +312,7 @@ G:/game/build/bn_sprite_items_moon_drop.h:
 G:/game/build/bn_sprite_items_skull_drop.h:
 G:/game/build/bn_sprite_items_star_drop.h:
 G:/game/build/bn_sprite_items_checkpoint.h:
+G:/game/build/bn_sprite_items_finish_seal.h:
 G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/build/bn_sprite_items_thorn_column.h:
 G:/game/build/bn_sprite_items_thorn_bar.h:
@@ -339,6 +341,7 @@ G:/game/include/moon_drop.h:
 G:/game/include/skull_drop.h:
 G:/game/include/star_drop.h:
 G:/game/include/checkpoint.h:
+G:/game/include/finish_seal.h:
 G:/game/include/ground_ghoul.h:
 G:/game/include/enemy.h:
 G:/game/include/thorn_column.h:
