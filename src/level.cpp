@@ -93,6 +93,7 @@ Level::Level(const Level& other)
     cam_is_scrolling      = other.cam_is_scrolling;
     menu_open             = other.menu_open;
     pause_requested       = other.pause_requested;
+    level_complete        = other.level_complete;
 
     cam_x_offset          = other.cam_x_offset;
     cam_y_offset          = other.cam_y_offset;
@@ -107,6 +108,8 @@ Level::Level(const Level& other)
     displayed_currency = other.displayed_currency;
     transition_frames  = other.transition_frames;
     cursor_index       = other.cursor_index;
+
+    next_level = other.next_level;
 }
 
 Level::~Level()
@@ -159,6 +162,7 @@ void Level::operator =(const Level& other)
     cam_is_scrolling      = other.cam_is_scrolling;
     menu_open             = other.menu_open;
     pause_requested       = other.pause_requested;
+    level_complete        = other.level_complete;
 
     cam_x_offset          = other.cam_x_offset;
     cam_y_offset          = other.cam_y_offset;
@@ -173,6 +177,8 @@ void Level::operator =(const Level& other)
     displayed_currency = other.displayed_currency;
     transition_frames  = other.transition_frames;
     cursor_index       = other.cursor_index;
+
+    next_level = other.next_level;
 }
 
 void Level::clear()
@@ -226,20 +232,22 @@ void Level::load()
     fade_out              = false;
     cam_is_scrolling      = false;
     menu_open             = false;
+    pause_requested       = false;
+    level_complete        = false;
+
     cam_x_offset          = 0;
     cam_y_offset          = 0;
     cam_look_x_offset     = 0;
     cam_look_dir_x_offset = 0;
     cam_look_y_offset     = 0;
     cam_update_timer      = 0;
-
     name_card_frame       = 0;
     //global_level_currency = 0;
     //displayed_currency    = 0;
     transition_frames     = -1;
     cursor_index          = 0;
 
-    pause_requested = false;
+    next_level = NO_LEVEL;
 
     // Initialize Variables
     switch(player_spawn.spawn_level)
@@ -268,6 +276,9 @@ void Level::load()
             // Init name card frames
             name_card_frame = LEVEL_NAME_CARD_FRAMES;
 
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
+
         break;
 
         case LEVEL_TITLE_SCREEN:
@@ -290,6 +301,9 @@ void Level::load()
 
             // Update cells
             cells        = main_bg_ptr->map().cells_ref().value();
+
+            // Next level
+            next_level = LEVEL_ZIGGURAT_1;
 
         break;
 
@@ -316,6 +330,9 @@ void Level::load()
 
             // Update HUD level name text box
             hud_level_name.setSpritesFromString("ETERNAL_ZIGGURAT", 16);
+
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
             
         break;
 
@@ -438,20 +455,22 @@ void Level::load(LevelName level_name)
     fade_out              = false;
     cam_is_scrolling      = false;
     menu_open             = false;
+    pause_requested       = false;
+    level_complete        = false;
+
     cam_x_offset          = 0;
     cam_y_offset          = 0;
     cam_look_x_offset     = 0;
     cam_look_dir_x_offset = 0;
     cam_look_y_offset     = 0;
     cam_update_timer      = 0;
-
     name_card_frame       = 0;
     global_level_currency = 0;
     displayed_currency    = 0;
     transition_frames     = -1;
     cursor_index          = 0;
 
-    pause_requested = false;
+    next_level = NO_LEVEL;
 
     // Initialize Variables
     switch(player_spawn.spawn_level)
@@ -486,6 +505,9 @@ void Level::load(LevelName level_name)
             // Update HUD level name text box
             hud_level_name.setSpritesFromString("", 0);
 
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
+
         break;
 
         case LEVEL_TITLE_SCREEN:
@@ -514,6 +536,9 @@ void Level::load(LevelName level_name)
 
             // Update HUD level name text box
             hud_level_name.setSpritesFromString("", 0);
+
+            // Next level
+            next_level = LEVEL_ZIGGURAT_1;
 
         break;
 
@@ -544,6 +569,9 @@ void Level::load(LevelName level_name)
 
             // Update HUD level name text box
             hud_level_name.setSpritesFromString("ETERNAL_ZIGGURAT", 16);
+
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
             
         break;
 
@@ -672,13 +700,16 @@ void Level::update()
 
     if(global_hitstop_frames <= 0)
     {
-        if(player_spawn.spawn_level == LEVEL_NAME_CARD)         {updateNameCard();}
+             if(player_spawn.spawn_level == LEVEL_NAME_CARD)    {updateNameCard();}
         else if(player_spawn.spawn_level == LEVEL_TITLE_SCREEN) {updateTitleScreen();}
+        else if(level_complete)                                 {updateLevelComplete();}
         else if(menu_open)                                      {updatePauseScreen();}
         else if(cam_is_scrolling)                               {updateCamera(); 
                                                                  updateCheckpoints();}
         else                                                    {updateAll();}
     }
+
+    updateLevelTransition(next_level);
 }
 
 void Level::updateAll()
@@ -730,9 +761,6 @@ void Level::updateNameCard()
 
     // Draw Screen
     updatePaintedBG();
-
-    // Transition
-    updateLevelTransition(LEVEL_TITLE_SCREEN);
 }
 
 void Level::updateTitleScreen()
@@ -771,9 +799,6 @@ void Level::updateTitleScreen()
 
     // Draw Screen
     updatePaintedBG();
-
-    // Transition
-    updateLevelTransition(LEVEL_ZIGGURAT_1);
 }
 
 void Level::updateObjects()
@@ -798,11 +823,8 @@ void Level::updateObjects()
             // Check if level complete //
             else if(current_room.game_objects.data()[i]->object_type == FINISH_SEAL)
             {
-                if(((FinishSeal*)current_room.game_objects.data()[i])->level_complete)
-                {
-                    fade_out          = true;
-                    transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
-                }
+                if(((FinishSeal*)current_room.game_objects.data()[i])->level_complete) 
+                {level_complete = true;}
             }
         }   
     } 
@@ -819,9 +841,6 @@ void Level::updateObjects()
         pause_requested = false; 
         togglePauseScreen();
     }
-
-    // Update transition if level complete
-    updateLevelTransition(LEVEL_TITLE_SCREEN);
 }
 
 void Level::updateCamera()
@@ -1288,6 +1307,7 @@ void Level::updatePauseScreen()
                     // Start Fade and Level Transition
                     fade_out          = true;
                     transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+                    next_level        = LEVEL_TITLE_SCREEN;
 
                 break;
 
@@ -1303,15 +1323,11 @@ void Level::updatePauseScreen()
                                                                             bn::regular_bg_items::pause_screen.map_item(),
                                                                             cursor_index, cursor_index);
     pause_screen_bg_anim_ptr->update();
-
-    // Transition
-    updateLevelTransition(LEVEL_TITLE_SCREEN);
 }
 
 void Level::updateLevelTransition(LevelName level_index)
 {
-    if(level_index < LEVEL_NAME_CARD || level_index > LEVEL_ZIGGURAT_1)
-    {return;}
+    if(level_index < LEVEL_NAME_CARD || level_index > LEVEL_ZIGGURAT_1) {return;}
 
     // Transition Level //
     if(transition_frames > 0)
@@ -1355,6 +1371,25 @@ void Level::updateCheckpoints()
             updateCheckpoint((Checkpoint*)current_room.game_objects.data()[i]);
             current_room.game_objects.data()[i]->draw();
         }
+    }
+}
+
+void Level::updateLevelComplete()
+{
+    updateAll();
+    
+    // 1. Set a victory theme to play once
+    // ...
+
+    // 2. Set player victory animation to play once
+    // ...
+
+    // 3. if victory theme and player animation are both done, trigger transition:
+    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) != NULL &&
+       current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->animate_action_ptr->done())
+    {
+        fade_out          = true;
+        transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
     }
 }
 

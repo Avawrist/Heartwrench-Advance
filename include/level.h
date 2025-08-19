@@ -191,6 +191,7 @@ struct Level
     bool  cam_is_scrolling;
     bool  menu_open;
     bool  pause_requested;
+    bool  level_complete;
 
     int32 cam_x_offset;
     int32 cam_y_offset;
@@ -208,6 +209,8 @@ struct Level
 
     // Transitions
     int32 transition_frames;
+
+    LevelName next_level;
 
     Level();
     Level(LevelName level_name);
@@ -239,6 +242,7 @@ struct Level
     void updateLevelTransition(LevelName level_index);
     void updateCheckpoint(Checkpoint* checkpoint_ptr);
     void updateCheckpoints();
+    void updateLevelComplete();
 
     void reloadOnDeath();
     void freeObjects();
