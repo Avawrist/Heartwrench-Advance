@@ -44,6 +44,8 @@
 #include "checkpoint.h"
 #include "finish_seal.h"
 
+#include "bounce_bell.h"
+
 // Enemies
 #include "ground_ghoul.h"
 #include "thorn_column.h"

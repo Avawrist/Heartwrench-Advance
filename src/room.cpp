@@ -222,6 +222,10 @@ int32 Room::addObject(ObjectRequest& object_request, const bn::camera_ptr& camer
             temp_object_ptr = new FinishSeal();
         break;
 
+        case BOUNCE_BELL:
+            temp_object_ptr = new BounceBell();
+        break;
+
         ///////////////////
 	    // Level Enemies //
 	    ///////////////////
@@ -461,6 +465,10 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
 
         case FINISH_SEAL:
             temp_object_ptr = new FinishSeal();
+        break;
+
+        case BOUNCE_BELL:
+            temp_object_ptr = new BounceBell();
         break;
 
         ///////////////////

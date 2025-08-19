@@ -109,6 +109,7 @@ push_block.o: G:/game/src/push_block.cpp G:/game/include/push_block.h \
  G:/game/build/bn_sprite_items_star_drop.h \
  G:/game/build/bn_sprite_items_checkpoint.h \
  G:/game/build/bn_sprite_items_finish_seal.h \
+ G:/game/build/bn_sprite_items_bounce_bell.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h \
  G:/game/build/bn_sprite_items_thorn_column.h \
  G:/game/build/bn_sprite_items_thorn_bar.h \
@@ -230,6 +231,7 @@ G:/game/build/bn_sprite_items_skull_drop.h:
 G:/game/build/bn_sprite_items_star_drop.h:
 G:/game/build/bn_sprite_items_checkpoint.h:
 G:/game/build/bn_sprite_items_finish_seal.h:
+G:/game/build/bn_sprite_items_bounce_bell.h:
 G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/build/bn_sprite_items_thorn_column.h:
 G:/game/build/bn_sprite_items_thorn_bar.h:

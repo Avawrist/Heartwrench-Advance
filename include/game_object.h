@@ -66,6 +66,7 @@
 #include "bn_sprite_items_star_drop.h"
 #include "bn_sprite_items_checkpoint.h"
 #include "bn_sprite_items_finish_seal.h"
+#include "bn_sprite_items_bounce_bell.h"
 
 // Enemy Object Assets
 #include "bn_sprite_items_ground_ghoul.h"
@@ -183,6 +184,8 @@ enum ObjectType
 	STAR_DROP,
 	CHECKPOINT,
 	FINISH_SEAL,
+
+	BOUNCE_BELL,
 
 	// Level Enemies
 	THORN_COLUMN,
@@ -459,6 +462,8 @@ struct GameObject
 	virtual void resolveStarDropCollision(GameObject& object);
 	virtual void resolveCheckpointCollision(GameObject& object);
 	virtual void resolveFinishSealCollision(GameObject& object);
+
+	virtual void resolveBounceBellCollision(GameObject& object);
 
 	// Level Enemies
 	virtual void resolveThornColumnCollision(GameObject& object); 
