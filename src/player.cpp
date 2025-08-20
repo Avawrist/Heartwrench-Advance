@@ -243,7 +243,11 @@ void Player::spinJump()
 
 void Player::bellJump()
 {
-	grounded_detected = false;
+	if(grounded_detected)
+	{
+		setY(y() + PLAYER_GROUNDED_BELL_JUMP_SUPPLEMENT);
+		grounded_detected = false;
+	}
 
 	rigidbody.removeForces();
 	air_frames_elapsed          = 0;

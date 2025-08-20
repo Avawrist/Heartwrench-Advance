@@ -71,8 +71,9 @@
 #define PLAYER_TERTIARY_JUMP_Y_FORCE -2 // Slows fall if jump held
 #define PLAYER_TERTIARY_JUMP_DECAY    1
 
-#define PLAYER_BASE_BELL_JUMP_FORCE -9
-#define PLAYER_BELL_JUMP_DECAY       0.024
+#define PLAYER_BASE_BELL_JUMP_FORCE          -9
+#define PLAYER_BELL_JUMP_DECAY                0.024
+#define PLAYER_GROUNDED_BELL_JUMP_SUPPLEMENT -32
 
 //#define PLAYER_WALL_JUMP_X_FORCE           2
 //#define PLAYER_WALL_JUMP_Y_FORCE          -7
