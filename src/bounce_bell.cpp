@@ -157,6 +157,15 @@ void BounceBell::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&  
     switch(state)
     {
         case IDLE:
+
+            if(animate_action_ptr->done())
+            {
+                animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+                                                                                4,
+                                                                                bn::sprite_items::bounce_bell.tiles_item(),
+                                                                                0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1);
+            }
+
         break;
 
         case OBJECT_HITSTUN:
@@ -186,7 +195,13 @@ void BounceBell::setState(ObjectState new_state)
 	{
         case OBJECT_HITSTUN:
 
-            // Player hit sway animation once
+            animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+                                                                        3,
+                                                                        bn::sprite_items::bounce_bell.tiles_item(),
+                                                                        3, 4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6, 5, 4,
+                                                                        3, 4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6, 5, 4,
+                                                                        3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 7, 7, 6, 6, 5, 5);
+
 
         break;
 

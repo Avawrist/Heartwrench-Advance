@@ -612,13 +612,39 @@ void GameObject::clampPosition(const RoomBounds& room_bounds)
 }
 
 void GameObject::setHitFlash()
-{}
+{
+	hit_flash_frames = GAME_OBJECT_MAX_HIT_FLASH_FRAMES;
+
+    bn::sprite_palette_ptr sprite_palette = bn::sprite_palette_items::sprite_white_palette.create_palette();
+
+    if(sprite_ptr.has_value())
+    {sprite_ptr->set_palette(sprite_palette);}
+}
 
 void GameObject::setHitFlash(int32 frames)
-{}
+{
+    if(frames > GAME_OBJECT_MAX_HIT_FLASH_FRAMES) 
+    {frames = GAME_OBJECT_MAX_HIT_FLASH_FRAMES;}
+
+    hit_flash_frames = frames;
+
+    bn::sprite_palette_ptr sprite_palette = bn::sprite_palette_items::sprite_white_palette.create_palette();
+    
+    if(sprite_ptr.has_value())
+    {sprite_ptr->set_palette(sprite_palette);}
+}
 
 void GameObject::updateHitFlash()
-{}
+{
+    if(!hit_flash_frames || state == OBJECT_DEATH)
+    {
+        if(sprite_ptr.has_value()) {sprite_ptr->set_palette(default_palette_ptr.value());}
+    }
+
+    hit_flash_frames--;
+    if(hit_flash_frames < 0)
+    {hit_flash_frames = 0;}
+}
 
 void GameObject::applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_dir)
 {

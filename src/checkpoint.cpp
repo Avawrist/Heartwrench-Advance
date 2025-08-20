@@ -81,6 +81,12 @@ void Checkpoint::update(const RoomBounds& 							   room_bounds,
 
     updateTimers();
     
+	//////////////////////
+	// Update Hit Flash //
+	//////////////////////
+
+	updateHitFlash();
+
     ////////////////////
     // Clamp Position //
     ////////////////////
