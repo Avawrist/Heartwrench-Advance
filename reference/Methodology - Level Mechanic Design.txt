@@ -1,0 +1,38 @@
+//////////////////////////////////////////////////////////////
+// HeartWrench Level Mechanic Design Methodology - MDC 2025 //
+//////////////////////////////////////////////////////////////
+
+1. Inspiration. Start with a concept that requires the player to use at least one core ability. 
+   Inspiration can come from anywhere:
+   -An image
+   -A phrase or lyric
+   -An existing mechanic you want to tweak
+   -A shower thought
+   -Other mediums: a painting, a movie, a novel, a song, etc.
+
+2. Narrative. Review the concept for narrative interest. Is the action interesting, and aligned with the tone of the world?
+
+3. Dimensions. After step 1 and 2 you have gameplay in one dimension. Build out the gameplay dimensions of the mechanic. 
+   For example, in an action platformer, a mechanic could impact ALL of the below:
+   -Player movement/position
+   -Combat
+   -Currency
+   -Local setting 
+   -Overworld setting 
+   A mechanic that impacts gameplay in multiple dimensions is a deeper mechanic. 2 dimensions seems comfortable for most mechanics.  
+
+*** Iterate on Steps 4 & 5 in conjunction with Playtesting ***
+
+4. Technical calibration. 
+   Ensure that the mechanic:
+   -Communicates its rules quickly and clearly
+   -Behaves reliably and consistently
+
+5. Skill calibration.
+   Balance the mechanic so that:
+   -A low skill player can comfortably utilize the mechanic to level completion.
+   -A higher skill player can bolster knowledge and precision to gain small additional utility from mechanics.
+
+**************************************************************    
+
+6. Polish. Finally, design art, animation and game feel in alignment with the game's art and feel direction.
