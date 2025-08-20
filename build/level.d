@@ -75,11 +75,12 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/build/bn_regular_bg_items_ziggurat_1_object_bg.h \
  G:/game/build/bn_regular_bg_items_ziggurat_1_painted_bg.h \
  G:/game/build/bn_regular_bg_items_pause_screen.h \
- G:/game/build/bn_sprite_items_hud_hp_bar.h \
+ G:/game/build/bn_sprite_items_hud_stripe.h \
  G:/butano-master/butano/include/bn_sprite_item.h \
  G:/butano-master/butano/include/bn_sprite_shape_size.h \
  G:/butano-master/butano/include/bn_sprite_tiles_item.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
+ G:/game/build/bn_sprite_items_hud_hp_bar.h \
  G:/game/build/bn_sprite_items_currency_number.h \
  G:/game/build/bn_sprite_items_hud_currency_icon.h G:/game/include/math.h \
  G:/butano-master/butano/include/bn_fixed.h \
@@ -241,11 +242,12 @@ G:/game/build/bn_regular_bg_items_ziggurat_1_level_bg.h:
 G:/game/build/bn_regular_bg_items_ziggurat_1_object_bg.h:
 G:/game/build/bn_regular_bg_items_ziggurat_1_painted_bg.h:
 G:/game/build/bn_regular_bg_items_pause_screen.h:
-G:/game/build/bn_sprite_items_hud_hp_bar.h:
+G:/game/build/bn_sprite_items_hud_stripe.h:
 G:/butano-master/butano/include/bn_sprite_item.h:
 G:/butano-master/butano/include/bn_sprite_shape_size.h:
 G:/butano-master/butano/include/bn_sprite_tiles_item.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:
+G:/game/build/bn_sprite_items_hud_hp_bar.h:
 G:/game/build/bn_sprite_items_currency_number.h:
 G:/game/build/bn_sprite_items_hud_currency_icon.h:
 G:/game/include/math.h:

@@ -69,6 +69,10 @@ Level::Level(const Level& other)
     pause_screen_bg_ptr = other.pause_screen_bg_ptr;
     pause_screen_bg_anim_ptr = other.pause_screen_bg_anim_ptr;
 
+    hud_stripe_1_sprite_ptr   = other.hud_stripe_1_sprite_ptr;
+    hud_stripe_2_sprite_ptr   = other.hud_stripe_2_sprite_ptr;
+    hud_stripe_3_sprite_ptr   = other.hud_stripe_3_sprite_ptr;
+    hud_stripe_4_sprite_ptr   = other.hud_stripe_4_sprite_ptr;
     hud_hp_sprite_ptr         = other.hud_hp_sprite_ptr;
     hud_hp_animate_action_ptr = other.hud_hp_animate_action_ptr;
 
@@ -138,6 +142,10 @@ void Level::operator =(const Level& other)
     pause_screen_bg_ptr = other.pause_screen_bg_ptr;
     pause_screen_bg_anim_ptr = other.pause_screen_bg_anim_ptr;
 
+    hud_stripe_1_sprite_ptr   = other.hud_stripe_1_sprite_ptr;
+    hud_stripe_2_sprite_ptr   = other.hud_stripe_2_sprite_ptr;
+    hud_stripe_3_sprite_ptr   = other.hud_stripe_3_sprite_ptr;
+    hud_stripe_4_sprite_ptr   = other.hud_stripe_4_sprite_ptr;
     hud_hp_sprite_ptr         = other.hud_hp_sprite_ptr;
     hud_hp_animate_action_ptr = other.hud_hp_animate_action_ptr;
 
@@ -199,6 +207,10 @@ void Level::clear()
     pause_screen_bg_ptr.reset();
     pause_screen_bg_anim_ptr.reset();
 
+    hud_stripe_1_sprite_ptr.reset();
+    hud_stripe_2_sprite_ptr.reset();
+    hud_stripe_3_sprite_ptr.reset();
+    hud_stripe_4_sprite_ptr.reset();
     hud_hp_sprite_ptr.reset();
     hud_hp_animate_action_ptr.reset();
 
@@ -329,7 +341,7 @@ void Level::load()
             cells = main_bg_ptr->map().cells_ref().value();
 
             // Update HUD level name text box
-            hud_level_name.setSpritesFromString("TOLLS AND TROLLS", 16);
+            hud_level_name.setSpritesFromString("     TROLL TOLLS", 16);
 
             // Next level
             next_level = LEVEL_TITLE_SCREEN;
@@ -379,6 +391,22 @@ void Level::load()
                                                                             0, 0);
 
     // Initialize HUD elements
+    hud_stripe_1_sprite_ptr = bn::sprite_items::hud_stripe.create_sprite(HUD_STRIPE_1_X_OFFSET, HUD_STRIPE_1_Y_OFFSET);
+    hud_stripe_1_sprite_ptr->set_z_order(HUD_STRIPE_Z_LAYER);
+    hud_stripe_1_sprite_ptr->set_visible(false);
+
+    hud_stripe_2_sprite_ptr = bn::sprite_items::hud_stripe.create_sprite(HUD_STRIPE_2_X_OFFSET, HUD_STRIPE_2_Y_OFFSET);
+    hud_stripe_2_sprite_ptr->set_z_order(HUD_STRIPE_Z_LAYER);
+    hud_stripe_2_sprite_ptr->set_visible(false);
+
+    hud_stripe_3_sprite_ptr = bn::sprite_items::hud_stripe.create_sprite(HUD_STRIPE_3_X_OFFSET, HUD_STRIPE_3_Y_OFFSET);
+    hud_stripe_3_sprite_ptr->set_z_order(HUD_STRIPE_Z_LAYER);
+    hud_stripe_3_sprite_ptr->set_visible(false);
+
+    hud_stripe_4_sprite_ptr = bn::sprite_items::hud_stripe.create_sprite(HUD_STRIPE_4_X_OFFSET, HUD_STRIPE_4_Y_OFFSET);
+    hud_stripe_4_sprite_ptr->set_z_order(HUD_STRIPE_Z_LAYER);
+    hud_stripe_4_sprite_ptr->set_visible(false);
+
     hud_hp_sprite_ptr = bn::sprite_items::hud_hp_bar.create_sprite(HUD_HP_X_OFFSET, HUD_HP_Y_OFFSET);
     hud_hp_sprite_ptr->set_z_order(HUD_Z_LAYER);
     hud_hp_sprite_ptr->set_visible(false);
@@ -410,6 +438,7 @@ void Level::load()
     default_hud_palette_ptr = hud_hp_sprite_ptr->palette();
 
     hud_level_name.setPosUR(HUD_LEVEL_NAME_X_OFFSET, HUD_LEVEL_NAME_Y_OFFSET);
+    hud_level_name.setZOrder(HUD_Z_LAYER);
     hud_level_name.setVisible(false);
 
     // Set Camera
@@ -420,6 +449,10 @@ void Level::load()
 
     pause_screen_bg_ptr->set_camera(camera.value());
 
+    hud_stripe_1_sprite_ptr->set_camera(camera.value());
+    hud_stripe_2_sprite_ptr->set_camera(camera.value());
+    hud_stripe_3_sprite_ptr->set_camera(camera.value());
+    hud_stripe_4_sprite_ptr->set_camera(camera.value());
     hud_hp_sprite_ptr->set_camera(camera.value());
 
     currency_num_1_sprite_ptr->set_camera(camera.value());
@@ -568,7 +601,7 @@ void Level::load(LevelName level_name)
             cells = main_bg_ptr->map().cells_ref().value();
 
             // Update HUD level name text box
-            hud_level_name.setSpritesFromString("TOLLS AND TROLLS", 16);
+            hud_level_name.setSpritesFromString("     TROLL TOLLS", 16);
 
             // Next level
             next_level = LEVEL_TITLE_SCREEN;
@@ -618,6 +651,22 @@ void Level::load(LevelName level_name)
                                                                             0, 0);
 
     // Initialize HUD elements
+    hud_stripe_1_sprite_ptr = bn::sprite_items::hud_stripe.create_sprite(HUD_STRIPE_1_X_OFFSET, HUD_STRIPE_1_Y_OFFSET);
+    hud_stripe_1_sprite_ptr->set_z_order(HUD_STRIPE_Z_LAYER);
+    hud_stripe_1_sprite_ptr->set_visible(false);
+
+    hud_stripe_2_sprite_ptr = bn::sprite_items::hud_stripe.create_sprite(HUD_STRIPE_2_X_OFFSET, HUD_STRIPE_2_Y_OFFSET);
+    hud_stripe_2_sprite_ptr->set_z_order(HUD_STRIPE_Z_LAYER);
+    hud_stripe_2_sprite_ptr->set_visible(false);
+
+    hud_stripe_3_sprite_ptr = bn::sprite_items::hud_stripe.create_sprite(HUD_STRIPE_3_X_OFFSET, HUD_STRIPE_3_Y_OFFSET);
+    hud_stripe_3_sprite_ptr->set_z_order(HUD_STRIPE_Z_LAYER);
+    hud_stripe_3_sprite_ptr->set_visible(false);
+
+    hud_stripe_4_sprite_ptr = bn::sprite_items::hud_stripe.create_sprite(HUD_STRIPE_4_X_OFFSET, HUD_STRIPE_4_Y_OFFSET);
+    hud_stripe_4_sprite_ptr->set_z_order(HUD_STRIPE_Z_LAYER);
+    hud_stripe_4_sprite_ptr->set_visible(false);
+
     hud_hp_sprite_ptr = bn::sprite_items::hud_hp_bar.create_sprite(HUD_HP_X_OFFSET, HUD_HP_Y_OFFSET);
     hud_hp_sprite_ptr->set_z_order(HUD_Z_LAYER);
     hud_hp_sprite_ptr->set_visible(false);
@@ -649,6 +698,7 @@ void Level::load(LevelName level_name)
     default_hud_palette_ptr = hud_hp_sprite_ptr->palette();
 
     hud_level_name.setPosUR(HUD_LEVEL_NAME_X_OFFSET, HUD_LEVEL_NAME_Y_OFFSET);
+    hud_level_name.setZOrder(HUD_Z_LAYER);
     hud_level_name.setVisible(false);
 
     // Set Camera
@@ -659,6 +709,10 @@ void Level::load(LevelName level_name)
 
     pause_screen_bg_ptr->set_camera(camera.value());
 
+    hud_stripe_1_sprite_ptr->set_camera(camera.value());
+    hud_stripe_2_sprite_ptr->set_camera(camera.value());
+    hud_stripe_3_sprite_ptr->set_camera(camera.value());
+    hud_stripe_4_sprite_ptr->set_camera(camera.value());
     hud_hp_sprite_ptr->set_camera(camera.value());
 
     currency_num_1_sprite_ptr->set_camera(camera.value());
@@ -736,6 +790,10 @@ void Level::updateNameCard()
     updateFade();
 
     // Hide HUD
+    hud_stripe_1_sprite_ptr->set_visible(false);
+    hud_stripe_2_sprite_ptr->set_visible(false);
+    hud_stripe_3_sprite_ptr->set_visible(false);
+    hud_stripe_4_sprite_ptr->set_visible(false);
     hud_hp_sprite_ptr->set_visible(false);
     currency_num_1_sprite_ptr->set_visible(false);
     currency_num_2_sprite_ptr->set_visible(false);
@@ -770,6 +828,10 @@ void Level::updateTitleScreen()
     updateFade();
 
     // Hide HUD
+    hud_stripe_1_sprite_ptr->set_visible(false);
+    hud_stripe_2_sprite_ptr->set_visible(false);
+    hud_stripe_3_sprite_ptr->set_visible(false);
+    hud_stripe_4_sprite_ptr->set_visible(false);
     hud_hp_sprite_ptr->set_visible(false);
     currency_num_1_sprite_ptr->set_visible(false);
     currency_num_2_sprite_ptr->set_visible(false);
@@ -1045,6 +1107,23 @@ void Level::updateHUD()
     
     if(temp_player_ptr != NULL)
     {
+        /////////////////////
+        // Draw HUD Stripe //
+        /////////////////////
+
+        // Set Position
+        hud_stripe_1_sprite_ptr->set_position(camera->x() + HUD_STRIPE_1_X_OFFSET, 
+                                              camera->y() + HUD_STRIPE_1_Y_OFFSET);
+
+        hud_stripe_2_sprite_ptr->set_position(camera->x() + HUD_STRIPE_2_X_OFFSET, 
+                                              camera->y() + HUD_STRIPE_2_Y_OFFSET);
+
+        hud_stripe_3_sprite_ptr->set_position(camera->x() + HUD_STRIPE_3_X_OFFSET, 
+                                              camera->y() + HUD_STRIPE_3_Y_OFFSET);
+
+        hud_stripe_4_sprite_ptr->set_position(camera->x() + HUD_STRIPE_4_X_OFFSET, 
+                                              camera->y() + HUD_STRIPE_4_Y_OFFSET);
+
         /////////////
         // Draw HP //
         /////////////
@@ -1141,6 +1220,10 @@ void Level::updateFade()
     if(fade_in)
     {
         // Reveal HUD
+        hud_stripe_1_sprite_ptr->set_visible(true);
+        hud_stripe_2_sprite_ptr->set_visible(true);
+        hud_stripe_3_sprite_ptr->set_visible(true);
+        hud_stripe_4_sprite_ptr->set_visible(true);
         hud_hp_sprite_ptr->set_visible(true);
         currency_num_1_sprite_ptr->set_visible(true);
         currency_num_2_sprite_ptr->set_visible(true);
@@ -1171,6 +1254,9 @@ void Level::updateFade()
         default_flash_palette_ptr->set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
 
         // Fade HUD in
+        bn::sprite_palette_ptr hud_stripe_palette = hud_stripe_1_sprite_ptr->palette();
+        hud_stripe_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+
         bn::sprite_palette_ptr hud_hp_palette = hud_hp_sprite_ptr->palette();
         hud_hp_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
 
@@ -1233,6 +1319,9 @@ void Level::updateFade()
         default_flash_palette_ptr->set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
 
         // Fade HUD out
+        bn::sprite_palette_ptr hud_stripe_palette = hud_stripe_1_sprite_ptr->palette();
+        hud_stripe_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+
         bn::sprite_palette_ptr hud_hp_palette = hud_hp_sprite_ptr->palette();
         hud_hp_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
 
@@ -1247,6 +1336,12 @@ void Level::updateFade()
 
         if(hud_hp_palette.fade_intensity() == 1)
         {
+            hud_stripe_palette.set_fade(bn::colors::black, 0);
+            hud_stripe_1_sprite_ptr->set_visible(false);
+            hud_stripe_2_sprite_ptr->set_visible(false);
+            hud_stripe_3_sprite_ptr->set_visible(false);
+            hud_stripe_4_sprite_ptr->set_visible(false);
+
             hud_hp_palette.set_fade(bn::colors::black, 0);
             hud_hp_sprite_ptr->set_visible(false);
 
@@ -1617,6 +1712,10 @@ void Level::togglePauseScreen()
         pause_screen_bg_ptr->set_visible(false);
 
         // Reveal HUD Sprites //
+        hud_stripe_1_sprite_ptr->set_visible(true);
+        hud_stripe_2_sprite_ptr->set_visible(true);
+        hud_stripe_3_sprite_ptr->set_visible(true);
+        hud_stripe_4_sprite_ptr->set_visible(true);
         hud_hp_sprite_ptr->set_visible(true);
         currency_num_1_sprite_ptr->set_visible(true);
         currency_num_2_sprite_ptr->set_visible(true);
@@ -1643,6 +1742,10 @@ void Level::togglePauseScreen()
         pause_screen_bg_ptr->set_position(camera.value().x(), camera.value().y());
 
         // Hide HUD Sprites //
+        hud_stripe_1_sprite_ptr->set_visible(false);
+        hud_stripe_2_sprite_ptr->set_visible(false);
+        hud_stripe_3_sprite_ptr->set_visible(false);
+        hud_stripe_4_sprite_ptr->set_visible(false);
         hud_hp_sprite_ptr->set_visible(false);
         currency_num_1_sprite_ptr->set_visible(false);
         currency_num_2_sprite_ptr->set_visible(false);

@@ -22,7 +22,7 @@
 
 #define TEXT_BOX_Z_ORDER -3
 
-#define TEXT_BOX_SPAN     18
+#define TEXT_BOX_SPAN     16
 #define TEXT_BOX_ROWS     1
 
 #define TEXT_BOX_LETTER_WIDTH  7
@@ -94,6 +94,7 @@ struct TextBox
     void setSpritesFromString(const char* char_string_ptr, int32 string_size);
     void setCamera(const bn::camera_ptr& camera);
     void draw();
+    void setZOrder(int32 z_order);
     void setVisible(bool is_visible);
 
     void updateSpritePositions();

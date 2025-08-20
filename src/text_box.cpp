@@ -379,6 +379,14 @@ void TextBox::draw()
     }
 }
 
+void TextBox::setZOrder(int32 z_order)
+{
+    for(int i = 0; i < sprite_vector.size(); i++)
+    {
+        sprite_vector[i].set_z_order(z_order);
+    }
+}
+
 void TextBox::setVisible(bool is_visible)
 {
     for(int i = 0; i < sprite_vector.size(); i++)

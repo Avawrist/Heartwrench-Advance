@@ -243,8 +243,12 @@ void Player::spinJump()
 
 void Player::bellJump()
 {
+	grounded_detected = false;
+
 	rigidbody.removeForces();
-	air_frames_elapsed = 0;
+	air_frames_elapsed          = 0;
+	remaining_jump_input_frames	= 0;
+	late_jump_grace_frames      = 0;
 	setState(NONE);
 	resetHitboxes();
 

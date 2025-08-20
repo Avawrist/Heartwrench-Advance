@@ -38,6 +38,7 @@
 #include "bn_regular_bg_items_pause_screen.h"
 
 // HUD Elements
+#include "bn_sprite_items_hud_stripe.h"
 #include "bn_sprite_items_hud_hp_bar.h"
 #include "bn_sprite_items_currency_number.h"
 #include "bn_sprite_items_hud_currency_icon.h"
@@ -72,22 +73,32 @@
 #define PAUSE_BG_ORDER  -5
 
 // HUD Macros
-#define HUD_Z_LAYER -4
+#define HUD_STRIPE_Z_LAYER -3
+#define HUD_Z_LAYER        -4
 
-#define HUD_HP_X_OFFSET -86
+#define HUD_STRIPE_1_X_OFFSET -88
+#define HUD_STRIPE_1_Y_OFFSET -62
+#define HUD_STRIPE_2_X_OFFSET -30
+#define HUD_STRIPE_2_Y_OFFSET -62
+#define HUD_STRIPE_3_X_OFFSET  30
+#define HUD_STRIPE_3_Y_OFFSET -62
+#define HUD_STRIPE_4_X_OFFSET  88
+#define HUD_STRIPE_4_Y_OFFSET -62
+
+#define HUD_HP_X_OFFSET -83
 #define HUD_HP_Y_OFFSET -62
 
-#define HUD_CURRENCY_NUM_1_X_OFFSET -15
-#define HUD_CURRENCY_NUM_1_Y_OFFSET -70
+#define HUD_CURRENCY_NUM_1_X_OFFSET -12
+#define HUD_CURRENCY_NUM_1_Y_OFFSET -67
 
-#define HUD_CURRENCY_NUM_2_X_OFFSET  -8
-#define HUD_CURRENCY_NUM_2_Y_OFFSET -70
+#define HUD_CURRENCY_NUM_2_X_OFFSET  -5
+#define HUD_CURRENCY_NUM_2_Y_OFFSET -67
 
-#define HUD_CURRENCY_ICON_X_OFFSET -38
+#define HUD_CURRENCY_ICON_X_OFFSET -35
 #define HUD_CURRENCY_ICON_Y_OFFSET -68
 
-#define HUD_LEVEL_NAME_X_OFFSET  140
-#define HUD_LEVEL_NAME_Y_OFFSET -70
+#define HUD_LEVEL_NAME_X_OFFSET  120
+#define HUD_LEVEL_NAME_Y_OFFSET -67
 
 // Pause Menu
 #define CURSOR_CONTINUE      0
@@ -167,6 +178,10 @@ struct Level
     // HUD
     bn::optional<bn::sprite_palette_ptr> default_hud_palette_ptr;
 
+    bn::optional<bn::sprite_ptr>                                         hud_stripe_1_sprite_ptr;
+    bn::optional<bn::sprite_ptr>                                         hud_stripe_2_sprite_ptr;
+    bn::optional<bn::sprite_ptr>                                         hud_stripe_3_sprite_ptr;
+    bn::optional<bn::sprite_ptr>                                         hud_stripe_4_sprite_ptr;
     bn::optional<bn::sprite_ptr>                                         hud_hp_sprite_ptr;
 	bn::optional<bn::sprite_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> hud_hp_animate_action_ptr;
 
