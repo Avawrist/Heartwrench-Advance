@@ -840,8 +840,8 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			//////////////////////
 			// Update Air Frame //
 			//////////////////////
-
-			if(animate_action_ptr->done())
+			
+			if(animate_action_ptr->done() || (animate_action_ptr->update_forever() && rigidbody.normalized_dir.y() > 0))
 			{
 				animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 																		   0,
