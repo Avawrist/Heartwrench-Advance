@@ -260,9 +260,10 @@ void Player::bellJump()
 	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 																2,
 																bn::sprite_items::player.tiles_item(),
-																10, 10, 10, 
-																11, 11, 11, 
-																12, 12, 12);
+																28, 30, 31, 32,
+																29, 30, 31, 32,
+																33, 33, 33, 
+																34, 34, 34);
 }
 
 /*
@@ -840,7 +841,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			// Update Air Frame //
 			//////////////////////
 
-			if(rigidbody.normalized_dir.y() > 0)
+			if(animate_action_ptr->done())
 			{
 				animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 																		   0,
