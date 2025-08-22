@@ -243,6 +243,8 @@ void Player::spinJump()
 
 void Player::bellJump()
 {
+	global_bell_struck = false;
+
 	if(grounded_detected)
 	{
 		setY(y() + PLAYER_GROUNDED_BELL_JUMP_SUPPLEMENT);
@@ -450,8 +452,7 @@ void Player::updateHitboxes(const RoomBounds& 							   room_bounds,
 							 camera);
 		hitbox_1_ptr->draw();
 
-		if(hitbox_1_ptr->bell_struck) {bellJump();}
-		else if(hitbox_1_ptr->is_inactive) 
+		if(hitbox_1_ptr->is_inactive) 
 		{
 			delete hitbox_1_ptr;
 			hitbox_1_ptr = NULL;
@@ -471,8 +472,7 @@ void Player::updateHitboxes(const RoomBounds& 							   room_bounds,
 							 camera);
 		hitbox_2_ptr->draw();
 
-		if(hitbox_2_ptr->bell_struck) {bellJump();}
-		else if(hitbox_2_ptr->is_inactive) 
+		if(hitbox_2_ptr->is_inactive) 
 		{
 			delete hitbox_2_ptr;
 			hitbox_2_ptr = NULL;
@@ -492,8 +492,7 @@ void Player::updateHitboxes(const RoomBounds& 							   room_bounds,
 							 camera);
 		hitbox_3_ptr->draw();
 	
-		if(hitbox_3_ptr->bell_struck) {bellJump();}
-		else if(hitbox_3_ptr->is_inactive) 
+		if(hitbox_3_ptr->is_inactive) 
 		{
 			delete hitbox_3_ptr;
 			hitbox_3_ptr = NULL;
@@ -754,6 +753,9 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			if(bn::keypad::a_pressed() || a_requested || jump_buffered_frames)
 			{jump();}
 
+			// Bell Jump
+			else if(global_bell_struck) {bellJump();}
+
 			// Spin Attack
 			else if(bn::keypad::b_pressed() || b_requested || spin_buffered_frames) 
 			{setState(PLAYER_SPIN_ATTACK);}
@@ -816,6 +818,9 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 			// Jump
 			if(bn::keypad::a_pressed() || a_requested || jump_buffered_frames) {jump();}
+
+			// Bell Jump
+			else if(global_bell_struck) {bellJump();}
 
 			// Spin Attack
 			else if(bn::keypad::b_pressed() || b_requested || spin_buffered_frames) {setState(PLAYER_SPIN_ATTACK);}
@@ -903,6 +908,9 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 				// Buffer Jump
 				else {jump_buffered_frames = PLAYER_JUMP_BUFFER_FRAMES;}
 			}
+
+			// Bell Jump
+			else if(global_bell_struck) {bellJump();}
 
 			// Spin
 			else if(bn::keypad::b_pressed() || b_requested || spin_buffered_frames)
@@ -1295,6 +1303,9 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			// Spin Jump
 			if((bn::keypad::a_pressed() || a_requested || jump_buffered_frames)) {spinJump();}
 
+			// Bell Jump
+			else if(global_bell_struck) {bellJump();}
+
 			// Spin Buffer
 			else if(bn::keypad::b_pressed() || b_requested)
 			{spin_buffered_frames = PLAYER_SPIN_BUFFER_FRAMES;}
@@ -1373,6 +1384,9 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 				jump(); 
 				setState(NONE);
 			}
+
+			// Bell Jump
+			else if(global_bell_struck) {bellJump();}
 
 			///////////////
 			// End State //

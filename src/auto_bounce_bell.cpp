@@ -153,6 +153,40 @@ void AutoBounceBell::update(const RoomBounds& 							   room_bounds,
 
 }
 
+void AutoBounceBell::applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_dir)
+{
+    if(invulnerability_frames) {return;}
+    
+    global_bell_struck = true;
+
+    // Object invuln:
+    invulnerability_frames = GAME_OBJECT_HIT_INVULNERABILITY_FRAMES;
+
+    // Global juice
+    global_bg_hitflash_frames   = GENERIC_HIT_HITSTOP_FRAMES;
+    global_hitstop_frames       = GENERIC_HIT_HITSTOP_FRAMES;
+    global_screenshake_frames   = GENERIC_HIT_SCREENSHAKE_FRAMES;
+    global_screenshake_severity = GENERIC_HIT_SCREENSHAKE_SEVERITY;
+
+    // Object physics:
+    rigidbody.removeForces();
+    rigidbody.addForce(Force(bn::fixed_point_t<12>(GENERIC_HIT_X_KNOCKBACK * knockback_x_dir, 
+                                                   GENERIC_HIT_Y_KNOCKBACK * knockback_y_dir), 
+                                                   GENERIC_HIT_KNOCKBACK_DECAY));
+
+    // Object damage:
+    applyDamage(_damage);
+
+    // Object hitstun state:
+    hitstun_frames = GENERIC_HIT_HITSTUN_FRAMES;
+    setState(OBJECT_HITSTUN);
+
+    // Object juice:
+    setHitFlash();
+    applyHitEffect(x().integer(),
+                   y().integer());    
+}
+
 //////////////////////////////
 // State Function Overrides //
 //////////////////////////////

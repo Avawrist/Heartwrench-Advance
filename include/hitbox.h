@@ -36,8 +36,6 @@ struct Hitbox : GameObject
     int32 height;
     int32 damage;
 
-    bool bell_struck;
-
     ScreenShakeSeverity screenshake_severity;
 
     Hitbox(bn::point  pos,

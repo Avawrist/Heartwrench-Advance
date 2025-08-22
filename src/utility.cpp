@@ -30,6 +30,8 @@ int32 global_hud_currency_flash_frames = 0;
 
 int32 global_timer = 0;
 
+bool global_bell_struck = false;
+
 // Functions
 
 bool tileIsSolid(uint32 tile_index)

@@ -648,7 +648,6 @@ void GameObject::updateHitFlash()
 
 void GameObject::applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_dir)
 {
-
     if(invulnerability_frames) {return;}
     
     // Object invuln:

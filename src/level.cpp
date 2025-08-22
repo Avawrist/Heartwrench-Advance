@@ -866,7 +866,6 @@ void Level::updateTitleScreen()
 
 void Level::updateObjects()
 {
-
     // Update all objects
     for(int32 i = current_room.game_objects.size() - 1; i >= 0; i--)
     {

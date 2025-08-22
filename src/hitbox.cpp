@@ -55,8 +55,6 @@ Hitbox::Hitbox(bn::point pos,
 
     screenshake_severity = _screenshake_severity;
 
-    bell_struck = false;
-
 }
 
 Hitbox::Hitbox(const Hitbox& other) : GameObject(other)
@@ -73,7 +71,6 @@ Hitbox::Hitbox(const Hitbox& other) : GameObject(other)
     height                 = other.height;
     damage                 = other.damage;
     screenshake_severity   = other.screenshake_severity;
-    bell_struck            = other.bell_struck;
 }
 
 Hitbox::~Hitbox()
@@ -95,7 +92,6 @@ Hitbox& Hitbox::operator =(const Hitbox& other)
     height                 = other.height;
     damage                 = other.damage;
     screenshake_severity   = screenshake_severity;
-    bell_struck            = other.bell_struck;
 
     return *this;
 }
@@ -291,9 +287,6 @@ void Hitbox::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
                                 const bn::regular_bg_item&                     bg_item,
 		                        const bn::camera_ptr&                          camera)
 {
-    // Reset Bell Struck //
-    bell_struck = false;
-
     // Udpate Frame Counter //
     current_lifespan_frame--;
     current_lifespan_frame = clamp(0, lifespan_frames, current_lifespan_frame);
@@ -436,7 +429,7 @@ void Hitbox::resolveBounceBellCollision(GameObject& object)
 
     if(collider.isCollision(object.collider))
     {
-        bell_struck = true;
+        global_bell_struck = true;
         applyHBHit(object);
     }
 }
@@ -447,7 +440,7 @@ void Hitbox::resolveAutoBounceBellCollision(GameObject& object)
 
     if(collider.isCollision(object.collider))
     {
-        bell_struck = true;
+        global_bell_struck = true;
         applyHBHit(object);
     }
 }

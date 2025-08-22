@@ -46,6 +46,8 @@ struct BounceBell : GameObject {
                 const bn::regular_bg_item&                     bg_item,
                 const bn::camera_ptr&                          camera) override;
 
+    void applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_dir) override;
+
     //////////////////////////////
     // State Function Overrides //
     //////////////////////////////

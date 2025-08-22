@@ -154,6 +154,8 @@ extern int32 global_hud_currency_flash_frames;
 
 extern int32 global_timer;
 
+extern bool global_bell_struck;
+
 // Debug Mode
 #define DEBUG_BUILD false
 

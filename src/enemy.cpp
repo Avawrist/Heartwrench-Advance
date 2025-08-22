@@ -531,7 +531,6 @@ void Enemy::resolveBounceBellCollision(GameObject& object)
 {
 	if(collider.isCollision(object.collider))
     {
-		// Smash the block
 		if(state == OBJECT_HITSTUN || state == OBJECT_DEATH)
 		{object.applyHit(damage, 0, 0);}
     }
@@ -541,7 +540,6 @@ void Enemy::resolveAutoBounceBellCollision(GameObject& object)
 {
 	if(collider.isCollision(object.collider))
     {
-		// Smash the block
 		if(state == OBJECT_HITSTUN || state == OBJECT_DEATH)
 		{object.applyHit(damage, 0, 0);}
     }
