@@ -13,11 +13,11 @@
 // Struct AutoBounceBell //
 ///////////////////////////
 
-#define AUTO_BOUNCE_BELL_COLLIDER_WIDTH  28
-#define AUTO_BOUNCE_BELL_COLLIDER_HEIGHT 38
+#define AUTO_BOUNCE_BELL_COLLIDER_WIDTH  26
+#define AUTO_BOUNCE_BELL_COLLIDER_HEIGHT 48
 
 #define AUTO_BOUNCE_BELL_COLLIDER_OFFSET_X 0
-#define AUTO_BOUNCE_BELL_COLLIDER_OFFSET_Y 0
+#define AUTO_BOUNCE_BELL_COLLIDER_OFFSET_Y -8
 
 #define AUTO_BOUNCE_BELL_HITPOINTS 0
 
@@ -71,16 +71,16 @@ struct AutoBounceBell : GameObject {
 
     void resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>& game_objects) override;
 
-    void resolveHardBlockCollision(const Collider& other_collider)   override;
+    void resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
+                              const bn::span<const bn::regular_bg_map_cell>& cells,
+                              const bn::regular_bg_item&                     bg_item) override;
+
 	void resolveHGearLeftCollision(const Collider& other_collider)   override;
 	void resolveHGearMidCollision(const Collider& other_collider)    override;
 	void resolveHGearRightCollision(const Collider& other_collider)  override;
 	void resolveVGearTopCollision(const Collider& other_collider)    override;
 	void resolveVGearMidCollision(const Collider& other_collider)    override;
 	void resolveVGearBottomCollision(const Collider& other_collider) override;
-	void resolveSpikeCollision(const Collider& other_collider)       override;
-	void resolveClimbableCollision(const Collider& other_collider)   override;
-	void resolveOneWayBlockCollision(const Collider& other_collider) override;
 
 };
 
