@@ -246,7 +246,7 @@ void AutoBounceBell::resolveTileCollision(const bn::regular_bg_ptr&             
 	// Get current cell index that object resides in:
 	int32 half_level_width_pixels  = (bg_ptr.dimensions().width() / 2);
 	int32 half_level_height_pixels = (bg_ptr.dimensions().height() / 2);
-	bn::fixed index_x = (x() + half_level_width_pixels  + collider_offset_x)  / TILE_WIDTH;
+	bn::fixed index_x = (x() + half_level_width_pixels + collider_offset_x)  / TILE_WIDTH;
 	bn::fixed index_y = (y() + half_level_height_pixels + collider_offset_y)  / TILE_HEIGHT;
 	bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
 
