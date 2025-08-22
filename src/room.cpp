@@ -485,7 +485,6 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
 
         case GROUND_GHOUL:
             temp_object_ptr = new GroundGhoul();
-            _is_persistent  = true;
         break;
 
         case THORN_COLUMN:

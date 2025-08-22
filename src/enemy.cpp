@@ -124,7 +124,7 @@ void Enemy::updateDeathState()
     {
 		is_dead = true;
 		
-		object_request = ObjectRequest(SKULL_DROP, bn::fixed_point(x(), y()));
+		//object_request = ObjectRequest(SKULL_DROP, bn::fixed_point(x(), y()));
 	}
 }
 
