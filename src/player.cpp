@@ -258,12 +258,12 @@ void Player::bellJump()
 
 	rigidbody.addForce(PLAYER_BELL_JUMP_FORCE);
 	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-																2,
+																3,
 																bn::sprite_items::player.tiles_item(),
 																28, 30, 31, 32,
 																29, 30, 31, 32,
-																33, 33, 33, 
-																34, 34, 34);
+																11, 11, 11, 
+																12, 12, 12);
 }
 
 /*

@@ -110,6 +110,7 @@ tile_passage.o: G:/game/src/tile_passage.cpp \
  G:/game/build/bn_sprite_items_checkpoint.h \
  G:/game/build/bn_sprite_items_finish_seal.h \
  G:/game/build/bn_sprite_items_bounce_bell.h \
+ G:/game/build/bn_sprite_items_auto_bounce_bell.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h \
  G:/game/build/bn_sprite_items_thorn_column.h \
  G:/game/build/bn_sprite_items_thorn_bar.h \
@@ -232,6 +233,7 @@ G:/game/build/bn_sprite_items_star_drop.h:
 G:/game/build/bn_sprite_items_checkpoint.h:
 G:/game/build/bn_sprite_items_finish_seal.h:
 G:/game/build/bn_sprite_items_bounce_bell.h:
+G:/game/build/bn_sprite_items_auto_bounce_bell.h:
 G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/build/bn_sprite_items_thorn_column.h:
 G:/game/build/bn_sprite_items_thorn_bar.h:

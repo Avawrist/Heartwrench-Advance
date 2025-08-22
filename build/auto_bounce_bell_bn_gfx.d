@@ -1,0 +1,1 @@
+auto_bounce_bell_bn_gfx.o: auto_bounce_bell_bn_gfx.s

@@ -12,9 +12,9 @@ BounceBell::BounceBell()
     sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
     default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								                                   4,
-								                                   bn::sprite_items::bounce_bell.tiles_item(),
-								                                   0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1);
+                                                                    0,
+                                                                    bn::sprite_items::bounce_bell.tiles_item(),
+                                                                    3, 3);
 
     // Init Variables //
     collider_offset_x = BOUNCE_BELL_COLLIDER_OFFSET_X;
@@ -160,10 +160,10 @@ void BounceBell::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&  
 
             if(animate_action_ptr->done())
             {
-                animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-                                                                                4,
+                animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+                                                                                0,
                                                                                 bn::sprite_items::bounce_bell.tiles_item(),
-                                                                                0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1);
+                                                                                3, 3);
             }
 
         break;
@@ -196,11 +196,12 @@ void BounceBell::setState(ObjectState new_state)
         case OBJECT_HITSTUN:
 
             animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-                                                                        3,
+                                                                        4,
                                                                         bn::sprite_items::bounce_bell.tiles_item(),
-                                                                        3, 4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6, 5, 4,
-                                                                        3, 4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6, 5, 4,
-                                                                        3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 7, 7, 6, 6, 5, 5);
+                                                                        7, 8, 9, 10, 11, 6,
+                                                                        5, 4, 3, 2, 1, 
+                                                                        2, 2, 3, 3, 4, 4, 5, 5,
+                                                                        4, 4, 4, 4, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2);
 
 
         break;

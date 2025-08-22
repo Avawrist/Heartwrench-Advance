@@ -441,6 +441,17 @@ void Hitbox::resolveBounceBellCollision(GameObject& object)
     }
 }
 
+void Hitbox::resolveAutoBounceBellCollision(GameObject& object)
+{
+    if(object.state == OBJECT_HITSTUN) {return;}
+
+    if(collider.isCollision(object.collider))
+    {
+        bell_struck = true;
+        applyHBHit(object);
+    }
+}
+
 // Tiles
 void Hitbox::resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
                                   const bn::span<const bn::regular_bg_map_cell>& cells,

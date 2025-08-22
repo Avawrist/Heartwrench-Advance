@@ -108,6 +108,7 @@ struct Hitbox : GameObject
     void resolveCheckpointCollision(GameObject& object)          override;
     void resolveFinishSealCollision(GameObject& object)          override;
     void resolveBounceBellCollision(GameObject& object)          override;
+    void resolveAutoBounceBellCollision(GameObject& object)      override;
 
     // Tiles
     void resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 

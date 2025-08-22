@@ -45,6 +45,7 @@
 #include "finish_seal.h"
 
 #include "bounce_bell.h"
+#include "auto_bounce_bell.h"
 
 // Enemies
 #include "ground_ghoul.h"
