@@ -48,6 +48,8 @@ struct BounceBell : GameObject {
 
     void applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_dir) override;
 
+    void updateTimers() override;
+
     //////////////////////////////
     // State Function Overrides //
     //////////////////////////////

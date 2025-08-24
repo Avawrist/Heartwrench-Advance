@@ -12,9 +12,9 @@ GroundGhoul::GroundGhoul()
         sprite_ptr->set_z_order(ENEMY_Z_ORDER);
         default_palette_ptr = sprite_ptr->palette();
         animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-                                                                2,
-                                                                bn::sprite_items::ground_ghoul.tiles_item(),
-                                                                0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3);
+                                                                        2,
+                                                                        bn::sprite_items::ground_ghoul.tiles_item(),
+                                                                        0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3);
     
         collider          = Collider(x(), y(), GROUND_GHOUL_COLLIDER_WIDTH, GROUND_GHOUL_COLLIDER_HEIGHT);
         collider_x_axis   = collider;
@@ -163,10 +163,7 @@ void GroundGhoul::setState(ObjectState new_state)
 
         case OBJECT_DEATH:
 
-            animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-                                 1,
-                                 bn::sprite_items::ground_ghoul.tiles_item(),
-                                 12, 12, 12, 13, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 18);
+            playEnemyDeathAnim();
 
         break;
 

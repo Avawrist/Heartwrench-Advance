@@ -92,6 +92,7 @@ struct HPDrop : GameObject {
 	void resolveThornColumnCollision(GameObject& object) override; 
 	void resolveThornBarCollision(GameObject& object)    override; 
 	void resolveGroundGhoulCollision(GameObject& object) override;
+	void resolveBellTrollCollision(GameObject& object)   override;
 
 
 };

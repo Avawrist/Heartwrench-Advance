@@ -169,13 +169,20 @@ void BounceBell::applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_
     applyDamage(_damage);
 
     // Object hitstun state:
-    hitstun_frames = GENERIC_HIT_HITSTUN_FRAMES;
+    //hitstun_frames = GENERIC_HIT_HITSTUN_FRAMES;
     setState(OBJECT_HITSTUN);
 
     // Object juice:
     setHitFlash();
     applyHitEffect(x().integer(),
                    y().integer());
+}
+
+void BounceBell::updateTimers()
+{
+    GameObject::updateTimers();
+
+    invulnerability_frames = 0;
 }
 
 //////////////////////////////

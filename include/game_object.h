@@ -40,6 +40,8 @@
 #include "bn_sprite_items_wall_jump_effect.h"
 #include "bn_sprite_items_wall_splat_effect.h"
 #include "bn_sprite_items_enemy_hp_bar.h"
+#include "bn_sprite_items_enemy_death.h"
+#include "bn_sprite_items_block_death.h"
 
 // Level Object Assets
 #include "bn_sprite_items_tile_passage.h"
@@ -70,9 +72,10 @@
 #include "bn_sprite_items_auto_bounce_bell.h"
 
 // Enemy Object Assets
-#include "bn_sprite_items_ground_ghoul.h"
 #include "bn_sprite_items_thorn_column.h"
 #include "bn_sprite_items_thorn_bar.h"
+#include "bn_sprite_items_ground_ghoul.h"
+#include "bn_sprite_items_bell_troll.h"
 
 // Prop Assets
 #include "bn_sprite_items_candelabra.h"
@@ -103,7 +106,7 @@
 
 #define GAME_OBJECT_IGNORE_OWP_FRAMES 3
 
-#define GAME_OBJECT_HIT_INVULNERABILITY_FRAMES 30
+#define GAME_OBJECT_HIT_INVULNERABILITY_FRAMES 45
 #define GAME_OBJECT_MAX_HIT_FLASH_FRAMES       3
 
 #define GAME_OBJECT_SPRITE_OFFSET_INCREMENT 0.1
@@ -193,6 +196,7 @@ enum ObjectType
 	THORN_COLUMN,
 	THORN_BAR,
 	GROUND_GHOUL,
+	BELL_TROLL,
 
 	// Props
 	CANDELABRA,
@@ -238,6 +242,9 @@ enum ObjectState
 
 	// Ground Ghoul
 	GROUND_GHOUL_CRAWL,
+
+	// Bell Troll
+	BELL_TROLL_FROZEN,
 
 	/////////////////////
 	// Special Objects //
@@ -408,6 +415,7 @@ struct GameObject
 	void applyHP(int32 points);
 	void applyHitEffect(int32 x, int32 y);
 	void applySplatEffect(int32 x, int32 y);
+	void playBlockDeathAnim();
 
 	/////////////////////
 	// State Functions //
@@ -472,6 +480,7 @@ struct GameObject
 	virtual void resolveThornColumnCollision(GameObject& object); 
 	virtual void resolveThornBarCollision(GameObject& object); 
 	virtual void resolveGroundGhoulCollision(GameObject& object);
+	virtual void resolveBellTrollCollision(GameObject& object);
 
 	// Special Objects
 	virtual void resolveHitboxSpin1Collision(GameObject& object);

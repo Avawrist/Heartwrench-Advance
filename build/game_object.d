@@ -84,6 +84,8 @@ game_object.o: G:/game/src/game_object.cpp G:/game/include/game_object.h \
  G:/game/build/bn_sprite_items_wall_jump_effect.h \
  G:/game/build/bn_sprite_items_wall_splat_effect.h \
  G:/game/build/bn_sprite_items_enemy_hp_bar.h \
+ G:/game/build/bn_sprite_items_enemy_death.h \
+ G:/game/build/bn_sprite_items_block_death.h \
  G:/game/build/bn_sprite_items_tile_passage.h \
  G:/game/build/bn_sprite_items_phase_orb_up.h \
  G:/game/build/bn_sprite_items_phase_orb_down.h \
@@ -110,9 +112,10 @@ game_object.o: G:/game/src/game_object.cpp G:/game/include/game_object.h \
  G:/game/build/bn_sprite_items_finish_seal.h \
  G:/game/build/bn_sprite_items_bounce_bell.h \
  G:/game/build/bn_sprite_items_auto_bounce_bell.h \
- G:/game/build/bn_sprite_items_ground_ghoul.h \
  G:/game/build/bn_sprite_items_thorn_column.h \
  G:/game/build/bn_sprite_items_thorn_bar.h \
+ G:/game/build/bn_sprite_items_ground_ghoul.h \
+ G:/game/build/bn_sprite_items_bell_troll.h \
  G:/game/build/bn_sprite_items_candelabra.h \
  G:/game/build/bn_sprite_items_hitbox.h \
  G:/game/build/bn_sprite_items_player.h \
@@ -206,6 +209,8 @@ G:/butano-master/butano/include/bn_sprite_palette_item.h:
 G:/game/build/bn_sprite_items_wall_jump_effect.h:
 G:/game/build/bn_sprite_items_wall_splat_effect.h:
 G:/game/build/bn_sprite_items_enemy_hp_bar.h:
+G:/game/build/bn_sprite_items_enemy_death.h:
+G:/game/build/bn_sprite_items_block_death.h:
 G:/game/build/bn_sprite_items_tile_passage.h:
 G:/game/build/bn_sprite_items_phase_orb_up.h:
 G:/game/build/bn_sprite_items_phase_orb_down.h:
@@ -232,9 +237,10 @@ G:/game/build/bn_sprite_items_checkpoint.h:
 G:/game/build/bn_sprite_items_finish_seal.h:
 G:/game/build/bn_sprite_items_bounce_bell.h:
 G:/game/build/bn_sprite_items_auto_bounce_bell.h:
-G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/build/bn_sprite_items_thorn_column.h:
 G:/game/build/bn_sprite_items_thorn_bar.h:
+G:/game/build/bn_sprite_items_ground_ghoul.h:
+G:/game/build/bn_sprite_items_bell_troll.h:
 G:/game/build/bn_sprite_items_candelabra.h:
 G:/game/build/bn_sprite_items_hitbox.h:
 G:/game/build/bn_sprite_items_player.h:

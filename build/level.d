@@ -116,6 +116,8 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/build/bn_sprite_items_wall_jump_effect.h \
  G:/game/build/bn_sprite_items_wall_splat_effect.h \
  G:/game/build/bn_sprite_items_enemy_hp_bar.h \
+ G:/game/build/bn_sprite_items_enemy_death.h \
+ G:/game/build/bn_sprite_items_block_death.h \
  G:/game/build/bn_sprite_items_tile_passage.h \
  G:/game/build/bn_sprite_items_phase_orb_up.h \
  G:/game/build/bn_sprite_items_phase_orb_down.h \
@@ -142,9 +144,10 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/build/bn_sprite_items_finish_seal.h \
  G:/game/build/bn_sprite_items_bounce_bell.h \
  G:/game/build/bn_sprite_items_auto_bounce_bell.h \
- G:/game/build/bn_sprite_items_ground_ghoul.h \
  G:/game/build/bn_sprite_items_thorn_column.h \
  G:/game/build/bn_sprite_items_thorn_bar.h \
+ G:/game/build/bn_sprite_items_ground_ghoul.h \
+ G:/game/build/bn_sprite_items_bell_troll.h \
  G:/game/build/bn_sprite_items_candelabra.h \
  G:/game/build/bn_sprite_items_hitbox.h \
  G:/game/build/bn_sprite_items_player.h \
@@ -162,10 +165,11 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/include/moon_drop.h G:/game/include/skull_drop.h \
  G:/game/include/star_drop.h G:/game/include/checkpoint.h \
  G:/game/include/finish_seal.h G:/game/include/bounce_bell.h \
- G:/game/include/auto_bounce_bell.h G:/game/include/ground_ghoul.h \
- G:/game/include/enemy.h G:/game/include/thorn_column.h \
- G:/game/include/thorn_bar.h G:/game/include/candelabra.h \
- G:/game/include/prop.h G:/game/include/player.h
+ G:/game/include/auto_bounce_bell.h G:/game/include/thorn_column.h \
+ G:/game/include/enemy.h G:/game/include/thorn_bar.h \
+ G:/game/include/ground_ghoul.h G:/game/include/bell_troll.h \
+ G:/game/include/candelabra.h G:/game/include/prop.h \
+ G:/game/include/player.h
 G:/game/include/level.h:
 G:/butano-master/butano/include/bn_log.h:
 G:/butano-master/butano/include/bn_config_log.h:
@@ -288,6 +292,8 @@ G:/game/build/bn_sprite_items_hit_effect.h:
 G:/game/build/bn_sprite_items_wall_jump_effect.h:
 G:/game/build/bn_sprite_items_wall_splat_effect.h:
 G:/game/build/bn_sprite_items_enemy_hp_bar.h:
+G:/game/build/bn_sprite_items_enemy_death.h:
+G:/game/build/bn_sprite_items_block_death.h:
 G:/game/build/bn_sprite_items_tile_passage.h:
 G:/game/build/bn_sprite_items_phase_orb_up.h:
 G:/game/build/bn_sprite_items_phase_orb_down.h:
@@ -314,9 +320,10 @@ G:/game/build/bn_sprite_items_checkpoint.h:
 G:/game/build/bn_sprite_items_finish_seal.h:
 G:/game/build/bn_sprite_items_bounce_bell.h:
 G:/game/build/bn_sprite_items_auto_bounce_bell.h:
-G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/build/bn_sprite_items_thorn_column.h:
 G:/game/build/bn_sprite_items_thorn_bar.h:
+G:/game/build/bn_sprite_items_ground_ghoul.h:
+G:/game/build/bn_sprite_items_bell_troll.h:
 G:/game/build/bn_sprite_items_candelabra.h:
 G:/game/build/bn_sprite_items_hitbox.h:
 G:/game/build/bn_sprite_items_player.h:
@@ -345,10 +352,11 @@ G:/game/include/checkpoint.h:
 G:/game/include/finish_seal.h:
 G:/game/include/bounce_bell.h:
 G:/game/include/auto_bounce_bell.h:
-G:/game/include/ground_ghoul.h:
-G:/game/include/enemy.h:
 G:/game/include/thorn_column.h:
+G:/game/include/enemy.h:
 G:/game/include/thorn_bar.h:
+G:/game/include/ground_ghoul.h:
+G:/game/include/bell_troll.h:
 G:/game/include/candelabra.h:
 G:/game/include/prop.h:
 G:/game/include/player.h:

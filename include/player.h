@@ -272,6 +272,14 @@ struct Player : GameObject {
 
 	void resetHitboxes();
 
+	void setIdleAnimation();
+	void setWalkAnimation();
+	void setJumpAnimation();
+	void setBellJumpAnimation();
+	void setSpinAttackAnimation();
+	void setDeathAnimation();
+	void setClimbAnimation();
+
 	//////////////////////////
 	// GameObject Overrides //
 	//////////////////////////
@@ -349,6 +357,7 @@ struct Player : GameObject {
 	void resolveThornColumnCollision(GameObject& object) override; 
 	void resolveThornBarCollision(GameObject& object)    override; 
 	void resolveGroundGhoulCollision(GameObject& object) override;
+	void resolveBellTrollCollision(GameObject& object)   override;
 
 	// Tiles
 	void resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 

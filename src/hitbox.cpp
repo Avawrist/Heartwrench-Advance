@@ -299,38 +299,6 @@ void Hitbox::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 /////////////////////////
 
 // Level Objects
-void Hitbox::resolvePushBlockCollision(GameObject& object)
-{
-    if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
-}
-
-void Hitbox::resolvePushBlockMiniCollision(GameObject& object)
-{
-    if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
-}
-
-// Level Enemies
-void Hitbox::resolveThornColumnCollision(GameObject& object)
-{
-    if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
-}
-
-void Hitbox::resolveThornBarCollision(GameObject& object)
-{
-    if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
-}
-
-void Hitbox::resolveGroundGhoulCollision(GameObject& object)
-{
-    if(object.state == OBJECT_DEATH) {return;}
-
-    if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
-}
 
 void Hitbox::resolveSmashBlockLargeCollision(GameObject& object)
 {
@@ -444,6 +412,48 @@ void Hitbox::resolveAutoBounceBellCollision(GameObject& object)
         applyHBHit(object);
     }
 }
+
+void Hitbox::resolvePushBlockCollision(GameObject& object)
+{
+    if(collider.isCollision(object.collider))
+    {applyHBHit(object);}
+}
+
+void Hitbox::resolvePushBlockMiniCollision(GameObject& object)
+{
+    if(collider.isCollision(object.collider))
+    {applyHBHit(object);}
+}
+
+// Level Enemies
+void Hitbox::resolveThornColumnCollision(GameObject& object)
+{
+    if(collider.isCollision(object.collider))
+    {applyHBHit(object);}
+}
+
+void Hitbox::resolveThornBarCollision(GameObject& object)
+{
+    if(collider.isCollision(object.collider))
+    {applyHBHit(object);}
+}
+
+void Hitbox::resolveGroundGhoulCollision(GameObject& object)
+{
+    if(object.state == OBJECT_DEATH) {return;}
+
+    if(collider.isCollision(object.collider))
+    {applyHBHit(object);}
+}
+
+void Hitbox::resolveBellTrollCollision(GameObject& object)
+{
+    if(object.state == OBJECT_DEATH) {return;}
+
+    if(collider.isCollision(object.collider))
+    {applyHBHit(object);}
+}
+
 
 // Tiles
 void Hitbox::resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 

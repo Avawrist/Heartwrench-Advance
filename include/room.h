@@ -48,9 +48,10 @@
 #include "auto_bounce_bell.h"
 
 // Enemies
-#include "ground_ghoul.h"
 #include "thorn_column.h"
 #include "thorn_bar.h"
+#include "ground_ghoul.h"
+#include "bell_troll.h"
 
 // Props
 #include "candelabra.h"

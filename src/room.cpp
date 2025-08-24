@@ -234,16 +234,20 @@ int32 Room::addObject(ObjectRequest& object_request, const bn::camera_ptr& camer
 	    // Level Enemies //
 	    ///////////////////
 
-        case GROUND_GHOUL:
-            temp_object_ptr = new GroundGhoul();
-        break;
-
         case THORN_COLUMN:
             temp_object_ptr = new ThornColumn();
         break;
 
         case THORN_BAR:
             temp_object_ptr = new ThornBar();
+        break;
+
+        case GROUND_GHOUL:
+            temp_object_ptr = new GroundGhoul();
+        break;
+
+        case BELL_TROLL:
+            temp_object_ptr = new BellTroll();
         break;
 
         ///////////
@@ -483,10 +487,6 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
 	    // Level Enemies //
 	    ///////////////////
 
-        case GROUND_GHOUL:
-            temp_object_ptr = new GroundGhoul();
-        break;
-
         case THORN_COLUMN:
             temp_object_ptr = new ThornColumn();
             _is_persistent  = true;
@@ -495,6 +495,14 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
         case THORN_BAR:
             temp_object_ptr = new ThornBar();
             _is_persistent  = true;
+        break;
+
+        case GROUND_GHOUL:
+            temp_object_ptr = new GroundGhoul();
+        break;
+
+        case BELL_TROLL:
+            temp_object_ptr = new BellTroll();
         break;
 
         ///////////

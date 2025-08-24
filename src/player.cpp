@@ -428,6 +428,41 @@ void Player::resetHitboxes()
 	hitbox_3_ptr = NULL;
 }
 
+void Player::setIdleAnimation()
+{
+
+}
+
+void Player::setWalkAnimation()
+{
+
+}
+
+void Player::setJumpAnimation()
+{
+
+}
+
+void Player::setBellJumpAnimation()
+{
+
+}
+
+void Player::setSpinAttackAnimation()
+{
+
+}
+
+void Player::setDeathAnimation()
+{
+
+}
+
+void Player::setClimbAnimation()
+{
+	
+}
+
 //////////////////////////
 // GameObject Overrides //
 //////////////////////////
@@ -2166,6 +2201,54 @@ void Player::resolveGroundGhoulCollision(GameObject& object)
 		else				 {knockback_x_dir = -1;}
 
 		applyHit(object.damage, knockback_x_dir, 0);
+	}
+}
+
+void Player::resolveBellTrollCollision(GameObject& object)
+{
+	if(object.state == OBJECT_HITSTUN || object.state == OBJECT_DEATH) {return;}
+	
+	switch(object.state)
+	{
+		case BELL_TROLL_FROZEN:
+
+			if(collider.isCollision(object.collider))
+			{
+				// Resolve X Axis Collision //
+				resolveXAxisCollision(object.collider);
+
+				// Resolve Y Axis Collision //
+				resolveYAxisCollision(object.collider);
+
+				// Resolve Corner Collision //
+				if(col_y_offset == 0 && col_x_offset == 0)
+				{resolveCornerCollision(object.collider);}
+			}
+
+			updateTestColliders();
+
+			if(test_collider.isCollision(object.collider) && 
+			rigidbody.normalized_dir.y() >= 0)
+			{
+				grounded_detected = true;
+				rigidbody.removeYForces();
+			}
+
+		break;
+
+		default:
+
+			if(hitpoints > 0 && collider.isCollision(object.collider))
+			{
+				int32 knockback_x_dir;
+
+				if(x() > object.x()) {knockback_x_dir = 1;}
+				else				 {knockback_x_dir = -1;}
+
+				applyHit(object.damage, knockback_x_dir, 0);
+			}
+
+		break;
 	}
 }
 

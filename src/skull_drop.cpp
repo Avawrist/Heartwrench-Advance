@@ -546,6 +546,45 @@ void SkullDrop::resolveHPTotemCollision(GameObject& object)
 	}
 }
 
+// Enemies
+
+void SkullDrop::resolveBellTrollCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH || object.state == OBJECT_HITSTUN) {return;}
+
+	switch(object.state)
+	{
+		case BELL_TROLL_FROZEN:
+
+			if(collider.isCollision(object.collider))
+			{
+				// Resolve X Axis Collision //
+				resolveXAxisCollision(object.collider);
+
+				// Resolve Y Axis Collision //
+				resolveYAxisCollision(object.collider);
+
+				// If there is still collision somehow, must be corner case //
+				//resolveCornerCollision(object.collider);
+			}
+
+			updateTestColliders();
+
+			// Test for, and log grounded collision
+			if(test_collider.isCollision(object.collider) && 
+			rigidbody.normalized_dir.y() >= 0)
+			{	
+				grounded_detected = true;
+				rigidbody.removeYForces();
+			}
+
+		break;
+
+		default:
+		break;
+	}
+}
+
 // Tiles
 
 void SkullDrop::resolveSpikeCollision(const Collider& other_collider)

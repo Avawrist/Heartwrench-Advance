@@ -85,6 +85,9 @@ struct MoonDrop : GameObject {
     void resolveSmashBlockZigguratRCollision(GameObject& object) override;
 	void resolveHPTotemCollision(GameObject& object)             override;
 
+    // Enemies
+    void resolveBellTrollCollision(GameObject& object) override;
+
     // Tiles
     void resolveSpikeCollision(const Collider& other_collider) override;
 

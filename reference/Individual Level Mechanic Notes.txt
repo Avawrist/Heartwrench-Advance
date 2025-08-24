@@ -18,6 +18,14 @@
 
 *** Level Idea ***
 
+"Witch Switch" - Constantly swap between two witch modes with different aesthetic and B abilities
+
+*** Level Idea ***
+
+Broomsticks!
+
+*** Level Idea ***
+
 -Strikeable switches that move layer 2.
 -Puzzle box level that requires the player to move layer 2 in different directions to access new areas.
 

@@ -564,8 +564,8 @@ void GameObject::updateInactiveState(const bn::camera_ptr& camera)
 {
     Collider load_range_collider(camera.position().x(), 
                                  camera.position().y(), 
-                                 LOAD_RANGE_W, 
-                                 LOAD_RANGE_H);
+                                 LOAD_RANGE_W * 2, 
+                                 LOAD_RANGE_H * 2);
 
     if(!load_range_collider.isCollision(pos()))
     {is_inactive = true;}
@@ -725,6 +725,21 @@ void GameObject::applySplatEffect(int32 x, int32 y)
 
     if(col_x_offset < 0) {splat_effect_sprite_ptr->set_horizontal_flip(true);}
     else                 {splat_effect_sprite_ptr->set_horizontal_flip(false);}
+}
+
+void GameObject::playBlockDeathAnim()
+{
+    bn::sprite_ptr temp_sprite_ptr = bn::sprite_items::block_death.create_sprite(sprite_ptr->x().integer(), 
+																				 sprite_ptr->y().integer());
+	temp_sprite_ptr.set_camera(sprite_ptr->camera());
+	temp_sprite_ptr.set_z_order(sprite_ptr->z_order());
+
+	sprite_ptr->swap(temp_sprite_ptr);
+
+	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+															   1,
+															   bn::sprite_items::block_death.tiles_item(),
+															   0, 0, 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4);
 }
 
 /////////////////////
@@ -935,6 +950,10 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
                         resolveGroundGhoulCollision(*game_objects.at(i));
                     break; 
 
+                    case BELL_TROLL:
+                        resolveBellTrollCollision(*game_objects.at(i));
+                    break; 
+
                     // Special Objects
                     case HITBOX_SPIN_1:
                         resolveHitboxSpin1Collision(*game_objects.at(i));
@@ -993,6 +1012,7 @@ void GameObject::resolveAutoBounceBellCollision(GameObject& object)      {}
 void GameObject::resolveThornColumnCollision(GameObject& object) {}
 void GameObject::resolveThornBarCollision(GameObject& object)    {}
 void GameObject::resolveGroundGhoulCollision(GameObject& object) {}
+void GameObject::resolveBellTrollCollision(GameObject& object)   {}
 
 // Special Objects
 void GameObject::resolveHitboxSpin1Collision(GameObject& object)         {}
@@ -1008,7 +1028,6 @@ void GameObject::resolveTileCollision(const bn::regular_bg_ptr&                 
                                       const bn::span<const bn::regular_bg_map_cell>& cells,
                                       const bn::regular_bg_item&                     bg_item)
 {
-
 	////////////////////////////////////////
     // Update Variables for state testing //
 	////////////////////////////////////////

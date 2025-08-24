@@ -128,6 +128,21 @@ void Enemy::updateDeathState()
 	}
 }
 
+void Enemy::playEnemyDeathAnim()
+{
+	bn::sprite_ptr temp_sprite_ptr = bn::sprite_items::enemy_death.create_sprite(sprite_ptr->x().integer(), 
+																				 sprite_ptr->y().integer());
+	temp_sprite_ptr.set_camera(sprite_ptr->camera());
+	temp_sprite_ptr.set_z_order(sprite_ptr->z_order());
+
+	sprite_ptr->swap(temp_sprite_ptr);
+
+	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+																1,
+																bn::sprite_items::enemy_death.tiles_item(),
+																0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6);
+}
+
 //////////////////////////////
 // State Function Overrides //
 //////////////////////////////
@@ -531,7 +546,7 @@ void Enemy::resolveBounceBellCollision(GameObject& object)
 {
 	if(collider.isCollision(object.collider))
     {
-		if(state == OBJECT_HITSTUN || state == OBJECT_DEATH)
+		if(state == OBJECT_HITSTUN)
 		{object.applyHit(damage, 0, 0);}
     }
 }
@@ -540,7 +555,7 @@ void Enemy::resolveAutoBounceBellCollision(GameObject& object)
 {
 	if(collider.isCollision(object.collider))
     {
-		if(state == OBJECT_HITSTUN || state == OBJECT_DEATH)
+		if(state == OBJECT_HITSTUN)
 		{object.applyHit(damage, 0, 0);}
     }
 }
@@ -591,6 +606,54 @@ void Enemy::resolveGroundGhoulCollision(GameObject& object)
        (object.state == OBJECT_HITSTUN || object.state == OBJECT_DEATH))
 	{
 		applyHit(object.damage, object.rigidbody.normalized_dir.x().integer(), 0);
+	}
+}
+
+void Enemy::resolveBellTrollCollision(GameObject& object)
+{
+	if(object.state == OBJECT_HITSTUN || object.state == OBJECT_DEATH) {return;}
+	
+	switch(object.state)
+	{
+		case BELL_TROLL_FROZEN:
+
+			if(collider.isCollision(object.collider))
+			{
+				// Resolve X Axis Collision //
+				resolveXAxisCollision(object.collider);
+
+				// Resolve Y Axis Collision //
+				resolveYAxisCollision(object.collider);
+
+				// Resolve Corner Collision //
+				if(col_y_offset == 0 && col_x_offset == 0)
+				{resolveCornerCollision(object.collider);}
+
+				// Smash the block
+				if(state == OBJECT_HITSTUN || state == OBJECT_DEATH)
+				{object.applyHit(damage, 0, 0);}
+			}
+
+			updateTestColliders();
+
+			if(test_collider.isCollision(object.collider) && 
+			rigidbody.normalized_dir.y() >= 0)
+			{
+				grounded_detected = true;
+				rigidbody.removeYForces();
+			}
+
+		break;
+
+		default:
+
+			if(collider.isCollision(object.collider) &&
+			(object.state == OBJECT_HITSTUN || object.state == OBJECT_DEATH))
+			{
+				applyHit(object.damage, object.rigidbody.normalized_dir.x().integer(), 0);
+			}
+			
+		break;
 	}
 }
 

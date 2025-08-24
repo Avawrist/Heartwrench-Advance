@@ -8,7 +8,7 @@
 
 #define ENEMY_MAX_HP 5
 
-#define ENEMY_HP_BAR_X_OFFSET  12
+#define ENEMY_HP_BAR_X_OFFSET  collider.width
 #define ENEMY_HP_BAR_Y_OFFSET -8
 
 struct Enemy : GameObject
@@ -34,6 +34,7 @@ struct Enemy : GameObject
     void setHitFlash()             override;
 	void setHitFlash(int32 frames) override;
     void updateDeathState()        override;
+    void playEnemyDeathAnim();
 
     //////////////////////////////
     // State Function Overrides //
@@ -68,6 +69,7 @@ struct Enemy : GameObject
     void resolveThornColumnCollision(GameObject& object) override;
     void resolveThornBarCollision(GameObject& object)    override;
 	void resolveGroundGhoulCollision(GameObject& object) override;
+    void resolveBellTrollCollision(GameObject& object)   override;
 
     // Tiles
     void resolveXAxisCollision(const Collider& other_collider) override;
