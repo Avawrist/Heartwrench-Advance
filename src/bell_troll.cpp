@@ -61,6 +61,12 @@ void BellTroll::updateTimers()
     frozen_frames = clamp(0, BELL_TROLL_FROZEN_FRAMES, frozen_frames);
 }
 
+void BellTroll::applyDamage(int32 _damage)
+{
+    hitpoints -= _damage;
+    if(hitpoints < 0 || state == BELL_TROLL_FROZEN) {hitpoints = 0;}
+}
+
 //////////////////////////////
 // State Function Overrides //
 //////////////////////////////

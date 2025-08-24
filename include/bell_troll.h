@@ -19,7 +19,7 @@
 #define BELL_TROLL_COLLIDER_OFFSET_X 0
 #define BELL_TROLL_COLLIDER_OFFSET_Y 5
 
-#define BELL_TROLL_HITPOINTS 1
+#define BELL_TROLL_HITPOINTS 4
 
 #define BELL_TROLL_30_FPS false
 
@@ -47,6 +47,8 @@ struct BellTroll : Enemy {
     //////////////////////////
 
 	void updateTimers() override;
+
+    void applyDamage(int32 _damage) override;
 
     //////////////////////////////
     // State Function Overrides //
