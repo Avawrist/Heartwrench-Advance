@@ -52,6 +52,21 @@ BellTroll& BellTroll::operator =(const BellTroll& other)
 // GameObject Overrides //
 //////////////////////////
 
+void BellTroll::updateHPBar()
+{
+	if(hitpoints > ENEMY_MAX_HP) {return;}
+
+	hp_sprite_ptr->set_position(x() + ENEMY_HP_BAR_X_OFFSET, y() + ENEMY_HP_BAR_Y_OFFSET);
+	hp_animate_action_ptr = bn::create_sprite_animate_action_forever(hp_sprite_ptr.value(),
+																	 0,
+																	 bn::sprite_items::enemy_hp_bar.tiles_item(),
+																	 hitpoints, hitpoints);
+
+    // Hide or reveal if Bell Troll is frozen:
+    if(state == BELL_TROLL_FROZEN) {hp_sprite_ptr->set_visible(false);}
+    else                           {hp_sprite_ptr->set_visible(true);}
+}
+
 void BellTroll::updateTimers()
 {
     GameObject::updateTimers();
@@ -77,8 +92,6 @@ void BellTroll::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   
                                    const bn::regular_bg_item&                     bg_item,
                                    const bn::camera_ptr&                          camera)
 {
-    BN_LOG(state);
-
     switch(state)
     {
         case IDLE:
@@ -104,7 +117,23 @@ void BellTroll::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   
             {rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
 
             // Reset state
-            if(global_bell_struck) {frozen_frames = BELL_TROLL_FROZEN_FRAMES;}
+            if(global_bell_struck) 
+            {
+                frozen_frames      = BELL_TROLL_FROZEN_FRAMES;
+                animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+                                                                           0,
+                                                                           bn::sprite_items::bell_troll.tiles_item(),
+                                                                           2, 2);
+            }
+
+            // Warning animation
+            if(frozen_frames == BELL_TROLL_TRANSITION_FRAME)
+            {
+                animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+                                                                               2,
+                                                                               bn::sprite_items::bell_troll.tiles_item(),
+                                                                               1, 1, 2, 2);
+            }
 
         break;
 
@@ -147,7 +176,10 @@ void BellTroll::setState(ObjectState new_state)
 
             frozen_frames = BELL_TROLL_FROZEN_FRAMES;
 
-            // Play live to frozen animation once here
+            animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+                                                                       2,
+                                                                       bn::sprite_items::bell_troll.tiles_item(),
+                                                                       1, 2, 1, 2, 1, 2, 1, 2);
 
         break;
 

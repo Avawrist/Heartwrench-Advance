@@ -14,17 +14,18 @@
 //////////////////////
 
 #define BELL_TROLL_COLLIDER_WIDTH  32
-#define BELL_TROLL_COLLIDER_HEIGHT 34
+#define BELL_TROLL_COLLIDER_HEIGHT 32
 
 #define BELL_TROLL_COLLIDER_OFFSET_X 0
-#define BELL_TROLL_COLLIDER_OFFSET_Y 5
+#define BELL_TROLL_COLLIDER_OFFSET_Y 6
 
 #define BELL_TROLL_HITPOINTS 4
 
 #define BELL_TROLL_30_FPS false
 
-#define BELL_TROLL_RUN_SPEED     2
-#define BELL_TROLL_FROZEN_FRAMES 300 // 5 seconds
+#define BELL_TROLL_RUN_SPEED        2
+#define BELL_TROLL_FROZEN_FRAMES    300 // 5 seconds
+#define BELL_TROLL_TRANSITION_FRAME 90 //  1.5 seconds
 
 #define BELL_TROLL_RUN_FORCE Force(bn::fixed_point_t<12>(BELL_TROLL_RUN_SPEED * (int32)(x_dir), 0), 1)
 
@@ -46,8 +47,8 @@ struct BellTroll : Enemy {
     // GameObject Overrides //
     //////////////////////////
 
+    void updateHPBar()  override;
 	void updateTimers() override;
-
     void applyDamage(int32 _damage) override;
 
     //////////////////////////////
