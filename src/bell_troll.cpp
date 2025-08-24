@@ -221,7 +221,11 @@ void BellTroll::setState(ObjectState new_state)
 
 void BellTroll::resolveXAxisCollision(const Collider& other_collider)
 {
-    Enemy::resolveXAxisCollision(other_collider);
+	GameObject::resolveXAxisCollision(other_collider);
+	
+	// Wall splat check
+	if(state != OBJECT_DEATH && !frozen_frames)
+	{wallSplatCheck();}
 
     if(col_x_offset != 0) 
     {
