@@ -82,6 +82,24 @@ void BellTroll::applyDamage(int32 _damage)
     if(hitpoints < 0 || state == BELL_TROLL_FROZEN) {hitpoints = 0;}
 }
 
+void BellTroll::updateHitFlash()
+{
+    if(frozen_frames) {GameObject::updateHitFlash();}
+    else              {Enemy::updateHitFlash();}
+}
+
+void BellTroll::setHitFlash()
+{
+    if(frozen_frames) {GameObject::setHitFlash();}
+    else              {Enemy::setHitFlash();}
+}
+
+void BellTroll::setHitFlash(int32 frames)
+{
+    if(frozen_frames) {GameObject::setHitFlash(frames);}
+    else              {Enemy::setHitFlash(frames);}
+}
+
 //////////////////////////////
 // State Function Overrides //
 //////////////////////////////
@@ -188,7 +206,7 @@ void BellTroll::setState(ObjectState new_state)
             // Play default death animation:
             if(!frozen_frames) {playEnemyDeathAnim();}
             // Play block death animation:
-            else {playBlockDeathAnim();}
+            else {rigidbody.removeXForces(); playBlockDeathAnim();}
 
         break;
 
