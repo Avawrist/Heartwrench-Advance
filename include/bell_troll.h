@@ -81,6 +81,8 @@ struct BellTroll : Enemy {
                               const bn::span<const bn::regular_bg_map_cell>& cells,
                               const bn::regular_bg_item&                     bg_item) override;
 
+    void resolveSpikeCollision(const Collider& other_collider) override;
+
 };
 
 #endif

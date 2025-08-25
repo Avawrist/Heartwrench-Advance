@@ -438,3 +438,21 @@ void BellTroll::resolveTileCollision(const bn::regular_bg_ptr&                  
 
 	updateTileGrounded(bg_ptr, cells, bg_item);
 }
+
+void BellTroll::resolveSpikeCollision(const Collider& other_collider)
+{
+    updateTestColliders();
+
+    if(collider.isCollision(other_collider))
+    {
+        // Resolve X Axis Collision //
+        resolveXAxisCollision(other_collider);
+
+        // Resolve Y Axis Collision //
+        resolveYAxisCollision(other_collider);
+
+        // Resolve Corner Collision // 
+        if(col_y_offset == 0 && col_x_offset == 0)
+        {resolveCornerCollision(other_collider);}
+    }
+}
