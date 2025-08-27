@@ -68,8 +68,15 @@ enum RoomName
     NO_ROOM = 0,
     ROOM_NAME_CARD,
     ROOM_TITLE_SCREEN,
-    ROOM_TEST_1,
-    ROOM_TEST_2
+    ROOM_TROLL_TOLLS_1,
+    ROOM_TROLL_TOLLS_2,
+    ROOM_TROLL_TOLLS_3,
+    ROOM_TROLL_TOLLS_4,
+    ROOM_TROLL_TOLLS_5,
+    ROOM_TROLL_TOLLS_6,
+    ROOM_TROLL_TOLLS_7,
+    ROOM_TROLL_TOLLS_8,
+    ROOM_TROLL_TOLLS_9
 };
 
 struct Room
@@ -92,7 +99,7 @@ struct Room
          bn::camera_ptr                                 camera_ptr,                
          const bn::regular_bg_ptr&                      object_bg_ptr, 
          const bn::regular_bg_item&                     object_bg_item,
-         uint8                                          object_cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT],
+         uint8**                                        object_cells,
          const bn::fixed_point                          player_spawn);
     Room(const Room& other);
     ~Room();
@@ -108,11 +115,11 @@ struct Room
                const bn::camera_ptr&                          camera_ptr, 
                const bn::regular_bg_ptr&                      object_bg_ptr, 
                const bn::regular_bg_item&                     object_bg_item,
-               uint8                                          object_cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT],
+               uint8**                                        object_cells,
                const bn::fixed_point                          player_spawn);
-    void prepObjects(const bn::regular_bg_ptr&                       object_bg_ptr, 
-                      const bn::regular_bg_item&                     object_bg_item,
-                      uint8                                          object_cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT]);
+    void prepObjects(const bn::regular_bg_ptr&                      object_bg_ptr, 
+                     const bn::regular_bg_item&                     object_bg_item,
+                     uint8**                                        object_cells);
     void monitorObjectRequests(const bn::camera_ptr& camera_ptr);
     void monitorUnloadedObjects(const bn::camera_ptr& camera_ptr); // This will be called every frame to 
                                                                     // test for objects that should be loaded.

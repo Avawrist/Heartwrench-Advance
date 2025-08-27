@@ -605,8 +605,8 @@ void GameObject::clampPosition(const RoomBounds& room_bounds)
 {
     bn::fixed new_x = x();
 	bn::fixed new_y = y();
-	new_x = clamp(room_bounds.left_bound - 1, room_bounds.right_bound + 1, new_x);
-	new_y = clamp(room_bounds.top_bound - 1, room_bounds.bottom_bound + 1, new_y);
+	new_x = clamp(room_bounds.left_bound - 1, room_bounds.right_bound  + 1, new_x);
+	new_y = clamp(room_bounds.top_bound  - 1, room_bounds.bottom_bound + 1, new_y);
 
 	setPos(new_x, new_y);
 }

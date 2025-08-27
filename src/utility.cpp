@@ -60,8 +60,7 @@ int32 getTileAtBGIndex(uint32 x, uint32 y,
 
 }
 
-uint8 getDynamicTileAtBGIndex(uint32 x, uint32 y, 
-                              uint8 cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT])
+uint8 getDynamicTileAtBGIndex(uint32 x, uint32 y, uint8** cells)
 {
     if(x >= LEVEL_OBJECT_CELL_WIDTH)  {return 0;}
     if(y >= LEVEL_OBJECT_CELL_HEIGHT) {return 0;}
@@ -71,9 +70,7 @@ uint8 getDynamicTileAtBGIndex(uint32 x, uint32 y,
     return cell_tile_index;
 }
 
-void setDynamicTileAtBGIndex(uint32 x, uint32 y, 
-                             uint8 value,
-                             uint8 cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT])
+void setDynamicTileAtBGIndex(uint32 x, uint32 y, uint8 value, uint8** cells)
 {
     if(x >= LEVEL_OBJECT_CELL_WIDTH)  {return;}
     if(y >= LEVEL_OBJECT_CELL_HEIGHT) {return;}

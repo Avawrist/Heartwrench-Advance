@@ -119,7 +119,13 @@ thorn_bar.o: G:/game/src/thorn_bar.cpp G:/game/include/thorn_bar.h \
  G:/game/build/bn_sprite_items_bell_troll.h \
  G:/game/build/bn_sprite_items_candelabra.h \
  G:/game/build/bn_sprite_items_hitbox.h \
- G:/game/build/bn_sprite_items_player.h \
+ G:/game/build/bn_sprite_items_player_idle.h \
+ G:/game/build/bn_sprite_items_player_walk.h \
+ G:/game/build/bn_sprite_items_player_jump.h \
+ G:/game/build/bn_sprite_items_player_spin_attack.h \
+ G:/game/build/bn_sprite_items_player_death.h \
+ G:/game/build/bn_sprite_items_player_climb.h \
+ G:/game/build/bn_sprite_items_player_bell_jump.h \
  G:/game/build/bn_sprite_items_phase_marker.h G:/game/include/hitbox.h
 G:/game/include/thorn_bar.h:
 G:/butano-master/butano/include/bn_optional.h:
@@ -246,6 +252,12 @@ G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/build/bn_sprite_items_bell_troll.h:
 G:/game/build/bn_sprite_items_candelabra.h:
 G:/game/build/bn_sprite_items_hitbox.h:
-G:/game/build/bn_sprite_items_player.h:
+G:/game/build/bn_sprite_items_player_idle.h:
+G:/game/build/bn_sprite_items_player_walk.h:
+G:/game/build/bn_sprite_items_player_jump.h:
+G:/game/build/bn_sprite_items_player_spin_attack.h:
+G:/game/build/bn_sprite_items_player_death.h:
+G:/game/build/bn_sprite_items_player_climb.h:
+G:/game/build/bn_sprite_items_player_bell_jump.h:
 G:/game/build/bn_sprite_items_phase_marker.h:
 G:/game/include/hitbox.h:

@@ -119,6 +119,8 @@ Level::Level(const Level& other)
 Level::~Level()
 {
     clear();
+
+    freeObjectCells();
 }
 
 void Level::operator =(const Level& other)
@@ -315,11 +317,11 @@ void Level::load()
             cells        = main_bg_ptr->map().cells_ref().value();
 
             // Next level
-            next_level = LEVEL_ZIGGURAT_1;
+            next_level = LEVEL_TROLL_TOLLS;
 
         break;
 
-        case LEVEL_ZIGGURAT_1:
+        case LEVEL_TROLL_TOLLS:
             
             // Load BGs //
             main_bg_ptr    = bn::regular_bg_items::ziggurat_1_level_bg.create_bg(0, 0);
@@ -360,7 +362,7 @@ void Level::load()
     //populateObjectCells();
 
     // Init room
-    current_room = Room(player_spawn.spawn_room, 
+    current_room = Room(player_spawn.spawn_room,
                         camera.value(), 
                         object_bg_ptr.value(), 
                         object_bg_item.value(),
@@ -571,15 +573,15 @@ void Level::load(LevelName level_name)
             hud_level_name.setSpritesFromString("", 0);
 
             // Next level
-            next_level = LEVEL_ZIGGURAT_1;
+            next_level = LEVEL_TROLL_TOLLS;
 
         break;
 
-        case LEVEL_ZIGGURAT_1:
+        case LEVEL_TROLL_TOLLS:
             
             // Player Spawn //
-            player_spawn.setSpawnPosAC(64, 640);
-            player_spawn.spawn_room = ROOM_TEST_1;
+            player_spawn.setSpawnPosAC(64, 2400);
+            player_spawn.spawn_room = ROOM_TROLL_TOLLS_1;
 
             // Load BGs //
             main_bg_ptr    = bn::regular_bg_items::ziggurat_1_level_bg.create_bg(0, 0);
@@ -939,7 +941,6 @@ void Level::updateCamera()
 
         // Do an unloaded object sweep since it won't happen otherwise if the cam is moving!
         current_room.monitorUnloadedObjects(camera.value());
-
     }
     else
     {
@@ -985,6 +986,7 @@ void Level::updateCamera()
         //////////////////////////
         // Clamp Camera to Room //
         //////////////////////////
+        
         new_cam_x = clamp(current_room.room_bounds.left_bound  + HALF_SCREEN_WIDTH,  
                           current_room.room_bounds.right_bound - HALF_SCREEN_WIDTH, 
                           new_cam_x + cam_look_x_offset + cam_look_dir_x_offset);
@@ -1429,7 +1431,7 @@ void Level::updatePauseScreen()
 
 void Level::updateLevelTransition(LevelName level_index)
 {
-    if(level_index < LEVEL_NAME_CARD || level_index > LEVEL_ZIGGURAT_1) {return;}
+    if(level_index < LEVEL_NAME_CARD || level_index > LEVEL_TROLL_TOLLS) {return;}
 
     // Transition Level //
     if(transition_frames > 0)
@@ -1559,10 +1561,16 @@ void Level::transitionRoom()
 
     Player temp_player = Player(*((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX))));
     
-    if(temp_player.pos().x() > current_room.room_bounds.right_bound)
+    if(temp_player.pos().x() + (temp_player.collider.width / 2) >= current_room.room_bounds.right_bound)
     {
         if(current_room.right_neighbor != NO_ROOM)
         {
+            // Move the player into the new room
+            temp_player.setX(temp_player.x() + temp_player.collider.width + 1);
+
+            // Store current room floor
+            int32 old_room_bottom_bound = current_room.room_bounds.bottom_bound;
+
             // Create the neighbor room
             current_room = Room(current_room.right_neighbor, 
                                 camera.value(),
@@ -1579,16 +1587,21 @@ void Level::transitionRoom()
             // Set camera offsets
             cam_is_scrolling = true;
             cam_x_offset     = SCREEN_WIDTH;
-            cam_y_offset     = 0;
+            cam_y_offset     = (current_room.room_bounds.bottom_bound - old_room_bottom_bound) * 0.25;
 
             return;
         }
     }
 
-    else if(temp_player.pos().x() < current_room.room_bounds.left_bound)
+    else if(temp_player.pos().x() - (temp_player.collider.width / 2) <= current_room.room_bounds.left_bound)
     {
         if(current_room.left_neighbor != NO_ROOM)
         {
+            // Move the player into the new room
+            temp_player.setX(temp_player.x() - temp_player.collider.width - 1);
+
+            // Store current room floor
+            int32 old_room_bottom_bound = current_room.room_bounds.bottom_bound;
 
             // Create the neighbor room
             current_room = Room(current_room.left_neighbor, 
@@ -1606,16 +1619,19 @@ void Level::transitionRoom()
             // Set camera offsets
             cam_is_scrolling = true;
             cam_x_offset     = -SCREEN_WIDTH;
-            cam_y_offset     = 0;
+            cam_y_offset     = (current_room.room_bounds.bottom_bound - old_room_bottom_bound) * 0.25;
 
             return;
         }
     }
 
-    else if(temp_player.pos().y() < current_room.room_bounds.top_bound)
+    else if(temp_player.pos().y() - (temp_player.collider.height / 2) <= current_room.room_bounds.top_bound)
     {
         if(current_room.top_neighbor != NO_ROOM)
         {
+            // Move the player into the new room
+            temp_player.setY(temp_player.y() - temp_player.collider.height - 1);
+
             // Create the neighbor room
             current_room = Room(current_room.top_neighbor, 
                                 camera.value(),
@@ -1638,10 +1654,13 @@ void Level::transitionRoom()
         }
     }
 
-    else if(temp_player.pos().y() > current_room.room_bounds.bottom_bound)
+    else if(temp_player.pos().y() + (temp_player.collider.height / 2) >= current_room.room_bounds.bottom_bound)
     {
         if(current_room.bottom_neighbor != NO_ROOM)
         {
+            // Move the player into the new room
+            temp_player.setY(temp_player.y() + temp_player.collider.height + 1);
+
             // Create the neighbor room
             current_room = Room(current_room.bottom_neighbor, 
                                 camera.value(),
@@ -1760,14 +1779,26 @@ void Level::togglePauseScreen()
     }
 }
 
+void Level::initObjectCells()
+{
+    object_cells = new uint8*[LEVEL_OBJECT_CELL_WIDTH];
+
+    for(int32 i = 0; i < LEVEL_OBJECT_CELL_WIDTH; i++)
+    {
+        object_cells[i] = new uint8[LEVEL_OBJECT_CELL_HEIGHT];
+    }
+}
+
 void Level::populateObjectCells()
 {
     // Look at the object tile index of the UL corner of each 32x32 tile.
     // Object tiles must be placed in the UL corner to be recorded.
 
-    #define OBJECT_CELLS_REDUCTION_FACTOR 4
+    initObjectCells();
 
-    uint32 cell_width  = object_bg_ptr.value().dimensions().width()  / TILE_WIDTH / OBJECT_CELLS_REDUCTION_FACTOR;
+    #define OBJECT_CELLS_REDUCTION_FACTOR 2
+
+    uint32 cell_width  = object_bg_ptr.value().dimensions().width()  / TILE_WIDTH  / OBJECT_CELLS_REDUCTION_FACTOR;
     uint32 cell_height = object_bg_ptr.value().dimensions().height() / TILE_HEIGHT / OBJECT_CELLS_REDUCTION_FACTOR;
 
     for(uint32 x = 0; x < cell_width; x++)
@@ -1807,4 +1838,14 @@ void Level::removeObjectCells()
 
         }
     }
+}
+
+void Level::freeObjectCells()
+{
+    for(int i = 0; i < LEVEL_OBJECT_CELL_WIDTH; i++)
+    {
+        delete[] object_cells[i];
+    }
+
+    delete[] object_cells;
 }

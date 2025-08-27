@@ -122,7 +122,7 @@ enum LevelName
     NO_LEVEL = 0,
     LEVEL_NAME_CARD,
     LEVEL_TITLE_SCREEN,
-    LEVEL_ZIGGURAT_1
+    LEVEL_TROLL_TOLLS
 };
 
 //////////////////
@@ -169,7 +169,7 @@ struct Level
     bn::span<const bn::regular_bg_map_cell> cells;
     
     bn::optional<bn::regular_bg_item> object_bg_item;
-    uint8                             object_cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT] = {0};
+    uint8**                           object_cells;
 
     // Pause Menu
     bn::optional<bn::regular_bg_ptr> pause_screen_bg_ptr;
@@ -266,8 +266,10 @@ struct Level
     void drawObjects();
     void storePlayerInputs();
     void togglePauseScreen();
+    void initObjectCells();
     void populateObjectCells();
     void removeObjectCells();
+    void freeObjectCells();
 };
 
 #endif

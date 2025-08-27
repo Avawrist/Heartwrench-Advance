@@ -11,11 +11,11 @@ Player::Player()
 	x_dir       = RIGHT;
 	y_dir       = UP;
 
-    sprite_ptr  = bn::sprite_items::player.create_sprite(0, 0);
+    sprite_ptr  = bn::sprite_items::player_idle.create_sprite(0, 0);
 	sprite_ptr->set_z_order(PLAYER_Z_ORDER);
 	animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 																  2,
-																  bn::sprite_items::player.tiles_item(),
+																  bn::sprite_items::player_idle.tiles_item(),
 																  0, 0, 0, 0, 
 																  1, 1, 1, 
 																  2, 2, 2, 2, 
@@ -77,15 +77,15 @@ Player::Player()
 	jump_effect_sprite_ptr->set_z_order(PLAYER_Z_ORDER);
 	jump_effect_sprite_ptr->set_visible(false);
 
-	spin_effect_sprite_1_ptr = bn::sprite_items::player.create_sprite(0, 0);
+	spin_effect_sprite_1_ptr = bn::sprite_items::player_idle.create_sprite(0, 0);
 	spin_effect_sprite_1_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
 	spin_effect_sprite_1_ptr->set_visible(false);
 
-	spin_effect_sprite_2_ptr = bn::sprite_items::player.create_sprite(0, 0);
+	spin_effect_sprite_2_ptr = bn::sprite_items::player_idle.create_sprite(0, 0);
 	spin_effect_sprite_2_ptr->set_z_order(SPLAT_EFFECT_Z_ORDER);
 	spin_effect_sprite_2_ptr->set_visible(false);
 
-	spin_effect_sprite_3_ptr = bn::sprite_items::player.create_sprite(0, 0);
+	spin_effect_sprite_3_ptr = bn::sprite_items::player_idle.create_sprite(0, 0);
 	spin_effect_sprite_3_ptr->set_z_order(SPIN_EFFECT_Z_ORDER);
 	spin_effect_sprite_3_ptr->set_visible(false);
 
@@ -224,12 +224,7 @@ void Player::jump()
 	late_jump_grace_frames      = 0;
 	rigidbody.addForce(PLAYER_JUMP_FORCE);
 
-	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-															   2,
-															   bn::sprite_items::player.tiles_item(),
-															   10, 10, 10, 
-															   11, 11, 11, 
-															   12, 12, 12);
+	setJumpAnimation();
 }
 
 void Player::spinJump()
@@ -259,13 +254,8 @@ void Player::bellJump()
 	resetHitboxes();
 
 	rigidbody.addForce(PLAYER_BELL_JUMP_FORCE);
-	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-																3,
-																bn::sprite_items::player.tiles_item(),
-																28, 30, 31, 32,
-																29, 30, 31, 32,
-																11, 11, 11, 
-																12, 12, 12);
+
+	setBellJumpAnimation();
 }
 
 /*
@@ -430,37 +420,138 @@ void Player::resetHitboxes()
 
 void Player::setIdleAnimation()
 {
+	bn::sprite_ptr temp_sprite_ptr = bn::sprite_items::player_idle.create_sprite(sprite_ptr->x().integer(), 
+																				 sprite_ptr->y().integer());
+	temp_sprite_ptr.set_camera(sprite_ptr->camera());
+	temp_sprite_ptr.set_z_order(sprite_ptr->z_order());
 
+	sprite_ptr->swap(temp_sprite_ptr);
+
+	animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+																  2,
+																  bn::sprite_items::player_idle.tiles_item(),
+																  0, 0, 0, 0, 
+																  1, 1, 1, 
+																  2, 2, 2, 2, 
+																  3, 3, 3);
 }
 
 void Player::setWalkAnimation()
 {
+	bn::sprite_ptr temp_sprite_ptr = bn::sprite_items::player_walk.create_sprite(sprite_ptr->x().integer(), 
+																				 sprite_ptr->y().integer());
+	temp_sprite_ptr.set_camera(sprite_ptr->camera());
+	temp_sprite_ptr.set_z_order(sprite_ptr->z_order());
 
+	sprite_ptr->swap(temp_sprite_ptr);
+
+	animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+																  2,
+																  bn::sprite_items::player_walk.tiles_item(),
+																  0, 0, 0,
+																  1, 1, 1,
+																  2, 2, 2,
+																  3, 3, 3,
+																  4, 4, 4,
+																  5, 5, 5);
 }
 
 void Player::setJumpAnimation()
 {
+	bn::sprite_ptr temp_sprite_ptr = bn::sprite_items::player_jump.create_sprite(sprite_ptr->x().integer(), 
+																				 sprite_ptr->y().integer());
+	temp_sprite_ptr.set_camera(sprite_ptr->camera());
+	temp_sprite_ptr.set_z_order(sprite_ptr->z_order());
 
+	sprite_ptr->swap(temp_sprite_ptr);
+
+	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+															   2,
+															   bn::sprite_items::player_jump.tiles_item(),
+															   0, 0, 0, 
+															   1, 1, 1, 
+															   2, 2, 2);
+}
+
+void Player::setFallAnimation()
+{
+	bn::sprite_ptr temp_sprite_ptr = bn::sprite_items::player_jump.create_sprite(sprite_ptr->x().integer(), 
+																				 sprite_ptr->y().integer());
+	temp_sprite_ptr.set_camera(sprite_ptr->camera());
+	temp_sprite_ptr.set_z_order(sprite_ptr->z_order());
+
+	sprite_ptr->swap(temp_sprite_ptr);
+
+	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+															   0,
+															   bn::sprite_items::player_jump.tiles_item(),
+															   2, 2);
 }
 
 void Player::setBellJumpAnimation()
 {
+	bn::sprite_ptr temp_sprite_ptr = bn::sprite_items::player_bell_jump.create_sprite(sprite_ptr->x().integer(), 
+																				 	  sprite_ptr->y().integer());
+	temp_sprite_ptr.set_camera(sprite_ptr->camera());
+	temp_sprite_ptr.set_z_order(sprite_ptr->z_order());
 
+	sprite_ptr->swap(temp_sprite_ptr);
+
+	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+																3,
+																bn::sprite_items::player_bell_jump.tiles_item(),
+																0, 2, 3, 4,
+																1, 2, 3, 4,
+																5, 5, 5, 
+																6, 6, 6);
 }
 
 void Player::setSpinAttackAnimation()
 {
+	bn::sprite_ptr temp_sprite_ptr = bn::sprite_items::player_spin_attack.create_sprite(sprite_ptr->x().integer(), 
+																				 	    sprite_ptr->y().integer());
+	temp_sprite_ptr.set_camera(sprite_ptr->camera());
+	temp_sprite_ptr.set_z_order(sprite_ptr->z_order());
 
+	sprite_ptr->swap(temp_sprite_ptr);
+
+	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+															   0,
+															   bn::sprite_items::player_spin_attack.tiles_item(),
+															   0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3,
+															   0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3,
+															   0, 0, 0, 0, 0);
 }
 
 void Player::setDeathAnimation()
 {
+	bn::sprite_ptr temp_sprite_ptr = bn::sprite_items::player_death.create_sprite(sprite_ptr->x().integer(), 
+																				  sprite_ptr->y().integer());
+	temp_sprite_ptr.set_camera(sprite_ptr->camera());
+	temp_sprite_ptr.set_z_order(sprite_ptr->z_order());
 
+	sprite_ptr->swap(temp_sprite_ptr);
+
+	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+															   1,
+															   bn::sprite_items::player_death.tiles_item(),
+															   0, 0, 0, 1, 1, 1, 2, 2, 2, 
+															   3, 3, 3, 4, 4, 4, 5, 5, 5);
 }
 
 void Player::setClimbAnimation()
 {
-	
+	bn::sprite_ptr temp_sprite_ptr = bn::sprite_items::player_climb.create_sprite(sprite_ptr->x().integer(), 
+																				  sprite_ptr->y().integer());
+	temp_sprite_ptr.set_camera(sprite_ptr->camera());
+	temp_sprite_ptr.set_z_order(sprite_ptr->z_order());
+
+	sprite_ptr->swap(temp_sprite_ptr);
+
+	animate_action_ptr  = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+																0,
+																bn::sprite_items::player_climb.tiles_item(),
+																0, 0);
 }
 
 //////////////////////////
@@ -882,12 +973,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			//////////////////////
 			
 			if(animate_action_ptr->done() || (animate_action_ptr->update_forever() && rigidbody.normalized_dir.y() > 0))
-			{
-				animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-																		   0,
-																		   bn::sprite_items::player.tiles_item(),
-																		   12, 12);
-			}
+			{setFallAnimation();}
 
 			///////////////
 			// Get Input //
@@ -1378,7 +1464,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 																	   0,
-																	   bn::sprite_items::player.tiles_item(),
+																	   bn::sprite_items::player_climb.tiles_item(),
 																	   current_climb_index.floor_integer(), 
 																	   current_climb_index.floor_integer());
 
@@ -1511,27 +1597,13 @@ void Player::setState(ObjectState new_state)
 
 		case PLAYER_GROUNDED_NEUTRAL:
 			
-			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-																		  2,
-																		  bn::sprite_items::player.tiles_item(),
-																		  0, 0, 0, 0, 
-																		  1, 1, 1, 
-																		  2, 2, 2, 2, 
-																		  3, 3, 3);
+			setIdleAnimation();
 
 		break;
 
 		case PLAYER_WALK:
 
-			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-																	      2,
-																	      bn::sprite_items::player.tiles_item(),
-																	      4, 4, 4, 
-																		  5, 5, 5,
-																		  6, 6, 6,
-																		  7, 7, 7,
-																		  8, 8, 8,
-																		  9, 9, 9);
+			setWalkAnimation();
 
 		break;
 
@@ -1588,32 +1660,21 @@ void Player::setState(ObjectState new_state)
 			spin_effect_frames = PLAYER_MAX_SPIN_EFFECT_FRAMES;
 			rigidbody.addForce(PLAYER_SPIN_FORCE);
 
-			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-																	   0,
-																	   bn::sprite_items::player.tiles_item(),
-																	   13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15, 16, 16, 16, 16, 16,
-																	   13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15, 16, 16, 16, 16, 16,
-																	   13, 13, 13, 13, 13);
+			setSpinAttackAnimation();
 
 		break;
 
 		case PLAYER_CLIMB:
 
 			current_climb_index = PLAYER_MIN_CLIMB_INDEX;
-			animate_action_ptr  = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-																	    0,
-																	    bn::sprite_items::player.tiles_item(),
-																	    23, 23);
+
+			setClimbAnimation();
 
 		break;
 
 		case OBJECT_DEATH:
 
-			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-																		1,
-																		bn::sprite_items::player.tiles_item(),
-																		17, 17, 17, 18, 18, 18, 19, 19, 19, 
-																		20, 20, 20, 21, 21, 21, 22, 22, 22);
+			setDeathAnimation();
 
 		break;
 

@@ -13,7 +13,7 @@ Room::Room(RoomName                                       _room_name,
            bn::camera_ptr                                 camera_ptr,                
            const bn::regular_bg_ptr&                      object_bg_ptr, 
            const bn::regular_bg_item&                     object_bg_item,
-           uint8                                          object_cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT],
+           uint8**                                        object_cells,
            const bn::fixed_point                          player_spawn)
 {
     load(_room_name, 
@@ -600,7 +600,7 @@ void Room::load(RoomName                                       _room_name,
                 const bn::camera_ptr&                          camera_ptr, 
                 const bn::regular_bg_ptr&                      object_bg_ptr, 
                 const bn::regular_bg_item&                     object_bg_item,
-                uint8                                          object_cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT],
+                uint8**                                        object_cells,
                 const bn::fixed_point                          player_spawn)
 {
     if(_room_name == NO_ROOM) {return;}
@@ -644,35 +644,154 @@ void Room::load(RoomName                                       _room_name,
             
         break;
 
-        case ROOM_TEST_1:
+        case ROOM_TROLL_TOLLS_1:
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
-            right_neighbor  = ROOM_TEST_2;
+            right_neighbor  = ROOM_TROLL_TOLLS_2;
             bottom_neighbor = NO_ROOM;
             left_neighbor   = NO_ROOM;
 
-            room_bounds.setTopBoundAC(320);
-            room_bounds.setBottomBoundAC(768);
+            room_bounds.setTopBoundAC(2224);
+            room_bounds.setBottomBoundAC(2544);
             room_bounds.setLeftBoundAC(16);
-            room_bounds.setRightBoundAC(624);
+            room_bounds.setRightBoundAC(880);
 
             // Add any special objects //
             
         break;
 
-        case ROOM_TEST_2:
+        case ROOM_TROLL_TOLLS_2:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = ROOM_TROLL_TOLLS_3;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = ROOM_TROLL_TOLLS_1;
+
+            room_bounds.setTopBoundAC(2224);
+            room_bounds.setBottomBoundAC(2544);
+            room_bounds.setLeftBoundAC(880);
+            room_bounds.setRightBoundAC(1280);
+
+            // Add any special objects //
+            
+        break;
+
+        case ROOM_TROLL_TOLLS_3:
+
+            // Init Variables //
+            top_neighbor    = ROOM_TROLL_TOLLS_4;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = ROOM_TROLL_TOLLS_2;
+
+            room_bounds.setTopBoundAC(2224);
+            room_bounds.setBottomBoundAC(2544);
+            room_bounds.setLeftBoundAC(1280);
+            room_bounds.setRightBoundAC(1680);
+
+            // Add any special objects //
+            
+        break;
+
+        case ROOM_TROLL_TOLLS_4:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = ROOM_TROLL_TOLLS_5;
+            bottom_neighbor = ROOM_TROLL_TOLLS_3;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.setTopBoundAC(1952);
+            room_bounds.setBottomBoundAC(2224);
+            room_bounds.setLeftBoundAC(1280);
+            room_bounds.setRightBoundAC(1680);
+
+            // Add any special objects //
+            
+        break;
+
+        case ROOM_TROLL_TOLLS_5:
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
             right_neighbor  = NO_ROOM;
             bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TEST_1;
+            left_neighbor   = ROOM_TROLL_TOLLS_4;
 
-            room_bounds.setTopBoundAC(320);
-            room_bounds.setBottomBoundAC(768);
-            room_bounds.setLeftBoundAC(624);
-            room_bounds.setRightBoundAC(992);
+            room_bounds.setTopBoundAC(1952);
+            room_bounds.setBottomBoundAC(2320);
+            room_bounds.setLeftBoundAC(1680);
+            room_bounds.setRightBoundAC(2064);
+
+            // Add any special objects //
+            
+        break;
+
+        case ROOM_TROLL_TOLLS_6:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = ROOM_TROLL_TOLLS_1;
+
+            room_bounds.setTopBoundAC(2224);
+            room_bounds.setBottomBoundAC(2544);
+            room_bounds.setLeftBoundAC(1008);
+            room_bounds.setRightBoundAC(1488);
+
+            // Add any special objects //
+            
+        break;
+
+        case ROOM_TROLL_TOLLS_7:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = ROOM_TROLL_TOLLS_1;
+
+            room_bounds.setTopBoundAC(2224);
+            room_bounds.setBottomBoundAC(2544);
+            room_bounds.setLeftBoundAC(1008);
+            room_bounds.setRightBoundAC(1488);
+
+            // Add any special objects //
+            
+        break;
+
+        case ROOM_TROLL_TOLLS_8:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = ROOM_TROLL_TOLLS_1;
+
+            room_bounds.setTopBoundAC(2224);
+            room_bounds.setBottomBoundAC(2544);
+            room_bounds.setLeftBoundAC(1008);
+            room_bounds.setRightBoundAC(1488);
+
+            // Add any special objects //
+            
+        break;
+
+        case ROOM_TROLL_TOLLS_9:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = ROOM_TROLL_TOLLS_1;
+
+            room_bounds.setTopBoundAC(2224);
+            room_bounds.setBottomBoundAC(2544);
+            room_bounds.setLeftBoundAC(1008);
+            room_bounds.setRightBoundAC(1488);
 
             // Add any special objects //
             
@@ -699,13 +818,13 @@ void Room::load(RoomName                                       _room_name,
 
 void Room::prepObjects(const bn::regular_bg_ptr&                      object_bg_ptr, 
                        const bn::regular_bg_item&                     object_bg_item,
-                       uint8                                          object_cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT])
+                       uint8**                                        object_cells)
 {
     int32 half_level_width_pixels  = object_bg_ptr.dimensions().width()  / 2;
 	int32 half_level_height_pixels = object_bg_ptr.dimensions().height() / 2;
     
     for(int32 x  = room_bounds.left_bound  + half_level_width_pixels; 
-              x <= room_bounds.right_bound + half_level_width_pixels; 
+              x <= room_bounds.right_bound + half_level_width_pixels;
               x += TILE_WIDTH * 2)
     {
         for(int32 y  = room_bounds.top_bound    + half_level_height_pixels; 
@@ -730,7 +849,6 @@ void Room::prepObjects(const bn::regular_bg_ptr&                      object_bg_
                     x_pos_offset = TILE_WIDTH;
                     y_pos_offset = TILE_HEIGHT;
                 }
-
                 addUnloadedObject(UnloadedObject(bn::point(x - half_level_width_pixels  + x_pos_offset, 
                                                            y - half_level_height_pixels + y_pos_offset - 1), type));
             }

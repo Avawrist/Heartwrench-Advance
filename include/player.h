@@ -56,8 +56,8 @@
 
 #define PLAYER_CLIMB_SPEED 1
 #define PLAYER_CLIMB_DECAY 1
-#define PLAYER_MIN_CLIMB_INDEX 24
-#define PLAYER_MAX_CLIMB_INDEX 27
+#define PLAYER_MIN_CLIMB_INDEX 0
+#define PLAYER_MAX_CLIMB_INDEX 4
 #define PLAYER_CLIMB_REGRAB_CD_FRAMES 20
 
 // Air Values
@@ -275,6 +275,7 @@ struct Player : GameObject {
 	void setIdleAnimation();
 	void setWalkAnimation();
 	void setJumpAnimation();
+	void setFallAnimation();
 	void setBellJumpAnimation();
 	void setSpinAttackAnimation();
 	void setDeathAnimation();

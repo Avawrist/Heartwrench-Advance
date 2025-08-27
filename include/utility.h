@@ -37,8 +37,8 @@ typedef int   int32;
 
 #define LEVEL_WIDTH  5120
 #define LEVEL_HEIGHT 2560
-#define LEVEL_OBJECT_CELL_WIDTH  160
-#define LEVEL_OBJECT_CELL_HEIGHT 80
+#define LEVEL_OBJECT_CELL_WIDTH  320
+#define LEVEL_OBJECT_CELL_HEIGHT 160
 
 #define ROOM_MAX_COLLIDERS 1800
 #define ROOM_MAX_WIDTH     128
@@ -168,11 +168,8 @@ int32 getTileAtBGIndex(uint32 x, uint32 y,
                        bn::span<const bn::regular_bg_map_cell> cells,
                        bn::regular_bg_item                     bg_item);
 
-uint8 getDynamicTileAtBGIndex(uint32 x, uint32 y, 
-                              uint8 cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT]);
+uint8 getDynamicTileAtBGIndex(uint32 x, uint32 y, uint8** cells);
 
-void setDynamicTileAtBGIndex(uint32 x, uint32 y,
-                             uint8 value,
-                             uint8 cells[LEVEL_OBJECT_CELL_WIDTH][LEVEL_OBJECT_CELL_HEIGHT]);
+void setDynamicTileAtBGIndex(uint32 x, uint32 y, uint8 value, uint8** cells);
 
 #endif

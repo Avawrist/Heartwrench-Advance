@@ -1,0 +1,1 @@
+player_bell_jump_bn_gfx.o: player_bell_jump_bn_gfx.s

@@ -82,7 +82,14 @@
 
 // Special Object Assets
 #include "bn_sprite_items_hitbox.h"
-#include "bn_sprite_items_player.h"
+//#include "bn_sprite_items_player.h"
+#include "bn_sprite_items_player_idle.h"
+#include "bn_sprite_items_player_walk.h"
+#include "bn_sprite_items_player_jump.h"
+#include "bn_sprite_items_player_spin_attack.h"
+#include "bn_sprite_items_player_death.h"
+#include "bn_sprite_items_player_climb.h"
+#include "bn_sprite_items_player_bell_jump.h"
 #include "bn_sprite_items_phase_marker.h"
 
 ///////////////////////
