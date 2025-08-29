@@ -250,6 +250,10 @@ int32 Room::addObject(ObjectRequest& object_request, const bn::camera_ptr& camer
             temp_object_ptr = new BellTroll();
         break;
 
+        case WINGED_TROLL:
+            temp_object_ptr = new WingedTroll();
+        break;
+
         ///////////
         // Props //
         ///////////
@@ -503,6 +507,10 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
 
         case BELL_TROLL:
             temp_object_ptr = new BellTroll();
+        break;
+
+        case WINGED_TROLL:
+            temp_object_ptr = new WingedTroll();
         break;
 
         ///////////

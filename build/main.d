@@ -150,6 +150,7 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/game/build/bn_sprite_items_thorn_bar.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h \
  G:/game/build/bn_sprite_items_bell_troll.h \
+ G:/game/build/bn_sprite_items_winged_troll.h \
  G:/game/build/bn_sprite_items_candelabra.h \
  G:/game/build/bn_sprite_items_hitbox.h \
  G:/game/build/bn_sprite_items_player_idle.h \
@@ -176,8 +177,8 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/game/include/auto_bounce_bell.h G:/game/include/thorn_column.h \
  G:/game/include/enemy.h G:/game/include/thorn_bar.h \
  G:/game/include/ground_ghoul.h G:/game/include/bell_troll.h \
- G:/game/include/candelabra.h G:/game/include/prop.h \
- G:/game/include/player.h
+ G:/game/include/winged_troll.h G:/game/include/candelabra.h \
+ G:/game/include/prop.h G:/game/include/player.h
 G:/butano-master/butano/include/bn_sprites.h:
 G:/butano-master/butano/hw/include/bn_hw_sprites_constants.h:
 G:/butano-master/butano/include/bn_common.h:
@@ -336,6 +337,7 @@ G:/game/build/bn_sprite_items_thorn_column.h:
 G:/game/build/bn_sprite_items_thorn_bar.h:
 G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/build/bn_sprite_items_bell_troll.h:
+G:/game/build/bn_sprite_items_winged_troll.h:
 G:/game/build/bn_sprite_items_candelabra.h:
 G:/game/build/bn_sprite_items_hitbox.h:
 G:/game/build/bn_sprite_items_player_idle.h:
@@ -375,6 +377,7 @@ G:/game/include/enemy.h:
 G:/game/include/thorn_bar.h:
 G:/game/include/ground_ghoul.h:
 G:/game/include/bell_troll.h:
+G:/game/include/winged_troll.h:
 G:/game/include/candelabra.h:
 G:/game/include/prop.h:
 G:/game/include/player.h:

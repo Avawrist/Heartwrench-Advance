@@ -2339,6 +2339,21 @@ void Player::resolveBellTrollCollision(GameObject& object)
 	}
 }
 
+void Player::resolveWingedTrollCollision(GameObject& object)
+{
+	if(object.state == OBJECT_HITSTUN || object.state == OBJECT_DEATH) {return;}
+	
+	if(hitpoints > 0 && collider.isCollision(object.collider))
+	{
+		int32 knockback_x_dir;
+
+		if(x() > object.x()) {knockback_x_dir =  1;}
+		else				 {knockback_x_dir = -1;}
+
+		applyHit(object.damage, knockback_x_dir, 0);
+	}
+}
+
 // Tiles
 void Player::resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
 								  const bn::span<const bn::regular_bg_map_cell>& cells,

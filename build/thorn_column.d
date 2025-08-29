@@ -118,6 +118,7 @@ thorn_column.o: G:/game/src/thorn_column.cpp \
  G:/game/build/bn_sprite_items_thorn_bar.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h \
  G:/game/build/bn_sprite_items_bell_troll.h \
+ G:/game/build/bn_sprite_items_winged_troll.h \
  G:/game/build/bn_sprite_items_candelabra.h \
  G:/game/build/bn_sprite_items_hitbox.h \
  G:/game/build/bn_sprite_items_player_idle.h \
@@ -251,6 +252,7 @@ G:/game/build/bn_sprite_items_thorn_column.h:
 G:/game/build/bn_sprite_items_thorn_bar.h:
 G:/game/build/bn_sprite_items_ground_ghoul.h:
 G:/game/build/bn_sprite_items_bell_troll.h:
+G:/game/build/bn_sprite_items_winged_troll.h:
 G:/game/build/bn_sprite_items_candelabra.h:
 G:/game/build/bn_sprite_items_hitbox.h:
 G:/game/build/bn_sprite_items_player_idle.h:

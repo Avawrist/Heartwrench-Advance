@@ -956,6 +956,10 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
                         resolveBellTrollCollision(*game_objects.at(i));
                     break; 
 
+                    case WINGED_TROLL:
+                        resolveWingedTrollCollision(*game_objects.at(i));
+                    break; 
+
                     // Special Objects
                     case HITBOX_SPIN_1:
                         resolveHitboxSpin1Collision(*game_objects.at(i));
@@ -1015,6 +1019,7 @@ void GameObject::resolveThornColumnCollision(GameObject& object) {}
 void GameObject::resolveThornBarCollision(GameObject& object)    {}
 void GameObject::resolveGroundGhoulCollision(GameObject& object) {}
 void GameObject::resolveBellTrollCollision(GameObject& object)   {}
+void GameObject::resolveWingedTrollCollision(GameObject& object) {}
 
 // Special Objects
 void GameObject::resolveHitboxSpin1Collision(GameObject& object)         {}

@@ -76,6 +76,7 @@
 #include "bn_sprite_items_thorn_bar.h"
 #include "bn_sprite_items_ground_ghoul.h"
 #include "bn_sprite_items_bell_troll.h"
+#include "bn_sprite_items_winged_troll.h"
 
 // Prop Assets
 #include "bn_sprite_items_candelabra.h"
@@ -204,6 +205,7 @@ enum ObjectType
 	THORN_BAR,
 	GROUND_GHOUL,
 	BELL_TROLL,
+	WINGED_TROLL,
 
 	// Props
 	CANDELABRA,
@@ -488,6 +490,7 @@ struct GameObject
 	virtual void resolveThornBarCollision(GameObject& object); 
 	virtual void resolveGroundGhoulCollision(GameObject& object);
 	virtual void resolveBellTrollCollision(GameObject& object);
+	virtual void resolveWingedTrollCollision(GameObject& object);
 
 	// Special Objects
 	virtual void resolveHitboxSpin1Collision(GameObject& object);

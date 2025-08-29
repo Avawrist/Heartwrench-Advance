@@ -1643,7 +1643,7 @@ void Level::transitionRoom()
 
     else if(temp_player.pos().y() - (temp_player.collider.height / 2) <= current_room.room_bounds.top_bound)
     {
-        if(current_room.top_neighbor != NO_ROOM)
+        if(current_room.top_neighbor != NO_ROOM && temp_player.state == PLAYER_CLIMB)
         {
             // Move the player into the new room
             temp_player.setY(temp_player.y() - temp_player.collider.height - 1);

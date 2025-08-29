@@ -52,6 +52,7 @@
 #include "thorn_bar.h"
 #include "ground_ghoul.h"
 #include "bell_troll.h"
+#include "winged_troll.h"
 
 // Props
 #include "candelabra.h"
