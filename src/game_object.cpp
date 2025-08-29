@@ -729,12 +729,14 @@ void GameObject::applySplatEffect(int32 x, int32 y)
 
 void GameObject::playBlockDeathAnim()
 {
-    bn::sprite_ptr temp_sprite_ptr = bn::sprite_items::block_death.create_sprite(sprite_ptr->x().integer(), 
-																				 sprite_ptr->y().integer());
-	temp_sprite_ptr.set_camera(sprite_ptr->camera());
-	temp_sprite_ptr.set_z_order(sprite_ptr->z_order());
+    bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::block_death.create_sprite(sprite_ptr->x().integer(), 
+																				               sprite_ptr->y().integer());
+	temp_sprite_ptr->set_camera(sprite_ptr->camera());
+	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
 
-	sprite_ptr->swap(temp_sprite_ptr);
+	sprite_ptr->swap(temp_sprite_ptr.value());
+
+    temp_sprite_ptr.reset();
 
 	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 															   1,

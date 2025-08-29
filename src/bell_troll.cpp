@@ -31,6 +31,8 @@ BellTroll::BellTroll()
     thirty_fps = BELL_TROLL_30_FPS;
 
     state = IDLE;
+
+    frozen_frames = 0;
 }
 
 BellTroll::BellTroll(const BellTroll& other) : Enemy(other)
@@ -227,7 +229,7 @@ void BellTroll::resolveXAxisCollision(const Collider& other_collider)
 	if(state != OBJECT_DEATH && !frozen_frames)
 	{wallSplatCheck();}
 
-    if(col_x_offset != 0) 
+    if(col_x_offset != 0 && state == IDLE) 
     {
         if(x_dir == RIGHT) {x_dir = LEFT;}
         else               {x_dir = RIGHT;}

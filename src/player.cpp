@@ -420,12 +420,14 @@ void Player::resetHitboxes()
 
 void Player::setIdleAnimation()
 {
-	bn::sprite_ptr temp_sprite_ptr = bn::sprite_items::player_idle.create_sprite(sprite_ptr->x().integer(), 
-																				 sprite_ptr->y().integer());
-	temp_sprite_ptr.set_camera(sprite_ptr->camera());
-	temp_sprite_ptr.set_z_order(sprite_ptr->z_order());
+	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_idle.create_sprite(sprite_ptr->x().integer(), 
+																				 			   sprite_ptr->y().integer());
+	temp_sprite_ptr->set_camera(sprite_ptr->camera());
+	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
 
-	sprite_ptr->swap(temp_sprite_ptr);
+	sprite_ptr->swap(temp_sprite_ptr.value());
+
+	temp_sprite_ptr.reset();
 
 	animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 																  2,
@@ -438,12 +440,14 @@ void Player::setIdleAnimation()
 
 void Player::setWalkAnimation()
 {
-	bn::sprite_ptr temp_sprite_ptr = bn::sprite_items::player_walk.create_sprite(sprite_ptr->x().integer(), 
-																				 sprite_ptr->y().integer());
-	temp_sprite_ptr.set_camera(sprite_ptr->camera());
-	temp_sprite_ptr.set_z_order(sprite_ptr->z_order());
+	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_walk.create_sprite(sprite_ptr->x().integer(), 
+																				 			   sprite_ptr->y().integer());
+	temp_sprite_ptr->set_camera(sprite_ptr->camera());
+	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
 
-	sprite_ptr->swap(temp_sprite_ptr);
+	sprite_ptr->swap(temp_sprite_ptr.value());
+
+	temp_sprite_ptr.reset();
 
 	animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 																  2,
@@ -458,12 +462,14 @@ void Player::setWalkAnimation()
 
 void Player::setJumpAnimation()
 {
-	bn::sprite_ptr temp_sprite_ptr = bn::sprite_items::player_jump.create_sprite(sprite_ptr->x().integer(), 
-																				 sprite_ptr->y().integer());
-	temp_sprite_ptr.set_camera(sprite_ptr->camera());
-	temp_sprite_ptr.set_z_order(sprite_ptr->z_order());
+	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_jump.create_sprite(sprite_ptr->x().integer(), 
+																				 			   sprite_ptr->y().integer());
+	temp_sprite_ptr->set_camera(sprite_ptr->camera());
+	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
 
-	sprite_ptr->swap(temp_sprite_ptr);
+	sprite_ptr->swap(temp_sprite_ptr.value());
+
+	temp_sprite_ptr.reset();
 
 	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 															   2,
@@ -475,12 +481,14 @@ void Player::setJumpAnimation()
 
 void Player::setFallAnimation()
 {
-	bn::sprite_ptr temp_sprite_ptr = bn::sprite_items::player_jump.create_sprite(sprite_ptr->x().integer(), 
-																				 sprite_ptr->y().integer());
-	temp_sprite_ptr.set_camera(sprite_ptr->camera());
-	temp_sprite_ptr.set_z_order(sprite_ptr->z_order());
+	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_jump.create_sprite(sprite_ptr->x().integer(), 
+																				 			   sprite_ptr->y().integer());
+	temp_sprite_ptr->set_camera(sprite_ptr->camera());
+	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
 
-	sprite_ptr->swap(temp_sprite_ptr);
+	sprite_ptr->swap(temp_sprite_ptr.value());
+
+	temp_sprite_ptr.reset();
 
 	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 															   0,
@@ -490,12 +498,14 @@ void Player::setFallAnimation()
 
 void Player::setBellJumpAnimation()
 {
-	bn::sprite_ptr temp_sprite_ptr = bn::sprite_items::player_bell_jump.create_sprite(sprite_ptr->x().integer(), 
-																				 	  sprite_ptr->y().integer());
-	temp_sprite_ptr.set_camera(sprite_ptr->camera());
-	temp_sprite_ptr.set_z_order(sprite_ptr->z_order());
+	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_bell_jump.create_sprite(sprite_ptr->x().integer(), 
+																				 	  				sprite_ptr->y().integer());
+	temp_sprite_ptr->set_camera(sprite_ptr->camera());
+	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
 
-	sprite_ptr->swap(temp_sprite_ptr);
+	sprite_ptr->swap(temp_sprite_ptr.value());
+
+	temp_sprite_ptr.reset();
 
 	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 																3,
@@ -508,12 +518,14 @@ void Player::setBellJumpAnimation()
 
 void Player::setSpinAttackAnimation()
 {
-	bn::sprite_ptr temp_sprite_ptr = bn::sprite_items::player_spin_attack.create_sprite(sprite_ptr->x().integer(), 
-																				 	    sprite_ptr->y().integer());
-	temp_sprite_ptr.set_camera(sprite_ptr->camera());
-	temp_sprite_ptr.set_z_order(sprite_ptr->z_order());
+	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_spin_attack.create_sprite(sprite_ptr->x().integer(), 
+																				 	    			  sprite_ptr->y().integer());
+	temp_sprite_ptr->set_camera(sprite_ptr->camera());
+	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
 
-	sprite_ptr->swap(temp_sprite_ptr);
+	sprite_ptr->swap(temp_sprite_ptr.value());
+
+	temp_sprite_ptr.reset();
 
 	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 															   0,
@@ -525,12 +537,14 @@ void Player::setSpinAttackAnimation()
 
 void Player::setDeathAnimation()
 {
-	bn::sprite_ptr temp_sprite_ptr = bn::sprite_items::player_death.create_sprite(sprite_ptr->x().integer(), 
-																				  sprite_ptr->y().integer());
-	temp_sprite_ptr.set_camera(sprite_ptr->camera());
-	temp_sprite_ptr.set_z_order(sprite_ptr->z_order());
+	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_death.create_sprite(sprite_ptr->x().integer(), 
+																				  				sprite_ptr->y().integer());
+	temp_sprite_ptr->set_camera(sprite_ptr->camera());
+	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
 
-	sprite_ptr->swap(temp_sprite_ptr);
+	sprite_ptr->swap(temp_sprite_ptr.value());
+
+	temp_sprite_ptr.reset();
 
 	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 															   1,
@@ -541,12 +555,14 @@ void Player::setDeathAnimation()
 
 void Player::setClimbAnimation()
 {
-	bn::sprite_ptr temp_sprite_ptr = bn::sprite_items::player_climb.create_sprite(sprite_ptr->x().integer(), 
-																				  sprite_ptr->y().integer());
-	temp_sprite_ptr.set_camera(sprite_ptr->camera());
-	temp_sprite_ptr.set_z_order(sprite_ptr->z_order());
+	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_climb.create_sprite(sprite_ptr->x().integer(), 
+																				  				sprite_ptr->y().integer());
+	temp_sprite_ptr->set_camera(sprite_ptr->camera());
+	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
 
-	sprite_ptr->swap(temp_sprite_ptr);
+	sprite_ptr->swap(temp_sprite_ptr.value());
+
+	temp_sprite_ptr.reset();
 
 	animate_action_ptr  = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 																0,
@@ -2106,6 +2122,16 @@ void Player::resolveHPTotemCollision(GameObject& object)
         // Resolve Corner Collision //
 		if(col_y_offset == 0 && col_x_offset == 0)
         {resolveCornerCollision(object.collider);}
+
+		// Smash block with player head //
+		if(col_y_offset > 0) 
+		{
+			object.applyHit(object.hitpoints, 0, 0);
+			
+			rigidbody.removeYForces();
+			sprite_ptr->set_horizontal_scale(PLAYER_HEAD_BONK_H_STRETCH);
+			sprite_ptr->set_vertical_scale(PLAYER_HEAD_BONK_V_STRETCH);
+		}		
     }
 
 	updateTestColliders();

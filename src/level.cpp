@@ -119,7 +119,6 @@ Level::Level(const Level& other)
 Level::~Level()
 {
     clear();
-
     freeObjectCells();
 }
 
@@ -193,7 +192,6 @@ void Level::operator =(const Level& other)
 
 void Level::clear()
 {
-    
     // Free level pointers
     camera.reset();
     main_bg_ptr.reset();
@@ -464,6 +462,10 @@ void Level::load()
 
     hud_level_name.setCamera(camera.value());
 
+    // Set initial Painted BG position
+    bn::fixed x_offset = camera->x() / LEVEL_PARALLAX_REDUCTION_FACTOR;
+    painted_bg_ptr->set_position(camera->x() + x_offset, current_room.room_bounds.center().y());
+
     // Set black screen
     default_main_palette_ptr->set_fade(bn::colors::black, 1);
     default_painted_palette_ptr->set_fade(bn::colors::black, 1);
@@ -724,6 +726,10 @@ void Level::load(LevelName level_name)
 
     hud_level_name.setCamera(camera.value());
 
+    // Set initial Painted BG position
+    bn::fixed x_offset = camera->x() / LEVEL_PARALLAX_REDUCTION_FACTOR;
+    painted_bg_ptr->set_position(camera->x() + x_offset, current_room.room_bounds.center().y());
+
     // Set black screen
     default_main_palette_ptr->set_fade(bn::colors::black, 1);
     default_painted_palette_ptr->set_fade(bn::colors::black, 1);
@@ -745,6 +751,7 @@ void Level::reload()
 void Level::loadNew(LevelName level_name)
 {
     clear(); 
+    freeObjectCells();
     load(level_name);
 }
 
@@ -1075,9 +1082,8 @@ void Level::updateBGFlash()
 void Level::updatePaintedBG()
 {   
     // Parallax Effect
-    #define PARALLAX_REDUCTION_FACTOR -4 // The larger the number, the slower the BG will scroll.
-    bn::fixed x_offset = camera->x() / PARALLAX_REDUCTION_FACTOR;
-    painted_bg_ptr->set_position(camera->x() + x_offset, current_room.room_bounds.center().y());
+    bn::fixed x_offset = camera->x() / LEVEL_PARALLAX_REDUCTION_FACTOR;
+    painted_bg_ptr->set_position(camera->x() + x_offset, painted_bg_ptr->y()); //current_room.room_bounds.center().y()
 
     painted_bg_anim_ptr->update();
 }
@@ -1440,7 +1446,9 @@ void Level::updateLevelTransition(LevelName level_index)
         transition_frames = clamp(0, LEVEL_TITLE_SCREEN_TRANSITION_FRAMES, transition_frames);
 
         if(transition_frames == 0)
-        {loadNew(level_index);}
+        {
+            loadNew(level_index);
+        }
     }
 }
 
@@ -1570,6 +1578,7 @@ void Level::transitionRoom()
 
             // Store current room floor
             int32 old_room_bottom_bound = current_room.room_bounds.bottom_bound;
+            int32 old_room_top_bound    = current_room.room_bounds.top_bound;
 
             // Create the neighbor room
             current_room = Room(current_room.right_neighbor, 
@@ -1587,8 +1596,11 @@ void Level::transitionRoom()
             // Set camera offsets
             cam_is_scrolling = true;
             cam_x_offset     = SCREEN_WIDTH;
-            cam_y_offset     = (current_room.room_bounds.bottom_bound - old_room_bottom_bound) * 0.25;
 
+            if(old_room_bottom_bound   == current_room.room_bounds.bottom_bound)      {cam_y_offset = 0;}
+            else if(old_room_top_bound == current_room.room_bounds.top_bound)         {cam_y_offset = 0;}
+            else {cam_y_offset = (current_room.room_bounds.bottom_bound - old_room_bottom_bound) * 0.25;}
+            
             return;
         }
     }
@@ -1602,6 +1614,7 @@ void Level::transitionRoom()
 
             // Store current room floor
             int32 old_room_bottom_bound = current_room.room_bounds.bottom_bound;
+            int32 old_room_top_bound    = current_room.room_bounds.top_bound;
 
             // Create the neighbor room
             current_room = Room(current_room.left_neighbor, 
@@ -1619,8 +1632,11 @@ void Level::transitionRoom()
             // Set camera offsets
             cam_is_scrolling = true;
             cam_x_offset     = -SCREEN_WIDTH;
-            cam_y_offset     = (current_room.room_bounds.bottom_bound - old_room_bottom_bound) * 0.25;
 
+            if(old_room_bottom_bound   == current_room.room_bounds.bottom_bound)      {cam_y_offset = 0;}
+            else if(old_room_top_bound == current_room.room_bounds.top_bound)         {cam_y_offset = 0;}
+            else {cam_y_offset = (current_room.room_bounds.bottom_bound - old_room_bottom_bound) * 0.25;}
+            
             return;
         }
     }

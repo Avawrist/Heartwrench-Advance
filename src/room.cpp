@@ -655,7 +655,7 @@ void Room::load(RoomName                                       _room_name,
             room_bounds.setTopBoundAC(2224);
             room_bounds.setBottomBoundAC(2544);
             room_bounds.setLeftBoundAC(16);
-            room_bounds.setRightBoundAC(880);
+            room_bounds.setRightBoundAC(752);
 
             // Add any special objects //
             
@@ -671,8 +671,8 @@ void Room::load(RoomName                                       _room_name,
 
             room_bounds.setTopBoundAC(2224);
             room_bounds.setBottomBoundAC(2544);
-            room_bounds.setLeftBoundAC(880);
-            room_bounds.setRightBoundAC(1280);
+            room_bounds.setLeftBoundAC(752);
+            room_bounds.setRightBoundAC(1184);
 
             // Add any special objects //
             
@@ -688,8 +688,8 @@ void Room::load(RoomName                                       _room_name,
 
             room_bounds.setTopBoundAC(2224);
             room_bounds.setBottomBoundAC(2544);
-            room_bounds.setLeftBoundAC(1280);
-            room_bounds.setRightBoundAC(1680);
+            room_bounds.setLeftBoundAC(1184);
+            room_bounds.setRightBoundAC(1664);
 
             // Add any special objects //
             
@@ -703,10 +703,10 @@ void Room::load(RoomName                                       _room_name,
             bottom_neighbor = ROOM_TROLL_TOLLS_3;
             left_neighbor   = NO_ROOM;
 
-            room_bounds.setTopBoundAC(1952);
+            room_bounds.setTopBoundAC(1824);
             room_bounds.setBottomBoundAC(2224);
-            room_bounds.setLeftBoundAC(1280);
-            room_bounds.setRightBoundAC(1680);
+            room_bounds.setLeftBoundAC(1152);
+            room_bounds.setRightBoundAC(1552);
 
             // Add any special objects //
             
@@ -716,14 +716,14 @@ void Room::load(RoomName                                       _room_name,
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
-            right_neighbor  = NO_ROOM;
+            right_neighbor  = ROOM_TROLL_TOLLS_6;
             bottom_neighbor = NO_ROOM;
             left_neighbor   = ROOM_TROLL_TOLLS_4;
 
-            room_bounds.setTopBoundAC(1952);
+            room_bounds.setTopBoundAC(1888);
             room_bounds.setBottomBoundAC(2320);
-            room_bounds.setLeftBoundAC(1680);
-            room_bounds.setRightBoundAC(2064);
+            room_bounds.setLeftBoundAC(1552);
+            room_bounds.setRightBoundAC(1936);
 
             // Add any special objects //
             
@@ -733,14 +733,14 @@ void Room::load(RoomName                                       _room_name,
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
-            right_neighbor  = NO_ROOM;
+            right_neighbor  = ROOM_TROLL_TOLLS_7;
             bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TROLL_TOLLS_1;
+            left_neighbor   = ROOM_TROLL_TOLLS_5;
 
-            room_bounds.setTopBoundAC(2224);
-            room_bounds.setBottomBoundAC(2544);
-            room_bounds.setLeftBoundAC(1008);
-            room_bounds.setRightBoundAC(1488);
+            room_bounds.setTopBoundAC(1888);
+            room_bounds.setBottomBoundAC(2320);
+            room_bounds.setLeftBoundAC(1936);
+            room_bounds.setRightBoundAC(2480);
 
             // Add any special objects //
             
@@ -750,14 +750,14 @@ void Room::load(RoomName                                       _room_name,
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
-            right_neighbor  = NO_ROOM;
+            right_neighbor  = ROOM_TROLL_TOLLS_8;
             bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TROLL_TOLLS_1;
+            left_neighbor   = ROOM_TROLL_TOLLS_6;
 
-            room_bounds.setTopBoundAC(2224);
-            room_bounds.setBottomBoundAC(2544);
-            room_bounds.setLeftBoundAC(1008);
-            room_bounds.setRightBoundAC(1488);
+            room_bounds.setTopBoundAC(1888);
+            room_bounds.setBottomBoundAC(2320);
+            room_bounds.setLeftBoundAC(2480);
+            room_bounds.setRightBoundAC(2752);
 
             // Add any special objects //
             
@@ -766,15 +766,15 @@ void Room::load(RoomName                                       _room_name,
         case ROOM_TROLL_TOLLS_8:
 
             // Init Variables //
-            top_neighbor    = NO_ROOM;
+            top_neighbor    = ROOM_TROLL_TOLLS_9;
             right_neighbor  = NO_ROOM;
             bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TROLL_TOLLS_1;
+            left_neighbor   = ROOM_TROLL_TOLLS_7;
 
-            room_bounds.setTopBoundAC(2224);
-            room_bounds.setBottomBoundAC(2544);
-            room_bounds.setLeftBoundAC(1008);
-            room_bounds.setRightBoundAC(1488);
+            room_bounds.setTopBoundAC(1904);
+            room_bounds.setBottomBoundAC(2320);
+            room_bounds.setLeftBoundAC(2752);
+            room_bounds.setRightBoundAC(3216);
 
             // Add any special objects //
             
@@ -785,13 +785,166 @@ void Room::load(RoomName                                       _room_name,
             // Init Variables //
             top_neighbor    = NO_ROOM;
             right_neighbor  = NO_ROOM;
-            bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TROLL_TOLLS_1;
+            bottom_neighbor = ROOM_TROLL_TOLLS_8;
+            left_neighbor   = ROOM_TROLL_TOLLS_10;
 
-            room_bounds.setTopBoundAC(2224);
-            room_bounds.setBottomBoundAC(2544);
-            room_bounds.setLeftBoundAC(1008);
-            room_bounds.setRightBoundAC(1488);
+            room_bounds.setTopBoundAC(1280);
+            room_bounds.setBottomBoundAC(1904);
+            room_bounds.setLeftBoundAC(2720);
+            room_bounds.setRightBoundAC(3216);
+
+            // Add any special objects //
+            
+        break;
+
+        case ROOM_TROLL_TOLLS_10:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = ROOM_TROLL_TOLLS_9;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = ROOM_TROLL_TOLLS_11;
+
+            room_bounds.setTopBoundAC(1280);
+            room_bounds.setBottomBoundAC(1552);
+            room_bounds.setLeftBoundAC(2448);
+            room_bounds.setRightBoundAC(2720);
+
+            // Add any special objects //
+            
+        break;
+
+        case ROOM_TROLL_TOLLS_11:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = ROOM_TROLL_TOLLS_10;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = ROOM_TROLL_TOLLS_12;
+
+            room_bounds.setTopBoundAC(1280);
+            room_bounds.setBottomBoundAC(1552);
+            room_bounds.setLeftBoundAC(2176);
+            room_bounds.setRightBoundAC(2448);
+
+            // Add any special objects //
+            
+        break;
+
+        case ROOM_TROLL_TOLLS_12:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = ROOM_TROLL_TOLLS_11;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.setTopBoundAC(864);
+            room_bounds.setBottomBoundAC(1552);
+            room_bounds.setLeftBoundAC(1616);
+            room_bounds.setRightBoundAC(2176);
+
+            // Add any special objects //
+            
+        break;
+
+        case ROOM_TROLL_TOLLS_13:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = ROOM_TROLL_TOLLS_10;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.setTopBoundAC(1280);
+            room_bounds.setBottomBoundAC(1456);
+            room_bounds.setLeftBoundAC(2192);
+            room_bounds.setRightBoundAC(2448);
+
+            // Add any special objects //
+            
+        break;
+
+        case ROOM_TROLL_TOLLS_14:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = ROOM_TROLL_TOLLS_10;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.setTopBoundAC(1280);
+            room_bounds.setBottomBoundAC(1456);
+            room_bounds.setLeftBoundAC(2192);
+            room_bounds.setRightBoundAC(2448);
+
+            // Add any special objects //
+            
+        break;
+
+        case ROOM_TROLL_TOLLS_15:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = ROOM_TROLL_TOLLS_10;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.setTopBoundAC(1280);
+            room_bounds.setBottomBoundAC(1456);
+            room_bounds.setLeftBoundAC(2192);
+            room_bounds.setRightBoundAC(2448);
+
+            // Add any special objects //
+            
+        break;
+
+        case ROOM_TROLL_TOLLS_16:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = ROOM_TROLL_TOLLS_10;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.setTopBoundAC(1280);
+            room_bounds.setBottomBoundAC(1456);
+            room_bounds.setLeftBoundAC(2192);
+            room_bounds.setRightBoundAC(2448);
+
+            // Add any special objects //
+            
+        break;
+
+        case ROOM_TROLL_TOLLS_17:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = ROOM_TROLL_TOLLS_10;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.setTopBoundAC(1280);
+            room_bounds.setBottomBoundAC(1456);
+            room_bounds.setLeftBoundAC(2192);
+            room_bounds.setRightBoundAC(2448);
+
+            // Add any special objects //
+            
+        break;
+
+        case ROOM_TROLL_TOLLS_18:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = ROOM_TROLL_TOLLS_10;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.setTopBoundAC(1280);
+            room_bounds.setBottomBoundAC(1456);
+            room_bounds.setLeftBoundAC(2192);
+            room_bounds.setRightBoundAC(2448);
 
             // Add any special objects //
             

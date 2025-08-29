@@ -72,6 +72,9 @@
 
 #define PAUSE_BG_ORDER  -5
 
+// Painted BG
+#define LEVEL_PARALLAX_REDUCTION_FACTOR -4 // The larger the number, the slower the BG will scroll.
+
 // HUD Macros
 #define HUD_STRIPE_Z_LAYER -3
 #define HUD_Z_LAYER        -4

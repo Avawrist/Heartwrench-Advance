@@ -309,12 +309,6 @@ void HPDrop::resolvePushBlockCollision(GameObject& object)
 
         // If there is still collision somehow, must be corner case //
         //resolveCornerCollision(object.collider);
-
-		// Smash the block
-		if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED)
-		{
-			object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
-		}
     }
 
 	updateTestColliders();
@@ -342,12 +336,6 @@ void HPDrop::resolvePushBlockMiniCollision(GameObject& object)
 
         // If there is still collision somehow, must be corner case //
         //resolveCornerCollision(object.collider);
-
-		// Smash the block
-		if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED)
-		{
-			object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
-		}
     }
 
 	updateTestColliders();
@@ -399,12 +387,6 @@ void HPDrop::resolveSmashBlockLargeCollision(GameObject& object)
 
         // If there is still collision somehow, must be corner case //
         //resolveCornerCollision(object.collider);
-
-		// Smash the block
-		if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED)
-		{
-			object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
-		}
     }
 
 	updateTestColliders();
@@ -432,12 +414,6 @@ void HPDrop::resolveSmashBlockMiniCollision(GameObject& object)
 
         // If there is still collision somehow, must be corner case //
         //resolveCornerCollision(object.collider);
-
-		// Smash the block
-		if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED)
-		{
-			object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
-		}
     }
 
 	updateTestColliders();
@@ -465,12 +441,6 @@ void HPDrop::resolveSmashBlockZigguratLCollision(GameObject& object)
 
         // If there is still collision somehow, must be corner case //
         //resolveCornerCollision(object.collider);
-
-		// Smash the block
-		if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED)
-		{
-			object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
-		}
     }
 
 	updateTestColliders();
@@ -498,12 +468,6 @@ void HPDrop::resolveSmashBlockZigguratCCollision(GameObject& object)
 
         // If there is still collision somehow, must be corner case //
         //resolveCornerCollision(object.collider);
-
-		// Smash the block
-		if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED)
-		{
-			object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
-		}
     }
 
 	updateTestColliders();
@@ -531,12 +495,6 @@ void HPDrop::resolveSmashBlockZigguratRCollision(GameObject& object)
 
         // If there is still collision somehow, must be corner case //
         //resolveCornerCollision(object.collider);
-
-		// Smash the block
-		if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED)
-		{
-			object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
-		}
     }
 
 	updateTestColliders();
@@ -547,26 +505,6 @@ void HPDrop::resolveSmashBlockZigguratRCollision(GameObject& object)
 	{	
 		grounded_detected = true;
 		rigidbody.removeYForces();
-	}
-}
-
-void HPDrop::resolveLargeVaseCollision(GameObject& object)
-{
-	if(object.state == OBJECT_DEATH) {return;}
-
-	if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED && collider.isCollision(object.collider))
-	{
-		object.applyHit(damage, 0, 0);
-	}
-}
-
-void HPDrop::resolveSmallVaseCollision(GameObject& object)
-{
-	if(object.state == OBJECT_DEATH) {return;}
-
-	if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED && collider.isCollision(object.collider))
-	{
-		object.applyHit(damage, 0, 0);
 	}
 }
 
@@ -584,12 +522,6 @@ void HPDrop::resolveHPTotemCollision(GameObject& object)
 
         // If there is still collision somehow, must be corner case //
         //resolveCornerCollision(object.collider);
-
-		// Smash the block
-		if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED)
-		{
-			object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
-		}
     }
 
 	updateTestColliders();
@@ -600,85 +532,5 @@ void HPDrop::resolveHPTotemCollision(GameObject& object)
 	{	
 		grounded_detected = true;
 		rigidbody.removeYForces();
-	}
-}
-
-// Level Enemies
-void HPDrop::resolveThornColumnCollision(GameObject& object)
-{
-	if(object.state == OBJECT_DEATH) {return;}
-
-	if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED && collider.isCollision(object.collider))
-	{
-		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
-	}
-}
-
-void HPDrop::resolveThornBarCollision(GameObject& object)
-{
-	if(object.state == OBJECT_DEATH) {return;}
-
-	if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED && collider.isCollision(object.collider))
-	{
-		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
-	}
-}
-
-void HPDrop::resolveGroundGhoulCollision(GameObject& object)
-{
-	if(object.state == OBJECT_DEATH || object.state == OBJECT_HITSTUN) {return;}
-
-	if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED && collider.isCollision(object.collider))
-	{
-		object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
-	}
-}
-
-void HPDrop::resolveBellTrollCollision(GameObject& object)
-{
-	if(object.state == OBJECT_DEATH || object.state == OBJECT_HITSTUN) {return;}
-
-	switch(object.state)
-	{
-		case BELL_TROLL_FROZEN:
-
-			if(collider.isCollision(object.collider))
-			{
-				// Resolve X Axis Collision //
-				resolveXAxisCollision(object.collider);
-
-				// Resolve Y Axis Collision //
-				resolveYAxisCollision(object.collider);
-
-				// If there is still collision somehow, must be corner case //
-				//resolveCornerCollision(object.collider);
-
-				// Smash the block
-				if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED)
-				{
-					object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
-				}
-			}
-
-			updateTestColliders();
-
-			// Test for, and log grounded collision
-			if(test_collider.isCollision(object.collider) && 
-			rigidbody.normalized_dir.y() >= 0)
-			{	
-				grounded_detected = true;
-				rigidbody.removeYForces();
-			}
-
-		break;
-
-		default:
-
-			if(abs(rigidbody.final_dir.x()) >= HP_DROP_MIN_HIT_SPEED && collider.isCollision(object.collider))
-			{
-				object.applyHit(damage, rigidbody.normalized_dir.x().integer(), 0);
-			}
-
-		break;
 	}
 }

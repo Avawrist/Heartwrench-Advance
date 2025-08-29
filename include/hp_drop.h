@@ -84,16 +84,7 @@ struct HPDrop : GameObject {
     void resolveSmashBlockZigguratLCollision(GameObject& object) override;
     void resolveSmashBlockZigguratCCollision(GameObject& object) override;
     void resolveSmashBlockZigguratRCollision(GameObject& object) override;
-	void resolveLargeVaseCollision(GameObject& object)           override;
-	void resolveSmallVaseCollision(GameObject& object)           override;
 	void resolveHPTotemCollision(GameObject& object)             override;
-
-	// Level Enemies
-	void resolveThornColumnCollision(GameObject& object) override; 
-	void resolveThornBarCollision(GameObject& object)    override; 
-	void resolveGroundGhoulCollision(GameObject& object) override;
-	void resolveBellTrollCollision(GameObject& object)   override;
-
 
 };
 

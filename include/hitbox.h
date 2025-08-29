@@ -95,7 +95,6 @@ struct Hitbox : GameObject
     void resolveLargeVaseCollision(GameObject& object)           override;
     void resolveSmallVaseCollision(GameObject& object)           override;
     void resolveHPTotemCollision(GameObject& object)             override;
-    void resolveHPDropCollision(GameObject& object)              override;
     void resolveCheckpointCollision(GameObject& object)          override;
     void resolveFinishSealCollision(GameObject& object)          override;
     void resolveBounceBellCollision(GameObject& object)          override;

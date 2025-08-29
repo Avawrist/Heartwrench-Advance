@@ -144,10 +144,7 @@ void SmashBlockZigguratR::setState(ObjectState new_state)
             //object_request = ObjectRequest(STAR_DROP, bn::fixed_point(x(), y()));
 
             sprite_ptr->set_z_order(ENEMY_Z_ORDER);
-			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-																		1,
-																		bn::sprite_items::smash_block_ziggurat_r.tiles_item(),
-																		1, 1, 2, 2, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5);
+            playBlockDeathAnim();
 
 		break;
 

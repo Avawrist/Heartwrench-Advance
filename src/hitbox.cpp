@@ -364,14 +364,6 @@ void Hitbox::resolveHPTotemCollision(GameObject& object)
     {applyHBHit(object);}
 }
 
-void Hitbox::resolveHPDropCollision(GameObject& object)
-{
-    if(object.state == OBJECT_DEATH) {return;}
-
-    if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
-}
-
 void Hitbox::resolveCheckpointCollision(GameObject& object)
 {	
 	if(collider.isCollision(object.collider)                         && 
