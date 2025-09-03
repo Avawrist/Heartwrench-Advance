@@ -36,11 +36,12 @@ Therefore, it carries more responsibility in introducing general concepts to the
 12. Checkpoint room
 
 
-13. Introduce Bounce Bell's freeze ability <<
+13. Introduce Bounce Bell's freeze ability
 14. Easy Bounce Bell and Bell Troll platforming room
-15. Easy Bounce Bell and Bell Troll combat room  
-16. Reward room
-17. Medium Bounce Bell, Bell Troll and Auto Platform room
-18. Checkpoint
+15. Vines & Bells
+16. Easy Bounce Bell and Bell Troll combat room
+17. Reward room
+18. Medium Bounce Bell, Bell Troll and Auto Platform room
+19. Checkpoint
 
-19. Boss
+20. Boss

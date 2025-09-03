@@ -23,7 +23,7 @@
 
 #define BELL_TROLL_30_FPS false
 
-#define BELL_TROLL_RUN_SPEED        2
+#define BELL_TROLL_RUN_SPEED        1
 #define BELL_TROLL_FROZEN_FRAMES    300 // 5 seconds
 #define BELL_TROLL_TRANSITION_FRAME 90 //  1.5 seconds
 

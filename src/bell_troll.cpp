@@ -80,7 +80,7 @@ void BellTroll::updateTimers()
 
 void BellTroll::applyDamage(int32 _damage)
 {
-    hitpoints -= _damage;
+    //hitpoints -= _damage;
     if(hitpoints < 0 || state == BELL_TROLL_FROZEN) {hitpoints = 0;}
 }
 
@@ -290,7 +290,7 @@ void BellTroll::resolveTileCollision(const bn::regular_bg_ptr&                  
     // Placeholder for other objects
 	Collider other_collider;
 
-    for(int32 y = 1; y < 3; y++)
+    for(int32 y = 1; y < 2; y++)
 	{
 		for(int32 x = -2; x < 3; x++)
 		{

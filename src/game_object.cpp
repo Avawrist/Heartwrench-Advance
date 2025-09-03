@@ -389,11 +389,13 @@ void GameObject::draw()
         {splat_effect_sprite_ptr->set_visible(false);}
     }
 
+    /*
     if(hp_animate_action_ptr.has_value())
     {
         if(!hp_animate_action_ptr->done())
         {hp_animate_action_ptr->update();}
     }
+    */
 
     global_tiles_in_VRAM += sprite_ptr->tiles().tiles_count();
     global_tiles_in_VRAM += hit_effect_sprite_ptr->tiles().tiles_count();
