@@ -652,6 +652,23 @@ void Room::load(RoomName                                       _room_name,
             
         break;
 
+        case ROOM_OVERWORLD:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.setTopBoundAC(LEVEL_HEIGHT / 2);
+            room_bounds.setBottomBoundAC(LEVEL_HEIGHT / 2);
+            room_bounds.setLeftBoundAC(LEVEL_WIDTH / 2);
+            room_bounds.setRightBoundAC(LEVEL_WIDTH / 2);
+
+            // Add any special objects //
+
+        break;
+
         case ROOM_TROLL_TOLLS_1:
 
             // Init Variables //
@@ -662,7 +679,7 @@ void Room::load(RoomName                                       _room_name,
 
             room_bounds.setTopBoundAC(2224);
             room_bounds.setBottomBoundAC(2544);
-            room_bounds.setLeftBoundAC(16);
+            room_bounds.setLeftBoundAC(160);
             room_bounds.setRightBoundAC(752);
 
             // Add any special objects //

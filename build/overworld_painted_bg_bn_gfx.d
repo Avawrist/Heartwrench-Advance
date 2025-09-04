@@ -1,0 +1,1 @@
+overworld_painted_bg_bn_gfx.o: overworld_painted_bg_bn_gfx.s

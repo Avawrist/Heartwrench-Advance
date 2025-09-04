@@ -19,7 +19,7 @@ int main()
     bn::core::init();
     
     // Initialize Level
-    Level level(LEVEL_TROLL_TOLLS);
+    Level level(LEVEL_NAME_CARD);
 
     // Game Loop
     while(true)

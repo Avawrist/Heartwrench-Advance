@@ -71,6 +71,9 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/build/bn_regular_bg_items_title_screen_level_bg.h \
  G:/game/build/bn_regular_bg_items_title_screen_object_bg.h \
  G:/game/build/bn_regular_bg_items_title_screen_painted_bg.h \
+ G:/game/build/bn_regular_bg_items_overworld_level_bg.h \
+ G:/game/build/bn_regular_bg_items_overworld_object_bg.h \
+ G:/game/build/bn_regular_bg_items_overworld_painted_bg.h \
  G:/game/build/bn_regular_bg_items_ziggurat_1_level_bg.h \
  G:/game/build/bn_regular_bg_items_ziggurat_1_object_bg.h \
  G:/game/build/bn_regular_bg_items_ziggurat_1_painted_bg.h \
@@ -250,6 +253,9 @@ G:/game/build/bn_regular_bg_items_name_card_painted_bg.h:
 G:/game/build/bn_regular_bg_items_title_screen_level_bg.h:
 G:/game/build/bn_regular_bg_items_title_screen_object_bg.h:
 G:/game/build/bn_regular_bg_items_title_screen_painted_bg.h:
+G:/game/build/bn_regular_bg_items_overworld_level_bg.h:
+G:/game/build/bn_regular_bg_items_overworld_object_bg.h:
+G:/game/build/bn_regular_bg_items_overworld_painted_bg.h:
 G:/game/build/bn_regular_bg_items_ziggurat_1_level_bg.h:
 G:/game/build/bn_regular_bg_items_ziggurat_1_object_bg.h:
 G:/game/build/bn_regular_bg_items_ziggurat_1_painted_bg.h:

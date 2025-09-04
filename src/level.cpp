@@ -315,10 +315,42 @@ void Level::load()
             cells        = main_bg_ptr->map().cells_ref().value();
 
             // Next level
-            next_level = LEVEL_TROLL_TOLLS;
+            next_level = LEVEL_OVERWORLD;
 
         break;
+            
+        case LEVEL_OVERWORLD:
+            
+            // Player Spawn //
+            player_spawn.spawn_room = ROOM_OVERWORLD;
 
+            // Load BGs //
+            main_bg_ptr    = bn::regular_bg_items::overworld_level_bg.create_bg(0, 0);
+            bg_item        = bn::regular_bg_items::overworld_level_bg;
+
+            object_bg_ptr  = bn::regular_bg_items::overworld_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::overworld_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::overworld_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               0,
+                                                                               bn::regular_bg_items::overworld_painted_bg.map_item(),
+                                                                               0, 0);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::ziggurat_1_bg_flash_palette.create_palette();
+
+            // Update cells
+            cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("       OVERWORLD", 16);
+
+            // Next level
+            next_level = LEVEL_TROLL_TOLLS;
+            
+        break;
+        
         case LEVEL_TROLL_TOLLS:
             
             // Load BGs //
@@ -485,7 +517,7 @@ void Level::load(LevelName level_name)
     camera = bn::camera_ptr::create(0, 0);
 
     player_spawn.spawn_pos   = bn::fixed_point(0, 0);
-    player_spawn.spawn_room  = NO_ROOM; 
+    player_spawn.spawn_room  = NO_ROOM;
     player_spawn.spawn_level = level_name;
 
     fade_in               = false;
@@ -575,14 +607,46 @@ void Level::load(LevelName level_name)
             hud_level_name.setSpritesFromString("", 0);
 
             // Next level
-            next_level = LEVEL_TROLL_TOLLS;
+            next_level = LEVEL_OVERWORLD;
 
+        break;
+
+         case LEVEL_OVERWORLD:
+            
+            // Player Spawn //
+            player_spawn.spawn_room = ROOM_OVERWORLD;
+
+            // Load BGs //
+            main_bg_ptr    = bn::regular_bg_items::overworld_level_bg.create_bg(0, 0);
+            bg_item        = bn::regular_bg_items::overworld_level_bg;
+
+            object_bg_ptr  = bn::regular_bg_items::overworld_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::overworld_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::overworld_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               0,
+                                                                               bn::regular_bg_items::overworld_painted_bg.map_item(),
+                                                                               0, 0);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::ziggurat_1_bg_flash_palette.create_palette();
+
+            // Update cells
+            cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("       OVERWORLD", 16);
+
+            // Next level
+            next_level = LEVEL_TROLL_TOLLS;
+            
         break;
 
         case LEVEL_TROLL_TOLLS:
             
             // Player Spawn //
-            player_spawn.setSpawnPosAC(64, 2400);
+            player_spawn.setSpawnPosAC(192, 2400);
             player_spawn.spawn_room = ROOM_TROLL_TOLLS_1;
 
             // Load BGs //
@@ -765,6 +829,7 @@ void Level::update()
     {
              if(player_spawn.spawn_level == LEVEL_NAME_CARD)    {updateNameCard();}
         else if(player_spawn.spawn_level == LEVEL_TITLE_SCREEN) {updateTitleScreen();}
+        else if(player_spawn.spawn_level == LEVEL_OVERWORLD)    {updateOverworld();}
         else if(level_complete)                                 {updateLevelComplete();}
         else if(menu_open)                                      {updatePauseScreen();}
         else if(cam_is_scrolling)                               {updateCamera(); 
@@ -868,6 +933,49 @@ void Level::updateTitleScreen()
                                                                            bn::regular_bg_items::title_screen_painted_bg.map_item(),
                                                                            0, 0, 1, 1);
     }
+
+    // Draw Screen
+    updatePaintedBG();
+}
+
+void Level::updateOverworld()
+{
+    // Update fade
+    updateFade();
+
+    // Hide HP
+    hud_hp_sprite_ptr->set_visible(false);
+    
+    // Delete Player
+    /*
+    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) != NULL)
+    {
+        delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+        current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = NULL;
+    }
+    */
+
+    // Create OW Player object
+    // ...
+
+    // Center Camera
+    camera.value().set_position(0, 0);
+
+    // Get Input //
+    if((bn::keypad::a_pressed()) && transition_frames < 0)
+    {
+        // Start Fade and Level Transition
+        fade_out = true;
+        transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+    }
+
+    // Typical level updates
+    updateObjects();
+    removeObjectCells();
+    updateCurrency();
+    //updateCamera();
+    freeObjects();
+    drawObjects();
 
     // Draw Screen
     updatePaintedBG();

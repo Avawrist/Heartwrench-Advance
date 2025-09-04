@@ -80,7 +80,15 @@ typedef int   int32;
 //#define STEEP_SLOPE_1_INDEX 161
 //#define STEEP_SLOPE_2_INDEX 162
 
-#define TILE_TOTAL_COUNT 255
+#define TILE_TOTAL_COUNT 160
+
+// Overworld Tile Indexes
+
+#define OW_HARD_BLOCK_MIN_INDEX 1
+#define OW_HARD_BLOCK_MAX_INDEX 2
+#define OW_TROLL_TOLLS_INDEX    5
+
+#define OW_TILE_TOTAL_COUNT 5
 
 // Tile Dimensions //
 #define TILE_WIDTH  8
