@@ -1,13 +1,13 @@
-#include "winged_troll.h"
+#include "winged_troll_l.h"
 
 ////////////////////////
-// Struct WingedTroll //
+// Struct WingedTrollL //
 ////////////////////////
 
-WingedTroll::WingedTroll()
+WingedTrollL::WingedTrollL()
 {
     // Init Assets //
-    object_type = WINGED_TROLL;
+    object_type = WINGED_TROLL_L;
     sprite_ptr  = bn::sprite_items::winged_troll.create_sprite(0, 0);
     sprite_ptr->set_z_order(ENEMY_Z_ORDER);
     default_palette_ptr = sprite_ptr->palette();
@@ -17,26 +17,26 @@ WingedTroll::WingedTroll()
 								                                   0, 0, 0, 1, 1, 1);
 
     // Init Variables //
-    collider_offset_x = WINGED_TROLL_COLLIDER_OFFSET_X;
-    collider_offset_y = WINGED_TROLL_COLLIDER_OFFSET_Y;
+    collider_offset_x = WINGED_TROLL_L_COLLIDER_OFFSET_X;
+    collider_offset_y = WINGED_TROLL_L_COLLIDER_OFFSET_Y;
 	collider = Collider(x() + collider_offset_x, 
                         y() + collider_offset_y, 
-                        WINGED_TROLL_COLLIDER_WIDTH, 
-                        WINGED_TROLL_COLLIDER_HEIGHT);
+                        WINGED_TROLL_L_COLLIDER_WIDTH, 
+                        WINGED_TROLL_L_COLLIDER_HEIGHT);
     collider_x_axis   = collider;
     collider_y_axis   = collider;
 
     state = IDLE;
     x_dir = LEFT;
 
-    hitpoints = WINGED_TROLL_HITPOINTS;
+    hitpoints = WINGED_TROLL_L_HITPOINTS;
 
-    thirty_fps = WINGED_TROLL_30_FPS;
+    thirty_fps = WINGED_TROLL_L_30_FPS;
 
     first = true;
 }
 
-WingedTroll::WingedTroll(const WingedTroll& other) : Enemy(other)
+WingedTrollL::WingedTrollL(const WingedTrollL& other) : Enemy(other)
 {
     first = other.first;
 
@@ -44,12 +44,12 @@ WingedTroll::WingedTroll(const WingedTroll& other) : Enemy(other)
     right_bound = other.right_bound;
 }
 
-WingedTroll::~WingedTroll()
+WingedTrollL::~WingedTrollL()
 {
 
 }
 
-WingedTroll& WingedTroll::operator =(const WingedTroll& other)
+WingedTrollL& WingedTrollL::operator =(const WingedTrollL& other)
 {
     first = other.first;
 
@@ -69,7 +69,7 @@ WingedTroll& WingedTroll::operator =(const WingedTroll& other)
 // State Function Overrides //
 //////////////////////////////
 
-void WingedTroll::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+void WingedTrollL::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
                                      const bn::regular_bg_ptr&                      bg_ptr, 
                                      const bn::span<const bn::regular_bg_map_cell>& cells,
                                      const bn::regular_bg_item&                     bg_item,
@@ -83,8 +83,8 @@ void WingedTroll::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
             if(first)
             {
                 first = false;
-                left_bound =  x().integer() - (WINGED_TROLL_FLIGHT_RANGE / 2);
-                right_bound = x().integer() + (WINGED_TROLL_FLIGHT_RANGE / 2);
+                left_bound =  x().integer() - (WINGED_TROLL_L_FLIGHT_RANGE / 2);
+                right_bound = x().integer() + (WINGED_TROLL_L_FLIGHT_RANGE / 2);
             }
 
             // Update direction
@@ -92,7 +92,7 @@ void WingedTroll::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
             else if(x() >= right_bound) {x_dir = LEFT;}
 
             // Add Flight Force
-            rigidbody.addForce(WINGED_TROLL_FLIGHT_FORCE);
+            rigidbody.addForce(WINGED_TROLL_L_FLIGHT_FORCE);
 
         break;
 
@@ -113,7 +113,7 @@ void WingedTroll::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
     }
 }
 
-void WingedTroll::setState(ObjectState new_state)
+void WingedTrollL::setState(ObjectState new_state)
 {
     state = new_state;
 
@@ -146,7 +146,7 @@ void WingedTroll::setState(ObjectState new_state)
 // Collision Overrides //
 /////////////////////////
 
-void WingedTroll::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+void WingedTrollL::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
                                    const bn::regular_bg_ptr&                      bg_ptr, 
                                    const bn::span<const bn::regular_bg_map_cell>& cells,
                                    const bn::regular_bg_item&                     bg_item)

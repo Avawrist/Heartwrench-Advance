@@ -667,6 +667,24 @@ void Enemy::resolveBellTrollCollision(GameObject& object)
 	}
 }
 
+void Enemy::resolveWingedTrollLCollision(GameObject& object)
+{	
+	if(collider.isCollision(object.collider) &&
+       (object.state == OBJECT_HITSTUN || object.state == OBJECT_DEATH))
+	{
+		applyHit(object.damage, object.rigidbody.normalized_dir.x().integer(), 0);
+	}
+}
+
+void Enemy::resolveWingedTrollRCollision(GameObject& object)
+{	
+	if(collider.isCollision(object.collider) &&
+       (object.state == OBJECT_HITSTUN || object.state == OBJECT_DEATH))
+	{
+		applyHit(object.damage, object.rigidbody.normalized_dir.x().integer(), 0);
+	}
+}
+
 // Tiles
 void Enemy::resolveXAxisCollision(const Collider& other_collider)
 {

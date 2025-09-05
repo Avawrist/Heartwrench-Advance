@@ -181,8 +181,9 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/game/include/auto_bounce_bell.h G:/game/include/thorn_column.h \
  G:/game/include/enemy.h G:/game/include/thorn_bar.h \
  G:/game/include/ground_ghoul.h G:/game/include/bell_troll.h \
- G:/game/include/winged_troll.h G:/game/include/candelabra.h \
- G:/game/include/prop.h G:/game/include/player.h
+ G:/game/include/winged_troll_l.h G:/game/include/winged_troll_r.h \
+ G:/game/include/candelabra.h G:/game/include/prop.h \
+ G:/game/include/player.h
 G:/butano-master/butano/include/bn_sprites.h:
 G:/butano-master/butano/hw/include/bn_hw_sprites_constants.h:
 G:/butano-master/butano/include/bn_common.h:
@@ -385,7 +386,8 @@ G:/game/include/enemy.h:
 G:/game/include/thorn_bar.h:
 G:/game/include/ground_ghoul.h:
 G:/game/include/bell_troll.h:
-G:/game/include/winged_troll.h:
+G:/game/include/winged_troll_l.h:
+G:/game/include/winged_troll_r.h:
 G:/game/include/candelabra.h:
 G:/game/include/prop.h:
 G:/game/include/player.h:

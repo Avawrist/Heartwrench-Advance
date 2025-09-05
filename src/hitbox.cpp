@@ -446,7 +446,15 @@ void Hitbox::resolveBellTrollCollision(GameObject& object)
     {applyHBHit(object);}
 }
 
-void Hitbox::resolveWingedTrollCollision(GameObject& object)
+void Hitbox::resolveWingedTrollLCollision(GameObject& object)
+{
+    if(object.state == OBJECT_DEATH) {return;}
+
+    if(collider.isCollision(object.collider))
+    {applyHBHit(object);}
+}
+
+void Hitbox::resolveWingedTrollRCollision(GameObject& object)
 {
     if(object.state == OBJECT_DEATH) {return;}
 

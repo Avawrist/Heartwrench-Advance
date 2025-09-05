@@ -374,7 +374,8 @@ struct Player : GameObject {
 	void resolveThornBarCollision(GameObject& object)    override; 
 	void resolveGroundGhoulCollision(GameObject& object) override;
 	void resolveBellTrollCollision(GameObject& object)   override;
-	void resolveWingedTrollCollision(GameObject& object) override;
+	void resolveWingedTrollLCollision(GameObject& object) override;
+	void resolveWingedTrollRCollision(GameObject& object) override;
 
 	// Tiles
 	void resolveOWTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 

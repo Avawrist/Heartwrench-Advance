@@ -150,8 +150,9 @@ room.o: G:/game/src/room.cpp G:/game/include/room.h \
  G:/game/include/auto_bounce_bell.h G:/game/include/thorn_column.h \
  G:/game/include/enemy.h G:/game/include/thorn_bar.h \
  G:/game/include/ground_ghoul.h G:/game/include/bell_troll.h \
- G:/game/include/winged_troll.h G:/game/include/candelabra.h \
- G:/game/include/prop.h G:/game/include/player.h
+ G:/game/include/winged_troll_l.h G:/game/include/winged_troll_r.h \
+ G:/game/include/candelabra.h G:/game/include/prop.h \
+ G:/game/include/player.h
 G:/game/include/room.h:
 G:/butano-master/butano/include/bn_log.h:
 G:/butano-master/butano/include/bn_config_log.h:
@@ -321,7 +322,8 @@ G:/game/include/enemy.h:
 G:/game/include/thorn_bar.h:
 G:/game/include/ground_ghoul.h:
 G:/game/include/bell_troll.h:
-G:/game/include/winged_troll.h:
+G:/game/include/winged_troll_l.h:
+G:/game/include/winged_troll_r.h:
 G:/game/include/candelabra.h:
 G:/game/include/prop.h:
 G:/game/include/player.h:

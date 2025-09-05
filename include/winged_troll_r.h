@@ -1,5 +1,5 @@
-#ifndef WINGED_TROLL_H
-#define WINGED_TROLL_H
+#ifndef WINGED_TROLL_R_H
+#define WINGED_TROLL_R_H
 
 // Butano
 
@@ -9,43 +9,43 @@
 // Base Class
 #include "enemy.h"
 
-//////////////////////
-// Struct WingedTroll //
-//////////////////////
+/////////////////////////
+// Struct WingedTrollR //
+/////////////////////////
 
-#define WINGED_TROLL_COLLIDER_WIDTH  30
-#define WINGED_TROLL_COLLIDER_HEIGHT 20
+#define WINGED_TROLL_R_COLLIDER_WIDTH  30
+#define WINGED_TROLL_R_COLLIDER_HEIGHT 20
 
-#define WINGED_TROLL_COLLIDER_OFFSET_X 0
-#define WINGED_TROLL_COLLIDER_OFFSET_Y 0
+#define WINGED_TROLL_R_COLLIDER_OFFSET_X 0
+#define WINGED_TROLL_R_COLLIDER_OFFSET_Y 0
 
-#define WINGED_TROLL_HITPOINTS 1
+#define WINGED_TROLL_R_HITPOINTS 1
 
-#define WINGED_TROLL_30_FPS false
+#define WINGED_TROLL_R_30_FPS false
 
-#define WINGED_TROLL_X_SPEED 1
-#define WINGED_TROLL_X_DECAY 1
+#define WINGED_TROLL_R_X_SPEED 1
+#define WINGED_TROLL_R_X_DECAY 1
 
-#define WINGED_TROLL_FLIGHT_RANGE 96
+#define WINGED_TROLL_R_FLIGHT_RANGE 96
 
-#define WINGED_TROLL_FLIGHT_FORCE Force(bn::fixed_point_t<12>(WINGED_TROLL_X_SPEED * (int32)(x_dir), 0), WINGED_TROLL_X_DECAY)
+#define WINGED_TROLL_R_FLIGHT_FORCE Force(bn::fixed_point_t<12>(WINGED_TROLL_R_X_SPEED * (int32)(x_dir), 0), WINGED_TROLL_R_X_DECAY)
 
-struct WingedTroll : Enemy {
+struct WingedTrollR : Enemy {
 
-    ////////////////////////
-    // Struct WingedTroll //
-    ////////////////////////
+    /////////////////////////
+    // Struct WingedTrollR //
+    /////////////////////////
 
     bool first;
 
     int32 left_bound;
     int32 right_bound;
 
-    WingedTroll();
-    WingedTroll(const WingedTroll& other);
-    ~WingedTroll();
+    WingedTrollR();
+    WingedTrollR(const WingedTrollR& other);
+    ~WingedTrollR();
 
-    WingedTroll& operator =(const WingedTroll& other);
+    WingedTrollR& operator =(const WingedTrollR& other);
 
 	//////////////////////////
 	// GameObject Overrides //

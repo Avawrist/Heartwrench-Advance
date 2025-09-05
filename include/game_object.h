@@ -205,7 +205,8 @@ enum ObjectType
 	THORN_BAR,
 	GROUND_GHOUL,
 	BELL_TROLL,
-	WINGED_TROLL,
+	WINGED_TROLL_L,
+	WINGED_TROLL_R,
 
 	// Props
 	CANDELABRA,
@@ -491,7 +492,8 @@ struct GameObject
 	virtual void resolveThornBarCollision(GameObject& object); 
 	virtual void resolveGroundGhoulCollision(GameObject& object);
 	virtual void resolveBellTrollCollision(GameObject& object);
-	virtual void resolveWingedTrollCollision(GameObject& object);
+	virtual void resolveWingedTrollLCollision(GameObject& object);
+	virtual void resolveWingedTrollRCollision(GameObject& object);
 
 	// Special Objects
 	virtual void resolveHitboxSpin1Collision(GameObject& object);
