@@ -106,7 +106,7 @@
 
 // Overdrive Values
 
-#define PLAYER_OD_CURRENCY_REQUIRED 99
+#define PLAYER_OD_CURRENCY_REQUIRED 0
 #define PLAYER_OD_BONUS_KNOCKBACK   4
 
 // Spin Attack Values
