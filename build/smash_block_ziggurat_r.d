@@ -128,6 +128,7 @@ smash_block_ziggurat_r.o: G:/game/src/smash_block_ziggurat_r.cpp \
  G:/game/build/bn_sprite_items_player_death.h \
  G:/game/build/bn_sprite_items_player_climb.h \
  G:/game/build/bn_sprite_items_player_bell_jump.h \
+ G:/game/build/bn_sprite_items_player_ow.h \
  G:/game/build/bn_sprite_items_phase_marker.h
 G:/game/include/smash_block_ziggurat_r.h:
 G:/game/include/utility.h:
@@ -261,4 +262,5 @@ G:/game/build/bn_sprite_items_player_spin_attack.h:
 G:/game/build/bn_sprite_items_player_death.h:
 G:/game/build/bn_sprite_items_player_climb.h:
 G:/game/build/bn_sprite_items_player_bell_jump.h:
+G:/game/build/bn_sprite_items_player_ow.h:
 G:/game/build/bn_sprite_items_phase_marker.h:

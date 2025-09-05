@@ -26,7 +26,7 @@ int main()
     {
         // Update Level
         level.update();
-       
+
         // Update Butano
         bn::core::update();
     }

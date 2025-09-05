@@ -615,7 +615,7 @@ void Room::load(RoomName                                       _room_name,
 
     room_name = _room_name;
 
-    // Initialize Objects
+    // Initialize Room bounds
     switch(room_name)
     {
         case ROOM_NAME_CARD:
@@ -660,10 +660,10 @@ void Room::load(RoomName                                       _room_name,
             bottom_neighbor = NO_ROOM;
             left_neighbor   = NO_ROOM;
 
-            room_bounds.setTopBoundAC(LEVEL_HEIGHT / 2);
-            room_bounds.setBottomBoundAC(LEVEL_HEIGHT / 2);
-            room_bounds.setLeftBoundAC(LEVEL_WIDTH / 2);
-            room_bounds.setRightBoundAC(LEVEL_WIDTH / 2);
+            room_bounds.top_bound    = -199;
+            room_bounds.bottom_bound =  247;
+            room_bounds.left_bound   = -247;
+            room_bounds.right_bound  =  247;
 
             // Add any special objects //
 
@@ -950,7 +950,7 @@ void Room::load(RoomName                                       _room_name,
     }
 
     // Init Player. Player will always be updated last.
-    ObjectRequest player_request(ObjectRequest(PLAYER, player_spawn));
+    ObjectRequest player_request(PLAYER, player_spawn);
     addObject(player_request, camera_ptr);
 
     // Add all object stubs 

@@ -32,7 +32,7 @@ Player::Player()
 
     x_speed        	  	 = PLAYER_MIN_X_SPEED;
 	phase_destination    = bn::fixed_point(0, 0);
-	
+
 	hitpoints                        = PLAYER_STARTING_HITPOINTS;
 	spin_buffered_frames             = 0;
 	jump_buffered_frames             = 0;
@@ -59,6 +59,7 @@ Player::Player()
 	left_wj_eligible         = false;
 	right_wj_eligible        = false;
 	is_dead                  = false;
+	troll_tolls_highlighted  = false;
 
 	a_requested   = false;
 	b_requested   = false;
@@ -123,6 +124,7 @@ Player::Player(const Player& other) : GameObject(other)
 	left_wj_eligible         = other.left_wj_eligible;
 	right_wj_eligible        = other.right_wj_eligible;
 	is_dead                  = other.is_dead;
+	troll_tolls_highlighted  = other.troll_tolls_highlighted;
 
 	a_requested   = other.a_requested;
 	b_requested   = other.b_requested;
@@ -193,6 +195,7 @@ Player& Player::operator =(const Player& other)
 	left_wj_eligible         = other.left_wj_eligible;
 	right_wj_eligible        = other.right_wj_eligible;
 	is_dead                  = other.is_dead;
+	troll_tolls_highlighted  = other.troll_tolls_highlighted;
 
 	a_requested   = other.a_requested;
 	b_requested   = other.b_requested;
@@ -568,6 +571,23 @@ void Player::setClimbAnimation()
 																0,
 																bn::sprite_items::player_climb.tiles_item(),
 																0, 0);
+}
+
+void Player::setOWAnimation()
+{
+	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_ow.create_sprite(sprite_ptr->x().integer(), 
+																				  			 sprite_ptr->y().integer());
+	temp_sprite_ptr->set_camera(sprite_ptr->camera());
+	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
+
+	sprite_ptr->swap(temp_sprite_ptr.value());
+
+	temp_sprite_ptr.reset();
+
+	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+															   0,
+															   bn::sprite_items::player_ow.tiles_item(),
+															   0, 0);
 }
 
 //////////////////////////
@@ -1537,6 +1557,26 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 		break;
 
+		case PLAYER_OW:
+
+			///////////////
+			// Get Input //
+			///////////////
+
+			if(bn::keypad::left_pressed())
+			{rigidbody.addForce(Force(bn::fixed_point_t<12>(-1 * PLAYER_OW_STEP_DISTANCE, 0), PLAYER_OW_STEP_DECAY));}
+
+			else if(bn::keypad::right_pressed())
+			{rigidbody.addForce(Force(bn::fixed_point_t<12>(PLAYER_OW_STEP_DISTANCE, 0), PLAYER_OW_STEP_DECAY));}
+
+			else if(bn::keypad::up_pressed())
+			{rigidbody.addForce(Force(bn::fixed_point_t<12>(0, -1 * PLAYER_OW_STEP_DISTANCE), PLAYER_OW_STEP_DECAY));}
+
+			else if(bn::keypad::down_pressed())
+			{rigidbody.addForce(Force(bn::fixed_point_t<12>(0, PLAYER_OW_STEP_DISTANCE), PLAYER_OW_STEP_DECAY));}
+
+		break;
+
 		case OBJECT_DEATH:
 
 			updateDeathState();
@@ -1570,6 +1610,7 @@ void Player::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_obj
 	if(state != PLAYER_SPIN_ATTACK     &&
 	   state != PLAYER_CLIMB           &&
 	   state != PLAYER_PHASE_STEP      &&
+	   state != PLAYER_OW              &&
 	   state != OBJECT_DEATH)
 	{
 		ObjectState new_state = NONE;
@@ -1688,6 +1729,12 @@ void Player::setState(ObjectState new_state)
 
 		break;
 
+		case PLAYER_OW:
+
+			setOWAnimation();
+
+		break;
+
 		case OBJECT_DEATH:
 
 			setDeathAnimation();
@@ -1703,6 +1750,28 @@ void Player::setState(ObjectState new_state)
 /////////////////////////
 // Collision Overrides //
 /////////////////////////
+
+void Player::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+							  const bn::regular_bg_ptr&                      bg_ptr, 
+							  const bn::span<const bn::regular_bg_map_cell>& cells,
+							  const bn::regular_bg_item&                     bg_item)
+{
+	if(is_frozen) {return;}
+
+    ////////////////////////////
+    // Resolve Tile Collision //
+    ////////////////////////////
+
+	if(state == PLAYER_OW) {resolveOWTileCollision(bg_ptr, cells, bg_item);}
+	else                   {resolveTileCollision(bg_ptr, cells, bg_item);}
+	
+
+    //////////////////////////////////
+    // Resolve GameObject Collision //
+    //////////////////////////////////
+
+    resolveObjectCollision(game_objects);
+}
 
 // Level Objects
 
@@ -2355,6 +2424,50 @@ void Player::resolveWingedTrollCollision(GameObject& object)
 }
 
 // Tiles
+
+void Player::resolveOWTileCollision(const bn::regular_bg_ptr&                      bg_ptr,
+								    const bn::span<const bn::regular_bg_map_cell>& cells,
+								    const bn::regular_bg_item&                     bg_item)
+{
+	///////////////////////////
+	// Reset highlight bools //
+	///////////////////////////
+
+	troll_tolls_highlighted = false;
+
+	///////////////////////////////////////////////////
+	// Get current cell index that player resides in //
+	///////////////////////////////////////////////////
+
+	int32 half_level_width_pixels  = 256;
+	int32 half_level_height_pixels = 256;
+	bn::fixed index_x = (x() + half_level_width_pixels)  / TILE_WIDTH;
+	bn::fixed index_y = (y() + half_level_height_pixels) / TILE_HEIGHT;
+	bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
+
+	uint32 tile_index = getTileAtBGIndex(cell_index.x(),
+										 cell_index.y(),
+										 bg_ptr, 
+										 cells,
+										 bg_item);
+
+	///////////////////////
+	// Resolve collision //
+	///////////////////////
+
+	if(tile_index >= OW_HARD_BLOCK_MIN_INDEX &&
+	   tile_index <= OW_HARD_BLOCK_MAX_INDEX)
+	{
+		setX(x().integer() - (rigidbody.normalized_dir.x().integer() * PLAYER_OW_STEP_DISTANCE));
+		setY(y().integer() - (rigidbody.normalized_dir.y().integer() * PLAYER_OW_STEP_DISTANCE));
+	}
+	else if(tile_index >= OW_TROLL_TOLLS_MIN_INDEX &&
+	  		tile_index <= OW_TROLL_TOLLS_MAX_INDEX)
+	{
+		troll_tolls_highlighted = true;
+	}
+}
+
 void Player::resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
 								  const bn::span<const bn::regular_bg_map_cell>& cells,
 								  const bn::regular_bg_item&                     bg_item)

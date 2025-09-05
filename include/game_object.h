@@ -83,7 +83,6 @@
 
 // Special Object Assets
 #include "bn_sprite_items_hitbox.h"
-//#include "bn_sprite_items_player.h"
 #include "bn_sprite_items_player_idle.h"
 #include "bn_sprite_items_player_walk.h"
 #include "bn_sprite_items_player_jump.h"
@@ -91,6 +90,7 @@
 #include "bn_sprite_items_player_death.h"
 #include "bn_sprite_items_player_climb.h"
 #include "bn_sprite_items_player_bell_jump.h"
+#include "bn_sprite_items_player_ow.h"
 #include "bn_sprite_items_phase_marker.h"
 
 ///////////////////////
@@ -214,7 +214,7 @@ enum ObjectType
 	HITBOX_SPIN_1,
 	HITBOX_SPIN_2,
 	HITBOX_WALL_SPLAT,
-	PLAYER,
+	PLAYER
 };
 
 enum ObjectState
@@ -269,6 +269,7 @@ enum ObjectState
 	PLAYER_SPIN_ATTACK,
 	PLAYER_CLIMB,
 	PLAYER_VICTORY,
+	PLAYER_OW,
 
 	/////////////
 	// Generic //

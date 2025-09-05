@@ -163,6 +163,7 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/game/build/bn_sprite_items_player_death.h \
  G:/game/build/bn_sprite_items_player_climb.h \
  G:/game/build/bn_sprite_items_player_bell_jump.h \
+ G:/game/build/bn_sprite_items_player_ow.h \
  G:/game/build/bn_sprite_items_phase_marker.h \
  G:/game/include/tile_passage.h G:/game/include/phase_orb.h \
  G:/game/include/falling_platform_wide.h \
@@ -353,6 +354,7 @@ G:/game/build/bn_sprite_items_player_spin_attack.h:
 G:/game/build/bn_sprite_items_player_death.h:
 G:/game/build/bn_sprite_items_player_climb.h:
 G:/game/build/bn_sprite_items_player_bell_jump.h:
+G:/game/build/bn_sprite_items_player_ow.h:
 G:/game/build/bn_sprite_items_phase_marker.h:
 G:/game/include/tile_passage.h:
 G:/game/include/phase_orb.h:

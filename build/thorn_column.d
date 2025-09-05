@@ -128,6 +128,7 @@ thorn_column.o: G:/game/src/thorn_column.cpp \
  G:/game/build/bn_sprite_items_player_death.h \
  G:/game/build/bn_sprite_items_player_climb.h \
  G:/game/build/bn_sprite_items_player_bell_jump.h \
+ G:/game/build/bn_sprite_items_player_ow.h \
  G:/game/build/bn_sprite_items_phase_marker.h G:/game/include/hitbox.h
 G:/game/include/thorn_column.h:
 G:/butano-master/butano/include/bn_optional.h:
@@ -262,5 +263,6 @@ G:/game/build/bn_sprite_items_player_spin_attack.h:
 G:/game/build/bn_sprite_items_player_death.h:
 G:/game/build/bn_sprite_items_player_climb.h:
 G:/game/build/bn_sprite_items_player_bell_jump.h:
+G:/game/build/bn_sprite_items_player_ow.h:
 G:/game/build/bn_sprite_items_phase_marker.h:
 G:/game/include/hitbox.h:

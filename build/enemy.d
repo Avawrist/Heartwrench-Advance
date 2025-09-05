@@ -127,6 +127,7 @@ enemy.o: G:/game/src/enemy.cpp G:/game/include/enemy.h \
  G:/game/build/bn_sprite_items_player_death.h \
  G:/game/build/bn_sprite_items_player_climb.h \
  G:/game/build/bn_sprite_items_player_bell_jump.h \
+ G:/game/build/bn_sprite_items_player_ow.h \
  G:/game/build/bn_sprite_items_phase_marker.h G:/game/include/hitbox.h
 G:/game/include/enemy.h:
 G:/game/include/game_object.h:
@@ -260,5 +261,6 @@ G:/game/build/bn_sprite_items_player_spin_attack.h:
 G:/game/build/bn_sprite_items_player_death.h:
 G:/game/build/bn_sprite_items_player_climb.h:
 G:/game/build/bn_sprite_items_player_bell_jump.h:
+G:/game/build/bn_sprite_items_player_ow.h:
 G:/game/build/bn_sprite_items_phase_marker.h:
 G:/game/include/hitbox.h:

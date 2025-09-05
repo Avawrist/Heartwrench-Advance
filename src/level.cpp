@@ -320,9 +320,6 @@ void Level::load()
         break;
             
         case LEVEL_OVERWORLD:
-            
-            // Player Spawn //
-            player_spawn.spawn_room = ROOM_OVERWORLD;
 
             // Load BGs //
             main_bg_ptr    = bn::regular_bg_items::overworld_level_bg.create_bg(0, 0);
@@ -399,8 +396,13 @@ void Level::load()
                         object_cells,
                         player_spawn.spawn_pos);
 
-    // Hide Player on the title screen
-    if(player_spawn.spawn_level == LEVEL_TITLE_SCREEN)
+    // Set Player state to OW if Overworld level
+    if(player_spawn.spawn_level == LEVEL_OVERWORLD)
+    {current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->setState(PLAYER_OW);}
+
+    // Hide Player on the title screen & overworld
+    if(player_spawn.spawn_level == LEVEL_TITLE_SCREEN ||
+       player_spawn.spawn_level == LEVEL_OVERWORLD)
     {current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->hideSprites();}
 
     // Store default painted bg palette
@@ -566,7 +568,7 @@ void Level::load(LevelName level_name)
             default_flash_palette_ptr = bn::bg_palette_items::ziggurat_1_bg_flash_palette.create_palette();
 
             // Update cells
-            cells        = main_bg_ptr->map().cells_ref().value();
+            cells = main_bg_ptr->map().cells_ref().value();
 
             // Init name card frames
             name_card_frame = LEVEL_NAME_CARD_FRAMES;
@@ -611,9 +613,10 @@ void Level::load(LevelName level_name)
 
         break;
 
-         case LEVEL_OVERWORLD:
-            
+        case LEVEL_OVERWORLD:
+
             // Player Spawn //
+            player_spawn.spawn_pos  = bn::fixed_point(-24, -8);
             player_spawn.spawn_room = ROOM_OVERWORLD;
 
             // Load BGs //
@@ -639,8 +642,8 @@ void Level::load(LevelName level_name)
             hud_level_name.setSpritesFromString("       OVERWORLD", 16);
 
             // Next level
-            next_level = LEVEL_TROLL_TOLLS;
-            
+            next_level = NO_LEVEL;
+
         break;
 
         case LEVEL_TROLL_TOLLS:
@@ -688,15 +691,20 @@ void Level::load(LevelName level_name)
     populateObjectCells();
 
     // Init room
-    current_room = Room(player_spawn.spawn_room, 
+    current_room = Room(player_spawn.spawn_room,
                         camera.value(), 
                         object_bg_ptr.value(), 
                         object_bg_item.value(),
                         object_cells,
                         player_spawn.spawn_pos);
 
-    // Hide Player on the title screen
-    if(player_spawn.spawn_level == LEVEL_TITLE_SCREEN)
+    // Set Player state to OW if Overworld level
+    if(player_spawn.spawn_level == LEVEL_OVERWORLD)
+    {current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->setState(PLAYER_OW);}
+
+    // Hide Player on the title screen & overworld
+    if(player_spawn.spawn_level == LEVEL_TITLE_SCREEN || 
+       player_spawn.spawn_level == LEVEL_OVERWORLD)
     {current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->hideSprites();}
 
     // Store default painted bg palette
@@ -939,46 +947,33 @@ void Level::updateTitleScreen()
 }
 
 void Level::updateOverworld()
-{
-    // Update fade
-    updateFade();
-
-    // Hide HP
-    hud_hp_sprite_ptr->set_visible(false);
-    
-    // Delete Player
-    /*
-    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) != NULL)
-    {
-        delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
-        current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = NULL;
-    }
-    */
-
-    // Create OW Player object
-    // ...
-
-    // Center Camera
-    camera.value().set_position(0, 0);
+{   
+    // Reveal player
+    if(!fade_out && transition_frames < 0)
+    {current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->sprite_ptr->set_visible(true);}
 
     // Get Input //
     if((bn::keypad::a_pressed()) && transition_frames < 0)
     {
         // Start Fade and Level Transition
-        fade_out = true;
-        transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+        if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->troll_tolls_highlighted)
+        {
+            next_level        = LEVEL_TROLL_TOLLS;
+            fade_out          = true;
+            transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+        }
     }
 
     // Typical level updates
+    reloadOnDeath();
     updateObjects();
     removeObjectCells();
     updateCurrency();
-    //updateCamera();
+    updateCamera();
+    updateBGFlash();
     freeObjects();
+    transitionRoom();
     drawObjects();
-
-    // Draw Screen
-    updatePaintedBG();
 }
 
 void Level::updateObjects()
@@ -1118,6 +1113,9 @@ void Level::updateCamera()
 
         camera.value().set_position(new_cam_x, new_cam_y);
 
+        if(temp_player_ptr->state == PLAYER_OW)
+        {camera.value().set_position(temp_player_ptr->pos());}
+
         ///////////////////////
         // Apply screenshake //
         ///////////////////////
@@ -1243,70 +1241,87 @@ void Level::updateHUD()
         // Draw HP //
         /////////////
 
-        // Update palette
-        bn::sprite_palette_ptr white_palette = bn::sprite_palette_items::sprite_white_palette.create_palette();
-
-        if(global_hud_hp_flash_frames) {hud_hp_sprite_ptr->set_palette(white_palette);}
-        else                           {hud_hp_sprite_ptr->set_palette(default_hud_palette_ptr.value());}
-
-        if(hud_hp_animate_action_ptr.has_value())
+        if(player_spawn.spawn_level == LEVEL_OVERWORLD)
         {
-            // Set Position
-            hud_hp_sprite_ptr->set_position(camera->x() + HUD_HP_X_OFFSET, camera->y() + HUD_HP_Y_OFFSET);
+            hud_hp_sprite_ptr->set_visible(false);
+        }
+        else
+        {
+            // Update palette
+            bn::sprite_palette_ptr white_palette = bn::sprite_palette_items::sprite_white_palette.create_palette();
 
-            // Update Graphic
-            hud_hp_animate_action_ptr = bn::create_sprite_animate_action_forever(hud_hp_sprite_ptr.value(),
-																                 0,
-                                                                                 bn::sprite_items::hud_hp_bar.tiles_item(),
-                                                                                 temp_player_ptr->hitpoints, temp_player_ptr->hitpoints);
+            if(global_hud_hp_flash_frames) {hud_hp_sprite_ptr->set_palette(white_palette);}
+            else                           {hud_hp_sprite_ptr->set_palette(default_hud_palette_ptr.value());}
 
-            hud_hp_animate_action_ptr->update();
+            if(hud_hp_animate_action_ptr.has_value())
+            {
+                // Set Position
+                hud_hp_sprite_ptr->set_position(camera->x() + HUD_HP_X_OFFSET, camera->y() + HUD_HP_Y_OFFSET);
+
+                // Update Graphic
+                hud_hp_animate_action_ptr = bn::create_sprite_animate_action_forever(hud_hp_sprite_ptr.value(),
+                                                                                    0,
+                                                                                    bn::sprite_items::hud_hp_bar.tiles_item(),
+                                                                                    temp_player_ptr->hitpoints, temp_player_ptr->hitpoints);
+
+                hud_hp_animate_action_ptr->update();
+            }
         }
 
         ///////////////////
         // Draw Currency //
         ///////////////////
 
-        // Update palette
-        if(global_hud_currency_flash_frames) {currency_icon_sprite_ptr->set_palette(white_palette);}
-        else                                 {currency_icon_sprite_ptr->set_palette(default_hud_palette_ptr.value());}
-
-        // Numbers
-        currency_num_1_sprite_ptr->set_position(camera->x() + HUD_CURRENCY_NUM_1_X_OFFSET, camera->y() + HUD_CURRENCY_NUM_1_Y_OFFSET);
-        bn::fixed unrounded_num_1 = displayed_currency / 10;
-        int32 num_1               = clamp(0, 9, unrounded_num_1.floor_integer());
-	    currency_num_1_animate_action_ptr = bn::create_sprite_animate_action_once(currency_num_1_sprite_ptr.value(),
-                                                                                  0,
-                                                                                  bn::sprite_items::currency_number.tiles_item(),
-                                                                                  num_1, num_1);
-
-        currency_num_2_sprite_ptr->set_position(camera->x() + HUD_CURRENCY_NUM_2_X_OFFSET, camera->y() + HUD_CURRENCY_NUM_2_Y_OFFSET);
-        int32 num_2 = displayed_currency % 10;
-	    currency_num_2_animate_action_ptr = bn::create_sprite_animate_action_once(currency_num_2_sprite_ptr.value(),
-                                                                                  0,
-                                                                                  bn::sprite_items::currency_number.tiles_item(),
-                                                                                  num_2, num_2);
-
-        // Use red nums if currency is maxed out
-        if(num_1 == 9 && num_2 == 9)
+        if(player_spawn.spawn_level == LEVEL_OVERWORLD)
         {
-            currency_num_1_animate_action_ptr = bn::create_sprite_animate_action_once(currency_num_1_sprite_ptr.value(),
-                                                                            0,
-                                                                            bn::sprite_items::currency_number.tiles_item(),
-                                                                            10, 10);
-
-            currency_num_2_animate_action_ptr = bn::create_sprite_animate_action_once(currency_num_2_sprite_ptr.value(),
-                                                                            0,
-                                                                            bn::sprite_items::currency_number.tiles_item(),
-                                                                            10, 10);
+            currency_icon_sprite_ptr->set_visible(false);
+            currency_num_1_sprite_ptr->set_visible(false);
+            currency_num_2_sprite_ptr->set_visible(false);
         }
+        else
+        {
+            // Update palette
+            bn::sprite_palette_ptr white_palette = bn::sprite_palette_items::sprite_white_palette.create_palette();
+            if(global_hud_currency_flash_frames) {currency_icon_sprite_ptr->set_palette(white_palette);}
+            else                                 {currency_icon_sprite_ptr->set_palette(default_hud_palette_ptr.value());}
 
-        currency_num_1_animate_action_ptr->update();
-        currency_num_2_animate_action_ptr->update();
+            // Numbers
+            currency_num_1_sprite_ptr->set_position(camera->x() + HUD_CURRENCY_NUM_1_X_OFFSET, camera->y() + HUD_CURRENCY_NUM_1_Y_OFFSET);
+            bn::fixed unrounded_num_1 = displayed_currency / 10;
+            int32 num_1               = clamp(0, 9, unrounded_num_1.floor_integer());
+            currency_num_1_animate_action_ptr = bn::create_sprite_animate_action_once(currency_num_1_sprite_ptr.value(),
+                                                                                    0,
+                                                                                    bn::sprite_items::currency_number.tiles_item(),
+                                                                                    num_1, num_1);
 
-        // Icon
-        currency_icon_sprite_ptr->set_position(camera->x() + HUD_CURRENCY_ICON_X_OFFSET, 
-                                               camera->y() + HUD_CURRENCY_ICON_Y_OFFSET);
+            currency_num_2_sprite_ptr->set_position(camera->x() + HUD_CURRENCY_NUM_2_X_OFFSET, camera->y() + HUD_CURRENCY_NUM_2_Y_OFFSET);
+            int32 num_2 = displayed_currency % 10;
+            currency_num_2_animate_action_ptr = bn::create_sprite_animate_action_once(currency_num_2_sprite_ptr.value(),
+                                                                                    0,
+                                                                                    bn::sprite_items::currency_number.tiles_item(),
+                                                                                    num_2, num_2);
+
+            // Use red nums if currency is maxed out
+            if(num_1 == 9 && num_2 == 9)
+            {
+                currency_num_1_animate_action_ptr = bn::create_sprite_animate_action_once(currency_num_1_sprite_ptr.value(),
+                                                                                0,
+                                                                                bn::sprite_items::currency_number.tiles_item(),
+                                                                                10, 10);
+
+                currency_num_2_animate_action_ptr = bn::create_sprite_animate_action_once(currency_num_2_sprite_ptr.value(),
+                                                                                0,
+                                                                                bn::sprite_items::currency_number.tiles_item(),
+                                                                                10, 10);
+            }
+
+            currency_num_1_animate_action_ptr->update();
+            currency_num_2_animate_action_ptr->update();
+
+            // Icon
+            currency_icon_sprite_ptr->set_position(camera->x() + HUD_CURRENCY_ICON_X_OFFSET, 
+                                                camera->y() + HUD_CURRENCY_ICON_Y_OFFSET);
+        }
 
         /////////////////////
         // Draw Level Name //
@@ -1518,6 +1533,12 @@ void Level::updatePauseScreen()
                 break;
 
                 case CURSOR_RETURN_TO_MAP:
+
+                    // Start Fade and Level Transition
+                    fade_out          = true;
+                    transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+                    next_level        = LEVEL_OVERWORLD;
+
                 break;
 
                 case CURSOR_QUIT_GAME:
@@ -1608,6 +1629,7 @@ void Level::updateLevelComplete()
     if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) != NULL &&
        current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->animate_action_ptr->done())
     {
+        next_level        = LEVEL_OVERWORLD;
         fade_out          = true;
         transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
     }

@@ -61,7 +61,6 @@
 #define PLAYER_CLIMB_REGRAB_CD_FRAMES 20
 
 // Air Values
-
 #define PLAYER_BASE_JUMP_FORCE -7 // 2 block height at 0.03 decay rate
 #define PLAYER_JUMP_DECAY       0.03
 
@@ -158,6 +157,13 @@
 #define PLAYER_CROUCH_FRAME  44
 #define PLAYER_UP_FRAME      45
 
+// Overworld
+
+#define PLAYER_OW_STEP_DISTANCE 16
+#define PLAYER_OW_STEP_DECAY    1
+
+// Forces
+
 #define PLAYER_X_LEFT_FORCE  	     Force(bn::fixed_point_t<12>(-x_speed, 0), PLAYER_X_DECAY)
 #define PLAYER_X_RIGHT_FORCE 	     Force(bn::fixed_point_t<12>( x_speed, 0), PLAYER_X_DECAY)
 #define PLAYER_X_LEFT_DECAY_FORCE    Force(bn::fixed_point_t<12>(-x_speed, 0), X_SPEED_DECAY_RATE)
@@ -229,6 +235,7 @@ struct Player : GameObject {
 	bool a_requested;
 	bool b_requested;
 	bool r_requested;
+	bool troll_tolls_highlighted;
 
 	Hitbox* hitbox_1_ptr;
 	Hitbox* hitbox_2_ptr;
@@ -280,6 +287,7 @@ struct Player : GameObject {
 	void setSpinAttackAnimation();
 	void setDeathAnimation();
 	void setClimbAnimation();
+	void setOWAnimation();
 
 	//////////////////////////
 	// GameObject Overrides //
@@ -331,6 +339,11 @@ struct Player : GameObject {
 	// Collision Overrides //
 	/////////////////////////
 
+	void resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+						  const bn::regular_bg_ptr&                      bg_ptr, 
+						  const bn::span<const bn::regular_bg_map_cell>& cells,
+						  const bn::regular_bg_item&                     bg_item) override;
+
 	// Level Objects
 	void resolveTilePassageCollision(GameObject& object)         override;
 	void resolvePhaseOrbUpCollision(GameObject& object)          override;
@@ -362,6 +375,10 @@ struct Player : GameObject {
 	void resolveWingedTrollCollision(GameObject& object) override;
 
 	// Tiles
+	void resolveOWTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
+								const bn::span<const bn::regular_bg_map_cell>& cells,
+								const bn::regular_bg_item&                     bg_item);
+
 	void resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
 							  const bn::span<const bn::regular_bg_map_cell>& cells,
 							  const bn::regular_bg_item&                     bg_item) override;

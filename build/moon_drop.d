@@ -127,6 +127,7 @@ moon_drop.o: G:/game/src/moon_drop.cpp G:/game/include/moon_drop.h \
  G:/game/build/bn_sprite_items_player_death.h \
  G:/game/build/bn_sprite_items_player_climb.h \
  G:/game/build/bn_sprite_items_player_bell_jump.h \
+ G:/game/build/bn_sprite_items_player_ow.h \
  G:/game/build/bn_sprite_items_phase_marker.h
 G:/game/include/moon_drop.h:
 G:/game/include/utility.h:
@@ -260,4 +261,5 @@ G:/game/build/bn_sprite_items_player_spin_attack.h:
 G:/game/build/bn_sprite_items_player_death.h:
 G:/game/build/bn_sprite_items_player_climb.h:
 G:/game/build/bn_sprite_items_player_bell_jump.h:
+G:/game/build/bn_sprite_items_player_ow.h:
 G:/game/build/bn_sprite_items_phase_marker.h:
