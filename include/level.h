@@ -124,6 +124,13 @@
 // Transitions
 #define LEVEL_TITLE_SCREEN_TRANSITION_FRAMES 60
 
+enum SaveFile
+{
+    FILE_1,
+    FILE_2,
+    FILE_3
+};
+
 enum LevelName 
 {
     NO_LEVEL = 0,
@@ -279,6 +286,9 @@ struct Level
     void populateObjectCells();
     void removeObjectCells();
     void freeObjectCells();
+
+    void saveCurrentFile();
+    void loadSave(SaveFile file_num);
 };
 
 #endif

@@ -2439,8 +2439,8 @@ void Player::resolveOWTileCollision(const bn::regular_bg_ptr&                   
 	// Get current cell index that player resides in //
 	///////////////////////////////////////////////////
 
-	int32 half_level_width_pixels  = 256;
-	int32 half_level_height_pixels = 256;
+	int32 half_level_width_pixels  = OW_WIDTH  / 2;
+	int32 half_level_height_pixels = OW_HEIGHT / 2;
 	bn::fixed index_x = (x() + half_level_width_pixels)  / TILE_WIDTH;
 	bn::fixed index_y = (y() + half_level_height_pixels) / TILE_HEIGHT;
 	bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
@@ -2466,6 +2466,10 @@ void Player::resolveOWTileCollision(const bn::regular_bg_ptr&                   
 	{
 		troll_tolls_highlighted = true;
 	}
+
+	// Record Player's OW position in global variables
+	global_ow_player_location_x = x().integer();
+	global_ow_player_location_y = y().integer();
 }
 
 void Player::resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 

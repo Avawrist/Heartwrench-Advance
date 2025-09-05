@@ -616,7 +616,8 @@ void Level::load(LevelName level_name)
         case LEVEL_OVERWORLD:
 
             // Player Spawn //
-            player_spawn.spawn_pos  = bn::fixed_point(-24, -8);
+            player_spawn.spawn_pos  = bn::fixed_point(global_ow_player_location_x, 
+                                                      global_ow_player_location_y);
             player_spawn.spawn_room = ROOM_OVERWORLD;
 
             // Load BGs //
@@ -932,6 +933,9 @@ void Level::updateTitleScreen()
     // Get Input //
     if((bn::keypad::start_pressed() || bn::keypad::a_pressed()) && transition_frames < 0)
     {
+        // Load Save Data
+        loadSave(FILE_1);
+
         // Start Fade and Level Transition
         fade_out = true;
         transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
@@ -1994,4 +1998,16 @@ void Level::freeObjectCells()
     }
 
     delete[] object_cells;
+}
+
+void Level::saveCurrentFile()
+{
+    // This function writes all relevant global variables to SROM
+    // referencing the current save file
+}
+
+void Level::loadSave(SaveFile file_num)
+{
+    // This function writes to all of the global save variables
+    // from SROM, given a save file number
 }

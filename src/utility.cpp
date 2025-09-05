@@ -32,6 +32,9 @@ int32 global_timer = 0;
 
 bool global_bell_struck = false;
 
+int32 global_ow_player_location_x = -24;
+int32 global_ow_player_location_y = -8;
+
 // Functions
 
 bool tileIsSolid(uint32 tile_index)

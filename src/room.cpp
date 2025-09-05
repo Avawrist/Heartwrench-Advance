@@ -660,10 +660,10 @@ void Room::load(RoomName                                       _room_name,
             bottom_neighbor = NO_ROOM;
             left_neighbor   = NO_ROOM;
 
-            room_bounds.top_bound    = -199;
-            room_bounds.bottom_bound =  247;
-            room_bounds.left_bound   = -247;
-            room_bounds.right_bound  =  247;
+            room_bounds.top_bound    = ((OW_WIDTH / 2) - TILE_HEIGHT - 1) * -1;
+            room_bounds.bottom_bound = (OW_WIDTH / 2) - TILE_HEIGHT - 1;
+            room_bounds.left_bound   = ((OW_WIDTH / 2) - TILE_WIDTH - 1) * -1;
+            room_bounds.right_bound  = (OW_WIDTH / 2) - TILE_WIDTH - 1;
 
             // Add any special objects //
 

@@ -82,6 +82,10 @@ typedef int   int32;
 
 #define TILE_TOTAL_COUNT 160
 
+// Overworld Measurements
+#define OW_WIDTH  1024
+#define OW_HEIGHT 1024
+
 // Overworld Tile Indexes
 
 #define OW_HARD_BLOCK_MIN_INDEX  1
@@ -164,6 +168,13 @@ extern int32 global_hud_currency_flash_frames;
 extern int32 global_timer;
 
 extern bool global_bell_struck;
+
+extern int32 global_ow_player_location_x;
+extern int32 global_ow_player_location_y;
+
+// Global Save Variables
+
+//...
 
 // Debug Mode
 #define DEBUG_BUILD false
