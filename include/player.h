@@ -161,7 +161,7 @@
 
 #define PLAYER_OW_STEP_DISTANCE 16
 #define PLAYER_OW_STEP_DECAY    1
-#define PLAYER_OW_SPEED         2
+#define PLAYER_OW_SPEED         1
 
 // Forces
 

@@ -1578,16 +1578,16 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 			if(pos() == ow_target_pos)
 			{
-				if(bn::keypad::left_pressed())
+				if(bn::keypad::left_held())
 				{ow_target_pos.set_x(ow_target_pos.x().integer() - PLAYER_OW_STEP_DISTANCE);}
 
-				else if(bn::keypad::right_pressed())
+				else if(bn::keypad::right_held())
 				{ow_target_pos.set_x(ow_target_pos.x().integer() + PLAYER_OW_STEP_DISTANCE);}
 
-				else if(bn::keypad::up_pressed())
+				else if(bn::keypad::up_held())
 				{ow_target_pos.set_y(ow_target_pos.y().integer() - PLAYER_OW_STEP_DISTANCE);}
 
-				else if(bn::keypad::down_pressed())
+				else if(bn::keypad::down_held())
 				{ow_target_pos.set_y(ow_target_pos.y().integer() + PLAYER_OW_STEP_DISTANCE);}
 			}
 
@@ -2476,23 +2476,23 @@ void Player::resolveOWTileCollision(const bn::regular_bg_ptr&                   
 	{
 		if(x().integer() < ow_target_pos.x()) 	   
 		{
-			setX(x().integer() + (TILE_WIDTH));
+			//setX(x().integer() + (TILE_WIDTH));
 			ow_target_pos.set_x(ow_target_pos.x() - PLAYER_OW_STEP_DISTANCE);
 		}
 		else if(x().integer() > ow_target_pos.x()) 
 		{
-			setX(x().integer() - (TILE_WIDTH));
+			//setX(x().integer() - (TILE_WIDTH));
 			ow_target_pos.set_x(ow_target_pos.x() + PLAYER_OW_STEP_DISTANCE);
 		}
 
 		if(y().integer() < ow_target_pos.y()) 	   
 		{
-			setY(y().integer() + (TILE_HEIGHT));
+			//setY(y().integer() + (TILE_HEIGHT));
 			ow_target_pos.set_y(ow_target_pos.y() - PLAYER_OW_STEP_DISTANCE);
 		}
 		else if(y().integer() > ow_target_pos.y()) 
 		{
-			setY(y().integer() - (TILE_HEIGHT));
+			//setY(y().integer() - (TILE_HEIGHT));
 			ow_target_pos.set_y(ow_target_pos.y() + PLAYER_OW_STEP_DISTANCE);
 		}
 	}
