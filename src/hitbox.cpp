@@ -379,7 +379,7 @@ void Hitbox::resolveFinishSealCollision(GameObject& object)
 {
     if(object.state == OBJECT_DEATH) {return;}
 
-    if(collider.isCollision(object.collider))
+    if(object_type == HITBOX_SPIN_1 && collider.isCollision(object.collider))
     {applyHBHit(object);}
 }
 

@@ -374,6 +374,9 @@ void Level::load()
 
             // Next level
             next_level = LEVEL_TITLE_SCREEN;
+
+            // Set Painted BG initial position
+            painted_bg_ptr->set_position(LEVEL_TROLL_TOLLS_PAINTED_BG_X, LEVEL_TROLL_TOLLS_PAINTED_BG_Y);
             
         break;
 
@@ -384,9 +387,6 @@ void Level::load()
 
         break;
     }
-
-    // Populate object cells
-    //populateObjectCells();
 
     // Init room
     current_room = Room(player_spawn.spawn_room,
@@ -495,10 +495,6 @@ void Level::load()
     currency_icon_sprite_ptr->set_camera(camera.value());
 
     hud_level_name.setCamera(camera.value());
-
-    // Set initial Painted BG position
-    bn::fixed x_offset = camera->x() / LEVEL_PARALLAX_REDUCTION_FACTOR;
-    painted_bg_ptr->set_position(camera->x() + x_offset, current_room.room_bounds.center().y());
 
     // Set black screen
     default_main_palette_ptr->set_fade(bn::colors::black, 1);
@@ -677,6 +673,9 @@ void Level::load(LevelName level_name)
 
             // Next level
             next_level = LEVEL_TITLE_SCREEN;
+
+            // Set Painted BG initial position
+            painted_bg_ptr->set_position(LEVEL_TROLL_TOLLS_PAINTED_BG_X, LEVEL_TROLL_TOLLS_PAINTED_BG_Y);
             
         break;
 
@@ -798,10 +797,6 @@ void Level::load(LevelName level_name)
     currency_icon_sprite_ptr->set_camera(camera.value());
 
     hud_level_name.setCamera(camera.value());
-
-    // Set initial Painted BG position
-    bn::fixed x_offset = camera->x() / LEVEL_PARALLAX_REDUCTION_FACTOR;
-    painted_bg_ptr->set_position(camera->x() + x_offset, current_room.room_bounds.center().y());
 
     // Set black screen
     default_main_palette_ptr->set_fade(bn::colors::black, 1);
@@ -1053,7 +1048,7 @@ void Level::updateCamera()
             cam_is_scrolling = false;
         }
 
-        // Do an unloaded object sweep since it won't happen otherwise if the cam is moving!
+        // Do an unloaded object sweep since it won't happen otherwise if the cam is moving.
         current_room.monitorUnloadedObjects(camera.value());
     }
     else
@@ -1104,7 +1099,7 @@ void Level::updateCamera()
         new_cam_x = clamp(current_room.room_bounds.left_bound  + HALF_SCREEN_WIDTH,  
                           current_room.room_bounds.right_bound - HALF_SCREEN_WIDTH, 
                           new_cam_x + cam_look_x_offset + cam_look_dir_x_offset);
-        new_cam_y = clamp(current_room.room_bounds.top_bound    + HALF_SCREEN_HEIGHT, 
+        new_cam_y = clamp(current_room.room_bounds.top_bound    + HALF_SCREEN_HEIGHT,
                           current_room.room_bounds.bottom_bound - HALF_SCREEN_HEIGHT,
                           new_cam_y);
 
@@ -1247,7 +1242,18 @@ void Level::updateHUD()
 
         if(player_spawn.spawn_level == LEVEL_OVERWORLD)
         {
+            hud_stripe_1_sprite_ptr->set_visible(false);
+            hud_stripe_2_sprite_ptr->set_visible(false);
+            hud_stripe_3_sprite_ptr->set_visible(false);
+            hud_stripe_4_sprite_ptr->set_visible(false);
+
             hud_hp_sprite_ptr->set_visible(false);
+
+            currency_icon_sprite_ptr->set_visible(false);
+            currency_num_1_sprite_ptr->set_visible(false);
+            currency_num_2_sprite_ptr->set_visible(false);
+
+            hud_level_name.setVisible(false);
         }
         else
         {
@@ -1705,7 +1711,7 @@ void Level::transitionRoom()
     
     if(temp_player.pos().x() + (temp_player.collider.width / 2) >= current_room.room_bounds.right_bound)
     {
-        if(current_room.right_neighbor != NO_ROOM)
+        if(current_room.right_neighbor != NO_ROOM && temp_player.grounded_detected)
         {
             // Move the player into the new room
             temp_player.setX(temp_player.x() + temp_player.collider.width + 1);
@@ -1741,7 +1747,7 @@ void Level::transitionRoom()
 
     else if(temp_player.pos().x() - (temp_player.collider.width / 2) <= current_room.room_bounds.left_bound)
     {
-        if(current_room.left_neighbor != NO_ROOM)
+        if(current_room.left_neighbor != NO_ROOM && temp_player.grounded_detected)
         {
             // Move the player into the new room
             temp_player.setX(temp_player.x() - temp_player.collider.width - 1);

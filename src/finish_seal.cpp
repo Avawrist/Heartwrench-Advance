@@ -148,6 +148,13 @@ void FinishSeal::update(const RoomBounds& 							   room_bounds,
 
 }
 
+void FinishSeal::updateTimers()
+{
+    // Invuln frames
+    invulnerability_frames -= 2;
+    if(invulnerability_frames < 0) {invulnerability_frames = 0;}
+}
+
 //////////////////////////////
 // State Function Overrides //
 //////////////////////////////

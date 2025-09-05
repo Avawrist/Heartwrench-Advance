@@ -48,6 +48,8 @@ struct FinishSeal : GameObject {
                 const bn::regular_bg_item&                     bg_item,
                 const bn::camera_ptr&                          camera) override;
 
+    void updateTimers() override;
+
     //////////////////////////////
     // State Function Overrides //
     //////////////////////////////
