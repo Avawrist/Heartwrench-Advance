@@ -280,7 +280,7 @@ void Level::load()
                                                                                0, 0);
 
             // Update flash palette
-            default_flash_palette_ptr = bn::bg_palette_items::ziggurat_1_bg_flash_palette.create_palette();
+            default_flash_palette_ptr = bn::bg_palette_items::troll_tolls_bg_flash_palette.create_palette();
 
             // Update cells
             cells = main_bg_ptr->map().cells_ref().value();
@@ -309,7 +309,7 @@ void Level::load()
                                                                                0, 0, 0, 0, 0, 1, 1, 1, 1);
 
             // Update flash palette
-            default_flash_palette_ptr = bn::bg_palette_items::ziggurat_1_bg_flash_palette.create_palette();
+            default_flash_palette_ptr = bn::bg_palette_items::troll_tolls_bg_flash_palette.create_palette();
 
             // Update cells
             cells        = main_bg_ptr->map().cells_ref().value();
@@ -335,7 +335,7 @@ void Level::load()
                                                                                0, 0);
 
             // Update flash palette
-            default_flash_palette_ptr = bn::bg_palette_items::ziggurat_1_bg_flash_palette.create_palette();
+            default_flash_palette_ptr = bn::bg_palette_items::troll_tolls_bg_flash_palette.create_palette();
 
             // Update cells
             cells = main_bg_ptr->map().cells_ref().value();
@@ -351,20 +351,20 @@ void Level::load()
         case LEVEL_TROLL_TOLLS:
             
             // Load BGs //
-            main_bg_ptr    = bn::regular_bg_items::ziggurat_1_level_bg.create_bg(0, 0);
-            bg_item        = bn::regular_bg_items::ziggurat_1_level_bg;
+            main_bg_ptr    = bn::regular_bg_items::troll_tolls_level_bg.create_bg(0, 0);
+            bg_item        = bn::regular_bg_items::troll_tolls_level_bg;
 
-            object_bg_ptr  = bn::regular_bg_items::ziggurat_1_object_bg.create_bg(0, 0);
-            object_bg_item = bn::regular_bg_items::ziggurat_1_object_bg;
+            object_bg_ptr  = bn::regular_bg_items::troll_tolls_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::troll_tolls_object_bg;
 
-            painted_bg_ptr      = bn::regular_bg_items::ziggurat_1_painted_bg.create_bg(0, 0);
+            painted_bg_ptr      = bn::regular_bg_items::troll_tolls_painted_bg.create_bg(0, 0);
             painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
                                                                                 3,
-                                                                                bn::regular_bg_items::ziggurat_1_painted_bg.map_item(),
+                                                                                bn::regular_bg_items::troll_tolls_painted_bg.map_item(),
                                                                                 0, 0, 0, 1, 1, 1, 2, 2, 2);
 
             // Update flash palette
-            default_flash_palette_ptr = bn::bg_palette_items::ziggurat_1_bg_flash_palette.create_palette();
+            default_flash_palette_ptr = bn::bg_palette_items::troll_tolls_bg_flash_palette.create_palette();
 
             // Update cells
             cells = main_bg_ptr->map().cells_ref().value();
@@ -565,7 +565,7 @@ void Level::load(LevelName level_name)
                                                                                0, 0);
 
             // Update flash palette
-            default_flash_palette_ptr = bn::bg_palette_items::ziggurat_1_bg_flash_palette.create_palette();
+            default_flash_palette_ptr = bn::bg_palette_items::troll_tolls_bg_flash_palette.create_palette();
 
             // Update cells
             cells = main_bg_ptr->map().cells_ref().value();
@@ -600,7 +600,7 @@ void Level::load(LevelName level_name)
                                                                                0, 0, 0, 0, 0, 1, 1, 1, 1);
 
             // Update flash palette
-            default_flash_palette_ptr = bn::bg_palette_items::ziggurat_1_bg_flash_palette.create_palette();
+            default_flash_palette_ptr = bn::bg_palette_items::troll_tolls_bg_flash_palette.create_palette();
 
             // Update cells
             cells        = main_bg_ptr->map().cells_ref().value();
@@ -634,7 +634,7 @@ void Level::load(LevelName level_name)
                                                                                0, 0);
 
             // Update flash palette
-            default_flash_palette_ptr = bn::bg_palette_items::ziggurat_1_bg_flash_palette.create_palette();
+            default_flash_palette_ptr = bn::bg_palette_items::troll_tolls_bg_flash_palette.create_palette();
 
             // Update cells
             cells = main_bg_ptr->map().cells_ref().value();
@@ -654,20 +654,20 @@ void Level::load(LevelName level_name)
             player_spawn.spawn_room = ROOM_TROLL_TOLLS_1;
 
             // Load BGs //
-            main_bg_ptr    = bn::regular_bg_items::ziggurat_1_level_bg.create_bg(0, 0);
-            bg_item        = bn::regular_bg_items::ziggurat_1_level_bg;
+            main_bg_ptr    = bn::regular_bg_items::troll_tolls_level_bg.create_bg(0, 0);
+            bg_item        = bn::regular_bg_items::troll_tolls_level_bg;
 
-            object_bg_ptr  = bn::regular_bg_items::ziggurat_1_object_bg.create_bg(0, 0);
-            object_bg_item = bn::regular_bg_items::ziggurat_1_object_bg;
+            object_bg_ptr  = bn::regular_bg_items::troll_tolls_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::troll_tolls_object_bg;
 
-            painted_bg_ptr      = bn::regular_bg_items::ziggurat_1_painted_bg.create_bg(0, 0);
+            painted_bg_ptr      = bn::regular_bg_items::troll_tolls_painted_bg.create_bg(0, 0);
             painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
                                                                                3,
-                                                                               bn::regular_bg_items::ziggurat_1_painted_bg.map_item(),
+                                                                               bn::regular_bg_items::troll_tolls_painted_bg.map_item(),
                                                                                0, 0, 0, 1, 1, 1, 2, 2, 2);
 
             // Update flash palette
-            default_flash_palette_ptr = bn::bg_palette_items::ziggurat_1_bg_flash_palette.create_palette();
+            default_flash_palette_ptr = bn::bg_palette_items::troll_tolls_bg_flash_palette.create_palette();
 
             // Update cells
             cells = main_bg_ptr->map().cells_ref().value();

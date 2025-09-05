@@ -32,6 +32,7 @@ Player::Player()
 
     x_speed        	  	 = PLAYER_MIN_X_SPEED;
 	phase_destination    = bn::fixed_point(0, 0);
+	ow_target_pos        = bn::fixed_point(global_ow_player_location_x, global_ow_player_location_y);
 
 	hitpoints                        = PLAYER_STARTING_HITPOINTS;
 	spin_buffered_frames             = 0;
@@ -100,6 +101,7 @@ Player::Player(const Player& other) : GameObject(other)
 {
     x_speed        	  	 = other.x_speed;
 	phase_destination    = other.phase_destination;
+	ow_target_pos        = other.ow_target_pos;
 	
 	spin_buffered_frames             = other.spin_buffered_frames;
 	jump_buffered_frames             = other.jump_buffered_frames;
@@ -171,6 +173,7 @@ Player& Player::operator =(const Player& other)
 {
     x_speed        	  	 = other.x_speed;
 	phase_destination    = other.phase_destination;
+	ow_target_pos        = other.ow_target_pos;
 	
 	spin_buffered_frames             = other.spin_buffered_frames;
 	jump_buffered_frames             = other.jump_buffered_frames;
@@ -1559,21 +1562,34 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 		case PLAYER_OW:
 
+			/////////////////////
+			// Update Position //
+			/////////////////////
+
+			if(x().integer() < ow_target_pos.x())      {setX(x().integer() + PLAYER_OW_SPEED);}
+			else if(x().integer() > ow_target_pos.x()) {setX(x().integer() - PLAYER_OW_SPEED);}
+
+			if(y().integer() < ow_target_pos.y())      {setY(y().integer() + PLAYER_OW_SPEED);}
+			else if(y().integer() > ow_target_pos.y()) {setY(y().integer() - PLAYER_OW_SPEED);}
+
 			///////////////
 			// Get Input //
 			///////////////
 
-			if(bn::keypad::left_pressed())
-			{rigidbody.addForce(Force(bn::fixed_point_t<12>(-1 * PLAYER_OW_STEP_DISTANCE, 0), PLAYER_OW_STEP_DECAY));}
+			if(pos() == ow_target_pos)
+			{
+				if(bn::keypad::left_pressed())
+				{ow_target_pos.set_x(ow_target_pos.x().integer() - PLAYER_OW_STEP_DISTANCE);}
 
-			else if(bn::keypad::right_pressed())
-			{rigidbody.addForce(Force(bn::fixed_point_t<12>(PLAYER_OW_STEP_DISTANCE, 0), PLAYER_OW_STEP_DECAY));}
+				else if(bn::keypad::right_pressed())
+				{ow_target_pos.set_x(ow_target_pos.x().integer() + PLAYER_OW_STEP_DISTANCE);}
 
-			else if(bn::keypad::up_pressed())
-			{rigidbody.addForce(Force(bn::fixed_point_t<12>(0, -1 * PLAYER_OW_STEP_DISTANCE), PLAYER_OW_STEP_DECAY));}
+				else if(bn::keypad::up_pressed())
+				{ow_target_pos.set_y(ow_target_pos.y().integer() - PLAYER_OW_STEP_DISTANCE);}
 
-			else if(bn::keypad::down_pressed())
-			{rigidbody.addForce(Force(bn::fixed_point_t<12>(0, PLAYER_OW_STEP_DISTANCE), PLAYER_OW_STEP_DECAY));}
+				else if(bn::keypad::down_pressed())
+				{ow_target_pos.set_y(ow_target_pos.y().integer() + PLAYER_OW_STEP_DISTANCE);}
+			}
 
 		break;
 
@@ -2441,8 +2457,8 @@ void Player::resolveOWTileCollision(const bn::regular_bg_ptr&                   
 
 	int32 half_level_width_pixels  = OW_WIDTH  / 2;
 	int32 half_level_height_pixels = OW_HEIGHT / 2;
-	bn::fixed index_x = (x() + half_level_width_pixels)  / TILE_WIDTH;
-	bn::fixed index_y = (y() + half_level_height_pixels) / TILE_HEIGHT;
+	bn::fixed index_x = (ow_target_pos.x() + half_level_width_pixels)  / TILE_WIDTH;
+	bn::fixed index_y = (ow_target_pos.y() + half_level_height_pixels) / TILE_HEIGHT;
 	bn::point cell_index = bn::point(index_x.integer(), index_y.integer());
 
 	uint32 tile_index = getTileAtBGIndex(cell_index.x(),
@@ -2458,8 +2474,27 @@ void Player::resolveOWTileCollision(const bn::regular_bg_ptr&                   
 	if(tile_index >= OW_HARD_BLOCK_MIN_INDEX &&
 	   tile_index <= OW_HARD_BLOCK_MAX_INDEX)
 	{
-		setX(x().integer() - (rigidbody.normalized_dir.x().integer() * PLAYER_OW_STEP_DISTANCE));
-		setY(y().integer() - (rigidbody.normalized_dir.y().integer() * PLAYER_OW_STEP_DISTANCE));
+		if(x().integer() < ow_target_pos.x()) 	   
+		{
+			setX(x().integer() + (TILE_WIDTH));
+			ow_target_pos.set_x(ow_target_pos.x() - PLAYER_OW_STEP_DISTANCE);
+		}
+		else if(x().integer() > ow_target_pos.x()) 
+		{
+			setX(x().integer() - (TILE_WIDTH));
+			ow_target_pos.set_x(ow_target_pos.x() + PLAYER_OW_STEP_DISTANCE);
+		}
+
+		if(y().integer() < ow_target_pos.y()) 	   
+		{
+			setY(y().integer() + (TILE_HEIGHT));
+			ow_target_pos.set_y(ow_target_pos.y() - PLAYER_OW_STEP_DISTANCE);
+		}
+		else if(y().integer() > ow_target_pos.y()) 
+		{
+			setY(y().integer() - (TILE_HEIGHT));
+			ow_target_pos.set_y(ow_target_pos.y() + PLAYER_OW_STEP_DISTANCE);
+		}
 	}
 	else if(tile_index >= OW_TROLL_TOLLS_MIN_INDEX &&
 	  		tile_index <= OW_TROLL_TOLLS_MAX_INDEX)

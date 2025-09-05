@@ -1,0 +1,2 @@
+troll_tolls_bg_flash_palette_bn_gfx.o: \
+ troll_tolls_bg_flash_palette_bn_gfx.s

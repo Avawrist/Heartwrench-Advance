@@ -161,6 +161,7 @@
 
 #define PLAYER_OW_STEP_DISTANCE 16
 #define PLAYER_OW_STEP_DECAY    1
+#define PLAYER_OW_SPEED         2
 
 // Forces
 
@@ -209,6 +210,7 @@ struct Player : GameObject {
 
 	bn::fixed       x_speed;
 	bn::fixed_point phase_destination;
+	bn::fixed_point ow_target_pos;
 
 	int32 spin_buffered_frames;
 	int32 jump_buffered_frames;

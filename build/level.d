@@ -63,7 +63,7 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/butano-master/butano/include/bn_regular_bg_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_map_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_animate_actions_fwd.h \
- G:/game/build/bn_bg_palette_items_ziggurat_1_bg_flash_palette.h \
+ G:/game/build/bn_bg_palette_items_troll_tolls_bg_flash_palette.h \
  G:/butano-master/butano/include/bn_bg_palette_item.h \
  G:/game/build/bn_regular_bg_items_name_card_level_bg.h \
  G:/game/build/bn_regular_bg_items_name_card_object_bg.h \
@@ -74,9 +74,9 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/build/bn_regular_bg_items_overworld_level_bg.h \
  G:/game/build/bn_regular_bg_items_overworld_object_bg.h \
  G:/game/build/bn_regular_bg_items_overworld_painted_bg.h \
- G:/game/build/bn_regular_bg_items_ziggurat_1_level_bg.h \
- G:/game/build/bn_regular_bg_items_ziggurat_1_object_bg.h \
- G:/game/build/bn_regular_bg_items_ziggurat_1_painted_bg.h \
+ G:/game/build/bn_regular_bg_items_troll_tolls_level_bg.h \
+ G:/game/build/bn_regular_bg_items_troll_tolls_object_bg.h \
+ G:/game/build/bn_regular_bg_items_troll_tolls_painted_bg.h \
  G:/game/build/bn_regular_bg_items_pause_screen.h \
  G:/game/build/bn_sprite_items_hud_stripe.h \
  G:/butano-master/butano/include/bn_sprite_item.h \
@@ -246,7 +246,7 @@ G:/butano-master/butano/include/bn_vector.h:
 G:/butano-master/butano/include/bn_regular_bg_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_map_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_animate_actions_fwd.h:
-G:/game/build/bn_bg_palette_items_ziggurat_1_bg_flash_palette.h:
+G:/game/build/bn_bg_palette_items_troll_tolls_bg_flash_palette.h:
 G:/butano-master/butano/include/bn_bg_palette_item.h:
 G:/game/build/bn_regular_bg_items_name_card_level_bg.h:
 G:/game/build/bn_regular_bg_items_name_card_object_bg.h:
@@ -257,9 +257,9 @@ G:/game/build/bn_regular_bg_items_title_screen_painted_bg.h:
 G:/game/build/bn_regular_bg_items_overworld_level_bg.h:
 G:/game/build/bn_regular_bg_items_overworld_object_bg.h:
 G:/game/build/bn_regular_bg_items_overworld_painted_bg.h:
-G:/game/build/bn_regular_bg_items_ziggurat_1_level_bg.h:
-G:/game/build/bn_regular_bg_items_ziggurat_1_object_bg.h:
-G:/game/build/bn_regular_bg_items_ziggurat_1_painted_bg.h:
+G:/game/build/bn_regular_bg_items_troll_tolls_level_bg.h:
+G:/game/build/bn_regular_bg_items_troll_tolls_object_bg.h:
+G:/game/build/bn_regular_bg_items_troll_tolls_painted_bg.h:
 G:/game/build/bn_regular_bg_items_pause_screen.h:
 G:/game/build/bn_sprite_items_hud_stripe.h:
 G:/butano-master/butano/include/bn_sprite_item.h:

@@ -1,0 +1,1 @@
+troll_tolls_object_bg_bn_gfx.o: troll_tolls_object_bg_bn_gfx.s

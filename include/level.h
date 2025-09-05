@@ -19,7 +19,7 @@
 #include "bn_regular_bg_animate_actions.h"
 
 // Flash Palettes
-#include "bn_bg_palette_items_ziggurat_1_bg_flash_palette.h"
+#include "bn_bg_palette_items_troll_tolls_bg_flash_palette.h"
 
 // BGs
 #include "bn_regular_bg_items_name_card_level_bg.h"
@@ -34,9 +34,9 @@
 #include "bn_regular_bg_items_overworld_object_bg.h"
 #include "bn_regular_bg_items_overworld_painted_bg.h"
 
-#include "bn_regular_bg_items_ziggurat_1_level_bg.h"
-#include "bn_regular_bg_items_ziggurat_1_object_bg.h"
-#include "bn_regular_bg_items_ziggurat_1_painted_bg.h"
+#include "bn_regular_bg_items_troll_tolls_level_bg.h"
+#include "bn_regular_bg_items_troll_tolls_object_bg.h"
+#include "bn_regular_bg_items_troll_tolls_painted_bg.h"
 
 // Pause Menu
 #include "bn_regular_bg_items_pause_screen.h"

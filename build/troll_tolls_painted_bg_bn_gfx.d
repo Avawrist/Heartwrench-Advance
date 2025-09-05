@@ -1,0 +1,1 @@
+troll_tolls_painted_bg_bn_gfx.o: troll_tolls_painted_bg_bn_gfx.s
