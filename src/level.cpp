@@ -1240,42 +1240,24 @@ void Level::updateHUD()
         // Draw HP //
         /////////////
 
-        if(player_spawn.spawn_level == LEVEL_OVERWORLD)
+        // Update palette
+        bn::sprite_palette_ptr white_palette = bn::sprite_palette_items::sprite_white_palette.create_palette();
+
+        if(global_hud_hp_flash_frames) {hud_hp_sprite_ptr->set_palette(white_palette);}
+        else                           {hud_hp_sprite_ptr->set_palette(default_hud_palette_ptr.value());}
+
+        if(hud_hp_animate_action_ptr.has_value())
         {
-            hud_stripe_1_sprite_ptr->set_visible(false);
-            hud_stripe_2_sprite_ptr->set_visible(false);
-            hud_stripe_3_sprite_ptr->set_visible(false);
-            hud_stripe_4_sprite_ptr->set_visible(false);
+            // Set Position
+            hud_hp_sprite_ptr->set_position(camera->x() + HUD_HP_X_OFFSET, camera->y() + HUD_HP_Y_OFFSET);
 
-            hud_hp_sprite_ptr->set_visible(false);
+            // Update Graphic
+            hud_hp_animate_action_ptr = bn::create_sprite_animate_action_forever(hud_hp_sprite_ptr.value(),
+                                                                                0,
+                                                                                bn::sprite_items::hud_hp_bar.tiles_item(),
+                                                                                temp_player_ptr->hitpoints, temp_player_ptr->hitpoints);
 
-            currency_icon_sprite_ptr->set_visible(false);
-            currency_num_1_sprite_ptr->set_visible(false);
-            currency_num_2_sprite_ptr->set_visible(false);
-
-            hud_level_name.setVisible(false);
-        }
-        else
-        {
-            // Update palette
-            bn::sprite_palette_ptr white_palette = bn::sprite_palette_items::sprite_white_palette.create_palette();
-
-            if(global_hud_hp_flash_frames) {hud_hp_sprite_ptr->set_palette(white_palette);}
-            else                           {hud_hp_sprite_ptr->set_palette(default_hud_palette_ptr.value());}
-
-            if(hud_hp_animate_action_ptr.has_value())
-            {
-                // Set Position
-                hud_hp_sprite_ptr->set_position(camera->x() + HUD_HP_X_OFFSET, camera->y() + HUD_HP_Y_OFFSET);
-
-                // Update Graphic
-                hud_hp_animate_action_ptr = bn::create_sprite_animate_action_forever(hud_hp_sprite_ptr.value(),
-                                                                                    0,
-                                                                                    bn::sprite_items::hud_hp_bar.tiles_item(),
-                                                                                    temp_player_ptr->hitpoints, temp_player_ptr->hitpoints);
-
-                hud_hp_animate_action_ptr->update();
-            }
+            hud_hp_animate_action_ptr->update();
         }
 
         ///////////////////
@@ -1291,7 +1273,6 @@ void Level::updateHUD()
         else
         {
             // Update palette
-            bn::sprite_palette_ptr white_palette = bn::sprite_palette_items::sprite_white_palette.create_palette();
             if(global_hud_currency_flash_frames) {currency_icon_sprite_ptr->set_palette(white_palette);}
             else                                 {currency_icon_sprite_ptr->set_palette(default_hud_palette_ptr.value());}
 
@@ -1330,7 +1311,7 @@ void Level::updateHUD()
 
             // Icon
             currency_icon_sprite_ptr->set_position(camera->x() + HUD_CURRENCY_ICON_X_OFFSET, 
-                                                camera->y() + HUD_CURRENCY_ICON_Y_OFFSET);
+                                                   camera->y() + HUD_CURRENCY_ICON_Y_OFFSET);
         }
 
         /////////////////////
@@ -1340,17 +1321,24 @@ void Level::updateHUD()
         hud_level_name.setPosUR(camera->x().integer() + HUD_LEVEL_NAME_X_OFFSET, 
                                 camera->y().integer() + HUD_LEVEL_NAME_Y_OFFSET);
         hud_level_name.draw();
+
+        /////////////////////////////////////////
+        // Hide some elements on the Overworld //
+        /////////////////////////////////////////
+
+        if(player_spawn.spawn_level == LEVEL_OVERWORLD)
+        {hud_hp_sprite_ptr->set_visible(false);}
     }
 
-        /////////////////////////////
-        // Update HUD Flash Frames //
-        /////////////////////////////
+    /////////////////////////////
+    // Update HUD Flash Frames //
+    /////////////////////////////
 
-        global_hud_hp_flash_frames--;
-        global_hud_hp_flash_frames = clamp(0, HUD_FLASH_FRAMES, global_hud_hp_flash_frames);
+    global_hud_hp_flash_frames--;
+    global_hud_hp_flash_frames = clamp(0, HUD_FLASH_FRAMES, global_hud_hp_flash_frames);
 
-        global_hud_currency_flash_frames--;
-        global_hud_currency_flash_frames = clamp(0, HUD_FLASH_FRAMES, global_hud_currency_flash_frames);
+    global_hud_currency_flash_frames--;
+    global_hud_currency_flash_frames = clamp(0, HUD_FLASH_FRAMES, global_hud_currency_flash_frames);
 }
 
 void Level::updateFade()
