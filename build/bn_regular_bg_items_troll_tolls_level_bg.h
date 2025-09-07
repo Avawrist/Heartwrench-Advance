@@ -9,11 +9,11 @@
 //
 //	troll_tolls_level_bg_bn_gfx, 5120x2560@4, 
 //	+ palette 16 entries, not compressed
-//	+ 268 tiles (t|p reduced) not compressed
+//	+ 272 tiles (t|p reduced) not compressed
 //	+ regular map (flat), not compressed, 640x320 
-//	Total size: 32 + 8576 + 409600 = 418208
+//	Total size: 32 + 8704 + 409600 = 418336
 //
-//	Time-stamp: 2025-09-05, 16:44:44
+//	Time-stamp: 2025-09-07, 02:05:57
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -22,8 +22,8 @@
 #ifndef GRIT_TROLL_TOLLS_LEVEL_BG_BN_GFX_H
 #define GRIT_TROLL_TOLLS_LEVEL_BG_BN_GFX_H
 
-#define troll_tolls_level_bg_bn_gfxTilesLen 8576
-extern const bn::tile troll_tolls_level_bg_bn_gfxTiles[268];
+#define troll_tolls_level_bg_bn_gfxTilesLen 8704
+extern const bn::tile troll_tolls_level_bg_bn_gfxTiles[272];
 
 #define troll_tolls_level_bg_bn_gfxMapLen 409600
 extern const bn::regular_bg_map_cell troll_tolls_level_bg_bn_gfxMap[204800];
@@ -38,7 +38,7 @@ extern const bn::color troll_tolls_level_bg_bn_gfxPal[16];
 namespace bn::regular_bg_items
 {
     constexpr inline regular_bg_item troll_tolls_level_bg(
-            regular_bg_tiles_item(span<const tile>(troll_tolls_level_bg_bn_gfxTiles, 268), bpp_mode::BPP_4, compression_type::NONE), 
+            regular_bg_tiles_item(span<const tile>(troll_tolls_level_bg_bn_gfxTiles, 272), bpp_mode::BPP_4, compression_type::NONE), 
             bg_palette_item(span<const color>(troll_tolls_level_bg_bn_gfxPal, 16), bpp_mode::BPP_4, compression_type::NONE),
             regular_bg_map_item(troll_tolls_level_bg_bn_gfxMap[0], size(640, 320), compression_type::NONE, 1, true));
 }

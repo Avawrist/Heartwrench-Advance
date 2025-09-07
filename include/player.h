@@ -49,8 +49,8 @@
 #define PLAYER_MIN_X_SPEED    0
 #define PLAYER_MAX_X_SPEED    2
 #define PLAYER_X_DECAY        1
-#define X_SPEED_ACC_RATE      0.175
-#define X_SPEED_DECAY_RATE    0.075
+#define X_SPEED_ACC_RATE      0.15
+#define X_SPEED_DECAY_RATE    0.04
 
 // Climb Values
 
@@ -289,7 +289,8 @@ struct Player : GameObject {
 	void setSpinAttackAnimation();
 	void setDeathAnimation();
 	void setClimbAnimation();
-	void setOWAnimation();
+	void setOWIdleAnimation();
+	void setOWWalkAnimation();
 
 	//////////////////////////
 	// GameObject Overrides //

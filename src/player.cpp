@@ -430,6 +430,7 @@ void Player::setIdleAnimation()
 																				 			   sprite_ptr->y().integer());
 	temp_sprite_ptr->set_camera(sprite_ptr->camera());
 	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
+	temp_sprite_ptr->set_visible(sprite_ptr->visible());
 
 	sprite_ptr->swap(temp_sprite_ptr.value());
 
@@ -450,6 +451,7 @@ void Player::setWalkAnimation()
 																				 			   sprite_ptr->y().integer());
 	temp_sprite_ptr->set_camera(sprite_ptr->camera());
 	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
+	temp_sprite_ptr->set_visible(sprite_ptr->visible());
 
 	sprite_ptr->swap(temp_sprite_ptr.value());
 
@@ -472,6 +474,7 @@ void Player::setJumpAnimation()
 																				 			   sprite_ptr->y().integer());
 	temp_sprite_ptr->set_camera(sprite_ptr->camera());
 	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
+	temp_sprite_ptr->set_visible(sprite_ptr->visible());
 
 	sprite_ptr->swap(temp_sprite_ptr.value());
 
@@ -491,6 +494,7 @@ void Player::setFallAnimation()
 																				 			   sprite_ptr->y().integer());
 	temp_sprite_ptr->set_camera(sprite_ptr->camera());
 	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
+	temp_sprite_ptr->set_visible(sprite_ptr->visible());
 
 	sprite_ptr->swap(temp_sprite_ptr.value());
 
@@ -508,6 +512,7 @@ void Player::setBellJumpAnimation()
 																				 	  				sprite_ptr->y().integer());
 	temp_sprite_ptr->set_camera(sprite_ptr->camera());
 	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
+	temp_sprite_ptr->set_visible(sprite_ptr->visible());
 
 	sprite_ptr->swap(temp_sprite_ptr.value());
 
@@ -528,6 +533,7 @@ void Player::setSpinAttackAnimation()
 																				 	    			  sprite_ptr->y().integer());
 	temp_sprite_ptr->set_camera(sprite_ptr->camera());
 	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
+	temp_sprite_ptr->set_visible(sprite_ptr->visible());
 
 	sprite_ptr->swap(temp_sprite_ptr.value());
 
@@ -547,6 +553,7 @@ void Player::setDeathAnimation()
 																				  				sprite_ptr->y().integer());
 	temp_sprite_ptr->set_camera(sprite_ptr->camera());
 	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
+	temp_sprite_ptr->set_visible(sprite_ptr->visible());
 
 	sprite_ptr->swap(temp_sprite_ptr.value());
 
@@ -565,6 +572,7 @@ void Player::setClimbAnimation()
 																				  				sprite_ptr->y().integer());
 	temp_sprite_ptr->set_camera(sprite_ptr->camera());
 	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
+	temp_sprite_ptr->set_visible(sprite_ptr->visible());
 
 	sprite_ptr->swap(temp_sprite_ptr.value());
 
@@ -576,21 +584,40 @@ void Player::setClimbAnimation()
 																0, 0);
 }
 
-void Player::setOWAnimation()
+void Player::setOWIdleAnimation()
 {
 	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_ow.create_sprite(sprite_ptr->x().integer(), 
 																				  			 sprite_ptr->y().integer());
 	temp_sprite_ptr->set_camera(sprite_ptr->camera());
 	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
+	temp_sprite_ptr->set_visible(sprite_ptr->visible());
 
 	sprite_ptr->swap(temp_sprite_ptr.value());
 
 	temp_sprite_ptr.reset();
 
-	animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-															      3,
+	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+															      0,
 															      bn::sprite_items::player_ow.tiles_item(),
-															      0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2);
+															      0, 0);
+}
+
+void Player::setOWWalkAnimation()
+{
+	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_ow.create_sprite(sprite_ptr->x().integer(), 
+																				  			 sprite_ptr->y().integer());
+	temp_sprite_ptr->set_camera(sprite_ptr->camera());
+	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
+	temp_sprite_ptr->set_visible(sprite_ptr->visible());
+
+	sprite_ptr->swap(temp_sprite_ptr.value());
+
+	temp_sprite_ptr.reset();
+
+	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+															   2,
+															   bn::sprite_items::player_ow.tiles_item(),
+														   	   1, 1, 0, 0, 2, 2, 0, 0);
 }
 
 //////////////////////////
@@ -1558,6 +1585,12 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 				setState(NONE);
 			}
 
+			if(!bn::keypad::r_held())
+			{
+				late_jump_grace_frames = PLAYER_LATE_JUMP_GRACE_FRAMES; 
+				setState(NONE);
+			}
+
 		break;
 
 		case PLAYER_OW:
@@ -1578,6 +1611,8 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 			if(pos() == ow_target_pos)
 			{
+				if(animate_action_ptr->done()) {setOWIdleAnimation();}
+
 				if(bn::keypad::left_held())
 				{ow_target_pos.set_x(ow_target_pos.x().integer() - PLAYER_OW_STEP_DISTANCE);}
 
@@ -1590,6 +1625,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 				else if(bn::keypad::down_held())
 				{ow_target_pos.set_y(ow_target_pos.y().integer() + PLAYER_OW_STEP_DISTANCE);}
 			}
+			else if(animate_action_ptr->done()) {setOWWalkAnimation();}
 
 		break;
 
@@ -1747,7 +1783,7 @@ void Player::setState(ObjectState new_state)
 
 		case PLAYER_OW:
 
-			setOWAnimation();
+			setOWIdleAnimation();
 
 		break;
 
@@ -2808,8 +2844,8 @@ void Player::resolveClimbableCollision(const Collider& other_collider)
 		// Set bool
 		climbable_detected = true;
 
-		if((bn::keypad::up_held() || bn::keypad::down_held()) && 
-		   state != PLAYER_CLIMB &&
+		if((bn::keypad::r_held()) && 
+		   state != PLAYER_CLIMB  &&
 		   climb_regrab_cooldown <= 0)
 		{
 			// Remove forces

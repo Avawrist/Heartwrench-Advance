@@ -735,6 +735,7 @@ void GameObject::playBlockDeathAnim()
 																				               sprite_ptr->y().integer());
 	temp_sprite_ptr->set_camera(sprite_ptr->camera());
 	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
+    temp_sprite_ptr->set_visible(sprite_ptr->visible());
 
 	sprite_ptr->swap(temp_sprite_ptr.value());
 
