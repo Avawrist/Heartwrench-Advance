@@ -1360,7 +1360,10 @@ void GameObject::resolveSpikeCollision(const Collider& other_collider)
     test_collider.setY(test_collider.y() + GAME_OBJECT_GROUND_RAY_LENGTH);
 
     if(test_collider.isCollision(other_collider) && hitpoints > 0)
-    {applyHit(SPIKE_DAMAGE, 0, 0);}
+    {
+        invulnerability_frames = 0;
+        applyHit(SPIKE_DAMAGE, 0, 0);
+    }
 
     if(collider.isCollision(other_collider))
     {
