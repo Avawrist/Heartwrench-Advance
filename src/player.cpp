@@ -1767,7 +1767,8 @@ void Player::setState(ObjectState new_state)
 		case PLAYER_SPIN_ATTACK:
 
 			spin_effect_frames = PLAYER_MAX_SPIN_EFFECT_FRAMES;
-			rigidbody.addForce(PLAYER_SPIN_FORCE);
+			if(bn::keypad::right_held() || bn::keypad::left_held())
+			{rigidbody.addForce(PLAYER_SPIN_FORCE);}
 
 			setSpinAttackAnimation();
 
