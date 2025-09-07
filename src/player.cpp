@@ -587,10 +587,10 @@ void Player::setOWAnimation()
 
 	temp_sprite_ptr.reset();
 
-	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-															   0,
-															   bn::sprite_items::player_ow.tiles_item(),
-															   0, 0);
+	animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+															      3,
+															      bn::sprite_items::player_ow.tiles_item(),
+															      0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2);
 }
 
 //////////////////////////

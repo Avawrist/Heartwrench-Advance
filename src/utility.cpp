@@ -32,8 +32,8 @@ int32 global_timer = 0;
 
 bool global_bell_struck = false;
 
-int32 global_ow_player_location_x = -24;
-int32 global_ow_player_location_y = -8;
+int32 global_ow_player_location_x = 136;
+int32 global_ow_player_location_y = -24;
 
 // Functions
 
