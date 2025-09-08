@@ -2485,8 +2485,6 @@ void Player::resolveOWTileCollision(const bn::regular_bg_ptr&                   
 	// Reset highlight bools //
 	///////////////////////////
 
-	troll_tolls_highlighted = false;
-
 	///////////////////////////////////////////////////
 	// Get current cell index that player resides in //
 	///////////////////////////////////////////////////
@@ -2511,31 +2509,26 @@ void Player::resolveOWTileCollision(const bn::regular_bg_ptr&                   
 	   tile_index <= OW_HARD_BLOCK_MAX_INDEX)
 	{
 		if(x().integer() < ow_target_pos.x()) 	   
-		{
-			//setX(x().integer() + (TILE_WIDTH));
-			ow_target_pos.set_x(ow_target_pos.x() - PLAYER_OW_STEP_DISTANCE);
-		}
+		{ow_target_pos.set_x(ow_target_pos.x() - PLAYER_OW_STEP_DISTANCE);}
+
 		else if(x().integer() > ow_target_pos.x()) 
-		{
-			//setX(x().integer() - (TILE_WIDTH));
-			ow_target_pos.set_x(ow_target_pos.x() + PLAYER_OW_STEP_DISTANCE);
-		}
+		{ow_target_pos.set_x(ow_target_pos.x() + PLAYER_OW_STEP_DISTANCE);}
 
 		if(y().integer() < ow_target_pos.y()) 	   
-		{
-			//setY(y().integer() + (TILE_HEIGHT));
-			ow_target_pos.set_y(ow_target_pos.y() - PLAYER_OW_STEP_DISTANCE);
-		}
+		{ow_target_pos.set_y(ow_target_pos.y() - PLAYER_OW_STEP_DISTANCE);}
+
 		else if(y().integer() > ow_target_pos.y()) 
-		{
-			//setY(y().integer() - (TILE_HEIGHT));
-			ow_target_pos.set_y(ow_target_pos.y() + PLAYER_OW_STEP_DISTANCE);
-		}
+		{ow_target_pos.set_y(ow_target_pos.y() + PLAYER_OW_STEP_DISTANCE);}
 	}
 	else if(tile_index >= OW_TROLL_TOLLS_MIN_INDEX &&
 	  		tile_index <= OW_TROLL_TOLLS_MAX_INDEX)
 	{
 		troll_tolls_highlighted = true;
+	}
+	else
+	{
+		// Reset highlight bools
+		troll_tolls_highlighted = false;
 	}
 
 	// Record Player's OW position in global variables

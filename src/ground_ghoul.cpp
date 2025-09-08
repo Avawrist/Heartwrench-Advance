@@ -12,9 +12,9 @@ GroundGhoul::GroundGhoul()
         sprite_ptr->set_z_order(ENEMY_Z_ORDER);
         default_palette_ptr = sprite_ptr->palette();
         animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-                                                                        2,
-                                                                        bn::sprite_items::ground_ghoul.tiles_item(),
-                                                                        0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3);
+                                                                      0,
+                                                                      bn::sprite_items::ground_ghoul.tiles_item(),
+                                                                      8, 8);
     
         collider          = Collider(x(), y(), GROUND_GHOUL_COLLIDER_WIDTH, GROUND_GHOUL_COLLIDER_HEIGHT);
         collider_x_axis   = collider;
@@ -105,7 +105,8 @@ void GroundGhoul::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
             if(animate_action_ptr->done())
             {setState(IDLE);}
 
-            if(animate_action_ptr->current_index() >= GROUND_GHOUL_CRAWL_FRAME)
+            if(animate_action_ptr->current_index() >= GROUND_GHOUL_CRAWL_FRAME &&
+               global_timer % 2 == 0)
             {rigidbody.addForce(GROUND_GHOUL_CRAWL_FORCE);}
 
             // Gravity
@@ -141,9 +142,9 @@ void GroundGhoul::setState(ObjectState new_state)
 
             action_timer       = GROUND_GHOUL_ACTION_TIMER;
             animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-                                                                            2,
+                                                                            0,
                                                                             bn::sprite_items::ground_ghoul.tiles_item(),
-                                                                            0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3);
+                                                                            8, 8);
 
         break;
 
@@ -151,10 +152,10 @@ void GroundGhoul::setState(ObjectState new_state)
 
             x_dir = next_crawl_dir;
             animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-                                                                          2,
-                                                                          bn::sprite_items::ground_ghoul.tiles_item(),
-                                                                          4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 
-                                                                          8, 8, 8, 9, 9, 9, 10, 10, 10, 11, 11, 11);
+                                                                       2,
+                                                                       bn::sprite_items::ground_ghoul.tiles_item(),
+                                                                       0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 
+                                                                       5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8);
 
         break;
 

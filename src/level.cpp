@@ -370,7 +370,7 @@ void Level::load()
             cells = main_bg_ptr->map().cells_ref().value();
 
             // Update HUD level name text box
-            hud_level_name.setSpritesFromString("     TROLL TOLLS", 16);
+            hud_level_name.setSpritesFromString(" TURN ON A CHIME", 16);
 
             // Next level
             next_level = LEVEL_TITLE_SCREEN;
@@ -669,7 +669,7 @@ void Level::load(LevelName level_name)
             cells = main_bg_ptr->map().cells_ref().value();
 
             // Update HUD level name text box
-            hud_level_name.setSpritesFromString("     TROLL TOLLS", 16);
+            hud_level_name.setSpritesFromString(" TURN ON A CHIME", 16);
 
             // Next level
             next_level = LEVEL_TITLE_SCREEN;
@@ -951,12 +951,18 @@ void Level::updateOverworld()
     if(!fade_out && transition_frames < 0)
     {current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->sprite_ptr->set_visible(true);}
 
+    // Set HUD Name 
+    if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->troll_tolls_highlighted)
+    {hud_level_name.setSpritesFromString(" TURN ON A CHIME", 16);}
+    else
+    {hud_level_name.setSpritesFromString("       OVERWORLD", 16);}
+
     // Get Input //
     if((bn::keypad::a_pressed()) && transition_frames < 0)
     {
-        // Start Fade and Level Transition
         if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->troll_tolls_highlighted)
         {
+            // Start Fade and Level Transition
             next_level        = LEVEL_TROLL_TOLLS;
             fade_out          = true;
             transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
