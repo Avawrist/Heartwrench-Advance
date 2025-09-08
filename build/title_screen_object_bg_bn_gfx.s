@@ -3,13 +3,13 @@
 
 @=======================================================================
 @
-@	title_screen_object_bg_bn_gfx, 256x256@8, 
+@	title_screen_object_bg_bn_gfx, 256x256@4, 
 @	+ palette 16 entries, not compressed
-@	+ 1 tiles (t|f reduced) not compressed
+@	+ 1 tiles (t|f|p reduced) not compressed
 @	+ regular map (flat), not compressed, 32x32 
-@	Total size: 32 + 64 + 2048 = 2144
+@	Total size: 32 + 32 + 2048 = 2112
 @
-@	Time-stamp: 2025-08-01, 20:37:05
+@	Time-stamp: 2025-09-08, 15:33:30
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -17,10 +17,9 @@
 
 	.section .rodata
 	.align	2
-	.global title_screen_object_bg_bn_gfxTiles		@ 64 unsigned chars
+	.global title_screen_object_bg_bn_gfxTiles		@ 32 unsigned chars
 	.hidden title_screen_object_bg_bn_gfxTiles
 title_screen_object_bg_bn_gfxTiles:
-	.word 0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000
 	.word 0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000
 
 	.section .rodata
@@ -177,7 +176,7 @@ title_screen_object_bg_bn_gfxMap:
 	.global title_screen_object_bg_bn_gfxPal		@ 32 unsigned chars
 	.hidden title_screen_object_bg_bn_gfxPal
 title_screen_object_bg_bn_gfxPal:
-	.hword 0x1485,0x20C7,0x314C,0x35B2,0x3E55,0x312D,0x45CF,0x5AB3
-	.hword 0x6B78,0x7FFF,0x108D,0x18F6,0x193D,0x25FE,0x1895,0x1CFD
+	.hword 0x1485,0x20CF,0x1D13,0x1DB9,0x265C,0x2AFF,0x1CA8,0x38ED
+	.hword 0x5572,0x7A15,0x76BD,0x3161,0x4621,0x4EA1,0x5F86,0x0000
 
 @}}BLOCK(title_screen_object_bg_bn_gfx)

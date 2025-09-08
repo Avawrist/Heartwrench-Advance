@@ -591,15 +591,15 @@ void Level::load(LevelName level_name)
 
             painted_bg_ptr      = bn::regular_bg_items::title_screen_painted_bg.create_bg(0, 0);
             painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
-                                                                               6,
+                                                                               3,
                                                                                bn::regular_bg_items::title_screen_painted_bg.map_item(),
-                                                                               0, 0, 0, 0, 0, 1, 1, 1, 1);
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2);
 
             // Update flash palette
             default_flash_palette_ptr = bn::bg_palette_items::troll_tolls_bg_flash_palette.create_palette();
 
             // Update cells
-            cells        = main_bg_ptr->map().cells_ref().value();
+            cells = main_bg_ptr->map().cells_ref().value();
 
             // Update HUD level name text box
             hud_level_name.setSpritesFromString("", 0);
@@ -936,9 +936,9 @@ void Level::updateTitleScreen()
         transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
 
         painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
-                                                                           0,
+                                                                           1,
                                                                            bn::regular_bg_items::title_screen_painted_bg.map_item(),
-                                                                           0, 0, 1, 1);
+                                                                           0, 0, 1, 1, 2, 2);
     }
 
     // Draw Screen
@@ -1194,7 +1194,7 @@ void Level::updatePaintedBG()
 {   
     // Parallax Effect
     bn::fixed x_offset = camera->x() / LEVEL_PARALLAX_REDUCTION_FACTOR;
-    painted_bg_ptr->set_position(camera->x() + x_offset, painted_bg_ptr->y()); //current_room.room_bounds.center().y()
+    painted_bg_ptr->set_position(camera->x() + x_offset, painted_bg_ptr->y());
 
     painted_bg_anim_ptr->update();
 }

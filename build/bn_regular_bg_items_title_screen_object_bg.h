@@ -7,13 +7,13 @@
 
 //======================================================================
 //
-//	title_screen_object_bg_bn_gfx, 256x256@8, 
+//	title_screen_object_bg_bn_gfx, 256x256@4, 
 //	+ palette 16 entries, not compressed
-//	+ 1 tiles (t|f reduced) not compressed
+//	+ 1 tiles (t|f|p reduced) not compressed
 //	+ regular map (flat), not compressed, 32x32 
-//	Total size: 32 + 64 + 2048 = 2144
+//	Total size: 32 + 32 + 2048 = 2112
 //
-//	Time-stamp: 2025-08-01, 20:37:05
+//	Time-stamp: 2025-09-08, 15:33:30
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -22,8 +22,8 @@
 #ifndef GRIT_TITLE_SCREEN_OBJECT_BG_BN_GFX_H
 #define GRIT_TITLE_SCREEN_OBJECT_BG_BN_GFX_H
 
-#define title_screen_object_bg_bn_gfxTilesLen 64
-extern const bn::tile title_screen_object_bg_bn_gfxTiles[2];
+#define title_screen_object_bg_bn_gfxTilesLen 32
+extern const bn::tile title_screen_object_bg_bn_gfxTiles[1];
 
 #define title_screen_object_bg_bn_gfxMapLen 2048
 extern const bn::regular_bg_map_cell title_screen_object_bg_bn_gfxMap[1024];
@@ -38,8 +38,8 @@ extern const bn::color title_screen_object_bg_bn_gfxPal[16];
 namespace bn::regular_bg_items
 {
     constexpr inline regular_bg_item title_screen_object_bg(
-            regular_bg_tiles_item(span<const tile>(title_screen_object_bg_bn_gfxTiles, 2), bpp_mode::BPP_8, compression_type::NONE), 
-            bg_palette_item(span<const color>(title_screen_object_bg_bn_gfxPal, 16), bpp_mode::BPP_8, compression_type::NONE),
+            regular_bg_tiles_item(span<const tile>(title_screen_object_bg_bn_gfxTiles, 1), bpp_mode::BPP_4, compression_type::NONE), 
+            bg_palette_item(span<const color>(title_screen_object_bg_bn_gfxPal, 16), bpp_mode::BPP_4, compression_type::NONE),
             regular_bg_map_item(title_screen_object_bg_bn_gfxMap[0], size(32, 32), compression_type::NONE, 1, false));
 }
 
