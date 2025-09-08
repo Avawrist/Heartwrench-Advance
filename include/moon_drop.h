@@ -23,7 +23,7 @@
 
 #define MOON_DROP_30_FPS false
 
-#define MOON_DROP_VALUE 10
+#define MOON_DROP_VALUE 0
 
 #define MOON_DROP_STARTING_INVULN_FRAMES 20
 

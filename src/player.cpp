@@ -292,22 +292,22 @@ void Player::createSpinAttack1Hitbox(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
 	if(game_objects.size() >= MAX_GAME_OBJECTS) {return;}
 
 	delete hitbox_1_ptr;
-	hitbox_1_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SPIN_1_X_OFFSET * x_dir),
-								  y().integer() + PLAYER_SPIN_1_Y_OFFSET),
-								  PLAYER_SPIN_1_HITSTOP_FRAMES,
-								  PLAYER_SPIN_1_HITSTUN_FRAMES,
-								  PLAYER_SPIN_1_SCREENSHAKE_FRAMES,
-								  PLAYER_SPIN_1_HB_LIFESPAN_FRAMES,
-								  PLAYER_SPIN_1_X_KNOCKBACK,
-								  PLAYER_SPIN_1_Y_KNOCKBACK,	
-								  PLAYER_SPIN_1_KNOCKBACK_DECAY,
-								  PLAYER_SPIN_1_HB_WIDTH,
-								  PLAYER_SPIN_1_HB_HEIGHT,
-								  PLAYER_SPIN_1_DAMAGE,
-								  x_dir,
-								  y_dir,
-								  HITBOX_SPIN_1,
-								  PLAYER_SPIN_1_SCREENSHAKE_SEVERITY);
+	hitbox_1_ptr = new Hitbox(bn::point(x().integer() + PLAYER_SPIN_1_X_OFFSET,
+								        y().integer() + PLAYER_SPIN_1_Y_OFFSET),
+							  PLAYER_SPIN_1_HITSTOP_FRAMES,
+							  PLAYER_SPIN_1_HITSTUN_FRAMES,
+							  PLAYER_SPIN_1_SCREENSHAKE_FRAMES,
+							  PLAYER_SPIN_1_HB_LIFESPAN_FRAMES,
+							  PLAYER_SPIN_1_X_KNOCKBACK,
+							  PLAYER_SPIN_1_Y_KNOCKBACK,	
+							  PLAYER_SPIN_1_KNOCKBACK_DECAY,
+							  PLAYER_SPIN_1_HB_WIDTH,
+							  PLAYER_SPIN_1_HB_HEIGHT,
+							  PLAYER_SPIN_1_DAMAGE,
+							  RIGHT,
+							  y_dir,
+							  HITBOX_SPIN_1,
+							  PLAYER_SPIN_1_SCREENSHAKE_SEVERITY);
 
 	hitbox_1_ptr->setCamera(camera);
 }
@@ -317,25 +317,25 @@ void Player::createSpinAttack2Hitbox(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
 {
 	if(game_objects.size() >= MAX_GAME_OBJECTS) {return;}
 
-	delete hitbox_1_ptr;
-	hitbox_1_ptr = new Hitbox(bn::point(x().integer() + (PLAYER_SPIN_2_X_OFFSET * x_dir),
-								  y().integer() + PLAYER_SPIN_2_Y_OFFSET),
-								  PLAYER_SPIN_2_HITSTOP_FRAMES,
-								  PLAYER_SPIN_2_HITSTUN_FRAMES,
-								  PLAYER_SPIN_2_SCREENSHAKE_FRAMES,
-								  PLAYER_SPIN_2_HB_LIFESPAN_FRAMES,
-								  PLAYER_SPIN_2_X_KNOCKBACK,
-								  PLAYER_SPIN_2_Y_KNOCKBACK,	
-								  PLAYER_SPIN_2_KNOCKBACK_DECAY,
-								  PLAYER_SPIN_2_HB_WIDTH,
-								  PLAYER_SPIN_2_HB_HEIGHT,
-								  PLAYER_SPIN_2_DAMAGE,
-								  x_dir,
-								  y_dir,
-								  HITBOX_SPIN_2,
-								  PLAYER_SPIN_2_SCREENSHAKE_SEVERITY);
+	delete hitbox_2_ptr;
+	hitbox_2_ptr = new Hitbox(bn::point(x().integer() + PLAYER_SPIN_2_X_OFFSET,
+								        y().integer() + PLAYER_SPIN_2_Y_OFFSET),
+							  PLAYER_SPIN_2_HITSTOP_FRAMES,
+							  PLAYER_SPIN_2_HITSTUN_FRAMES,
+							  PLAYER_SPIN_2_SCREENSHAKE_FRAMES,
+							  PLAYER_SPIN_2_HB_LIFESPAN_FRAMES,
+							  PLAYER_SPIN_2_X_KNOCKBACK,
+							  PLAYER_SPIN_2_Y_KNOCKBACK,	
+							  PLAYER_SPIN_2_KNOCKBACK_DECAY,
+							  PLAYER_SPIN_2_HB_WIDTH,
+							  PLAYER_SPIN_2_HB_HEIGHT,
+							  PLAYER_SPIN_2_DAMAGE,
+							  LEFT,
+							  y_dir,
+							  HITBOX_SPIN_2,
+							  PLAYER_SPIN_2_SCREENSHAKE_SEVERITY);
 
-	hitbox_1_ptr->setCamera(camera);
+	hitbox_2_ptr->setCamera(camera);
 }
 
 void Player::createWallJumpEffect()
@@ -633,9 +633,8 @@ void Player::updateHitboxes(const RoomBounds& 							   room_bounds,
 {
 	if(hitbox_1_ptr != NULL)
 	{
-
-		hitbox_1_ptr->setPos(bn::point(x().integer() + (PLAYER_SPIN_1_X_OFFSET * x_dir),
-									   y().integer() + (PLAYER_SPIN_1_Y_OFFSET * y_dir)));
+		hitbox_1_ptr->setPos(bn::point(x().integer() + PLAYER_SPIN_1_X_OFFSET,
+									   y().integer() + PLAYER_SPIN_1_Y_OFFSET));
 		hitbox_1_ptr->update(room_bounds,
 						     game_objects,
 							 bg_ptr, 
@@ -653,9 +652,8 @@ void Player::updateHitboxes(const RoomBounds& 							   room_bounds,
 	
 	if(hitbox_2_ptr != NULL) 
 	{
-
-		hitbox_2_ptr->setPos(bn::point(x().integer() + (PLAYER_SPIN_1_X_OFFSET * x_dir),
-									   y().integer() + (PLAYER_SPIN_1_Y_OFFSET * y_dir)));
+		hitbox_2_ptr->setPos(bn::point(x().integer() + PLAYER_SPIN_2_X_OFFSET,
+									   y().integer() + PLAYER_SPIN_2_Y_OFFSET));
 		hitbox_2_ptr->update(room_bounds,
 							 game_objects,
 							 bg_ptr, 
@@ -673,9 +671,6 @@ void Player::updateHitboxes(const RoomBounds& 							   room_bounds,
 	
 	if(hitbox_3_ptr != NULL)
 	{
-		hitbox_3_ptr->setPos(bn::point(x().integer() + (PLAYER_SPIN_1_X_OFFSET * x_dir),
-									   y().integer() + (PLAYER_SPIN_1_Y_OFFSET * y_dir)));
-
 		hitbox_3_ptr->update(room_bounds,
 							 game_objects,
 							 bg_ptr, 
@@ -1444,11 +1439,11 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			{createSpinAttack1Hitbox(game_objects, camera);}
 
 			// HB 2
-			else if(animate_action_ptr->current_index() == PLAYER_SPIN_2_CREATE_HB_FRAME)
+			if(animate_action_ptr->current_index() == PLAYER_SPIN_2_CREATE_HB_FRAME)
 			{createSpinAttack2Hitbox(game_objects, camera);}
 
 			// End State
-			else if(animate_action_ptr->done())
+			if(animate_action_ptr->done())
 			{setState(NONE);}
 
 			///////////////
@@ -2272,15 +2267,8 @@ void Player::resolveHPDropCollision(GameObject& object)
 	
 	if(collider.isCollision(object.collider))
     {
-		if(hitpoints == PLAYER_MAX_HITPOINTS) 
-		{
-			global_level_currency += object.hitpoints;
-		}
-		else
-		{
-			global_hitstop_frames      = PLAYER_GET_HP_HITSTOP_FRAMES;
-			global_hud_hp_flash_frames = HUD_FLASH_FRAMES;
-		}
+		global_hitstop_frames      = PLAYER_GET_HP_HITSTOP_FRAMES;
+		global_hud_hp_flash_frames = HUD_FLASH_FRAMES;
 
 		applyHP(object.damage);
 		object.setState(OBJECT_DEATH);
@@ -2293,11 +2281,7 @@ void Player::resolveMoonDropCollision(GameObject& object)
 	
 	if(collider.isCollision(object.collider))
     {	
-		global_level_currency += object.damage;
-
-		global_hitstop_frames            = PLAYER_GET_MOON_HITSTOP_FRAMES;
-		global_hud_currency_flash_frames = HUD_FLASH_FRAMES;
-
+		global_hitstop_frames = PLAYER_GET_MOON_HITSTOP_FRAMES;
 		object.setState(OBJECT_DEATH);
 	}
 }

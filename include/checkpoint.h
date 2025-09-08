@@ -23,7 +23,7 @@
 
 #define CHECKPOINT_30_FPS true
 
-#define CHECKPOINT_COST 33
+#define CHECKPOINT_COST 10
 
 struct Checkpoint : GameObject {
 
