@@ -128,6 +128,7 @@ ground_ghoul.o: G:/game/src/ground_ghoul.cpp \
  G:/game/build/bn_sprite_items_player_climb.h \
  G:/game/build/bn_sprite_items_player_bell_jump.h \
  G:/game/build/bn_sprite_items_player_ow.h \
+ G:/game/build/bn_sprite_items_player_get.h \
  G:/game/build/bn_sprite_items_phase_marker.h G:/game/include/hitbox.h \
  G:/game/include/tile_passage.h
 G:/game/include/ground_ghoul.h:
@@ -264,6 +265,7 @@ G:/game/build/bn_sprite_items_player_death.h:
 G:/game/build/bn_sprite_items_player_climb.h:
 G:/game/build/bn_sprite_items_player_bell_jump.h:
 G:/game/build/bn_sprite_items_player_ow.h:
+G:/game/build/bn_sprite_items_player_get.h:
 G:/game/build/bn_sprite_items_phase_marker.h:
 G:/game/include/hitbox.h:
 G:/game/include/tile_passage.h:

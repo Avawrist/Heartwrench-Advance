@@ -128,6 +128,7 @@ tile_passage.o: G:/game/src/tile_passage.cpp \
  G:/game/build/bn_sprite_items_player_climb.h \
  G:/game/build/bn_sprite_items_player_bell_jump.h \
  G:/game/build/bn_sprite_items_player_ow.h \
+ G:/game/build/bn_sprite_items_player_get.h \
  G:/game/build/bn_sprite_items_phase_marker.h
 G:/game/include/tile_passage.h:
 G:/butano-master/butano/include/bn_math.h:
@@ -262,4 +263,5 @@ G:/game/build/bn_sprite_items_player_death.h:
 G:/game/build/bn_sprite_items_player_climb.h:
 G:/game/build/bn_sprite_items_player_bell_jump.h:
 G:/game/build/bn_sprite_items_player_ow.h:
+G:/game/build/bn_sprite_items_player_get.h:
 G:/game/build/bn_sprite_items_phase_marker.h:

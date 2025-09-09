@@ -128,6 +128,7 @@ player.o: G:/game/src/player.cpp G:/game/include/player.h \
  G:/game/build/bn_sprite_items_player_climb.h \
  G:/game/build/bn_sprite_items_player_bell_jump.h \
  G:/game/build/bn_sprite_items_player_ow.h \
+ G:/game/build/bn_sprite_items_player_get.h \
  G:/game/build/bn_sprite_items_phase_marker.h G:/game/include/hitbox.h \
  G:/game/include/phase_orb.h
 G:/game/include/player.h:
@@ -263,6 +264,7 @@ G:/game/build/bn_sprite_items_player_death.h:
 G:/game/build/bn_sprite_items_player_climb.h:
 G:/game/build/bn_sprite_items_player_bell_jump.h:
 G:/game/build/bn_sprite_items_player_ow.h:
+G:/game/build/bn_sprite_items_player_get.h:
 G:/game/build/bn_sprite_items_phase_marker.h:
 G:/game/include/hitbox.h:
 G:/game/include/phase_orb.h:

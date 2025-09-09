@@ -127,6 +127,7 @@ game_object.o: G:/game/src/game_object.cpp G:/game/include/game_object.h \
  G:/game/build/bn_sprite_items_player_climb.h \
  G:/game/build/bn_sprite_items_player_bell_jump.h \
  G:/game/build/bn_sprite_items_player_ow.h \
+ G:/game/build/bn_sprite_items_player_get.h \
  G:/game/build/bn_sprite_items_phase_marker.h
 G:/game/include/game_object.h:
 G:/butano-master/butano/include/bn_optional.h:
@@ -260,4 +261,5 @@ G:/game/build/bn_sprite_items_player_death.h:
 G:/game/build/bn_sprite_items_player_climb.h:
 G:/game/build/bn_sprite_items_player_bell_jump.h:
 G:/game/build/bn_sprite_items_player_ow.h:
+G:/game/build/bn_sprite_items_player_get.h:
 G:/game/build/bn_sprite_items_phase_marker.h:

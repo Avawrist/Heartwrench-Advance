@@ -1002,10 +1002,15 @@ void Level::updateObjects()
             // Check if level complete //
             else if(current_room.game_objects.data()[i]->object_type == FINISH_SEAL)
             {
-                if(((FinishSeal*)current_room.game_objects.data()[i])->level_complete) 
+                if(((FinishSeal*)current_room.game_objects.data()[i])->level_complete)
                 {
+                    // Close menu if open
                     if(menu_open) {togglePauseScreen();}
 
+                    // Set player Get animation
+                    current_room.game_objects.data()[PLAYER_OBJECT_LIST_INDEX]->setState(PLAYER_GET_EXTENDED);
+
+                    // Mark complete to trigger transition
                     level_complete = true;
                 }
             }

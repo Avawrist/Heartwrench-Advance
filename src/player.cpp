@@ -620,6 +620,46 @@ void Player::setOWWalkAnimation()
 														   	   1, 1, 0, 0, 2, 2, 0, 0);
 }
 
+void Player::setGetAnimation()
+{
+	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_get.create_sprite(sprite_ptr->x().integer(), 
+																				  			  sprite_ptr->y().integer());
+	temp_sprite_ptr->set_camera(sprite_ptr->camera());
+	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
+	temp_sprite_ptr->set_visible(sprite_ptr->visible());
+
+	sprite_ptr->swap(temp_sprite_ptr.value());
+
+	temp_sprite_ptr.reset();
+
+	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+															   1,
+															   bn::sprite_items::player_get.tiles_item(),
+														   	   0, 0, 2, 2, 3, 3, 2, 2,
+														       1, 1, 2, 2, 3, 3, 2, 2, 1, 1);
+}
+
+void Player::setGetExtendedAnimation()
+{
+	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_get.create_sprite(sprite_ptr->x().integer(), 
+																				  			  sprite_ptr->y().integer());
+	temp_sprite_ptr->set_camera(sprite_ptr->camera());
+	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
+	temp_sprite_ptr->set_visible(sprite_ptr->visible());
+
+	sprite_ptr->swap(temp_sprite_ptr.value());
+
+	temp_sprite_ptr.reset();
+
+	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+															   1,
+															   bn::sprite_items::player_get.tiles_item(),
+														   	   1, 1, 2, 2, 3, 3, 2, 2,
+														       1, 1, 2, 2, 3, 3, 2, 2,
+															   1, 1, 2, 2, 3, 3, 2, 2,
+															   1, 1, 2, 2, 3, 3, 2, 2);
+}
+
 //////////////////////////
 // GameObject Overrides //
 //////////////////////////
@@ -1624,6 +1664,23 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 		break;
 
+		case PLAYER_GET:
+
+			if(animate_action_ptr->done())
+			{
+				air_frames_elapsed = 0;
+				setState(NONE);
+			}
+
+		break;
+
+		case PLAYER_GET_EXTENDED:
+
+			if(animate_action_ptr->done())
+			{setState(PLAYER_GET_EXTENDED);}
+
+		break;
+
 		case OBJECT_DEATH:
 
 			updateDeathState();
@@ -1658,6 +1715,8 @@ void Player::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_obj
 	   state != PLAYER_CLIMB           &&
 	   state != PLAYER_PHASE_STEP      &&
 	   state != PLAYER_OW              &&
+	   state != PLAYER_GET             &&
+	   state != PLAYER_GET_EXTENDED    &&
 	   state != OBJECT_DEATH)
 	{
 		ObjectState new_state = NONE;
@@ -1780,6 +1839,20 @@ void Player::setState(ObjectState new_state)
 		case PLAYER_OW:
 
 			setOWIdleAnimation();
+
+		break;
+
+		case PLAYER_GET:
+
+			rigidbody.removeForces();
+			setGetAnimation();
+
+		break;
+
+		case PLAYER_GET_EXTENDED:
+
+			rigidbody.removeForces();
+			setGetExtendedAnimation();
 
 		break;
 
@@ -2283,6 +2356,8 @@ void Player::resolveMoonDropCollision(GameObject& object)
     {	
 		global_hitstop_frames = PLAYER_GET_MOON_HITSTOP_FRAMES;
 		object.setState(OBJECT_DEATH);
+
+		setState(PLAYER_GET);
 	}
 }
 

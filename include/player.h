@@ -33,7 +33,7 @@
 #define PLAYER_STARTING_HITPOINTS 3
 
 #define PLAYER_GET_HP_HITSTOP_FRAMES    10
-#define PLAYER_GET_MOON_HITSTOP_FRAMES  15
+#define PLAYER_GET_MOON_HITSTOP_FRAMES  5
 #define PLAYER_GET_SKULL_HITSTOP_FRAMES 0
 #define PLAYER_GET_STAR_HITSTOP_FRAMES  0
 
@@ -288,6 +288,8 @@ struct Player : GameObject {
 	void setClimbAnimation();
 	void setOWIdleAnimation();
 	void setOWWalkAnimation();
+	void setGetAnimation();
+	void setGetExtendedAnimation();
 
 	//////////////////////////
 	// GameObject Overrides //

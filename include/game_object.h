@@ -91,6 +91,7 @@
 #include "bn_sprite_items_player_climb.h"
 #include "bn_sprite_items_player_bell_jump.h"
 #include "bn_sprite_items_player_ow.h"
+#include "bn_sprite_items_player_get.h"
 #include "bn_sprite_items_phase_marker.h"
 
 ///////////////////////
@@ -271,6 +272,8 @@ enum ObjectState
 	PLAYER_CLIMB,
 	PLAYER_VICTORY,
 	PLAYER_OW,
+	PLAYER_GET,
+	PLAYER_GET_EXTENDED,
 
 	/////////////
 	// Generic //
