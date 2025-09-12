@@ -38,6 +38,9 @@
 #include "bn_regular_bg_items_troll_tolls_object_bg.h"
 #include "bn_regular_bg_items_troll_tolls_painted_bg.h"
 
+// Title player sprite
+#include "bn_sprite_items_player_title.h"
+
 // Pause Menu
 #include "bn_regular_bg_items_pause_screen.h"
 
@@ -121,6 +124,10 @@
 // Name Card Screen
 #define LEVEL_NAME_CARD_FRAMES 120
 
+// Title Screen
+#define PLAYER_TITLE_X_POS 0
+#define PLAYER_TITLE_Y_POS 16
+
 // Troll Tolls
 #define LEVEL_TROLL_TOLLS_PAINTED_BG_X 192
 #define LEVEL_TROLL_TOLLS_PAINTED_BG_Y 1600
@@ -189,6 +196,10 @@ struct Level
     
     bn::optional<bn::regular_bg_item> object_bg_item;
     uint8**                           object_cells;
+
+    // Title screen sprites
+    bn::optional<bn::sprite_ptr>                                         title_player_sprite_ptr;
+    bn::optional<bn::sprite_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> title_player_anim_ptr;
 
     // Pause Menu
     bn::optional<bn::regular_bg_ptr> pause_screen_bg_ptr;

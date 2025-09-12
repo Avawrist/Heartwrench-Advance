@@ -66,6 +66,9 @@ Level::Level(const Level& other)
     default_painted_palette_ptr = other.default_painted_palette_ptr;
     default_flash_palette_ptr   = other.default_flash_palette_ptr;
 
+    title_player_sprite_ptr = other.title_player_sprite_ptr;
+    title_player_anim_ptr   = other.title_player_anim_ptr;
+
     pause_screen_bg_ptr = other.pause_screen_bg_ptr;
     pause_screen_bg_anim_ptr = other.pause_screen_bg_anim_ptr;
 
@@ -140,6 +143,9 @@ void Level::operator =(const Level& other)
     default_painted_palette_ptr = other.default_painted_palette_ptr;
     default_flash_palette_ptr   = other.default_flash_palette_ptr;
 
+    title_player_sprite_ptr = other.title_player_sprite_ptr;
+    title_player_anim_ptr   = other.title_player_anim_ptr;
+
     pause_screen_bg_ptr = other.pause_screen_bg_ptr;
     pause_screen_bg_anim_ptr = other.pause_screen_bg_anim_ptr;
 
@@ -203,6 +209,9 @@ void Level::clear()
     default_main_palette_ptr.reset();
     default_painted_palette_ptr.reset();
     default_flash_palette_ptr.reset();
+
+    title_player_sprite_ptr.reset();
+    title_player_anim_ptr.reset();
 
     pause_screen_bg_ptr.reset();
     pause_screen_bg_anim_ptr.reset();
@@ -311,6 +320,12 @@ void Level::load()
             // Update flash palette
             default_flash_palette_ptr = bn::bg_palette_items::troll_tolls_bg_flash_palette.create_palette();
 
+            // Title player sprite
+            title_player_sprite_ptr = bn::sprite_items::player_title.create_sprite(PLAYER_TITLE_X_POS, PLAYER_TITLE_Y_POS);
+            title_player_anim_ptr   = bn::create_sprite_animate_action_forever(title_player_sprite_ptr.value(),
+                                                                               2,
+                                                                               bn::sprite_items::player_title.tiles_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3);
             // Update cells
             cells        = main_bg_ptr->map().cells_ref().value();
 
@@ -414,6 +429,9 @@ void Level::load()
     main_bg_ptr->set_z_order(MAIN_BG_ORDER);
     object_bg_ptr->set_z_order(OBJECT_BG_ORDER);
 
+    // Initialize Title Screen
+    if(title_player_sprite_ptr.get() != NULL) {title_player_sprite_ptr->set_visible(false);}
+
     // Initialize Pause Menu
     pause_screen_bg_ptr = bn::regular_bg_items::pause_screen.create_bg(0, 0);
     pause_screen_bg_ptr->set_z_order(PAUSE_BG_ORDER);
@@ -495,6 +513,8 @@ void Level::load()
     currency_icon_sprite_ptr->set_camera(camera.value());
 
     hud_level_name.setCamera(camera.value());
+
+    if(title_player_sprite_ptr.get() != NULL) {title_player_sprite_ptr->set_camera(camera.value());}
 
     // Set black screen
     default_main_palette_ptr->set_fade(bn::colors::black, 1);
@@ -597,6 +617,13 @@ void Level::load(LevelName level_name)
 
             // Update flash palette
             default_flash_palette_ptr = bn::bg_palette_items::troll_tolls_bg_flash_palette.create_palette();
+
+            // Title player sprite
+            title_player_sprite_ptr = bn::sprite_items::player_title.create_sprite(PLAYER_TITLE_X_POS, PLAYER_TITLE_Y_POS);
+            title_player_anim_ptr   = bn::create_sprite_animate_action_forever(title_player_sprite_ptr.value(),
+                                                                               2,
+                                                                               bn::sprite_items::player_title.tiles_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3);
 
             // Update cells
             cells = main_bg_ptr->map().cells_ref().value();
@@ -716,6 +743,9 @@ void Level::load(LevelName level_name)
     main_bg_ptr->set_z_order(MAIN_BG_ORDER);
     object_bg_ptr->set_z_order(OBJECT_BG_ORDER);
 
+    // Initialize Title Screen
+    if(title_player_sprite_ptr.get() != NULL) {title_player_sprite_ptr->set_visible(false);}
+
     // Initialize Pause Menu
     pause_screen_bg_ptr = bn::regular_bg_items::pause_screen.create_bg(0, 0);
     pause_screen_bg_ptr->set_z_order(PAUSE_BG_ORDER);
@@ -797,6 +827,8 @@ void Level::load(LevelName level_name)
     currency_icon_sprite_ptr->set_camera(camera.value());
 
     hud_level_name.setCamera(camera.value());
+
+    if(title_player_sprite_ptr.get() != NULL) {title_player_sprite_ptr->set_camera(camera.value());}
 
     // Set black screen
     default_main_palette_ptr->set_fade(bn::colors::black, 1);
@@ -921,6 +953,9 @@ void Level::updateTitleScreen()
         delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
         current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = NULL;
     }
+
+    // Animate title player sprite
+    title_player_anim_ptr->update();
 
     // Center Camera
     camera.value().set_position(0, 0);
@@ -1358,6 +1393,10 @@ void Level::updateFade()
 
     if(fade_in)
     {
+        // Reveal Title Player
+        if(title_player_sprite_ptr.get() != NULL)
+        {title_player_sprite_ptr->set_visible(true);}
+
         // Reveal HUD
         hud_stripe_1_sprite_ptr->set_visible(true);
         hud_stripe_2_sprite_ptr->set_visible(true);
@@ -1391,6 +1430,13 @@ void Level::updateFade()
         default_main_palette_ptr->set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
         default_painted_palette_ptr->set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
         default_flash_palette_ptr->set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+
+        // Fade Title Player in
+        if(title_player_sprite_ptr.get() != NULL)
+        {
+            bn::sprite_palette_ptr title_player_palette = title_player_sprite_ptr->palette();
+            title_player_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+        }
 
         // Fade HUD in
         bn::sprite_palette_ptr hud_stripe_palette = hud_stripe_1_sprite_ptr->palette();
@@ -1457,6 +1503,13 @@ void Level::updateFade()
         default_painted_palette_ptr->set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
         default_flash_palette_ptr->set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
 
+        // Fade Title Player out
+        if(title_player_sprite_ptr.get() != NULL)
+        {
+            bn::sprite_palette_ptr title_player_palette = title_player_sprite_ptr->palette();
+            title_player_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+        } 
+
         // Fade HUD out
         bn::sprite_palette_ptr hud_stripe_palette = hud_stripe_1_sprite_ptr->palette();
         hud_stripe_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
@@ -1475,6 +1528,13 @@ void Level::updateFade()
 
         if(hud_hp_palette.fade_intensity() == 1)
         {
+            if(title_player_sprite_ptr.get() != NULL)
+            {
+                bn::sprite_palette_ptr title_player_palette = title_player_sprite_ptr->palette();
+                title_player_palette.set_fade(bn::colors::black, 0);
+                title_player_sprite_ptr->set_visible(false);
+            } 
+
             hud_stripe_palette.set_fade(bn::colors::black, 0);
             hud_stripe_1_sprite_ptr->set_visible(false);
             hud_stripe_2_sprite_ptr->set_visible(false);
