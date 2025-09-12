@@ -107,6 +107,7 @@ enemy.o: G:/game/src/enemy.cpp G:/game/include/enemy.h \
  G:/game/build/bn_sprite_items_hp_totem.h \
  G:/game/build/bn_sprite_items_hp_drop.h \
  G:/game/build/bn_sprite_items_moon_drop.h \
+ G:/game/build/bn_sprite_items_old_moon_drop.h \
  G:/game/build/bn_sprite_items_skull_drop.h \
  G:/game/build/bn_sprite_items_star_drop.h \
  G:/game/build/bn_sprite_items_checkpoint.h \
@@ -242,6 +243,7 @@ G:/game/build/bn_sprite_items_small_vase.h:
 G:/game/build/bn_sprite_items_hp_totem.h:
 G:/game/build/bn_sprite_items_hp_drop.h:
 G:/game/build/bn_sprite_items_moon_drop.h:
+G:/game/build/bn_sprite_items_old_moon_drop.h:
 G:/game/build/bn_sprite_items_skull_drop.h:
 G:/game/build/bn_sprite_items_star_drop.h:
 G:/game/build/bn_sprite_items_checkpoint.h:

@@ -89,10 +89,9 @@ typedef int   int32;
 // Overworld Tile Indexes
 
 #define OW_HARD_BLOCK_MIN_INDEX  1
-#define OW_HARD_BLOCK_MAX_INDEX  24
-#define OW_TROLL_TOLLS_MIN_INDEX 31
-#define OW_TROLL_TOLLS_MAX_INDEX 34
-
+#define OW_HARD_BLOCK_MAX_INDEX  34
+#define OW_TROLL_TOLLS_MIN_INDEX 43
+#define OW_TROLL_TOLLS_MAX_INDEX 46
 #define OW_TILE_TOTAL_COUNT 5
 
 // Tile Dimensions //
@@ -174,13 +173,20 @@ extern int32 global_ow_player_location_y;
 
 // Global Save Variables
 
-//...
+extern uint32 global_moons_collected;
+
+extern bool troll_tolls_complete;
+extern bool troll_tolls_room_3_moon;
+extern bool troll_tolls_room_5_moon;
+extern bool troll_tolls_room_6_moon;
+extern bool troll_tolls_room_7_moon;
+extern bool troll_tolls_room_9_moon;
+extern bool troll_tolls_room_13_moon;
 
 // Debug Mode
 #define DEBUG_BUILD false
 
 // Functions
-
 bool tileIsSolid(uint32 tile_index);
 
 int32 getTileAtBGIndex(uint32 x, uint32 y, 

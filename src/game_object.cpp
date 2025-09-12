@@ -918,6 +918,10 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
                         resolveMoonDropCollision(*game_objects.at(i));
                     break;
 
+                    case OLD_MOON_DROP:
+                        resolveOldMoonDropCollision(*game_objects.at(i));
+                    break;
+
                     case SKULL_DROP:
                         resolveSkullDropCollision(*game_objects.at(i));
                     break;
@@ -1013,6 +1017,7 @@ void GameObject::resolveSmallVaseCollision(GameObject& object)           {}
 void GameObject::resolveHPTotemCollision(GameObject& object)             {}
 void GameObject::resolveHPDropCollision(GameObject& object)              {}
 void GameObject::resolveMoonDropCollision(GameObject& object)            {}
+void GameObject::resolveOldMoonDropCollision(GameObject& object)         {}
 void GameObject::resolveSkullDropCollision(GameObject& object)           {}
 void GameObject::resolveStarDropCollision(GameObject& object)            {}
 void GameObject::resolveCheckpointCollision(GameObject& object)          {}

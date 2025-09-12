@@ -39,6 +39,7 @@
 #include "hp_totem.h"
 #include "hp_drop.h"
 #include "moon_drop.h"
+#include "old_moon_drop.h"
 #include "skull_drop.h"
 #include "star_drop.h"
 #include "checkpoint.h"
@@ -129,15 +130,17 @@ struct Room
                const bn::regular_bg_item&                     object_bg_item,
                uint8**                                        object_cells,
                const bn::fixed_point                          player_spawn);
-    void prepObjects(const bn::regular_bg_ptr&                      object_bg_ptr, 
-                     const bn::regular_bg_item&                     object_bg_item,
-                     uint8**                                        object_cells);
+    void prepObjects(const bn::regular_bg_ptr&  object_bg_ptr, 
+                     const bn::regular_bg_item& object_bg_item,
+                     uint8**                    object_cells);
     void monitorObjectRequests(const bn::camera_ptr& camera_ptr);
     void monitorUnloadedObjects(const bn::camera_ptr& camera_ptr); // This will be called every frame to 
                                                                     // test for objects that should be loaded.
     void updateIndexes();
-    
     bn::point center();
+
+    void setMoonCollected();
+    bool moonIsCollected();
 };
 
 #endif

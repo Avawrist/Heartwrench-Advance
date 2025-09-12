@@ -64,6 +64,7 @@
 #include "bn_sprite_items_hp_totem.h"
 #include "bn_sprite_items_hp_drop.h"
 #include "bn_sprite_items_moon_drop.h"
+#include "bn_sprite_items_old_moon_drop.h"
 #include "bn_sprite_items_skull_drop.h"
 #include "bn_sprite_items_star_drop.h"
 #include "bn_sprite_items_checkpoint.h"
@@ -193,6 +194,7 @@ enum ObjectType
 	HP_TOTEM,
 	HP_DROP,
 	MOON_DROP,
+	OLD_MOON_DROP,
 	SKULL_DROP,
 	STAR_DROP,
 	CHECKPOINT,
@@ -482,6 +484,7 @@ struct GameObject
 	virtual void resolveHPTotemCollision(GameObject& object);
 	virtual void resolveHPDropCollision(GameObject& object);
 	virtual void resolveMoonDropCollision(GameObject& object);
+	virtual void resolveOldMoonDropCollision(GameObject& object);
 	virtual void resolveSkullDropCollision(GameObject& object);
 	virtual void resolveStarDropCollision(GameObject& object);
 	virtual void resolveCheckpointCollision(GameObject& object);

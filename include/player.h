@@ -365,6 +365,7 @@ struct Player : GameObject {
 	void resolveHPTotemCollision(GameObject& object)             override;
 	void resolveHPDropCollision(GameObject& object)              override;
 	void resolveMoonDropCollision(GameObject& object)            override;
+	void resolveOldMoonDropCollision(GameObject& object)         override;
 	void resolveSkullDropCollision(GameObject& object)           override;
 	void resolveStarDropCollision(GameObject& object)            override;
 	void resolveFinishSealCollision(GameObject& object)          override;

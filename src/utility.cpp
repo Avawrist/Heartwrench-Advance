@@ -35,8 +35,18 @@ bool global_bell_struck = false;
 int32 global_ow_player_location_x = 136;
 int32 global_ow_player_location_y = -24;
 
-// Functions
+// Global save variables
+uint32 global_moons_collected = 0;
 
+bool troll_tolls_complete     = false;
+bool troll_tolls_room_3_moon  = false;
+bool troll_tolls_room_5_moon  = false;
+bool troll_tolls_room_6_moon  = false;
+bool troll_tolls_room_7_moon  = false;
+bool troll_tolls_room_9_moon  = false;
+bool troll_tolls_room_13_moon = false;
+
+// Functions
 bool tileIsSolid(uint32 tile_index)
 {
     if(tile_index >= HARD_BLOCK_MIN_INDEX   && tile_index <= HARD_BLOCK_MAX_INDEX)   {return true;}

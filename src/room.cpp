@@ -444,12 +444,27 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
 
         case MOON_DROP:
 
-            temp_object_ptr = new MoonDrop();
-            _is_persistent  = true;
-            // Special Case: 
-            // Moon Drops added in through the Level Editor are "frozen"
-            // and don't receive physics updates
-            temp_object_ptr->is_frozen = true;
+            // Don't add the Moon if it's already been collected.
+            if(moonIsCollected())
+            {
+                temp_object_ptr = new OldMoonDrop();
+                _is_persistent  = true;
+
+                // Special Case: 
+                // Moon Drops added in through the Level Editor are "frozen"
+                // and don't receive physics updates
+                temp_object_ptr->is_frozen = true;
+            }
+            else
+            {
+                temp_object_ptr = new MoonDrop();
+                _is_persistent  = true;
+
+                // Special Case: 
+                // Moon Drops added in through the Level Editor are "frozen"
+                // and don't receive physics updates
+                temp_object_ptr->is_frozen = true;
+            }
 
         break;
 
@@ -892,7 +907,7 @@ void Room::load(RoomName                                       _room_name,
             room_bounds.setTopBoundAC(400);
             room_bounds.setBottomBoundAC(1120);
             room_bounds.setLeftBoundAC(1616);
-            room_bounds.setRightBoundAC(2368);
+            room_bounds.setRightBoundAC(2448);
 
             // Add any special objects //
             
@@ -908,7 +923,7 @@ void Room::load(RoomName                                       _room_name,
 
             room_bounds.setTopBoundAC(400);
             room_bounds.setBottomBoundAC(864);
-            room_bounds.setLeftBoundAC(2368);
+            room_bounds.setLeftBoundAC(2448);
             room_bounds.setRightBoundAC(2976);
 
             // Add any special objects //
@@ -1102,4 +1117,176 @@ void Room::updateIndexes()
 bn::point Room::center()
 {
     return(room_bounds.center());
+}
+
+void Room::setMoonCollected()
+{
+    switch(room_name)
+    {   
+        case ROOM_NAME_CARD:
+        break;
+
+        case ROOM_TITLE_SCREEN:
+        break;
+
+        case ROOM_OVERWORLD:
+        break;
+
+        case ROOM_TROLL_TOLLS_1:            
+        break;
+
+        case ROOM_TROLL_TOLLS_2:
+        break;
+
+        case ROOM_TROLL_TOLLS_3:
+
+            troll_tolls_room_3_moon = true;
+
+        break;
+
+        case ROOM_TROLL_TOLLS_4:
+        break;
+
+        case ROOM_TROLL_TOLLS_5:
+
+            troll_tolls_room_5_moon = true;
+
+        break;
+
+        case ROOM_TROLL_TOLLS_6:
+
+            troll_tolls_room_6_moon = true;
+
+        break;
+
+        case ROOM_TROLL_TOLLS_7:
+
+            troll_tolls_room_7_moon = true;
+
+        break;
+
+        case ROOM_TROLL_TOLLS_8:
+        break;
+
+        case ROOM_TROLL_TOLLS_9:
+
+            troll_tolls_room_9_moon = true;
+
+        break;
+
+        case ROOM_TROLL_TOLLS_10:
+        break;
+
+        case ROOM_TROLL_TOLLS_11:
+        break;
+
+        case ROOM_TROLL_TOLLS_12:
+        break;
+
+        case ROOM_TROLL_TOLLS_13:
+        
+            troll_tolls_room_13_moon = true;
+
+        break;
+
+        case ROOM_TROLL_TOLLS_14:
+        break;
+
+        case ROOM_TROLL_TOLLS_15:
+        break;
+
+        case ROOM_TROLL_TOLLS_16:
+        break;
+
+        default:
+        break;
+    }  
+}
+
+bool Room::moonIsCollected()
+{
+    bool is_collected = false;
+
+    switch(room_name)
+    {   
+        case ROOM_NAME_CARD:
+        break;
+
+        case ROOM_TITLE_SCREEN:
+        break;
+
+        case ROOM_OVERWORLD:
+        break;
+
+        case ROOM_TROLL_TOLLS_1:            
+        break;
+
+        case ROOM_TROLL_TOLLS_2:
+        break;
+
+        case ROOM_TROLL_TOLLS_3:
+
+            if(troll_tolls_room_3_moon) {is_collected = true;}
+
+        break;
+
+        case ROOM_TROLL_TOLLS_4:
+        break;
+
+        case ROOM_TROLL_TOLLS_5:
+
+            if(troll_tolls_room_5_moon) {is_collected = true;}
+
+        break;
+
+        case ROOM_TROLL_TOLLS_6:
+
+            if(troll_tolls_room_6_moon) {is_collected = true;}
+
+        break;
+
+        case ROOM_TROLL_TOLLS_7:
+
+            if(troll_tolls_room_7_moon) {is_collected = true;}
+
+        break;
+
+        case ROOM_TROLL_TOLLS_8:
+        break;
+
+        case ROOM_TROLL_TOLLS_9:
+
+            if(troll_tolls_room_9_moon) {is_collected = true;}
+
+        break;
+
+        case ROOM_TROLL_TOLLS_10:
+        break;
+
+        case ROOM_TROLL_TOLLS_11:
+        break;
+
+        case ROOM_TROLL_TOLLS_12:
+        break;
+
+        case ROOM_TROLL_TOLLS_13:
+        
+            if(troll_tolls_room_13_moon) {is_collected = true;}
+
+        break;
+
+        case ROOM_TROLL_TOLLS_14:
+        break;
+
+        case ROOM_TROLL_TOLLS_15:
+        break;
+
+        case ROOM_TROLL_TOLLS_16:
+        break;
+
+        default:
+        break;
+    }
+
+    return is_collected;
 }

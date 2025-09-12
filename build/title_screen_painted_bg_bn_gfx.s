@@ -9,7 +9,7 @@
 @	+ regular map (in SBBs), not compressed, 64x192 
 @	Total size: 32 + 2944 + 24576 = 27552
 @
-@	Time-stamp: 2025-09-11, 17:41:50
+@	Time-stamp: 2025-09-11, 23:10:54
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -1862,7 +1862,7 @@ title_screen_painted_bg_bn_gfxMap:
 	.global title_screen_painted_bg_bn_gfxPal		@ 32 unsigned chars
 	.hidden title_screen_painted_bg_bn_gfxPal
 title_screen_painted_bg_bn_gfxPal:
-	.hword 0x1485,0x1CA8,0x2CEB,0x392D,0x4570,0x1914,0x1D36,0x1D77
-	.hword 0x21B9,0x21FB,0x263C,0x269E,0x4625,0x4E65,0x52C6,0x5B07
+	.hword 0x1485,0x1CA8,0x2CEB,0x392D,0x4570,0x269E,0x263C,0x21FB
+	.hword 0x21B9,0x1D77,0x1D36,0x1914,0x4625,0x4E65,0x52C6,0x5B07
 
 @}}BLOCK(title_screen_painted_bg_bn_gfx)

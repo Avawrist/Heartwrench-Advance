@@ -172,6 +172,7 @@ void MoonDrop::setState(ObjectState new_state)
 
         case OBJECT_DEATH:
 
+			global_moons_collected++;
             animate_action_ptr  = bn::create_sprite_animate_action_once(sprite_ptr.value(),
                                                                         0,
                                                                         bn::sprite_items::moon_drop.tiles_item(),
@@ -189,7 +190,7 @@ void MoonDrop::setState(ObjectState new_state)
 // State Function Overrides //
 //////////////////////////////
 
-void MoonDrop::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+void MoonDrop::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   game_objects,
                                 const bn::regular_bg_ptr&                      bg_ptr, 
                                 const bn::span<const bn::regular_bg_map_cell>& cells,
                                 const bn::regular_bg_item&                     bg_item,

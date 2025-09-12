@@ -1617,6 +1617,9 @@ void Level::updatePauseScreen()
 
                 case CURSOR_QUIT_GAME:
 
+                    // Save game
+                    saveCurrentFile();
+
                     // Start Fade and Level Transition
                     fade_out          = true;
                     transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
@@ -1732,6 +1735,10 @@ void Level::freeObjects()
     {
         if(current_room.game_objects.at(i)->is_dead)
         {
+            // 0. If moon, log it.
+            if(current_room.game_objects.at(i)->object_type == MOON_DROP)
+            {current_room.setMoonCollected();}
+
             // 1. Update the UnloadedObject with the Unloaded ID:
             int32 object_id = current_room.game_objects.at(i)->object_id;
             int32 unloaded_index = current_room.findUnloadedObjectIndex(object_id);
