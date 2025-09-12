@@ -40,7 +40,6 @@ void Spawn::setSpawnPosAC(int32 spawn_x, int32 spawn_y)
 
 Level::Level()
 {
-    
 }
 
 Level::Level(LevelName level_name)
@@ -50,6 +49,8 @@ Level::Level(LevelName level_name)
 
 Level::Level(const Level& other)
 {
+    save_data_ptr = other.save_data_ptr;
+
     current_room = other.current_room;
     
     camera         = other.camera;
@@ -127,6 +128,8 @@ Level::~Level()
 
 void Level::operator =(const Level& other)
 {
+    save_data_ptr = other.save_data_ptr;
+
     current_room = other.current_room;
 
     camera         = other.camera;
@@ -954,9 +957,6 @@ void Level::updateTitleScreen()
         current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = NULL;
     }
 
-    // Animate title player sprite
-    title_player_anim_ptr->update();
-
     // Center Camera
     camera.value().set_position(0, 0);
 
@@ -964,7 +964,7 @@ void Level::updateTitleScreen()
     if((bn::keypad::start_pressed() || bn::keypad::a_pressed()) && transition_frames < 0)
     {
         // Load Save Data
-        loadSave(FILE_1);
+        loadSave();
 
         // Start Fade and Level Transition
         fade_out = true;
@@ -983,6 +983,13 @@ void Level::updateTitleScreen()
     {painted_bg_ptr->set_x(PLAYER_TITLE_X_POS);}
 
     painted_bg_anim_ptr->update();
+
+    // Scroll Player
+    if(transition_frames > 0)
+    {title_player_sprite_ptr->set_x(title_player_sprite_ptr->x().integer() + TITLE_SCROLL_SPEED);}
+
+    // Animate title player sprite
+    title_player_anim_ptr->update();
 }
 
 void Level::updateOverworld()
@@ -2079,12 +2086,49 @@ void Level::freeObjectCells()
 
 void Level::saveCurrentFile()
 {
-    // This function writes all relevant global variables to SROM
+    // This function writes all relevant global variables to SRAM
     // referencing the current save file
+    
+    save_data_ptr = (volatile SaveData*)SRAM_BASE_ADDRESS;
+
+    save_data_ptr->no_data = false;
+
+    save_data_ptr->troll_tolls_complete     = global_troll_tolls_complete;
+    save_data_ptr->troll_tolls_room_3_moon  = global_troll_tolls_room_3_moon;
+    save_data_ptr->troll_tolls_room_5_moon  = global_troll_tolls_room_5_moon;
+    save_data_ptr->troll_tolls_room_6_moon  = global_troll_tolls_room_6_moon;
+    save_data_ptr->troll_tolls_room_7_moon  = global_troll_tolls_room_7_moon;
+    save_data_ptr->troll_tolls_room_9_moon  = global_troll_tolls_room_9_moon;
+    save_data_ptr->troll_tolls_room_13_moon = global_troll_tolls_room_13_moon;
+
+    //save_data_ptr->ow_player_location_x = global_ow_player_location_x;
+    //save_data_ptr->ow_player_location_y = global_ow_player_location_y;
+
+    save_data_ptr->moons_collected      = global_moons_collected;
 }
 
-void Level::loadSave(SaveFile file_num)
+void Level::loadSave()
 {
     // This function writes to all of the global save variables
-    // from SROM, given a save file number
+    // from SRAM, given a save file number
+
+    save_data_ptr = (volatile SaveData*)SRAM_BASE_ADDRESS;
+
+    if(save_data_ptr->no_data) {saveCurrentFile();}
+    else
+    {
+        global_troll_tolls_complete     = save_data_ptr->troll_tolls_complete;
+
+        global_troll_tolls_room_3_moon  = save_data_ptr->troll_tolls_room_3_moon;
+        global_troll_tolls_room_5_moon  = save_data_ptr->troll_tolls_room_5_moon;
+        global_troll_tolls_room_6_moon  = save_data_ptr->troll_tolls_room_6_moon;
+        global_troll_tolls_room_7_moon  = save_data_ptr->troll_tolls_room_7_moon;
+        global_troll_tolls_room_9_moon  = save_data_ptr->troll_tolls_room_9_moon;
+        global_troll_tolls_room_13_moon = save_data_ptr->troll_tolls_room_13_moon;
+
+        //global_ow_player_location_x = save_data_ptr->ow_player_location_x;
+        //global_ow_player_location_y = save_data_ptr->ow_player_location_y;
+
+        global_moons_collected      = save_data_ptr->moons_collected;
+    }
 }

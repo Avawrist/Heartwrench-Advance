@@ -2571,10 +2571,6 @@ void Player::resolveOWTileCollision(const bn::regular_bg_ptr&                   
 								    const bn::span<const bn::regular_bg_map_cell>& cells,
 								    const bn::regular_bg_item&                     bg_item)
 {
-	///////////////////////////
-	// Reset highlight bools //
-	///////////////////////////
-
 	///////////////////////////////////////////////////
 	// Get current cell index that player resides in //
 	///////////////////////////////////////////////////

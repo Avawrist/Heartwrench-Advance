@@ -32,19 +32,20 @@ int32 global_timer = 0;
 
 bool global_bell_struck = false;
 
-int32 global_ow_player_location_x = 136;
-int32 global_ow_player_location_y = -24;
-
 // Global save variables
+
+int32 global_ow_player_location_x = 136;
+int32 global_ow_player_location_y = 8;
+
 uint32 global_moons_collected = 0;
 
-bool troll_tolls_complete     = false;
-bool troll_tolls_room_3_moon  = false;
-bool troll_tolls_room_5_moon  = false;
-bool troll_tolls_room_6_moon  = false;
-bool troll_tolls_room_7_moon  = false;
-bool troll_tolls_room_9_moon  = false;
-bool troll_tolls_room_13_moon = false;
+bool global_troll_tolls_complete     = false;
+bool global_troll_tolls_room_3_moon  = false;
+bool global_troll_tolls_room_5_moon  = false;
+bool global_troll_tolls_room_6_moon  = false;
+bool global_troll_tolls_room_7_moon  = false;
+bool global_troll_tolls_room_9_moon  = false;
+bool global_troll_tolls_room_13_moon = false;
 
 // Functions
 bool tileIsSolid(uint32 tile_index)

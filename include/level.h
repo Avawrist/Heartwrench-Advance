@@ -59,6 +59,27 @@
 #include "checkpoint.h"
 #include "finish_seal.h"
 
+/////////////////////
+// Struct SaveData //
+/////////////////////
+
+struct SaveData 
+{
+    bool no_data;
+    
+    bool troll_tolls_complete;
+    bool troll_tolls_room_3_moon;
+    bool troll_tolls_room_5_moon;
+    bool troll_tolls_room_6_moon;
+    bool troll_tolls_room_7_moon;
+    bool troll_tolls_room_9_moon;
+    bool troll_tolls_room_13_moon;
+
+    int32 ow_player_location_x;
+    int32 ow_player_location_y;
+    uint32 moons_collected;
+};
+
 //////////////////
 // Struct Level //
 //////////////////
@@ -137,13 +158,6 @@
 // Transitions
 #define LEVEL_TITLE_SCREEN_TRANSITION_FRAMES 60
 
-enum SaveFile
-{
-    FILE_1,
-    FILE_2,
-    FILE_3
-};
-
 enum LevelName 
 {
     NO_LEVEL = 0,
@@ -179,6 +193,9 @@ struct Spawn
 struct Level
 {
     Room current_room;
+
+    // SaveData
+    volatile SaveData* save_data_ptr;
 
     // BGs
     bn::optional<bn::camera_ptr> camera;
@@ -305,7 +322,7 @@ struct Level
     void freeObjectCells();
 
     void saveCurrentFile();
-    void loadSave(SaveFile file_num);
+    void loadSave();
 };
 
 #endif
