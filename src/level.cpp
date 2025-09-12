@@ -976,8 +976,13 @@ void Level::updateTitleScreen()
                                                                            0, 0, 1, 1, 2, 2);
     }
 
-    // Draw Screen
-    updatePaintedBG();
+    // Scroll Painted BG
+    painted_bg_ptr->set_x(painted_bg_ptr->x() - TITLE_SCROLL_SPEED);
+    
+    if(painted_bg_ptr->x() <= -painted_bg_ptr->dimensions().width())
+    {painted_bg_ptr->set_x(PLAYER_TITLE_X_POS);}
+
+    painted_bg_anim_ptr->update();
 }
 
 void Level::updateOverworld()
