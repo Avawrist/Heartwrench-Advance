@@ -47,7 +47,7 @@
 #define PLAYER_MAX_X_SPEED    2
 #define PLAYER_X_DECAY        1
 #define X_SPEED_ACC_RATE      0.155
-#define X_SPEED_DECAY_RATE    0.045
+#define X_SPEED_DECAY_RATE    0.065
 
 // Climb Values
 
