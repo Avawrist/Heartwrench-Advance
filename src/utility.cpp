@@ -33,9 +33,8 @@ int32 global_timer = 0;
 bool global_bell_struck = false;
 
 // Global save variables
-
-int32  global_ow_player_location_x = 136;
-int32  global_ow_player_location_y = 8;
+int32 global_ow_player_location_x = 8;
+int32 global_ow_player_location_y = 56;
 
 uint32 global_moons_collected      = 0;
 

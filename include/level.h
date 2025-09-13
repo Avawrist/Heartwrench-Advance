@@ -204,6 +204,7 @@ struct Level
     bn::optional<bn::regular_bg_ptr> painted_bg_ptr;
     bn::optional<bn::regular_bg_ptr> object_bg_ptr;
 
+    bn::optional<bn::regular_bg_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> level_bg_anim_ptr;
 	bn::optional<bn::regular_bg_animate_action<GAME_OBJECT_MAX_ANIM_FRAMES>> painted_bg_anim_ptr;
 
     bn::optional<bn::bg_palette_ptr> default_main_palette_ptr;
@@ -323,6 +324,8 @@ struct Level
 
     void saveCurrentFile();
     void loadSave();
+
+    void animateLevelBG();
 };
 
 #endif

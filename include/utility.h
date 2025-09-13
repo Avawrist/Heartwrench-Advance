@@ -92,10 +92,10 @@ typedef int   int32;
 // Overworld Tile Indexes
 
 #define OW_HARD_BLOCK_MIN_INDEX  1
-#define OW_HARD_BLOCK_MAX_INDEX  36
-#define OW_TROLL_TOLLS_MIN_INDEX 45
-#define OW_TROLL_TOLLS_MAX_INDEX 48
-#define OW_TILE_TOTAL_COUNT 5
+#define OW_HARD_BLOCK_MAX_INDEX  93
+#define OW_TROLL_TOLLS_MIN_INDEX 102
+#define OW_TROLL_TOLLS_MAX_INDEX 105
+#define OW_TILE_TOTAL_COUNT 105
 
 // Tile Dimensions //
 #define TILE_WIDTH  8

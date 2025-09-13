@@ -61,6 +61,7 @@ Level::Level(const Level& other)
     cells          = other.cells;
     object_bg_item = other.object_bg_item;
 
+    level_bg_anim_ptr   = other.level_bg_anim_ptr;
     painted_bg_anim_ptr = other.painted_bg_anim_ptr;
 
     default_main_palette_ptr    = other.default_main_palette_ptr;
@@ -140,6 +141,7 @@ void Level::operator =(const Level& other)
     cells          = other.cells;
     object_bg_item = other.object_bg_item;
 
+    level_bg_anim_ptr   = other.level_bg_anim_ptr;
     painted_bg_anim_ptr = other.painted_bg_anim_ptr;
 
     default_main_palette_ptr    = other.default_main_palette_ptr;
@@ -207,6 +209,7 @@ void Level::clear()
     painted_bg_ptr.reset();
     object_bg_ptr.reset();
 
+    level_bg_anim_ptr.reset();
     painted_bg_anim_ptr.reset();
 
     default_main_palette_ptr.reset();
@@ -279,8 +282,12 @@ void Level::load()
         case LEVEL_NAME_CARD:
 
             // Load BGs //
-            main_bg_ptr    = bn::regular_bg_items::name_card_level_bg.create_bg(0, 0);
-            bg_item        = bn::regular_bg_items::name_card_level_bg;
+            main_bg_ptr       = bn::regular_bg_items::name_card_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::name_card_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::name_card_level_bg.map_item(),
+                                                                             0, 0);
 
             object_bg_ptr  = bn::regular_bg_items::name_card_object_bg.create_bg(0, 0);
             object_bg_item = bn::regular_bg_items::name_card_object_bg;
@@ -308,8 +315,12 @@ void Level::load()
         case LEVEL_TITLE_SCREEN:
 
             // Load BGs //
-            main_bg_ptr    = bn::regular_bg_items::title_screen_level_bg.create_bg(0, 0);
-            bg_item        = bn::regular_bg_items::title_screen_level_bg;
+            main_bg_ptr       = bn::regular_bg_items::title_screen_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::title_screen_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::title_screen_level_bg.map_item(),
+                                                                             0, 0);
 
             object_bg_ptr  = bn::regular_bg_items::title_screen_object_bg.create_bg(0, 0);
             object_bg_item = bn::regular_bg_items::title_screen_object_bg;
@@ -340,8 +351,12 @@ void Level::load()
         case LEVEL_OVERWORLD:
 
             // Load BGs //
-            main_bg_ptr    = bn::regular_bg_items::overworld_level_bg.create_bg(0, 0);
-            bg_item        = bn::regular_bg_items::overworld_level_bg;
+            main_bg_ptr       = bn::regular_bg_items::overworld_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::overworld_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             20,
+                                                                             bn::regular_bg_items::overworld_level_bg.map_item(),
+                                                                             0, 1, 2, 1);
 
             object_bg_ptr  = bn::regular_bg_items::overworld_object_bg.create_bg(0, 0);
             object_bg_item = bn::regular_bg_items::overworld_object_bg;
@@ -369,17 +384,21 @@ void Level::load()
         case LEVEL_TROLL_TOLLS:
             
             // Load BGs //
-            main_bg_ptr    = bn::regular_bg_items::troll_tolls_level_bg.create_bg(0, 0);
-            bg_item        = bn::regular_bg_items::troll_tolls_level_bg;
+            main_bg_ptr       = bn::regular_bg_items::troll_tolls_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::troll_tolls_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::troll_tolls_level_bg.map_item(),
+                                                                             0, 0);
 
             object_bg_ptr  = bn::regular_bg_items::troll_tolls_object_bg.create_bg(0, 0);
             object_bg_item = bn::regular_bg_items::troll_tolls_object_bg;
 
             painted_bg_ptr      = bn::regular_bg_items::troll_tolls_painted_bg.create_bg(0, 0);
             painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
-                                                                                3,
-                                                                                bn::regular_bg_items::troll_tolls_painted_bg.map_item(),
-                                                                                0, 0, 0, 1, 1, 1, 2, 2, 2);
+                                                                               3,
+                                                                               bn::regular_bg_items::troll_tolls_painted_bg.map_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2);
 
             // Update flash palette
             default_flash_palette_ptr = bn::bg_palette_items::troll_tolls_bg_flash_palette.create_palette();
@@ -571,8 +590,12 @@ void Level::load(LevelName level_name)
             player_spawn.spawn_room = ROOM_NAME_CARD;
 
             // Load BGs //
-            main_bg_ptr    = bn::regular_bg_items::name_card_level_bg.create_bg(0, 0);
-            bg_item        = bn::regular_bg_items::name_card_level_bg;
+            main_bg_ptr       = bn::regular_bg_items::name_card_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::name_card_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::name_card_level_bg.map_item(),
+                                                                             0, 0);
 
             object_bg_ptr  = bn::regular_bg_items::name_card_object_bg.create_bg(0, 0);
             object_bg_item = bn::regular_bg_items::name_card_object_bg;
@@ -606,8 +629,12 @@ void Level::load(LevelName level_name)
             player_spawn.spawn_room = ROOM_TITLE_SCREEN;
 
             // Load BGs //
-            main_bg_ptr    = bn::regular_bg_items::title_screen_level_bg.create_bg(0, 0);
-            bg_item        = bn::regular_bg_items::title_screen_level_bg;
+            main_bg_ptr       = bn::regular_bg_items::title_screen_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::title_screen_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::title_screen_level_bg.map_item(),
+                                                                             0, 0);
 
             object_bg_ptr  = bn::regular_bg_items::title_screen_object_bg.create_bg(0, 0);
             object_bg_item = bn::regular_bg_items::title_screen_object_bg;
@@ -647,8 +674,12 @@ void Level::load(LevelName level_name)
             player_spawn.spawn_room = ROOM_OVERWORLD;
 
             // Load BGs //
-            main_bg_ptr    = bn::regular_bg_items::overworld_level_bg.create_bg(0, 0);
-            bg_item        = bn::regular_bg_items::overworld_level_bg;
+            main_bg_ptr       = bn::regular_bg_items::overworld_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::overworld_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             20,
+                                                                             bn::regular_bg_items::overworld_level_bg.map_item(),
+                                                                             0, 1, 2, 1);
 
             object_bg_ptr  = bn::regular_bg_items::overworld_object_bg.create_bg(0, 0);
             object_bg_item = bn::regular_bg_items::overworld_object_bg;
@@ -680,8 +711,12 @@ void Level::load(LevelName level_name)
             player_spawn.spawn_room = ROOM_TROLL_TOLLS_1;
 
             // Load BGs //
-            main_bg_ptr    = bn::regular_bg_items::troll_tolls_level_bg.create_bg(0, 0);
-            bg_item        = bn::regular_bg_items::troll_tolls_level_bg;
+            main_bg_ptr       = bn::regular_bg_items::troll_tolls_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::troll_tolls_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::troll_tolls_level_bg.map_item(),
+                                                                             0, 0);
 
             object_bg_ptr  = bn::regular_bg_items::troll_tolls_object_bg.create_bg(0, 0);
             object_bg_item = bn::regular_bg_items::troll_tolls_object_bg;
@@ -891,6 +926,7 @@ void Level::updateAll()
     freeObjects();
     transitionRoom();
     drawObjects();
+    animateLevelBG();
 }
 
 void Level::updateNameCard()
@@ -1026,6 +1062,7 @@ void Level::updateOverworld()
     freeObjects();
     transitionRoom();
     drawObjects();
+    animateLevelBG();
 }
 
 void Level::updateObjects()
@@ -2125,4 +2162,9 @@ void Level::loadSave()
         global_troll_tolls_room_9_moon  = save_data_ptr->troll_tolls_room_9_moon;
         global_troll_tolls_room_13_moon = save_data_ptr->troll_tolls_room_13_moon;
     }
+}
+
+void Level::animateLevelBG()
+{
+    level_bg_anim_ptr->update();
 }
