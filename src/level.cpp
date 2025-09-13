@@ -2089,9 +2089,11 @@ void Level::saveCurrentFile()
     // This function writes all relevant global variables to SRAM
     // referencing the current save file
     
-    save_data_ptr = (volatile SaveData*)SRAM_BASE_ADDRESS;
-
     save_data_ptr->no_data = false;
+
+    //save_data_ptr->ow_player_location_x = global_ow_player_location_x;
+    //save_data_ptr->ow_player_location_y = global_ow_player_location_y;
+    //save_data_ptr->moons_collected      = global_moons_collected;
 
     save_data_ptr->troll_tolls_complete     = global_troll_tolls_complete;
     save_data_ptr->troll_tolls_room_3_moon  = global_troll_tolls_room_3_moon;
@@ -2100,24 +2102,21 @@ void Level::saveCurrentFile()
     save_data_ptr->troll_tolls_room_7_moon  = global_troll_tolls_room_7_moon;
     save_data_ptr->troll_tolls_room_9_moon  = global_troll_tolls_room_9_moon;
     save_data_ptr->troll_tolls_room_13_moon = global_troll_tolls_room_13_moon;
-
-    //save_data_ptr->ow_player_location_x = global_ow_player_location_x;
-    //save_data_ptr->ow_player_location_y = global_ow_player_location_y;
-
-    save_data_ptr->moons_collected      = global_moons_collected;
 }
 
 void Level::loadSave()
 {
-    // This function writes to all of the global save variables
-    // from SRAM, given a save file number
-
-    save_data_ptr = (volatile SaveData*)SRAM_BASE_ADDRESS;
+    // This function writes to all 
+    // of the global save variables from SRAM
 
     if(save_data_ptr->no_data) {saveCurrentFile();}
     else
     {
-        global_troll_tolls_complete     = save_data_ptr->troll_tolls_complete;
+        global_troll_tolls_complete = save_data_ptr->troll_tolls_complete;
+
+        //global_ow_player_location_x = save_data_ptr->ow_player_location_x;
+        //global_ow_player_location_y = save_data_ptr->ow_player_location_y;
+        //global_moons_collected = save_data_ptr->moons_collected;
 
         global_troll_tolls_room_3_moon  = save_data_ptr->troll_tolls_room_3_moon;
         global_troll_tolls_room_5_moon  = save_data_ptr->troll_tolls_room_5_moon;
@@ -2125,10 +2124,5 @@ void Level::loadSave()
         global_troll_tolls_room_7_moon  = save_data_ptr->troll_tolls_room_7_moon;
         global_troll_tolls_room_9_moon  = save_data_ptr->troll_tolls_room_9_moon;
         global_troll_tolls_room_13_moon = save_data_ptr->troll_tolls_room_13_moon;
-
-        //global_ow_player_location_x = save_data_ptr->ow_player_location_x;
-        //global_ow_player_location_y = save_data_ptr->ow_player_location_y;
-
-        global_moons_collected      = save_data_ptr->moons_collected;
     }
 }

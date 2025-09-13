@@ -32,7 +32,8 @@ Player::Player()
 
     x_speed        	  	 = PLAYER_MIN_X_SPEED;
 	phase_destination    = bn::fixed_point(0, 0);
-	ow_target_pos        = bn::fixed_point(global_ow_player_location_x, global_ow_player_location_y);
+	ow_target_pos        = bn::fixed_point(global_ow_player_location_x,
+		                                   global_ow_player_location_y);
 
 	hitpoints                        = PLAYER_STARTING_HITPOINTS;
 	spin_buffered_frames             = 0;

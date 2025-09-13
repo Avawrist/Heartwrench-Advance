@@ -67,6 +67,10 @@ struct SaveData
 {
     bool no_data;
     
+    int32 ow_player_location_x;
+    int32 ow_player_location_y;
+    uint32 moons_collected;
+
     bool troll_tolls_complete;
     bool troll_tolls_room_3_moon;
     bool troll_tolls_room_5_moon;
@@ -74,10 +78,6 @@ struct SaveData
     bool troll_tolls_room_7_moon;
     bool troll_tolls_room_9_moon;
     bool troll_tolls_room_13_moon;
-
-    int32 ow_player_location_x;
-    int32 ow_player_location_y;
-    uint32 moons_collected;
 };
 
 //////////////////
@@ -195,7 +195,7 @@ struct Level
     Room current_room;
 
     // SaveData
-    volatile SaveData* save_data_ptr;
+    volatile SaveData* save_data_ptr = (volatile SaveData*)SRAM_BASE_ADDRESS;
 
     // BGs
     bn::optional<bn::camera_ptr> camera;

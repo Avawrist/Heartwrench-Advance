@@ -34,10 +34,10 @@ bool global_bell_struck = false;
 
 // Global save variables
 
-int32 global_ow_player_location_x = 136;
-int32 global_ow_player_location_y = 8;
+int32  global_ow_player_location_x = 136;
+int32  global_ow_player_location_y = 8;
 
-uint32 global_moons_collected = 0;
+uint32 global_moons_collected      = 0;
 
 bool global_troll_tolls_complete     = false;
 bool global_troll_tolls_room_3_moon  = false;

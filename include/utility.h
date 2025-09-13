@@ -172,7 +172,6 @@ extern int32 global_timer;
 extern bool global_bell_struck;
 
 // Global Save Variables
-
 extern int32 global_ow_player_location_x;
 extern int32 global_ow_player_location_y;
 
