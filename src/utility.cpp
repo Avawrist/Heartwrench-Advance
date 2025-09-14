@@ -34,7 +34,7 @@ bool global_bell_struck = false;
 
 // Global save variables
 int32 global_ow_player_location_x = 8;
-int32 global_ow_player_location_y = 56;
+int32 global_ow_player_location_y = 120;
 
 uint8 global_moons_collected      = 0;
 

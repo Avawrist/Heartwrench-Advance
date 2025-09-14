@@ -1660,7 +1660,10 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 				{ow_target_pos.set_x(ow_target_pos.x().integer() + PLAYER_OW_STEP_DISTANCE);}
 
 				else if(bn::keypad::up_held())
-				{ow_target_pos.set_y(ow_target_pos.y().integer() - PLAYER_OW_STEP_DISTANCE);}
+				{
+					if(!troll_tolls_highlighted || global_troll_tolls_complete)
+					{ow_target_pos.set_y(ow_target_pos.y().integer() - PLAYER_OW_STEP_DISTANCE);}
+				}
 
 				else if(bn::keypad::down_held())
 				{ow_target_pos.set_y(ow_target_pos.y().integer() + PLAYER_OW_STEP_DISTANCE);}

@@ -1739,20 +1739,16 @@ void Level::updateCheckpoints()
 void Level::updateLevelComplete()
 {
     updateAll();
-    
-    // 1. Set a victory theme to play once
-    // ...
 
-    // 2. Set player victory animation to play once
-    // ...
-
-    // 3. if victory theme and player animation are both done, trigger transition:
+    // If victory theme and player animation are both done, trigger transition:
     if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) != NULL &&
        current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->animate_action_ptr->done())
     {
         next_level        = LEVEL_OVERWORLD;
         fade_out          = true;
         transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+
+        if(current_room.room_name == ROOM_TROLL_TOLLS_16) {global_troll_tolls_complete = true;}
     }
 }
 
