@@ -11,12 +11,16 @@
 #define ENEMY_HP_BAR_X_OFFSET  collider.width
 #define ENEMY_HP_BAR_Y_OFFSET -8
 
+#define ENEMY_SPLAT_CD_FRAMES 20
+
 struct Enemy : GameObject
 {
     //////////////////
     // Struct Enemy //
     //////////////////
     
+    uint32 splat_frames;
+
     Enemy();
 	Enemy(const Enemy& other);
 	virtual ~Enemy();
@@ -29,6 +33,7 @@ struct Enemy : GameObject
     // GameObject Overrides //
     //////////////////////////
 
+    void updateTimers()            override;
 	void updateHitFlash()          override;
     void updateHPBar()             override;
     void setHitFlash()             override;

@@ -10,10 +10,14 @@ Enemy::Enemy()
 	max_hp = ENEMY_MAX_HP;
 
 	hp_sprite_ptr->set_visible(true);
+
+	splat_frames = 0;
 }
 
 Enemy::Enemy(const Enemy& other) : GameObject(other)
-{}
+{
+	splat_frames = other.splat_frames;
+}
 
 Enemy::~Enemy()
 {
@@ -21,14 +25,20 @@ Enemy::~Enemy()
 }
 
 Enemy& Enemy::operator =(const Enemy& other)
-{return *this;}
+{
+	splat_frames = other.splat_frames;
+
+	return *this;
+}
 
 void Enemy::wallSplatCheck()
 {
 	if(col_x_offset != 0 &&
-	   (state == OBJECT_HITSTUN) &&
+	   (state == OBJECT_HITSTUN || state == OBJECT_DEATH) &&
 	   abs(rigidbody.final_dir.x().integer()) >= GAME_OBJECT_REQUIRED_SPLAT_SPEED)
 	{
+
+		splat_frames = ENEMY_SPLAT_CD_FRAMES;
 
 		XDirection splat_x_dir;
 		if(col_x_offset < 0) {splat_x_dir = LEFT;}
@@ -57,6 +67,14 @@ void Enemy::wallSplatCheck()
 //////////////////////////
 // GameObject Overrides //
 //////////////////////////
+
+void Enemy::updateTimers()
+{
+	GameObject::updateTimers();
+
+	splat_frames--;
+	splat_frames = clamp(0, ENEMY_SPLAT_CD_FRAMES, splat_frames);
+}
 
 void Enemy::updateHitFlash()
 {
@@ -692,6 +710,6 @@ void Enemy::resolveXAxisCollision(const Collider& other_collider)
 	GameObject::resolveXAxisCollision(other_collider);
 	
 	// Wall splat check
-	if(state != OBJECT_DEATH)
+	if(splat_frames == 0)
 	{wallSplatCheck();}
 }
