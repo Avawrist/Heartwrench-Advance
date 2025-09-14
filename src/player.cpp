@@ -121,6 +121,7 @@ Player::Player(const Player& other) : GameObject(other)
 	current_climb_index              = other.current_climb_index;
 
 	overdrive                = other.overdrive;
+	r_climb                  = other.r_climb;
 	wall_right_detected      = other.wall_right_detected;
     wall_left_detected       = other.wall_left_detected;
 	climbable_detected       = other.climbable_detected;
@@ -193,6 +194,7 @@ Player& Player::operator =(const Player& other)
 	current_climb_index              = other.current_climb_index;
 
 	overdrive                = other.overdrive;
+	r_climb                  = other.r_climb;
 	wall_right_detected      = other.wall_right_detected;
     wall_left_detected       = other.wall_left_detected;
 	climbable_detected       = other.climbable_detected;
@@ -1621,8 +1623,10 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 				setState(NONE);
 			}
 
-			if(!bn::keypad::r_held())
+			if(r_climb && !bn::keypad::r_held())
 			{
+				r_climb = false;
+
 				late_jump_grace_frames = PLAYER_LATE_JUMP_GRACE_FRAMES; 
 				setState(NONE);
 			}
@@ -2909,15 +2913,29 @@ void Player::resolveClimbableCollision(const Collider& other_collider)
 		// Set bool
 		climbable_detected = true;
 
-		if((bn::keypad::r_held()) && 
-		   state != PLAYER_CLIMB  &&
-		   climb_regrab_cooldown <= 0)
-		{
-			// Remove forces
-			rigidbody.removeForces();
+		if(state != PLAYER_CLIMB && climb_regrab_cooldown <= 0)
+		{	
+			// Up climb
+			if(bn::keypad::up_held())
+			{
+				// Remove forces
+				rigidbody.removeForces();
 
-			// Set state
-			setState(PLAYER_CLIMB);
+				// Set state
+				setState(PLAYER_CLIMB);
+			}
+
+			// R climb
+			else if(bn::keypad::r_held())
+			{
+				r_climb = true;
+
+				// Remove forces
+				rigidbody.removeForces();
+
+				// Set state
+				setState(PLAYER_CLIMB);
+			}
 		}
     }
 }

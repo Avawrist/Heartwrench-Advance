@@ -175,7 +175,7 @@ extern bool global_bell_struck;
 extern int32 global_ow_player_location_x;
 extern int32 global_ow_player_location_y;
 
-extern uint32 global_moons_collected;
+extern uint8 global_moons_collected;
 
 extern bool global_troll_tolls_complete;
 extern bool global_troll_tolls_room_3_moon;

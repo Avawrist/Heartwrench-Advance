@@ -80,7 +80,7 @@ void BellTroll::updateTimers()
 
 void BellTroll::applyDamage(int32 _damage)
 {
-    //hitpoints -= _damage;
+    hitpoints -= _damage;
     if(hitpoints < 0 || state == BELL_TROLL_FROZEN) {hitpoints = 0;}
 }
 

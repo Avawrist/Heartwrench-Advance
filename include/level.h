@@ -67,9 +67,10 @@ struct SaveData
 {
     bool no_data;
     
-    int32 ow_player_location_x;
-    int32 ow_player_location_y;
-    uint32 moons_collected;
+    int32  ow_player_location_x;
+    int32  ow_player_location_y;
+    
+    uint8 moons_collected;
 
     bool troll_tolls_complete;
     bool troll_tolls_room_3_moon;

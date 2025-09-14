@@ -226,6 +226,7 @@ struct Player : GameObject {
 	bn::fixed current_climb_index;
 
 	bool overdrive;
+	bool r_climb;
 	bool wall_right_detected;
     bool wall_left_detected;
 	bool climbable_detected;

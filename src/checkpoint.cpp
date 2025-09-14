@@ -148,9 +148,9 @@ void Checkpoint::setState(ObjectState new_state)
         case CHECKPOINT_IDLE_ON:
 
             animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-                                                                           3,
+                                                                           2,
                                                                            bn::sprite_items::checkpoint.tiles_item(),
-                                                                           3, 3, 3, 4, 4, 4);
+                                                                           3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 4, 4, 4, 4);
 
         break;
 
@@ -162,9 +162,8 @@ void Checkpoint::setState(ObjectState new_state)
             animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
                                                                        2,
                                                                        bn::sprite_items::checkpoint.tiles_item(),
-                                                                       3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 
-                                                                       3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6,
-                                                                       3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6);
+                                                                       6, 6, 6, 7, 7, 7, 8, 8, 8, 
+                                                                       9, 9, 9, 10, 10, 10, 11, 11, 11);
 
         break;
 

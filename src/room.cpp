@@ -938,7 +938,7 @@ void Room::load(RoomName                                       _room_name,
             bottom_neighbor = NO_ROOM;
             left_neighbor   = ROOM_TROLL_TOLLS_14;
 
-            room_bounds.setTopBoundAC(400);
+            room_bounds.setTopBoundAC(16);
             room_bounds.setBottomBoundAC(864);
             room_bounds.setLeftBoundAC(2976);
             room_bounds.setRightBoundAC(3264);
@@ -956,7 +956,7 @@ void Room::load(RoomName                                       _room_name,
             left_neighbor   = ROOM_TROLL_TOLLS_15;
 
             room_bounds.setTopBoundAC(16);
-            room_bounds.setBottomBoundAC(864);
+            room_bounds.setBottomBoundAC(768);
             room_bounds.setLeftBoundAC(3264);
             room_bounds.setRightBoundAC(5088);
 
