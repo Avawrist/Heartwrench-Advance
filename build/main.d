@@ -124,41 +124,59 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/game/build/bn_sprite_items_enemy_hp_bar.h \
  G:/game/build/bn_sprite_items_enemy_death.h \
  G:/game/build/bn_sprite_items_block_death.h \
- G:/game/build/bn_sprite_items_tile_passage.h \
+ G:/game/include/tile_passage.h \
+ G:/game/build/bn_sprite_items_tile_passage.h G:/game/include/phase_orb.h \
  G:/game/build/bn_sprite_items_phase_orb_up.h \
  G:/game/build/bn_sprite_items_phase_orb_down.h \
  G:/game/build/bn_sprite_items_phase_orb_left.h \
  G:/game/build/bn_sprite_items_phase_orb_right.h \
+ G:/game/include/falling_platform_wide.h \
  G:/game/build/bn_sprite_items_falling_platform_wide.h \
+ G:/game/include/falling_platform_thin.h \
  G:/game/build/bn_sprite_items_falling_platform_thin.h \
- G:/game/build/bn_sprite_items_push_block.h \
+ G:/game/include/push_block.h G:/game/build/bn_sprite_items_push_block.h \
+ G:/game/include/push_block_mini.h \
  G:/game/build/bn_sprite_items_push_block_mini.h \
+ G:/game/include/auto_platform.h \
  G:/game/build/bn_sprite_items_auto_platform.h \
+ G:/game/include/smash_block_large.h \
  G:/game/build/bn_sprite_items_smash_block_large.h \
+ G:/game/include/smash_block_mini.h \
  G:/game/build/bn_sprite_items_smash_block_mini.h \
+ G:/game/include/smash_block_ziggurat_l.h \
  G:/game/build/bn_sprite_items_smash_block_ziggurat_l.h \
+ G:/game/include/smash_block_ziggurat_c.h \
  G:/game/build/bn_sprite_items_smash_block_ziggurat_c.h \
+ G:/game/include/smash_block_ziggurat_r.h \
  G:/game/build/bn_sprite_items_smash_block_ziggurat_r.h \
- G:/game/build/bn_sprite_items_large_vase.h \
- G:/game/build/bn_sprite_items_small_vase.h \
- G:/game/build/bn_sprite_items_hp_totem.h \
- G:/game/build/bn_sprite_items_hp_drop.h \
- G:/game/build/bn_sprite_items_moon_drop.h \
- G:/game/build/bn_sprite_items_old_moon_drop.h \
- G:/game/build/bn_sprite_items_skull_drop.h \
- G:/game/build/bn_sprite_items_star_drop.h \
- G:/game/build/bn_sprite_items_checkpoint.h \
- G:/game/build/bn_sprite_items_finish_seal.h \
- G:/game/build/bn_sprite_items_bounce_bell.h \
- G:/game/build/bn_sprite_items_auto_bounce_bell.h \
- G:/game/build/bn_sprite_items_thorn_column.h \
- G:/game/build/bn_sprite_items_thorn_bar.h \
- G:/game/build/bn_sprite_items_ground_ghoul.h \
- G:/game/build/bn_sprite_items_bell_troll.h \
- G:/game/build/bn_sprite_items_winged_troll.h \
- G:/game/build/bn_sprite_items_candelabra.h \
+ G:/game/include/large_vase.h G:/game/build/bn_sprite_items_large_vase.h \
+ G:/game/include/small_vase.h G:/game/include/hitbox.h \
  G:/game/build/bn_sprite_items_hitbox.h \
- G:/game/build/bn_sprite_items_player_idle.h \
+ G:/game/build/bn_sprite_items_small_vase.h G:/game/include/hp_totem.h \
+ G:/game/build/bn_sprite_items_hp_totem.h G:/game/include/hp_drop.h \
+ G:/game/build/bn_sprite_items_hp_drop.h G:/game/include/moon_drop.h \
+ G:/game/build/bn_sprite_items_moon_drop.h \
+ G:/game/include/old_moon_drop.h \
+ G:/game/build/bn_sprite_items_old_moon_drop.h \
+ G:/game/include/skull_drop.h G:/game/build/bn_sprite_items_skull_drop.h \
+ G:/game/include/gear_drop.h G:/game/build/bn_sprite_items_gear_drop.h \
+ G:/game/include/checkpoint.h G:/game/build/bn_sprite_items_checkpoint.h \
+ G:/game/include/finish_seal.h \
+ G:/game/build/bn_sprite_items_finish_seal.h \
+ G:/game/include/bounce_bell.h \
+ G:/game/build/bn_sprite_items_bounce_bell.h \
+ G:/game/include/auto_bounce_bell.h \
+ G:/game/build/bn_sprite_items_auto_bounce_bell.h \
+ G:/game/include/thorn_column.h G:/game/include/enemy.h \
+ G:/game/build/bn_sprite_items_thorn_column.h G:/game/include/thorn_bar.h \
+ G:/game/build/bn_sprite_items_thorn_bar.h G:/game/include/ground_ghoul.h \
+ G:/game/build/bn_sprite_items_ground_ghoul.h \
+ G:/game/include/bell_troll.h G:/game/build/bn_sprite_items_bell_troll.h \
+ G:/game/include/winged_troll_l.h \
+ G:/game/build/bn_sprite_items_winged_troll.h \
+ G:/game/include/winged_troll_r.h G:/game/include/candelabra.h \
+ G:/game/include/prop.h G:/game/build/bn_sprite_items_candelabra.h \
+ G:/game/include/player.h G:/game/build/bn_sprite_items_player_idle.h \
  G:/game/build/bn_sprite_items_player_walk.h \
  G:/game/build/bn_sprite_items_player_jump.h \
  G:/game/build/bn_sprite_items_player_spin_attack.h \
@@ -167,26 +185,7 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/game/build/bn_sprite_items_player_bell_jump.h \
  G:/game/build/bn_sprite_items_player_ow.h \
  G:/game/build/bn_sprite_items_player_get.h \
- G:/game/build/bn_sprite_items_phase_marker.h \
- G:/game/include/tile_passage.h G:/game/include/phase_orb.h \
- G:/game/include/falling_platform_wide.h \
- G:/game/include/falling_platform_thin.h G:/game/include/push_block.h \
- G:/game/include/push_block_mini.h G:/game/include/auto_platform.h \
- G:/game/include/smash_block_large.h G:/game/include/smash_block_mini.h \
- G:/game/include/smash_block_ziggurat_l.h \
- G:/game/include/smash_block_ziggurat_c.h \
- G:/game/include/smash_block_ziggurat_r.h G:/game/include/large_vase.h \
- G:/game/include/small_vase.h G:/game/include/hitbox.h \
- G:/game/include/hp_totem.h G:/game/include/hp_drop.h \
- G:/game/include/moon_drop.h G:/game/include/old_moon_drop.h \
- G:/game/include/skull_drop.h G:/game/include/star_drop.h \
- G:/game/include/checkpoint.h G:/game/include/finish_seal.h \
- G:/game/include/bounce_bell.h G:/game/include/auto_bounce_bell.h \
- G:/game/include/thorn_column.h G:/game/include/enemy.h \
- G:/game/include/thorn_bar.h G:/game/include/ground_ghoul.h \
- G:/game/include/bell_troll.h G:/game/include/winged_troll_l.h \
- G:/game/include/winged_troll_r.h G:/game/include/candelabra.h \
- G:/game/include/prop.h G:/game/include/player.h
+ G:/game/build/bn_sprite_items_phase_marker.h
 G:/butano-master/butano/include/bn_sprites.h:
 G:/butano-master/butano/hw/include/bn_hw_sprites_constants.h:
 G:/butano-master/butano/include/bn_common.h:
@@ -319,40 +318,75 @@ G:/game/build/bn_sprite_items_wall_splat_effect.h:
 G:/game/build/bn_sprite_items_enemy_hp_bar.h:
 G:/game/build/bn_sprite_items_enemy_death.h:
 G:/game/build/bn_sprite_items_block_death.h:
+G:/game/include/tile_passage.h:
 G:/game/build/bn_sprite_items_tile_passage.h:
+G:/game/include/phase_orb.h:
 G:/game/build/bn_sprite_items_phase_orb_up.h:
 G:/game/build/bn_sprite_items_phase_orb_down.h:
 G:/game/build/bn_sprite_items_phase_orb_left.h:
 G:/game/build/bn_sprite_items_phase_orb_right.h:
+G:/game/include/falling_platform_wide.h:
 G:/game/build/bn_sprite_items_falling_platform_wide.h:
+G:/game/include/falling_platform_thin.h:
 G:/game/build/bn_sprite_items_falling_platform_thin.h:
+G:/game/include/push_block.h:
 G:/game/build/bn_sprite_items_push_block.h:
+G:/game/include/push_block_mini.h:
 G:/game/build/bn_sprite_items_push_block_mini.h:
+G:/game/include/auto_platform.h:
 G:/game/build/bn_sprite_items_auto_platform.h:
+G:/game/include/smash_block_large.h:
 G:/game/build/bn_sprite_items_smash_block_large.h:
+G:/game/include/smash_block_mini.h:
 G:/game/build/bn_sprite_items_smash_block_mini.h:
+G:/game/include/smash_block_ziggurat_l.h:
 G:/game/build/bn_sprite_items_smash_block_ziggurat_l.h:
+G:/game/include/smash_block_ziggurat_c.h:
 G:/game/build/bn_sprite_items_smash_block_ziggurat_c.h:
+G:/game/include/smash_block_ziggurat_r.h:
 G:/game/build/bn_sprite_items_smash_block_ziggurat_r.h:
+G:/game/include/large_vase.h:
 G:/game/build/bn_sprite_items_large_vase.h:
-G:/game/build/bn_sprite_items_small_vase.h:
-G:/game/build/bn_sprite_items_hp_totem.h:
-G:/game/build/bn_sprite_items_hp_drop.h:
-G:/game/build/bn_sprite_items_moon_drop.h:
-G:/game/build/bn_sprite_items_old_moon_drop.h:
-G:/game/build/bn_sprite_items_skull_drop.h:
-G:/game/build/bn_sprite_items_star_drop.h:
-G:/game/build/bn_sprite_items_checkpoint.h:
-G:/game/build/bn_sprite_items_finish_seal.h:
-G:/game/build/bn_sprite_items_bounce_bell.h:
-G:/game/build/bn_sprite_items_auto_bounce_bell.h:
-G:/game/build/bn_sprite_items_thorn_column.h:
-G:/game/build/bn_sprite_items_thorn_bar.h:
-G:/game/build/bn_sprite_items_ground_ghoul.h:
-G:/game/build/bn_sprite_items_bell_troll.h:
-G:/game/build/bn_sprite_items_winged_troll.h:
-G:/game/build/bn_sprite_items_candelabra.h:
+G:/game/include/small_vase.h:
+G:/game/include/hitbox.h:
 G:/game/build/bn_sprite_items_hitbox.h:
+G:/game/build/bn_sprite_items_small_vase.h:
+G:/game/include/hp_totem.h:
+G:/game/build/bn_sprite_items_hp_totem.h:
+G:/game/include/hp_drop.h:
+G:/game/build/bn_sprite_items_hp_drop.h:
+G:/game/include/moon_drop.h:
+G:/game/build/bn_sprite_items_moon_drop.h:
+G:/game/include/old_moon_drop.h:
+G:/game/build/bn_sprite_items_old_moon_drop.h:
+G:/game/include/skull_drop.h:
+G:/game/build/bn_sprite_items_skull_drop.h:
+G:/game/include/gear_drop.h:
+G:/game/build/bn_sprite_items_gear_drop.h:
+G:/game/include/checkpoint.h:
+G:/game/build/bn_sprite_items_checkpoint.h:
+G:/game/include/finish_seal.h:
+G:/game/build/bn_sprite_items_finish_seal.h:
+G:/game/include/bounce_bell.h:
+G:/game/build/bn_sprite_items_bounce_bell.h:
+G:/game/include/auto_bounce_bell.h:
+G:/game/build/bn_sprite_items_auto_bounce_bell.h:
+G:/game/include/thorn_column.h:
+G:/game/include/enemy.h:
+G:/game/build/bn_sprite_items_thorn_column.h:
+G:/game/include/thorn_bar.h:
+G:/game/build/bn_sprite_items_thorn_bar.h:
+G:/game/include/ground_ghoul.h:
+G:/game/build/bn_sprite_items_ground_ghoul.h:
+G:/game/include/bell_troll.h:
+G:/game/build/bn_sprite_items_bell_troll.h:
+G:/game/include/winged_troll_l.h:
+G:/game/build/bn_sprite_items_winged_troll.h:
+G:/game/include/winged_troll_r.h:
+G:/game/include/candelabra.h:
+G:/game/include/prop.h:
+G:/game/build/bn_sprite_items_candelabra.h:
+G:/game/include/player.h:
 G:/game/build/bn_sprite_items_player_idle.h:
 G:/game/build/bn_sprite_items_player_walk.h:
 G:/game/build/bn_sprite_items_player_jump.h:
@@ -363,38 +397,3 @@ G:/game/build/bn_sprite_items_player_bell_jump.h:
 G:/game/build/bn_sprite_items_player_ow.h:
 G:/game/build/bn_sprite_items_player_get.h:
 G:/game/build/bn_sprite_items_phase_marker.h:
-G:/game/include/tile_passage.h:
-G:/game/include/phase_orb.h:
-G:/game/include/falling_platform_wide.h:
-G:/game/include/falling_platform_thin.h:
-G:/game/include/push_block.h:
-G:/game/include/push_block_mini.h:
-G:/game/include/auto_platform.h:
-G:/game/include/smash_block_large.h:
-G:/game/include/smash_block_mini.h:
-G:/game/include/smash_block_ziggurat_l.h:
-G:/game/include/smash_block_ziggurat_c.h:
-G:/game/include/smash_block_ziggurat_r.h:
-G:/game/include/large_vase.h:
-G:/game/include/small_vase.h:
-G:/game/include/hitbox.h:
-G:/game/include/hp_totem.h:
-G:/game/include/hp_drop.h:
-G:/game/include/moon_drop.h:
-G:/game/include/old_moon_drop.h:
-G:/game/include/skull_drop.h:
-G:/game/include/star_drop.h:
-G:/game/include/checkpoint.h:
-G:/game/include/finish_seal.h:
-G:/game/include/bounce_bell.h:
-G:/game/include/auto_bounce_bell.h:
-G:/game/include/thorn_column.h:
-G:/game/include/enemy.h:
-G:/game/include/thorn_bar.h:
-G:/game/include/ground_ghoul.h:
-G:/game/include/bell_troll.h:
-G:/game/include/winged_troll_l.h:
-G:/game/include/winged_troll_r.h:
-G:/game/include/candelabra.h:
-G:/game/include/prop.h:
-G:/game/include/player.h:

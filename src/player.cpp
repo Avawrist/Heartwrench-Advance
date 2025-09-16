@@ -35,7 +35,7 @@ Player::Player()
 	ow_target_pos        = bn::fixed_point(global_ow_player_location_x,
 		                                   global_ow_player_location_y);
 
-	hitpoints                        = PLAYER_STARTING_HITPOINTS;
+	hitpoints                        = PLAYER_GEARTING_HITPOINTS;
 	spin_buffered_frames             = 0;
 	jump_buffered_frames             = 0;
 	remaining_jump_input_frames      = 0;
@@ -2377,7 +2377,7 @@ void Player::resolveOldMoonDropCollision(GameObject& object)
     {	
 		global_level_currency += object.damage;
 
-		global_hitstop_frames            = PLAYER_GET_STAR_HITSTOP_FRAMES;
+		global_hitstop_frames            = PLAYER_GET_GEAR_HITSTOP_FRAMES;
 		global_hud_currency_flash_frames = HUD_FLASH_FRAMES;
 
 		object.setState(OBJECT_DEATH);
@@ -2399,7 +2399,7 @@ void Player::resolveSkullDropCollision(GameObject& object)
 	}
 }
 
-void Player::resolveStarDropCollision(GameObject& object)
+void Player::resolveGearDropCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH || (!object.is_frozen && object.invulnerability_frames)) {return;}
 	
@@ -2407,7 +2407,7 @@ void Player::resolveStarDropCollision(GameObject& object)
     {	
 		global_level_currency += object.damage;
 
-		global_hitstop_frames            = PLAYER_GET_STAR_HITSTOP_FRAMES;
+		global_hitstop_frames            = PLAYER_GET_GEAR_HITSTOP_FRAMES;
 		global_hud_currency_flash_frames = HUD_FLASH_FRAMES;
 
 		object.setState(OBJECT_DEATH);

@@ -9,9 +9,12 @@
 // Base Class
 #include "enemy.h"
 
-//////////////////////
+// Assets
+#include "bn_sprite_items_winged_troll.h"
+
+/////////////////////////
 // Struct WingedTrollL //
-//////////////////////
+/////////////////////////
 
 #define WINGED_TROLL_L_COLLIDER_WIDTH  30
 #define WINGED_TROLL_L_COLLIDER_HEIGHT 20

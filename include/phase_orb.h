@@ -7,6 +7,12 @@
 // Base Class
 #include "game_object.h"
 
+// Assets
+#include "bn_sprite_items_phase_orb_up.h"
+#include "bn_sprite_items_phase_orb_down.h"
+#include "bn_sprite_items_phase_orb_left.h"
+#include "bn_sprite_items_phase_orb_right.h"
+
 /////////////////////
 // PhaseOrb Macros //
 /////////////////////

@@ -7,6 +7,9 @@
 // Base Class
 #include "game_object.h"
 
+// Assets
+#include "bn_sprite_items_tile_passage.h"
+
 #define TILE_PASSAGE_Z_ORDER 10
 
 #define TILE_PASSAGE_COLLIDER_WIDTH  32

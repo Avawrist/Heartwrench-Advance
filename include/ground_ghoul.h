@@ -8,6 +8,9 @@
 #include "enemy.h"
 #include "tile_passage.h"
 
+// Assets
+#include "bn_sprite_items_ground_ghoul.h"
+
 //////////////////////
 // Struct TestEnemy //
 //////////////////////

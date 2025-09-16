@@ -926,8 +926,8 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
                         resolveSkullDropCollision(*game_objects.at(i));
                     break;
 
-                    case STAR_DROP:
-                        resolveStarDropCollision(*game_objects.at(i));
+                    case GEAR_DROP:
+                        resolveGearDropCollision(*game_objects.at(i));
                     break;
 
                     case CHECKPOINT:
@@ -1019,7 +1019,7 @@ void GameObject::resolveHPDropCollision(GameObject& object)              {}
 void GameObject::resolveMoonDropCollision(GameObject& object)            {}
 void GameObject::resolveOldMoonDropCollision(GameObject& object)         {}
 void GameObject::resolveSkullDropCollision(GameObject& object)           {}
-void GameObject::resolveStarDropCollision(GameObject& object)            {}
+void GameObject::resolveGearDropCollision(GameObject& object)            {}
 void GameObject::resolveCheckpointCollision(GameObject& object)          {}
 void GameObject::resolveFinishSealCollision(GameObject& object)          {}
 

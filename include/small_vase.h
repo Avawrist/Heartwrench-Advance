@@ -8,6 +8,9 @@
 #include "game_object.h"
 #include "hitbox.h"
 
+// Assets
+#include "bn_sprite_items_small_vase.h"
+
 //////////////////////
 // Struct SmallVase //
 //////////////////////

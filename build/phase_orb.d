@@ -87,50 +87,10 @@ phase_orb.o: G:/game/src/phase_orb.cpp G:/game/include/phase_orb.h \
  G:/game/build/bn_sprite_items_enemy_hp_bar.h \
  G:/game/build/bn_sprite_items_enemy_death.h \
  G:/game/build/bn_sprite_items_block_death.h \
- G:/game/build/bn_sprite_items_tile_passage.h \
  G:/game/build/bn_sprite_items_phase_orb_up.h \
  G:/game/build/bn_sprite_items_phase_orb_down.h \
  G:/game/build/bn_sprite_items_phase_orb_left.h \
- G:/game/build/bn_sprite_items_phase_orb_right.h \
- G:/game/build/bn_sprite_items_falling_platform_wide.h \
- G:/game/build/bn_sprite_items_falling_platform_thin.h \
- G:/game/build/bn_sprite_items_push_block.h \
- G:/game/build/bn_sprite_items_push_block_mini.h \
- G:/game/build/bn_sprite_items_auto_platform.h \
- G:/game/build/bn_sprite_items_smash_block_large.h \
- G:/game/build/bn_sprite_items_smash_block_mini.h \
- G:/game/build/bn_sprite_items_smash_block_ziggurat_l.h \
- G:/game/build/bn_sprite_items_smash_block_ziggurat_c.h \
- G:/game/build/bn_sprite_items_smash_block_ziggurat_r.h \
- G:/game/build/bn_sprite_items_large_vase.h \
- G:/game/build/bn_sprite_items_small_vase.h \
- G:/game/build/bn_sprite_items_hp_totem.h \
- G:/game/build/bn_sprite_items_hp_drop.h \
- G:/game/build/bn_sprite_items_moon_drop.h \
- G:/game/build/bn_sprite_items_old_moon_drop.h \
- G:/game/build/bn_sprite_items_skull_drop.h \
- G:/game/build/bn_sprite_items_star_drop.h \
- G:/game/build/bn_sprite_items_checkpoint.h \
- G:/game/build/bn_sprite_items_finish_seal.h \
- G:/game/build/bn_sprite_items_bounce_bell.h \
- G:/game/build/bn_sprite_items_auto_bounce_bell.h \
- G:/game/build/bn_sprite_items_thorn_column.h \
- G:/game/build/bn_sprite_items_thorn_bar.h \
- G:/game/build/bn_sprite_items_ground_ghoul.h \
- G:/game/build/bn_sprite_items_bell_troll.h \
- G:/game/build/bn_sprite_items_winged_troll.h \
- G:/game/build/bn_sprite_items_candelabra.h \
- G:/game/build/bn_sprite_items_hitbox.h \
- G:/game/build/bn_sprite_items_player_idle.h \
- G:/game/build/bn_sprite_items_player_walk.h \
- G:/game/build/bn_sprite_items_player_jump.h \
- G:/game/build/bn_sprite_items_player_spin_attack.h \
- G:/game/build/bn_sprite_items_player_death.h \
- G:/game/build/bn_sprite_items_player_climb.h \
- G:/game/build/bn_sprite_items_player_bell_jump.h \
- G:/game/build/bn_sprite_items_player_ow.h \
- G:/game/build/bn_sprite_items_player_get.h \
- G:/game/build/bn_sprite_items_phase_marker.h
+ G:/game/build/bn_sprite_items_phase_orb_right.h
 G:/game/include/phase_orb.h:
 G:/butano-master/butano/include/bn_math.h:
 G:/butano-master/butano/include/bn_array.h:
@@ -223,47 +183,7 @@ G:/game/build/bn_sprite_items_wall_splat_effect.h:
 G:/game/build/bn_sprite_items_enemy_hp_bar.h:
 G:/game/build/bn_sprite_items_enemy_death.h:
 G:/game/build/bn_sprite_items_block_death.h:
-G:/game/build/bn_sprite_items_tile_passage.h:
 G:/game/build/bn_sprite_items_phase_orb_up.h:
 G:/game/build/bn_sprite_items_phase_orb_down.h:
 G:/game/build/bn_sprite_items_phase_orb_left.h:
 G:/game/build/bn_sprite_items_phase_orb_right.h:
-G:/game/build/bn_sprite_items_falling_platform_wide.h:
-G:/game/build/bn_sprite_items_falling_platform_thin.h:
-G:/game/build/bn_sprite_items_push_block.h:
-G:/game/build/bn_sprite_items_push_block_mini.h:
-G:/game/build/bn_sprite_items_auto_platform.h:
-G:/game/build/bn_sprite_items_smash_block_large.h:
-G:/game/build/bn_sprite_items_smash_block_mini.h:
-G:/game/build/bn_sprite_items_smash_block_ziggurat_l.h:
-G:/game/build/bn_sprite_items_smash_block_ziggurat_c.h:
-G:/game/build/bn_sprite_items_smash_block_ziggurat_r.h:
-G:/game/build/bn_sprite_items_large_vase.h:
-G:/game/build/bn_sprite_items_small_vase.h:
-G:/game/build/bn_sprite_items_hp_totem.h:
-G:/game/build/bn_sprite_items_hp_drop.h:
-G:/game/build/bn_sprite_items_moon_drop.h:
-G:/game/build/bn_sprite_items_old_moon_drop.h:
-G:/game/build/bn_sprite_items_skull_drop.h:
-G:/game/build/bn_sprite_items_star_drop.h:
-G:/game/build/bn_sprite_items_checkpoint.h:
-G:/game/build/bn_sprite_items_finish_seal.h:
-G:/game/build/bn_sprite_items_bounce_bell.h:
-G:/game/build/bn_sprite_items_auto_bounce_bell.h:
-G:/game/build/bn_sprite_items_thorn_column.h:
-G:/game/build/bn_sprite_items_thorn_bar.h:
-G:/game/build/bn_sprite_items_ground_ghoul.h:
-G:/game/build/bn_sprite_items_bell_troll.h:
-G:/game/build/bn_sprite_items_winged_troll.h:
-G:/game/build/bn_sprite_items_candelabra.h:
-G:/game/build/bn_sprite_items_hitbox.h:
-G:/game/build/bn_sprite_items_player_idle.h:
-G:/game/build/bn_sprite_items_player_walk.h:
-G:/game/build/bn_sprite_items_player_jump.h:
-G:/game/build/bn_sprite_items_player_spin_attack.h:
-G:/game/build/bn_sprite_items_player_death.h:
-G:/game/build/bn_sprite_items_player_climb.h:
-G:/game/build/bn_sprite_items_player_bell_jump.h:
-G:/game/build/bn_sprite_items_player_ow.h:
-G:/game/build/bn_sprite_items_player_get.h:
-G:/game/build/bn_sprite_items_phase_marker.h:

@@ -1,53 +1,53 @@
-#include "star_drop.h"
+#include "gear_drop.h"
 
 /////////////////////
-// Struct StarDrop //
+// Struct GearDrop //
 /////////////////////
 
-StarDrop::StarDrop()
+GearDrop::GearDrop()
 {
     // Init Assets //
-    object_type = STAR_DROP;
-    sprite_ptr  = bn::sprite_items::star_drop.create_sprite(0, 0);
+    object_type = GEAR_DROP;
+    sprite_ptr  = bn::sprite_items::gear_drop.create_sprite(0, 0);
     sprite_ptr->set_z_order(ENEMY_Z_ORDER);
     default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								                                   2,
-								                                   bn::sprite_items::star_drop.tiles_item(),
+								                                   bn::sprite_items::gear_drop.tiles_item(),
 								                                   0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3);
 
     // Init Variables //
-    collider_offset_x = STAR_DROP_COLLIDER_OFFSET_X;
-    collider_offset_y = STAR_DROP_COLLIDER_OFFSET_Y;
+    collider_offset_x = GEAR_DROP_COLLIDER_OFFSET_X;
+    collider_offset_y = GEAR_DROP_COLLIDER_OFFSET_Y;
 	collider = Collider(x() + collider_offset_x, 
                         y() + collider_offset_y,
-                        STAR_DROP_COLLIDER_WIDTH, 
-                        STAR_DROP_COLLIDER_HEIGHT);
+                        GEAR_DROP_COLLIDER_WIDTH, 
+                        GEAR_DROP_COLLIDER_HEIGHT);
     collider_x_axis   = collider;
     collider_y_axis   = collider;
 
     setState(IDLE);
 
-    hitpoints  = STAR_DROP_HITPOINTS;
-    thirty_fps = STAR_DROP_30_FPS;
-    damage     = STAR_DROP_VALUE;
+    hitpoints  = GEAR_DROP_HITPOINTS;
+    thirty_fps = GEAR_DROP_30_FPS;
+    damage     = GEAR_DROP_VALUE;
 
-	invulnerability_frames = STAR_DROP_STARTING_INVULN_FRAMES;
+	invulnerability_frames = GEAR_DROP_GEARTING_INVULN_FRAMES;
 
-	rigidbody.addForce(STAR_DROP_SPAWN_FORCE);
+	rigidbody.addForce(GEAR_DROP_SPAWN_FORCE);
 }
 
-StarDrop::StarDrop(const StarDrop& other) : GameObject(other)
+GearDrop::GearDrop(const GearDrop& other) : GameObject(other)
 {
 
 }
 
-StarDrop::~StarDrop()
+GearDrop::~GearDrop()
 {
 
 }
 
-StarDrop& StarDrop::operator =(const StarDrop& other)
+GearDrop& GearDrop::operator =(const GearDrop& other)
 {
     return *this;
 }
@@ -56,7 +56,7 @@ StarDrop& StarDrop::operator =(const StarDrop& other)
 // GameObject Overrides //
 //////////////////////////
 
-void StarDrop::update(const RoomBounds& 							 room_bounds,
+void GearDrop::update(const RoomBounds& 							 room_bounds,
                       bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
                       const bn::regular_bg_ptr&                      bg_ptr, 
                       const bn::span<const bn::regular_bg_map_cell>& cells,
@@ -150,7 +150,7 @@ void StarDrop::update(const RoomBounds& 							 room_bounds,
 
 }
 
-void StarDrop::setState(ObjectState new_state)
+void GearDrop::setState(ObjectState new_state)
 {
     state = new_state;
 
@@ -160,7 +160,7 @@ void StarDrop::setState(ObjectState new_state)
 
 			animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 																		2,
-																		bn::sprite_items::star_drop.tiles_item(),
+																		bn::sprite_items::gear_drop.tiles_item(),
 																		0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3);
 
         break;
@@ -172,7 +172,7 @@ void StarDrop::setState(ObjectState new_state)
 
             animate_action_ptr  = bn::create_sprite_animate_action_once(sprite_ptr.value(),
                                                                         1,
-                                                                        bn::sprite_items::star_drop.tiles_item(),
+                                                                        bn::sprite_items::gear_drop.tiles_item(),
                                                                         4, 4, 5, 5, 6, 6, 7, 7, 8, 8);
 
         break;
@@ -186,7 +186,7 @@ void StarDrop::setState(ObjectState new_state)
 // State Function Overrides //
 //////////////////////////////
 
-void StarDrop::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+void GearDrop::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
                                 const bn::regular_bg_ptr&                      bg_ptr, 
                                 const bn::span<const bn::regular_bg_map_cell>& cells,
                                 const bn::regular_bg_item&                     bg_item,
@@ -224,7 +224,7 @@ void StarDrop::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&    
 /////////////////////////
 
 // Level Objects
-void StarDrop::resolveTilePassageCollision(GameObject& object)
+void GearDrop::resolveTilePassageCollision(GameObject& object)
 {
 	if(object.state == TILE_PASSAGE_SHUT &&
 	   collider.isCollision(object.collider))
@@ -249,7 +249,7 @@ void StarDrop::resolveTilePassageCollision(GameObject& object)
 	{grounded_detected = true;}
 }
 
-void StarDrop::resolveFallingPlatformWideCollision(GameObject& object)
+void GearDrop::resolveFallingPlatformWideCollision(GameObject& object)
 {
 	if(rigidbody.normalized_dir.y() >= 0 &&
 	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
@@ -273,7 +273,7 @@ void StarDrop::resolveFallingPlatformWideCollision(GameObject& object)
 	}
 }
 
-void StarDrop::resolveFallingPlatformThinCollision(GameObject& object)
+void GearDrop::resolveFallingPlatformThinCollision(GameObject& object)
 {
 	if(rigidbody.normalized_dir.y() >= 0 &&
 	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
@@ -297,7 +297,7 @@ void StarDrop::resolveFallingPlatformThinCollision(GameObject& object)
 	}
 }
 
-void StarDrop::resolvePushBlockCollision(GameObject& object)
+void GearDrop::resolvePushBlockCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
@@ -325,7 +325,7 @@ void StarDrop::resolvePushBlockCollision(GameObject& object)
 	}
 }
 
-void StarDrop::resolvePushBlockMiniCollision(GameObject& object)
+void GearDrop::resolvePushBlockMiniCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
@@ -353,7 +353,7 @@ void StarDrop::resolvePushBlockMiniCollision(GameObject& object)
 	}
 }
 
-void StarDrop::resolveAutoPlatformCollision(GameObject& object)
+void GearDrop::resolveAutoPlatformCollision(GameObject& object)
 {
 	if(rigidbody.normalized_dir.y() >= 0 &&
 	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
@@ -377,7 +377,7 @@ void StarDrop::resolveAutoPlatformCollision(GameObject& object)
 	}
 }
 
-void StarDrop::resolveSmashBlockLargeCollision(GameObject& object)
+void GearDrop::resolveSmashBlockLargeCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
@@ -405,7 +405,7 @@ void StarDrop::resolveSmashBlockLargeCollision(GameObject& object)
 	}
 }
 
-void StarDrop::resolveSmashBlockMiniCollision(GameObject& object)
+void GearDrop::resolveSmashBlockMiniCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
@@ -433,7 +433,7 @@ void StarDrop::resolveSmashBlockMiniCollision(GameObject& object)
 	}
 }
 
-void StarDrop::resolveSmashBlockZigguratLCollision(GameObject& object)
+void GearDrop::resolveSmashBlockZigguratLCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
@@ -461,7 +461,7 @@ void StarDrop::resolveSmashBlockZigguratLCollision(GameObject& object)
 	}
 }
 
-void StarDrop::resolveSmashBlockZigguratCCollision(GameObject& object)
+void GearDrop::resolveSmashBlockZigguratCCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
@@ -489,7 +489,7 @@ void StarDrop::resolveSmashBlockZigguratCCollision(GameObject& object)
 	}
 }
 
-void StarDrop::resolveSmashBlockZigguratRCollision(GameObject& object)
+void GearDrop::resolveSmashBlockZigguratRCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
@@ -517,7 +517,7 @@ void StarDrop::resolveSmashBlockZigguratRCollision(GameObject& object)
 	}
 }
 
-void StarDrop::resolveHPTotemCollision(GameObject& object)
+void GearDrop::resolveHPTotemCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
@@ -547,7 +547,7 @@ void StarDrop::resolveHPTotemCollision(GameObject& object)
 
 // Enemies
 
-void StarDrop::resolveBellTrollCollision(GameObject& object)
+void GearDrop::resolveBellTrollCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH || object.state == OBJECT_HITSTUN) {return;}
 
@@ -586,7 +586,7 @@ void StarDrop::resolveBellTrollCollision(GameObject& object)
 
 // Tiles
 
-void StarDrop::resolveSpikeCollision(const Collider& other_collider)
+void GearDrop::resolveSpikeCollision(const Collider& other_collider)
 {
     if(collider.isCollision(other_collider))
     {

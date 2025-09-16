@@ -14,6 +14,9 @@
 // Base Class
 #include "enemy.h"
 
+// Assets
+#include "bn_sprite_items_thorn_bar.h"
+
 #define THORN_BAR_COLLIDER_WIDTH    64
 #define THORN_BAR_COLLIDER_HEIGHT   16
 #define THORN_BAR_COLLIDER_OFFSET_X 0

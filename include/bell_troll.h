@@ -9,6 +9,9 @@
 // Base Class
 #include "enemy.h"
 
+// Assets
+#include "bn_sprite_items_bell_troll.h"
+
 //////////////////////
 // Struct BellTroll //
 //////////////////////

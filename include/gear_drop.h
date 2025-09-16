@@ -1,5 +1,5 @@
-#ifndef STAR_DROP_H
-#define STAR_DROP_H
+#ifndef GEAR_DROP_H
+#define GEAR_DROP_H
 
 // Butano
 
@@ -9,40 +9,43 @@
 // Base Class
 #include "game_object.h"
 
+// Assets
+#include "bn_sprite_items_gear_drop.h"
+
 /////////////////////
-// Struct StarDrop //
+// Struct GearDrop //
 /////////////////////
 
-#define STAR_DROP_COLLIDER_WIDTH  16
-#define STAR_DROP_COLLIDER_HEIGHT 10
+#define GEAR_DROP_COLLIDER_WIDTH  16
+#define GEAR_DROP_COLLIDER_HEIGHT 14
 
-#define STAR_DROP_COLLIDER_OFFSET_X 0
-#define STAR_DROP_COLLIDER_OFFSET_Y 0
+#define GEAR_DROP_COLLIDER_OFFSET_X 0
+#define GEAR_DROP_COLLIDER_OFFSET_Y 0
 
-#define STAR_DROP_HITPOINTS 5
+#define GEAR_DROP_HITPOINTS 5
 
-#define STAR_DROP_30_FPS false
+#define GEAR_DROP_30_FPS false
 
-#define STAR_DROP_VALUE 1
+#define GEAR_DROP_VALUE 1
 
-#define STAR_DROP_STARTING_INVULN_FRAMES 20
+#define GEAR_DROP_GEARTING_INVULN_FRAMES 20
 
-#define STAR_DROP_SPAWN_Y_FORCE    -6
-#define STAR_DROP_SPAWN_FORCE_DECAY 0.05
+#define GEAR_DROP_SPAWN_Y_FORCE    -6
+#define GEAR_DROP_SPAWN_FORCE_DECAY 0.05
 
-#define STAR_DROP_SPAWN_FORCE Force(bn::fixed_point_t<12>(0, STAR_DROP_SPAWN_Y_FORCE), STAR_DROP_SPAWN_FORCE_DECAY)
+#define GEAR_DROP_SPAWN_FORCE Force(bn::fixed_point_t<12>(0, GEAR_DROP_SPAWN_Y_FORCE), GEAR_DROP_SPAWN_FORCE_DECAY)
 
-struct StarDrop : GameObject {
+struct GearDrop : GameObject {
 
     /////////////////////
-    // Struct StarDrop //
+    // Struct GearDrop //
     /////////////////////
 
-    StarDrop();
-    StarDrop(const StarDrop& other);
-    ~StarDrop();
+    GearDrop();
+    GearDrop(const GearDrop& other);
+    ~GearDrop();
 
-    StarDrop& operator =(const StarDrop& other);
+    GearDrop& operator =(const GearDrop& other);
 
     //////////////////////////
     // GameObject Overrides //

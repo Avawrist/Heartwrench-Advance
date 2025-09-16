@@ -9,6 +9,9 @@
 // Base Class
 #include "game_object.h"
 
+// Assets
+#include "bn_sprite_items_old_moon_drop.h"
+
 ////////////////////////
 // Struct OldMoonDrop //
 ////////////////////////

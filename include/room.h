@@ -41,7 +41,7 @@
 #include "moon_drop.h"
 #include "old_moon_drop.h"
 #include "skull_drop.h"
-#include "star_drop.h"
+#include "gear_drop.h"
 #include "checkpoint.h"
 #include "finish_seal.h"
 

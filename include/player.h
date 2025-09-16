@@ -12,6 +12,18 @@
 #include "hitbox.h"
 #include "phase_orb.h"
 
+// Assets
+#include "bn_sprite_items_player_idle.h"
+#include "bn_sprite_items_player_walk.h"
+#include "bn_sprite_items_player_jump.h"
+#include "bn_sprite_items_player_spin_attack.h"
+#include "bn_sprite_items_player_death.h"
+#include "bn_sprite_items_player_climb.h"
+#include "bn_sprite_items_player_bell_jump.h"
+#include "bn_sprite_items_player_ow.h"
+#include "bn_sprite_items_player_get.h"
+#include "bn_sprite_items_phase_marker.h"
+
 ///////////////////
 // Struct Player //
 ///////////////////
@@ -30,12 +42,12 @@
 #define PLAYER_FALL_STRETCH_H 0.75
 
 #define PLAYER_MAX_HITPOINTS      3
-#define PLAYER_STARTING_HITPOINTS 3
+#define PLAYER_GEARTING_HITPOINTS 3
 
 #define PLAYER_GET_HP_HITSTOP_FRAMES    10
 #define PLAYER_GET_MOON_HITSTOP_FRAMES  5
 #define PLAYER_GET_SKULL_HITSTOP_FRAMES 0
-#define PLAYER_GET_STAR_HITSTOP_FRAMES  0
+#define PLAYER_GET_GEAR_HITSTOP_FRAMES  0
 
 #define PLAYER_HIT_INVULNERABILITY_FRAMES 80
 
@@ -368,7 +380,7 @@ struct Player : GameObject {
 	void resolveMoonDropCollision(GameObject& object)            override;
 	void resolveOldMoonDropCollision(GameObject& object)         override;
 	void resolveSkullDropCollision(GameObject& object)           override;
-	void resolveStarDropCollision(GameObject& object)            override;
+	void resolveGearDropCollision(GameObject& object)            override;
 	void resolveFinishSealCollision(GameObject& object)          override;
 
 	// Level Enemies

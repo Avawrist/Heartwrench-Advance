@@ -9,6 +9,9 @@
 // Base Class
 #include "game_object.h"
 
+// Assets
+#include "bn_sprite_items_hp_drop.h"
+
 ///////////////////
 // Struct HPDrop //
 ///////////////////

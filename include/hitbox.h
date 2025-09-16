@@ -10,6 +10,9 @@
 // My libs
 #include "utility.h"
 
+// Assets
+#include "bn_sprite_items_hitbox.h"
+
 ///////////////////
 // Struct Hitbox //
 ///////////////////

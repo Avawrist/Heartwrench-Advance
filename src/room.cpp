@@ -210,8 +210,8 @@ int32 Room::addObject(ObjectRequest& object_request, const bn::camera_ptr& camer
             temp_object_ptr = new SkullDrop();
         break;
 
-        case STAR_DROP:
-            temp_object_ptr = new StarDrop();
+        case GEAR_DROP:
+            temp_object_ptr = new GearDrop();
         break;
 
         case CHECKPOINT:
@@ -479,12 +479,12 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             
         break;
 
-        case STAR_DROP:
+        case GEAR_DROP:
 
-            temp_object_ptr = new StarDrop();
+            temp_object_ptr = new GearDrop();
             _is_persistent  = true;
             // Special Case: 
-            // Star Drops added in through the Level Editor are "frozen"
+            // Gear Drops added in through the Level Editor are "frozen"
             // and don't receive physics updates
             temp_object_ptr->is_frozen = true;
 

@@ -43,58 +43,6 @@
 #include "bn_sprite_items_enemy_death.h"
 #include "bn_sprite_items_block_death.h"
 
-// Level Object Assets
-#include "bn_sprite_items_tile_passage.h"
-#include "bn_sprite_items_phase_orb_up.h"
-#include "bn_sprite_items_phase_orb_down.h"
-#include "bn_sprite_items_phase_orb_left.h"
-#include "bn_sprite_items_phase_orb_right.h"
-#include "bn_sprite_items_falling_platform_wide.h"
-#include "bn_sprite_items_falling_platform_thin.h"
-#include "bn_sprite_items_push_block.h"
-#include "bn_sprite_items_push_block_mini.h"
-#include "bn_sprite_items_auto_platform.h"
-#include "bn_sprite_items_smash_block_large.h"
-#include "bn_sprite_items_smash_block_mini.h"
-#include "bn_sprite_items_smash_block_ziggurat_l.h"
-#include "bn_sprite_items_smash_block_ziggurat_c.h"
-#include "bn_sprite_items_smash_block_ziggurat_r.h"
-#include "bn_sprite_items_large_vase.h"
-#include "bn_sprite_items_small_vase.h"
-#include "bn_sprite_items_hp_totem.h"
-#include "bn_sprite_items_hp_drop.h"
-#include "bn_sprite_items_moon_drop.h"
-#include "bn_sprite_items_old_moon_drop.h"
-#include "bn_sprite_items_skull_drop.h"
-#include "bn_sprite_items_star_drop.h"
-#include "bn_sprite_items_checkpoint.h"
-#include "bn_sprite_items_finish_seal.h"
-#include "bn_sprite_items_bounce_bell.h"
-#include "bn_sprite_items_auto_bounce_bell.h"
-
-// Enemy Object Assets
-#include "bn_sprite_items_thorn_column.h"
-#include "bn_sprite_items_thorn_bar.h"
-#include "bn_sprite_items_ground_ghoul.h"
-#include "bn_sprite_items_bell_troll.h"
-#include "bn_sprite_items_winged_troll.h"
-
-// Prop Assets
-#include "bn_sprite_items_candelabra.h"
-
-// Special Object Assets
-#include "bn_sprite_items_hitbox.h"
-#include "bn_sprite_items_player_idle.h"
-#include "bn_sprite_items_player_walk.h"
-#include "bn_sprite_items_player_jump.h"
-#include "bn_sprite_items_player_spin_attack.h"
-#include "bn_sprite_items_player_death.h"
-#include "bn_sprite_items_player_climb.h"
-#include "bn_sprite_items_player_bell_jump.h"
-#include "bn_sprite_items_player_ow.h"
-#include "bn_sprite_items_player_get.h"
-#include "bn_sprite_items_phase_marker.h"
-
 ///////////////////////
 // Struct GameObject //
 ///////////////////////
@@ -196,7 +144,7 @@ enum ObjectType
 	MOON_DROP,
 	OLD_MOON_DROP,
 	SKULL_DROP,
-	STAR_DROP,
+	GEAR_DROP,
 	CHECKPOINT,
 	FINISH_SEAL,
 
@@ -486,7 +434,7 @@ struct GameObject
 	virtual void resolveMoonDropCollision(GameObject& object);
 	virtual void resolveOldMoonDropCollision(GameObject& object);
 	virtual void resolveSkullDropCollision(GameObject& object);
-	virtual void resolveStarDropCollision(GameObject& object);
+	virtual void resolveGearDropCollision(GameObject& object);
 	virtual void resolveCheckpointCollision(GameObject& object);
 	virtual void resolveFinishSealCollision(GameObject& object);
 
