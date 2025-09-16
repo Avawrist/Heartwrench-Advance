@@ -2126,7 +2126,7 @@ void Level::saveCurrentFile()
 
     //save_data_ptr->ow_player_location_x = global_ow_player_location_x;
     //save_data_ptr->ow_player_location_y = global_ow_player_location_y;
-    //save_data_ptr->moons_collected      = global_moons_collected;
+    save_data_ptr->moons_collected = global_moons_collected;
 
     save_data_ptr->troll_tolls_complete     = global_troll_tolls_complete;
     save_data_ptr->troll_tolls_room_3_moon  = global_troll_tolls_room_3_moon;
@@ -2149,7 +2149,7 @@ void Level::loadSave()
 
         //global_ow_player_location_x = save_data_ptr->ow_player_location_x;
         //global_ow_player_location_y = save_data_ptr->ow_player_location_y;
-        //global_moons_collected = save_data_ptr->moons_collected;
+        global_moons_collected = save_data_ptr->moons_collected;
 
         global_troll_tolls_room_3_moon  = save_data_ptr->troll_tolls_room_3_moon;
         global_troll_tolls_room_5_moon  = save_data_ptr->troll_tolls_room_5_moon;
