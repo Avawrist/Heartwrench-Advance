@@ -2356,31 +2356,16 @@ void Player::resolveHPDropCollision(GameObject& object)
 	}
 }
 
-void Player::resolveMoonDropCollision(GameObject& object)
+void Player::resolveStarJarCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH || (!object.is_frozen && object.invulnerability_frames)) {return;}
 	
 	if(collider.isCollision(object.collider))
     {	
-		global_hitstop_frames = PLAYER_GET_MOON_HITSTOP_FRAMES;
+		global_hitstop_frames = PLAYER_GET_STAR_HITSTOP_FRAMES;
 		object.setState(OBJECT_DEATH);
 
 		setState(PLAYER_GET);
-	}
-}
-
-void Player::resolveOldMoonDropCollision(GameObject& object)
-{
-	if(object.state == OBJECT_DEATH || (!object.is_frozen && object.invulnerability_frames)) {return;}
-	
-	if(collider.isCollision(object.collider))
-    {	
-		global_level_currency += object.damage;
-
-		global_hitstop_frames            = PLAYER_GET_GEAR_HITSTOP_FRAMES;
-		global_hud_currency_flash_frames = HUD_FLASH_FRAMES;
-
-		object.setState(OBJECT_DEATH);
 	}
 }
 

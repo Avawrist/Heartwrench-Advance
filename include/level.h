@@ -70,15 +70,15 @@ struct SaveData
     int32  ow_player_location_x;
     int32  ow_player_location_y;
     
-    uint8 moons_collected;
+    uint8 stars_collected;
 
     bool troll_tolls_complete;
-    bool troll_tolls_room_3_moon;
-    bool troll_tolls_room_5_moon;
-    bool troll_tolls_room_6_moon;
-    bool troll_tolls_room_7_moon;
-    bool troll_tolls_room_9_moon;
-    bool troll_tolls_room_13_moon;
+    bool troll_tolls_room_3_star;
+    bool troll_tolls_room_5_star;
+    bool troll_tolls_room_6_star;
+    bool troll_tolls_room_7_star;
+    bool troll_tolls_room_9_star;
+    bool troll_tolls_room_13_star;
 };
 
 //////////////////

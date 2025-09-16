@@ -122,14 +122,11 @@ room.o: G:/game/src/room.cpp G:/game/include/room.h \
  G:/game/build/bn_sprite_items_hitbox.h \
  G:/game/build/bn_sprite_items_small_vase.h G:/game/include/hp_totem.h \
  G:/game/build/bn_sprite_items_hp_totem.h G:/game/include/hp_drop.h \
- G:/game/build/bn_sprite_items_hp_drop.h G:/game/include/moon_drop.h \
- G:/game/build/bn_sprite_items_moon_drop.h \
- G:/game/include/old_moon_drop.h \
- G:/game/build/bn_sprite_items_old_moon_drop.h \
- G:/game/include/skull_drop.h G:/game/build/bn_sprite_items_skull_drop.h \
- G:/game/include/gear_drop.h G:/game/build/bn_sprite_items_gear_drop.h \
- G:/game/include/checkpoint.h G:/game/build/bn_sprite_items_checkpoint.h \
- G:/game/include/finish_seal.h \
+ G:/game/build/bn_sprite_items_hp_drop.h G:/game/include/star_jar.h \
+ G:/game/build/bn_sprite_items_star_jar.h G:/game/include/skull_drop.h \
+ G:/game/build/bn_sprite_items_skull_drop.h G:/game/include/gear_drop.h \
+ G:/game/build/bn_sprite_items_gear_drop.h G:/game/include/checkpoint.h \
+ G:/game/build/bn_sprite_items_checkpoint.h G:/game/include/finish_seal.h \
  G:/game/build/bn_sprite_items_finish_seal.h \
  G:/game/include/bounce_bell.h \
  G:/game/build/bn_sprite_items_bounce_bell.h \
@@ -289,10 +286,8 @@ G:/game/include/hp_totem.h:
 G:/game/build/bn_sprite_items_hp_totem.h:
 G:/game/include/hp_drop.h:
 G:/game/build/bn_sprite_items_hp_drop.h:
-G:/game/include/moon_drop.h:
-G:/game/build/bn_sprite_items_moon_drop.h:
-G:/game/include/old_moon_drop.h:
-G:/game/build/bn_sprite_items_old_moon_drop.h:
+G:/game/include/star_jar.h:
+G:/game/build/bn_sprite_items_star_jar.h:
 G:/game/include/skull_drop.h:
 G:/game/build/bn_sprite_items_skull_drop.h:
 G:/game/include/gear_drop.h:

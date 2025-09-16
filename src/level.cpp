@@ -1775,9 +1775,9 @@ void Level::freeObjects()
     {
         if(current_room.game_objects.at(i)->is_dead)
         {
-            // 0. If moon, log it.
-            if(current_room.game_objects.at(i)->object_type == MOON_DROP)
-            {current_room.setMoonCollected();}
+            // 0. If star, log it.
+            if(current_room.game_objects.at(i)->object_type == STAR_JAR)
+            {current_room.setStarCollected();}
 
             // 1. Update the UnloadedObject with the Unloaded ID:
             int32 object_id = current_room.game_objects.at(i)->object_id;
@@ -2126,15 +2126,15 @@ void Level::saveCurrentFile()
 
     //save_data_ptr->ow_player_location_x = global_ow_player_location_x;
     //save_data_ptr->ow_player_location_y = global_ow_player_location_y;
-    save_data_ptr->moons_collected = global_moons_collected;
+    save_data_ptr->stars_collected = global_stars_collected;
 
     save_data_ptr->troll_tolls_complete     = global_troll_tolls_complete;
-    save_data_ptr->troll_tolls_room_3_moon  = global_troll_tolls_room_3_moon;
-    save_data_ptr->troll_tolls_room_5_moon  = global_troll_tolls_room_5_moon;
-    save_data_ptr->troll_tolls_room_6_moon  = global_troll_tolls_room_6_moon;
-    save_data_ptr->troll_tolls_room_7_moon  = global_troll_tolls_room_7_moon;
-    save_data_ptr->troll_tolls_room_9_moon  = global_troll_tolls_room_9_moon;
-    save_data_ptr->troll_tolls_room_13_moon = global_troll_tolls_room_13_moon;
+    save_data_ptr->troll_tolls_room_3_star  = global_troll_tolls_room_3_star;
+    save_data_ptr->troll_tolls_room_5_star  = global_troll_tolls_room_5_star;
+    save_data_ptr->troll_tolls_room_6_star  = global_troll_tolls_room_6_star;
+    save_data_ptr->troll_tolls_room_7_star  = global_troll_tolls_room_7_star;
+    save_data_ptr->troll_tolls_room_9_star  = global_troll_tolls_room_9_star;
+    save_data_ptr->troll_tolls_room_13_star = global_troll_tolls_room_13_star;
 }
 
 void Level::loadSave()
@@ -2149,14 +2149,14 @@ void Level::loadSave()
 
         //global_ow_player_location_x = save_data_ptr->ow_player_location_x;
         //global_ow_player_location_y = save_data_ptr->ow_player_location_y;
-        global_moons_collected = save_data_ptr->moons_collected;
+        global_stars_collected = save_data_ptr->stars_collected;
 
-        global_troll_tolls_room_3_moon  = save_data_ptr->troll_tolls_room_3_moon;
-        global_troll_tolls_room_5_moon  = save_data_ptr->troll_tolls_room_5_moon;
-        global_troll_tolls_room_6_moon  = save_data_ptr->troll_tolls_room_6_moon;
-        global_troll_tolls_room_7_moon  = save_data_ptr->troll_tolls_room_7_moon;
-        global_troll_tolls_room_9_moon  = save_data_ptr->troll_tolls_room_9_moon;
-        global_troll_tolls_room_13_moon = save_data_ptr->troll_tolls_room_13_moon;
+        global_troll_tolls_room_3_star  = save_data_ptr->troll_tolls_room_3_star;
+        global_troll_tolls_room_5_star  = save_data_ptr->troll_tolls_room_5_star;
+        global_troll_tolls_room_6_star  = save_data_ptr->troll_tolls_room_6_star;
+        global_troll_tolls_room_7_star  = save_data_ptr->troll_tolls_room_7_star;
+        global_troll_tolls_room_9_star  = save_data_ptr->troll_tolls_room_9_star;
+        global_troll_tolls_room_13_star = save_data_ptr->troll_tolls_room_13_star;
     }
 }
 

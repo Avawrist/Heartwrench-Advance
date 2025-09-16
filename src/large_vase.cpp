@@ -132,7 +132,7 @@ void LargeVase::setState(ObjectState new_state)
 	{
 		case OBJECT_DEATH:
 
-            object_request = ObjectRequest(MOON_DROP, bn::fixed_point(x(), y()));
+            object_request = ObjectRequest(STAR_JAR, bn::fixed_point(x(), y()));
 
             sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
 			animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),

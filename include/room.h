@@ -38,8 +38,7 @@
 #include "small_vase.h"
 #include "hp_totem.h"
 #include "hp_drop.h"
-#include "moon_drop.h"
-#include "old_moon_drop.h"
+#include "star_jar.h"
 #include "skull_drop.h"
 #include "gear_drop.h"
 #include "checkpoint.h"
@@ -139,8 +138,8 @@ struct Room
     void updateIndexes();
     bn::point center();
 
-    void setMoonCollected();
-    bool moonIsCollected();
+    void setStarCollected();
+    bool starIsCollected();
 };
 
 #endif

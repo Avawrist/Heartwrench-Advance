@@ -141,8 +141,7 @@ enum ObjectType
 	SMALL_VASE,
 	HP_TOTEM,
 	HP_DROP,
-	MOON_DROP,
-	OLD_MOON_DROP,
+	STAR_JAR,
 	SKULL_DROP,
 	GEAR_DROP,
 	CHECKPOINT,
@@ -431,8 +430,7 @@ struct GameObject
 	virtual void resolveSmallVaseCollision(GameObject& object);
 	virtual void resolveHPTotemCollision(GameObject& object);
 	virtual void resolveHPDropCollision(GameObject& object);
-	virtual void resolveMoonDropCollision(GameObject& object);
-	virtual void resolveOldMoonDropCollision(GameObject& object);
+	virtual void resolveStarJarCollision(GameObject& object);
 	virtual void resolveSkullDropCollision(GameObject& object);
 	virtual void resolveGearDropCollision(GameObject& object);
 	virtual void resolveCheckpointCollision(GameObject& object);

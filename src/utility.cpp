@@ -36,15 +36,15 @@ bool global_bell_struck = false;
 int32 global_ow_player_location_x = 8;
 int32 global_ow_player_location_y = 120;
 
-uint8 global_moons_collected      = 0;
+uint8 global_stars_collected      = 0;
 
 bool global_troll_tolls_complete     = false;
-bool global_troll_tolls_room_3_moon  = false;
-bool global_troll_tolls_room_5_moon  = false;
-bool global_troll_tolls_room_6_moon  = false;
-bool global_troll_tolls_room_7_moon  = false;
-bool global_troll_tolls_room_9_moon  = false;
-bool global_troll_tolls_room_13_moon = false;
+bool global_troll_tolls_room_3_star  = false;
+bool global_troll_tolls_room_5_star  = false;
+bool global_troll_tolls_room_6_star  = false;
+bool global_troll_tolls_room_7_star  = false;
+bool global_troll_tolls_room_9_star  = false;
+bool global_troll_tolls_room_13_star = false;
 
 // Functions
 bool tileIsSolid(uint32 tile_index)

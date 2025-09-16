@@ -1,5 +1,5 @@
-#ifndef OLD_MOON_DROP_H
-#define OLD_MOON_DROP_H
+#ifndef STAR_JAR_H
+#define STAR_JAR_H
 
 // Butano
 
@@ -10,42 +10,42 @@
 #include "game_object.h"
 
 // Assets
-#include "bn_sprite_items_old_moon_drop.h"
+#include "bn_sprite_items_star_jar.h"
 
-////////////////////////
-// Struct OldMoonDrop //
-////////////////////////
+/////////////////////
+// Struct StarJar //
+/////////////////////
 
-#define OLD_MOON_DROP_COLLIDER_WIDTH  16
-#define OLD_MOON_DROP_COLLIDER_HEIGHT 16
+#define STAR_JAR_COLLIDER_WIDTH  16
+#define STAR_JAR_COLLIDER_HEIGHT 16
 
-#define OLD_MOON_DROP_COLLIDER_OFFSET_X 0
-#define OLD_MOON_DROP_COLLIDER_OFFSET_Y 0
+#define STAR_JAR_COLLIDER_OFFSET_X 0
+#define STAR_JAR_COLLIDER_OFFSET_Y 0
 
-#define OLD_MOON_DROP_HITPOINTS 5
+#define STAR_JAR_HITPOINTS 5
 
-#define OLD_MOON_DROP_30_FPS false
+#define STAR_JAR_30_FPS false
 
-#define OLD_MOON_DROP_VALUE 3
+#define STAR_JAR_VALUE 0
 
-#define OLD_MOON_DROP_STARTING_INVULN_FRAMES 20
+#define STAR_JAR_STARTING_INVULN_FRAMES 20
 
-#define OLD_MOON_DROP_SPAWN_Y_FORCE    -6
-#define OLD_MOON_DROP_SPAWN_FORCE_DECAY 0.05
+#define STAR_JAR_SPAWN_Y_FORCE    -6
+#define STAR_JAR_SPAWN_FORCE_DECAY 0.05
 
-#define OLD_MOON_DROP_SPAWN_FORCE Force(bn::fixed_point_t<12>(0, OLD_MOON_DROP_SPAWN_Y_FORCE), OLD_MOON_DROP_SPAWN_FORCE_DECAY)
+#define STAR_JAR_SPAWN_FORCE Force(bn::fixed_point_t<12>(0, STAR_JAR_SPAWN_Y_FORCE), STAR_JAR_SPAWN_FORCE_DECAY)
 
-struct OldMoonDrop : GameObject {
+struct StarJar : GameObject {
 
-    ////////////////////////
-    // Struct OldMoonDrop //
-    ////////////////////////
+    /////////////////////
+    // Struct StarJar //
+    /////////////////////
 
-    OldMoonDrop();
-    OldMoonDrop(const OldMoonDrop& other);
-    ~OldMoonDrop();
+    StarJar();
+    StarJar(const StarJar& other);
+    ~StarJar();
 
-    OldMoonDrop& operator =(const OldMoonDrop& other);
+    StarJar& operator =(const StarJar& other);
 
     //////////////////////////
     // GameObject Overrides //

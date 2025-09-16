@@ -1,54 +1,54 @@
-#include "moon_drop.h"
+#include "star_jar.h"
 
 ///////////////////
-// Struct MoonDrop //
+// Struct StarJar //
 ///////////////////
 
-MoonDrop::MoonDrop()
+StarJar::StarJar()
 {
     // Init Assets //
-    object_type = MOON_DROP;
-    sprite_ptr  = bn::sprite_items::moon_drop.create_sprite(0, 0);
+    object_type = STAR_JAR;
+    sprite_ptr  = bn::sprite_items::star_jar.create_sprite(0, 0);
     sprite_ptr->set_z_order(ENEMY_Z_ORDER);
     default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								                                   2,
-								                                   bn::sprite_items::moon_drop.tiles_item(),
+								                                   bn::sprite_items::star_jar.tiles_item(),
 								                                   0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3,
 																   4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7);
 
     // Init Variables //
-    collider_offset_x = MOON_DROP_COLLIDER_OFFSET_X;
-    collider_offset_y = MOON_DROP_COLLIDER_OFFSET_Y;
+    collider_offset_x = STAR_JAR_COLLIDER_OFFSET_X;
+    collider_offset_y = STAR_JAR_COLLIDER_OFFSET_Y;
 	collider = Collider(x() + collider_offset_x, 
                         y() + collider_offset_y,
-                        MOON_DROP_COLLIDER_WIDTH, 
-                        MOON_DROP_COLLIDER_HEIGHT);
+                        STAR_JAR_COLLIDER_WIDTH, 
+                        STAR_JAR_COLLIDER_HEIGHT);
     collider_x_axis   = collider;
     collider_y_axis   = collider;
 
     setState(IDLE);
 
-    hitpoints  = MOON_DROP_HITPOINTS;
-    thirty_fps = MOON_DROP_30_FPS;
-    damage     = MOON_DROP_VALUE;
+    hitpoints  = STAR_JAR_HITPOINTS;
+    thirty_fps = STAR_JAR_30_FPS;
+    damage     = STAR_JAR_VALUE;
 
-	invulnerability_frames = MOON_DROP_STARTING_INVULN_FRAMES;
+	invulnerability_frames = STAR_JAR_STARTING_INVULN_FRAMES;
 
-	rigidbody.addForce(MOON_DROP_SPAWN_FORCE);
+	rigidbody.addForce(STAR_JAR_SPAWN_FORCE);
 }
 
-MoonDrop::MoonDrop(const MoonDrop& other) : GameObject(other)
+StarJar::StarJar(const StarJar& other) : GameObject(other)
 {
 
 }
 
-MoonDrop::~MoonDrop()
+StarJar::~StarJar()
 {
 
 }
 
-MoonDrop& MoonDrop::operator =(const MoonDrop& other)
+StarJar& StarJar::operator =(const StarJar& other)
 {
     return *this;
 }
@@ -57,7 +57,7 @@ MoonDrop& MoonDrop::operator =(const MoonDrop& other)
 // GameObject Overrides //
 //////////////////////////
 
-void MoonDrop::update(const RoomBounds& 							 room_bounds,
+void StarJar::update(const RoomBounds& 							 room_bounds,
                       bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
                       const bn::regular_bg_ptr&                      bg_ptr, 
                       const bn::span<const bn::regular_bg_map_cell>& cells,
@@ -151,7 +151,7 @@ void MoonDrop::update(const RoomBounds& 							 room_bounds,
 
 }
 
-void MoonDrop::setState(ObjectState new_state)
+void StarJar::setState(ObjectState new_state)
 {
     state = new_state;
 
@@ -160,10 +160,9 @@ void MoonDrop::setState(ObjectState new_state)
         case IDLE:
 
 			animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-																		2,
-																		bn::sprite_items::moon_drop.tiles_item(),
-																		0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3,
-																		4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7);
+																		3,
+																		bn::sprite_items::star_jar.tiles_item(),
+																		0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3);
 
         break;
 
@@ -172,12 +171,11 @@ void MoonDrop::setState(ObjectState new_state)
 
         case OBJECT_DEATH:
 
-			global_moons_collected++;
+			global_stars_collected++;
             animate_action_ptr  = bn::create_sprite_animate_action_once(sprite_ptr.value(),
                                                                         0,
-                                                                        bn::sprite_items::moon_drop.tiles_item(),
-                                                                        8, 8, 9, 9, 10, 10, 
-																		11, 11, 12, 12);
+                                                                        bn::sprite_items::star_jar.tiles_item(),
+                                                                        4, 4, 5, 5, 6, 6, 7, 7, 8, 8);
 
         break;
 
@@ -190,7 +188,7 @@ void MoonDrop::setState(ObjectState new_state)
 // State Function Overrides //
 //////////////////////////////
 
-void MoonDrop::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   game_objects,
+void StarJar::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   game_objects,
                                 const bn::regular_bg_ptr&                      bg_ptr, 
                                 const bn::span<const bn::regular_bg_map_cell>& cells,
                                 const bn::regular_bg_item&                     bg_item,
@@ -228,7 +226,7 @@ void MoonDrop::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   g
 /////////////////////////
 
 // Level Objects
-void MoonDrop::resolveTilePassageCollision(GameObject& object)
+void StarJar::resolveTilePassageCollision(GameObject& object)
 {
 	if(object.state == TILE_PASSAGE_SHUT &&
 	   collider.isCollision(object.collider))
@@ -253,7 +251,7 @@ void MoonDrop::resolveTilePassageCollision(GameObject& object)
 	{grounded_detected = true;}
 }
 
-void MoonDrop::resolveFallingPlatformWideCollision(GameObject& object)
+void StarJar::resolveFallingPlatformWideCollision(GameObject& object)
 {
 	if(rigidbody.normalized_dir.y() >= 0 &&
 	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
@@ -277,7 +275,7 @@ void MoonDrop::resolveFallingPlatformWideCollision(GameObject& object)
 	}
 }
 
-void MoonDrop::resolveFallingPlatformThinCollision(GameObject& object)
+void StarJar::resolveFallingPlatformThinCollision(GameObject& object)
 {
 	if(rigidbody.normalized_dir.y() >= 0 &&
 	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
@@ -301,7 +299,7 @@ void MoonDrop::resolveFallingPlatformThinCollision(GameObject& object)
 	}
 }
 
-void MoonDrop::resolvePushBlockCollision(GameObject& object)
+void StarJar::resolvePushBlockCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
@@ -329,7 +327,7 @@ void MoonDrop::resolvePushBlockCollision(GameObject& object)
 	}
 }
 
-void MoonDrop::resolvePushBlockMiniCollision(GameObject& object)
+void StarJar::resolvePushBlockMiniCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
@@ -357,7 +355,7 @@ void MoonDrop::resolvePushBlockMiniCollision(GameObject& object)
 	}
 }
 
-void MoonDrop::resolveAutoPlatformCollision(GameObject& object)
+void StarJar::resolveAutoPlatformCollision(GameObject& object)
 {
 	if(rigidbody.normalized_dir.y() >= 0 &&
 	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
@@ -381,7 +379,7 @@ void MoonDrop::resolveAutoPlatformCollision(GameObject& object)
 	}
 }
 
-void MoonDrop::resolveSmashBlockLargeCollision(GameObject& object)
+void StarJar::resolveSmashBlockLargeCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
@@ -409,7 +407,7 @@ void MoonDrop::resolveSmashBlockLargeCollision(GameObject& object)
 	}
 }
 
-void MoonDrop::resolveSmashBlockMiniCollision(GameObject& object)
+void StarJar::resolveSmashBlockMiniCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
@@ -437,7 +435,7 @@ void MoonDrop::resolveSmashBlockMiniCollision(GameObject& object)
 	}
 }
 
-void MoonDrop::resolveSmashBlockZigguratLCollision(GameObject& object)
+void StarJar::resolveSmashBlockZigguratLCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
@@ -465,7 +463,7 @@ void MoonDrop::resolveSmashBlockZigguratLCollision(GameObject& object)
 	}
 }
 
-void MoonDrop::resolveSmashBlockZigguratCCollision(GameObject& object)
+void StarJar::resolveSmashBlockZigguratCCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
@@ -493,7 +491,7 @@ void MoonDrop::resolveSmashBlockZigguratCCollision(GameObject& object)
 	}
 }
 
-void MoonDrop::resolveSmashBlockZigguratRCollision(GameObject& object)
+void StarJar::resolveSmashBlockZigguratRCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
@@ -521,7 +519,7 @@ void MoonDrop::resolveSmashBlockZigguratRCollision(GameObject& object)
 	}
 }
 
-void MoonDrop::resolveHPTotemCollision(GameObject& object)
+void StarJar::resolveHPTotemCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
@@ -551,7 +549,7 @@ void MoonDrop::resolveHPTotemCollision(GameObject& object)
 
 // Enemies
 
-void MoonDrop::resolveBellTrollCollision(GameObject& object)
+void StarJar::resolveBellTrollCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH || object.state == OBJECT_HITSTUN) {return;}
 
@@ -590,7 +588,7 @@ void MoonDrop::resolveBellTrollCollision(GameObject& object)
 
 // Tiles
 
-void MoonDrop::resolveSpikeCollision(const Collider& other_collider)
+void StarJar::resolveSpikeCollision(const Collider& other_collider)
 {
     if(collider.isCollision(other_collider))
     {

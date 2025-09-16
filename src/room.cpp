@@ -202,8 +202,8 @@ int32 Room::addObject(ObjectRequest& object_request, const bn::camera_ptr& camer
             temp_object_ptr = new HPDrop();
         break;
 
-        case MOON_DROP:
-            temp_object_ptr = new MoonDrop();
+        case STAR_JAR:
+            temp_object_ptr = new StarJar();
         break;
 
         case SKULL_DROP:
@@ -442,26 +442,16 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             temp_object_ptr->is_frozen = true;
         break;
 
-        case MOON_DROP:
+        case STAR_JAR:
 
-            // Don't add the Moon if it's already been collected.
-            if(moonIsCollected())
+            // Don't add the Star if it's already been collected.
+            if(!starIsCollected())
             {
-                temp_object_ptr = new OldMoonDrop();
+                temp_object_ptr = new StarJar();
                 _is_persistent  = true;
 
                 // Special Case: 
-                // Moon Drops added in through the Level Editor are "frozen"
-                // and don't receive physics updates
-                temp_object_ptr->is_frozen = true;
-            }
-            else
-            {
-                temp_object_ptr = new MoonDrop();
-                _is_persistent  = true;
-
-                // Special Case: 
-                // Moon Drops added in through the Level Editor are "frozen"
+                // Star Drops added in through the Level Editor are "frozen"
                 // and don't receive physics updates
                 temp_object_ptr->is_frozen = true;
             }
@@ -1119,7 +1109,7 @@ bn::point Room::center()
     return(room_bounds.center());
 }
 
-void Room::setMoonCollected()
+void Room::setStarCollected()
 {
     switch(room_name)
     {   
@@ -1140,7 +1130,7 @@ void Room::setMoonCollected()
 
         case ROOM_TROLL_TOLLS_3:
 
-            global_troll_tolls_room_3_moon = true;
+            global_troll_tolls_room_3_star = true;
 
         break;
 
@@ -1149,19 +1139,19 @@ void Room::setMoonCollected()
 
         case ROOM_TROLL_TOLLS_5:
 
-            global_troll_tolls_room_5_moon = true;
+            global_troll_tolls_room_5_star = true;
 
         break;
 
         case ROOM_TROLL_TOLLS_6:
 
-            global_troll_tolls_room_6_moon = true;
+            global_troll_tolls_room_6_star = true;
 
         break;
 
         case ROOM_TROLL_TOLLS_7:
 
-            global_troll_tolls_room_7_moon = true;
+            global_troll_tolls_room_7_star = true;
 
         break;
 
@@ -1170,7 +1160,7 @@ void Room::setMoonCollected()
 
         case ROOM_TROLL_TOLLS_9:
 
-            global_troll_tolls_room_9_moon = true;
+            global_troll_tolls_room_9_star = true;
 
         break;
 
@@ -1185,7 +1175,7 @@ void Room::setMoonCollected()
 
         case ROOM_TROLL_TOLLS_13:
         
-            global_troll_tolls_room_13_moon = true;
+            global_troll_tolls_room_13_star = true;
 
         break;
 
@@ -1203,7 +1193,7 @@ void Room::setMoonCollected()
     }  
 }
 
-bool Room::moonIsCollected()
+bool Room::starIsCollected()
 {
     bool is_collected = false;
 
@@ -1226,7 +1216,7 @@ bool Room::moonIsCollected()
 
         case ROOM_TROLL_TOLLS_3:
 
-            if(global_troll_tolls_room_3_moon) {is_collected = true;}
+            if(global_troll_tolls_room_3_star) {is_collected = true;}
 
         break;
 
@@ -1235,19 +1225,19 @@ bool Room::moonIsCollected()
 
         case ROOM_TROLL_TOLLS_5:
 
-            if(global_troll_tolls_room_5_moon) {is_collected = true;}
+            if(global_troll_tolls_room_5_star) {is_collected = true;}
 
         break;
 
         case ROOM_TROLL_TOLLS_6:
 
-            if(global_troll_tolls_room_6_moon) {is_collected = true;}
+            if(global_troll_tolls_room_6_star) {is_collected = true;}
 
         break;
 
         case ROOM_TROLL_TOLLS_7:
 
-            if(global_troll_tolls_room_7_moon) {is_collected = true;}
+            if(global_troll_tolls_room_7_star) {is_collected = true;}
 
         break;
 
@@ -1256,7 +1246,7 @@ bool Room::moonIsCollected()
 
         case ROOM_TROLL_TOLLS_9:
 
-            if(global_troll_tolls_room_9_moon) {is_collected = true;}
+            if(global_troll_tolls_room_9_star) {is_collected = true;}
 
         break;
 
@@ -1271,7 +1261,7 @@ bool Room::moonIsCollected()
 
         case ROOM_TROLL_TOLLS_13:
         
-            if(global_troll_tolls_room_13_moon) {is_collected = true;}
+            if(global_troll_tolls_room_13_star) {is_collected = true;}
 
         break;
 

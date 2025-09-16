@@ -175,15 +175,15 @@ extern bool global_bell_struck;
 extern int32 global_ow_player_location_x;
 extern int32 global_ow_player_location_y;
 
-extern uint8 global_moons_collected;
+extern uint8 global_stars_collected;
 
 extern bool global_troll_tolls_complete;
-extern bool global_troll_tolls_room_3_moon;
-extern bool global_troll_tolls_room_5_moon;
-extern bool global_troll_tolls_room_6_moon;
-extern bool global_troll_tolls_room_7_moon;
-extern bool global_troll_tolls_room_9_moon;
-extern bool global_troll_tolls_room_13_moon;
+extern bool global_troll_tolls_room_3_star;
+extern bool global_troll_tolls_room_5_star;
+extern bool global_troll_tolls_room_6_star;
+extern bool global_troll_tolls_room_7_star;
+extern bool global_troll_tolls_room_9_star;
+extern bool global_troll_tolls_room_13_star;
 
 // Debug Mode
 #define DEBUG_BUILD false
