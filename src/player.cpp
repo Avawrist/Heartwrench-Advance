@@ -233,6 +233,8 @@ void Player::jump()
 	late_jump_grace_frames      = 0;
 	rigidbody.addForce(PLAYER_JUMP_FORCE);
 
+	bn::sound_items::jump.play();
+
 	setJumpAnimation();
 }
 

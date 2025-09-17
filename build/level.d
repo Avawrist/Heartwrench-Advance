@@ -110,6 +110,9 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/butano-master/butano/include/bn_profiler.h \
  G:/butano-master/butano/include/bn_config_profiler.h \
  G:/butano-master/butano/include/bn_unordered_map_fwd.h \
+ G:/game/build/bn_sound_items.h \
+ G:/butano-master/butano/include/bn_sound_item.h \
+ G:/butano-master/butano/include/bn_sound_handle.h \
  G:/game/include/physics.h \
  G:/game/build/bn_sprite_palette_items_sprite_white_palette.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
@@ -299,6 +302,9 @@ G:/butano-master/butano/include/bn_keypad.h:
 G:/butano-master/butano/include/bn_profiler.h:
 G:/butano-master/butano/include/bn_config_profiler.h:
 G:/butano-master/butano/include/bn_unordered_map_fwd.h:
+G:/game/build/bn_sound_items.h:
+G:/butano-master/butano/include/bn_sound_item.h:
+G:/butano-master/butano/include/bn_sound_handle.h:
 G:/game/include/physics.h:
 G:/game/build/bn_sprite_palette_items_sprite_white_palette.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:

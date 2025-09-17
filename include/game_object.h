@@ -9,6 +9,8 @@
 #include "bn_profiler.h"
 #include "bn_random.h"
 
+#include "bn_sound_items.h"
+
 #include "bn_sprite_ptr.h"
 #include "bn_sprite_animate_actions.h"
 #include "bn_sprite_palette_ptr.h"
@@ -35,7 +37,7 @@
 #include "bn_sprite_palette_items_player_flash_palette.h"
 #include "bn_sprite_palette_items_sprite_spin_effect_palette.h"
 
-// Effect Assets
+// Effect Sprite Assets
 #include "bn_sprite_items_hit_effect.h"
 #include "bn_sprite_items_wall_jump_effect.h"
 #include "bn_sprite_items_wall_splat_effect.h"

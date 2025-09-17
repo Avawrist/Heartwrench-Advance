@@ -112,7 +112,10 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/butano-master/butano/include/bn_value_template_actions.h \
  G:/game/build/bn_sprite_items_alphabet.h G:/game/include/room.h \
  G:/game/include/room_bounds.h G:/game/include/collider.h \
- G:/game/include/game_object.h G:/game/include/physics.h \
+ G:/game/include/game_object.h G:/game/build/bn_sound_items.h \
+ G:/butano-master/butano/include/bn_sound_item.h \
+ G:/butano-master/butano/include/bn_sound_handle.h \
+ G:/game/include/physics.h \
  G:/game/build/bn_sprite_palette_items_sprite_white_palette.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h \
@@ -305,6 +308,9 @@ G:/game/include/room.h:
 G:/game/include/room_bounds.h:
 G:/game/include/collider.h:
 G:/game/include/game_object.h:
+G:/game/build/bn_sound_items.h:
+G:/butano-master/butano/include/bn_sound_item.h:
+G:/butano-master/butano/include/bn_sound_handle.h:
 G:/game/include/physics.h:
 G:/game/build/bn_sprite_palette_items_sprite_white_palette.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:

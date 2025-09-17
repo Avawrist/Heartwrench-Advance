@@ -57,6 +57,9 @@ winged_troll_l.o: G:/game/src/winged_troll_l.cpp \
  G:/butano-master/butano/include/bn_unordered_map_fwd.h \
  G:/butano-master/butano/include/bn_random.h \
  G:/butano-master/butano/include/bn_limits.h \
+ G:/game/build/bn_sound_items.h \
+ G:/butano-master/butano/include/bn_sound_item.h \
+ G:/butano-master/butano/include/bn_sound_handle.h \
  G:/butano-master/butano/include/bn_sprite_ptr.h \
  G:/butano-master/butano/include/bn_sprite_animate_actions.h \
  G:/butano-master/butano/include/bn_vector.h \
@@ -150,6 +153,9 @@ G:/butano-master/butano/include/bn_config_profiler.h:
 G:/butano-master/butano/include/bn_unordered_map_fwd.h:
 G:/butano-master/butano/include/bn_random.h:
 G:/butano-master/butano/include/bn_limits.h:
+G:/game/build/bn_sound_items.h:
+G:/butano-master/butano/include/bn_sound_item.h:
+G:/butano-master/butano/include/bn_sound_handle.h:
 G:/butano-master/butano/include/bn_sprite_ptr.h:
 G:/butano-master/butano/include/bn_sprite_animate_actions.h:
 G:/butano-master/butano/include/bn_vector.h:
