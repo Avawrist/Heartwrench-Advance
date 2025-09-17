@@ -1,6 +1,3 @@
-// License
-#include "../licenses/heartwrench_advance.txt"
-
 // Butano
 #include "bn_sprites.h"
 #include "bn_log.h"

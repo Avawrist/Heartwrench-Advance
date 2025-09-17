@@ -1,5 +1,4 @@
-main.o: G:/game/src/main.cpp G:/game/licenses/heartwrench_advance.txt \
- G:/butano-master/butano/include/bn_sprites.h \
+main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/butano-master/butano/hw/include/bn_hw_sprites_constants.h \
  G:/butano-master/butano/include/bn_common.h \
  G:/butano-master/butano/hw/include/bn_hw_common.h \
@@ -189,7 +188,6 @@ main.o: G:/game/src/main.cpp G:/game/licenses/heartwrench_advance.txt \
  G:/game/build/bn_sprite_items_player_entrance.h \
  G:/game/build/bn_sprite_items_player_get.h \
  G:/game/build/bn_sprite_items_phase_marker.h
-G:/game/licenses/heartwrench_advance.txt:
 G:/butano-master/butano/include/bn_sprites.h:
 G:/butano-master/butano/hw/include/bn_hw_sprites_constants.h:
 G:/butano-master/butano/include/bn_common.h:
