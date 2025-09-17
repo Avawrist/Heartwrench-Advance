@@ -1,0 +1,1 @@
+player_entrance_bn_gfx.o: player_entrance_bn_gfx.s

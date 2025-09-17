@@ -589,6 +589,31 @@ void Enemy::resolveAutoBounceBellCollision(GameObject& object)
     }
 }
 
+void Enemy::resolveScrewCollision(GameObject& object)
+{
+	if(object.state == OBJECT_DEATH) {return;}
+
+    if(rigidbody.normalized_dir.y() >= 0 &&
+       collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
+	{
+        // Resolve Collision //
+        while(collider_y_axis.isCollision(object.collider))
+        {
+            collider_y_axis.setY(collider_y_axis.y() - 1);
+            setY(this->y() - 1);
+        }
+	}
+
+    updateTestColliders();
+
+	if(test_collider.isCollision(object.collider) &&
+	   rigidbody.normalized_dir.y() >= 0          &&
+       test_collider.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
+	{
+		grounded_detected = true;
+		rigidbody.removeYForces();
+	}	
+}
 
 // Level Enemies
 void Enemy::resolveThornColumnCollision(GameObject& object)

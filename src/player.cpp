@@ -28,8 +28,6 @@ Player::Player()
 	collider_offset_x   = PLAYER_COLLIDER_OFFSET_X;
 	collider_offset_y   = PLAYER_COLLIDER_OFFSET_Y;
     
-	state             	 = PLAYER_AIR_NEUTRAL;
-
     x_speed        	  	 = PLAYER_MIN_X_SPEED;
 	phase_destination    = bn::fixed_point(0, 0);
 	ow_target_pos        = bn::fixed_point(global_ow_player_location_x,
@@ -96,6 +94,8 @@ Player::Player()
 	spin_effect_sprite_1_ptr->set_palette(sprite_spin_effect_palette);
 	spin_effect_sprite_2_ptr->set_palette(sprite_spin_effect_palette);
 	spin_effect_sprite_3_ptr->set_palette(sprite_spin_effect_palette);
+
+	setState(PLAYER_ENTRANCE);
 }
 
 Player::Player(const Player& other) : GameObject(other)
@@ -600,12 +600,12 @@ void Player::setOWIdleAnimation()
 	temp_sprite_ptr.reset();
 
 	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-															      0,
-															      bn::sprite_items::player_ow.tiles_item(),
-															      0, 0);
+															   0,
+															   bn::sprite_items::player_ow.tiles_item(),
+															   PLAYER_OW_DOWN_FRAME, PLAYER_OW_DOWN_FRAME);
 }
 
-void Player::setOWWalkAnimation()
+void Player::setEntranceAnimation()
 {
 	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_ow.create_sprite(sprite_ptr->x().integer(), 
 																				  			 sprite_ptr->y().integer());
@@ -618,9 +618,10 @@ void Player::setOWWalkAnimation()
 	temp_sprite_ptr.reset();
 
 	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-															   2,
-															   bn::sprite_items::player_ow.tiles_item(),
-														   	   1, 1, 0, 0, 2, 2, 0, 0);
+															   1,
+															   bn::sprite_items::player_entrance.tiles_item(),
+															   0, 0, 1, 1, 2, 2, 3, 3, 
+															   4, 4, 5, 5, 6, 6, 7, 7);	
 }
 
 void Player::setGetAnimation()
@@ -1514,16 +1515,10 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			
 			// Walk
 			if(bn::keypad::left_held())       
-			{
-				rigidbody.addForce(PLAYER_X_LEFT_FORCE);
-				if(!late_spin_jump_grace_frames) {x_dir = LEFT;}
-			}
+			{rigidbody.addForce(PLAYER_X_LEFT_FORCE);}
 
 			else if(bn::keypad::right_held()) 
-			{
-				rigidbody.addForce(PLAYER_X_RIGHT_FORCE); 
-				if(!late_spin_jump_grace_frames) {x_dir = RIGHT;}
-			}
+			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE);}
 
 			// Spin Jump
 			if((bn::keypad::a_pressed() || a_requested || jump_buffered_frames)) {spinJump();}
@@ -1651,24 +1646,53 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 			if(pos() == ow_target_pos)
 			{
-				if(animate_action_ptr->done()) {setOWIdleAnimation();}
-
 				if(bn::keypad::left_held())
-				{ow_target_pos.set_x(ow_target_pos.x().integer() - PLAYER_OW_STEP_DISTANCE);}
+				{
+					animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+																			   0,
+																			   bn::sprite_items::player_ow.tiles_item(),
+																			   PLAYER_OW_LEFT_FRAME, PLAYER_OW_LEFT_FRAME);
+
+					ow_target_pos.set_x(ow_target_pos.x().integer() - PLAYER_OW_STEP_DISTANCE);
+				}
 
 				else if(bn::keypad::right_held())
-				{ow_target_pos.set_x(ow_target_pos.x().integer() + PLAYER_OW_STEP_DISTANCE);}
+				{
+					animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+															0,
+															bn::sprite_items::player_ow.tiles_item(),
+															PLAYER_OW_RIGHT_FRAME, PLAYER_OW_RIGHT_FRAME);
+
+					ow_target_pos.set_x(ow_target_pos.x().integer() + PLAYER_OW_STEP_DISTANCE);
+				}
 
 				else if(bn::keypad::up_held())
 				{
+					animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+															0,
+															bn::sprite_items::player_ow.tiles_item(),
+															PLAYER_OW_UP_FRAME, PLAYER_OW_UP_FRAME);
+
 					if(!troll_tolls_highlighted || global_troll_tolls_complete)
 					{ow_target_pos.set_y(ow_target_pos.y().integer() - PLAYER_OW_STEP_DISTANCE);}
 				}
 
 				else if(bn::keypad::down_held())
-				{ow_target_pos.set_y(ow_target_pos.y().integer() + PLAYER_OW_STEP_DISTANCE);}
+				{
+					animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+															0,
+															bn::sprite_items::player_ow.tiles_item(),
+															PLAYER_OW_DOWN_FRAME, PLAYER_OW_DOWN_FRAME);
+
+					ow_target_pos.set_y(ow_target_pos.y().integer() + PLAYER_OW_STEP_DISTANCE);
+				}
 			}
-			else if(animate_action_ptr->done()) {setOWWalkAnimation();}
+
+		break;
+
+		case PLAYER_ENTRANCE:
+
+			if(animate_action_ptr->done()) {setState(NONE);}
 
 		break;
 
@@ -1719,13 +1743,11 @@ void Player::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_obj
 	overdrive = false;
 	if(global_level_currency >= PLAYER_OD_CURRENCY_REQUIRED) {overdrive = true;}
 
-	if(state != PLAYER_SPIN_ATTACK     &&
-	   state != PLAYER_CLIMB           &&
-	   state != PLAYER_PHASE_STEP      &&
-	   state != PLAYER_OW              &&
-	   state != PLAYER_GET             &&
-	   state != PLAYER_GET_EXTENDED    &&
-	   state != OBJECT_DEATH)
+	if(state == NONE                        ||
+	   state == OBJECT_HITSTUN              ||
+	   state == PLAYER_GROUNDED_NEUTRAL     ||
+	   state == PLAYER_WALK                 ||
+	   state == PLAYER_AIR_NEUTRAL)
 	{
 		ObjectState new_state = NONE;
 
@@ -1850,6 +1872,12 @@ void Player::setState(ObjectState new_state)
 
 		break;
 
+		case PLAYER_ENTRANCE:
+
+			setEntranceAnimation();
+
+		break;
+
 		case PLAYER_GET:
 
 			rigidbody.removeForces();
@@ -1866,6 +1894,9 @@ void Player::setState(ObjectState new_state)
 
 		case OBJECT_DEATH:
 
+			global_hitstop_frames     = PLAYER_DEATH_HITSTOP_FRAMES;
+			global_screenshake_frames = PLAYER_DEATH_HITSTOP_FRAMES;
+			
 			setDeathAnimation();
 
 		break;
@@ -2396,6 +2427,51 @@ void Player::resolveGearDropCollision(GameObject& object)
 		global_hud_currency_flash_frames = HUD_FLASH_FRAMES;
 
 		object.setState(OBJECT_DEATH);
+	}
+}
+
+void Player::resolveScrewCollision(GameObject& object)
+{	
+	if(object.state == OBJECT_DEATH) {return;}
+
+    if(rigidbody.normalized_dir.y() >= 0 &&
+       collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
+	{
+        // Resolve Collision //
+        while(collider_y_axis.isCollision(object.collider))
+        {
+            collider_y_axis.setY(collider_y_axis.y() - 1);
+            setY(this->y() - 1);
+        }
+	}
+
+    updateTestColliders();
+
+	if(test_collider.isCollision(object.collider) &&
+	   rigidbody.normalized_dir.y() >= 0          &&
+       test_collider.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
+	{
+		grounded_detected = true;
+		rigidbody.removeYForces();
+
+		// Screw down
+		if(state == PLAYER_SPIN_ATTACK       &&
+		   rigidbody.normalized_dir.x() == 0 &&
+		   global_timer % 4             == 0)
+		{
+			if(x_dir == RIGHT) 
+			{
+				setY(y() + PLAYER_SCREW_STEP);
+				object.setState(SCREW_DOWN);
+			}
+			else               
+			{
+				if(object.collider_offset_y > PLAYER_SCREW_MIN_Y_OFFSET) 
+				{setY(y() - PLAYER_SCREW_STEP);}
+				
+				object.setState(SCREW_UP);
+			}
+		}
 	}
 }
 

@@ -69,6 +69,7 @@ struct Enemy : GameObject
     void resolveFinishSealCollision(GameObject& object)          override;
     void resolveBounceBellCollision(GameObject& object)          override;
     void resolveAutoBounceBellCollision(GameObject& object)      override;
+    void resolveScrewCollision(GameObject& object)               override;
 
     // Level Enemies
     void resolveThornColumnCollision(GameObject& object)  override;

@@ -21,6 +21,7 @@
 #include "bn_sprite_items_player_climb.h"
 #include "bn_sprite_items_player_bell_jump.h"
 #include "bn_sprite_items_player_ow.h"
+#include "bn_sprite_items_player_entrance.h"
 #include "bn_sprite_items_player_get.h"
 #include "bn_sprite_items_phase_marker.h"
 
@@ -48,6 +49,8 @@
 #define PLAYER_GET_STAR_HITSTOP_FRAMES  5
 #define PLAYER_GET_SKULL_HITSTOP_FRAMES 0
 #define PLAYER_GET_GEAR_HITSTOP_FRAMES  0
+
+#define PLAYER_DEATH_HITSTOP_FRAMES 7
 
 #define PLAYER_HIT_INVULNERABILITY_FRAMES 80
 
@@ -104,7 +107,7 @@
 #define PLAYER_SQUISH_FRAMES_REQUIRED 4
 #define PLAYER_MAX_AIR_FRAMES         100
 
-// Phase Step Values
+// Object Interaction Values
 
 #define PLAYER_PHASE_STEP_MAX_DISTANCE PLAYER_COLLIDER_WIDTH * 6
 #define PLAYER_PHASE_STEP_SPEED        4
@@ -112,6 +115,9 @@
 #define PLAYER_PHASE_STEP_EXIT_Y_FORCE 8
 #define PLAYER_PHASE_STEP_EXIT_DECAY   0.05
 #define PLAYER_PHASE_JUMP_LOCKOUT_FRAMES 5
+
+#define PLAYER_SCREW_STEP          2
+#define PLAYER_SCREW_MIN_Y_OFFSET -1
 
 // Overdrive Values
 
@@ -135,9 +141,9 @@
 #define PLAYER_SPIN_1_Y_KNOCKBACK        0
 #define PLAYER_SPIN_1_KNOCKBACK_DECAY    0.05
 #define PLAYER_SPIN_1_DAMAGE             (1 + (uint32)overdrive)
-#define PLAYER_SPIN_1_HITSTOP_FRAMES     7
+#define PLAYER_SPIN_1_HITSTOP_FRAMES     5
 #define PLAYER_SPIN_1_HITSTUN_FRAMES     30
-#define PLAYER_SPIN_1_SCREENSHAKE_FRAMES 8
+#define PLAYER_SPIN_1_SCREENSHAKE_FRAMES 6
 #define PLAYER_SPIN_1_SCREENSHAKE_SEVERITY STRONG_SHAKE
 
 #define PLAYER_SPIN_2_X_OFFSET          -14
@@ -150,9 +156,9 @@
 #define PLAYER_SPIN_2_Y_KNOCKBACK        0
 #define PLAYER_SPIN_2_KNOCKBACK_DECAY    0.05
 #define PLAYER_SPIN_2_DAMAGE             (1 + (uint32)overdrive)
-#define PLAYER_SPIN_2_HITSTOP_FRAMES     7
+#define PLAYER_SPIN_2_HITSTOP_FRAMES     5
 #define PLAYER_SPIN_2_HITSTUN_FRAMES     30
-#define PLAYER_SPIN_2_SCREENSHAKE_FRAMES 8
+#define PLAYER_SPIN_2_SCREENSHAKE_FRAMES 6
 #define PLAYER_SPIN_2_SCREENSHAKE_SEVERITY STRONG_SHAKE
 
 #define PLAYER_V_COLLISION_MAX_GRACE_FRAMES 4
@@ -172,8 +178,12 @@
 #define PLAYER_OW_STEP_DECAY    1
 #define PLAYER_OW_SPEED         1
 
-// Forces
+#define PLAYER_OW_UP_FRAME    0
+#define PLAYER_OW_DOWN_FRAME  1
+#define PLAYER_OW_LEFT_FRAME  2
+#define PLAYER_OW_RIGHT_FRAME 3
 
+// Forces
 #define PLAYER_X_LEFT_FORCE  	     Force(bn::fixed_point_t<12>(-x_speed, 0), PLAYER_X_DECAY)
 #define PLAYER_X_RIGHT_FORCE 	     Force(bn::fixed_point_t<12>( x_speed, 0), PLAYER_X_DECAY)
 #define PLAYER_X_LEFT_DECAY_FORCE    Force(bn::fixed_point_t<12>(-x_speed, 0), X_SPEED_DECAY_RATE)
@@ -301,6 +311,7 @@ struct Player : GameObject {
 	void setClimbAnimation();
 	void setOWIdleAnimation();
 	void setOWWalkAnimation();
+	void setEntranceAnimation();
 	void setGetAnimation();
 	void setGetExtendedAnimation();
 
@@ -377,9 +388,10 @@ struct Player : GameObject {
     void resolveSmashBlockZigguratRCollision(GameObject& object) override;
 	void resolveHPTotemCollision(GameObject& object)             override;
 	void resolveHPDropCollision(GameObject& object)              override;
-	void resolveStarJarCollision(GameObject& object)            override;
+	void resolveStarJarCollision(GameObject& object)             override;
 	void resolveSkullDropCollision(GameObject& object)           override;
 	void resolveGearDropCollision(GameObject& object)            override;
+	void resolveScrewCollision(GameObject& object)               override;
 	void resolveFinishSealCollision(GameObject& object)          override;
 
 	// Level Enemies

@@ -36,7 +36,7 @@ bool global_bell_struck = false;
 int32 global_ow_player_location_x = 8;
 int32 global_ow_player_location_y = 120;
 
-uint8 global_stars_collected      = 0;
+uint8 global_stars_collected = 0;
 
 bool global_troll_tolls_complete     = false;
 bool global_troll_tolls_room_3_star  = false;

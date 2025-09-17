@@ -144,6 +144,7 @@ enum ObjectType
 	STAR_JAR,
 	SKULL_DROP,
 	GEAR_DROP,
+	SCREW,
 	CHECKPOINT,
 	FINISH_SEAL,
 
@@ -196,6 +197,10 @@ enum ObjectState
 	CHECKPOINT_ACTIVE,
 	CHECKPOINT_OVERWRITE,
 
+	// Screw
+	SCREW_UP,
+	SCREW_DOWN,
+
 	///////////////////
 	// Level Enemies //
 	///////////////////
@@ -221,6 +226,7 @@ enum ObjectState
 	PLAYER_CLIMB,
 	PLAYER_VICTORY,
 	PLAYER_OW,
+	PLAYER_ENTRANCE,
 	PLAYER_GET,
 	PLAYER_GET_EXTENDED,
 
@@ -433,6 +439,7 @@ struct GameObject
 	virtual void resolveStarJarCollision(GameObject& object);
 	virtual void resolveSkullDropCollision(GameObject& object);
 	virtual void resolveGearDropCollision(GameObject& object);
+	virtual void resolveScrewCollision(GameObject& object);
 	virtual void resolveCheckpointCollision(GameObject& object);
 	virtual void resolveFinishSealCollision(GameObject& object);
 

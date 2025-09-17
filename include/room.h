@@ -41,6 +41,7 @@
 #include "star_jar.h"
 #include "skull_drop.h"
 #include "gear_drop.h"
+#include "screw.h"
 #include "checkpoint.h"
 #include "finish_seal.h"
 

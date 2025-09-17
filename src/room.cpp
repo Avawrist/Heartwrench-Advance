@@ -214,6 +214,11 @@ int32 Room::addObject(ObjectRequest& object_request, const bn::camera_ptr& camer
             temp_object_ptr = new GearDrop();
         break;
 
+        case SCREW:
+            temp_object_ptr = new GearDrop();
+            priority_object = true;
+        break;
+
         case CHECKPOINT:
             temp_object_ptr = new Checkpoint();
         break;
@@ -455,6 +460,10 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
                 // and don't receive physics updates
                 temp_object_ptr->is_frozen = true;
             }
+            else
+            {
+                return -1;
+            }
 
         break;
 
@@ -477,6 +486,14 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             // Gear Drops added in through the Level Editor are "frozen"
             // and don't receive physics updates
             temp_object_ptr->is_frozen = true;
+
+        break;
+
+        case SCREW:
+
+            temp_object_ptr = new Screw();
+            priority_object = true;
+            _is_persistent   = true;
 
         break;
 

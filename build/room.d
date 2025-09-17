@@ -125,7 +125,8 @@ room.o: G:/game/src/room.cpp G:/game/include/room.h \
  G:/game/build/bn_sprite_items_hp_drop.h G:/game/include/star_jar.h \
  G:/game/build/bn_sprite_items_star_jar.h G:/game/include/skull_drop.h \
  G:/game/build/bn_sprite_items_skull_drop.h G:/game/include/gear_drop.h \
- G:/game/build/bn_sprite_items_gear_drop.h G:/game/include/checkpoint.h \
+ G:/game/build/bn_sprite_items_gear_drop.h G:/game/include/screw.h \
+ G:/game/build/bn_sprite_items_screw.h G:/game/include/checkpoint.h \
  G:/game/build/bn_sprite_items_checkpoint.h G:/game/include/finish_seal.h \
  G:/game/build/bn_sprite_items_finish_seal.h \
  G:/game/include/bounce_bell.h \
@@ -149,6 +150,7 @@ room.o: G:/game/src/room.cpp G:/game/include/room.h \
  G:/game/build/bn_sprite_items_player_climb.h \
  G:/game/build/bn_sprite_items_player_bell_jump.h \
  G:/game/build/bn_sprite_items_player_ow.h \
+ G:/game/build/bn_sprite_items_player_entrance.h \
  G:/game/build/bn_sprite_items_player_get.h \
  G:/game/build/bn_sprite_items_phase_marker.h
 G:/game/include/room.h:
@@ -292,6 +294,8 @@ G:/game/include/skull_drop.h:
 G:/game/build/bn_sprite_items_skull_drop.h:
 G:/game/include/gear_drop.h:
 G:/game/build/bn_sprite_items_gear_drop.h:
+G:/game/include/screw.h:
+G:/game/build/bn_sprite_items_screw.h:
 G:/game/include/checkpoint.h:
 G:/game/build/bn_sprite_items_checkpoint.h:
 G:/game/include/finish_seal.h:
@@ -324,5 +328,6 @@ G:/game/build/bn_sprite_items_player_death.h:
 G:/game/build/bn_sprite_items_player_climb.h:
 G:/game/build/bn_sprite_items_player_bell_jump.h:
 G:/game/build/bn_sprite_items_player_ow.h:
+G:/game/build/bn_sprite_items_player_entrance.h:
 G:/game/build/bn_sprite_items_player_get.h:
 G:/game/build/bn_sprite_items_phase_marker.h:
