@@ -19,6 +19,8 @@
 #include "bn_sprite_items_player_spin_attack.h"
 #include "bn_sprite_items_player_death.h"
 #include "bn_sprite_items_player_climb.h"
+#include "bn_sprite_items_player_wrench.h"
+#include "bn_sprite_items_player_door.h"
 #include "bn_sprite_items_player_bell_jump.h"
 #include "bn_sprite_items_player_ow.h"
 #include "bn_sprite_items_player_entrance.h"
@@ -118,6 +120,9 @@
 
 #define PLAYER_SCREW_STEP          2
 #define PLAYER_SCREW_MIN_Y_OFFSET -1
+
+#define PLAYER_SEALED_GATE_X_OFFSET     16
+#define PLAYER_WRENCH_PUMP_ACTION_FRAME 3
 
 // Overdrive Values
 
@@ -311,6 +316,9 @@ struct Player : GameObject {
 	void setSpinAttackAnimation();
 	void setDeathAnimation();
 	void setClimbAnimation();
+	void setWrenchIdleAnimation();
+	void setWrenchPumpAnimation();
+	void setDoorAnimation();
 	void setOWIdleAnimation();
 	void setOWWalkAnimation();
 	void setEntranceAnimation();
@@ -394,7 +402,7 @@ struct Player : GameObject {
 	void resolveSkullDropCollision(GameObject& object)           override;
 	void resolveGearDropCollision(GameObject& object)            override;
 	void resolveScrewCollision(GameObject& object)               override;
-	void resolveFinishSealCollision(GameObject& object)          override;
+	void resolveSealedGateCollision(GameObject& object)          override;
 
 	// Level Enemies
 	void resolveThornColumnCollision(GameObject& object) override; 

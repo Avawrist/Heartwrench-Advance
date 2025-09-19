@@ -99,11 +99,10 @@ Level::Level(const Level& other)
     player_spawn          = other.player_spawn;
     fade_in               = other.fade_in;
     fade_out              = other.fade_out;
-    death_fade_out        = other.death_fade_out;
+    soft_fade_out        = other.soft_fade_out;
     cam_is_scrolling      = other.cam_is_scrolling;
     menu_open             = other.menu_open;
     pause_requested       = other.pause_requested;
-    level_complete        = other.level_complete;
 
     cam_x_offset          = other.cam_x_offset;
     cam_y_offset          = other.cam_y_offset;
@@ -180,11 +179,10 @@ void Level::operator =(const Level& other)
     player_spawn          = other.player_spawn;
     fade_in               = other.fade_in;
     fade_out              = other.fade_out;
-    death_fade_out        = other.death_fade_out;
+    soft_fade_out        = other.soft_fade_out;
     cam_is_scrolling      = other.cam_is_scrolling;
     menu_open             = other.menu_open;
     pause_requested       = other.pause_requested;
-    level_complete        = other.level_complete;
 
     cam_x_offset          = other.cam_x_offset;
     cam_y_offset          = other.cam_y_offset;
@@ -259,11 +257,12 @@ void Level::load()
 
     fade_in               = false;
     fade_out              = false;
-    death_fade_out        = false;
+    soft_fade_out        = false;
     cam_is_scrolling      = false;
     menu_open             = false;
     pause_requested       = false;
-    level_complete        = false;
+
+    global_current_level_complete = false;
 
     cam_x_offset          = 0;
     cam_y_offset          = 0;
@@ -579,11 +578,12 @@ void Level::load(LevelName level_name)
 
     fade_in               = false;
     fade_out              = false;
-    death_fade_out        = false;
+    soft_fade_out        = false;
     cam_is_scrolling      = false;
     menu_open             = false;
     pause_requested       = false;
-    level_complete        = false;
+
+    global_current_level_complete = false;
 
     cam_x_offset          = 0;
     cam_y_offset          = 0;
@@ -934,7 +934,7 @@ void Level::update()
              if(player_spawn.spawn_level == LEVEL_NAME_CARD)    {updateNameCard();}
         else if(player_spawn.spawn_level == LEVEL_TITLE_SCREEN) {updateTitleScreen();}
         else if(player_spawn.spawn_level == LEVEL_OVERWORLD)    {updateOverworld();}
-        else if(level_complete)                                 {updateLevelComplete();}
+        else if(global_current_level_complete)                  {updateLevelComplete();}
         else if(menu_open)                                      {updatePauseScreen();}
         else if(cam_is_scrolling)                               {updateCamera(); 
                                                                  updateCheckpoints();}
@@ -993,7 +993,7 @@ void Level::updateNameCard()
         transition_frames < 0)
     {
         // Start Fade and Level Transition
-        death_fade_out = true;
+        soft_fade_out = true;
         transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
 
         // Music
@@ -1036,7 +1036,7 @@ void Level::updateTitleScreen()
         loadSave();
 
         // Start Fade and Level Transition
-        death_fade_out = true;
+        soft_fade_out = true;
         transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
 
         painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
@@ -1125,22 +1125,6 @@ void Level::updateObjects()
             // Update spawn point //
             if(current_room.game_objects.data()[i]->object_type == CHECKPOINT)
             {updateCheckpoint((Checkpoint*)current_room.game_objects.data()[i]);}
-
-            // Check if level complete //
-            else if(current_room.game_objects.data()[i]->object_type == FINISH_SEAL)
-            {
-                if(((FinishSeal*)current_room.game_objects.data()[i])->level_complete)
-                {
-                    // Close menu if open
-                    if(menu_open) {togglePauseScreen();}
-
-                    // Set player Get animation
-                    current_room.game_objects.data()[PLAYER_OBJECT_LIST_INDEX]->setState(PLAYER_GET_EXTENDED);
-
-                    // Mark complete to trigger transition
-                    level_complete = true;
-                }
-            }
         }   
     } 
 
@@ -1218,13 +1202,20 @@ void Level::updateCamera()
         ////////////////////////////////////
         // Determine camera Y look offset //
         ////////////////////////////////////
-        if(bn::keypad::up_held()        && temp_player_ptr->grounded_detected) {cam_look_y_offset--;}
-        else if(bn::keypad::down_held() && temp_player_ptr->grounded_detected) {cam_look_y_offset++;}
+        
+        if(temp_player_ptr->state == PLAYER_GROUNDED_NEUTRAL && bn::keypad::up_held())
+        {cam_look_y_offset--;}
+        else if(temp_player_ptr->state == PLAYER_GROUNDED_NEUTRAL && bn::keypad::down_held()) 
+        {cam_look_y_offset++;}
         else
         {
             if(cam_look_y_offset > 0)      {cam_look_y_offset--;}
             else if(cam_look_y_offset < 0) {cam_look_y_offset++;}
         }
+
+        ////////////////////////
+        // Clamp look offsets //
+        ////////////////////////
 
         cam_look_x_offset = clamp(-CAM_MAX_LOOK_X, CAM_MAX_LOOK_X, cam_look_x_offset);
         cam_look_dir_x_offset = clamp(-CAM_MAX_DIR_LOOK_X, CAM_MAX_DIR_LOOK_X, cam_look_dir_x_offset);
@@ -1560,7 +1551,7 @@ void Level::updateFade()
         // End condition
         if(default_main_palette_ptr->fade_intensity() == 0) {fade_in = false;}
     }
-    else if(death_fade_out)
+    else if(soft_fade_out)
     {
         // Fade objects out
         for(int32 i = 0; i < current_room.game_objects.size(); i++)
@@ -1660,7 +1651,7 @@ void Level::updateFade()
         pause_screen_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
 
         // End condition
-        if(default_main_palette_ptr->fade_intensity() == 1) {death_fade_out = false;}
+        if(default_main_palette_ptr->fade_intensity() == 1) {soft_fade_out = false;}
     }
     else if(fade_out)
     {
@@ -1776,7 +1767,7 @@ void Level::updateFade()
 void Level::updatePauseInputs()
 {
     // Toggle Pause Menu
-    if((bn::keypad::start_pressed() || pause_requested) && !level_complete)
+    if((bn::keypad::start_pressed() || pause_requested) && !global_current_level_complete)
     {
         pause_requested = false; 
         togglePauseScreen();
@@ -1901,9 +1892,11 @@ void Level::updateLevelComplete()
 {
     updateAll();
 
+    // Close menu if open
+    if(menu_open) {togglePauseScreen();}
+
     // If victory theme and player animation are both done, trigger transition:
-    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) != NULL &&
-       current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->animate_action_ptr->done())
+    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) != NULL && transition_frames == -1)
     {
         next_level        = LEVEL_OVERWORLD;
         fade_out          = true;
@@ -1919,7 +1912,7 @@ void Level::reloadOnDeath()
     if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->is_dead)
     {
         // Trigger the fade out
-        death_fade_out = true;
+        soft_fade_out = true;
 
         // If fade out is done, we can reload.
         if(default_painted_palette_ptr->fade_intensity() == 1)

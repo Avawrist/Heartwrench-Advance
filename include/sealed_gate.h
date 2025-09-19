@@ -1,5 +1,5 @@
-#ifndef FINISH_SEAL_H
-#define FINISH_SEAL_H
+#ifndef SEALED_GATE_H
+#define SEALED_GATE_H
 
 // Butano
 
@@ -10,35 +10,42 @@
 #include "game_object.h"
 
 // Assets
-#include "bn_sprite_items_finish_seal.h"
+#include "bn_sprite_items_sealed_gate.h"
 
 //////////////////////
-// Struct FinishSeal //
+// Struct SealedGate //
 //////////////////////
 
-#define FINISH_SEAL_COLLIDER_WIDTH  64
-#define FINISH_SEAL_COLLIDER_HEIGHT 64
+#define SEALED_GATE_COLLIDER_WIDTH  44
+#define SEALED_GATE_COLLIDER_HEIGHT 64
 
-#define FINISH_SEAL_COLLIDER_OFFSET_X 0
-#define FINISH_SEAL_COLLIDER_OFFSET_Y 0
+#define SEALED_GATE_COLLIDER_OFFSET_X -26
+#define SEALED_GATE_COLLIDER_OFFSET_Y 0
 
-#define FINISH_SEAL_HITPOINTS 3
+#define SEALED_GATE_COLLIDER_OPEN_OFFSET_X 0
+#define SEALED_GATE_COLLIDER_OPEN_OFFSET_Y 0
 
-#define FINISH_SEAL_30_FPS true
+#define SEALED_GATE_HITPOINTS 1
 
-struct FinishSeal : GameObject {
+#define SEALED_GATE_30_FPS false
 
-    //////////////////////
-    // Struct FinishSeal //
-    //////////////////////
+#define SEALED_GATE_MAX_FRAMES 4
 
-    bool level_complete;
+struct SealedGate : GameObject {
 
-    FinishSeal();
-    FinishSeal(const FinishSeal& other);
-    ~FinishSeal();
+    ///////////////////////
+    // Struct SealedGate //
+    ///////////////////////
 
-    FinishSeal& operator =(const FinishSeal& other);
+    SealedGate();
+    SealedGate(const SealedGate& other);
+    ~SealedGate();
+
+    SealedGate& operator =(const SealedGate& other);
+
+    void setOpen1Anim();
+    void setOpen2Anim();
+    void setOpen3Anim();
 
     //////////////////////////
     // GameObject Overrides //
@@ -50,8 +57,6 @@ struct FinishSeal : GameObject {
                 const bn::span<const bn::regular_bg_map_cell>& cells,
                 const bn::regular_bg_item&                     bg_item,
                 const bn::camera_ptr&                          camera) override;
-
-    void updateTimers() override;
 
     //////////////////////////////
     // State Function Overrides //

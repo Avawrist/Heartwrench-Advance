@@ -420,19 +420,6 @@ void Hitbox::resolveCheckpointCollision(GameObject& object)
 	}
 }
 
-void Hitbox::resolveFinishSealCollision(GameObject& object)
-{
-    if(object.state == OBJECT_DEATH || object.state == OBJECT_HITSTUN) {return;}
-
-    if(collider.isCollision(object.collider))
-    {
-        applyHBHit(object);
-
-        // SFX
-        bn::sound_items::generic_hit.play();
-    }
-}
-
 void Hitbox::resolveBounceBellCollision(GameObject& object)
 {
     if(object.state == OBJECT_HITSTUN) {return;}

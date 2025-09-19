@@ -164,8 +164,8 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/build/bn_sprite_items_skull_drop.h G:/game/include/gear_drop.h \
  G:/game/build/bn_sprite_items_gear_drop.h G:/game/include/screw.h \
  G:/game/build/bn_sprite_items_screw.h G:/game/include/checkpoint.h \
- G:/game/build/bn_sprite_items_checkpoint.h G:/game/include/finish_seal.h \
- G:/game/build/bn_sprite_items_finish_seal.h \
+ G:/game/build/bn_sprite_items_checkpoint.h G:/game/include/sealed_gate.h \
+ G:/game/build/bn_sprite_items_sealed_gate.h \
  G:/game/include/bounce_bell.h \
  G:/game/build/bn_sprite_items_bounce_bell.h \
  G:/game/include/auto_bounce_bell.h \
@@ -185,6 +185,8 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/build/bn_sprite_items_player_spin_attack.h \
  G:/game/build/bn_sprite_items_player_death.h \
  G:/game/build/bn_sprite_items_player_climb.h \
+ G:/game/build/bn_sprite_items_player_wrench.h \
+ G:/game/build/bn_sprite_items_player_door.h \
  G:/game/build/bn_sprite_items_player_bell_jump.h \
  G:/game/build/bn_sprite_items_player_ow.h \
  G:/game/build/bn_sprite_items_player_entrance.h \
@@ -372,8 +374,8 @@ G:/game/include/screw.h:
 G:/game/build/bn_sprite_items_screw.h:
 G:/game/include/checkpoint.h:
 G:/game/build/bn_sprite_items_checkpoint.h:
-G:/game/include/finish_seal.h:
-G:/game/build/bn_sprite_items_finish_seal.h:
+G:/game/include/sealed_gate.h:
+G:/game/build/bn_sprite_items_sealed_gate.h:
 G:/game/include/bounce_bell.h:
 G:/game/build/bn_sprite_items_bounce_bell.h:
 G:/game/include/auto_bounce_bell.h:
@@ -400,6 +402,8 @@ G:/game/build/bn_sprite_items_player_jump.h:
 G:/game/build/bn_sprite_items_player_spin_attack.h:
 G:/game/build/bn_sprite_items_player_death.h:
 G:/game/build/bn_sprite_items_player_climb.h:
+G:/game/build/bn_sprite_items_player_wrench.h:
+G:/game/build/bn_sprite_items_player_door.h:
 G:/game/build/bn_sprite_items_player_bell_jump.h:
 G:/game/build/bn_sprite_items_player_ow.h:
 G:/game/build/bn_sprite_items_player_entrance.h:

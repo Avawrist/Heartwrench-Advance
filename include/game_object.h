@@ -148,7 +148,7 @@ enum ObjectType
 	GEAR_DROP,
 	SCREW,
 	CHECKPOINT,
-	FINISH_SEAL,
+	SEALED_GATE,
 
 	BOUNCE_BELL,
 	AUTO_BOUNCE_BELL,
@@ -203,6 +203,11 @@ enum ObjectState
 	SCREW_UP,
 	SCREW_DOWN,
 
+	// Sealed Gate
+	SEALED_GATE_OPEN_1,
+	SEALED_GATE_OPEN_2,
+	SEALED_GATE_OPEN_3,
+
 	///////////////////
 	// Level Enemies //
 	///////////////////
@@ -226,6 +231,8 @@ enum ObjectState
 	PLAYER_PHASE_STEP,
 	PLAYER_SPIN_ATTACK,
 	PLAYER_CLIMB,
+	PLAYER_WRENCH,
+	PLAYER_DOOR,
 	PLAYER_VICTORY,
 	PLAYER_OW,
 	PLAYER_ENTRANCE,
@@ -443,7 +450,7 @@ struct GameObject
 	virtual void resolveGearDropCollision(GameObject& object);
 	virtual void resolveScrewCollision(GameObject& object);
 	virtual void resolveCheckpointCollision(GameObject& object);
-	virtual void resolveFinishSealCollision(GameObject& object);
+	virtual void resolveSealedGateCollision(GameObject& object);
 
 	virtual void resolveBounceBellCollision(GameObject& object);
 	virtual void resolveAutoBounceBellCollision(GameObject& object);

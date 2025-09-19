@@ -62,7 +62,7 @@
 #include "utility.h"
 #include "player.h"
 #include "checkpoint.h"
-#include "finish_seal.h"
+#include "sealed_gate.h"
 
 #define LEVEL_SFX_MASTER_VOLUME   0.6
 #define LEVEL_MUSIC_MAX_VOLUME    1.0
@@ -263,7 +263,7 @@ struct Level
     
     bool  fade_in;
     bool  fade_out;
-    bool  death_fade_out;
+    bool  soft_fade_out;
     bool  cam_is_scrolling;
     bool  menu_open;
     bool  pause_requested;

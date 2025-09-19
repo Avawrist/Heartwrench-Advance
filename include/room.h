@@ -43,7 +43,7 @@
 #include "gear_drop.h"
 #include "screw.h"
 #include "checkpoint.h"
-#include "finish_seal.h"
+#include "sealed_gate.h"
 
 #include "bounce_bell.h"
 #include "auto_bounce_bell.h"

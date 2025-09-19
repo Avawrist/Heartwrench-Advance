@@ -596,6 +596,60 @@ void Player::setClimbAnimation()
 																0, 0);
 }
 
+void Player::setWrenchIdleAnimation()
+{
+	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_wrench.create_sprite(sprite_ptr->x().integer(), 
+																				  				sprite_ptr->y().integer());
+	temp_sprite_ptr->set_camera(sprite_ptr->camera());
+	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
+	temp_sprite_ptr->set_visible(sprite_ptr->visible());
+
+	sprite_ptr->swap(temp_sprite_ptr.value());
+
+	temp_sprite_ptr.reset();
+
+	animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+																  0,
+																  bn::sprite_items::player_wrench.tiles_item(),
+																  0, 0);
+}
+
+void Player::setWrenchPumpAnimation()
+{
+	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_wrench.create_sprite(sprite_ptr->x().integer(), 
+																				  				 sprite_ptr->y().integer());
+	temp_sprite_ptr->set_camera(sprite_ptr->camera());
+	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
+	temp_sprite_ptr->set_visible(sprite_ptr->visible());
+
+	sprite_ptr->swap(temp_sprite_ptr.value());
+
+	temp_sprite_ptr.reset();
+
+	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+															   2,
+															   bn::sprite_items::player_wrench.tiles_item(),
+															   1, 1, 1, 2, 2, 2, 3, 3, 3);
+}
+
+void Player::setDoorAnimation()
+{
+	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_door.create_sprite(sprite_ptr->x().integer(), 
+																				  			   sprite_ptr->y().integer());
+	temp_sprite_ptr->set_camera(sprite_ptr->camera());
+	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
+	temp_sprite_ptr->set_visible(sprite_ptr->visible());
+
+	sprite_ptr->swap(temp_sprite_ptr.value());
+
+	temp_sprite_ptr.reset();
+
+	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+															   0,
+															   bn::sprite_items::player_door.tiles_item(),
+															   0, 0);
+}
+
 void Player::setOWIdleAnimation()
 {
 	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_ow.create_sprite(sprite_ptr->x().integer(), 
@@ -616,7 +670,7 @@ void Player::setOWIdleAnimation()
 
 void Player::setEntranceAnimation()
 {
-	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_ow.create_sprite(sprite_ptr->x().integer(), 
+	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_entrance.create_sprite(sprite_ptr->x().integer(), 
 																				  			 sprite_ptr->y().integer());
 	temp_sprite_ptr->set_camera(sprite_ptr->camera());
 	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
@@ -1162,8 +1216,8 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			{remaining_jump_input_frames = 0;}
 
 			// Jump Regrab
-			if(bn::keypad::a_held() && rigidbody.normalized_dir.y() > 0)
-			{rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);}
+			//if(bn::keypad::a_held() && rigidbody.normalized_dir.y() > 0)
+			//{rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);}
 
 			/////////////////
 			// Add Gravity //
@@ -1550,8 +1604,8 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			{remaining_jump_input_frames = 0;}
 
 			// Jump Regrab
-			if(bn::keypad::a_held() && rigidbody.normalized_dir.y() > 0)
-			{rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);}
+			//if(bn::keypad::a_held() && rigidbody.normalized_dir.y() > 0)
+			//{rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);}
 
 			/////////////////
 			// Add Gravity //
@@ -1638,6 +1692,21 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 				setState(NONE);
 			}
 
+		break;
+
+		case PLAYER_WRENCH:
+
+			// Pump
+			if(bn::keypad::b_pressed())
+			{setWrenchPumpAnimation();}
+
+			// End state:
+			if(bn::keypad::r_released())
+			{setState(NONE);}
+
+		break;
+
+		case PLAYER_DOOR:
 		break;
 
 		case PLAYER_OW:
@@ -1887,6 +1956,19 @@ void Player::setState(ObjectState new_state)
 
 			// SFX
 			bn::sound_items::player_climb.play();
+
+		break;
+
+		case PLAYER_WRENCH:
+
+			setWrenchIdleAnimation();
+
+		break;
+
+		case PLAYER_DOOR:
+
+			rigidbody.removeForces();
+			setDoorAnimation();
 
 		break;
 
@@ -2511,31 +2593,72 @@ void Player::resolveScrewCollision(GameObject& object)
 	}
 }
 
-void Player::resolveFinishSealCollision(GameObject& object)
+void Player::resolveSealedGateCollision(GameObject& object)
 {
-	if(object.state == OBJECT_DEATH) {return;}
-	
 	if(collider.isCollision(object.collider))
-    {
-        // Resolve X Axis Collision //
-        resolveXAxisCollision(object.collider);
-
-        // Resolve Y Axis Collision //
-        resolveYAxisCollision(object.collider);
-
-        // Resolve Corner Collision //
-		if(col_y_offset == 0 && col_x_offset == 0)
-        {resolveCornerCollision(object.collider);}
-    }
-
-	updateTestColliders();
-
-	if(test_collider.isCollision(object.collider) && 
-	   rigidbody.normalized_dir.y() >= 0)
 	{
-		grounded_detected = true;
-		rigidbody.removeYForces();
-	}	
+		// Enter wrench state
+		if(state != PLAYER_WRENCH             &&
+		   object.state != SEALED_GATE_OPEN_3 &&
+		   bn::keypad::r_held()               && 
+		   (state == PLAYER_GROUNDED_NEUTRAL || state == PLAYER_WALK))
+		{
+			setState(PLAYER_WRENCH);
+
+			if(x() > object.collider.x()) 
+			{
+				x_dir = LEFT;
+				setX(object.collider.x() + PLAYER_SEALED_GATE_X_OFFSET);
+			}
+			else                          
+			{
+				x_dir = RIGHT;
+				setX(object.collider.x() - PLAYER_SEALED_GATE_X_OFFSET);
+			}
+		}
+
+		// Pump wrench
+		if(state == PLAYER_WRENCH && animate_action_ptr->done())
+		{
+			setWrenchIdleAnimation();
+			
+			switch(object.state)
+			{
+				case IDLE:
+
+					object.setState(SEALED_GATE_OPEN_1);
+
+				break;
+
+				case SEALED_GATE_OPEN_1:
+
+					object.setState(SEALED_GATE_OPEN_2);
+
+				break;
+
+				case SEALED_GATE_OPEN_2:
+
+					object.setState(SEALED_GATE_OPEN_3);
+					setState(NONE);
+
+				break;
+
+				default:
+				break;
+			}
+		}
+
+		// Enter Gate
+		if(object.state == SEALED_GATE_OPEN_3 && 
+		   state != PLAYER_DOOR && 
+		   bn::keypad::up_pressed())
+		{
+			setX(object.collider.x());
+			setState(PLAYER_DOOR);
+
+			global_current_level_complete = true;
+		}
+	}
 }
 
 // Level Enemies
