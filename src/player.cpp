@@ -1756,12 +1756,11 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 				else if(bn::keypad::up_held())
 				{
 					animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-																				0,
-																				bn::sprite_items::player_ow.tiles_item(),
-																				PLAYER_OW_UP_FRAME, PLAYER_OW_UP_FRAME);
+																			   0,
+																			   bn::sprite_items::player_ow.tiles_item(),
+																			   PLAYER_OW_UP_FRAME, PLAYER_OW_UP_FRAME);
 
-					if(!troll_tolls_highlighted || global_troll_tolls_complete)
-					{ow_target_pos.set_y(ow_target_pos.y().integer() - PLAYER_OW_STEP_DISTANCE);}
+					ow_target_pos.set_y(ow_target_pos.y().integer() - PLAYER_OW_STEP_DISTANCE);
 				}
 
 				else if(bn::keypad::down_held())
