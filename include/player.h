@@ -257,7 +257,9 @@ struct Player : GameObject {
 	bool a_requested;
 	bool b_requested;
 	bool r_requested;
+
 	bool troll_tolls_highlighted;
+	bool under_construction_highlighted;
 
 	Hitbox* hitbox_1_ptr;
 	Hitbox* hitbox_2_ptr;

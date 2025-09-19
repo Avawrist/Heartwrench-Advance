@@ -312,6 +312,11 @@ int32 Room::addObject(ObjectRequest& object_request, const bn::camera_ptr& camer
         (*insert_index)->setPos(object_request.position);
         (*insert_index)->object_id = 0;
 
+        if(room_name != ROOM_NAME_CARD && 
+           room_name != ROOM_TITLE_SCREEN && 
+           room_name != ROOM_OVERWORLD)
+        (*insert_index)->setState(PLAYER_ENTRANCE);
+
         object_request = ObjectRequest();
 
         return (*insert_index)->object_id;

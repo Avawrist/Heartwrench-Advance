@@ -350,7 +350,8 @@ void Level::load()
             next_level = LEVEL_OVERWORLD;
 
             // Music
-            bn::music_items::title_screen.play();
+            if(bn::music::playing_item() != bn::music_items::title_screen)
+            {bn::music_items::title_screen.play();}
 
         break;
             
@@ -682,7 +683,8 @@ void Level::load(LevelName level_name)
             next_level = LEVEL_OVERWORLD;
 
             // Music
-            bn::music_items::title_screen.play();
+            if(bn::music::playing_item() != bn::music_items::title_screen)
+            {bn::music_items::title_screen.play();}
 
         break;
 
@@ -991,8 +993,11 @@ void Level::updateNameCard()
         transition_frames < 0)
     {
         // Start Fade and Level Transition
-        fade_out = true;
+        death_fade_out = true;
         transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+
+        // Music
+        bn::music_items::title_screen.play();
     }
 
     // Draw Screen
@@ -1031,7 +1036,7 @@ void Level::updateTitleScreen()
         loadSave();
 
         // Start Fade and Level Transition
-        fade_out = true;
+        death_fade_out = true;
         transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
 
         painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
@@ -1067,6 +1072,8 @@ void Level::updateOverworld()
     // Set HUD Name 
     if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->troll_tolls_highlighted)
     {hud_level_name.setSpritesFromString(" TURN ON A CHIME", 16);}
+    else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->under_construction_highlighted)
+    {hud_level_name.setSpritesFromString("WORK IN PROGRESS", 16);}
     else
     {hud_level_name.setSpritesFromString("       OVERWORLD", 16);}
 
@@ -1081,6 +1088,10 @@ void Level::updateOverworld()
             transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
 
             bn::sound_items::select.play();
+        }
+        else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->under_construction_highlighted)
+        {
+            //...
         }
     }
 

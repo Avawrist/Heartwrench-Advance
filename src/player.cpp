@@ -95,7 +95,7 @@ Player::Player()
 	spin_effect_sprite_2_ptr->set_palette(sprite_spin_effect_palette);
 	spin_effect_sprite_3_ptr->set_palette(sprite_spin_effect_palette);
 
-	setState(PLAYER_ENTRANCE);
+	setState(NONE);
 }
 
 Player::Player(const Player& other) : GameObject(other)
@@ -120,15 +120,16 @@ Player::Player(const Player& other) : GameObject(other)
 
 	current_climb_index              = other.current_climb_index;
 
-	overdrive                = other.overdrive;
-	r_climb                  = other.r_climb;
-	wall_right_detected      = other.wall_right_detected;
-    wall_left_detected       = other.wall_left_detected;
-	climbable_detected       = other.climbable_detected;
-	left_wj_eligible         = other.left_wj_eligible;
-	right_wj_eligible        = other.right_wj_eligible;
-	is_dead                  = other.is_dead;
-	troll_tolls_highlighted  = other.troll_tolls_highlighted;
+	overdrive                       = other.overdrive;
+	r_climb                         = other.r_climb;
+	wall_right_detected             = other.wall_right_detected;
+    wall_left_detected              = other.wall_left_detected;
+	climbable_detected              = other.climbable_detected;
+	left_wj_eligible                = other.left_wj_eligible;
+	right_wj_eligible               = other.right_wj_eligible;
+	is_dead                         = other.is_dead;
+	troll_tolls_highlighted         = other.troll_tolls_highlighted;
+	under_construction_highlighted  = other.under_construction_highlighted;
 
 	a_requested   = other.a_requested;
 	b_requested   = other.b_requested;
@@ -193,15 +194,17 @@ Player& Player::operator =(const Player& other)
 
 	current_climb_index              = other.current_climb_index;
 
-	overdrive                = other.overdrive;
-	r_climb                  = other.r_climb;
-	wall_right_detected      = other.wall_right_detected;
-    wall_left_detected       = other.wall_left_detected;
-	climbable_detected       = other.climbable_detected;
-	left_wj_eligible         = other.left_wj_eligible;
-	right_wj_eligible        = other.right_wj_eligible;
-	is_dead                  = other.is_dead;
-	troll_tolls_highlighted  = other.troll_tolls_highlighted;
+	overdrive                		= other.overdrive;
+	r_climb                  		= other.r_climb;
+	wall_right_detected      		= other.wall_right_detected;
+    wall_left_detected       		= other.wall_left_detected;
+	climbable_detected       		= other.climbable_detected;
+	left_wj_eligible         		= other.left_wj_eligible;
+	right_wj_eligible        		= other.right_wj_eligible;
+	is_dead                  		= other.is_dead;
+	troll_tolls_highlighted  		= other.troll_tolls_highlighted;
+	under_construction_highlighted  = other.under_construction_highlighted;
+	
 
 	a_requested   = other.a_requested;
 	b_requested   = other.b_requested;
@@ -624,7 +627,7 @@ void Player::setEntranceAnimation()
 	temp_sprite_ptr.reset();
 
 	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-															   1,
+															   2,
 															   bn::sprite_items::player_entrance.tiles_item(),
 															   0, 0, 1, 1, 2, 2, 3, 3, 
 															   4, 4, 5, 5, 6, 6, 7, 7);	
@@ -1655,6 +1658,12 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 			if(pos() == ow_target_pos)
 			{
+				if(bn::keypad::up_pressed()   || 
+				   bn::keypad::down_pressed() ||
+				   bn::keypad::left_pressed() ||
+				   bn::keypad::right_pressed())
+				{bn::sound_items::ow_step.play();}
+
 				if(bn::keypad::left_held())
 				{
 					animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
@@ -1683,9 +1692,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 																				PLAYER_OW_UP_FRAME, PLAYER_OW_UP_FRAME);
 
 					if(!troll_tolls_highlighted || global_troll_tolls_complete)
-					{
-						ow_target_pos.set_y(ow_target_pos.y().integer() - PLAYER_OW_STEP_DISTANCE); 					
-					}
+					{ow_target_pos.set_y(ow_target_pos.y().integer() - PLAYER_OW_STEP_DISTANCE);}
 				}
 
 				else if(bn::keypad::down_held())
@@ -2709,10 +2716,16 @@ void Player::resolveOWTileCollision(const bn::regular_bg_ptr&                   
 	{
 		troll_tolls_highlighted = true;
 	}
+	else if(tile_index >= OW_UNDER_CONSTRUCTION_MIN_INDEX &&
+	  		tile_index <= OW_UNDER_CONSTRUCTION_MAX_INDEX)
+	{
+		under_construction_highlighted = true;
+	}
 	else
 	{
 		// Reset highlight bools
 		troll_tolls_highlighted = false;
+		under_construction_highlighted = false;
 	}
 
 	// Record Player's OW position in global variables
