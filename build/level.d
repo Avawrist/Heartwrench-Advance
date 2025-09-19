@@ -63,6 +63,7 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/butano-master/butano/include/bn_regular_bg_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_map_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_animate_actions_fwd.h \
+ G:/butano-master/butano/include/bn_music.h \
  G:/butano-master/butano/include/bn_sound.h \
  G:/butano-master/butano/include/bn_sound_handle.h \
  G:/game/build/bn_music_items.h \
@@ -254,6 +255,7 @@ G:/butano-master/butano/include/bn_vector.h:
 G:/butano-master/butano/include/bn_regular_bg_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_map_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_animate_actions_fwd.h:
+G:/butano-master/butano/include/bn_music.h:
 G:/butano-master/butano/include/bn_sound.h:
 G:/butano-master/butano/include/bn_sound_handle.h:
 G:/game/build/bn_music_items.h:

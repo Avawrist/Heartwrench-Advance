@@ -99,6 +99,7 @@ Level::Level(const Level& other)
     player_spawn          = other.player_spawn;
     fade_in               = other.fade_in;
     fade_out              = other.fade_out;
+    death_fade_out        = other.death_fade_out;
     cam_is_scrolling      = other.cam_is_scrolling;
     menu_open             = other.menu_open;
     pause_requested       = other.pause_requested;
@@ -179,6 +180,7 @@ void Level::operator =(const Level& other)
     player_spawn          = other.player_spawn;
     fade_in               = other.fade_in;
     fade_out              = other.fade_out;
+    death_fade_out        = other.death_fade_out;
     cam_is_scrolling      = other.cam_is_scrolling;
     menu_open             = other.menu_open;
     pause_requested       = other.pause_requested;
@@ -257,6 +259,7 @@ void Level::load()
 
     fade_in               = false;
     fade_out              = false;
+    death_fade_out        = false;
     cam_is_scrolling      = false;
     menu_open             = false;
     pause_requested       = false;
@@ -346,6 +349,9 @@ void Level::load()
             // Next level
             next_level = LEVEL_OVERWORLD;
 
+            // Music
+            bn::music_items::title_screen.play();
+
         break;
             
         case LEVEL_OVERWORLD:
@@ -378,6 +384,10 @@ void Level::load()
 
             // Next level
             next_level = LEVEL_TROLL_TOLLS;
+
+            // Music
+            if(bn::music::playing_item() != bn::music_items::title_screen)
+            {bn::music_items::title_screen.play();}
             
         break;
         
@@ -415,6 +425,10 @@ void Level::load()
             // Set Painted BG initial position
             painted_bg_ptr->set_position(LEVEL_TROLL_TOLLS_PAINTED_BG_X, LEVEL_TROLL_TOLLS_PAINTED_BG_Y);
             
+            // Music
+            if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
+            {bn::music_items::turn_on_a_chime.play();}
+
         break;
 
         default:
@@ -556,12 +570,15 @@ void Level::load(LevelName level_name)
 
     camera = bn::camera_ptr::create(0, 0);
 
+    bn::sound::set_master_volume(LEVEL_SFX_MASTER_VOLUME);
+
     player_spawn.spawn_pos   = bn::fixed_point(0, 0);
     player_spawn.spawn_room  = NO_ROOM;
     player_spawn.spawn_level = level_name;
 
     fade_in               = false;
     fade_out              = false;
+    death_fade_out        = false;
     cam_is_scrolling      = false;
     menu_open             = false;
     pause_requested       = false;
@@ -664,6 +681,9 @@ void Level::load(LevelName level_name)
             // Next level
             next_level = LEVEL_OVERWORLD;
 
+            // Music
+            bn::music_items::title_screen.play();
+
         break;
 
         case LEVEL_OVERWORLD:
@@ -702,6 +722,10 @@ void Level::load(LevelName level_name)
             // Next level
             next_level = NO_LEVEL;
 
+            // Music
+            if(bn::music::playing_item() != bn::music_items::title_screen)
+            {bn::music_items::title_screen.play();}
+            
         break;
 
         case LEVEL_TROLL_TOLLS:
@@ -741,6 +765,10 @@ void Level::load(LevelName level_name)
 
             // Set Painted BG initial position
             painted_bg_ptr->set_position(LEVEL_TROLL_TOLLS_PAINTED_BG_X, LEVEL_TROLL_TOLLS_PAINTED_BG_Y);
+
+            // Music
+            if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
+            {bn::music_items::turn_on_a_chime.play();}
             
         break;
 
@@ -965,10 +993,6 @@ void Level::updateNameCard()
         // Start Fade and Level Transition
         fade_out = true;
         transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
-
-        // Music & Sound
-        bn::sound::set_master_volume(LEVEL_SFX_MASTER_VOLUME);
-        bn::music_items::overworld.play();
     }
 
     // Draw Screen
@@ -1465,6 +1489,13 @@ void Level::updateFade()
         currency_icon_sprite_ptr->set_visible(true);
         hud_level_name.setVisible(true);
 
+        // Fade volume in
+        if(bn::music::playing() && bn::music::volume() < LEVEL_MUSIC_MAX_VOLUME) 
+        {
+            bn::fixed new_volume = clamp(0, LEVEL_MUSIC_MAX_VOLUME, bn::music::volume() + LEVEL_VOLUME_STEP);
+            bn::music::set_volume(new_volume);
+        }
+
         // Fade objects in
         for(int32 i = 0; i < current_room.game_objects.size(); i++)
         {
@@ -1518,8 +1549,117 @@ void Level::updateFade()
         // End condition
         if(default_main_palette_ptr->fade_intensity() == 0) {fade_in = false;}
     }
+    else if(death_fade_out)
+    {
+        // Fade objects out
+        for(int32 i = 0; i < current_room.game_objects.size(); i++)
+        {
+            GameObject* object_ptr = current_room.game_objects.at(i);
+            
+            if(object_ptr != NULL)
+            {
+
+                bn::sprite_palette_ptr object_palette       = object_ptr->sprite_ptr->palette();
+                bn::sprite_palette_ptr hit_effect_palette   = object_ptr->hit_effect_sprite_ptr->palette();
+                bn::sprite_palette_ptr splat_effect_palette = object_ptr->splat_effect_sprite_ptr->palette();
+                bn::sprite_palette_ptr hp_bar_palette       = object_ptr->hp_sprite_ptr->palette();
+
+                object_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+                hit_effect_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+                splat_effect_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+                hp_bar_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+
+                // If fully faded out, stop drawing it and restore the palette.
+                // This method assumes a fully faded out GameObject will be deleted. 
+                if(object_palette.fade_intensity() == 1) 
+                {
+                    object_palette.set_fade(bn::colors::black, 0);
+                    hit_effect_palette.set_fade(bn::colors::black, 0);
+                    splat_effect_palette.set_fade(bn::colors::black, 0);
+                    hp_bar_palette.set_fade(bn::colors::black, 0);
+
+                    object_ptr->sprite_ptr->set_visible(false);
+                    object_ptr->hit_effect_sprite_ptr->set_visible(false);
+                    object_ptr->splat_effect_sprite_ptr->set_visible(false);
+                    object_ptr->hp_sprite_ptr->set_visible(false);
+                }
+            }
+        }
+
+        // Fade BGs out
+        default_main_palette_ptr->set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+        default_painted_palette_ptr->set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+        default_flash_palette_ptr->set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+
+        // Fade Title Player out
+        if(title_player_sprite_ptr.get() != NULL)
+        {
+            bn::sprite_palette_ptr title_player_palette = title_player_sprite_ptr->palette();
+            title_player_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+        } 
+
+        // Fade HUD out
+        bn::sprite_palette_ptr hud_stripe_palette = hud_stripe_1_sprite_ptr->palette();
+        hud_stripe_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+
+        bn::sprite_palette_ptr hud_hp_palette = hud_hp_sprite_ptr->palette();
+        hud_hp_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+
+        bn::sprite_palette_ptr hud_currency_num_1_palette = currency_num_1_sprite_ptr->palette();
+        hud_currency_num_1_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+
+        bn::sprite_palette_ptr hud_currency_num_2_palette = currency_num_1_sprite_ptr->palette();
+        hud_currency_num_2_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+
+        bn::sprite_palette_ptr hud_currency_icon_palette = currency_icon_sprite_ptr->palette();
+        hud_currency_icon_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+
+        if(hud_hp_palette.fade_intensity() == 1)
+        {
+            if(title_player_sprite_ptr.get() != NULL)
+            {
+                bn::sprite_palette_ptr title_player_palette = title_player_sprite_ptr->palette();
+                title_player_palette.set_fade(bn::colors::black, 0);
+                title_player_sprite_ptr->set_visible(false);
+            } 
+
+            hud_stripe_palette.set_fade(bn::colors::black, 0);
+            hud_stripe_1_sprite_ptr->set_visible(false);
+            hud_stripe_2_sprite_ptr->set_visible(false);
+            hud_stripe_3_sprite_ptr->set_visible(false);
+            hud_stripe_4_sprite_ptr->set_visible(false);
+
+            hud_hp_palette.set_fade(bn::colors::black, 0);
+            hud_hp_sprite_ptr->set_visible(false);
+
+            hud_currency_num_1_palette.set_fade(bn::colors::black, 0);
+            currency_num_1_sprite_ptr->set_visible(false);
+
+            hud_currency_num_2_palette.set_fade(bn::colors::black, 0);
+            currency_num_2_sprite_ptr->set_visible(false);
+
+            hud_currency_icon_palette.set_fade(bn::colors::black, 0);
+            currency_icon_sprite_ptr->set_visible(false);
+
+            hud_level_name.setVisible(false);
+        }
+
+        // Fade Pause Screen out
+        bn::bg_palette_ptr pause_screen_palette = pause_screen_bg_ptr->palette();
+        pause_screen_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+
+        // End condition
+        if(default_main_palette_ptr->fade_intensity() == 1) {death_fade_out = false;}
+    }
     else if(fade_out)
     {
+        // Fade volume out
+        if(bn::music::playing() && bn::music::volume() > 0) 
+        {
+            bn::fixed new_volume = clamp(0, LEVEL_MUSIC_MAX_VOLUME, bn::music::volume() - LEVEL_VOLUME_STEP);
+            bn::music::set_volume(new_volume);
+        }
+
         // Fade objects out
         for(int32 i = 0; i < current_room.game_objects.size(); i++)
         {
@@ -1768,7 +1908,7 @@ void Level::reloadOnDeath()
     if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->is_dead)
     {
         // Trigger the fade out
-        fade_out = true;
+        death_fade_out = true;
 
         // If fade out is done, we can reload.
         if(default_painted_palette_ptr->fade_intensity() == 1)

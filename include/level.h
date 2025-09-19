@@ -17,6 +17,7 @@
 #include "bn_bg_palette_ptr.h"
 #include "bn_colors.h"
 #include "bn_regular_bg_animate_actions.h"
+#include "bn_music.h"
 #include "bn_sound.h"
 
 #include "bn_music_items.h"
@@ -63,7 +64,9 @@
 #include "checkpoint.h"
 #include "finish_seal.h"
 
-#define LEVEL_SFX_MASTER_VOLUME 0.6
+#define LEVEL_SFX_MASTER_VOLUME   0.6
+#define LEVEL_MUSIC_MAX_VOLUME    1.0
+#define LEVEL_VOLUME_STEP         0.1
 
 /////////////////////
 // Struct SaveData //
@@ -260,6 +263,7 @@ struct Level
     
     bool  fade_in;
     bool  fade_out;
+    bool  death_fade_out;
     bool  cam_is_scrolling;
     bool  menu_open;
     bool  pause_requested;

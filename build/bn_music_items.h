@@ -5,7 +5,7 @@
 
 namespace bn::music_items
 {
-    constexpr inline music_item overworld(0);
+    constexpr inline music_item title_screen(0);
     constexpr inline music_item turn_on_a_chime(1);
 }
 
