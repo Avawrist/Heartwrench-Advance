@@ -396,11 +396,6 @@ void GameObject::draw()
         {hp_animate_action_ptr->update();}
     }
     */
-
-    global_tiles_in_VRAM += sprite_ptr->tiles().tiles_count();
-    global_tiles_in_VRAM += hit_effect_sprite_ptr->tiles().tiles_count();
-    global_tiles_in_VRAM += splat_effect_sprite_ptr->tiles().tiles_count();
-    global_tiles_in_VRAM += hp_sprite_ptr->tiles().tiles_count();
 }
 
 void GameObject::hideSprites()
@@ -677,8 +672,10 @@ void GameObject::applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_
     // Object juice:
     setHitFlash();
     applyHitEffect(x().integer(),
-                   y().integer());
-                       
+                   y().integer());      
+                   
+    // SFX
+    bn::sound_items::generic_hit.play();
 }
 
 void GameObject::applyDamage(int32 _damage)

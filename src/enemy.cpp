@@ -161,7 +161,7 @@ void Enemy::playEnemyDeathAnim()
 	temp_sprite_ptr.reset();
 
 	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-																1,
+																0,
 																bn::sprite_items::enemy_death.tiles_item(),
 																0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6);
 }
@@ -323,6 +323,7 @@ void Enemy::resolvePushBlockMiniCollision(GameObject& object)
 
 void Enemy::resolveAutoPlatformCollision(GameObject& object)
 {
+	/*
 	if(rigidbody.normalized_dir.y() >= 0 &&
 	   collider_y_axis.p4.y() <= object.collider.p1.y() + rigidbody.final_dir.y())
 	{
@@ -343,6 +344,7 @@ void Enemy::resolveAutoPlatformCollision(GameObject& object)
 			rigidbody.removeYForces();
 		}
 	}
+	*/
 }
 
 void Enemy::resolveSmashBlockLargeCollision(GameObject& object)

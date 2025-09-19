@@ -105,8 +105,7 @@ void GroundGhoul::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
             if(animate_action_ptr->done())
             {setState(IDLE);}
 
-            if(animate_action_ptr->current_index() >= GROUND_GHOUL_CRAWL_FRAME &&
-               global_timer % 2 == 0)
+            if(animate_action_ptr->current_index() >= GROUND_GHOUL_CRAWL_FRAME)
             {rigidbody.addForce(GROUND_GHOUL_CRAWL_FORCE);}
 
             // Gravity

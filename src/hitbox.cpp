@@ -139,7 +139,6 @@ void Hitbox::applyHBHit(GameObject& object)
     object.setHitFlash();
     object.applyHitEffect(x().integer() + x_offset,
                           y().integer() + y_offset);
-    
 }
 
 void Hitbox::applyWallHit(GameObject& object)
@@ -175,8 +174,11 @@ void Hitbox::applyWallHit(GameObject& object)
     // Object juice:
     object.setHitFlash();
     //object.setVerticalStretch();
-    object.applySplatEffect(object.x().integer() + splat_x_offset, 
+    object.applySplatEffect(object.x().integer() + splat_x_offset,
                             object.y().integer());
+
+    // SFX
+    bn::sound_items::wall_hit.play();
 }
 
 //////////////////////////
@@ -305,7 +307,12 @@ void Hitbox::resolveSmashBlockLargeCollision(GameObject& object)
     if(object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
+    {
+        applyHBHit(object);
+
+        // SFX
+        bn::sound_items::generic_hit.play();
+    }
 }
 
 void Hitbox::resolveSmashBlockMiniCollision(GameObject& object)
@@ -313,7 +320,12 @@ void Hitbox::resolveSmashBlockMiniCollision(GameObject& object)
     if(object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
+    {
+        applyHBHit(object);
+
+        // SFX
+        bn::sound_items::generic_hit.play();
+    }
 }
 
 void Hitbox::resolveSmashBlockZigguratLCollision(GameObject& object)
@@ -321,7 +333,12 @@ void Hitbox::resolveSmashBlockZigguratLCollision(GameObject& object)
     if(object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
+    {
+        applyHBHit(object);
+
+        // SFX
+        bn::sound_items::generic_hit.play();
+    }
 }
 
 void Hitbox::resolveSmashBlockZigguratCCollision(GameObject& object)
@@ -329,7 +346,12 @@ void Hitbox::resolveSmashBlockZigguratCCollision(GameObject& object)
     if(object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
+    {
+        applyHBHit(object);
+
+        // SFX
+        bn::sound_items::generic_hit.play();
+    }
 }
 
 void Hitbox::resolveSmashBlockZigguratRCollision(GameObject& object)
@@ -337,7 +359,12 @@ void Hitbox::resolveSmashBlockZigguratRCollision(GameObject& object)
     if(object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
+    {
+        applyHBHit(object);
+
+        // SFX
+        bn::sound_items::generic_hit.play();
+    }
 }
 
 void Hitbox::resolveLargeVaseCollision(GameObject& object)
@@ -345,7 +372,12 @@ void Hitbox::resolveLargeVaseCollision(GameObject& object)
     if(object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
+    {
+        applyHBHit(object);
+    
+        // SFX
+        bn::sound_items::vase_hit.play();
+    }
 }
 
 void Hitbox::resolveSmallVaseCollision(GameObject& object)
@@ -353,7 +385,12 @@ void Hitbox::resolveSmallVaseCollision(GameObject& object)
     if(object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
+    {
+        applyHBHit(object);
+
+        // SFX
+        bn::sound_items::vase_hit.play();
+    }
 }
 
 void Hitbox::resolveHPTotemCollision(GameObject& object)
@@ -361,7 +398,12 @@ void Hitbox::resolveHPTotemCollision(GameObject& object)
     if(object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
+    {
+        applyHBHit(object);
+
+        // SFX
+        bn::sound_items::generic_hit.play();
+    }
 }
 
 void Hitbox::resolveCheckpointCollision(GameObject& object)
@@ -372,15 +414,23 @@ void Hitbox::resolveCheckpointCollision(GameObject& object)
     {	
         applyHBHit(object);
 		object.setState(CHECKPOINT_ACTIVE);
+
+        // SFX
+        bn::sound_items::generic_hit.play();
 	}
 }
 
 void Hitbox::resolveFinishSealCollision(GameObject& object)
 {
-    if(object.state == OBJECT_DEATH) {return;}
+    if(object.state == OBJECT_DEATH || object.state == OBJECT_HITSTUN) {return;}
 
     if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
+    {
+        applyHBHit(object);
+
+        // SFX
+        bn::sound_items::generic_hit.play();
+    }
 }
 
 void Hitbox::resolveBounceBellCollision(GameObject& object)
@@ -391,6 +441,9 @@ void Hitbox::resolveBounceBellCollision(GameObject& object)
     {
         global_bell_struck = true;
         applyHBHit(object);
+
+        // SFX
+        bn::sound_items::bell_hit.play();
     }
 }
 
@@ -402,32 +455,55 @@ void Hitbox::resolveAutoBounceBellCollision(GameObject& object)
     {
         global_bell_struck = true;
         applyHBHit(object);
+
+        // SFX
+        bn::sound_items::bell_hit.play();
     }
 }
 
 void Hitbox::resolvePushBlockCollision(GameObject& object)
 {
     if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
+    {
+        applyHBHit(object);
+
+        // SFX
+        bn::sound_items::generic_hit.play();
+    }
 }
 
 void Hitbox::resolvePushBlockMiniCollision(GameObject& object)
 {
     if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
+    {
+        applyHBHit(object);
+
+        // SFX
+        bn::sound_items::generic_hit.play();
+    }
 }
 
 // Level Enemies
 void Hitbox::resolveThornColumnCollision(GameObject& object)
 {
     if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
+    {
+        applyHBHit(object);
+
+        // SFX
+        bn::sound_items::generic_hit.play();
+    }
 }
 
 void Hitbox::resolveThornBarCollision(GameObject& object)
 {
     if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
+    {
+        applyHBHit(object);
+
+        // SFX
+        bn::sound_items::generic_hit.play();
+    }
 }
 
 void Hitbox::resolveGroundGhoulCollision(GameObject& object)
@@ -435,7 +511,12 @@ void Hitbox::resolveGroundGhoulCollision(GameObject& object)
     if(object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
+    {
+        applyHBHit(object);
+
+        // SFX
+        bn::sound_items::generic_hit.play();
+    }
 }
 
 void Hitbox::resolveBellTrollCollision(GameObject& object)
@@ -443,7 +524,12 @@ void Hitbox::resolveBellTrollCollision(GameObject& object)
     if(object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
+    {
+        applyHBHit(object);
+
+        // SFX
+        bn::sound_items::generic_hit.play();
+    }
 }
 
 void Hitbox::resolveWingedTrollLCollision(GameObject& object)
@@ -451,7 +537,12 @@ void Hitbox::resolveWingedTrollLCollision(GameObject& object)
     if(object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
+    {
+        applyHBHit(object);
+
+        // SFX
+        bn::sound_items::generic_hit.play();
+    }
 }
 
 void Hitbox::resolveWingedTrollRCollision(GameObject& object)
@@ -459,7 +550,12 @@ void Hitbox::resolveWingedTrollRCollision(GameObject& object)
     if(object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
-    {applyHBHit(object);}
+    {
+        applyHBHit(object);
+
+        // SFX
+        bn::sound_items::generic_hit.play();
+    }
 }
 
 

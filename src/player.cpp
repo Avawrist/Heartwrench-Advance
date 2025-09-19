@@ -233,9 +233,10 @@ void Player::jump()
 	late_jump_grace_frames      = 0;
 	rigidbody.addForce(PLAYER_JUMP_FORCE);
 
-	bn::sound_items::jump.play();
-
 	setJumpAnimation();
+
+	// SFX
+	bn::sound_items::jump.play();
 }
 
 void Player::spinJump()
@@ -245,6 +246,9 @@ void Player::spinJump()
 	remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
 	late_jump_grace_frames      = 0;
 	rigidbody.addForce(PLAYER_JUMP_FORCE);
+
+	// SFX
+	bn::sound_items::jump.play();
 }
 
 void Player::bellJump()
@@ -929,6 +933,9 @@ void Player::applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_di
 
     // Object juice:
     setHitFlash();
+
+	// SFX
+	bn::sound_items::player_hit.play();
 }
 
 void Player::setHitFlash()
@@ -1671,12 +1678,14 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 				else if(bn::keypad::up_held())
 				{
 					animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-															0,
-															bn::sprite_items::player_ow.tiles_item(),
-															PLAYER_OW_UP_FRAME, PLAYER_OW_UP_FRAME);
+																				0,
+																				bn::sprite_items::player_ow.tiles_item(),
+																				PLAYER_OW_UP_FRAME, PLAYER_OW_UP_FRAME);
 
 					if(!troll_tolls_highlighted || global_troll_tolls_complete)
-					{ow_target_pos.set_y(ow_target_pos.y().integer() - PLAYER_OW_STEP_DISTANCE);}
+					{
+						ow_target_pos.set_y(ow_target_pos.y().integer() - PLAYER_OW_STEP_DISTANCE); 					
+					}
 				}
 
 				else if(bn::keypad::down_held())
@@ -1858,6 +1867,9 @@ void Player::setState(ObjectState new_state)
 
 			setSpinAttackAnimation();
 
+			// SFX
+			bn::sound_items::spin_attack.play();
+
 		break;
 
 		case PLAYER_CLIMB:
@@ -1865,6 +1877,9 @@ void Player::setState(ObjectState new_state)
 			current_climb_index = PLAYER_MIN_CLIMB_INDEX;
 
 			setClimbAnimation();
+
+			// SFX
+			bn::sound_items::player_climb.play();
 
 		break;
 
@@ -1900,6 +1915,9 @@ void Player::setState(ObjectState new_state)
 			global_screenshake_frames = PLAYER_DEATH_HITSTOP_FRAMES;
 			
 			setDeathAnimation();
+
+			// SFX
+			bn::sound_items::player_death.play();
 
 		break;
 
@@ -2386,6 +2404,9 @@ void Player::resolveHPDropCollision(GameObject& object)
 
 		applyHP(object.damage);
 		object.setState(OBJECT_DEATH);
+
+		// SFX
+		bn::sound_items::heart_get.play();
 	}
 }
 
@@ -2399,6 +2420,9 @@ void Player::resolveStarJarCollision(GameObject& object)
 		object.setState(OBJECT_DEATH);
 
 		setState(PLAYER_GET);
+
+		// SFX
+		bn::sound_items::star_jar_get.play();
 	}
 }
 
@@ -2422,13 +2446,16 @@ void Player::resolveGearDropCollision(GameObject& object)
 	if(object.state == OBJECT_DEATH || (!object.is_frozen && object.invulnerability_frames)) {return;}
 	
 	if(collider.isCollision(object.collider))
-    {	
+    {
 		global_level_currency += object.damage;
 
 		global_hitstop_frames            = PLAYER_GET_GEAR_HITSTOP_FRAMES;
 		global_hud_currency_flash_frames = HUD_FLASH_FRAMES;
 
 		object.setState(OBJECT_DEATH);
+
+		// SFX
+		bn::sound_items::gear_get.play();
 	}
 }
 
@@ -2697,7 +2724,6 @@ void Player::resolveTileCollision(const bn::regular_bg_ptr&                     
 								  const bn::span<const bn::regular_bg_map_cell>& cells,
 								  const bn::regular_bg_item&                     bg_item)
 {
-
 	////////////////////////////////////////
     // Update Variables for state testing //
 	////////////////////////////////////////
@@ -2952,7 +2978,13 @@ void Player::resolveYAxisCollision(const Collider& other_collider)
 	collider_y_axis.setY(collider_y_axis.y() + col_y_offset);
 	setY(this->y() + col_y_offset);
 
-	if(col_y_offset > 0) {rigidbody.removeYForces();}
+	if(col_y_offset > 0 && state != PLAYER_CLIMB) 
+	{
+		rigidbody.removeYForces(); 
+
+		// SFX
+		bn::sound_items::player_bonk.play();
+	}
 }
 
 void Player::resolveHardBlockCollision(const Collider& other_collider)

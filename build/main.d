@@ -75,6 +75,12 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/butano-master/butano/include/bn_regular_bg_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_map_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_animate_actions_fwd.h \
+ G:/butano-master/butano/include/bn_sound.h \
+ G:/butano-master/butano/include/bn_sound_handle.h \
+ G:/game/build/bn_music_items.h \
+ G:/butano-master/butano/include/bn_music_item.h \
+ G:/game/build/bn_sound_items.h \
+ G:/butano-master/butano/include/bn_sound_item.h \
  G:/game/build/bn_bg_palette_items_troll_tolls_bg_flash_palette.h \
  G:/butano-master/butano/include/bn_bg_palette_item.h \
  G:/game/build/bn_regular_bg_items_name_card_level_bg.h \
@@ -112,10 +118,7 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/butano-master/butano/include/bn_value_template_actions.h \
  G:/game/build/bn_sprite_items_alphabet.h G:/game/include/room.h \
  G:/game/include/room_bounds.h G:/game/include/collider.h \
- G:/game/include/game_object.h G:/game/build/bn_sound_items.h \
- G:/butano-master/butano/include/bn_sound_item.h \
- G:/butano-master/butano/include/bn_sound_handle.h \
- G:/game/include/physics.h \
+ G:/game/include/game_object.h G:/game/include/physics.h \
  G:/game/build/bn_sprite_palette_items_sprite_white_palette.h \
  G:/butano-master/butano/include/bn_sprite_palette_item.h \
  G:/game/build/bn_sprite_palette_items_sprite_flash_palette.h \
@@ -266,6 +269,12 @@ G:/butano-master/butano/include/bn_vector.h:
 G:/butano-master/butano/include/bn_regular_bg_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_map_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_animate_actions_fwd.h:
+G:/butano-master/butano/include/bn_sound.h:
+G:/butano-master/butano/include/bn_sound_handle.h:
+G:/game/build/bn_music_items.h:
+G:/butano-master/butano/include/bn_music_item.h:
+G:/game/build/bn_sound_items.h:
+G:/butano-master/butano/include/bn_sound_item.h:
 G:/game/build/bn_bg_palette_items_troll_tolls_bg_flash_palette.h:
 G:/butano-master/butano/include/bn_bg_palette_item.h:
 G:/game/build/bn_regular_bg_items_name_card_level_bg.h:
@@ -308,9 +317,6 @@ G:/game/include/room.h:
 G:/game/include/room_bounds.h:
 G:/game/include/collider.h:
 G:/game/include/game_object.h:
-G:/game/build/bn_sound_items.h:
-G:/butano-master/butano/include/bn_sound_item.h:
-G:/butano-master/butano/include/bn_sound_handle.h:
 G:/game/include/physics.h:
 G:/game/build/bn_sprite_palette_items_sprite_white_palette.h:
 G:/butano-master/butano/include/bn_sprite_palette_item.h:

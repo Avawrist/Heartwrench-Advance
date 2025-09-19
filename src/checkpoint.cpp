@@ -159,6 +159,7 @@ void Checkpoint::setState(ObjectState new_state)
 
         case CHECKPOINT_OVERWRITE:
 
+            bn::sound_items::checkpoint.play();
             animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
                                                                        2,
                                                                        bn::sprite_items::checkpoint.tiles_item(),

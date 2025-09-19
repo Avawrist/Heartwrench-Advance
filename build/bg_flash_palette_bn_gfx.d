@@ -1,1 +1,0 @@
-bg_flash_palette_bn_gfx.o: bg_flash_palette_bn_gfx.s

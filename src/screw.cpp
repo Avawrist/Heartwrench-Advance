@@ -238,6 +238,8 @@ void Screw::setState(ObjectState new_state)
             global_hitstop_frames = SCREW_HITSTOP_FRAMES;
             object_request        = ObjectRequest(GEAR_DROP, bn::fixed_point(x(), y()));
 
+            bn::sound_items::screw_click.play();
+
         break;
 
         default:

@@ -965,6 +965,10 @@ void Level::updateNameCard()
         // Start Fade and Level Transition
         fade_out = true;
         transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+
+        // Music & Sound
+        bn::sound::set_master_volume(LEVEL_SFX_MASTER_VOLUME);
+        bn::music_items::overworld.play();
     }
 
     // Draw Screen
@@ -1010,6 +1014,8 @@ void Level::updateTitleScreen()
                                                                            1,
                                                                            bn::regular_bg_items::title_screen_painted_bg.map_item(),
                                                                            0, 0, 1, 1, 2, 2);
+
+        bn::sound_items::select.play();
     }
 
     // Scroll Painted BG
@@ -1049,6 +1055,8 @@ void Level::updateOverworld()
             next_level        = LEVEL_TROLL_TOLLS;
             fade_out          = true;
             transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+
+            bn::sound_items::select.play();
         }
     }
 
@@ -1632,8 +1640,8 @@ void Level::updatePauseScreen()
     // Get Input
     if(transition_frames < 0)
     {
-        if(bn::keypad::up_pressed())   {cursor_index--;}
-        if(bn::keypad::down_pressed()) {cursor_index++;}
+        if(bn::keypad::up_pressed())   {cursor_index--; bn::sound_items::cursor_move.play();}
+        if(bn::keypad::down_pressed()) {cursor_index++; bn::sound_items::cursor_move.play();}
 
         if(cursor_index > CURSOR_QUIT_GAME)     {cursor_index = CURSOR_CONTINUE;}
         else if(cursor_index < CURSOR_CONTINUE) {cursor_index = CURSOR_QUIT_GAME;}
@@ -1674,6 +1682,8 @@ void Level::updatePauseScreen()
                 default:
                 break;
             }
+
+            bn::sound_items::select.play();
         }
     }
 
@@ -2015,6 +2025,9 @@ void Level::togglePauseScreen()
                 current_room.game_objects.at(i)->revealSprites();
             }
         }
+
+        // Close menu SFX
+        bn::sound_items::pause.play();
     }
 
     else          
@@ -2043,6 +2056,9 @@ void Level::togglePauseScreen()
             if(current_room.game_objects.at(i) != NULL)
             {current_room.game_objects.at(i)->hideSprites();}
         }
+
+        // Open menu SFX
+        bn::sound_items::pause.play();
     }
 }
 

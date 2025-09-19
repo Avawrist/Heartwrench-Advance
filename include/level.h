@@ -17,8 +17,10 @@
 #include "bn_bg_palette_ptr.h"
 #include "bn_colors.h"
 #include "bn_regular_bg_animate_actions.h"
+#include "bn_sound.h"
 
-//#include "bn_music_items.h"
+#include "bn_music_items.h"
+#include "bn_sound_items.h"
 
 // Flash Palettes
 #include "bn_bg_palette_items_troll_tolls_bg_flash_palette.h"
@@ -60,6 +62,8 @@
 #include "player.h"
 #include "checkpoint.h"
 #include "finish_seal.h"
+
+#define LEVEL_SFX_MASTER_VOLUME 0.6
 
 /////////////////////
 // Struct SaveData //

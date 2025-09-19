@@ -17,7 +17,7 @@
 int main()
 {   
     bn::core::init();
-    
+
     // Initialize Level
     Level level(LEVEL_NAME_CARD);
 

@@ -112,6 +112,7 @@ void AutoPlatform::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&
 // Level Enemies
 void AutoPlatform::resolveGroundGhoulCollision(GameObject& object)
 {
+    /*
     Collider roof_test_collider = Collider(collider.x(),
                                            collider.y() + AUTO_PLATFORM_ROOF_OFFSET,
                                            collider.width,
@@ -136,6 +137,7 @@ void AutoPlatform::resolveGroundGhoulCollision(GameObject& object)
             {object.rigidbody.addForce(Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), rigidbody.final_dir.y()), 1));}
         }
     }
+    */
 }
 
 // Special Objects

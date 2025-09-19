@@ -1,1 +1,0 @@
-ziggurat_1_level_bg_bn_gfx.o: ziggurat_1_level_bg_bn_gfx.s

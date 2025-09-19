@@ -24,12 +24,12 @@
 
 #define AUTO_PLATFORM_HITPOINTS 0
 
-#define AUTO_PLATFORM_30_FPS false
+#define AUTO_PLATFORM_30_FPS true
 
 #define AUTO_PLATFORM_ROOF_OFFSET -8
 #define AUTO_PLATFORM_ROOF_COLLIDER_HEIGHT 16
 
-#define AUTO_PLATFORM_SPEED 1
+#define AUTO_PLATFORM_SPEED 2
 #define AUTO_PLATFORM_ROLL_FORCE (Force(bn::fixed_point_t<12>(AUTO_PLATFORM_SPEED * (int32)x_dir, AUTO_PLATFORM_SPEED * (int32)y_dir), 1))
 
 struct AutoPlatform : GameObject {
