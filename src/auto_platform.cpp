@@ -32,6 +32,8 @@ AutoPlatform::AutoPlatform()
     thirty_fps = AUTO_PLATFORM_30_FPS;
 
     changed_x_dir = false;
+
+    x_dir = LEFT;
 }
 
 AutoPlatform::AutoPlatform(const AutoPlatform& other) : GameObject(other)
