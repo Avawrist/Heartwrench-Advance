@@ -81,7 +81,7 @@
 #define PLAYER_SECOND_JUMP_Y_FORCE  -1 // 1 extra block height if jump held all possible frames
 #define PLAYER_SECONDARY_JUMP_DECAY  1
 
-#define PLAYER_TERTIARY_JUMP_Y_FORCE -2 // Slows fall if jump held
+#define PLAYER_TERTIARY_JUMP_Y_FORCE -1 // Slows fall if jump held
 #define PLAYER_TERTIARY_JUMP_DECAY    1
 
 #define PLAYER_BASE_BELL_JUMP_FORCE          -9

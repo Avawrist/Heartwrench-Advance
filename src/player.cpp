@@ -1216,8 +1216,9 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			{remaining_jump_input_frames = 0;}
 
 			// Jump Regrab
-			//if(bn::keypad::a_held() && rigidbody.normalized_dir.y() > 0)
-			//{rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);}
+			if(bn::keypad::a_held() && 
+			   rigidbody.normalized_dir.y() > 0)
+			{rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);}
 
 			/////////////////
 			// Add Gravity //
@@ -1604,8 +1605,8 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			{remaining_jump_input_frames = 0;}
 
 			// Jump Regrab
-			//if(bn::keypad::a_held() && rigidbody.normalized_dir.y() > 0)
-			//{rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);}
+			if(bn::keypad::a_held() && rigidbody.normalized_dir.y() > 0)
+			{rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);}
 
 			/////////////////
 			// Add Gravity //
