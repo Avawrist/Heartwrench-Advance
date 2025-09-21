@@ -196,7 +196,7 @@ void Hitbox::update(const RoomBounds& 							   room_bounds,
     // Early out for 30FPS Objects //
     /////////////////////////////////
 
-    //if((thirty_fps || is_frozen) && (global_timer % 2 == 0)) {return;}
+    if((thirty_fps || is_frozen) && (global_timer % 2 == 0)) {return;}
 
     //////////////////
     // Update State //
@@ -232,7 +232,7 @@ void Hitbox::update(const RoomBounds& 							   room_bounds,
     // Update Timers //
     ///////////////////
 
-    updateTimers();
+    //updateTimers();
 
     ///////////////////
     // Check if dead //

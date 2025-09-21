@@ -50,8 +50,13 @@ struct AutoPlatform : GameObject {
     // GameObject Overrides //
     //////////////////////////
 
-    void checkIfDead()           override;
-    void updateSpriteDirection() override;
+	void update(const RoomBounds& 							   room_bounds,
+                bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+                const bn::regular_bg_ptr&                      bg_ptr, 
+                const bn::span<const bn::regular_bg_map_cell>& cells,
+                const bn::regular_bg_item&                     bg_item,
+                const bn::camera_ptr&                          camera) override;
+
     void updateTimers()          override;
 
     //////////////////////////////
