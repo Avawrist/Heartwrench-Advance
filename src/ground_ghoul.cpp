@@ -159,6 +159,9 @@ void GroundGhoul::setState(ObjectState new_state)
         break;
 
         case OBJECT_HITSTUN:
+
+            setHitStretch();
+
         break;
 
         case OBJECT_DEATH:

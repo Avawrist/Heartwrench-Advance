@@ -498,33 +498,6 @@ void GameObject::setPos(bn::fixed_point new_pos)
     }
 }
 
-void GameObject::setHitStretch()
-{
-    if(sprite_ptr.has_value())
-    {
-        sprite_ptr->set_horizontal_scale(GAME_OBJECT_MAX_STRETCH_H);				
-        sprite_ptr->set_vertical_scale(GAME_OBJECT_MIN_STRETCH_V);
-    }
-}
-
-void GameObject::setVerticalStretch()
-{
-    if(sprite_ptr.has_value())
-    {
-        sprite_ptr->set_horizontal_scale(GAME_OBJECT_MIN_STRETCH_H);
-        sprite_ptr->set_vertical_scale(GAME_OBJECT_MAX_STRETCH_V);
-    }
-}
-
-void GameObject::setHorizontalStretch()
-{
-    if(sprite_ptr.has_value())
-    {
-        sprite_ptr->set_horizontal_scale(GAME_OBJECT_MAX_STRETCH_H);				
-        sprite_ptr->set_vertical_scale(GAME_OBJECT_MIN_STRETCH_V);
-    }
-}
-
 void GameObject::updateSpriteDirection()
 {
     if(sprite_ptr.has_value())
@@ -543,7 +516,7 @@ void GameObject::updateSpriteOffsets()
     {
         bn::fixed h_scale   = sprite_ptr->horizontal_scale();
         bn::fixed v_scale   = sprite_ptr->vertical_scale();
-        bn::fixed increment = 0.1;
+        bn::fixed increment = 0.05;
     
         // Correct H Scale
         if(h_scale > 1) {sprite_ptr->set_horizontal_scale(h_scale - increment);}
@@ -742,6 +715,15 @@ void GameObject::playBlockDeathAnim()
 															   1,
 															   bn::sprite_items::block_death.tiles_item(),
 															   0, 0, 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4);
+}
+
+void GameObject::setHitStretch()
+{
+    if(sprite_ptr.has_value())
+    {
+        sprite_ptr->set_horizontal_scale(OBJECT_HIT_STRETCH_H);
+	    sprite_ptr->set_vertical_scale(OBJECT_HIT_STRETCH_V);
+    }
 }
 
 /////////////////////

@@ -111,6 +111,9 @@
 #define GENERIC_HIT_SCREENSHAKE_FRAMES 0
 #define GENERIC_HIT_SCREENSHAKE_SEVERITY STRONG_SHAKE
 
+#define OBJECT_HIT_STRETCH_H 0.9
+#define OBJECT_HIT_STRETCH_V 1.2
+
 #define GAME_OBJECT_GRAVITY       4
 #define GAME_OBJECT_GRAVITY_DECAY 1
 
@@ -382,9 +385,6 @@ struct GameObject
 	void setY(bn::fixed new_y);
 	void setPos(bn::fixed new_x, bn::fixed new_y);
 	void setPos(bn::fixed_point new_pos);
-	void setHitStretch();
-	void setVerticalStretch();
-	void setHorizontalStretch();
 	void clampPosition(const RoomBounds& room_bounds);
 	virtual void setHitFlash();
 	virtual void setHitFlash(int32 frames);
@@ -393,7 +393,10 @@ struct GameObject
 	void applyHP(int32 points);
 	void applyHitEffect(int32 x, int32 y);
 	void applySplatEffect(int32 x, int32 y);
+
 	void playBlockDeathAnim();
+
+	void setHitStretch();
 
 	/////////////////////
 	// State Functions //

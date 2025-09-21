@@ -41,11 +41,8 @@
 
 #define PLAYER_WALL_TEST_RAY_LENGTH 1
 
-#define PLAYER_FALL_STRETCH_V 1.5
-#define PLAYER_FALL_STRETCH_H 0.75
-
 #define PLAYER_MAX_HITPOINTS      3
-#define PLAYER_GEARTING_HITPOINTS 3
+#define PLAYER_STARTING_HITPOINTS 3
 
 #define PLAYER_GET_HP_HITSTOP_FRAMES    10
 #define PLAYER_GET_STAR_HITSTOP_FRAMES  5
@@ -63,8 +60,8 @@
 #define PLAYER_MIN_X_SPEED    0
 #define PLAYER_MAX_X_SPEED    2
 #define PLAYER_X_DECAY        1
-#define X_SPEED_ACC_RATE      0.25 // 0.155
-#define X_SPEED_DECAY_RATE    0.25 // 0.065
+#define X_SPEED_ACC_RATE      0.125 // 0.155
+#define X_SPEED_DECAY_RATE    0.125 // 0.065
 
 // Climb Values
 
@@ -75,8 +72,8 @@
 #define PLAYER_CLIMB_REGRAB_CD_FRAMES 20
 
 // Air Values
-#define PLAYER_BASE_JUMP_FORCE -7 // 2 block height at 0.03 decay rate
-#define PLAYER_JUMP_DECAY       0.03
+#define PLAYER_BASE_JUMP_FORCE -7 // Roughly 2.5 block height at 0.028 decay rate
+#define PLAYER_JUMP_DECAY       0.028
 
 #define PLAYER_SECOND_JUMP_Y_FORCE  -1 // 1 extra block height if jump held all possible frames
 #define PLAYER_SECONDARY_JUMP_DECAY  1
@@ -84,22 +81,21 @@
 #define PLAYER_TERTIARY_JUMP_Y_FORCE -1 // Slows fall if jump held
 #define PLAYER_TERTIARY_JUMP_DECAY    1
 
-#define PLAYER_BASE_BELL_JUMP_FORCE          -9
-#define PLAYER_BELL_JUMP_DECAY                0.024
-#define PLAYER_GROUNDED_BELL_JUMP_SUPPLEMENT -24
-
 //#define PLAYER_WALL_JUMP_X_FORCE           2
 //#define PLAYER_WALL_JUMP_Y_FORCE          -7
 //#define PLAYER_WALL_JUMP_DECAY             0.033
 
 #define PLAYER_MAX_JUMP_INPUT_FRAMES 20
 
-#define PLAYER_HEAD_BONK_H_STRETCH 1.6
-#define PLAYER_HEAD_BONK_V_STRETCH 0.7
+#define PLAYER_JUMP_STRETCH_H 0.7
+#define PLAYER_JUMP_STRETCH_V 1.4
+
+#define PLAYER_HEAD_BONK_STRETCH_H 1.6
+#define PLAYER_HEAD_BONK_STRETCH_V 0.7
 
 #define PLAYER_GRAVITY       	             3
 #define PLAYER_PROLONGED_GRAVITY             2
-#define PLAYER_PROLONGED_AIR_FRAMES_REQUIRED 20
+#define PLAYER_PROLONGED_AIR_FRAMES_REQUIRED 24
 #define PLAYER_FAST_FALL_GRAVITY             2
 #define PLAYER_MIN_FAST_FALL_FRAMES          3
 #define PLAYER_WALL_RIDE_GRAVITY             1
@@ -123,6 +119,10 @@
 
 #define PLAYER_SEALED_GATE_X_OFFSET     16
 #define PLAYER_WRENCH_PUMP_ACTION_FRAME 3
+
+#define PLAYER_BASE_BELL_JUMP_FORCE          -9
+#define PLAYER_BELL_JUMP_DECAY                0.0235
+#define PLAYER_GROUNDED_BELL_JUMP_SUPPLEMENT -24
 
 // Overdrive Values
 
@@ -165,6 +165,9 @@
 #define PLAYER_SPIN_2_HITSTUN_FRAMES     30
 #define PLAYER_SPIN_2_SCREENSHAKE_FRAMES 6
 #define PLAYER_SPIN_2_SCREENSHAKE_SEVERITY STRONG_SHAKE
+
+#define PLAYER_SPIN_STRETCH_H 1.4
+#define PLAYER_SPIN_STRETCH_V 0.8
 
 #define PLAYER_V_COLLISION_MAX_GRACE_FRAMES 4
 #define PLAYER_LATE_JUMP_GRACE_FRAMES       6
@@ -324,6 +327,10 @@ struct Player : GameObject {
 	void setEntranceAnimation();
 	void setGetAnimation();
 	void setGetExtendedAnimation();
+
+	void setJumpStretch();
+	void setSpinStretch();
+	void setBonkStretch();
 
 	//////////////////////////
 	// GameObject Overrides //

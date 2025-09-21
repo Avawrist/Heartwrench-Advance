@@ -33,7 +33,7 @@ Player::Player()
 	ow_target_pos        = bn::fixed_point(global_ow_player_location_x,
 		                                   global_ow_player_location_y);
 
-	hitpoints                        = PLAYER_GEARTING_HITPOINTS;
+	hitpoints                        = PLAYER_STARTING_HITPOINTS;
 	spin_buffered_frames             = 0;
 	jump_buffered_frames             = 0;
 	remaining_jump_input_frames      = 0;
@@ -237,6 +237,7 @@ void Player::jump()
 	rigidbody.addForce(PLAYER_JUMP_FORCE);
 
 	setJumpAnimation();
+	setJumpStretch();
 
 	// SFX
 	bn::sound_items::jump.play();
@@ -249,6 +250,8 @@ void Player::spinJump()
 	remaining_jump_input_frames = PLAYER_MAX_JUMP_INPUT_FRAMES;
 	late_jump_grace_frames      = 0;
 	rigidbody.addForce(PLAYER_JUMP_FORCE);
+
+	setJumpStretch();
 
 	// SFX
 	bn::sound_items::jump.play();
@@ -274,6 +277,7 @@ void Player::bellJump()
 	rigidbody.addForce(PLAYER_BELL_JUMP_FORCE);
 
 	setBellJumpAnimation();
+	setJumpStretch();
 }
 
 /*
@@ -726,6 +730,33 @@ void Player::setGetExtendedAnimation()
 														       1, 1, 2, 2, 3, 3, 2, 2,
 															   1, 1, 2, 2, 3, 3, 2, 2,
 															   1, 1, 2, 2, 3, 3, 2, 2);
+}
+
+void Player::setJumpStretch()
+{
+	if(sprite_ptr.has_value())
+	{
+		sprite_ptr->set_horizontal_scale(PLAYER_JUMP_STRETCH_H);
+		sprite_ptr->set_vertical_scale(PLAYER_JUMP_STRETCH_V);
+	}
+}
+
+void Player::setSpinStretch()
+{
+	if(sprite_ptr.has_value())
+	{
+		sprite_ptr->set_horizontal_scale(PLAYER_SPIN_STRETCH_H);
+		sprite_ptr->set_vertical_scale(PLAYER_SPIN_STRETCH_V);	
+	}
+}
+
+void Player::setBonkStretch()
+{
+	if(sprite_ptr.has_value())
+	{
+		sprite_ptr->set_horizontal_scale(PLAYER_HEAD_BONK_STRETCH_H);
+		sprite_ptr->set_vertical_scale(PLAYER_HEAD_BONK_STRETCH_V);
+	}
 }
 
 //////////////////////////
@@ -1467,9 +1498,6 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 						rigidbody.addForce(PLAYER_PHASE_STEP_EXIT_FORCE_UP);
 						late_jump_grace_frames = 0;
 
-						// Stretch
-						setVerticalStretch();
-
 						// Hide Marker
 						pm_sprite_ptr->set_visible(false);
 					}
@@ -1484,9 +1512,6 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 						setY(phase_destination.y());
 						setState(NONE);
 						rigidbody.addForce(PLAYER_PHASE_STEP_EXIT_FORCE_DOWN);
-
-						// Stretch
-						setVerticalStretch();
 
 						// Hide Marker
 						pm_sprite_ptr->set_visible(false);
@@ -1504,9 +1529,6 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 						rigidbody.addForce(PLAYER_PHASE_STEP_EXIT_FORCE_LEFT);
 						x_dir = LEFT;
 
-						// Stretch
-						setHorizontalStretch();
-
 						// Hide Marker
 						pm_sprite_ptr->set_visible(false);
 					}
@@ -1522,9 +1544,6 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 						setState(NONE);
 						rigidbody.addForce(PLAYER_PHASE_STEP_EXIT_FORCE_RIGHT);
 						x_dir = RIGHT;
-
-						// Stretch
-						setHorizontalStretch();
 
 						// Hide Marker
 						pm_sprite_ptr->set_visible(false);
@@ -1936,8 +1955,6 @@ void Player::setState(ObjectState new_state)
 			remaining_jump_input_frames      = 0;
 			late_jump_grace_frames           = PLAYER_LATE_JUMP_GRACE_FRAMES;
 
-			setHorizontalStretch();
-
 			pm_sprite_ptr->set_position(phase_destination.x(), phase_destination.y());
 			pm_sprite_ptr->set_visible(true);
 
@@ -1947,9 +1964,12 @@ void Player::setState(ObjectState new_state)
 
 			spin_effect_frames = PLAYER_MAX_SPIN_EFFECT_FRAMES;
 			if(bn::keypad::right_held() || bn::keypad::left_held())
-			{rigidbody.addForce(PLAYER_SPIN_FORCE);}
+			{
+				rigidbody.addForce(PLAYER_SPIN_FORCE);
+			}
 
 			setSpinAttackAnimation();
+			setSpinStretch();
 
 			// SFX
 			bn::sound_items::spin_attack.play();
@@ -2293,10 +2313,8 @@ void Player::resolveSmashBlockLargeCollision(GameObject& object)
 		if(col_y_offset > 0) 
 		{
 			object.applyHit(object.hitpoints, 0, 0);
-			
 			rigidbody.removeYForces();
-			sprite_ptr->set_horizontal_scale(PLAYER_HEAD_BONK_H_STRETCH);
-			sprite_ptr->set_vertical_scale(PLAYER_HEAD_BONK_V_STRETCH);
+			setBonkStretch();
 		}		
     }
 
@@ -2331,8 +2349,7 @@ void Player::resolveSmashBlockMiniCollision(GameObject& object)
 		{
 			object.applyHit(object.hitpoints, 0, 0);
 			rigidbody.removeYForces();
-			sprite_ptr->set_horizontal_scale(PLAYER_HEAD_BONK_H_STRETCH);
-			sprite_ptr->set_vertical_scale(PLAYER_HEAD_BONK_V_STRETCH);
+			setBonkStretch();
 		}
     }
 
@@ -2368,8 +2385,7 @@ void Player::resolveSmashBlockZigguratLCollision(GameObject& object)
 			object.applyHit(object.hitpoints, 0, 0);
 			
 			rigidbody.removeYForces();
-			sprite_ptr->set_horizontal_scale(PLAYER_HEAD_BONK_H_STRETCH);
-			sprite_ptr->set_vertical_scale(PLAYER_HEAD_BONK_V_STRETCH);
+			setBonkStretch();
 		}		
     }
 
@@ -2405,8 +2421,7 @@ void Player::resolveSmashBlockZigguratCCollision(GameObject& object)
 			object.applyHit(object.hitpoints, 0, 0);
 			
 			rigidbody.removeYForces();
-			sprite_ptr->set_horizontal_scale(PLAYER_HEAD_BONK_H_STRETCH);
-			sprite_ptr->set_vertical_scale(PLAYER_HEAD_BONK_V_STRETCH);
+			setBonkStretch();
 		}		
     }
 
@@ -2442,8 +2457,7 @@ void Player::resolveSmashBlockZigguratRCollision(GameObject& object)
 			object.applyHit(object.hitpoints, 0, 0);
 			
 			rigidbody.removeYForces();
-			sprite_ptr->set_horizontal_scale(PLAYER_HEAD_BONK_H_STRETCH);
-			sprite_ptr->set_vertical_scale(PLAYER_HEAD_BONK_V_STRETCH);
+			setBonkStretch();
 		}		
     }
 
@@ -2479,8 +2493,7 @@ void Player::resolveHPTotemCollision(GameObject& object)
 			object.applyHit(object.hitpoints, 0, 0);
 			
 			rigidbody.removeYForces();
-			sprite_ptr->set_horizontal_scale(PLAYER_HEAD_BONK_H_STRETCH);
-			sprite_ptr->set_vertical_scale(PLAYER_HEAD_BONK_V_STRETCH);
+			setBonkStretch();
 		}		
     }
 
@@ -3128,7 +3141,7 @@ void Player::resolveYAxisCollision(const Collider& other_collider)
 
 	if(col_y_offset > 0 && state != PLAYER_CLIMB) 
 	{
-		rigidbody.removeYForces(); 
+		rigidbody.removeYForces();
 
 		// SFX
 		bn::sound_items::player_bonk.play();

@@ -161,9 +161,9 @@ void Enemy::playEnemyDeathAnim()
 	temp_sprite_ptr.reset();
 
 	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-																0,
+																1,
 																bn::sprite_items::enemy_death.tiles_item(),
-																0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6);
+																0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6);
 }
 
 //////////////////////////////

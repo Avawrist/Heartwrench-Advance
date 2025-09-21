@@ -173,7 +173,6 @@ void Hitbox::applyWallHit(GameObject& object)
 
     // Object juice:
     object.setHitFlash();
-    //object.setVerticalStretch();
     object.applySplatEffect(object.x().integer() + splat_x_offset,
                             object.y().integer());
 

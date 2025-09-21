@@ -203,6 +203,12 @@ void BellTroll::setState(ObjectState new_state)
 
         break;
 
+        case OBJECT_HITSTUN:
+
+            setHitStretch();
+
+        break;
+
         case OBJECT_DEATH:
 
             // Play default death animation:

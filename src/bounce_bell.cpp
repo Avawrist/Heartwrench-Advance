@@ -116,7 +116,7 @@ void BounceBell::update(const RoomBounds& 							   room_bounds,
     // Correct Sprite Offsets //
     ////////////////////////////
 	
-    //updateSpriteOffsets();
+    updateSpriteOffsets();
 
     //////////////////////////
     // Update HP Bar Visual //
@@ -236,6 +236,7 @@ void BounceBell::setState(ObjectState new_state)
 	{
         case OBJECT_HITSTUN:
 
+            setHitStretch();
             animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
                                                                         4,
                                                                         bn::sprite_items::bounce_bell.tiles_item(),
