@@ -4,6 +4,8 @@ audio/checkpoint.wav
 1758239053.276908
 audio/cursor_move.wav
 1758237632.9616153
+audio/gate_open.wav
+1758410268.7437642
 audio/gear_get.wav
 1758237612.81549
 audio/generic_hit.wav
@@ -24,6 +26,10 @@ audio/player_death.wav
 1758244521.9467714
 audio/player_hit.wav
 1758238332.6612465
+audio/player_wrench_clamp.wav
+1758410388.02839
+audio/player_wrench_pump.wav
+1758410442.5229588
 audio/screw_click.wav
 1758238422.1645975
 audio/select.wav

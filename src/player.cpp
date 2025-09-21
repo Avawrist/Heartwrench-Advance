@@ -629,7 +629,7 @@ void Player::setWrenchPumpAnimation()
 	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 															   2,
 															   bn::sprite_items::player_wrench.tiles_item(),
-															   1, 1, 1, 2, 2, 2, 3, 3, 3);
+															   1, 1, 1, 2, 2, 2);
 }
 
 void Player::setDoorAnimation()
@@ -645,9 +645,10 @@ void Player::setDoorAnimation()
 	temp_sprite_ptr.reset();
 
 	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-															   0,
+															   2,
 															   bn::sprite_items::player_door.tiles_item(),
-															   0, 0);
+															   0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3,
+															   0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3);
 }
 
 void Player::setOWIdleAnimation()
@@ -1699,7 +1700,10 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 			// Pump
 			if(bn::keypad::b_pressed())
-			{setWrenchPumpAnimation();}
+			{
+				setWrenchPumpAnimation();
+				bn::sound_items::player_wrench_pump.play();
+			}
 
 			// End state:
 			if(bn::keypad::r_released())
@@ -1708,6 +1712,10 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 		break;
 
 		case PLAYER_DOOR:
+
+			if(animate_action_ptr->done())
+			{setDoorAnimation();}
+
 		break;
 
 		case PLAYER_OW:
@@ -1961,7 +1969,11 @@ void Player::setState(ObjectState new_state)
 
 		case PLAYER_WRENCH:
 
+			rigidbody.removeForces();
 			setWrenchIdleAnimation();
+
+			// SFX
+			bn::sound_items::player_wrench_clamp.play();
 
 		break;
 
@@ -2006,7 +2018,7 @@ void Player::setState(ObjectState new_state)
 			setDeathAnimation();
 
 			// SFX
-			bn::sound_items::player_death.play();
+			bn::sound_items::generic_hit.play();
 
 		break;
 

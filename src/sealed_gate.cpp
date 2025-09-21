@@ -227,18 +227,21 @@ void SealedGate::setState(ObjectState new_state)
         case SEALED_GATE_OPEN_1:
 
             setOpen1Anim();
+            bn::sound_items::gate_open.play();
 
         break;
 
         case SEALED_GATE_OPEN_2:
 
             setOpen2Anim();
+            bn::sound_items::gate_open.play();
 
         break;
 
         case SEALED_GATE_OPEN_3:
 
             setOpen3Anim();
+            bn::sound_items::gate_open.play();
 
             // Resize & reposition collider
             collider_offset_x = SEALED_GATE_COLLIDER_OPEN_OFFSET_X;

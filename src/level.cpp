@@ -1895,8 +1895,10 @@ void Level::updateLevelComplete()
     // Close menu if open
     if(menu_open) {togglePauseScreen();}
 
-    // If victory theme and player animation are both done, trigger transition:
-    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) != NULL && transition_frames == -1)
+    // If player animation is done, trigger transition:
+    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) != NULL                     && 
+       current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->animate_action_ptr->done() &&
+       transition_frames == -1)
     {
         next_level        = LEVEL_OVERWORLD;
         fade_out          = true;
