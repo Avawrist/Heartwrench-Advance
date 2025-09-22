@@ -2689,14 +2689,14 @@ void Player::resolveSealedGateCollision(GameObject& object)
 // Level Enemies
 void Player::resolveThornColumnCollision(GameObject& object)  
 {
-	int32 thorn_collision_x_offset = collider.getCollisionXOffset(object.collider, rigidbody.normalized_dir.x()).integer();
+	//int32 thorn_collision_x_offset = collider.getCollisionXOffset(object.collider, rigidbody.normalized_dir.x()).integer();
 	
 	if(collider.isCollision(object.collider))
 	{
 		if(hitpoints > 0)
 		{
-			int32 knockback_x_dir = abs(thorn_collision_x_offset) / thorn_collision_x_offset;
-			applyHit(object.damage, knockback_x_dir, 0);
+			//int32 knockback_x_dir = abs(thorn_collision_x_offset) / thorn_collision_x_offset;
+			applyHit(object.damage, 0, 0);
 		}
 
 		resolveXAxisCollision(object.collider);
@@ -2731,12 +2731,12 @@ void Player::resolveGroundGhoulCollision(GameObject& object)
 	
 	if(hitpoints > 0 && collider.isCollision(object.collider))
 	{
-		int32 knockback_x_dir;
+		//int32 knockback_x_dir;
 
-		if(x() > object.x()) {knockback_x_dir = 1;}
-		else				 {knockback_x_dir = -1;}
+		//if(x() > object.x()) {knockback_x_dir = 1;}
+		//else				 {knockback_x_dir = -1;}
 
-		applyHit(object.damage, knockback_x_dir, 0);
+		applyHit(object.damage, 0, 0);
 	}
 }
 
@@ -2776,12 +2776,12 @@ void Player::resolveBellTrollCollision(GameObject& object)
 
 			if(hitpoints > 0 && collider.isCollision(object.collider))
 			{
-				int32 knockback_x_dir;
+				//int32 knockback_x_dir;
 
-				if(x() > object.x()) {knockback_x_dir = 1;}
-				else				 {knockback_x_dir = -1;}
+				//if(x() > object.x()) {knockback_x_dir = 1;}
+				//else				 {knockback_x_dir = -1;}
 
-				applyHit(object.damage, knockback_x_dir, 0);
+				applyHit(object.damage, 0, 0);
 			}
 
 		break;
@@ -2794,12 +2794,12 @@ void Player::resolveWingedTrollLCollision(GameObject& object)
 	
 	if(hitpoints > 0 && collider.isCollision(object.collider))
 	{
-		int32 knockback_x_dir;
+		//int32 knockback_x_dir;
 
-		if(x() > object.x()) {knockback_x_dir =  1;}
-		else				 {knockback_x_dir = -1;}
+		//if(x() > object.x()) {knockback_x_dir =  1;}
+		//else				 {knockback_x_dir = -1;}
 
-		applyHit(object.damage, knockback_x_dir, 0);
+		applyHit(object.damage, 0, 0);
 	}
 }
 
@@ -2809,12 +2809,12 @@ void Player::resolveWingedTrollRCollision(GameObject& object)
 	
 	if(hitpoints > 0 && collider.isCollision(object.collider))
 	{
-		int32 knockback_x_dir;
+		//int32 knockback_x_dir;
 
-		if(x() > object.x()) {knockback_x_dir =  1;}
-		else				 {knockback_x_dir = -1;}
+		//if(x() > object.x()) {knockback_x_dir =  1;}
+		//else				 {knockback_x_dir = -1;}
 
-		applyHit(object.damage, knockback_x_dir, 0);
+		applyHit(object.damage, 0, 0);
 	}
 }
 
