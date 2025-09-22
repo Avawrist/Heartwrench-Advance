@@ -8,7 +8,7 @@
 @	+ 256 tiles not compressed
 @	Total size: 32 + 8192 = 8224
 @
-@	Time-stamp: 2025-09-18, 16:16:32
+@	Time-stamp: 2025-09-21, 17:21:47
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -312,7 +312,7 @@ hud_hp_bar_bn_gfxTiles:
 	.global hud_hp_bar_bn_gfxPal		@ 32 unsigned chars
 	.hidden hud_hp_bar_bn_gfxPal
 hud_hp_bar_bn_gfxPal:
-	.hword 0x28C6,0x3929,0x5989,0x7269,0x7F51,0x73F1,0x2898,0x3D3E
-	.hword 0x421E,0x4A9F,0x1DB9,0x265C,0x2AFF,0x7FFF,0x0000,0x0000
+	.hword 0x2CE6,0x4149,0x61AA,0x7EAA,0x7FB3,0x7FF3,0x2C9A,0x415F
+	.hword 0x463F,0x4EFF,0x21DC,0x2A7F,0x2F3F,0x7FFF,0x0000,0x0000
 
 @}}BLOCK(hud_hp_bar_bn_gfx)

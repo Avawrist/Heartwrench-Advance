@@ -494,7 +494,8 @@ void Hitbox::resolveThornBarCollision(GameObject& object)
 
 void Hitbox::resolveGroundGhoulCollision(GameObject& object)
 {
-    if(object.state == OBJECT_DEATH) {return;}
+    if(object.state == OBJECT_HITSTUN || 
+       object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
     {
@@ -507,7 +508,8 @@ void Hitbox::resolveGroundGhoulCollision(GameObject& object)
 
 void Hitbox::resolveBellTrollCollision(GameObject& object)
 {
-    if(object.state == OBJECT_DEATH) {return;}
+    if(object.state == OBJECT_HITSTUN || 
+       object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
     {
@@ -520,7 +522,8 @@ void Hitbox::resolveBellTrollCollision(GameObject& object)
 
 void Hitbox::resolveWingedTrollLCollision(GameObject& object)
 {
-    if(object.state == OBJECT_DEATH) {return;}
+    if(object.state == OBJECT_HITSTUN || 
+       object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
     {
@@ -533,7 +536,8 @@ void Hitbox::resolveWingedTrollLCollision(GameObject& object)
 
 void Hitbox::resolveWingedTrollRCollision(GameObject& object)
 {
-    if(object.state == OBJECT_DEATH) {return;}
+    if(object.state == OBJECT_HITSTUN || 
+       object.state == OBJECT_DEATH) {return;}
 
     if(collider.isCollision(object.collider))
     {

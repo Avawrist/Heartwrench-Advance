@@ -8,7 +8,7 @@
 @	+ 448 tiles not compressed
 @	Total size: 32 + 14336 = 14368
 @
-@	Time-stamp: 2025-09-19, 13:36:53
+@	Time-stamp: 2025-09-21, 17:21:47
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -528,7 +528,7 @@ player_bell_jump_bn_gfxTiles:
 	.global player_bell_jump_bn_gfxPal		@ 32 unsigned chars
 	.hidden player_bell_jump_bn_gfxPal
 player_bell_jump_bn_gfxPal:
-	.hword 0x1485,0x0000,0x6B78,0x7FFF,0x28C6,0x3929,0x5989,0x7269
-	.hword 0x7F51,0x1D13,0x1DB9,0x265C,0x2AFF,0x2C70,0x2898,0x3D3E
+	.hword 0x1886,0x0000,0x73DB,0x7FFF,0x2CE6,0x4149,0x61AA,0x7EAA
+	.hword 0x7FB3,0x1D35,0x21DC,0x2A7F,0x2F3F,0x3072,0x2C9A,0x415F
 
 @}}BLOCK(player_bell_jump_bn_gfx)

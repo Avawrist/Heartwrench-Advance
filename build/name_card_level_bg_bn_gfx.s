@@ -9,7 +9,7 @@
 @	+ regular map (flat), not compressed, 32x32 
 @	Total size: 32 + 64 + 2048 = 2144
 @
-@	Time-stamp: 2025-09-18, 16:16:32
+@	Time-stamp: 2025-09-21, 17:21:47
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -177,7 +177,7 @@ name_card_level_bg_bn_gfxMap:
 	.global name_card_level_bg_bn_gfxPal		@ 32 unsigned chars
 	.hidden name_card_level_bg_bn_gfxPal
 name_card_level_bg_bn_gfxPal:
-	.hword 0x1485,0x20C7,0x314C,0x35B2,0x3E55,0x312D,0x45CF,0x5AB3
-	.hword 0x6B78,0x7FFF,0x108D,0x18F6,0x193D,0x25FE,0x1895,0x1CFD
+	.hword 0x1886,0x24E8,0x356D,0x39D4,0x4297,0x354E,0x4DF1,0x62F5
+	.hword 0x73DB,0x7FFF,0x14AF,0x18F8,0x1D5F,0x2A3F,0x1C97,0x211F
 
 @}}BLOCK(name_card_level_bg_bn_gfx)

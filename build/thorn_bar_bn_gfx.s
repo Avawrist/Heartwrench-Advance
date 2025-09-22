@@ -8,7 +8,7 @@
 @	+ 320 tiles not compressed
 @	Total size: 32 + 10240 = 10272
 @
-@	Time-stamp: 2025-09-18, 16:16:33
+@	Time-stamp: 2025-09-21, 17:21:47
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -384,7 +384,7 @@ thorn_bar_bn_gfxTiles:
 	.global thorn_bar_bn_gfxPal		@ 32 unsigned chars
 	.hidden thorn_bar_bn_gfxPal
 thorn_bar_bn_gfxPal:
-	.hword 0x1485,0x20C7,0x314C,0x73F1,0x3244,0x3AE3,0x3772,0x3779
-	.hword 0x0000,0x20CF,0x1D13,0x1DB9,0x265C,0x2AFF,0x10E9,0x7FFF
+	.hword 0x1886,0x24E8,0x356D,0x7FF3,0x3664,0x3F24,0x3BD3,0x3BDC
+	.hword 0x0000,0x24D0,0x1D35,0x21DC,0x2A7F,0x2F3F,0x110A,0x7FFF
 
 @}}BLOCK(thorn_bar_bn_gfx)

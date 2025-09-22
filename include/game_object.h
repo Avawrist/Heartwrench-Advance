@@ -2,6 +2,7 @@
 #define GAMEOBJECT_H
 
 // Butano
+#include "bn_core.h"
 #include "bn_optional.h"
 #include "bn_camera_ptr.h"
 #include "bn_math.h"
@@ -87,7 +88,7 @@
 #define WALL_SPLAT_Y_KNOCKBACK        0
 #define WALL_SPLAT_KNOCKBACK_DECAY    0.05
 #define WALL_SPLAT_DAMAGE             1
-#define WALL_SPLAT_HITSTOP_FRAMES     4
+#define WALL_SPLAT_HITSTOP_FRAMES     0
 #define WALL_SPLAT_HITSTUN_FRAMES     30
 #define WALL_SPLAT_SCREENSHAKE_FRAMES 8
 #define WALL_SPLAT_SCREENSHAKE_SEVERITY STRONG_SHAKE

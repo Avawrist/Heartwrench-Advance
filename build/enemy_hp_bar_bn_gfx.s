@@ -8,7 +8,7 @@
 @	+ 24 tiles not compressed
 @	Total size: 32 + 768 = 800
 @
-@	Time-stamp: 2025-09-18, 16:16:32
+@	Time-stamp: 2025-09-21, 17:21:47
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -51,7 +51,7 @@ enemy_hp_bar_bn_gfxTiles:
 	.global enemy_hp_bar_bn_gfxPal		@ 32 unsigned chars
 	.hidden enemy_hp_bar_bn_gfxPal
 enemy_hp_bar_bn_gfxPal:
-	.hword 0x1485,0x20CF,0x1D13,0x1DB9,0x265C,0x2AFF,0x1CA8,0x38ED
-	.hword 0x5572,0x7A15,0x76BD,0x3161,0x4621,0x4EA1,0x5F86,0x0000
+	.hword 0x1886,0x24D0,0x1D35,0x21DC,0x2A7F,0x2F3F,0x20A9,0x410E
+	.hword 0x5D93,0x7E57,0x7EFF,0x3581,0x4E61,0x5701,0x67C6,0x0000
 
 @}}BLOCK(enemy_hp_bar_bn_gfx)

@@ -29,5 +29,7 @@ int main()
 
         // Update Butano
         bn::core::update();
+
+        BN_LOG(bn::core::last_missed_frames());
     }
 }

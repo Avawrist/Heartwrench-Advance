@@ -24,10 +24,15 @@ ground_ghoul.o: G:/game/src/ground_ghoul.cpp \
  G:/butano-master/butano/include/bn_reciprocal_lut.h \
  G:/butano-master/butano/include/bn_rule_of_three_approximation.h \
  G:/game/include/enemy.h G:/game/include/game_object.h \
+ G:/butano-master/butano/include/bn_core.h \
+ G:/butano-master/butano/include/bn_span.h \
+ G:/butano-master/butano/include/bn_span_fwd.h \
  G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_memory_alias.h \
- G:/butano-master/butano/include/bn_camera_ptr.h \
+ G:/butano-master/butano/include/bn_string_view.h \
+ G:/butano-master/butano/include/bn_vblank_callback_type.h \
  G:/butano-master/butano/include/bn_optional.h \
+ G:/butano-master/butano/include/bn_camera_ptr.h \
  G:/butano-master/butano/include/bn_fixed_point.h \
  G:/butano-master/butano/include/bn_point.h \
  G:/butano-master/butano/include/bn_fixed_point_fwd.h \
@@ -46,8 +51,6 @@ ground_ghoul.o: G:/game/src/ground_ghoul.cpp \
  G:/butano-master/butano/include/bn_vector_fwd.h \
  G:/butano-master/butano/include/bn_sprite_ptr.h \
  G:/butano-master/butano/include/bn_sprite_tiles_ptr.h \
- G:/butano-master/butano/include/bn_span.h \
- G:/butano-master/butano/include/bn_span_fwd.h \
  G:/butano-master/butano/include/bn_sprite_tiles_item.h \
  G:/butano-master/butano/include/bn_tile.h \
  G:/butano-master/butano/include/bn_bpp_mode.h \
@@ -120,10 +123,15 @@ G:/butano-master/butano/include/bn_reciprocal_lut.h:
 G:/butano-master/butano/include/bn_rule_of_three_approximation.h:
 G:/game/include/enemy.h:
 G:/game/include/game_object.h:
+G:/butano-master/butano/include/bn_core.h:
+G:/butano-master/butano/include/bn_span.h:
+G:/butano-master/butano/include/bn_span_fwd.h:
 G:/butano-master/butano/include/bn_optional.h:
 G:/butano-master/butano/include/bn_memory_alias.h:
-G:/butano-master/butano/include/bn_camera_ptr.h:
+G:/butano-master/butano/include/bn_string_view.h:
+G:/butano-master/butano/include/bn_vblank_callback_type.h:
 G:/butano-master/butano/include/bn_optional.h:
+G:/butano-master/butano/include/bn_camera_ptr.h:
 G:/butano-master/butano/include/bn_fixed_point.h:
 G:/butano-master/butano/include/bn_point.h:
 G:/butano-master/butano/include/bn_fixed_point_fwd.h:
@@ -142,8 +150,6 @@ G:/butano-master/butano/include/bn_vector.h:
 G:/butano-master/butano/include/bn_vector_fwd.h:
 G:/butano-master/butano/include/bn_sprite_ptr.h:
 G:/butano-master/butano/include/bn_sprite_tiles_ptr.h:
-G:/butano-master/butano/include/bn_span.h:
-G:/butano-master/butano/include/bn_span_fwd.h:
 G:/butano-master/butano/include/bn_sprite_tiles_item.h:
 G:/butano-master/butano/include/bn_tile.h:
 G:/butano-master/butano/include/bn_bpp_mode.h:

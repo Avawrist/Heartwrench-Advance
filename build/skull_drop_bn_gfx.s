@@ -8,7 +8,7 @@
 @	+ 144 tiles not compressed
 @	Total size: 32 + 4608 = 4640
 @
-@	Time-stamp: 2025-09-19, 13:19:00
+@	Time-stamp: 2025-09-21, 17:21:47
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -186,7 +186,7 @@ skull_drop_bn_gfxTiles:
 	.global skull_drop_bn_gfxPal		@ 32 unsigned chars
 	.hidden skull_drop_bn_gfxPal
 skull_drop_bn_gfxPal:
-	.hword 0x1485,0x2C70,0x2898,0x3D3E,0x421E,0x4A9F,0x5B3F,0x0000
-	.hword 0x6B78,0x7FFF,0x108D,0x18F6,0x193D,0x25FE,0x1895,0x1CFD
+	.hword 0x1886,0x3072,0x2C9A,0x415F,0x463F,0x4EFF,0x637F,0x0000
+	.hword 0x73DB,0x7FFF,0x14AF,0x18F8,0x1D5F,0x2A3F,0x1C97,0x211F
 
 @}}BLOCK(skull_drop_bn_gfx)

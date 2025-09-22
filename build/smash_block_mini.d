@@ -44,7 +44,9 @@ smash_block_mini.o: G:/game/src/smash_block_mini.cpp \
  G:/butano-master/butano/include/bn_regular_bg_map_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h \
- G:/game/include/game_object.h \
+ G:/game/include/game_object.h G:/butano-master/butano/include/bn_core.h \
+ G:/butano-master/butano/include/bn_string_view.h \
+ G:/butano-master/butano/include/bn_vblank_callback_type.h \
  G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_camera_ptr.h \
  G:/butano-master/butano/include/bn_math.h \
@@ -139,6 +141,9 @@ G:/butano-master/butano/include/bn_regular_bg_map_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_map_cell.h:
 G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h:
 G:/game/include/game_object.h:
+G:/butano-master/butano/include/bn_core.h:
+G:/butano-master/butano/include/bn_string_view.h:
+G:/butano-master/butano/include/bn_vblank_callback_type.h:
 G:/butano-master/butano/include/bn_optional.h:
 G:/butano-master/butano/include/bn_camera_ptr.h:
 G:/butano-master/butano/include/bn_math.h:

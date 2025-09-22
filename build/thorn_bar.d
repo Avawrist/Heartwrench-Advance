@@ -60,7 +60,9 @@ thorn_bar.o: G:/game/src/thorn_bar.cpp G:/game/include/thorn_bar.h \
  G:/butano-master/butano/include/bn_sprite_tiles_item.h \
  G:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h \
  G:/butano-master/butano/include/bn_camera_ptr.h G:/game/include/enemy.h \
- G:/game/include/game_object.h \
+ G:/game/include/game_object.h G:/butano-master/butano/include/bn_core.h \
+ G:/butano-master/butano/include/bn_string_view.h \
+ G:/butano-master/butano/include/bn_vblank_callback_type.h \
  G:/butano-master/butano/include/bn_keypad.h \
  G:/butano-master/butano/include/bn_profiler.h \
  G:/butano-master/butano/include/bn_config_profiler.h \
@@ -157,6 +159,9 @@ G:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h:
 G:/butano-master/butano/include/bn_camera_ptr.h:
 G:/game/include/enemy.h:
 G:/game/include/game_object.h:
+G:/butano-master/butano/include/bn_core.h:
+G:/butano-master/butano/include/bn_string_view.h:
+G:/butano-master/butano/include/bn_vblank_callback_type.h:
 G:/butano-master/butano/include/bn_keypad.h:
 G:/butano-master/butano/include/bn_profiler.h:
 G:/butano-master/butano/include/bn_config_profiler.h:

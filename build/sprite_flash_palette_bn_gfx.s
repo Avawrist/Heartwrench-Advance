@@ -7,7 +7,7 @@
 @	+ palette 16 entries, not compressed
 @	Total size: 32 = 32
 @
-@	Time-stamp: 2025-09-18, 16:16:33
+@	Time-stamp: 2025-09-21, 17:21:47
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -18,7 +18,7 @@
 	.global sprite_flash_palette_bn_gfxPal		@ 32 unsigned chars
 	.hidden sprite_flash_palette_bn_gfxPal
 sprite_flash_palette_bn_gfxPal:
-	.hword 0x1485,0x2898,0x3D3E,0x421E,0x4A9F,0x5B3F,0x2898,0x3D3E
-	.hword 0x421E,0x4A9F,0x5B3F,0x2898,0x3D3E,0x421E,0x4A9F,0x5B3F
+	.hword 0x1886,0x2C9A,0x415F,0x463F,0x4EFF,0x637F,0x2C9A,0x415F
+	.hword 0x463F,0x4EFF,0x637F,0x2C9A,0x415F,0x463F,0x4EFF,0x637F
 
 @}}BLOCK(sprite_flash_palette_bn_gfx)

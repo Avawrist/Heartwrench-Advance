@@ -9,7 +9,7 @@
 @	+ regular map (in SBBs), not compressed, 64x192 
 @	Total size: 32 + 3552 + 24576 = 28160
 @
-@	Time-stamp: 2025-09-18, 16:16:33
+@	Time-stamp: 2025-09-21, 17:21:47
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -1883,7 +1883,7 @@ troll_tolls_painted_bg_bn_gfxMap:
 	.global troll_tolls_painted_bg_bn_gfxPal		@ 32 unsigned chars
 	.hidden troll_tolls_painted_bg_bn_gfxPal
 troll_tolls_painted_bg_bn_gfxPal:
-	.hword 0x1485,0x1CA8,0x2CEB,0x392D,0x4570,0x269E,0x263C,0x21FB
-	.hword 0x21B9,0x1D77,0x1D36,0x1914,0x4625,0x4E65,0x52C6,0x5B07
+	.hword 0x1886,0x20A9,0x30EC,0x3D2E,0x4990,0x2ABF,0x265E,0x261C
+	.hword 0x21DA,0x2199,0x1D57,0x1915,0x4A45,0x5286,0x56E6,0x5F47
 
 @}}BLOCK(troll_tolls_painted_bg_bn_gfx)

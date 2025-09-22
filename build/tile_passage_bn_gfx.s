@@ -8,7 +8,7 @@
 @	+ 32 tiles not compressed
 @	Total size: 32 + 1024 = 1056
 @
-@	Time-stamp: 2025-09-18, 16:16:33
+@	Time-stamp: 2025-09-21, 17:21:47
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -60,7 +60,7 @@ tile_passage_bn_gfxTiles:
 	.global tile_passage_bn_gfxPal		@ 32 unsigned chars
 	.hidden tile_passage_bn_gfxPal
 tile_passage_bn_gfxPal:
-	.hword 0x1485,0x76BD,0x7A15,0x5572,0x38ED,0x1CA8,0x20C7,0x0000
-	.hword 0x314C,0x35B2,0x3E55,0x312D,0x45CF,0x5AB3,0x6B78,0x7FFF
+	.hword 0x1886,0x7EFF,0x7E57,0x5D93,0x410E,0x20A9,0x24E8,0x0000
+	.hword 0x356D,0x39D4,0x4297,0x354E,0x4DF1,0x62F5,0x73DB,0x7FFF
 
 @}}BLOCK(tile_passage_bn_gfx)
