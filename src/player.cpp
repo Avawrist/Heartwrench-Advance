@@ -1002,9 +1002,9 @@ void Player::applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_di
 	invulnerability_frames = PLAYER_HIT_INVULNERABILITY_FRAMES;
 
     // Global juice
-    global_bg_hitflash_frames   = GENERIC_HIT_HITSTOP_FRAMES;
-    global_hitstop_frames       = GENERIC_HIT_HITSTOP_FRAMES;
-    global_screenshake_frames   = GENERIC_HIT_SCREENSHAKE_FRAMES;
+    global_bg_hitflash_frames   = PLAYER_HIT_HITSTOP_FRAMES;
+    global_hitstop_frames       = PLAYER_HIT_HITSTOP_FRAMES;
+    global_screenshake_frames   = PLAYER_HIT_HITSTOP_FRAMES;
     global_screenshake_severity = GENERIC_HIT_SCREENSHAKE_SEVERITY;
 
     // Object physics:
