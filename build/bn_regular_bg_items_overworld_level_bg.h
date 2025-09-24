@@ -7,13 +7,13 @@
 
 //======================================================================
 //
-//	overworld_level_bg_bn_gfx, 1024x3072@8, 
+//	overworld_level_bg_bn_gfx, 3072x1024@8, 
 //	+ palette 80 entries, not compressed
 //	+ 110 tiles (t reduced) not compressed
-//	+ regular map (flat), not compressed, 128x384 
+//	+ regular map (flat), not compressed, 384x128 
 //	Total size: 160 + 7040 + 98304 = 105504
 //
-//	Time-stamp: 2025-09-21, 17:21:47
+//	Time-stamp: 2025-09-23, 22:18:42
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -40,7 +40,7 @@ namespace bn::regular_bg_items
     constexpr inline regular_bg_item overworld_level_bg(
             regular_bg_tiles_item(span<const tile>(overworld_level_bg_bn_gfxTiles, 220), bpp_mode::BPP_8, compression_type::NONE), 
             bg_palette_item(span<const color>(overworld_level_bg_bn_gfxPal, 80), bpp_mode::BPP_8, compression_type::NONE),
-            regular_bg_map_item(overworld_level_bg_bn_gfxMap[0], size(128, 128), compression_type::NONE, 3, true));
+            regular_bg_map_item(overworld_level_bg_bn_gfxMap[0], size(384, 128), compression_type::NONE, 1, true));
 }
 
 #endif
