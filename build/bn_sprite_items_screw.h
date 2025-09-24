@@ -7,12 +7,12 @@
 
 //======================================================================
 //
-//	screw_bn_gfx, 32x288@4, 
+//	screw_bn_gfx, 32x320@4, 
 //	+ palette 16 entries, not compressed
-//	+ 144 tiles not compressed
-//	Total size: 32 + 4608 = 4640
+//	+ 160 tiles not compressed
+//	Total size: 32 + 5120 = 5152
 //
-//	Time-stamp: 2025-09-21, 17:21:47
+//	Time-stamp: 2025-09-23, 23:04:57
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -21,8 +21,8 @@
 #ifndef GRIT_SCREW_BN_GFX_H
 #define GRIT_SCREW_BN_GFX_H
 
-#define screw_bn_gfxTilesLen 4608
-extern const bn::tile screw_bn_gfxTiles[144];
+#define screw_bn_gfxTilesLen 5120
+extern const bn::tile screw_bn_gfxTiles[160];
 
 #define screw_bn_gfxPalLen 32
 extern const bn::color screw_bn_gfxPal[16];
@@ -34,7 +34,7 @@ extern const bn::color screw_bn_gfxPal[16];
 namespace bn::sprite_items
 {
     constexpr inline sprite_item screw(sprite_shape_size(sprite_shape::SQUARE, sprite_size::BIG), 
-            sprite_tiles_item(span<const tile>(screw_bn_gfxTiles, 144), bpp_mode::BPP_4, compression_type::NONE, 9), 
+            sprite_tiles_item(span<const tile>(screw_bn_gfxTiles, 160), bpp_mode::BPP_4, compression_type::NONE, 10), 
             sprite_palette_item(span<const color>(screw_bn_gfxPal, 16), bpp_mode::BPP_4, compression_type::NONE));
 }
 

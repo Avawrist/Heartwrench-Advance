@@ -219,7 +219,7 @@ void Screw::setState(ObjectState new_state)
                                       collider_offset_y);
 
             // Get anim frame
-            anim_frame = (collider_offset_y + 1) * 0.5;
+            anim_frame = collider_offset_y * 0.5;
 
             // Update sprite
             animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
