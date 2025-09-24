@@ -123,10 +123,15 @@ void Hitbox::applyHBHit(GameObject& object)
 
     // Object physics:
     object.rigidbody.removeForces();
-    object.rigidbody.addForce(HITBOX_KNOCKBACK_FORCE);
+
+    int32 knockback_x_dir = 1;
+    if(object.x() < x()) {knockback_x_dir = -1;}
+
+    object.rigidbody.addForce(Force(bn::fixed_point_t<12>(x_knockback * knockback_x_dir, 
+                                                          y_knockback * y_dir), knockback_decay));
 
     // Object Dir:
-    object.x_dir = (XDirection)(x_dir * -1);
+    object.x_dir = (XDirection)(knockback_x_dir * -1);
 
     // Object damage:
     object.applyDamage(damage);

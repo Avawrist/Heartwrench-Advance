@@ -24,9 +24,9 @@
 
 #define AUTO_BOUNCE_BELL_HITPOINTS 0
 
-#define AUTO_BOUNCE_BELL_30_FPS false
+#define AUTO_BOUNCE_BELL_30_FPS true
 
-#define AUTO_BOUNCE_BELL_SPEED 1
+#define AUTO_BOUNCE_BELL_SPEED 2
 #define AUTO_BOUNCE_BELL_ROLL_FORCE (Force(bn::fixed_point_t<12>(AUTO_BOUNCE_BELL_SPEED * (int32)x_dir, AUTO_BOUNCE_BELL_SPEED * (int32)y_dir), 1))
 
 struct AutoBounceBell : GameObject {

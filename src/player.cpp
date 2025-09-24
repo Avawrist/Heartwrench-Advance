@@ -1570,8 +1570,8 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			{createSpinAttack1Hitbox(game_objects, camera);}
 
 			// HB 2
-			if(animate_action_ptr->current_index() == PLAYER_SPIN_2_CREATE_HB_FRAME)
-			{createSpinAttack2Hitbox(game_objects, camera);}
+			//if(animate_action_ptr->current_index() == PLAYER_SPIN_2_CREATE_HB_FRAME)
+			//{createSpinAttack2Hitbox(game_objects, camera);}
 
 			// End State
 			if(animate_action_ptr->done())
