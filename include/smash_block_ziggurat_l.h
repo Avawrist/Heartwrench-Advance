@@ -26,9 +26,6 @@
 
 #define SMASH_BLOCK_ZIGGURAT_L_30_FPS true
 
-#define SMASH_BLOCK_ZIGGURAT_L_HIT_STOP_TRIGGER_FRAME 3
-#define SMASH_BLOCK_ZIGGURAT_L_HIT_STOP_FRAMES        2
-
 struct SmashBlockZigguratL : GameObject {
 
     ////////////////////////////////
@@ -52,8 +49,6 @@ struct SmashBlockZigguratL : GameObject {
                 const bn::regular_bg_item&                     bg_item,
                 const bn::camera_ptr&                          camera) override;
 
-    void updateDeathState() override;
-
     //////////////////////////////
     // State Function Overrides //
     //////////////////////////////
@@ -70,7 +65,9 @@ struct SmashBlockZigguratL : GameObject {
     // Collision Overrides //
     /////////////////////////
 
-    // None..
+    void resolveSmashBlockZigguratLCollision(GameObject& object) override;
+	void resolveSmashBlockZigguratCCollision(GameObject& object) override;
+	void resolveSmashBlockZigguratRCollision(GameObject& object) override;
 
 };
 

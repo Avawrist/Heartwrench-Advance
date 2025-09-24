@@ -69,6 +69,12 @@ void SmashBlockZigguratC::update(const RoomBounds& 							   room_bounds,
 
     updateStateMachine(game_objects, bg_ptr, cells, bg_item, camera);
 
+    ///////////////////////
+    // Resolve Collision //
+    ///////////////////////
+
+    if(state == OBJECT_DEATH) {resolveObjectCollision(game_objects);}
+
     ///////////////////
     // Update Timers //
     ///////////////////
@@ -102,10 +108,8 @@ void SmashBlockZigguratC::update(const RoomBounds& 							   room_bounds,
 
 void SmashBlockZigguratC::updateDeathState()
 {
-    if(animate_action_ptr->current_index() == SMASH_BLOCK_ZIGGURAT_C_HIT_STOP_TRIGGER_FRAME)
-    {global_hitstop_frames = SMASH_BLOCK_ZIGGURAT_C_HIT_STOP_FRAMES;}
-
-    GameObject::updateDeathState();
+    if(animate_action_ptr->done())
+    {is_dead  = true;}
 }
 
 //////////////////////////////
@@ -146,6 +150,13 @@ void SmashBlockZigguratC::setState(ObjectState new_state)
             sprite_ptr->set_z_order(ENEMY_Z_ORDER);
             playBlockDeathAnim();
 
+            // Expand collider width 4 pixels
+            // to trigger collisions with neighbor blocks
+            collider = Collider(x() + collider_offset_x, 
+                                y() + collider_offset_y, 
+                                SMASH_BLOCK_ZIGGURAT_C_COLLIDER_WIDTH + 4, 
+                                SMASH_BLOCK_ZIGGURAT_C_COLLIDER_HEIGHT);
+
 		break;
 
 		default:
@@ -157,4 +168,20 @@ void SmashBlockZigguratC::setState(ObjectState new_state)
 // Collision Overrides //
 /////////////////////////
 
-// None..
+void SmashBlockZigguratC::resolveSmashBlockZigguratLCollision(GameObject& object)
+{
+    if(collider.isCollision(object.collider))
+    {object.applyHit(1, 0, 0);}
+}
+
+void SmashBlockZigguratC::resolveSmashBlockZigguratCCollision(GameObject& object)
+{
+    if(collider.isCollision(object.collider))
+    {object.applyHit(1, 0, 0);}
+}
+
+void SmashBlockZigguratC::resolveSmashBlockZigguratRCollision(GameObject& object)
+{
+    if(collider.isCollision(object.collider))
+    {object.applyHit(1, 0, 0);}
+}
