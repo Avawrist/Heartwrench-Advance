@@ -40,6 +40,8 @@ struct Checkpoint : GameObject {
 
     Checkpoint& operator =(const Checkpoint& other);
 
+    void setOverwriteAnimation();
+
     uint32 cost;
 
     //////////////////////////
@@ -64,6 +66,8 @@ struct Checkpoint : GameObject {
                             const bn::camera_ptr&                          camera) override;
 
 	void setState(ObjectState new_state) override;
+
+    void updateHitstunState() override;
 
     /////////////////////////
     // Collision Overrides //

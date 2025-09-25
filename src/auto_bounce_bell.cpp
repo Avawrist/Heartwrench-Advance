@@ -251,6 +251,8 @@ void AutoBounceBell::setState(ObjectState new_state)
                                                                         2, 2, 3, 3, 4, 4, 5, 5,
                                                                         4, 4, 4, 4, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2);
 
+            // SFX
+            bn::sound_items::bell_hit.play();
 
         break;
 

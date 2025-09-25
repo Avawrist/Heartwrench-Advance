@@ -227,6 +227,13 @@ void PushBlockMini::setState(ObjectState new_state)
 																		  0, 0);
 
 		break;
+		
+		case OBJECT_HITSTUN:
+	
+			// SFX
+			bn::sound_items::generic_hit.play();
+
+		break;
 
 		default:
 		break;

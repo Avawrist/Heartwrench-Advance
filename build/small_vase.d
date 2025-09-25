@@ -92,6 +92,7 @@ small_vase.o: G:/game/src/small_vase.cpp G:/game/include/small_vase.h \
  G:/game/build/bn_sprite_items_enemy_hp_bar.h \
  G:/game/build/bn_sprite_items_enemy_death.h \
  G:/game/build/bn_sprite_items_block_death.h G:/game/include/hitbox.h \
+ G:/game/include/checkpoint.h G:/game/build/bn_sprite_items_checkpoint.h \
  G:/game/build/bn_sprite_items_hitbox.h \
  G:/game/build/bn_sprite_items_small_vase.h
 G:/game/include/small_vase.h:
@@ -193,5 +194,7 @@ G:/game/build/bn_sprite_items_enemy_hp_bar.h:
 G:/game/build/bn_sprite_items_enemy_death.h:
 G:/game/build/bn_sprite_items_block_death.h:
 G:/game/include/hitbox.h:
+G:/game/include/checkpoint.h:
+G:/game/build/bn_sprite_items_checkpoint.h:
 G:/game/build/bn_sprite_items_hitbox.h:
 G:/game/build/bn_sprite_items_small_vase.h:

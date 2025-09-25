@@ -9,6 +9,7 @@
 
 // My libs
 #include "utility.h"
+#include "checkpoint.h"
 
 // Assets
 #include "bn_sprite_items_hitbox.h"

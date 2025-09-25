@@ -158,6 +158,7 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/game/build/bn_sprite_items_smash_block_ziggurat_r.h \
  G:/game/include/large_vase.h G:/game/build/bn_sprite_items_large_vase.h \
  G:/game/include/small_vase.h G:/game/include/hitbox.h \
+ G:/game/include/checkpoint.h G:/game/build/bn_sprite_items_checkpoint.h \
  G:/game/build/bn_sprite_items_hitbox.h \
  G:/game/build/bn_sprite_items_small_vase.h G:/game/include/hp_totem.h \
  G:/game/build/bn_sprite_items_hp_totem.h G:/game/include/hp_drop.h \
@@ -165,8 +166,7 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/game/build/bn_sprite_items_star_jar.h G:/game/include/skull_drop.h \
  G:/game/build/bn_sprite_items_skull_drop.h G:/game/include/gear_drop.h \
  G:/game/build/bn_sprite_items_gear_drop.h G:/game/include/screw.h \
- G:/game/build/bn_sprite_items_screw.h G:/game/include/checkpoint.h \
- G:/game/build/bn_sprite_items_checkpoint.h G:/game/include/sealed_gate.h \
+ G:/game/build/bn_sprite_items_screw.h G:/game/include/sealed_gate.h \
  G:/game/build/bn_sprite_items_sealed_gate.h \
  G:/game/include/bounce_bell.h \
  G:/game/build/bn_sprite_items_bounce_bell.h \
@@ -364,6 +364,8 @@ G:/game/include/large_vase.h:
 G:/game/build/bn_sprite_items_large_vase.h:
 G:/game/include/small_vase.h:
 G:/game/include/hitbox.h:
+G:/game/include/checkpoint.h:
+G:/game/build/bn_sprite_items_checkpoint.h:
 G:/game/build/bn_sprite_items_hitbox.h:
 G:/game/build/bn_sprite_items_small_vase.h:
 G:/game/include/hp_totem.h:
@@ -378,8 +380,6 @@ G:/game/include/gear_drop.h:
 G:/game/build/bn_sprite_items_gear_drop.h:
 G:/game/include/screw.h:
 G:/game/build/bn_sprite_items_screw.h:
-G:/game/include/checkpoint.h:
-G:/game/build/bn_sprite_items_checkpoint.h:
 G:/game/include/sealed_gate.h:
 G:/game/build/bn_sprite_items_sealed_gate.h:
 G:/game/include/bounce_bell.h:

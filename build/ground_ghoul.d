@@ -93,6 +93,7 @@ ground_ghoul.o: G:/game/src/ground_ghoul.cpp \
  G:/game/build/bn_sprite_items_enemy_hp_bar.h \
  G:/game/build/bn_sprite_items_enemy_death.h \
  G:/game/build/bn_sprite_items_block_death.h G:/game/include/hitbox.h \
+ G:/game/include/checkpoint.h G:/game/build/bn_sprite_items_checkpoint.h \
  G:/game/build/bn_sprite_items_hitbox.h G:/game/include/tile_passage.h \
  G:/game/build/bn_sprite_items_tile_passage.h \
  G:/game/build/bn_sprite_items_ground_ghoul.h
@@ -196,6 +197,8 @@ G:/game/build/bn_sprite_items_enemy_hp_bar.h:
 G:/game/build/bn_sprite_items_enemy_death.h:
 G:/game/build/bn_sprite_items_block_death.h:
 G:/game/include/hitbox.h:
+G:/game/include/checkpoint.h:
+G:/game/build/bn_sprite_items_checkpoint.h:
 G:/game/build/bn_sprite_items_hitbox.h:
 G:/game/include/tile_passage.h:
 G:/game/build/bn_sprite_items_tile_passage.h:

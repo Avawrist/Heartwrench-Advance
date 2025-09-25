@@ -92,6 +92,7 @@ player.o: G:/game/src/player.cpp G:/game/include/player.h \
  G:/game/build/bn_sprite_items_enemy_hp_bar.h \
  G:/game/build/bn_sprite_items_enemy_death.h \
  G:/game/build/bn_sprite_items_block_death.h G:/game/include/hitbox.h \
+ G:/game/include/checkpoint.h G:/game/build/bn_sprite_items_checkpoint.h \
  G:/game/build/bn_sprite_items_hitbox.h G:/game/include/phase_orb.h \
  G:/game/build/bn_sprite_items_phase_orb_up.h \
  G:/game/build/bn_sprite_items_phase_orb_down.h \
@@ -209,6 +210,8 @@ G:/game/build/bn_sprite_items_enemy_hp_bar.h:
 G:/game/build/bn_sprite_items_enemy_death.h:
 G:/game/build/bn_sprite_items_block_death.h:
 G:/game/include/hitbox.h:
+G:/game/include/checkpoint.h:
+G:/game/build/bn_sprite_items_checkpoint.h:
 G:/game/build/bn_sprite_items_hitbox.h:
 G:/game/include/phase_orb.h:
 G:/game/build/bn_sprite_items_phase_orb_up.h:

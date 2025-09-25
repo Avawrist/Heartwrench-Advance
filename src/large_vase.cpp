@@ -142,6 +142,13 @@ void LargeVase::setState(ObjectState new_state)
 
 		break;
 
+        case OBJECT_HITSTUN:
+
+            // SFX
+            bn::sound_items::vase_hit.play();
+
+        break;
+
 		default:
 		break;
 	}

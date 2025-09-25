@@ -51,6 +51,25 @@ Checkpoint& Checkpoint::operator =(const Checkpoint& other)
     return *this;
 }
 
+void Checkpoint::setOverwriteAnimation()
+{
+	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::checkpoint.create_sprite(sprite_ptr->x().integer(), 
+																				  			  sprite_ptr->y().integer());
+	temp_sprite_ptr->set_camera(sprite_ptr->camera());
+	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
+	temp_sprite_ptr->set_visible(sprite_ptr->visible());
+
+	sprite_ptr->swap(temp_sprite_ptr.value());
+
+	temp_sprite_ptr.reset();
+
+    animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+                                                               2,
+                                                               bn::sprite_items::checkpoint.tiles_item(),
+                                                               6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9,
+                                                               10, 10, 10, 11, 11, 11, 12, 12, 12);
+}
+
 //////////////////////////
 // GameObject Overrides //
 //////////////////////////
@@ -113,15 +132,25 @@ void Checkpoint::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&  
 {
     switch(state)
     {
-        case CHECKPOINT_ACTIVE:
+        case CHECKPOINT_IDLE_ON:
 
-            setState(CHECKPOINT_IDLE_OFF);
+            // Play Idle On animation post overwrite animation
+            if(animate_action_ptr->done())
+            {
+                animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+                                                                                2,
+                                                                                bn::sprite_items::checkpoint.tiles_item(),
+                                                                                3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 4, 4, 4, 4);
+            }
 
         break;
 
-        case CHECKPOINT_OVERWRITE:
+        case CHECKPOINT_IDLE_OFF:
+        break;
 
-            if(animate_action_ptr->done()) {setState(CHECKPOINT_IDLE_ON);}
+        case OBJECT_HITSTUN:
+
+            updateHitstunState();
 
         break;
 
@@ -148,29 +177,31 @@ void Checkpoint::setState(ObjectState new_state)
         case CHECKPOINT_IDLE_ON:
 
             animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-                                                                           2,
-                                                                           bn::sprite_items::checkpoint.tiles_item(),
-                                                                           3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 4, 4, 4, 4);
+                                                                2,
+                                                                bn::sprite_items::checkpoint.tiles_item(),
+                                                                3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 4, 4, 4, 4);
 
         break;
 
-        case CHECKPOINT_ACTIVE:
-        break;
+        case OBJECT_HITSTUN:
 
-        case CHECKPOINT_OVERWRITE:
-
-            bn::sound_items::checkpoint.play();
-            animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-                                                                       2,
-                                                                       bn::sprite_items::checkpoint.tiles_item(),
-                                                                       6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9,
-                                                                       10, 10, 10, 11, 11, 11, 12, 12, 12);
+            // SFX
+            bn::sound_items::generic_hit.play();
 
         break;
 
         default:
         break;
     }
+}
+
+void Checkpoint::updateHitstunState()
+{
+    hitstun_frames--;
+    hitstun_frames = max(0, hitstun_frames);
+
+    if(!hitstun_frames)
+    {setState(CHECKPOINT_IDLE_OFF);}
 }
 
 /////////////////////////

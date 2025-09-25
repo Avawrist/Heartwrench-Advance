@@ -140,7 +140,7 @@
 
 #define PLAYER_SPIN_1_X_OFFSET           0
 #define PLAYER_SPIN_1_Y_OFFSET           11
-#define PLAYER_SPIN_1_HB_WIDTH           42
+#define PLAYER_SPIN_1_HB_WIDTH           46
 #define PLAYER_SPIN_1_HB_HEIGHT          24
 #define PLAYER_SPIN_1_CREATE_HB_FRAME    5
 #define PLAYER_SPIN_1_HB_LIFESPAN_FRAMES 21

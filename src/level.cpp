@@ -1860,18 +1860,12 @@ void Level::updateCheckpoint(Checkpoint* checkpoint_ptr)
        player_spawn.spawn_pos == checkpoint_ptr->pos())
     {checkpoint_ptr->setState(CHECKPOINT_IDLE_ON);}
 
-    if(checkpoint_ptr->state == CHECKPOINT_ACTIVE &&
-       global_level_currency >= checkpoint_ptr->cost)
+    if(checkpoint_ptr->state == CHECKPOINT_IDLE_ON &&
+       player_spawn.spawn_pos != checkpoint_ptr->pos())
     {
-        // Take cost
-        global_level_currency -= checkpoint_ptr->cost;
-
-        // Update spawn data
+        // Update spawn pos
         player_spawn.spawn_pos   = checkpoint_ptr->pos();
         player_spawn.spawn_room  = current_room.room_name;
-
-        // Animate checkpoint
-        checkpoint_ptr->setState(CHECKPOINT_OVERWRITE);
     }
 }
 

@@ -207,6 +207,9 @@ void BellTroll::setState(ObjectState new_state)
 
             setHitStretch();
 
+            // SFX
+            bn::sound_items::generic_hit.play();
+
         break;
 
         case OBJECT_DEATH:
