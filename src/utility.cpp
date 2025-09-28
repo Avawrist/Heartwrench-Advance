@@ -1,5 +1,7 @@
 #include "utility.h"
 
+// Global Arrays
+
 int32 left_shallow_slope_1_arr[TILE_WIDTH] = {1, 1, 1, 1, 2, 2, 2, 2};
 int32 left_shallow_slope_2_arr[TILE_WIDTH] = {3, 3, 3, 3, 4, 4, 4, 4};
 int32 left_shallow_slope_3_arr[TILE_WIDTH] = {5, 5, 5, 5, 6, 6, 6, 6};
@@ -15,6 +17,8 @@ int32 right_shallow_slope_4_arr[TILE_WIDTH] = {8, 8, 8, 8, 7, 7, 7, 7};
 
 int32 right_steep_slope_1_arr[TILE_WIDTH] = {4, 4, 3, 3, 2, 2, 1, 1};
 int32 right_steep_slope_2_arr[TILE_WIDTH] = {8, 8, 7, 7, 6, 6, 5, 5};
+
+// Global Variables
 
 int32 global_tiles_in_VRAM                      = 0;
 int32 global_bg_hitflash_frames                 = 0;
@@ -34,19 +38,23 @@ bool global_bell_struck = false;
 
 bool global_current_level_complete = false;
 
+bool global_fade_in       = false;
+bool global_fade_out      = false;
+bool global_soft_fade_out = false;
+
 // Global save variables
 int32 global_ow_player_location_x = 8;
 int32 global_ow_player_location_y = 120;
 
 uint8 global_stars_collected = 0;
 
-bool global_troll_tolls_complete     = false;
-bool global_troll_tolls_room_3_star  = false;
-bool global_troll_tolls_room_5_star  = false;
-bool global_troll_tolls_room_6_star  = false;
-bool global_troll_tolls_room_7_star  = false;
-bool global_troll_tolls_room_9_star  = false;
-bool global_troll_tolls_room_13_star = false;
+bool global_level_1_complete     = false;
+bool global_level_1_room_3_star  = false;
+bool global_level_1_room_5_star  = false;
+bool global_level_1_room_6_star  = false;
+bool global_level_1_room_7_star  = false;
+bool global_level_1_room_9_star  = false;
+bool global_level_1_room_13_star = false;
 
 // Functions
 bool tileIsSolid(uint32 tile_index)

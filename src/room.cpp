@@ -227,6 +227,10 @@ int32 Room::addObject(ObjectRequest& object_request, const bn::camera_ptr& camer
             temp_object_ptr = new SealedGate();
         break;
 
+        case SUB_AREA_GATE:
+            temp_object_ptr = new SubAreaGate();
+        break;
+
         case BOUNCE_BELL:
             temp_object_ptr = new BounceBell();
         break;
@@ -510,6 +514,10 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             temp_object_ptr = new SealedGate();
         break;
 
+        case SUB_AREA_GATE:
+            temp_object_ptr = new SubAreaGate();
+        break;
+
         case BOUNCE_BELL:
             temp_object_ptr = new BounceBell();
         break;
@@ -704,11 +712,11 @@ void Room::load(RoomName                                       _room_name,
 
         break;
 
-        case ROOM_TROLL_TOLLS_1:
+        case ROOM_LEVEL_1_1:
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
-            right_neighbor  = ROOM_TROLL_TOLLS_2;
+            right_neighbor  = ROOM_LEVEL_1_2;
             bottom_neighbor = NO_ROOM;
             left_neighbor   = NO_ROOM;
 
@@ -721,13 +729,13 @@ void Room::load(RoomName                                       _room_name,
             
         break;
 
-        case ROOM_TROLL_TOLLS_2:
+        case ROOM_LEVEL_1_2:
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
-            right_neighbor  = ROOM_TROLL_TOLLS_3;
+            right_neighbor  = ROOM_LEVEL_1_3;
             bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TROLL_TOLLS_1;
+            left_neighbor   = ROOM_LEVEL_1_1;
 
             room_bounds.setTopBoundAC(2224);
             room_bounds.setBottomBoundAC(2544);
@@ -738,13 +746,13 @@ void Room::load(RoomName                                       _room_name,
             
         break;
 
-        case ROOM_TROLL_TOLLS_3:
+        case ROOM_LEVEL_1_3:
 
             // Init Variables //
-            top_neighbor    = ROOM_TROLL_TOLLS_4;
+            top_neighbor    = ROOM_LEVEL_1_4;
             right_neighbor  = NO_ROOM;
             bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TROLL_TOLLS_2;
+            left_neighbor   = ROOM_LEVEL_1_2;
 
             room_bounds.setTopBoundAC(2224);
             room_bounds.setBottomBoundAC(2544);
@@ -755,12 +763,12 @@ void Room::load(RoomName                                       _room_name,
             
         break;
 
-        case ROOM_TROLL_TOLLS_4:
+        case ROOM_LEVEL_1_4:
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
-            right_neighbor  = ROOM_TROLL_TOLLS_5;
-            bottom_neighbor = ROOM_TROLL_TOLLS_3;
+            right_neighbor  = ROOM_LEVEL_1_5;
+            bottom_neighbor = ROOM_LEVEL_1_3;
             left_neighbor   = NO_ROOM;
 
             room_bounds.setTopBoundAC(2048);
@@ -772,13 +780,13 @@ void Room::load(RoomName                                       _room_name,
             
         break;
 
-        case ROOM_TROLL_TOLLS_5:
+        case ROOM_LEVEL_1_5:
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
-            right_neighbor  = ROOM_TROLL_TOLLS_6;
+            right_neighbor  = ROOM_LEVEL_1_6;
             bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TROLL_TOLLS_4;
+            left_neighbor   = ROOM_LEVEL_1_4;
 
             room_bounds.setTopBoundAC(1888);
             room_bounds.setBottomBoundAC(2320);
@@ -789,13 +797,13 @@ void Room::load(RoomName                                       _room_name,
             
         break;
 
-        case ROOM_TROLL_TOLLS_6:
+        case ROOM_LEVEL_1_6:
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
-            right_neighbor  = ROOM_TROLL_TOLLS_7;
+            right_neighbor  = ROOM_LEVEL_1_7;
             bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TROLL_TOLLS_5;
+            left_neighbor   = ROOM_LEVEL_1_5;
 
             room_bounds.setTopBoundAC(1888);
             room_bounds.setBottomBoundAC(2320);
@@ -806,13 +814,13 @@ void Room::load(RoomName                                       _room_name,
             
         break;
 
-        case ROOM_TROLL_TOLLS_7:
+        case ROOM_LEVEL_1_7:
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
-            right_neighbor  = ROOM_TROLL_TOLLS_8;
+            right_neighbor  = ROOM_LEVEL_1_8;
             bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TROLL_TOLLS_6;
+            left_neighbor   = ROOM_LEVEL_1_6;
 
             room_bounds.setTopBoundAC(1888);
             room_bounds.setBottomBoundAC(2320);
@@ -823,13 +831,13 @@ void Room::load(RoomName                                       _room_name,
             
         break;
 
-        case ROOM_TROLL_TOLLS_8:
+        case ROOM_LEVEL_1_8:
 
             // Init Variables //
-            top_neighbor    = ROOM_TROLL_TOLLS_9;
+            top_neighbor    = ROOM_LEVEL_1_9;
             right_neighbor  = NO_ROOM;
             bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TROLL_TOLLS_7;
+            left_neighbor   = ROOM_LEVEL_1_7;
 
             room_bounds.setTopBoundAC(1904);
             room_bounds.setBottomBoundAC(2320);
@@ -840,13 +848,13 @@ void Room::load(RoomName                                       _room_name,
             
         break;
 
-        case ROOM_TROLL_TOLLS_9:
+        case ROOM_LEVEL_1_9:
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
             right_neighbor  = NO_ROOM;
-            bottom_neighbor = ROOM_TROLL_TOLLS_8;
-            left_neighbor   = ROOM_TROLL_TOLLS_10;
+            bottom_neighbor = ROOM_LEVEL_1_8;
+            left_neighbor   = ROOM_LEVEL_1_10;
 
             room_bounds.setTopBoundAC(1280);
             room_bounds.setBottomBoundAC(1904);
@@ -857,13 +865,13 @@ void Room::load(RoomName                                       _room_name,
             
         break;
 
-        case ROOM_TROLL_TOLLS_10:
+        case ROOM_LEVEL_1_10:
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
-            right_neighbor  = ROOM_TROLL_TOLLS_9;
+            right_neighbor  = ROOM_LEVEL_1_9;
             bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TROLL_TOLLS_11;
+            left_neighbor   = ROOM_LEVEL_1_11;
 
             room_bounds.setTopBoundAC(1280);
             room_bounds.setBottomBoundAC(1552);
@@ -874,13 +882,13 @@ void Room::load(RoomName                                       _room_name,
             
         break;
 
-        case ROOM_TROLL_TOLLS_11:
+        case ROOM_LEVEL_1_11:
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
-            right_neighbor  = ROOM_TROLL_TOLLS_10;
+            right_neighbor  = ROOM_LEVEL_1_10;
             bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TROLL_TOLLS_12;
+            left_neighbor   = ROOM_LEVEL_1_12;
 
             room_bounds.setTopBoundAC(1280);
             room_bounds.setBottomBoundAC(1552);
@@ -891,11 +899,11 @@ void Room::load(RoomName                                       _room_name,
             
         break;
 
-        case ROOM_TROLL_TOLLS_12:
+        case ROOM_LEVEL_1_12:
 
             // Init Variables //
-            top_neighbor    = ROOM_TROLL_TOLLS_13;
-            right_neighbor  = ROOM_TROLL_TOLLS_11;
+            top_neighbor    = ROOM_LEVEL_1_13;
+            right_neighbor  = ROOM_LEVEL_1_11;
             bottom_neighbor = NO_ROOM;
             left_neighbor   = NO_ROOM;
 
@@ -908,47 +916,47 @@ void Room::load(RoomName                                       _room_name,
             
         break;
 
-        case ROOM_TROLL_TOLLS_13:
+        case ROOM_LEVEL_1_13:
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
-            right_neighbor  = ROOM_TROLL_TOLLS_14;
-            bottom_neighbor = ROOM_TROLL_TOLLS_12;
+            right_neighbor  = ROOM_LEVEL_1_14;
+            bottom_neighbor = ROOM_LEVEL_1_12;
             left_neighbor   = NO_ROOM;
 
             room_bounds.setTopBoundAC(400);
             room_bounds.setBottomBoundAC(1120);
             room_bounds.setLeftBoundAC(1616);
-            room_bounds.setRightBoundAC(2448);
+            room_bounds.setRightBoundAC(2480);
 
             // Add any special objects //
             
         break;
 
-        case ROOM_TROLL_TOLLS_14:
+        case ROOM_LEVEL_1_14:
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
-            right_neighbor  = ROOM_TROLL_TOLLS_15;
+            right_neighbor  = ROOM_LEVEL_1_15;
             bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TROLL_TOLLS_13;
+            left_neighbor   = ROOM_LEVEL_1_13;
 
             room_bounds.setTopBoundAC(400);
             room_bounds.setBottomBoundAC(864);
-            room_bounds.setLeftBoundAC(2448);
+            room_bounds.setLeftBoundAC(2480);
             room_bounds.setRightBoundAC(2976);
 
             // Add any special objects //
             
         break;
 
-        case ROOM_TROLL_TOLLS_15:
+        case ROOM_LEVEL_1_15:
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
-            right_neighbor  = ROOM_TROLL_TOLLS_16;
+            right_neighbor  = ROOM_LEVEL_1_16;
             bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TROLL_TOLLS_14;
+            left_neighbor   = ROOM_LEVEL_1_14;
 
             room_bounds.setTopBoundAC(16);
             room_bounds.setBottomBoundAC(864);
@@ -959,13 +967,13 @@ void Room::load(RoomName                                       _room_name,
             
         break;
 
-        case ROOM_TROLL_TOLLS_16:
+        case ROOM_LEVEL_1_16:
 
             // Init Variables //
             top_neighbor    = NO_ROOM;
             right_neighbor  = NO_ROOM;
             bottom_neighbor = NO_ROOM;
-            left_neighbor   = ROOM_TROLL_TOLLS_15;
+            left_neighbor   = ROOM_LEVEL_1_15;
 
             room_bounds.setTopBoundAC(16);
             room_bounds.setBottomBoundAC(768);
@@ -974,6 +982,57 @@ void Room::load(RoomName                                       _room_name,
 
             // Add any special objects //
             
+        break;
+
+        case ROOM_LEVEL_1_SA_1:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.setTopBoundAC(1984);
+            room_bounds.setBottomBoundAC(2384);
+            room_bounds.setLeftBoundAC(3600);
+            room_bounds.setRightBoundAC(4240);
+
+            // Add any special objects //
+
+        break;
+
+        case ROOM_LEVEL_1_SA_2:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.setTopBoundAC(0);
+            room_bounds.setBottomBoundAC(0);
+            room_bounds.setLeftBoundAC(0);
+            room_bounds.setRightBoundAC(0);
+
+            // Add any special objects //
+
+        break;
+
+        case ROOM_LEVEL_1_BOSS:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.setTopBoundAC(0);
+            room_bounds.setBottomBoundAC(0);
+            room_bounds.setLeftBoundAC(0);
+            room_bounds.setRightBoundAC(0);
+
+            // Add any special objects //
+
         break;
 
         default:
@@ -1144,70 +1203,70 @@ void Room::setStarCollected()
         case ROOM_OVERWORLD:
         break;
 
-        case ROOM_TROLL_TOLLS_1:            
+        case ROOM_LEVEL_1_1:            
         break;
 
-        case ROOM_TROLL_TOLLS_2:
+        case ROOM_LEVEL_1_2:
         break;
 
-        case ROOM_TROLL_TOLLS_3:
+        case ROOM_LEVEL_1_3:
 
-            global_troll_tolls_room_3_star = true;
-
-        break;
-
-        case ROOM_TROLL_TOLLS_4:
-        break;
-
-        case ROOM_TROLL_TOLLS_5:
-
-            global_troll_tolls_room_5_star = true;
+            global_level_1_room_3_star = true;
 
         break;
 
-        case ROOM_TROLL_TOLLS_6:
+        case ROOM_LEVEL_1_4:
+        break;
 
-            global_troll_tolls_room_6_star = true;
+        case ROOM_LEVEL_1_5:
+
+            global_level_1_room_5_star = true;
 
         break;
 
-        case ROOM_TROLL_TOLLS_7:
+        case ROOM_LEVEL_1_6:
 
-            global_troll_tolls_room_7_star = true;
-
-        break;
-
-        case ROOM_TROLL_TOLLS_8:
-        break;
-
-        case ROOM_TROLL_TOLLS_9:
-
-            global_troll_tolls_room_9_star = true;
+            global_level_1_room_6_star = true;
 
         break;
 
-        case ROOM_TROLL_TOLLS_10:
+        case ROOM_LEVEL_1_7:
+
+            global_level_1_room_7_star = true;
+
         break;
 
-        case ROOM_TROLL_TOLLS_11:
+        case ROOM_LEVEL_1_8:
         break;
 
-        case ROOM_TROLL_TOLLS_12:
+        case ROOM_LEVEL_1_9:
+
+            global_level_1_room_9_star = true;
+
         break;
 
-        case ROOM_TROLL_TOLLS_13:
+        case ROOM_LEVEL_1_10:
+        break;
+
+        case ROOM_LEVEL_1_11:
+        break;
+
+        case ROOM_LEVEL_1_12:
+        break;
+
+        case ROOM_LEVEL_1_13:
         
-            global_troll_tolls_room_13_star = true;
+            global_level_1_room_13_star = true;
 
         break;
 
-        case ROOM_TROLL_TOLLS_14:
+        case ROOM_LEVEL_1_14:
         break;
 
-        case ROOM_TROLL_TOLLS_15:
+        case ROOM_LEVEL_1_15:
         break;
 
-        case ROOM_TROLL_TOLLS_16:
+        case ROOM_LEVEL_1_16:
         break;
 
         default:
@@ -1230,70 +1289,70 @@ bool Room::starIsCollected()
         case ROOM_OVERWORLD:
         break;
 
-        case ROOM_TROLL_TOLLS_1:            
+        case ROOM_LEVEL_1_1:            
         break;
 
-        case ROOM_TROLL_TOLLS_2:
+        case ROOM_LEVEL_1_2:
         break;
 
-        case ROOM_TROLL_TOLLS_3:
+        case ROOM_LEVEL_1_3:
 
-            if(global_troll_tolls_room_3_star) {is_collected = true;}
-
-        break;
-
-        case ROOM_TROLL_TOLLS_4:
-        break;
-
-        case ROOM_TROLL_TOLLS_5:
-
-            if(global_troll_tolls_room_5_star) {is_collected = true;}
+            if(global_level_1_room_3_star) {is_collected = true;}
 
         break;
 
-        case ROOM_TROLL_TOLLS_6:
+        case ROOM_LEVEL_1_4:
+        break;
 
-            if(global_troll_tolls_room_6_star) {is_collected = true;}
+        case ROOM_LEVEL_1_5:
+
+            if(global_level_1_room_5_star) {is_collected = true;}
 
         break;
 
-        case ROOM_TROLL_TOLLS_7:
+        case ROOM_LEVEL_1_6:
 
-            if(global_troll_tolls_room_7_star) {is_collected = true;}
-
-        break;
-
-        case ROOM_TROLL_TOLLS_8:
-        break;
-
-        case ROOM_TROLL_TOLLS_9:
-
-            if(global_troll_tolls_room_9_star) {is_collected = true;}
+            if(global_level_1_room_6_star) {is_collected = true;}
 
         break;
 
-        case ROOM_TROLL_TOLLS_10:
+        case ROOM_LEVEL_1_7:
+
+            if(global_level_1_room_7_star) {is_collected = true;}
+
         break;
 
-        case ROOM_TROLL_TOLLS_11:
+        case ROOM_LEVEL_1_8:
         break;
 
-        case ROOM_TROLL_TOLLS_12:
+        case ROOM_LEVEL_1_9:
+
+            if(global_level_1_room_9_star) {is_collected = true;}
+
         break;
 
-        case ROOM_TROLL_TOLLS_13:
+        case ROOM_LEVEL_1_10:
+        break;
+
+        case ROOM_LEVEL_1_11:
+        break;
+
+        case ROOM_LEVEL_1_12:
+        break;
+
+        case ROOM_LEVEL_1_13:
         
-            if(global_troll_tolls_room_13_star) {is_collected = true;}
+            if(global_level_1_room_13_star) {is_collected = true;}
 
         break;
 
-        case ROOM_TROLL_TOLLS_14:
+        case ROOM_LEVEL_1_14:
         break;
 
-        case ROOM_TROLL_TOLLS_15:
+        case ROOM_LEVEL_1_15:
         break;
 
-        case ROOM_TROLL_TOLLS_16:
+        case ROOM_LEVEL_1_16:
         break;
 
         default:

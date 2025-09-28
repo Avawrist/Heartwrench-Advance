@@ -1,5 +1,6 @@
-finish_seal.o: G:/game/src/finish_seal.cpp G:/game/include/finish_seal.h \
- G:/game/include/utility.h G:/butano-master/butano/include/bn_log.h \
+sub_area_gate.o: G:/game/src/sub_area_gate.cpp \
+ G:/game/include/sub_area_gate.h G:/game/include/utility.h \
+ G:/butano-master/butano/include/bn_log.h \
  G:/butano-master/butano/include/bn_config_log.h \
  G:/butano-master/butano/include/bn_log_backend.h \
  G:/butano-master/butano/include/bn_common.h \
@@ -43,7 +44,9 @@ finish_seal.o: G:/game/src/finish_seal.cpp G:/game/include/finish_seal.h \
  G:/butano-master/butano/include/bn_regular_bg_map_ptr.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell.h \
  G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h \
- G:/game/include/game_object.h \
+ G:/game/include/game_object.h G:/butano-master/butano/include/bn_core.h \
+ G:/butano-master/butano/include/bn_string_view.h \
+ G:/butano-master/butano/include/bn_vblank_callback_type.h \
  G:/butano-master/butano/include/bn_optional.h \
  G:/butano-master/butano/include/bn_camera_ptr.h \
  G:/butano-master/butano/include/bn_math.h \
@@ -90,8 +93,8 @@ finish_seal.o: G:/game/src/finish_seal.cpp G:/game/include/finish_seal.h \
  G:/game/build/bn_sprite_items_enemy_hp_bar.h \
  G:/game/build/bn_sprite_items_enemy_death.h \
  G:/game/build/bn_sprite_items_block_death.h \
- G:/game/build/bn_sprite_items_finish_seal.h
-G:/game/include/finish_seal.h:
+ G:/game/build/bn_sprite_items_sub_area_gate.h
+G:/game/include/sub_area_gate.h:
 G:/game/include/utility.h:
 G:/butano-master/butano/include/bn_log.h:
 G:/butano-master/butano/include/bn_config_log.h:
@@ -138,6 +141,9 @@ G:/butano-master/butano/include/bn_regular_bg_map_ptr.h:
 G:/butano-master/butano/include/bn_regular_bg_map_cell.h:
 G:/butano-master/butano/include/bn_regular_bg_map_cell_info.h:
 G:/game/include/game_object.h:
+G:/butano-master/butano/include/bn_core.h:
+G:/butano-master/butano/include/bn_string_view.h:
+G:/butano-master/butano/include/bn_vblank_callback_type.h:
 G:/butano-master/butano/include/bn_optional.h:
 G:/butano-master/butano/include/bn_camera_ptr.h:
 G:/butano-master/butano/include/bn_math.h:
@@ -186,4 +192,4 @@ G:/game/build/bn_sprite_items_wall_splat_effect.h:
 G:/game/build/bn_sprite_items_enemy_hp_bar.h:
 G:/game/build/bn_sprite_items_enemy_death.h:
 G:/game/build/bn_sprite_items_block_death.h:
-G:/game/build/bn_sprite_items_finish_seal.h:
+G:/game/build/bn_sprite_items_sub_area_gate.h:

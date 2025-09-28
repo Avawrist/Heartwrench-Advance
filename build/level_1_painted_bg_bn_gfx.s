@@ -1,15 +1,15 @@
 
-@{{BLOCK(troll_tolls_painted_bg_bn_gfx)
+@{{BLOCK(level_1_painted_bg_bn_gfx)
 
 @=======================================================================
 @
-@	troll_tolls_painted_bg_bn_gfx, 512x1536@4, 
+@	level_1_painted_bg_bn_gfx, 512x1536@4, 
 @	+ palette 16 entries, not compressed
 @	+ 111 tiles (t|f|p reduced) not compressed
 @	+ regular map (in SBBs), not compressed, 64x192 
 @	Total size: 32 + 3552 + 24576 = 28160
 @
-@	Time-stamp: 2025-09-21, 17:21:47
+@	Time-stamp: 2025-09-28, 14:35:41
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -17,9 +17,9 @@
 
 	.section .rodata
 	.align	2
-	.global troll_tolls_painted_bg_bn_gfxTiles		@ 3552 unsigned chars
-	.hidden troll_tolls_painted_bg_bn_gfxTiles
-troll_tolls_painted_bg_bn_gfxTiles:
+	.global level_1_painted_bg_bn_gfxTiles		@ 3552 unsigned chars
+	.hidden level_1_painted_bg_bn_gfxTiles
+level_1_painted_bg_bn_gfxTiles:
 	.word 0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000
 	.word 0x11111111,0x11111111,0x11111111,0x11111111,0x11111111,0x11111111,0x11111111,0x11111111
 	.word 0xDDDDDDDD,0xDDDDDDDD,0xDDDDDDDD,0xDDDDDDDD,0xDDDDDDDD,0xDDDDDDDD,0xDDDDDDDD,0xDDDDDDDD
@@ -147,9 +147,9 @@ troll_tolls_painted_bg_bn_gfxTiles:
 
 	.section .rodata
 	.align	2
-	.global troll_tolls_painted_bg_bn_gfxMap		@ 24576 unsigned chars
-	.hidden troll_tolls_painted_bg_bn_gfxMap
-troll_tolls_painted_bg_bn_gfxMap:
+	.global level_1_painted_bg_bn_gfxMap		@ 24576 unsigned chars
+	.hidden level_1_painted_bg_bn_gfxMap
+level_1_painted_bg_bn_gfxMap:
 	.hword 0x0001,0x0001,0x0001,0x0002,0x0002,0x0002,0x0002,0x0003
 	.hword 0x0003,0x0003,0x0003,0x0003,0x0003,0x0003,0x0003,0x0003
 	.hword 0x0003,0x0003,0x0003,0x0003,0x0004,0x0005,0x0004,0x0005
@@ -1880,10 +1880,10 @@ troll_tolls_painted_bg_bn_gfxMap:
 
 	.section .rodata
 	.align	2
-	.global troll_tolls_painted_bg_bn_gfxPal		@ 32 unsigned chars
-	.hidden troll_tolls_painted_bg_bn_gfxPal
-troll_tolls_painted_bg_bn_gfxPal:
+	.global level_1_painted_bg_bn_gfxPal		@ 32 unsigned chars
+	.hidden level_1_painted_bg_bn_gfxPal
+level_1_painted_bg_bn_gfxPal:
 	.hword 0x1886,0x20A9,0x30EC,0x3D2E,0x4990,0x2ABF,0x265E,0x261C
 	.hword 0x21DA,0x2199,0x1D57,0x1915,0x4A45,0x5286,0x56E6,0x5F47
 
-@}}BLOCK(troll_tolls_painted_bg_bn_gfx)
+@}}BLOCK(level_1_painted_bg_bn_gfx)

@@ -59,7 +59,7 @@ Player::Player()
 	left_wj_eligible         = false;
 	right_wj_eligible        = false;
 	is_dead                  = false;
-	troll_tolls_highlighted  = false;
+	level_1_highlighted  = false;
 
 	a_requested   = false;
 	b_requested   = false;
@@ -128,7 +128,7 @@ Player::Player(const Player& other) : GameObject(other)
 	left_wj_eligible                = other.left_wj_eligible;
 	right_wj_eligible               = other.right_wj_eligible;
 	is_dead                         = other.is_dead;
-	troll_tolls_highlighted         = other.troll_tolls_highlighted;
+	level_1_highlighted         = other.level_1_highlighted;
 	under_construction_highlighted  = other.under_construction_highlighted;
 
 	a_requested   = other.a_requested;
@@ -202,7 +202,7 @@ Player& Player::operator =(const Player& other)
 	left_wj_eligible         		= other.left_wj_eligible;
 	right_wj_eligible        		= other.right_wj_eligible;
 	is_dead                  		= other.is_dead;
-	troll_tolls_highlighted  		= other.troll_tolls_highlighted;
+	level_1_highlighted  		= other.level_1_highlighted;
 	under_construction_highlighted  = other.under_construction_highlighted;
 	
 
@@ -1062,6 +1062,10 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 {
 	bool clear_to_jump = true;
 
+	BN_LOG("========");
+	BN_LOG(x());
+	BN_LOG(y());
+
 	//////////////////////////
     // Player State Machine //
     //////////////////////////
@@ -1733,6 +1737,13 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 		case PLAYER_DOOR:
 
 			if(animate_action_ptr->done())
+			{setState(PLAYER_DOOR_EXTENDED);}
+
+		break;
+
+		case PLAYER_DOOR_EXTENDED:
+
+			if(animate_action_ptr->done())
 			{setDoorAnimation();}
 
 		break;
@@ -2001,6 +2012,13 @@ void Player::setState(ObjectState new_state)
 
 			rigidbody.removeForces();
 			setDoorAnimation();
+
+		break;
+
+		case PLAYER_DOOR_EXTENDED:
+
+			setDoorAnimation();
+			global_soft_fade_out = true;
 
 		break;
 
@@ -2599,14 +2617,14 @@ void Player::resolveScrewCollision(GameObject& object)
 
 		// Screw down
 		if(state == PLAYER_SPIN_ATTACK       &&
-		   rigidbody.normalized_dir.x() == 0 &&
-		   global_timer % 4             == 0)
+		   global_timer % 4               == 0)
 		{
 			if(x_dir == RIGHT) 
 			{
 				setY(y() + PLAYER_SCREW_STEP);
 				object.setState(SCREW_DOWN);
 			}
+			/*
 			else               
 			{
 				if(object.collider_offset_y > PLAYER_SCREW_MIN_Y_OFFSET) 
@@ -2614,6 +2632,7 @@ void Player::resolveScrewCollision(GameObject& object)
 				
 				object.setState(SCREW_UP);
 			}
+			*/
 		}
 	}
 }
@@ -2674,14 +2693,80 @@ void Player::resolveSealedGateCollision(GameObject& object)
 		}
 
 		// Enter Gate
-		if(object.state == SEALED_GATE_OPEN_3 && 
-		   state != PLAYER_DOOR && 
-		   bn::keypad::up_pressed())
+		if(bn::keypad::up_pressed() && 
+		   object.state == SEALED_GATE_OPEN_3 && 
+		   state != PLAYER_DOOR)   
 		{
 			setX(object.collider.x());
 			setState(PLAYER_DOOR);
 
 			global_current_level_complete = true;
+		}
+	}
+}
+
+void Player::resolveSubAreaGateCollision(GameObject& object)
+{
+	if(collider.isCollision(object.collider))
+	{
+		// Enter wrench state
+		if(state != PLAYER_WRENCH               &&
+		   object.state != SUB_AREA_GATE_OPEN_3 &&
+		   bn::keypad::r_held()                 && 
+		   (state == PLAYER_GROUNDED_NEUTRAL || state == PLAYER_WALK))
+		{
+			setState(PLAYER_WRENCH);
+
+			if(x() > object.collider.x()) 
+			{
+				x_dir = LEFT;
+				setX(object.collider.x() + PLAYER_SUB_AREA_GATE_X_OFFSET);
+			}
+			else                          
+			{
+				x_dir = RIGHT;
+				setX(object.collider.x() - PLAYER_SUB_AREA_GATE_X_OFFSET);
+			}
+		}
+
+		// Pump wrench
+		if(state == PLAYER_WRENCH && animate_action_ptr->done())
+		{
+			setWrenchIdleAnimation();
+			
+			switch(object.state)
+			{
+				case IDLE:
+
+					object.setState(SUB_AREA_GATE_OPEN_1);
+
+				break;
+
+				case SUB_AREA_GATE_OPEN_1:
+
+					object.setState(SUB_AREA_GATE_OPEN_2);
+
+				break;
+
+				case SUB_AREA_GATE_OPEN_2:
+
+					object.setState(SUB_AREA_GATE_OPEN_3);
+					setState(NONE);
+
+				break;
+
+				default:
+				break;
+			}
+		}
+
+		// Enter Gate
+		if(bn::keypad::up_pressed() && 
+		   object.state == SUB_AREA_GATE_OPEN_3 && 
+		   state != PLAYER_DOOR)
+		{
+			setX(object.collider.x());
+			setState(PLAYER_DOOR);
 		}
 	}
 }
@@ -2859,10 +2944,10 @@ void Player::resolveOWTileCollision(const bn::regular_bg_ptr&                   
 		else if(y().integer() > ow_target_pos.y()) 
 		{ow_target_pos.set_y(ow_target_pos.y() + PLAYER_OW_STEP_DISTANCE);}
 	}
-	else if(tile_index >= OW_TROLL_TOLLS_MIN_INDEX &&
-	  		tile_index <= OW_TROLL_TOLLS_MAX_INDEX)
+	else if(tile_index >= OW_LEVEL_1_MIN_INDEX &&
+	  		tile_index <= OW_LEVEL_1_MAX_INDEX)
 	{
-		troll_tolls_highlighted = true;
+		level_1_highlighted = true;
 	}
 	else if(tile_index >= OW_UNDER_CONSTRUCTION_MIN_INDEX &&
 	  		tile_index <= OW_UNDER_CONSTRUCTION_MAX_INDEX)
@@ -2872,7 +2957,7 @@ void Player::resolveOWTileCollision(const bn::regular_bg_ptr&                   
 	else
 	{
 		// Reset highlight bools
-		troll_tolls_highlighted = false;
+		level_1_highlighted = false;
 		under_construction_highlighted = false;
 	}
 

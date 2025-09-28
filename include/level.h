@@ -24,7 +24,7 @@
 #include "bn_sound_items.h"
 
 // Flash Palettes
-#include "bn_bg_palette_items_troll_tolls_bg_flash_palette.h"
+#include "bn_bg_palette_items_level_1_bg_flash_palette.h"
 
 // BGs
 #include "bn_regular_bg_items_name_card_level_bg.h"
@@ -39,9 +39,9 @@
 #include "bn_regular_bg_items_overworld_object_bg.h"
 #include "bn_regular_bg_items_overworld_painted_bg.h"
 
-#include "bn_regular_bg_items_troll_tolls_level_bg.h"
-#include "bn_regular_bg_items_troll_tolls_object_bg.h"
-#include "bn_regular_bg_items_troll_tolls_painted_bg.h"
+#include "bn_regular_bg_items_level_1_level_bg.h"
+#include "bn_regular_bg_items_level_1_object_bg.h"
+#include "bn_regular_bg_items_level_1_painted_bg.h"
 
 // Title player sprite
 #include "bn_sprite_items_player_title.h"
@@ -81,13 +81,13 @@ struct SaveData
     
     uint8 stars_collected;
 
-    bool troll_tolls_complete;
-    bool troll_tolls_room_3_star;
-    bool troll_tolls_room_5_star;
-    bool troll_tolls_room_6_star;
-    bool troll_tolls_room_7_star;
-    bool troll_tolls_room_9_star;
-    bool troll_tolls_room_13_star;
+    bool level_1_complete;
+    bool level_1_room_3_star;
+    bool level_1_room_5_star;
+    bool level_1_room_6_star;
+    bool level_1_room_7_star;
+    bool level_1_room_9_star;
+    bool level_1_room_13_star;
 };
 
 //////////////////
@@ -162,8 +162,8 @@ struct SaveData
 #define TITLE_SCROLL_SPEED 1
 
 // Troll Tolls
-#define LEVEL_TROLL_TOLLS_PAINTED_BG_X 192
-#define LEVEL_TROLL_TOLLS_PAINTED_BG_Y 1600
+#define LEVEL_LEVEL_1_PAINTED_BG_X 192
+#define LEVEL_LEVEL_1_PAINTED_BG_Y 1600
 
 // Transitions
 #define LEVEL_TITLE_SCREEN_TRANSITION_FRAMES 60
@@ -174,7 +174,7 @@ enum LevelName
     LEVEL_NAME_CARD,
     LEVEL_TITLE_SCREEN,
     LEVEL_OVERWORLD,
-    LEVEL_TROLL_TOLLS
+    LEVEL_LEVEL_1
 };
 
 //////////////////
@@ -261,9 +261,6 @@ struct Level
 
     Spawn player_spawn;
     
-    bool  fade_in;
-    bool  fade_out;
-    bool  soft_fade_out;
     bool  cam_is_scrolling;
     bool  menu_open;
     bool  pause_requested;

@@ -118,6 +118,7 @@
 #define PLAYER_SCREW_MIN_Y_OFFSET  0
 
 #define PLAYER_SEALED_GATE_X_OFFSET     16
+#define PLAYER_SUB_AREA_GATE_X_OFFSET   16
 #define PLAYER_WRENCH_PUMP_ACTION_FRAME 3
 
 #define PLAYER_BASE_BELL_JUMP_FORCE          -9
@@ -140,7 +141,7 @@
 
 #define PLAYER_SPIN_1_X_OFFSET           0
 #define PLAYER_SPIN_1_Y_OFFSET           11
-#define PLAYER_SPIN_1_HB_WIDTH           46
+#define PLAYER_SPIN_1_HB_WIDTH           50
 #define PLAYER_SPIN_1_HB_HEIGHT          24
 #define PLAYER_SPIN_1_CREATE_HB_FRAME    5
 #define PLAYER_SPIN_1_HB_LIFESPAN_FRAMES 21
@@ -268,7 +269,7 @@ struct Player : GameObject {
 	bool b_requested;
 	bool r_requested;
 
-	bool troll_tolls_highlighted;
+	bool level_1_highlighted;
 	bool under_construction_highlighted;
 
 	Hitbox* hitbox_1_ptr;
@@ -412,6 +413,7 @@ struct Player : GameObject {
 	void resolveGearDropCollision(GameObject& object)            override;
 	void resolveScrewCollision(GameObject& object)               override;
 	void resolveSealedGateCollision(GameObject& object)          override;
+	void resolveSubAreaGateCollision(GameObject& object)         override;
 
 	// Level Enemies
 	void resolveThornColumnCollision(GameObject& object) override; 

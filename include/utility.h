@@ -90,12 +90,11 @@ typedef int   int32;
 #define OW_HEIGHT 1024
 
 // Overworld Tile Indexes
-
 #define OW_HARD_BLOCK_MIN_INDEX  1
 #define OW_HARD_BLOCK_MAX_INDEX  93
 
-#define OW_TROLL_TOLLS_MIN_INDEX 102
-#define OW_TROLL_TOLLS_MAX_INDEX 105
+#define OW_LEVEL_1_MIN_INDEX 102
+#define OW_LEVEL_1_MAX_INDEX 105
 
 #define OW_UNDER_CONSTRUCTION_MIN_INDEX 106
 #define OW_UNDER_CONSTRUCTION_MAX_INDEX 109
@@ -120,6 +119,13 @@ typedef int   int32;
 // Tile Macros
 #define SPIKE_DAMAGE 10
 
+// Gate Positions
+#define ROOM_LEVEL_1_SA_1_POS_X 1296
+#define ROOM_LEVEL_1_SA_1_POS_Y 1056
+
+#define ROOM_LEVEL_1_7_POS_X 112
+#define ROOM_LEVEL_1_7_POS_Y 960
+
 // Enums
 enum XDirection
 {
@@ -140,6 +146,37 @@ enum ScreenShakeSeverity
     NO_SHAKE     = 0,
     WEAK_SHAKE   = 1,
     STRONG_SHAKE = 2,
+};
+
+enum RoomName 
+{
+    NO_ROOM = 0,
+    
+    ROOM_NAME_CARD,
+    ROOM_TITLE_SCREEN,
+    ROOM_OVERWORLD,
+
+    ROOM_LEVEL_1_1,
+    ROOM_LEVEL_1_2,
+    ROOM_LEVEL_1_3,
+    ROOM_LEVEL_1_4,
+    ROOM_LEVEL_1_5,
+    ROOM_LEVEL_1_6,
+    ROOM_LEVEL_1_7,
+    ROOM_LEVEL_1_8,
+    ROOM_LEVEL_1_9,
+    ROOM_LEVEL_1_10,
+    ROOM_LEVEL_1_11,
+    ROOM_LEVEL_1_12,
+    ROOM_LEVEL_1_13,
+    ROOM_LEVEL_1_14,
+    ROOM_LEVEL_1_15,
+    ROOM_LEVEL_1_16,
+    ROOM_LEVEL_1_17,
+    ROOM_LEVEL_1_18,
+    ROOM_LEVEL_1_SA_1,
+    ROOM_LEVEL_1_SA_2,
+    ROOM_LEVEL_1_BOSS
 };
 
 // Global Arrays
@@ -178,19 +215,23 @@ extern bool global_bell_struck;
 
 extern bool global_current_level_complete;
 
+extern bool global_fade_in;
+extern bool global_fade_out;
+extern bool global_soft_fade_out;
+
 // Global Save Variables
 extern int32 global_ow_player_location_x;
 extern int32 global_ow_player_location_y;
 
 extern uint8 global_stars_collected;
 
-extern bool global_troll_tolls_complete;
-extern bool global_troll_tolls_room_3_star;
-extern bool global_troll_tolls_room_5_star;
-extern bool global_troll_tolls_room_6_star;
-extern bool global_troll_tolls_room_7_star;
-extern bool global_troll_tolls_room_9_star;
-extern bool global_troll_tolls_room_13_star;
+extern bool global_level_1_complete;
+extern bool global_level_1_room_3_star;
+extern bool global_level_1_room_5_star;
+extern bool global_level_1_room_6_star;
+extern bool global_level_1_room_7_star;
+extern bool global_level_1_room_9_star;
+extern bool global_level_1_room_13_star;
 
 // Debug Mode
 #define DEBUG_BUILD false

@@ -97,9 +97,6 @@ Level::Level(const Level& other)
     tile_height = other.tile_height;
 
     player_spawn          = other.player_spawn;
-    fade_in               = other.fade_in;
-    fade_out              = other.fade_out;
-    soft_fade_out        = other.soft_fade_out;
     cam_is_scrolling      = other.cam_is_scrolling;
     menu_open             = other.menu_open;
     pause_requested       = other.pause_requested;
@@ -177,9 +174,6 @@ void Level::operator =(const Level& other)
     tile_height = other.tile_height;
 
     player_spawn          = other.player_spawn;
-    fade_in               = other.fade_in;
-    fade_out              = other.fade_out;
-    soft_fade_out        = other.soft_fade_out;
     cam_is_scrolling      = other.cam_is_scrolling;
     menu_open             = other.menu_open;
     pause_requested       = other.pause_requested;
@@ -255,9 +249,10 @@ void Level::load()
 
     camera = bn::camera_ptr::create(0, 0);
 
-    fade_in               = false;
-    fade_out              = false;
-    soft_fade_out        = false;
+    global_fade_in               = false;
+    global_fade_out              = false;
+    global_soft_fade_out         = false;
+
     cam_is_scrolling      = false;
     menu_open             = false;
     pause_requested       = false;
@@ -301,7 +296,7 @@ void Level::load()
                                                                                0, 0);
 
             // Update flash palette
-            default_flash_palette_ptr = bn::bg_palette_items::troll_tolls_bg_flash_palette.create_palette();
+            default_flash_palette_ptr = bn::bg_palette_items::level_1_bg_flash_palette.create_palette();
 
             // Update cells
             cells = main_bg_ptr->map().cells_ref().value();
@@ -334,7 +329,7 @@ void Level::load()
                                                                                0, 0, 0, 0, 0, 1, 1, 1, 1);
 
             // Update flash palette
-            default_flash_palette_ptr = bn::bg_palette_items::troll_tolls_bg_flash_palette.create_palette();
+            default_flash_palette_ptr = bn::bg_palette_items::level_1_bg_flash_palette.create_palette();
 
             // Title player sprite
             title_player_sprite_ptr = bn::sprite_items::player_title.create_sprite(PLAYER_TITLE_X_POS, PLAYER_TITLE_Y_POS);
@@ -374,7 +369,7 @@ void Level::load()
                                                                                0, 0);
 
             // Update flash palette
-            default_flash_palette_ptr = bn::bg_palette_items::troll_tolls_bg_flash_palette.create_palette();
+            default_flash_palette_ptr = bn::bg_palette_items::level_1_bg_flash_palette.create_palette();
 
             // Update cells
             cells = main_bg_ptr->map().cells_ref().value();
@@ -383,7 +378,7 @@ void Level::load()
             hud_level_name.setSpritesFromString("       OVERWORLD", 16);
 
             // Next level
-            next_level = LEVEL_TROLL_TOLLS;
+            next_level = LEVEL_LEVEL_1;
 
             // Music
             if(bn::music::playing_item() != bn::music_items::title_screen)
@@ -391,27 +386,27 @@ void Level::load()
             
         break;
         
-        case LEVEL_TROLL_TOLLS:
+        case LEVEL_LEVEL_1:
             
             // Load BGs //
-            main_bg_ptr       = bn::regular_bg_items::troll_tolls_level_bg.create_bg(0, 0);
-            bg_item           = bn::regular_bg_items::troll_tolls_level_bg;
+            main_bg_ptr       = bn::regular_bg_items::level_1_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::level_1_level_bg;
             level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
                                                                              0,
-                                                                             bn::regular_bg_items::troll_tolls_level_bg.map_item(),
+                                                                             bn::regular_bg_items::level_1_level_bg.map_item(),
                                                                              0, 0);
 
-            object_bg_ptr  = bn::regular_bg_items::troll_tolls_object_bg.create_bg(0, 0);
-            object_bg_item = bn::regular_bg_items::troll_tolls_object_bg;
+            object_bg_ptr  = bn::regular_bg_items::level_1_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::level_1_object_bg;
 
-            painted_bg_ptr      = bn::regular_bg_items::troll_tolls_painted_bg.create_bg(0, 0);
+            painted_bg_ptr      = bn::regular_bg_items::level_1_painted_bg.create_bg(0, 0);
             painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
                                                                                3,
-                                                                               bn::regular_bg_items::troll_tolls_painted_bg.map_item(),
+                                                                               bn::regular_bg_items::level_1_painted_bg.map_item(),
                                                                                0, 0, 0, 1, 1, 1, 2, 2, 2);
 
             // Update flash palette
-            default_flash_palette_ptr = bn::bg_palette_items::troll_tolls_bg_flash_palette.create_palette();
+            default_flash_palette_ptr = bn::bg_palette_items::level_1_bg_flash_palette.create_palette();
 
             // Update cells
             cells = main_bg_ptr->map().cells_ref().value();
@@ -423,7 +418,7 @@ void Level::load()
             next_level = LEVEL_TITLE_SCREEN;
 
             // Set Painted BG initial position
-            painted_bg_ptr->set_position(LEVEL_TROLL_TOLLS_PAINTED_BG_X, LEVEL_TROLL_TOLLS_PAINTED_BG_Y);
+            painted_bg_ptr->set_position(LEVEL_LEVEL_1_PAINTED_BG_X, LEVEL_LEVEL_1_PAINTED_BG_Y);
             
             // Music
             if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
@@ -557,7 +552,7 @@ void Level::load()
     default_painted_palette_ptr->set_fade(bn::colors::black, 1);
 
     // Trigger fade in
-    fade_in = true;
+    global_fade_in = true;
 
     BN_LOG("=== Level loaded ===");
     BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
@@ -576,9 +571,10 @@ void Level::load(LevelName level_name)
     player_spawn.spawn_room  = NO_ROOM;
     player_spawn.spawn_level = level_name;
 
-    fade_in               = false;
-    fade_out              = false;
-    soft_fade_out        = false;
+    global_fade_in               = false;
+    global_fade_out              = false;
+    global_soft_fade_out         = false;
+
     cam_is_scrolling      = false;
     menu_open             = false;
     pause_requested       = false;
@@ -625,7 +621,7 @@ void Level::load(LevelName level_name)
                                                                                0, 0);
 
             // Update flash palette
-            default_flash_palette_ptr = bn::bg_palette_items::troll_tolls_bg_flash_palette.create_palette();
+            default_flash_palette_ptr = bn::bg_palette_items::level_1_bg_flash_palette.create_palette();
 
             // Update cells
             cells = main_bg_ptr->map().cells_ref().value();
@@ -664,7 +660,7 @@ void Level::load(LevelName level_name)
                                                                                0, 0, 0, 1, 1, 1, 2, 2, 2);
 
             // Update flash palette
-            default_flash_palette_ptr = bn::bg_palette_items::troll_tolls_bg_flash_palette.create_palette();
+            default_flash_palette_ptr = bn::bg_palette_items::level_1_bg_flash_palette.create_palette();
 
             // Title player sprite
             title_player_sprite_ptr = bn::sprite_items::player_title.create_sprite(PLAYER_TITLE_X_POS, PLAYER_TITLE_Y_POS);
@@ -713,7 +709,7 @@ void Level::load(LevelName level_name)
                                                                                0, 0);
 
             // Update flash palette
-            default_flash_palette_ptr = bn::bg_palette_items::troll_tolls_bg_flash_palette.create_palette();
+            default_flash_palette_ptr = bn::bg_palette_items::level_1_bg_flash_palette.create_palette();
 
             // Update cells
             cells = main_bg_ptr->map().cells_ref().value();
@@ -730,31 +726,31 @@ void Level::load(LevelName level_name)
             
         break;
 
-        case LEVEL_TROLL_TOLLS:
+        case LEVEL_LEVEL_1:
             
             // Player Spawn //
             player_spawn.setSpawnPosAC(192, 2400);
-            player_spawn.spawn_room = ROOM_TROLL_TOLLS_1;
+            player_spawn.spawn_room = ROOM_LEVEL_1_1;
 
             // Load BGs //
-            main_bg_ptr       = bn::regular_bg_items::troll_tolls_level_bg.create_bg(0, 0);
-            bg_item           = bn::regular_bg_items::troll_tolls_level_bg;
+            main_bg_ptr       = bn::regular_bg_items::level_1_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::level_1_level_bg;
             level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
                                                                              0,
-                                                                             bn::regular_bg_items::troll_tolls_level_bg.map_item(),
+                                                                             bn::regular_bg_items::level_1_level_bg.map_item(),
                                                                              0, 0);
 
-            object_bg_ptr  = bn::regular_bg_items::troll_tolls_object_bg.create_bg(0, 0);
-            object_bg_item = bn::regular_bg_items::troll_tolls_object_bg;
+            object_bg_ptr  = bn::regular_bg_items::level_1_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::level_1_object_bg;
 
-            painted_bg_ptr      = bn::regular_bg_items::troll_tolls_painted_bg.create_bg(0, 0);
+            painted_bg_ptr      = bn::regular_bg_items::level_1_painted_bg.create_bg(0, 0);
             painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
                                                                                3,
-                                                                               bn::regular_bg_items::troll_tolls_painted_bg.map_item(),
+                                                                               bn::regular_bg_items::level_1_painted_bg.map_item(),
                                                                                0, 0, 0, 1, 1, 1, 2, 2, 2);
 
             // Update flash palette
-            default_flash_palette_ptr = bn::bg_palette_items::troll_tolls_bg_flash_palette.create_palette();
+            default_flash_palette_ptr = bn::bg_palette_items::level_1_bg_flash_palette.create_palette();
 
             // Update cells
             cells = main_bg_ptr->map().cells_ref().value();
@@ -766,7 +762,7 @@ void Level::load(LevelName level_name)
             next_level = LEVEL_TITLE_SCREEN;
 
             // Set Painted BG initial position
-            painted_bg_ptr->set_position(LEVEL_TROLL_TOLLS_PAINTED_BG_X, LEVEL_TROLL_TOLLS_PAINTED_BG_Y);
+            painted_bg_ptr->set_position(LEVEL_LEVEL_1_PAINTED_BG_X, LEVEL_LEVEL_1_PAINTED_BG_Y);
 
             // Music
             if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
@@ -903,7 +899,7 @@ void Level::load(LevelName level_name)
     default_painted_palette_ptr->set_fade(bn::colors::black, 1);
 
     // Trigger fade in
-    fade_in = true;
+    global_fade_in = true;
 
     BN_LOG("=== Level loaded ===");
     BN_LOG("Bytes allocated in EWRAM: ", bn::memory::used_alloc_ewram());
@@ -993,7 +989,7 @@ void Level::updateNameCard()
         transition_frames < 0)
     {
         // Start Fade and Level Transition
-        soft_fade_out = true;
+        global_soft_fade_out = true;
         transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
 
         // Music
@@ -1036,7 +1032,7 @@ void Level::updateTitleScreen()
         loadSave();
 
         // Start Fade and Level Transition
-        soft_fade_out = true;
+        global_soft_fade_out = true;
         transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
 
         painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
@@ -1066,11 +1062,11 @@ void Level::updateTitleScreen()
 void Level::updateOverworld()
 {   
     // Reveal player
-    if(!fade_out && transition_frames < 0)
+    if(!global_fade_out && transition_frames < 0)
     {current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->sprite_ptr->set_visible(true);}
 
     // Set HUD Name 
-    if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->troll_tolls_highlighted)
+    if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_1_highlighted)
     {hud_level_name.setSpritesFromString(" TURN ON A CHIME", 16);}
     else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->under_construction_highlighted)
     {hud_level_name.setSpritesFromString("WORK IN PROGRESS", 16);}
@@ -1080,11 +1076,11 @@ void Level::updateOverworld()
     // Get Input //
     if((bn::keypad::a_pressed()) && transition_frames < 0)
     {
-        if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->troll_tolls_highlighted)
+        if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_1_highlighted)
         {
             // Start Fade and Level Transition
-            next_level        = LEVEL_TROLL_TOLLS;
-            fade_out          = true;
+            next_level        = LEVEL_LEVEL_1;
+            global_fade_out   = true;
             transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
 
             bn::sound_items::select.play();
@@ -1294,7 +1290,7 @@ void Level::updateGlobalHitstop()
 
 void Level::updateBGFlash()
 {
-    if(fade_out) {main_bg_ptr->set_palette(default_main_palette_ptr.value()); return;}
+    if(global_fade_out) {main_bg_ptr->set_palette(default_main_palette_ptr.value()); return;}
 
     if(global_bg_hitflash_frames)
     {
@@ -1474,7 +1470,7 @@ void Level::updateFade()
 {
     bn::fixed fade_intensity = default_main_palette_ptr->fade_intensity();
 
-    if(fade_in)
+    if(global_fade_in)
     {
         // Reveal Title Player
         if(title_player_sprite_ptr.get() != NULL)
@@ -1549,9 +1545,9 @@ void Level::updateFade()
         pause_screen_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
 
         // End condition
-        if(default_main_palette_ptr->fade_intensity() == 0) {fade_in = false;}
+        if(default_main_palette_ptr->fade_intensity() == 0) {global_fade_in = false;}
     }
-    else if(soft_fade_out)
+    else if(global_soft_fade_out)
     {
         // Fade objects out
         for(int32 i = 0; i < current_room.game_objects.size(); i++)
@@ -1651,9 +1647,9 @@ void Level::updateFade()
         pause_screen_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
 
         // End condition
-        if(default_main_palette_ptr->fade_intensity() == 1) {soft_fade_out = false;}
+        if(default_main_palette_ptr->fade_intensity() == 1) {global_soft_fade_out = false;}
     }
-    else if(fade_out)
+    else if(global_fade_out)
     {
         // Fade volume out
         if(bn::music::playing() && bn::music::volume() > 0) 
@@ -1760,7 +1756,7 @@ void Level::updateFade()
         pause_screen_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
 
         // End condition
-        if(default_main_palette_ptr->fade_intensity() == 1) {fade_out = false;}
+        if(default_main_palette_ptr->fade_intensity() == 1) {global_fade_out = false;}
     }
 }
 
@@ -1803,7 +1799,7 @@ void Level::updatePauseScreen()
                 case CURSOR_RETURN_TO_MAP:
 
                     // Start Fade and Level Transition
-                    fade_out          = true;
+                    global_fade_out          = true;
                     transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
                     next_level        = LEVEL_OVERWORLD;
 
@@ -1815,7 +1811,7 @@ void Level::updatePauseScreen()
                     saveCurrentFile();
 
                     // Start Fade and Level Transition
-                    fade_out          = true;
+                    global_fade_out          = true;
                     transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
                     next_level        = LEVEL_TITLE_SCREEN;
 
@@ -1839,7 +1835,7 @@ void Level::updatePauseScreen()
 
 void Level::updateLevelTransition(LevelName level_index)
 {
-    if(level_index < LEVEL_NAME_CARD || level_index > LEVEL_TROLL_TOLLS) {return;}
+    if(level_index < LEVEL_NAME_CARD || level_index > LEVEL_LEVEL_1) {return;}
 
     // Transition Level //
     if(transition_frames > 0)
@@ -1890,15 +1886,14 @@ void Level::updateLevelComplete()
     if(menu_open) {togglePauseScreen();}
 
     // If player animation is done, trigger transition:
-    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) != NULL                     && 
-       current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->animate_action_ptr->done() &&
+    if(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) != NULL                        && 
+       current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->state == PLAYER_DOOR_EXTENDED &&
        transition_frames == -1)
     {
         next_level        = LEVEL_OVERWORLD;
-        fade_out          = true;
         transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
 
-        if(current_room.room_name == ROOM_TROLL_TOLLS_16) {global_troll_tolls_complete = true;}
+        if(current_room.room_name == ROOM_LEVEL_1_16) {global_level_1_complete = true;}
     }
 }
 
@@ -1908,7 +1903,7 @@ void Level::reloadOnDeath()
     if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->is_dead)
     {
         // Trigger the fade out
-        soft_fade_out = true;
+        global_soft_fade_out = true;
 
         // If fade out is done, we can reload.
         if(default_painted_palette_ptr->fade_intensity() == 1)
@@ -2099,6 +2094,73 @@ void Level::transitionRoom()
             return;
         }
     }
+
+    else if(temp_player.state == PLAYER_DOOR_EXTENDED && global_soft_fade_out == false)
+    {
+        switch(current_room.room_name)
+        {
+            case ROOM_LEVEL_1_7:
+
+                // Fade back in
+                global_fade_in = true;
+
+                // Manually reveal player sprite
+                temp_player.revealSprites();
+
+                // Move the player into the new room
+                temp_player.setPos(ROOM_LEVEL_1_SA_1_POS_X, ROOM_LEVEL_1_SA_1_POS_Y);
+                temp_player.setState(NONE);
+
+                // Create the neighbor room
+                current_room = Room(ROOM_LEVEL_1_SA_1, 
+                                    camera.value(),
+                                    object_bg_ptr.value(),
+                                    object_bg_item.value(),
+                                    object_cells,
+                                    player_spawn.spawn_pos);
+
+                // Free up the default player object that came with the new room,
+                // and replace with the player object from the previous room
+                delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+                current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(temp_player);
+                
+                return;
+
+            break;
+
+            case ROOM_LEVEL_1_SA_1:
+
+                // Fade back in
+                global_fade_in = true;
+
+                // Manually reveal player sprite
+                temp_player.revealSprites();
+
+                // Move the player into the new room
+                temp_player.setPos(ROOM_LEVEL_1_7_POS_X, ROOM_LEVEL_1_7_POS_Y);
+                temp_player.setState(NONE);
+
+                // Create the neighbor room
+                current_room = Room(ROOM_LEVEL_1_7, 
+                                    camera.value(),
+                                    object_bg_ptr.value(),
+                                    object_bg_item.value(),
+                                    object_cells,
+                                    player_spawn.spawn_pos);
+
+                // Free up the default player object that came with the new room,
+                // and replace with the player object from the previous room
+                delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+                current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(temp_player);
+                
+                return;
+
+            break;
+
+            default:
+            break;
+        }
+    }
 }
 
 void Level::drawObjects()
@@ -2284,13 +2346,13 @@ void Level::saveCurrentFile()
     //save_data_ptr->ow_player_location_y = global_ow_player_location_y;
     save_data_ptr->stars_collected = global_stars_collected;
 
-    save_data_ptr->troll_tolls_complete     = global_troll_tolls_complete;
-    save_data_ptr->troll_tolls_room_3_star  = global_troll_tolls_room_3_star;
-    save_data_ptr->troll_tolls_room_5_star  = global_troll_tolls_room_5_star;
-    save_data_ptr->troll_tolls_room_6_star  = global_troll_tolls_room_6_star;
-    save_data_ptr->troll_tolls_room_7_star  = global_troll_tolls_room_7_star;
-    save_data_ptr->troll_tolls_room_9_star  = global_troll_tolls_room_9_star;
-    save_data_ptr->troll_tolls_room_13_star = global_troll_tolls_room_13_star;
+    save_data_ptr->level_1_complete     = global_level_1_complete;
+    save_data_ptr->level_1_room_3_star  = global_level_1_room_3_star;
+    save_data_ptr->level_1_room_5_star  = global_level_1_room_5_star;
+    save_data_ptr->level_1_room_6_star  = global_level_1_room_6_star;
+    save_data_ptr->level_1_room_7_star  = global_level_1_room_7_star;
+    save_data_ptr->level_1_room_9_star  = global_level_1_room_9_star;
+    save_data_ptr->level_1_room_13_star = global_level_1_room_13_star;
 }
 
 void Level::loadSave()
@@ -2301,18 +2363,18 @@ void Level::loadSave()
     if(save_data_ptr->no_data) {saveCurrentFile();}
     else
     {
-        global_troll_tolls_complete = save_data_ptr->troll_tolls_complete;
+        global_level_1_complete = save_data_ptr->level_1_complete;
 
         //global_ow_player_location_x = save_data_ptr->ow_player_location_x;
         //global_ow_player_location_y = save_data_ptr->ow_player_location_y;
         global_stars_collected = save_data_ptr->stars_collected;
 
-        global_troll_tolls_room_3_star  = save_data_ptr->troll_tolls_room_3_star;
-        global_troll_tolls_room_5_star  = save_data_ptr->troll_tolls_room_5_star;
-        global_troll_tolls_room_6_star  = save_data_ptr->troll_tolls_room_6_star;
-        global_troll_tolls_room_7_star  = save_data_ptr->troll_tolls_room_7_star;
-        global_troll_tolls_room_9_star  = save_data_ptr->troll_tolls_room_9_star;
-        global_troll_tolls_room_13_star = save_data_ptr->troll_tolls_room_13_star;
+        global_level_1_room_3_star  = save_data_ptr->level_1_room_3_star;
+        global_level_1_room_5_star  = save_data_ptr->level_1_room_5_star;
+        global_level_1_room_6_star  = save_data_ptr->level_1_room_6_star;
+        global_level_1_room_7_star  = save_data_ptr->level_1_room_7_star;
+        global_level_1_room_9_star  = save_data_ptr->level_1_room_9_star;
+        global_level_1_room_13_star = save_data_ptr->level_1_room_13_star;
     }
 }
 

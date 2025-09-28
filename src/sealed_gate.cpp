@@ -186,7 +186,7 @@ void SealedGate::update(const RoomBounds& 							   room_bounds,
     // Clamp Position //
     ////////////////////
 
-    clampPosition(room_bounds);
+    //clampPosition(room_bounds);
 
 	//////////////////////////////
     // Monitor unloading bounds //

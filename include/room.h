@@ -44,6 +44,7 @@
 #include "screw.h"
 #include "checkpoint.h"
 #include "sealed_gate.h"
+#include "sub_area_gate.h"
 
 #include "bounce_bell.h"
 #include "auto_bounce_bell.h"
@@ -65,37 +66,6 @@
 /////////////////
 // Struct Room //
 /////////////////
-
-enum RoomName 
-{
-    NO_ROOM = 0,
-    
-    ROOM_NAME_CARD,
-    ROOM_TITLE_SCREEN,
-    ROOM_OVERWORLD,
-
-    ROOM_TROLL_TOLLS_1,
-    ROOM_TROLL_TOLLS_2,
-    ROOM_TROLL_TOLLS_3,
-    ROOM_TROLL_TOLLS_4,
-    ROOM_TROLL_TOLLS_5,
-    ROOM_TROLL_TOLLS_6,
-    ROOM_TROLL_TOLLS_7,
-    ROOM_TROLL_TOLLS_8,
-    ROOM_TROLL_TOLLS_9,
-    ROOM_TROLL_TOLLS_10,
-    ROOM_TROLL_TOLLS_11,
-    ROOM_TROLL_TOLLS_12,
-    ROOM_TROLL_TOLLS_13,
-    ROOM_TROLL_TOLLS_14,
-    ROOM_TROLL_TOLLS_15,
-    ROOM_TROLL_TOLLS_16,
-    ROOM_TROLL_TOLLS_17,
-    ROOM_TROLL_TOLLS_18,
-    ROOM_TROLL_TOLLS_SA_1,
-    ROOM_TROLL_TOLLS_SA_2,
-    ROOM_TROLL_TOLLS_BOSS
-};
 
 struct Room
 {

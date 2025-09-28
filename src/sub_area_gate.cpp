@@ -1,53 +1,53 @@
-#include "sealed_gate.h"
+#include "sub_area_gate.h"
 
 ///////////////////////
-// Struct SealedGate //
+// Struct SubAreaGate //
 ///////////////////////
 
-SealedGate::SealedGate()
+SubAreaGate::SubAreaGate()
 {
-    hitpoints  = SEALED_GATE_HITPOINTS;
-    thirty_fps = SEALED_GATE_30_FPS;
+    hitpoints  = SUB_AREA_GATE_HITPOINTS;
+    thirty_fps = SUB_AREA_GATE_30_FPS;
 
     // Init Assets //
     state       = IDLE;
-    object_type = SEALED_GATE;
-    sprite_ptr  = bn::sprite_items::sealed_gate.create_sprite(0, 0);
+    object_type = SUB_AREA_GATE;
+    sprite_ptr  = bn::sprite_items::sub_area_gate.create_sprite(0, 0);
     sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
     default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
                                                                     0,
-                                                                    bn::sprite_items::sealed_gate.tiles_item(),
+                                                                    bn::sprite_items::sub_area_gate.tiles_item(),
                                                                     0, 0);
 
     // Init Variables //
-    collider_offset_x = SEALED_GATE_COLLIDER_OFFSET_X;
-    collider_offset_y = SEALED_GATE_COLLIDER_OFFSET_Y;
+    collider_offset_x = SUB_AREA_GATE_COLLIDER_OFFSET_X;
+    collider_offset_y = SUB_AREA_GATE_COLLIDER_OFFSET_Y;
 	collider = Collider(x() + collider_offset_x, 
                         y() + collider_offset_y, 
-                        SEALED_GATE_COLLIDER_WIDTH, 
-                        SEALED_GATE_COLLIDER_HEIGHT);
+                        SUB_AREA_GATE_COLLIDER_WIDTH, 
+                        SUB_AREA_GATE_COLLIDER_HEIGHT);
     collider_x_axis   = collider;
     collider_y_axis   = collider;
 }
 
-SealedGate::SealedGate(const SealedGate& other) : GameObject(other)
+SubAreaGate::SubAreaGate(const SubAreaGate& other) : GameObject(other)
 {}
 
-SealedGate::~SealedGate()
+SubAreaGate::~SubAreaGate()
 {
 
 }
 
-SealedGate& SealedGate::operator =(const SealedGate& other)
+SubAreaGate& SubAreaGate::operator =(const SubAreaGate& other)
 {
     return *this;
 }
 
-void SealedGate::setOpen1Anim()
+void SubAreaGate::setOpen1Anim()
 {
-    bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::sealed_gate.create_sprite(sprite_ptr->x().integer(), 
-																				  			   sprite_ptr->y().integer());
+    bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::sub_area_gate.create_sprite(sprite_ptr->x().integer(), 
+																				  			     sprite_ptr->y().integer());
 	temp_sprite_ptr->set_camera(sprite_ptr->camera());
 	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
 	temp_sprite_ptr->set_visible(sprite_ptr->visible());
@@ -58,13 +58,13 @@ void SealedGate::setOpen1Anim()
 
 	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 															   0,
-															   bn::sprite_items::sealed_gate.tiles_item(),
+															   bn::sprite_items::sub_area_gate.tiles_item(),
 														   	   1, 1);
 }
 
-void SealedGate::setOpen2Anim()
+void SubAreaGate::setOpen2Anim()
 {
-    bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::sealed_gate.create_sprite(sprite_ptr->x().integer(), 
+    bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::sub_area_gate.create_sprite(sprite_ptr->x().integer(), 
 																				  			   sprite_ptr->y().integer());
 	temp_sprite_ptr->set_camera(sprite_ptr->camera());
 	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
@@ -76,13 +76,13 @@ void SealedGate::setOpen2Anim()
 
 	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 															   0,
-															   bn::sprite_items::sealed_gate.tiles_item(),
+															   bn::sprite_items::sub_area_gate.tiles_item(),
 														   	   2, 2);
 }
 
-void SealedGate::setOpen3Anim()
+void SubAreaGate::setOpen3Anim()
 {
-    bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::sealed_gate.create_sprite(sprite_ptr->x().integer(), 
+    bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::sub_area_gate.create_sprite(sprite_ptr->x().integer(), 
 																				  			   sprite_ptr->y().integer());
 	temp_sprite_ptr->set_camera(sprite_ptr->camera());
 	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
@@ -94,7 +94,7 @@ void SealedGate::setOpen3Anim()
 
 	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
 															   0,
-															   bn::sprite_items::sealed_gate.tiles_item(),
+															   bn::sprite_items::sub_area_gate.tiles_item(),
 														   	   3, 3);
 }
 
@@ -102,7 +102,7 @@ void SealedGate::setOpen3Anim()
 // GameObject Overrides //
 //////////////////////////
 
-void SealedGate::update(const RoomBounds& 							   room_bounds,
+void SubAreaGate::update(const RoomBounds& 							   room_bounds,
                         bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
                         const bn::regular_bg_ptr&                      bg_ptr, 
                         const bn::span<const bn::regular_bg_map_cell>& cells,
@@ -186,7 +186,7 @@ void SealedGate::update(const RoomBounds& 							   room_bounds,
     // Clamp Position //
     ////////////////////
 
-    clampPosition(room_bounds);
+    //clampPosition(room_bounds);
 
 	//////////////////////////////
     // Monitor unloading bounds //
@@ -200,7 +200,7 @@ void SealedGate::update(const RoomBounds& 							   room_bounds,
 // State Function Overrides //
 //////////////////////////////
 
-void SealedGate::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+void SubAreaGate::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
                                     const bn::regular_bg_ptr&                      bg_ptr, 
                                     const bn::span<const bn::regular_bg_map_cell>& cells,
                                     const bn::regular_bg_item&                     bg_item,
@@ -213,7 +213,7 @@ void SealedGate::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&  
     }
 }
 
-void SealedGate::setState(ObjectState new_state)
+void SubAreaGate::setState(ObjectState new_state)
 {
 	// Set State
 	state = new_state;
@@ -224,33 +224,33 @@ void SealedGate::setState(ObjectState new_state)
         case IDLE:
         break;
 
-        case SEALED_GATE_OPEN_1:
+        case SUB_AREA_GATE_OPEN_1:
 
             setOpen1Anim();
             bn::sound_items::gate_open.play();
 
         break;
 
-        case SEALED_GATE_OPEN_2:
+        case SUB_AREA_GATE_OPEN_2:
 
             setOpen2Anim();
             bn::sound_items::gate_open.play();
 
         break;
 
-        case SEALED_GATE_OPEN_3:
+        case SUB_AREA_GATE_OPEN_3:
 
             setOpen3Anim();
             bn::sound_items::gate_open.play();
 
             // Resize & reposition collider
-            collider_offset_x = SEALED_GATE_COLLIDER_OPEN_OFFSET_X;
-            collider_offset_y = SEALED_GATE_COLLIDER_OPEN_OFFSET_Y;
+            collider_offset_x = SUB_AREA_GATE_COLLIDER_OPEN_OFFSET_X;
+            collider_offset_y = SUB_AREA_GATE_COLLIDER_OPEN_OFFSET_Y;
 
             collider = Collider(x() + collider_offset_x, 
                                 y() + collider_offset_y, 
-                                SEALED_GATE_COLLIDER_WIDTH, 
-                                SEALED_GATE_COLLIDER_HEIGHT);
+                                SUB_AREA_GATE_COLLIDER_WIDTH, 
+                                SUB_AREA_GATE_COLLIDER_HEIGHT);
 
         break;
 

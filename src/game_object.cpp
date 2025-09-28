@@ -917,6 +917,10 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
                         resolveSealedGateCollision(*game_objects.at(i));
                     break;
 
+                    case SUB_AREA_GATE:
+                        resolveSubAreaGateCollision(*game_objects.at(i));
+                    break;
+
                     case BOUNCE_BELL:
                         resolveBounceBellCollision(*game_objects.at(i));
                     break;
@@ -1001,6 +1005,7 @@ void GameObject::resolveGearDropCollision(GameObject& object)            {}
 void GameObject::resolveScrewCollision(GameObject& object)               {}
 void GameObject::resolveCheckpointCollision(GameObject& object)          {}
 void GameObject::resolveSealedGateCollision(GameObject& object)          {}
+void GameObject::resolveSubAreaGateCollision(GameObject& object)         {}
 
 void GameObject::resolveBounceBellCollision(GameObject& object)          {}
 void GameObject::resolveAutoBounceBellCollision(GameObject& object)      {}

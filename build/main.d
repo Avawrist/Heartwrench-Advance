@@ -82,7 +82,7 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/butano-master/butano/include/bn_music_item.h \
  G:/game/build/bn_sound_items.h \
  G:/butano-master/butano/include/bn_sound_item.h \
- G:/game/build/bn_bg_palette_items_troll_tolls_bg_flash_palette.h \
+ G:/game/build/bn_bg_palette_items_level_1_bg_flash_palette.h \
  G:/butano-master/butano/include/bn_bg_palette_item.h \
  G:/game/build/bn_regular_bg_items_name_card_level_bg.h \
  G:/game/build/bn_regular_bg_items_name_card_object_bg.h \
@@ -93,9 +93,9 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/game/build/bn_regular_bg_items_overworld_level_bg.h \
  G:/game/build/bn_regular_bg_items_overworld_object_bg.h \
  G:/game/build/bn_regular_bg_items_overworld_painted_bg.h \
- G:/game/build/bn_regular_bg_items_troll_tolls_level_bg.h \
- G:/game/build/bn_regular_bg_items_troll_tolls_object_bg.h \
- G:/game/build/bn_regular_bg_items_troll_tolls_painted_bg.h \
+ G:/game/build/bn_regular_bg_items_level_1_level_bg.h \
+ G:/game/build/bn_regular_bg_items_level_1_object_bg.h \
+ G:/game/build/bn_regular_bg_items_level_1_painted_bg.h \
  G:/game/build/bn_sprite_items_player_title.h \
  G:/butano-master/butano/include/bn_sprite_item.h \
  G:/butano-master/butano/include/bn_sprite_shape_size.h \
@@ -168,6 +168,8 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/game/build/bn_sprite_items_gear_drop.h G:/game/include/screw.h \
  G:/game/build/bn_sprite_items_screw.h G:/game/include/sealed_gate.h \
  G:/game/build/bn_sprite_items_sealed_gate.h \
+ G:/game/include/sub_area_gate.h \
+ G:/game/build/bn_sprite_items_sub_area_gate.h \
  G:/game/include/bounce_bell.h \
  G:/game/build/bn_sprite_items_bounce_bell.h \
  G:/game/include/auto_bounce_bell.h \
@@ -279,7 +281,7 @@ G:/game/build/bn_music_items.h:
 G:/butano-master/butano/include/bn_music_item.h:
 G:/game/build/bn_sound_items.h:
 G:/butano-master/butano/include/bn_sound_item.h:
-G:/game/build/bn_bg_palette_items_troll_tolls_bg_flash_palette.h:
+G:/game/build/bn_bg_palette_items_level_1_bg_flash_palette.h:
 G:/butano-master/butano/include/bn_bg_palette_item.h:
 G:/game/build/bn_regular_bg_items_name_card_level_bg.h:
 G:/game/build/bn_regular_bg_items_name_card_object_bg.h:
@@ -290,9 +292,9 @@ G:/game/build/bn_regular_bg_items_title_screen_painted_bg.h:
 G:/game/build/bn_regular_bg_items_overworld_level_bg.h:
 G:/game/build/bn_regular_bg_items_overworld_object_bg.h:
 G:/game/build/bn_regular_bg_items_overworld_painted_bg.h:
-G:/game/build/bn_regular_bg_items_troll_tolls_level_bg.h:
-G:/game/build/bn_regular_bg_items_troll_tolls_object_bg.h:
-G:/game/build/bn_regular_bg_items_troll_tolls_painted_bg.h:
+G:/game/build/bn_regular_bg_items_level_1_level_bg.h:
+G:/game/build/bn_regular_bg_items_level_1_object_bg.h:
+G:/game/build/bn_regular_bg_items_level_1_painted_bg.h:
 G:/game/build/bn_sprite_items_player_title.h:
 G:/butano-master/butano/include/bn_sprite_item.h:
 G:/butano-master/butano/include/bn_sprite_shape_size.h:
@@ -382,6 +384,8 @@ G:/game/include/screw.h:
 G:/game/build/bn_sprite_items_screw.h:
 G:/game/include/sealed_gate.h:
 G:/game/build/bn_sprite_items_sealed_gate.h:
+G:/game/include/sub_area_gate.h:
+G:/game/build/bn_sprite_items_sub_area_gate.h:
 G:/game/include/bounce_bell.h:
 G:/game/build/bn_sprite_items_bounce_bell.h:
 G:/game/include/auto_bounce_bell.h:
