@@ -41,7 +41,7 @@
 
 #define PLAYER_WALL_TEST_RAY_LENGTH 1
 
-#define PLAYER_MAX_HITPOINTS      3
+#define PLAYER_MAX_HITPOINTS      6
 #define PLAYER_STARTING_HITPOINTS 3
 
 #define PLAYER_GET_HP_HITSTOP_FRAMES    10
@@ -127,14 +127,13 @@
 
 #define PLAYER_HIT_HITSTOP_FRAMES 5
 
-// Overdrive Values
+// Overspin Values
 
-#define PLAYER_OD_CURRENCY_REQUIRED 999
 #define PLAYER_OD_BONUS_KNOCKBACK   4
 
 // Spin Attack Values
 
-#define PLAYER_SPIN_X_FORCE (3 + (uint32)overdrive)
+#define PLAYER_SPIN_X_FORCE (3 + (uint32)overspin)
 #define PLAYER_SPIN_DECAY   0.02
 
 #define PLAYER_MAX_SPIN_EFFECT_FRAMES 35
@@ -145,10 +144,10 @@
 #define PLAYER_SPIN_1_HB_HEIGHT          24
 #define PLAYER_SPIN_1_CREATE_HB_FRAME    5
 #define PLAYER_SPIN_1_HB_LIFESPAN_FRAMES 21
-#define PLAYER_SPIN_1_X_KNOCKBACK        (8 + ((uint32)overdrive * PLAYER_OD_BONUS_KNOCKBACK))
+#define PLAYER_SPIN_1_X_KNOCKBACK        (8 + ((uint32)overspin * PLAYER_OD_BONUS_KNOCKBACK))
 #define PLAYER_SPIN_1_Y_KNOCKBACK        0
 #define PLAYER_SPIN_1_KNOCKBACK_DECAY    0.05
-#define PLAYER_SPIN_1_DAMAGE             (1 + (uint32)overdrive)
+#define PLAYER_SPIN_1_DAMAGE             (1 + (uint32)overspin)
 #define PLAYER_SPIN_1_HITSTOP_FRAMES     6
 #define PLAYER_SPIN_1_HITSTUN_FRAMES     30
 #define PLAYER_SPIN_1_SCREENSHAKE_FRAMES 6
@@ -160,10 +159,10 @@
 #define PLAYER_SPIN_2_HB_HEIGHT          24
 #define PLAYER_SPIN_2_CREATE_HB_FRAME    5
 #define PLAYER_SPIN_2_HB_LIFESPAN_FRAMES 21
-#define PLAYER_SPIN_2_X_KNOCKBACK        (8 + ((uint32)overdrive * PLAYER_OD_BONUS_KNOCKBACK))
+#define PLAYER_SPIN_2_X_KNOCKBACK        (8 + ((uint32)overspin * PLAYER_OD_BONUS_KNOCKBACK))
 #define PLAYER_SPIN_2_Y_KNOCKBACK        0
 #define PLAYER_SPIN_2_KNOCKBACK_DECAY    0.05
-#define PLAYER_SPIN_2_DAMAGE             (1 + (uint32)overdrive)
+#define PLAYER_SPIN_2_DAMAGE             (1 + (uint32)overspin)
 #define PLAYER_SPIN_2_HITSTOP_FRAMES     5
 #define PLAYER_SPIN_2_HITSTUN_FRAMES     30
 #define PLAYER_SPIN_2_SCREENSHAKE_FRAMES 6
@@ -258,7 +257,10 @@ struct Player : GameObject {
 	
 	bn::fixed current_climb_index;
 
-	bool overdrive;
+	bool overspin;
+	bool overjump;
+	bool overhealth;
+
 	bool r_climb;
 	bool wall_right_detected;
     bool wall_left_detected;

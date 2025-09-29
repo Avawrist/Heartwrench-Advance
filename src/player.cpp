@@ -52,7 +52,10 @@ Player::Player()
 
 	max_hp = PLAYER_MAX_HITPOINTS;
 	
-	overdrive                = false;
+	overspin                 = false;
+	overjump                 = false;
+	overhealth               = false;
+
 	wall_right_detected      = false;
     wall_left_detected       = false;
 	climbable_detected       = false;
@@ -120,7 +123,10 @@ Player::Player(const Player& other) : GameObject(other)
 
 	current_climb_index              = other.current_climb_index;
 
-	overdrive                       = other.overdrive;
+	overspin                        = other.overspin;
+	overjump                        = other.overjump;
+	overhealth                      = other.overhealth;
+
 	r_climb                         = other.r_climb;
 	wall_right_detected             = other.wall_right_detected;
     wall_left_detected              = other.wall_left_detected;
@@ -194,7 +200,10 @@ Player& Player::operator =(const Player& other)
 
 	current_climb_index              = other.current_climb_index;
 
-	overdrive                		= other.overdrive;
+	overspin                        = other.overspin;
+	overjump                        = other.overjump;
+	overhealth                      = other.overhealth;
+
 	r_climb                  		= other.r_climb;
 	wall_right_detected      		= other.wall_right_detected;
     wall_left_detected       		= other.wall_left_detected;
@@ -370,7 +379,7 @@ void Player::createWallJumpEffect()
 
 void Player::drawSpinEffect()
 {	
-	if(!overdrive)
+	if(!overspin)
 	{
 		spin_effect_sprite_1_ptr->set_visible(false);
 		spin_effect_sprite_2_ptr->set_visible(false);
@@ -1865,8 +1874,8 @@ void Player::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_obj
 	// Update State //
 	//////////////////
 
-	overdrive = false;
-	if(global_level_currency >= PLAYER_OD_CURRENCY_REQUIRED) {overdrive = true;}
+	// = false;
+	//if(global_level_currency >= PLAYER_OD_CURRENCY_REQUIRED) {overspin = true;}
 
 	if(state == NONE                        ||
 	   state == OBJECT_HITSTUN              ||
@@ -2534,7 +2543,7 @@ void Player::resolveHPDropCollision(GameObject& object)
 		global_hitstop_frames      = PLAYER_GET_HP_HITSTOP_FRAMES;
 		global_hud_hp_flash_frames = HUD_FLASH_FRAMES;
 
-		applyHP(object.damage);
+		if(hitpoints < PLAYER_STARTING_HITPOINTS) {applyHP(object.damage);}
 		object.setState(OBJECT_DEATH);
 
 		// SFX
