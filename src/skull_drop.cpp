@@ -600,6 +600,8 @@ void SkullDrop::resolveSpikeCollision(const Collider& other_collider)
 		// Corner collision //
         if(col_x_offset == 0 && col_y_offset == 0)
 		{resolveCornerCollision(other_collider);}
+
+		setState(OBJECT_DEATH);
     }
 
     updateTestColliders();

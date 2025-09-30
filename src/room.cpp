@@ -223,6 +223,18 @@ int32 Room::addObject(ObjectRequest& object_request, const bn::camera_ptr& camer
             temp_object_ptr = new Checkpoint();
         break;
 
+        case WRENCHPOINT:
+            temp_object_ptr = new Wrenchpoint();
+        break;
+
+        case JUMPPOINT:
+            temp_object_ptr = new Jumppoint();
+        break;
+
+        case HEALTHPOINT:
+            temp_object_ptr = new Healthpoint();
+        break;
+
         case SEALED_GATE:
             temp_object_ptr = new SealedGate();
         break;
@@ -516,6 +528,18 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
             temp_object_ptr = new Checkpoint();
         break;
 
+        case WRENCHPOINT:
+            temp_object_ptr = new Wrenchpoint();
+        break;
+
+        case JUMPPOINT:
+            temp_object_ptr = new Jumppoint();
+        break;
+
+        case HEALTHPOINT:
+            temp_object_ptr = new Healthpoint();
+        break;
+
         case SEALED_GATE:
             temp_object_ptr = new SealedGate();
         break;
@@ -548,6 +572,7 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
 
         case GROUND_GHOUL:
             temp_object_ptr = new GroundGhoul();
+            _is_persistent  = true;
         break;
 
         case BELL_TROLL:
@@ -556,10 +581,12 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
 
         case WINGED_TROLL_L:
             temp_object_ptr = new WingedTrollL();
+            _is_persistent  = true;
         break;
 
         case WINGED_TROLL_R:
             temp_object_ptr = new WingedTrollR();
+            _is_persistent  = true;
         break;
 
         ///////////

@@ -571,9 +571,13 @@ void Level::load(LevelName level_name)
     player_spawn.spawn_room  = NO_ROOM;
     player_spawn.spawn_level = level_name;
 
-    global_fade_in               = false;
-    global_fade_out              = false;
-    global_soft_fade_out         = false;
+    global_fade_in       = false;
+    global_fade_out      = false;
+    global_soft_fade_out = false;
+
+	global_overwrench = false;
+	global_overjump   = false;
+	global_overhealth = false;
 
     cam_is_scrolling      = false;
     menu_open             = false;
@@ -933,7 +937,7 @@ void Level::update()
         else if(global_current_level_complete)                  {updateLevelComplete();}
         else if(menu_open)                                      {updatePauseScreen();}
         else if(cam_is_scrolling)                               {updateCamera(); 
-                                                                 updateCheckpoints();}
+                                                                 updatePoints();}
         else                                                    {updateAll();}
     }
 
@@ -1332,8 +1336,20 @@ void Level::updateCurrency()
     // Update currency ticks
     if(global_timer % 4 == 0) 
     {
-        if(displayed_currency < global_level_currency)      {displayed_currency++;}
-        else if(displayed_currency > global_level_currency) {displayed_currency--;}
+        if(displayed_currency < global_level_currency)      
+        {
+            displayed_currency++; 
+
+		    // SFX
+		    bn::sound_items::gear_get.play();
+        }
+        else if(displayed_currency > global_level_currency) 
+        {
+            displayed_currency--;
+
+            // SFX
+		    bn::sound_items::gear_spend.play();
+        }
     }
 }
 
@@ -1380,7 +1396,8 @@ void Level::updateHUD()
             hud_hp_animate_action_ptr = bn::create_sprite_animate_action_forever(hud_hp_sprite_ptr.value(),
                                                                                 0,
                                                                                 bn::sprite_items::hud_hp_bar.tiles_item(),
-                                                                                temp_player_ptr->hitpoints, temp_player_ptr->hitpoints);
+                                                                                temp_player_ptr->hitpoints, 
+                                                                                temp_player_ptr->hitpoints);
 
             hud_hp_animate_action_ptr->update();
         }
@@ -1865,15 +1882,75 @@ void Level::updateCheckpoint(Checkpoint* checkpoint_ptr)
     }
 }
 
-void Level::updateCheckpoints()
+void Level::updateWrenchpoint(Wrenchpoint* wrenchpoint_ptr)
+{
+    if(wrenchpoint_ptr->state == WRENCHPOINT_UNCOLLECTED && 
+       global_overwrench      == true)
+    {
+        wrenchpoint_ptr->state = WRENCHPOINT_COLLECTED;
+        wrenchpoint_ptr->setCollectedAnimation();
+    }
+}
+
+void Level::updateJumppoint(Jumppoint* jumppoint_ptr)
+{   
+    if(jumppoint_ptr->state == JUMPPOINT_UNCOLLECTED && 
+       global_overjump      == true)
+    {
+        jumppoint_ptr->state = JUMPPOINT_COLLECTED;
+        jumppoint_ptr->setCollectedAnimation();
+    }
+}
+
+void Level::updateHealthpoint(Healthpoint* healthpoint_ptr)
+{    
+    if(healthpoint_ptr->state == HEALTHPOINT_UNCOLLECTED && 
+       global_overhealth      == true)
+    {
+        healthpoint_ptr->state = HEALTHPOINT_COLLECTED;
+        healthpoint_ptr->setCollectedAnimation();
+    }
+}
+
+void Level::updatePoints()
 {
     for(int32 i = current_room.game_objects.size() - 1; i > PLAYER_OBJECT_LIST_INDEX; i--)
     {
-        if(current_room.game_objects.data()[i] != NULL &&
-           current_room.game_objects.data()[i]->object_type == CHECKPOINT)
-        {           
-            updateCheckpoint((Checkpoint*)current_room.game_objects.data()[i]);
-            current_room.game_objects.data()[i]->draw();
+        if(current_room.game_objects.data()[i] != NULL)
+        { 
+            switch(current_room.game_objects.data()[i]->object_type)
+            {
+                case CHECKPOINT:
+
+                    updateCheckpoint((Checkpoint*)current_room.game_objects.data()[i]);
+                    current_room.game_objects.data()[i]->draw();
+
+                break;
+
+                case WRENCHPOINT:
+
+                    updateWrenchpoint((Wrenchpoint*)current_room.game_objects.data()[i]);
+                    current_room.game_objects.data()[i]->draw();
+
+                break;
+
+                case JUMPPOINT:
+
+                    updateJumppoint((Jumppoint*)current_room.game_objects.data()[i]);
+                    current_room.game_objects.data()[i]->draw();
+
+                break;
+
+                case HEALTHPOINT:
+
+                    updateHealthpoint((Healthpoint*)current_room.game_objects.data()[i]);
+                    current_room.game_objects.data()[i]->draw();
+
+                break;
+
+                default:
+                break;
+            }
         }
     }
 }

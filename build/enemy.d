@@ -93,6 +93,10 @@ enemy.o: G:/game/src/enemy.cpp G:/game/include/enemy.h \
  G:/game/build/bn_sprite_items_enemy_death.h \
  G:/game/build/bn_sprite_items_block_death.h G:/game/include/hitbox.h \
  G:/game/include/checkpoint.h G:/game/build/bn_sprite_items_checkpoint.h \
+ G:/game/include/wrenchpoint.h \
+ G:/game/build/bn_sprite_items_wrenchpoint.h G:/game/include/jumppoint.h \
+ G:/game/build/bn_sprite_items_jumppoint.h G:/game/include/healthpoint.h \
+ G:/game/build/bn_sprite_items_healthpoint.h \
  G:/game/build/bn_sprite_items_hitbox.h
 G:/game/include/enemy.h:
 G:/game/include/game_object.h:
@@ -195,4 +199,10 @@ G:/game/build/bn_sprite_items_block_death.h:
 G:/game/include/hitbox.h:
 G:/game/include/checkpoint.h:
 G:/game/build/bn_sprite_items_checkpoint.h:
+G:/game/include/wrenchpoint.h:
+G:/game/build/bn_sprite_items_wrenchpoint.h:
+G:/game/include/jumppoint.h:
+G:/game/build/bn_sprite_items_jumppoint.h:
+G:/game/include/healthpoint.h:
+G:/game/build/bn_sprite_items_healthpoint.h:
 G:/game/build/bn_sprite_items_hitbox.h:

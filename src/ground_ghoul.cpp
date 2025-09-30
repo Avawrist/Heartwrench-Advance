@@ -124,6 +124,9 @@ void GroundGhoul::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
 
             updateDeathState();
 
+            if(animate_action_ptr->done())
+            {object_request = ObjectRequest(SKULL_DROP, bn::fixed_point(x(), y()));}
+
         break;
 
         default:

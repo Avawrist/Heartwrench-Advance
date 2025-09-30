@@ -8,6 +8,8 @@ audio/gate_open.wav
 1758410268.7437642
 audio/gear_get.wav
 1758237612.81549
+audio/gear_spend.wav
+1759270101.5473087
 audio/generic_hit.wav
 1758237653.4397535
 audio/heart_get.wav

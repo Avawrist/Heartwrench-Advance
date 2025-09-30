@@ -597,7 +597,9 @@ void GearDrop::resolveSpikeCollision(const Collider& other_collider)
         resolveYAxisCollision(other_collider);
 
         // If there is still collision somehow, must be corner case //
-        //resolveCornerCollision(other_collider);
+        resolveCornerCollision(other_collider);
+
+		setState(OBJECT_DEATH);
     }
 
     updateTestColliders();

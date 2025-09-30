@@ -94,6 +94,10 @@ bell_troll.o: G:/game/src/bell_troll.cpp G:/game/include/bell_troll.h \
  G:/game/build/bn_sprite_items_enemy_death.h \
  G:/game/build/bn_sprite_items_block_death.h G:/game/include/hitbox.h \
  G:/game/include/checkpoint.h G:/game/build/bn_sprite_items_checkpoint.h \
+ G:/game/include/wrenchpoint.h \
+ G:/game/build/bn_sprite_items_wrenchpoint.h G:/game/include/jumppoint.h \
+ G:/game/build/bn_sprite_items_jumppoint.h G:/game/include/healthpoint.h \
+ G:/game/build/bn_sprite_items_healthpoint.h \
  G:/game/build/bn_sprite_items_hitbox.h \
  G:/game/build/bn_sprite_items_bell_troll.h
 G:/game/include/bell_troll.h:
@@ -198,5 +202,11 @@ G:/game/build/bn_sprite_items_block_death.h:
 G:/game/include/hitbox.h:
 G:/game/include/checkpoint.h:
 G:/game/build/bn_sprite_items_checkpoint.h:
+G:/game/include/wrenchpoint.h:
+G:/game/build/bn_sprite_items_wrenchpoint.h:
+G:/game/include/jumppoint.h:
+G:/game/build/bn_sprite_items_jumppoint.h:
+G:/game/include/healthpoint.h:
+G:/game/build/bn_sprite_items_healthpoint.h:
 G:/game/build/bn_sprite_items_hitbox.h:
 G:/game/build/bn_sprite_items_bell_troll.h:

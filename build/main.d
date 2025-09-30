@@ -159,6 +159,10 @@ main.o: G:/game/src/main.cpp G:/butano-master/butano/include/bn_sprites.h \
  G:/game/include/large_vase.h G:/game/build/bn_sprite_items_large_vase.h \
  G:/game/include/small_vase.h G:/game/include/hitbox.h \
  G:/game/include/checkpoint.h G:/game/build/bn_sprite_items_checkpoint.h \
+ G:/game/include/wrenchpoint.h \
+ G:/game/build/bn_sprite_items_wrenchpoint.h G:/game/include/jumppoint.h \
+ G:/game/build/bn_sprite_items_jumppoint.h G:/game/include/healthpoint.h \
+ G:/game/build/bn_sprite_items_healthpoint.h \
  G:/game/build/bn_sprite_items_hitbox.h \
  G:/game/build/bn_sprite_items_small_vase.h G:/game/include/hp_totem.h \
  G:/game/build/bn_sprite_items_hp_totem.h G:/game/include/hp_drop.h \
@@ -368,6 +372,12 @@ G:/game/include/small_vase.h:
 G:/game/include/hitbox.h:
 G:/game/include/checkpoint.h:
 G:/game/build/bn_sprite_items_checkpoint.h:
+G:/game/include/wrenchpoint.h:
+G:/game/build/bn_sprite_items_wrenchpoint.h:
+G:/game/include/jumppoint.h:
+G:/game/build/bn_sprite_items_jumppoint.h:
+G:/game/include/healthpoint.h:
+G:/game/build/bn_sprite_items_healthpoint.h:
 G:/game/build/bn_sprite_items_hitbox.h:
 G:/game/build/bn_sprite_items_small_vase.h:
 G:/game/include/hp_totem.h:

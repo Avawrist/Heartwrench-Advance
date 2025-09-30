@@ -78,7 +78,8 @@
 #define PLAYER_SECOND_JUMP_Y_FORCE  -1 // 1 extra block height if jump held all possible frames
 #define PLAYER_SECONDARY_JUMP_DECAY  1
 
-#define PLAYER_TERTIARY_JUMP_Y_FORCE -1 // Slows fall if jump held
+#define PLAYER_OVERJUMP_BONUS_FORCE   2
+#define PLAYER_TERTIARY_JUMP_Y_FORCE (-1 - ((uint32)global_overjump * PLAYER_OVERJUMP_BONUS_FORCE)) // Slows fall if jump held
 #define PLAYER_TERTIARY_JUMP_DECAY    1
 
 //#define PLAYER_WALL_JUMP_X_FORCE           2
@@ -133,36 +134,36 @@
 
 // Spin Attack Values
 
-#define PLAYER_SPIN_X_FORCE (3 + (uint32)overspin)
+#define PLAYER_SPIN_X_FORCE (3 + (uint32)global_overwrench)
 #define PLAYER_SPIN_DECAY   0.02
 
 #define PLAYER_MAX_SPIN_EFFECT_FRAMES 35
 
 #define PLAYER_SPIN_1_X_OFFSET           0
-#define PLAYER_SPIN_1_Y_OFFSET           11
+#define PLAYER_SPIN_1_Y_OFFSET           12
 #define PLAYER_SPIN_1_HB_WIDTH           50
-#define PLAYER_SPIN_1_HB_HEIGHT          24
+#define PLAYER_SPIN_1_HB_HEIGHT          22
 #define PLAYER_SPIN_1_CREATE_HB_FRAME    5
 #define PLAYER_SPIN_1_HB_LIFESPAN_FRAMES 21
-#define PLAYER_SPIN_1_X_KNOCKBACK        (8 + ((uint32)overspin * PLAYER_OD_BONUS_KNOCKBACK))
+#define PLAYER_SPIN_1_X_KNOCKBACK        (8 + ((uint32)global_overwrench * PLAYER_OD_BONUS_KNOCKBACK))
 #define PLAYER_SPIN_1_Y_KNOCKBACK        0
 #define PLAYER_SPIN_1_KNOCKBACK_DECAY    0.05
-#define PLAYER_SPIN_1_DAMAGE             (1 + (uint32)overspin)
+#define PLAYER_SPIN_1_DAMAGE             (1 + (uint32)global_overwrench)
 #define PLAYER_SPIN_1_HITSTOP_FRAMES     6
 #define PLAYER_SPIN_1_HITSTUN_FRAMES     30
 #define PLAYER_SPIN_1_SCREENSHAKE_FRAMES 6
 #define PLAYER_SPIN_1_SCREENSHAKE_SEVERITY STRONG_SHAKE
 
 #define PLAYER_SPIN_2_X_OFFSET          -14
-#define PLAYER_SPIN_2_Y_OFFSET           11
+#define PLAYER_SPIN_2_Y_OFFSET           12
 #define PLAYER_SPIN_2_HB_WIDTH           28
-#define PLAYER_SPIN_2_HB_HEIGHT          24
+#define PLAYER_SPIN_2_HB_HEIGHT          22
 #define PLAYER_SPIN_2_CREATE_HB_FRAME    5
 #define PLAYER_SPIN_2_HB_LIFESPAN_FRAMES 21
-#define PLAYER_SPIN_2_X_KNOCKBACK        (8 + ((uint32)overspin * PLAYER_OD_BONUS_KNOCKBACK))
+#define PLAYER_SPIN_2_X_KNOCKBACK        (8 + ((uint32)global_overwrench * PLAYER_OD_BONUS_KNOCKBACK))
 #define PLAYER_SPIN_2_Y_KNOCKBACK        0
 #define PLAYER_SPIN_2_KNOCKBACK_DECAY    0.05
-#define PLAYER_SPIN_2_DAMAGE             (1 + (uint32)overspin)
+#define PLAYER_SPIN_2_DAMAGE             (1 + (uint32)global_overwrench)
 #define PLAYER_SPIN_2_HITSTOP_FRAMES     5
 #define PLAYER_SPIN_2_HITSTUN_FRAMES     30
 #define PLAYER_SPIN_2_SCREENSHAKE_FRAMES 6
@@ -197,7 +198,7 @@
 #define PLAYER_X_LEFT_FORCE  	     Force(bn::fixed_point_t<12>(-x_speed, 0), PLAYER_X_DECAY)
 #define PLAYER_X_RIGHT_FORCE 	     Force(bn::fixed_point_t<12>( x_speed, 0), PLAYER_X_DECAY)
 #define PLAYER_X_LEFT_DECAY_FORCE    Force(bn::fixed_point_t<12>(-x_speed, 0), X_SPEED_DECAY_RATE)
-#define PLAYER_X_RIGHT_DECAY_FORCE   Force(bn::fixed_point_t<12> (x_speed, 0), X_SPEED_DECAY_RATE)
+#define PLAYER_X_RIGHT_DECAY_FORCE   Force(bn::fixed_point_t<12>( x_speed, 0), X_SPEED_DECAY_RATE)
 
 #define PLAYER_JUMP_FORCE              Force(bn::fixed_point_t<12>(0, PLAYER_BASE_JUMP_FORCE), PLAYER_JUMP_DECAY)
 #define PLAYER_SECONDARY_JUMP_FORCE    Force(bn::fixed_point_t<12>(0, PLAYER_SECOND_JUMP_Y_FORCE), PLAYER_SECONDARY_JUMP_DECAY)
@@ -256,10 +257,6 @@ struct Player : GameObject {
 	int32 climb_regrab_cooldown;
 	
 	bn::fixed current_climb_index;
-
-	bool overspin;
-	bool overjump;
-	bool overhealth;
 
 	bool r_climb;
 	bool wall_right_detected;

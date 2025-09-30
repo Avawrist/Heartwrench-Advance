@@ -33,7 +33,9 @@ Player::Player()
 	ow_target_pos        = bn::fixed_point(global_ow_player_location_x,
 		                                   global_ow_player_location_y);
 
-	hitpoints                        = PLAYER_STARTING_HITPOINTS;
+	if(global_overhealth) {hitpoints = PLAYER_MAX_HITPOINTS;}
+	else                  {hitpoints = PLAYER_STARTING_HITPOINTS;}
+
 	spin_buffered_frames             = 0;
 	jump_buffered_frames             = 0;
 	remaining_jump_input_frames      = 0;
@@ -52,10 +54,6 @@ Player::Player()
 
 	max_hp = PLAYER_MAX_HITPOINTS;
 	
-	overspin                 = false;
-	overjump                 = false;
-	overhealth               = false;
-
 	wall_right_detected      = false;
     wall_left_detected       = false;
 	climbable_detected       = false;
@@ -122,10 +120,6 @@ Player::Player(const Player& other) : GameObject(other)
 	climb_regrab_cooldown            = other.climb_regrab_cooldown;
 
 	current_climb_index              = other.current_climb_index;
-
-	overspin                        = other.overspin;
-	overjump                        = other.overjump;
-	overhealth                      = other.overhealth;
 
 	r_climb                         = other.r_climb;
 	wall_right_detected             = other.wall_right_detected;
@@ -199,10 +193,6 @@ Player& Player::operator =(const Player& other)
 	climb_regrab_cooldown            = other.climb_regrab_cooldown;
 
 	current_climb_index              = other.current_climb_index;
-
-	overspin                        = other.overspin;
-	overjump                        = other.overjump;
-	overhealth                      = other.overhealth;
 
 	r_climb                  		= other.r_climb;
 	wall_right_detected      		= other.wall_right_detected;
@@ -379,7 +369,7 @@ void Player::createWallJumpEffect()
 
 void Player::drawSpinEffect()
 {	
-	if(!overspin)
+	if(!global_overwrench)
 	{
 		spin_effect_sprite_1_ptr->set_visible(false);
 		spin_effect_sprite_2_ptr->set_visible(false);
@@ -1638,8 +1628,8 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			{remaining_jump_input_frames = 0;}
 
 			// Jump Regrab
-			if(bn::keypad::a_held() && rigidbody.normalized_dir.y() > 0)
-			{rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);}
+			//if(bn::keypad::a_held() && rigidbody.normalized_dir.y() > 0)
+			//{rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);}
 
 			/////////////////
 			// Add Gravity //
@@ -1873,9 +1863,6 @@ void Player::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_obj
 	//////////////////
 	// Update State //
 	//////////////////
-
-	// = false;
-	//if(global_level_currency >= PLAYER_OD_CURRENCY_REQUIRED) {overspin = true;}
 
 	if(state == NONE                        ||
 	   state == OBJECT_HITSTUN              ||
@@ -2594,9 +2581,6 @@ void Player::resolveGearDropCollision(GameObject& object)
 		global_hud_currency_flash_frames = HUD_FLASH_FRAMES;
 
 		object.setState(OBJECT_DEATH);
-
-		// SFX
-		bn::sound_items::gear_get.play();
 	}
 }
 

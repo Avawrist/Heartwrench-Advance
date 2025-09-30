@@ -390,6 +390,73 @@ void Hitbox::resolveCheckpointCollision(GameObject& object)
             bn::sound_items::checkpoint.play();
         }
 	}
+
+}
+
+void Hitbox::resolveWrenchpointCollision(GameObject& object)
+{
+	if(collider.isCollision(object.collider) &&
+       object.state == WRENCHPOINT_UNCOLLECTED)
+    {	
+        // Apply hit
+        applyHBHit(object);
+
+        if(global_level_currency >= ((Wrenchpoint&)(object)).cost)
+        {
+            // Take cost
+            global_level_currency -= ((Wrenchpoint&)(object)).cost;
+
+            // Activate wrenchpoint
+            object.setState(WRENCHPOINT_COLLECTED);
+
+            // SFX
+            bn::sound_items::checkpoint.play();
+        }
+	}
+}
+
+void Hitbox::resolveJumppointCollision(GameObject& object)
+{
+	if(collider.isCollision(object.collider) &&
+       object.state == JUMPPOINT_UNCOLLECTED)
+    {	
+        // Apply hit
+        applyHBHit(object);
+
+        if(global_level_currency >= ((Jumppoint&)(object)).cost)
+        {
+            // Take cost
+            global_level_currency -= ((Jumppoint&)(object)).cost;
+
+            // Activate jumppoint
+            object.setState(JUMPPOINT_COLLECTED);
+
+            // SFX
+            bn::sound_items::checkpoint.play();
+        }
+	}
+}
+
+void Hitbox::resolveHealthpointCollision(GameObject& object)
+{
+	if(collider.isCollision(object.collider) &&
+       object.state == HEALTHPOINT_UNCOLLECTED)
+    {	
+        // Apply hit
+        applyHBHit(object);
+
+        if(global_level_currency >= ((Healthpoint&)(object)).cost)
+        {
+            // Take cost
+            global_level_currency -= ((Healthpoint&)(object)).cost;
+
+            // Activate jumppoint
+            object.setState(HEALTHPOINT_COLLECTED);
+
+            // SFX
+            bn::sound_items::checkpoint.play();
+        }
+	}
 }
 
 void Hitbox::resolveBounceBellCollision(GameObject& object)

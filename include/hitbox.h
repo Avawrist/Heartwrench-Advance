@@ -10,6 +10,9 @@
 // My libs
 #include "utility.h"
 #include "checkpoint.h"
+#include "wrenchpoint.h"
+#include "jumppoint.h"
+#include "healthpoint.h"
 
 // Assets
 #include "bn_sprite_items_hitbox.h"
@@ -100,6 +103,9 @@ struct Hitbox : GameObject
     void resolveSmallVaseCollision(GameObject& object)           override;
     void resolveHPTotemCollision(GameObject& object)             override;
     void resolveCheckpointCollision(GameObject& object)          override;
+    void resolveWrenchpointCollision(GameObject& object)         override;
+    void resolveJumppointCollision(GameObject& object)           override;
+    void resolveHealthpointCollision(GameObject& object)         override;
     void resolveBounceBellCollision(GameObject& object)          override;
     void resolveAutoBounceBellCollision(GameObject& object)      override;
     void resolvePushBlockCollision(GameObject& object)     override;

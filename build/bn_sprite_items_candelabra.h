@@ -7,12 +7,12 @@
 
 //======================================================================
 //
-//	candelabra_bn_gfx, 64x256@4, 
+//	candelabra_bn_gfx, 32x128@4, 
 //	+ palette 16 entries, not compressed
-//	+ 256 tiles not compressed
-//	Total size: 32 + 8192 = 8224
+//	+ 64 tiles not compressed
+//	Total size: 32 + 2048 = 2080
 //
-//	Time-stamp: 2025-09-28, 14:35:41
+//	Time-stamp: 2025-09-30, 16:52:20
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -21,8 +21,8 @@
 #ifndef GRIT_CANDELABRA_BN_GFX_H
 #define GRIT_CANDELABRA_BN_GFX_H
 
-#define candelabra_bn_gfxTilesLen 8192
-extern const bn::tile candelabra_bn_gfxTiles[256];
+#define candelabra_bn_gfxTilesLen 2048
+extern const bn::tile candelabra_bn_gfxTiles[64];
 
 #define candelabra_bn_gfxPalLen 32
 extern const bn::color candelabra_bn_gfxPal[16];
@@ -33,8 +33,8 @@ extern const bn::color candelabra_bn_gfxPal[16];
 
 namespace bn::sprite_items
 {
-    constexpr inline sprite_item candelabra(sprite_shape_size(sprite_shape::SQUARE, sprite_size::HUGE), 
-            sprite_tiles_item(span<const tile>(candelabra_bn_gfxTiles, 256), bpp_mode::BPP_4, compression_type::NONE, 4), 
+    constexpr inline sprite_item candelabra(sprite_shape_size(sprite_shape::SQUARE, sprite_size::BIG), 
+            sprite_tiles_item(span<const tile>(candelabra_bn_gfxTiles, 64), bpp_mode::BPP_4, compression_type::NONE, 4), 
             sprite_palette_item(span<const color>(candelabra_bn_gfxPal, 16), bpp_mode::BPP_4, compression_type::NONE));
 }
 

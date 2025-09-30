@@ -913,6 +913,18 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
                         resolveCheckpointCollision(*game_objects.at(i));
                     break;
 
+                    case WRENCHPOINT:
+                        resolveWrenchpointCollision(*game_objects.at(i));
+                    break;
+
+                    case JUMPPOINT:
+                        resolveJumppointCollision(*game_objects.at(i));
+                    break;
+
+                    case HEALTHPOINT:
+                        resolveHealthpointCollision(*game_objects.at(i));
+                    break;
+
                     case SEALED_GATE:
                         resolveSealedGateCollision(*game_objects.at(i));
                     break;
@@ -1004,6 +1016,9 @@ void GameObject::resolveSkullDropCollision(GameObject& object)           {}
 void GameObject::resolveGearDropCollision(GameObject& object)            {}
 void GameObject::resolveScrewCollision(GameObject& object)               {}
 void GameObject::resolveCheckpointCollision(GameObject& object)          {}
+void GameObject::resolveWrenchpointCollision(GameObject& object)         {}
+void GameObject::resolveJumppointCollision(GameObject& object)           {}
+void GameObject::resolveHealthpointCollision(GameObject& object)         {}
 void GameObject::resolveSealedGateCollision(GameObject& object)          {}
 void GameObject::resolveSubAreaGateCollision(GameObject& object)         {}
 

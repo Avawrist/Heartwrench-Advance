@@ -7,12 +7,12 @@
 
 //======================================================================
 //
-//	smash_block_ziggurat_r_bn_gfx, 64x64@4, 
+//	smash_block_ziggurat_r_bn_gfx, 32x32@4, 
 //	+ palette 16 entries, not compressed
-//	+ 64 tiles not compressed
-//	Total size: 32 + 2048 = 2080
+//	+ 16 tiles not compressed
+//	Total size: 32 + 512 = 544
 //
-//	Time-stamp: 2025-09-28, 14:35:42
+//	Time-stamp: 2025-09-30, 15:53:00
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -21,8 +21,8 @@
 #ifndef GRIT_SMASH_BLOCK_ZIGGURAT_R_BN_GFX_H
 #define GRIT_SMASH_BLOCK_ZIGGURAT_R_BN_GFX_H
 
-#define smash_block_ziggurat_r_bn_gfxTilesLen 2048
-extern const bn::tile smash_block_ziggurat_r_bn_gfxTiles[64];
+#define smash_block_ziggurat_r_bn_gfxTilesLen 512
+extern const bn::tile smash_block_ziggurat_r_bn_gfxTiles[16];
 
 #define smash_block_ziggurat_r_bn_gfxPalLen 32
 extern const bn::color smash_block_ziggurat_r_bn_gfxPal[16];
@@ -33,8 +33,8 @@ extern const bn::color smash_block_ziggurat_r_bn_gfxPal[16];
 
 namespace bn::sprite_items
 {
-    constexpr inline sprite_item smash_block_ziggurat_r(sprite_shape_size(sprite_shape::SQUARE, sprite_size::HUGE), 
-            sprite_tiles_item(span<const tile>(smash_block_ziggurat_r_bn_gfxTiles, 64), bpp_mode::BPP_4, compression_type::NONE, 1), 
+    constexpr inline sprite_item smash_block_ziggurat_r(sprite_shape_size(sprite_shape::SQUARE, sprite_size::BIG), 
+            sprite_tiles_item(span<const tile>(smash_block_ziggurat_r_bn_gfxTiles, 16), bpp_mode::BPP_4, compression_type::NONE, 1), 
             sprite_palette_item(span<const color>(smash_block_ziggurat_r_bn_gfxPal, 16), bpp_mode::BPP_4, compression_type::NONE));
 }
 

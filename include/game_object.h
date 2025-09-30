@@ -152,6 +152,9 @@ enum ObjectType
 	GEAR_DROP,
 	SCREW,
 	CHECKPOINT,
+	WRENCHPOINT,
+	JUMPPOINT,
+	HEALTHPOINT,
 	SEALED_GATE,
 	SUB_AREA_GATE,
 
@@ -201,6 +204,18 @@ enum ObjectState
 	// Checkpoint
 	CHECKPOINT_IDLE_OFF,
 	CHECKPOINT_IDLE_ON,
+
+	// Wrenchpoint
+	WRENCHPOINT_UNCOLLECTED,
+	WRENCHPOINT_COLLECTED,
+
+	// Jumppoint
+	JUMPPOINT_UNCOLLECTED,
+	JUMPPOINT_COLLECTED,
+
+	// Healthpoint
+	HEALTHPOINT_UNCOLLECTED,
+	HEALTHPOINT_COLLECTED,
 
 	// Screw
 	SCREW_UP,
@@ -459,6 +474,9 @@ struct GameObject
 	virtual void resolveGearDropCollision(GameObject& object);
 	virtual void resolveScrewCollision(GameObject& object);
 	virtual void resolveCheckpointCollision(GameObject& object);
+	virtual void resolveWrenchpointCollision(GameObject& object);
+	virtual void resolveJumppointCollision(GameObject& object);
+	virtual void resolveHealthpointCollision(GameObject& object);
 	virtual void resolveSealedGateCollision(GameObject& object);
 	virtual void resolveSubAreaGateCollision(GameObject& object);
 

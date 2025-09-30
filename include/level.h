@@ -62,6 +62,9 @@
 #include "utility.h"
 #include "player.h"
 #include "checkpoint.h"
+#include "wrenchpoint.h"
+#include "jumppoint.h"
+#include "healthpoint.h"
 #include "sealed_gate.h"
 
 #define LEVEL_SFX_MASTER_VOLUME   0.6
@@ -316,7 +319,10 @@ struct Level
     void updatePauseScreen();
     void updateLevelTransition(LevelName level_index);
     void updateCheckpoint(Checkpoint* checkpoint_ptr);
-    void updateCheckpoints();
+    void updateWrenchpoint(Wrenchpoint* wrenchpoint_ptr);
+    void updateJumppoint(Jumppoint* jumppoint_ptr);
+    void updateHealthpoint(Healthpoint* healthpoint_ptr);
+    void updatePoints();
     void updateLevelComplete();
 
     void reloadOnDeath();

@@ -200,7 +200,7 @@ void SubAreaGate::update(const RoomBounds& 							   room_bounds,
 // State Function Overrides //
 //////////////////////////////
 
-void SubAreaGate::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+void SubAreaGate::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&    game_objects,
                                     const bn::regular_bg_ptr&                      bg_ptr, 
                                     const bn::span<const bn::regular_bg_map_cell>& cells,
                                     const bn::regular_bg_item&                     bg_item,
@@ -208,6 +208,14 @@ void SubAreaGate::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>& 
 {
     switch(state)
     {	
+        case IDLE:
+
+            if(game_objects.at(PLAYER_OBJECT_LIST_INDEX)->state == PLAYER_DOOR_EXTENDED &&
+               state                                            != SUB_AREA_GATE_OPEN_3)
+            {setState(SUB_AREA_GATE_OPEN_3);}
+
+        break;
+
 		default:
 		break;
     }

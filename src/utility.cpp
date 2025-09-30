@@ -42,6 +42,10 @@ bool global_fade_in       = false;
 bool global_fade_out      = false;
 bool global_soft_fade_out = false;
 
+bool global_overwrench = false;
+bool global_overjump   = false;
+bool global_overhealth = false;
+
 // Global save variables
 int32 global_ow_player_location_x = 8;
 int32 global_ow_player_location_y = 120;

@@ -43,6 +43,9 @@
 #include "gear_drop.h"
 #include "screw.h"
 #include "checkpoint.h"
+#include "wrenchpoint.h"
+#include "jumppoint.h"
+#include "healthpoint.h"
 #include "sealed_gate.h"
 #include "sub_area_gate.h"
 

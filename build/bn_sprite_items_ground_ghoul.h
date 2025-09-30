@@ -7,12 +7,12 @@
 
 //======================================================================
 //
-//	ground_ghoul_bn_gfx, 64x576@4, 
+//	ground_ghoul_bn_gfx, 32x288@4, 
 //	+ palette 16 entries, not compressed
-//	+ 576 tiles not compressed
-//	Total size: 32 + 18432 = 18464
+//	+ 144 tiles not compressed
+//	Total size: 32 + 4608 = 4640
 //
-//	Time-stamp: 2025-09-28, 14:35:41
+//	Time-stamp: 2025-09-30, 16:47:27
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -21,8 +21,8 @@
 #ifndef GRIT_GROUND_GHOUL_BN_GFX_H
 #define GRIT_GROUND_GHOUL_BN_GFX_H
 
-#define ground_ghoul_bn_gfxTilesLen 18432
-extern const bn::tile ground_ghoul_bn_gfxTiles[576];
+#define ground_ghoul_bn_gfxTilesLen 4608
+extern const bn::tile ground_ghoul_bn_gfxTiles[144];
 
 #define ground_ghoul_bn_gfxPalLen 32
 extern const bn::color ground_ghoul_bn_gfxPal[16];
@@ -33,8 +33,8 @@ extern const bn::color ground_ghoul_bn_gfxPal[16];
 
 namespace bn::sprite_items
 {
-    constexpr inline sprite_item ground_ghoul(sprite_shape_size(sprite_shape::SQUARE, sprite_size::HUGE), 
-            sprite_tiles_item(span<const tile>(ground_ghoul_bn_gfxTiles, 576), bpp_mode::BPP_4, compression_type::NONE, 9), 
+    constexpr inline sprite_item ground_ghoul(sprite_shape_size(sprite_shape::SQUARE, sprite_size::BIG), 
+            sprite_tiles_item(span<const tile>(ground_ghoul_bn_gfxTiles, 144), bpp_mode::BPP_4, compression_type::NONE, 9), 
             sprite_palette_item(span<const color>(ground_ghoul_bn_gfxPal, 16), bpp_mode::BPP_4, compression_type::NONE));
 }
 

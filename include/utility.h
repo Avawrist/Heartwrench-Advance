@@ -124,7 +124,7 @@ typedef int   int32;
 #define ROOM_LEVEL_1_SA_1_POS_Y 1056
 
 #define ROOM_LEVEL_1_7_POS_X 112
-#define ROOM_LEVEL_1_7_POS_Y 960
+#define ROOM_LEVEL_1_7_POS_Y 928
 
 // Enums
 enum XDirection
@@ -218,6 +218,10 @@ extern bool global_current_level_complete;
 extern bool global_fade_in;
 extern bool global_fade_out;
 extern bool global_soft_fade_out;
+
+extern bool global_overwrench;
+extern bool global_overjump;
+extern bool global_overhealth;
 
 // Global Save Variables
 extern int32 global_ow_player_location_x;
