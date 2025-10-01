@@ -13,7 +13,7 @@ SubAreaGate::SubAreaGate()
     state       = IDLE;
     object_type = SUB_AREA_GATE;
     sprite_ptr  = bn::sprite_items::sub_area_gate.create_sprite(0, 0);
-    sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
+    sprite_ptr->set_z_order(PROP_Z_ORDER);
     default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
                                                                     0,

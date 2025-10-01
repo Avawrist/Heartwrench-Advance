@@ -80,15 +80,15 @@ Player::Player()
 	jump_effect_sprite_ptr->set_visible(false);
 
 	spin_effect_sprite_1_ptr = bn::sprite_items::player_idle.create_sprite(0, 0);
-	spin_effect_sprite_1_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
+	spin_effect_sprite_1_ptr->set_z_order(SPIN_EFFECT_1_Z_ORDER);
 	spin_effect_sprite_1_ptr->set_visible(false);
 
 	spin_effect_sprite_2_ptr = bn::sprite_items::player_idle.create_sprite(0, 0);
-	spin_effect_sprite_2_ptr->set_z_order(SPLAT_EFFECT_Z_ORDER);
+	spin_effect_sprite_2_ptr->set_z_order(SPIN_EFFECT_2_Z_ORDER);
 	spin_effect_sprite_2_ptr->set_visible(false);
 
 	spin_effect_sprite_3_ptr = bn::sprite_items::player_idle.create_sprite(0, 0);
-	spin_effect_sprite_3_ptr->set_z_order(SPIN_EFFECT_Z_ORDER);
+	spin_effect_sprite_3_ptr->set_z_order(SPIN_EFFECT_3_Z_ORDER);
 	spin_effect_sprite_3_ptr->set_visible(false);
 
 	bn::sprite_palette_ptr sprite_spin_effect_palette = bn::sprite_palette_items::sprite_spin_effect_palette.create_palette();
@@ -2648,7 +2648,7 @@ void Player::resolveSealedGateCollision(GameObject& object)
 		if(state != PLAYER_WRENCH             &&
 		   object.state != SEALED_GATE_OPEN_3 &&
 		   bn::keypad::r_held()               && 
-		   (state == PLAYER_GROUNDED_NEUTRAL || state == PLAYER_WALK))
+		   grounded_detected)
 		{
 			setState(PLAYER_WRENCH);
 
@@ -2716,7 +2716,7 @@ void Player::resolveSubAreaGateCollision(GameObject& object)
 		if(state != PLAYER_WRENCH               &&
 		   object.state != SUB_AREA_GATE_OPEN_3 &&
 		   bn::keypad::r_held()                 && 
-		   (state == PLAYER_GROUNDED_NEUTRAL || state == PLAYER_WALK))
+		   grounded_detected)
 		{
 			setState(PLAYER_WRENCH);
 
@@ -2766,6 +2766,20 @@ void Player::resolveSubAreaGateCollision(GameObject& object)
 		// Enter Gate
 		if(bn::keypad::up_pressed() && 
 		   object.state == SUB_AREA_GATE_OPEN_3 && 
+		   state != PLAYER_DOOR)
+		{
+			setX(object.collider.x());
+			setState(PLAYER_DOOR);
+		}
+	}
+}
+
+void Player::resolveOpenGateCollision(GameObject& object)
+{
+	if(collider.isCollision(object.collider))
+	{
+		// Enter Gate
+		if(bn::keypad::up_pressed() &&
 		   state != PLAYER_DOOR)
 		{
 			setX(object.collider.x());

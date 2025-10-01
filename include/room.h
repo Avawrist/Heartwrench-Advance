@@ -48,6 +48,7 @@
 #include "healthpoint.h"
 #include "sealed_gate.h"
 #include "sub_area_gate.h"
+#include "open_gate.h"
 
 #include "bounce_bell.h"
 #include "auto_bounce_bell.h"

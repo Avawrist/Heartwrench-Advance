@@ -140,6 +140,7 @@ room.o: G:/game/src/room.cpp G:/game/include/room.h \
  G:/game/build/bn_sprite_items_sealed_gate.h \
  G:/game/include/sub_area_gate.h \
  G:/game/build/bn_sprite_items_sub_area_gate.h \
+ G:/game/include/open_gate.h G:/game/build/bn_sprite_items_open_gate.h \
  G:/game/include/bounce_bell.h \
  G:/game/build/bn_sprite_items_bounce_bell.h \
  G:/game/include/auto_bounce_bell.h \
@@ -326,6 +327,8 @@ G:/game/include/sealed_gate.h:
 G:/game/build/bn_sprite_items_sealed_gate.h:
 G:/game/include/sub_area_gate.h:
 G:/game/build/bn_sprite_items_sub_area_gate.h:
+G:/game/include/open_gate.h:
+G:/game/build/bn_sprite_items_open_gate.h:
 G:/game/include/bounce_bell.h:
 G:/game/build/bn_sprite_items_bounce_bell.h:
 G:/game/include/auto_bounce_bell.h:

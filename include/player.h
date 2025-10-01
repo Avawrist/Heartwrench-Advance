@@ -413,6 +413,7 @@ struct Player : GameObject {
 	void resolveScrewCollision(GameObject& object)               override;
 	void resolveSealedGateCollision(GameObject& object)          override;
 	void resolveSubAreaGateCollision(GameObject& object)         override;
+	void resolveOpenGateCollision(GameObject& object)            override;
 
 	// Level Enemies
 	void resolveThornColumnCollision(GameObject& object) override; 

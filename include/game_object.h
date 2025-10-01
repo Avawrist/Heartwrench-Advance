@@ -55,7 +55,11 @@
 #define GAME_OBJECT_MAX_ANIM_FRAMES 48
 
 #define PROP_Z_ORDER          4
-#define SPIN_EFFECT_Z_ORDER   3
+
+#define SPIN_EFFECT_3_Z_ORDER 3
+#define SPIN_EFFECT_2_Z_ORDER 2
+#define SPIN_EFFECT_1_Z_ORDER 1
+
 #define SPLAT_EFFECT_Z_ORDER  2
 #define GAME_OBJECT_Z_ORDER   1
 #define ENEMY_Z_ORDER        -1
@@ -159,6 +163,7 @@ enum ObjectType
 	HEALTHPOINT,
 	SEALED_GATE,
 	SUB_AREA_GATE,
+	OPEN_GATE,
 
 	BOUNCE_BELL,
 	AUTO_BOUNCE_BELL,
@@ -484,6 +489,7 @@ struct GameObject
 	virtual void resolveHealthpointCollision(GameObject& object);
 	virtual void resolveSealedGateCollision(GameObject& object);
 	virtual void resolveSubAreaGateCollision(GameObject& object);
+	virtual void resolveOpenGateCollision(GameObject& object);
 
 	virtual void resolveBounceBellCollision(GameObject& object);
 	virtual void resolveAutoBounceBellCollision(GameObject& object);

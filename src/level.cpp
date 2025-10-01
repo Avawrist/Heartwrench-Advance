@@ -89,6 +89,10 @@ Level::Level(const Level& other)
 
     currency_icon_sprite_ptr = other.currency_icon_sprite_ptr;
 
+    hud_upgrade_1_sprite_ptr = other.hud_upgrade_1_sprite_ptr;
+    hud_upgrade_2_sprite_ptr = other.hud_upgrade_2_sprite_ptr;
+    hud_upgrade_3_sprite_ptr = other.hud_upgrade_3_sprite_ptr;
+
     default_hud_palette_ptr = other.default_hud_palette_ptr;
 
     hud_level_name = other.hud_level_name;
@@ -101,12 +105,14 @@ Level::Level(const Level& other)
     menu_open             = other.menu_open;
     pause_requested       = other.pause_requested;
 
-    cam_x_offset          = other.cam_x_offset;
-    cam_y_offset          = other.cam_y_offset;
-    cam_look_x_offset     = other.cam_look_x_offset;
-    cam_look_dir_x_offset = other.cam_look_dir_x_offset;
-    cam_look_y_offset     = other.cam_look_y_offset;
-    cam_update_timer      = other.cam_update_timer;
+    cam_x_offset              = other.cam_x_offset;
+    cam_y_offset              = other.cam_y_offset;
+    cam_look_x_offset         = other.cam_look_x_offset;
+    cam_look_dir_x_offset     = other.cam_look_dir_x_offset;
+    cam_look_y_offset         = other.cam_look_y_offset;
+    cam_update_timer          = other.cam_update_timer;
+    upgrade_count             = other.upgrade_count;
+    upgrade_count_prior_frame = other.upgrade_count_prior_frame;
 
     random_engine = other.random_engine;
 
@@ -166,6 +172,10 @@ void Level::operator =(const Level& other)
 
     currency_icon_sprite_ptr = other.currency_icon_sprite_ptr;
 
+    hud_upgrade_1_sprite_ptr = other.hud_upgrade_1_sprite_ptr;
+    hud_upgrade_2_sprite_ptr = other.hud_upgrade_2_sprite_ptr;
+    hud_upgrade_3_sprite_ptr = other.hud_upgrade_3_sprite_ptr;
+
     default_hud_palette_ptr = other.default_hud_palette_ptr;
 
     hud_level_name = other.hud_level_name;
@@ -187,10 +197,12 @@ void Level::operator =(const Level& other)
 
     random_engine = other.random_engine;
 
-    name_card_frame    = other.name_card_frame;
-    displayed_currency = other.displayed_currency;
-    transition_frames  = other.transition_frames;
-    cursor_index       = other.cursor_index;
+    name_card_frame           = other.name_card_frame;
+    displayed_currency        = other.displayed_currency;
+    transition_frames         = other.transition_frames;
+    cursor_index              = other.cursor_index;
+    upgrade_count             = other.upgrade_count;
+    upgrade_count_prior_frame = other.upgrade_count_prior_frame;
 
     next_level = other.next_level;
 }
@@ -231,6 +243,10 @@ void Level::clear()
 
     currency_icon_sprite_ptr.reset();
 
+    hud_upgrade_1_sprite_ptr.reset();
+    hud_upgrade_2_sprite_ptr.reset();
+    hud_upgrade_3_sprite_ptr.reset();
+
     default_hud_palette_ptr.reset();
 
     bg_item.reset();
@@ -249,9 +265,9 @@ void Level::load()
 
     camera = bn::camera_ptr::create(0, 0);
 
-    global_fade_in               = false;
-    global_fade_out              = false;
-    global_soft_fade_out         = false;
+    global_fade_in        = false;
+    global_fade_out       = false;
+    global_soft_fade_out  = false;
 
     cam_is_scrolling      = false;
     menu_open             = false;
@@ -270,6 +286,8 @@ void Level::load()
     //displayed_currency    = 0;
     transition_frames     = -1;
     cursor_index          = 0;
+    upgrade_count         = 0;
+    upgrade_count_prior_frame = 0;
 
     next_level = NO_LEVEL;
 
@@ -596,6 +614,8 @@ void Level::load(LevelName level_name)
     displayed_currency    = 0;
     transition_frames     = -1;
     cursor_index          = 0;
+    upgrade_count         = 0;
+    upgrade_count_prior_frame = 0;
 
     next_level = NO_LEVEL;
 
@@ -1467,6 +1487,48 @@ void Level::updateHUD()
                                 camera->y().integer() + HUD_LEVEL_NAME_Y_OFFSET);
         hud_level_name.draw();
 
+        ///////////////////
+        // Draw Upgrades //
+        ///////////////////
+
+        upgrade_count = 0;
+
+        if(global_overwrench) {upgrade_count++;}
+        if(global_overjump)   {upgrade_count++;}
+        if(global_overhealth) {upgrade_count++;}
+
+        if(global_overwrench && upgrade_count != upgrade_count_prior_frame)
+        {setWrenchUpIcon();}
+
+        if(global_overjump && upgrade_count != upgrade_count_prior_frame)
+        {setJumpUpIcon();}
+
+        if(global_overhealth && upgrade_count != upgrade_count_prior_frame)
+        {setHealthUpIcon();}
+
+        upgrade_count_prior_frame = upgrade_count;
+
+        if(hud_upgrade_1_sprite_ptr.get() != NULL) 
+        {
+            hud_upgrade_1_sprite_ptr->set_camera(camera.value());
+            hud_upgrade_1_sprite_ptr->set_position(camera->x().integer() + HUD_UPGRADE_1_X_OFFSET, 
+                                                   camera->y().integer() + HUD_UPGRADE_1_Y_OFFSET);
+        }
+
+        if(hud_upgrade_2_sprite_ptr.get() != NULL) 
+        {
+            hud_upgrade_2_sprite_ptr->set_camera(camera.value());
+            hud_upgrade_2_sprite_ptr->set_position(camera->x().integer() + HUD_UPGRADE_2_X_OFFSET, 
+                                                   camera->y().integer() + HUD_UPGRADE_2_Y_OFFSET);
+        }
+
+        if(hud_upgrade_3_sprite_ptr.get() != NULL) 
+        {
+            hud_upgrade_3_sprite_ptr->set_camera(camera.value());
+            hud_upgrade_3_sprite_ptr->set_position(camera->x().integer() + HUD_UPGRADE_3_X_OFFSET, 
+                                                   camera->y().integer() + HUD_UPGRADE_3_Y_OFFSET);
+        }
+
         /////////////////////////////////////////
         // Hide some elements on the Overworld //
         /////////////////////////////////////////
@@ -1484,6 +1546,87 @@ void Level::updateHUD()
 
     global_hud_currency_flash_frames--;
     global_hud_currency_flash_frames = clamp(0, HUD_FLASH_FRAMES, global_hud_currency_flash_frames);
+}
+
+void Level::setWrenchUpIcon()
+{
+    switch(upgrade_count)
+    {
+        case 1:
+
+            hud_upgrade_1_sprite_ptr = bn::sprite_items::hud_wrench_plus.create_sprite(0, 0);
+        
+        break;
+
+        case 2:
+
+            hud_upgrade_2_sprite_ptr = bn::sprite_items::hud_wrench_plus.create_sprite(0, 0);
+
+        break;
+
+        case 3:
+
+            hud_upgrade_3_sprite_ptr = bn::sprite_items::hud_wrench_plus.create_sprite(0, 0);
+
+        break;
+
+        default:
+        break;
+    }
+}
+
+void Level::setJumpUpIcon()
+{
+    switch(upgrade_count)
+    {
+        case 1:
+
+            hud_upgrade_1_sprite_ptr = bn::sprite_items::hud_jump_plus.create_sprite(0, 0);
+        
+        break;
+
+        case 2:
+
+            hud_upgrade_2_sprite_ptr = bn::sprite_items::hud_jump_plus.create_sprite(0, 0);
+
+        break;
+
+        case 3:
+
+            hud_upgrade_3_sprite_ptr = bn::sprite_items::hud_jump_plus.create_sprite(0, 0);
+
+        break;
+
+        default:
+        break;
+    }
+}
+
+void Level::setHealthUpIcon()
+{
+    switch(upgrade_count)
+    {
+        case 1:
+
+            hud_upgrade_1_sprite_ptr = bn::sprite_items::hud_health_plus.create_sprite(0, 0);
+        
+        break;
+
+        case 2:
+
+            hud_upgrade_2_sprite_ptr = bn::sprite_items::hud_health_plus.create_sprite(0, 0);
+
+        break;
+
+        case 3:
+
+            hud_upgrade_3_sprite_ptr = bn::sprite_items::hud_health_plus.create_sprite(0, 0);
+
+        break;
+
+        default:
+        break;
+    }
 }
 
 void Level::updateFade()
@@ -1506,6 +1649,10 @@ void Level::updateFade()
         currency_num_2_sprite_ptr->set_visible(true);
         currency_icon_sprite_ptr->set_visible(true);
         hud_level_name.setVisible(true);
+
+        if(hud_upgrade_1_sprite_ptr.get() != NULL) {hud_upgrade_1_sprite_ptr->set_visible(true);}
+        if(hud_upgrade_2_sprite_ptr.get() != NULL) {hud_upgrade_2_sprite_ptr->set_visible(true);}
+        if(hud_upgrade_3_sprite_ptr.get() != NULL) {hud_upgrade_3_sprite_ptr->set_visible(true);}
 
         // Fade volume in
         if(bn::music::playing() && bn::music::volume() < LEVEL_MUSIC_MAX_VOLUME) 
@@ -1559,6 +1706,12 @@ void Level::updateFade()
 
         bn::sprite_palette_ptr hud_currency_icon_palette = currency_icon_sprite_ptr->palette();
         hud_currency_icon_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+
+        if(hud_upgrade_1_sprite_ptr.get() != NULL)
+        {
+            bn::sprite_palette_ptr hud_upgrade_icon_palette = hud_upgrade_1_sprite_ptr->palette();
+            hud_upgrade_icon_palette.set_fade(bn::colors::black, max(0, fade_intensity - LEVEL_FADE_INCREMENT));
+        }
 
         // Fade Pause Screen in
         bn::bg_palette_ptr pause_screen_palette = pause_screen_bg_ptr->palette();
@@ -1632,6 +1785,12 @@ void Level::updateFade()
         bn::sprite_palette_ptr hud_currency_icon_palette = currency_icon_sprite_ptr->palette();
         hud_currency_icon_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
 
+        if(hud_upgrade_1_sprite_ptr.get() != NULL)
+        {
+            bn::sprite_palette_ptr hud_upgrade_icon_palette = hud_upgrade_1_sprite_ptr->palette();
+            hud_upgrade_icon_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+        }
+
         if(hud_hp_palette.fade_intensity() == 1)
         {
             if(title_player_sprite_ptr.get() != NULL)
@@ -1660,6 +1819,10 @@ void Level::updateFade()
             currency_icon_sprite_ptr->set_visible(false);
 
             hud_level_name.setVisible(false);
+
+            if(hud_upgrade_1_sprite_ptr.get() != NULL) {hud_upgrade_1_sprite_ptr->set_visible(false);}
+            if(hud_upgrade_2_sprite_ptr.get() != NULL) {hud_upgrade_2_sprite_ptr->set_visible(false);}
+            if(hud_upgrade_3_sprite_ptr.get() != NULL) {hud_upgrade_3_sprite_ptr->set_visible(false);}
         }
 
         // Fade Pause Screen out
@@ -1741,6 +1904,12 @@ void Level::updateFade()
         bn::sprite_palette_ptr hud_currency_icon_palette = currency_icon_sprite_ptr->palette();
         hud_currency_icon_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
 
+        if(hud_upgrade_1_sprite_ptr.get() != NULL)
+        {
+            bn::sprite_palette_ptr hud_upgrade_icon_palette = hud_upgrade_1_sprite_ptr->palette();
+            hud_upgrade_icon_palette.set_fade(bn::colors::black, min(1, fade_intensity + LEVEL_FADE_INCREMENT));
+        }
+
         if(hud_hp_palette.fade_intensity() == 1)
         {
             if(title_player_sprite_ptr.get() != NULL)
@@ -1769,6 +1938,10 @@ void Level::updateFade()
             currency_icon_sprite_ptr->set_visible(false);
 
             hud_level_name.setVisible(false);
+
+            if(hud_upgrade_1_sprite_ptr.get() != NULL) {hud_upgrade_1_sprite_ptr->set_visible(false);}
+            if(hud_upgrade_2_sprite_ptr.get() != NULL) {hud_upgrade_2_sprite_ptr->set_visible(false);}
+            if(hud_upgrade_3_sprite_ptr.get() != NULL) {hud_upgrade_3_sprite_ptr->set_visible(false);}
         }
 
         // Fade Pause Screen out

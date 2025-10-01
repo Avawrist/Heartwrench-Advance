@@ -243,6 +243,10 @@ int32 Room::addObject(ObjectRequest& object_request, const bn::camera_ptr& camer
             temp_object_ptr = new SubAreaGate();
         break;
 
+        case OPEN_GATE:
+            temp_object_ptr = new OpenGate();
+        break;
+
         case BOUNCE_BELL:
             temp_object_ptr = new BounceBell();
         break;
@@ -546,6 +550,10 @@ int32 Room::addObject(const UnloadedObject& object, const bn::camera_ptr& camera
 
         case SUB_AREA_GATE:
             temp_object_ptr = new SubAreaGate();
+        break;
+
+        case OPEN_GATE:
+            temp_object_ptr = new OpenGate();
         break;
 
         case BOUNCE_BELL:

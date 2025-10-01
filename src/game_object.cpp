@@ -969,6 +969,10 @@ void GameObject::resolveObjectCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS
                         resolveSubAreaGateCollision(*game_objects.at(i));
                     break;
 
+                    case OPEN_GATE:
+                        resolveOpenGateCollision(*game_objects.at(i));
+                    break;
+
                     case BOUNCE_BELL:
                         resolveBounceBellCollision(*game_objects.at(i));
                     break;
@@ -1057,6 +1061,7 @@ void GameObject::resolveJumppointCollision(GameObject& object)           {}
 void GameObject::resolveHealthpointCollision(GameObject& object)         {}
 void GameObject::resolveSealedGateCollision(GameObject& object)          {}
 void GameObject::resolveSubAreaGateCollision(GameObject& object)         {}
+void GameObject::resolveOpenGateCollision(GameObject& object)            {}
 
 void GameObject::resolveBounceBellCollision(GameObject& object)          {}
 void GameObject::resolveAutoBounceBellCollision(GameObject& object)      {}
@@ -1403,6 +1408,7 @@ void GameObject::resolveSpikeCollision(const Collider& other_collider)
     {
         invulnerability_frames = 0;
         applyHit(SPIKE_DAMAGE, 0, 0);
+        rigidbody.removeXForces();
     }
 
     if(collider.isCollision(other_collider))

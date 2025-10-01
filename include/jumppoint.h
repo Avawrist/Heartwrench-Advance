@@ -26,7 +26,7 @@
 
 #define JUMPPOINT_30_FPS true
 
-#define JUMPPOINT_COST 0 //15
+#define JUMPPOINT_COST 15
 
 struct Jumppoint : GameObject {
 

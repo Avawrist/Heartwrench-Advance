@@ -10,10 +10,10 @@ Wrenchpoint::Wrenchpoint()
     state       = WRENCHPOINT_UNCOLLECTED;
     object_type = WRENCHPOINT;
     sprite_ptr  = bn::sprite_items::wrenchpoint.create_sprite(0, 0);
-    sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
+    sprite_ptr->set_z_order(PROP_Z_ORDER);
     default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								                                   2,
+								                                   3,
 								                                   bn::sprite_items::wrenchpoint.tiles_item(),
 								                                   0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5);
 
@@ -66,7 +66,7 @@ void Wrenchpoint::setCollectingAnimation()
     animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
                                                                2,
                                                                bn::sprite_items::wrenchpoint.tiles_item(),
-                                                               6, 6, 7, 7, 8, 8, 9, 9, 10, 10,
+                                                               6, 6, 7, 7, 8, 8, 9, 9, 9, 9, 9, 9, 9, 10, 10,
                                                                11, 11, 12, 12, 13, 13);
 }
 
@@ -188,7 +188,7 @@ void Wrenchpoint::setState(ObjectState new_state)
         case WRENCHPOINT_UNCOLLECTED:
 
             animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-                                                                           2,
+                                                                           3,
                                                                            bn::sprite_items::wrenchpoint.tiles_item(),
                                                                            0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5);       
 

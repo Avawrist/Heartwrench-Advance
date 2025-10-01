@@ -93,7 +93,10 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/build/bn_sprite_items_hud_stripe.h \
  G:/game/build/bn_sprite_items_hud_hp_bar.h \
  G:/game/build/bn_sprite_items_currency_number.h \
- G:/game/build/bn_sprite_items_hud_currency_icon.h G:/game/include/math.h \
+ G:/game/build/bn_sprite_items_hud_currency_icon.h \
+ G:/game/build/bn_sprite_items_hud_wrench_plus.h \
+ G:/game/build/bn_sprite_items_hud_jump_plus.h \
+ G:/game/build/bn_sprite_items_hud_health_plus.h G:/game/include/math.h \
  G:/butano-master/butano/include/bn_fixed.h \
  G:/butano-master/butano/include/bn_fixed_point.h \
  G:/game/include/utility.h G:/game/include/text_box.h \
@@ -174,6 +177,7 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/build/bn_sprite_items_sealed_gate.h \
  G:/game/include/sub_area_gate.h \
  G:/game/build/bn_sprite_items_sub_area_gate.h \
+ G:/game/include/open_gate.h G:/game/build/bn_sprite_items_open_gate.h \
  G:/game/include/bounce_bell.h \
  G:/game/build/bn_sprite_items_bounce_bell.h \
  G:/game/include/auto_bounce_bell.h \
@@ -296,6 +300,9 @@ G:/game/build/bn_sprite_items_hud_stripe.h:
 G:/game/build/bn_sprite_items_hud_hp_bar.h:
 G:/game/build/bn_sprite_items_currency_number.h:
 G:/game/build/bn_sprite_items_hud_currency_icon.h:
+G:/game/build/bn_sprite_items_hud_wrench_plus.h:
+G:/game/build/bn_sprite_items_hud_jump_plus.h:
+G:/game/build/bn_sprite_items_hud_health_plus.h:
 G:/game/include/math.h:
 G:/butano-master/butano/include/bn_fixed.h:
 G:/butano-master/butano/include/bn_fixed_point.h:
@@ -394,6 +401,8 @@ G:/game/include/sealed_gate.h:
 G:/game/build/bn_sprite_items_sealed_gate.h:
 G:/game/include/sub_area_gate.h:
 G:/game/build/bn_sprite_items_sub_area_gate.h:
+G:/game/include/open_gate.h:
+G:/game/build/bn_sprite_items_open_gate.h:
 G:/game/include/bounce_bell.h:
 G:/game/build/bn_sprite_items_bounce_bell.h:
 G:/game/include/auto_bounce_bell.h:

@@ -54,6 +54,9 @@
 #include "bn_sprite_items_hud_hp_bar.h"
 #include "bn_sprite_items_currency_number.h"
 #include "bn_sprite_items_hud_currency_icon.h"
+#include "bn_sprite_items_hud_wrench_plus.h"
+#include "bn_sprite_items_hud_jump_plus.h"
+#include "bn_sprite_items_hud_health_plus.h"
 
 // My Libs
 #include "math.h"
@@ -143,6 +146,15 @@ struct SaveData
 
 #define HUD_LEVEL_NAME_X_OFFSET  120
 #define HUD_LEVEL_NAME_Y_OFFSET -67
+
+#define HUD_UPGRADE_1_X_OFFSET -108
+#define HUD_UPGRADE_1_Y_OFFSET -54
+
+#define HUD_UPGRADE_2_X_OFFSET -90
+#define HUD_UPGRADE_2_Y_OFFSET -54
+
+#define HUD_UPGRADE_3_X_OFFSET -72
+#define HUD_UPGRADE_3_Y_OFFSET -54
 
 // Pause Menu
 #define CURSOR_CONTINUE      0
@@ -256,6 +268,13 @@ struct Level
 
     bn::optional<bn::sprite_ptr>                                         currency_icon_sprite_ptr;
 
+    bn::optional<bn::sprite_ptr>                                         hud_upgrade_1_sprite_ptr;
+    bn::optional<bn::sprite_ptr>                                         hud_upgrade_2_sprite_ptr;
+    bn::optional<bn::sprite_ptr>                                         hud_upgrade_3_sprite_ptr;
+
+    int32 upgrade_count;
+    int32 upgrade_count_prior_frame;
+
     TextBox hud_level_name;
 
     // Other
@@ -315,6 +334,9 @@ struct Level
     void updateCurrency();
     void updateFade();
     void updateHUD();
+    void setWrenchUpIcon();
+    void setJumpUpIcon();
+    void setHealthUpIcon();
     void updatePauseInputs();
     void updatePauseScreen();
     void updateLevelTransition(LevelName level_index);
