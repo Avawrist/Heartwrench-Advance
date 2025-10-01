@@ -93,6 +93,8 @@ falling_platform_thin.o: G:/game/src/falling_platform_thin.cpp \
  G:/game/build/bn_sprite_items_enemy_hp_bar.h \
  G:/game/build/bn_sprite_items_enemy_death.h \
  G:/game/build/bn_sprite_items_block_death.h \
+ G:/game/build/bn_sprite_items_vase_death.h \
+ G:/game/build/bn_sprite_items_drop_death.h \
  G:/game/build/bn_sprite_items_falling_platform_thin.h
 G:/game/include/falling_platform_thin.h:
 G:/butano-master/butano/include/bn_optional.h:
@@ -192,4 +194,6 @@ G:/game/build/bn_sprite_items_wall_splat_effect.h:
 G:/game/build/bn_sprite_items_enemy_hp_bar.h:
 G:/game/build/bn_sprite_items_enemy_death.h:
 G:/game/build/bn_sprite_items_block_death.h:
+G:/game/build/bn_sprite_items_vase_death.h:
+G:/game/build/bn_sprite_items_drop_death.h:
 G:/game/build/bn_sprite_items_falling_platform_thin.h:

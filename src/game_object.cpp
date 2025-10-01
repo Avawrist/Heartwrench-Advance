@@ -717,6 +717,42 @@ void GameObject::playBlockDeathAnim()
 															   0, 0, 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4);
 }
 
+void GameObject::playVaseDeathAnim()
+{
+    bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::vase_death.create_sprite(sprite_ptr->x().integer(), 
+																				              sprite_ptr->y().integer());
+	temp_sprite_ptr->set_camera(sprite_ptr->camera());
+	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
+    temp_sprite_ptr->set_visible(sprite_ptr->visible());
+
+	sprite_ptr->swap(temp_sprite_ptr.value());
+
+    temp_sprite_ptr.reset();
+
+	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+															   1,
+															   bn::sprite_items::vase_death.tiles_item(),
+															   0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3);
+}
+
+void GameObject::playDropDeathAnim()
+{
+    bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::drop_death.create_sprite(sprite_ptr->x().integer(), 
+																				              sprite_ptr->y().integer());
+	temp_sprite_ptr->set_camera(sprite_ptr->camera());
+	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
+    temp_sprite_ptr->set_visible(sprite_ptr->visible());
+
+	sprite_ptr->swap(temp_sprite_ptr.value());
+
+    temp_sprite_ptr.reset();
+
+	animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
+															   1,
+															   bn::sprite_items::drop_death.tiles_item(),
+															   0, 0, 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4);
+}
+
 void GameObject::setHitStretch()
 {
     if(sprite_ptr.has_value())

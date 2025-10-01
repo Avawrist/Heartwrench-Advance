@@ -104,7 +104,6 @@ void Enemy::updateHitFlash()
 
 void Enemy::updateHPBar()
 {
-	/*
 	if(hitpoints > ENEMY_MAX_HP) {return;}
 
 	hp_sprite_ptr->set_position(x() + ENEMY_HP_BAR_X_OFFSET, y() + ENEMY_HP_BAR_Y_OFFSET);
@@ -112,7 +111,6 @@ void Enemy::updateHPBar()
 																	 0,
 																	 bn::sprite_items::enemy_hp_bar.tiles_item(),
 																	 hitpoints, hitpoints);
-	*/
 }
 
 void Enemy::setHitFlash()

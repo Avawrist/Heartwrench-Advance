@@ -15,7 +15,7 @@ Wrenchpoint::Wrenchpoint()
     animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								                                   2,
 								                                   bn::sprite_items::wrenchpoint.tiles_item(),
-								                                   0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1);
+								                                   0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5);
 
     // Init Variables //
     collider_offset_x = WRENCHPOINT_COLLIDER_OFFSET_X;
@@ -64,10 +64,10 @@ void Wrenchpoint::setCollectingAnimation()
 	temp_sprite_ptr.reset();
 
     animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-                                                               1,
+                                                               2,
                                                                bn::sprite_items::wrenchpoint.tiles_item(),
-                                                               3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7,
-                                                               8, 8, 8, 9, 9, 9, 10, 10, 10, 11, 11, 11);
+                                                               6, 6, 7, 7, 8, 8, 9, 9, 10, 10,
+                                                               11, 11, 12, 12, 13, 13);
 }
 
 void Wrenchpoint::setCollectedAnimation()
@@ -85,7 +85,7 @@ void Wrenchpoint::setCollectedAnimation()
     animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
                                                                   0,
                                                                   bn::sprite_items::wrenchpoint.tiles_item(),
-                                                                  11, 11);
+                                                                  13, 13);
 }
 
 //////////////////////////
@@ -190,7 +190,7 @@ void Wrenchpoint::setState(ObjectState new_state)
             animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
                                                                            2,
                                                                            bn::sprite_items::wrenchpoint.tiles_item(),
-                                                                           0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1);       
+                                                                           0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5);       
 
         break;
 

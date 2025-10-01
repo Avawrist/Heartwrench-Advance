@@ -1087,6 +1087,8 @@ void Level::updateOverworld()
             global_fade_out   = true;
             transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
 
+            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->setState(PLAYER_OW_FROZEN);
+
             bn::sound_items::select.play();
         }
         else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->under_construction_highlighted)
@@ -1241,7 +1243,8 @@ void Level::updateCamera()
 
         camera.value().set_position(new_cam_x, new_cam_y);
 
-        if(temp_player_ptr->state == PLAYER_OW)
+        if(temp_player_ptr->state == PLAYER_OW || 
+           temp_player_ptr->state == PLAYER_OW_FROZEN)
         {camera.value().set_position(temp_player_ptr->pos());}
 
         ///////////////////////

@@ -12,9 +12,9 @@ Screw::Screw()
     sprite_ptr->set_z_order(GAME_OBJECT_Z_ORDER);
     default_palette_ptr = sprite_ptr->palette();
     animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
-								                                   0,
+								                                   3,
 								                                   bn::sprite_items::screw.tiles_item(),
-								                                   0, 0);
+								                                   0, 0, 0, 1, 1, 1, 2, 2, 2);
 
     // Init Variables //
     collider_offset_x = SCREW_COLLIDER_OFFSET_X;
@@ -192,11 +192,11 @@ void Screw::setState(ObjectState new_state)
 
             // Clamp Y offset
             collider_offset_y = clamp(SCREW_MIN_Y_OFFSET, 
-                                      SCREW_MAX_Y_OFFSET, 
+                                      SCREW_MAX_Y_OFFSET,
                                       collider_offset_y);
 
             // Get anim frame
-            anim_frame = (collider_offset_y + 1) * 0.5;
+            anim_frame = SCREW_FRAME_OFFSET + ((collider_offset_y + 1) * 0.5);
 
             // Update sprite
             animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
@@ -219,9 +219,9 @@ void Screw::setState(ObjectState new_state)
                                       collider_offset_y);
 
             // Get anim frame
-            anim_frame = collider_offset_y * 0.5;
+            anim_frame = SCREW_FRAME_OFFSET + (collider_offset_y * 0.5);
 
-            if(anim_frame % 3 == 0)
+            if((anim_frame - SCREW_FRAME_OFFSET) % 3 == 0)
             {object_request = ObjectRequest(GEAR_DROP, bn::fixed_point(x(), y()));}
 
             // Update sprite

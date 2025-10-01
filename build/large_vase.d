@@ -92,6 +92,8 @@ large_vase.o: G:/game/src/large_vase.cpp G:/game/include/large_vase.h \
  G:/game/build/bn_sprite_items_enemy_hp_bar.h \
  G:/game/build/bn_sprite_items_enemy_death.h \
  G:/game/build/bn_sprite_items_block_death.h \
+ G:/game/build/bn_sprite_items_vase_death.h \
+ G:/game/build/bn_sprite_items_drop_death.h \
  G:/game/build/bn_sprite_items_large_vase.h
 G:/game/include/large_vase.h:
 G:/game/include/utility.h:
@@ -191,4 +193,6 @@ G:/game/build/bn_sprite_items_wall_splat_effect.h:
 G:/game/build/bn_sprite_items_enemy_hp_bar.h:
 G:/game/build/bn_sprite_items_enemy_death.h:
 G:/game/build/bn_sprite_items_block_death.h:
+G:/game/build/bn_sprite_items_vase_death.h:
+G:/game/build/bn_sprite_items_drop_death.h:
 G:/game/build/bn_sprite_items_large_vase.h:

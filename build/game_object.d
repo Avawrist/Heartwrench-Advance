@@ -91,7 +91,9 @@ game_object.o: G:/game/src/game_object.cpp G:/game/include/game_object.h \
  G:/game/build/bn_sprite_items_wall_splat_effect.h \
  G:/game/build/bn_sprite_items_enemy_hp_bar.h \
  G:/game/build/bn_sprite_items_enemy_death.h \
- G:/game/build/bn_sprite_items_block_death.h
+ G:/game/build/bn_sprite_items_block_death.h \
+ G:/game/build/bn_sprite_items_vase_death.h \
+ G:/game/build/bn_sprite_items_drop_death.h
 G:/game/include/game_object.h:
 G:/butano-master/butano/include/bn_core.h:
 G:/butano-master/butano/include/bn_span.h:
@@ -189,3 +191,5 @@ G:/game/build/bn_sprite_items_wall_splat_effect.h:
 G:/game/build/bn_sprite_items_enemy_hp_bar.h:
 G:/game/build/bn_sprite_items_enemy_death.h:
 G:/game/build/bn_sprite_items_block_death.h:
+G:/game/build/bn_sprite_items_vase_death.h:
+G:/game/build/bn_sprite_items_drop_death.h:

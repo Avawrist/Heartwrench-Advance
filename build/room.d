@@ -95,6 +95,8 @@ room.o: G:/game/src/room.cpp G:/game/include/room.h \
  G:/game/build/bn_sprite_items_enemy_hp_bar.h \
  G:/game/build/bn_sprite_items_enemy_death.h \
  G:/game/build/bn_sprite_items_block_death.h \
+ G:/game/build/bn_sprite_items_vase_death.h \
+ G:/game/build/bn_sprite_items_drop_death.h \
  G:/game/include/tile_passage.h \
  G:/game/build/bn_sprite_items_tile_passage.h G:/game/include/phase_orb.h \
  G:/game/build/bn_sprite_items_phase_orb_up.h \
@@ -265,6 +267,8 @@ G:/game/build/bn_sprite_items_wall_splat_effect.h:
 G:/game/build/bn_sprite_items_enemy_hp_bar.h:
 G:/game/build/bn_sprite_items_enemy_death.h:
 G:/game/build/bn_sprite_items_block_death.h:
+G:/game/build/bn_sprite_items_vase_death.h:
+G:/game/build/bn_sprite_items_drop_death.h:
 G:/game/include/tile_passage.h:
 G:/game/build/bn_sprite_items_tile_passage.h:
 G:/game/include/phase_orb.h:

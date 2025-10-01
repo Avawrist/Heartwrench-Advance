@@ -1061,10 +1061,6 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 {
 	bool clear_to_jump = true;
 
-	BN_LOG("========");
-	BN_LOG(x());
-	BN_LOG(y());
-
 	//////////////////////////
     // Player State Machine //
     //////////////////////////
@@ -1814,6 +1810,9 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 		break;
 
+		case PLAYER_OW_FROZEN:
+		break;
+
 		case PLAYER_ENTRANCE:
 
 			if(animate_action_ptr->done()) {setState(NONE);}
@@ -2024,6 +2023,17 @@ void Player::setState(ObjectState new_state)
 
 		break;
 
+		case PLAYER_OW_FROZEN:
+
+			/////////////////////
+			// Update Position //
+			/////////////////////
+
+			setX(ow_target_pos.x());
+			setY(ow_target_pos.y());
+
+		break;
+
 		case PLAYER_ENTRANCE:
 
 			setEntranceAnimation();
@@ -2077,8 +2087,8 @@ void Player::resolveCollision(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     gam
     // Resolve Tile Collision //
     ////////////////////////////
 
-	if(state == PLAYER_OW) {resolveOWTileCollision(bg_ptr, cells, bg_item);}
-	else                   {resolveTileCollision(bg_ptr, cells, bg_item);}
+	if(state == PLAYER_OW || state == PLAYER_OW_FROZEN) {resolveOWTileCollision(bg_ptr, cells, bg_item);}
+	else                   								{resolveTileCollision(bg_ptr, cells, bg_item);}
 	
 
     //////////////////////////////////

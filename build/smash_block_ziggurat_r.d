@@ -93,6 +93,8 @@ smash_block_ziggurat_r.o: G:/game/src/smash_block_ziggurat_r.cpp \
  G:/game/build/bn_sprite_items_enemy_hp_bar.h \
  G:/game/build/bn_sprite_items_enemy_death.h \
  G:/game/build/bn_sprite_items_block_death.h \
+ G:/game/build/bn_sprite_items_vase_death.h \
+ G:/game/build/bn_sprite_items_drop_death.h \
  G:/game/build/bn_sprite_items_smash_block_ziggurat_r.h
 G:/game/include/smash_block_ziggurat_r.h:
 G:/game/include/utility.h:
@@ -192,4 +194,6 @@ G:/game/build/bn_sprite_items_wall_splat_effect.h:
 G:/game/build/bn_sprite_items_enemy_hp_bar.h:
 G:/game/build/bn_sprite_items_enemy_death.h:
 G:/game/build/bn_sprite_items_block_death.h:
+G:/game/build/bn_sprite_items_vase_death.h:
+G:/game/build/bn_sprite_items_drop_death.h:
 G:/game/build/bn_sprite_items_smash_block_ziggurat_r.h:

@@ -16,7 +16,7 @@
 // Struct AutoPlatform //
 /////////////////////////
 
-#define AUTO_PLATFORM_COLLIDER_WIDTH  36
+#define AUTO_PLATFORM_COLLIDER_WIDTH  32
 #define AUTO_PLATFORM_COLLIDER_HEIGHT 1
 
 #define AUTO_PLATFORM_COLLIDER_OFFSET_X  0

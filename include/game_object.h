@@ -45,6 +45,8 @@
 #include "bn_sprite_items_enemy_hp_bar.h"
 #include "bn_sprite_items_enemy_death.h"
 #include "bn_sprite_items_block_death.h"
+#include "bn_sprite_items_vase_death.h"
+#include "bn_sprite_items_drop_death.h"
 
 ///////////////////////
 // Struct GameObject //
@@ -259,6 +261,7 @@ enum ObjectState
 	PLAYER_DOOR_EXTENDED,
 	PLAYER_VICTORY,
 	PLAYER_OW,
+	PLAYER_OW_FROZEN,
 	PLAYER_ENTRANCE,
 	PLAYER_GET,
 	PLAYER_GET_EXTENDED,
@@ -416,6 +419,8 @@ struct GameObject
 	void applySplatEffect(int32 x, int32 y);
 
 	void playBlockDeathAnim();
+	void playVaseDeathAnim();
+	void playDropDeathAnim();
 
 	void setHitStretch();
 

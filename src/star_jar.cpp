@@ -14,8 +14,7 @@ StarJar::StarJar()
     animate_action_ptr  = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
 								                                   2,
 								                                   bn::sprite_items::star_jar.tiles_item(),
-								                                   0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3,
-																   4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7);
+								                                   0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3);
 
     // Init Variables //
     collider_offset_x = STAR_JAR_COLLIDER_OFFSET_X;
@@ -172,10 +171,7 @@ void StarJar::setState(ObjectState new_state)
         case OBJECT_DEATH:
 
 			global_stars_collected++;
-            animate_action_ptr  = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-                                                                        0,
-                                                                        bn::sprite_items::star_jar.tiles_item(),
-                                                                        4, 4, 5, 5, 6, 6, 7, 7, 8, 8);
+			playDropDeathAnim();
 
         break;
 

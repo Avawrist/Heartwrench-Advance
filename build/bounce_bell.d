@@ -92,6 +92,8 @@ bounce_bell.o: G:/game/src/bounce_bell.cpp G:/game/include/bounce_bell.h \
  G:/game/build/bn_sprite_items_enemy_hp_bar.h \
  G:/game/build/bn_sprite_items_enemy_death.h \
  G:/game/build/bn_sprite_items_block_death.h \
+ G:/game/build/bn_sprite_items_vase_death.h \
+ G:/game/build/bn_sprite_items_drop_death.h \
  G:/game/build/bn_sprite_items_bounce_bell.h
 G:/game/include/bounce_bell.h:
 G:/game/include/utility.h:
@@ -191,4 +193,6 @@ G:/game/build/bn_sprite_items_wall_splat_effect.h:
 G:/game/build/bn_sprite_items_enemy_hp_bar.h:
 G:/game/build/bn_sprite_items_enemy_death.h:
 G:/game/build/bn_sprite_items_block_death.h:
+G:/game/build/bn_sprite_items_vase_death.h:
+G:/game/build/bn_sprite_items_drop_death.h:
 G:/game/build/bn_sprite_items_bounce_bell.h:

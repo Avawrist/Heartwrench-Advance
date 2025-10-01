@@ -170,10 +170,7 @@ void GearDrop::setState(ObjectState new_state)
 
         case OBJECT_DEATH:
 
-            animate_action_ptr  = bn::create_sprite_animate_action_once(sprite_ptr.value(),
-                                                                        1,
-                                                                        bn::sprite_items::gear_drop.tiles_item(),
-                                                                        4, 4, 5, 5, 6, 6, 7, 7, 8, 8);
+			playDropDeathAnim();
 
         break;
 

@@ -33,6 +33,8 @@
 #define SCREW_STOP_FRAME     0
 #define SCREW_HITSTOP_FRAMES 6
 
+#define SCREW_FRAME_OFFSET 3
+
 struct Screw : GameObject {
 
     //////////////////
