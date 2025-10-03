@@ -26,7 +26,7 @@
 
 #define WRENCHPOINT_30_FPS true
 
-#define WRENCHPOINT_COST 10
+#define WRENCHPOINT_COST 0 //10
 
 struct Wrenchpoint : GameObject {
 

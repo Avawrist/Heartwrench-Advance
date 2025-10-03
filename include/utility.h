@@ -22,8 +22,8 @@ typedef int   int32;
 
 #define GLOBAL_TIMER_MAX 600
 
-#define MAX_GAME_OBJECTS     45
-#define MAX_UNLOADED_OBJECTS 45
+#define MAX_GAME_OBJECTS     50
+#define MAX_UNLOADED_OBJECTS 50
 
 #define MAX_SPRITE_TILES 1350
 

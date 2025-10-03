@@ -282,11 +282,13 @@ void Level::load()
     cam_look_y_offset     = 0;
     cam_update_timer      = 0;
     name_card_frame       = 0;
+    sa_transition_frames  = 0;
     //global_level_currency = 0;
     //displayed_currency    = 0;
     transition_frames     = -1;
-    cursor_index          = 0;
-    upgrade_count         = 0;
+    cursor_index          =  0;
+    
+    upgrade_count             = 0;
     upgrade_count_prior_frame = 0;
 
     next_level = NO_LEVEL;
@@ -610,6 +612,7 @@ void Level::load(LevelName level_name)
     cam_look_y_offset     = 0;
     cam_update_timer      = 0;
     name_card_frame       = 0;
+    sa_transition_frames  = 0;
     global_level_currency = 0;
     displayed_currency    = 0;
     transition_frames     = -1;
@@ -949,6 +952,9 @@ void Level::update()
     updateGlobalHitstop();
     updateGlobalTimer();
 
+    // Update Timers
+    updateTimers();
+
     if(global_hitstop_frames <= 0)
     {
              if(player_spawn.spawn_level == LEVEL_NAME_CARD)    {updateNameCard();}
@@ -968,6 +974,7 @@ void Level::updateAll()
 {
     reloadOnDeath();
     updateObjects();
+    if(sa_transition_frames) {updatePoints();}
     updatePauseInputs();
     removeObjectCells();
     updateCurrency();
@@ -1143,7 +1150,7 @@ void Level::updateObjects()
                                                         cells,
                                                         bg_item.value(),
                                                         camera.value());
-            
+
             // Update spawn point //
             if(current_room.game_objects.data()[i]->object_type == CHECKPOINT)
             {updateCheckpoint((Checkpoint*)current_room.game_objects.data()[i]);}
@@ -1351,6 +1358,13 @@ void Level::updateGlobalTimer()
     if(global_timer >= GLOBAL_TIMER_MAX) {global_timer = 0;}
 }
 
+void Level::updateTimers()
+{
+    // Update Sub Area transition frames
+    sa_transition_frames--;
+    sa_transition_frames = clamp(0, LEVEL_SA_TRANSITION_FRAMES, sa_transition_frames);
+}
+
 void Level::updateCurrency()
 {
     // Cap currency
@@ -1497,31 +1511,24 @@ void Level::updateHUD()
         if(global_overjump)   {upgrade_count++;}
         if(global_overhealth) {upgrade_count++;}
 
-        if(global_overwrench && upgrade_count != upgrade_count_prior_frame)
-        {setWrenchUpIcon();}
-
-        if(global_overjump && upgrade_count != upgrade_count_prior_frame)
-        {setJumpUpIcon();}
-
-        if(global_overhealth && upgrade_count != upgrade_count_prior_frame)
-        {setHealthUpIcon();}
+        updateWrenchUpIcon();
+        updateJumpUpIcon();
+        updateHealthUpIcon();
 
         upgrade_count_prior_frame = upgrade_count;
-
-        if(hud_upgrade_1_sprite_ptr.get() != NULL) 
+ 
+        if(hud_upgrade_1_sprite_ptr.get() != NULL)
         {
             hud_upgrade_1_sprite_ptr->set_camera(camera.value());
-            hud_upgrade_1_sprite_ptr->set_position(camera->x().integer() + HUD_UPGRADE_1_X_OFFSET, 
+            hud_upgrade_1_sprite_ptr->set_position(camera->x().integer() + HUD_UPGRADE_1_X_OFFSET,
                                                    camera->y().integer() + HUD_UPGRADE_1_Y_OFFSET);
         }
-
         if(hud_upgrade_2_sprite_ptr.get() != NULL) 
         {
             hud_upgrade_2_sprite_ptr->set_camera(camera.value());
             hud_upgrade_2_sprite_ptr->set_position(camera->x().integer() + HUD_UPGRADE_2_X_OFFSET, 
                                                    camera->y().integer() + HUD_UPGRADE_2_Y_OFFSET);
         }
-
         if(hud_upgrade_3_sprite_ptr.get() != NULL) 
         {
             hud_upgrade_3_sprite_ptr->set_camera(camera.value());
@@ -1548,85 +1555,28 @@ void Level::updateHUD()
     global_hud_currency_flash_frames = clamp(0, HUD_FLASH_FRAMES, global_hud_currency_flash_frames);
 }
 
-void Level::setWrenchUpIcon()
+void Level::updateWrenchUpIcon()
 {
-    switch(upgrade_count)
-    {
-        case 1:
+    if(!global_overwrench)                         {return;}
+    if(upgrade_count == upgrade_count_prior_frame) {return;}
 
-            hud_upgrade_1_sprite_ptr = bn::sprite_items::hud_wrench_plus.create_sprite(0, 0);
-        
-        break;
-
-        case 2:
-
-            hud_upgrade_2_sprite_ptr = bn::sprite_items::hud_wrench_plus.create_sprite(0, 0);
-
-        break;
-
-        case 3:
-
-            hud_upgrade_3_sprite_ptr = bn::sprite_items::hud_wrench_plus.create_sprite(0, 0);
-
-        break;
-
-        default:
-        break;
-    }
+    hud_upgrade_1_sprite_ptr = bn::sprite_items::hud_wrench_plus.create_sprite(0, 0);
 }
 
-void Level::setJumpUpIcon()
+void Level::updateJumpUpIcon()
 {
-    switch(upgrade_count)
-    {
-        case 1:
+    if(!global_overjump)                           {return;}
+    if(upgrade_count == upgrade_count_prior_frame) {return;}
 
-            hud_upgrade_1_sprite_ptr = bn::sprite_items::hud_jump_plus.create_sprite(0, 0);
-        
-        break;
-
-        case 2:
-
-            hud_upgrade_2_sprite_ptr = bn::sprite_items::hud_jump_plus.create_sprite(0, 0);
-
-        break;
-
-        case 3:
-
-            hud_upgrade_3_sprite_ptr = bn::sprite_items::hud_jump_plus.create_sprite(0, 0);
-
-        break;
-
-        default:
-        break;
-    }
+    hud_upgrade_2_sprite_ptr = bn::sprite_items::hud_jump_plus.create_sprite(0, 0);
 }
 
-void Level::setHealthUpIcon()
+void Level::updateHealthUpIcon()
 {
-    switch(upgrade_count)
-    {
-        case 1:
+    if(!global_overhealth)                         {return;}
+    if(upgrade_count == upgrade_count_prior_frame) {return;}
 
-            hud_upgrade_1_sprite_ptr = bn::sprite_items::hud_health_plus.create_sprite(0, 0);
-        
-        break;
-
-        case 2:
-
-            hud_upgrade_2_sprite_ptr = bn::sprite_items::hud_health_plus.create_sprite(0, 0);
-
-        break;
-
-        case 3:
-
-            hud_upgrade_3_sprite_ptr = bn::sprite_items::hud_health_plus.create_sprite(0, 0);
-
-        break;
-
-        default:
-        break;
-    }
+    hud_upgrade_3_sprite_ptr = bn::sprite_items::hud_health_plus.create_sprite(0, 0);
 }
 
 void Level::updateFade()
@@ -2101,6 +2051,8 @@ void Level::updatePoints()
                     updateCheckpoint((Checkpoint*)current_room.game_objects.data()[i]);
                     current_room.game_objects.data()[i]->draw();
 
+                    sa_transition_frames = 0;
+
                 break;
 
                 case OPEN_GATE:
@@ -2129,12 +2081,16 @@ void Level::updatePoints()
                         break;
                     }
 
+                    sa_transition_frames = 0;
+
                 break;
 
                 case WRENCHPOINT:
 
                     updateWrenchpoint((Wrenchpoint*)current_room.game_objects.data()[i]);
                     current_room.game_objects.data()[i]->draw();
+
+                    sa_transition_frames = 0;
 
                 break;
 
@@ -2143,12 +2099,16 @@ void Level::updatePoints()
                     updateJumppoint((Jumppoint*)current_room.game_objects.data()[i]);
                     current_room.game_objects.data()[i]->draw();
 
+                    sa_transition_frames = 0;
+
                 break;
 
                 case HEALTHPOINT:
 
                     updateHealthpoint((Healthpoint*)current_room.game_objects.data()[i]);
                     current_room.game_objects.data()[i]->draw();
+
+                    sa_transition_frames = 0;
 
                 break;
 
@@ -2405,8 +2365,7 @@ void Level::transitionRoom()
                 delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
                 current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(temp_player);
 
-                // Flip this on so that the Open Gate is set as the new spawn point.
-                cam_is_scrolling = true;
+                sa_transition_frames = LEVEL_SA_TRANSITION_FRAMES;
                 
                 return;
 
@@ -2437,8 +2396,7 @@ void Level::transitionRoom()
                 delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
                 current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(temp_player);
 
-                // Flip this on so that the Open Gate is set as the new spawn point.
-                cam_is_scrolling = true;
+                sa_transition_frames = LEVEL_SA_TRANSITION_FRAMES;
                 
                 return;
 
@@ -2468,6 +2426,8 @@ void Level::transitionRoom()
                 // and replace with the player object from the previous room
                 delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
                 current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(temp_player);
+
+                sa_transition_frames = LEVEL_SA_TRANSITION_FRAMES;
                 
                 return;
 
@@ -2497,6 +2457,8 @@ void Level::transitionRoom()
                 // and replace with the player object from the previous room
                 delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
                 current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(temp_player);
+
+                sa_transition_frames = LEVEL_SA_TRANSITION_FRAMES;
                 
                 return;
 
@@ -2563,6 +2525,9 @@ void Level::togglePauseScreen()
         currency_num_2_sprite_ptr->set_visible(true);
         currency_icon_sprite_ptr->set_visible(true);
         hud_level_name.setVisible(true);
+        hud_upgrade_1_sprite_ptr->set_visible(true);
+        hud_upgrade_2_sprite_ptr->set_visible(true);
+        hud_upgrade_3_sprite_ptr->set_visible(true);
 
         // Reveal GameObjects //
         for(int32 i = 0; i < current_room.game_objects.size(); i++)
@@ -2596,6 +2561,9 @@ void Level::togglePauseScreen()
         currency_num_2_sprite_ptr->set_visible(false);
         currency_icon_sprite_ptr->set_visible(false);
         hud_level_name.setVisible(false);
+        hud_upgrade_1_sprite_ptr->set_visible(false);
+        hud_upgrade_2_sprite_ptr->set_visible(false);
+        hud_upgrade_3_sprite_ptr->set_visible(false);
 
         // Hide GameObjects //
         for(int32 i = 0; i < current_room.game_objects.size(); i++)

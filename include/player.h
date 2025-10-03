@@ -134,7 +134,8 @@
 
 // Spin Attack Values
 
-#define PLAYER_SPIN_X_FORCE (3 + (uint32)global_overwrench)
+#define PLAYER_OVERWRENCH_SPIN_FORCE_MULTIPLIER 0.5
+#define PLAYER_SPIN_X_FORCE (3 + ((uint32)global_overwrench * PLAYER_OVERWRENCH_SPIN_FORCE_MULTIPLIER))
 #define PLAYER_SPIN_DECAY   0.02
 
 #define PLAYER_MAX_SPIN_EFFECT_FRAMES 35

@@ -182,6 +182,7 @@ struct SaveData
 
 // Transitions
 #define LEVEL_TITLE_SCREEN_TRANSITION_FRAMES 60
+#define LEVEL_SA_TRANSITION_FRAMES 12
 
 enum LevelName 
 {
@@ -275,6 +276,8 @@ struct Level
     int32 upgrade_count;
     int32 upgrade_count_prior_frame;
 
+    int32 sa_transition_frames;
+
     TextBox hud_level_name;
 
     // Other
@@ -331,12 +334,13 @@ struct Level
     void updateBGFlash();
     void updatePaintedBG();
     void updateGlobalTimer();
+    void updateTimers();
     void updateCurrency();
     void updateFade();
     void updateHUD();
-    void setWrenchUpIcon();
-    void setJumpUpIcon();
-    void setHealthUpIcon();
+    void updateWrenchUpIcon();
+    void updateJumpUpIcon();
+    void updateHealthUpIcon();
     void updatePauseInputs();
     void updatePauseScreen();
     void updateLevelTransition(LevelName level_index);
