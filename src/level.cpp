@@ -2103,6 +2103,34 @@ void Level::updatePoints()
 
                 break;
 
+                case OPEN_GATE:
+
+                    switch(current_room.room_name)
+                    {
+                        case ROOM_LEVEL_1_SA_1:
+                            
+                            // Update spawn pos
+                            player_spawn.spawn_pos.set_x(ROOM_LEVEL_1_SA_1_POS_X);
+                            player_spawn.spawn_pos.set_y(ROOM_LEVEL_1_SA_1_POS_Y);
+                            player_spawn.spawn_room = current_room.room_name;
+
+                        break;
+
+                        case ROOM_LEVEL_1_SA_2:
+
+                            // Update spawn pos
+                            player_spawn.spawn_pos.set_x(ROOM_LEVEL_1_SA_2_POS_X);
+                            player_spawn.spawn_pos.set_y(ROOM_LEVEL_1_SA_2_POS_Y);
+                            player_spawn.spawn_room = current_room.room_name;
+
+                        break;
+
+                        default:
+                        break;
+                    }
+
+                break;
+
                 case WRENCHPOINT:
 
                     updateWrenchpoint((Wrenchpoint*)current_room.game_objects.data()[i]);
@@ -2376,6 +2404,41 @@ void Level::transitionRoom()
                 // and replace with the player object from the previous room
                 delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
                 current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(temp_player);
+
+                // Flip this on so that the Open Gate is set as the new spawn point.
+                cam_is_scrolling = true;
+                
+                return;
+
+            break;
+
+            case ROOM_LEVEL_1_12:
+
+                // Fade back in
+                global_fade_in = true;
+
+                // Manually reveal player sprite
+                temp_player.revealSprites();
+
+                // Move the player into the new room
+                temp_player.setPos(ROOM_LEVEL_1_SA_2_POS_X, ROOM_LEVEL_1_SA_2_POS_Y);
+                temp_player.setState(NONE);
+
+                // Create the neighbor room
+                current_room = Room(ROOM_LEVEL_1_SA_2, 
+                                    camera.value(),
+                                    object_bg_ptr.value(),
+                                    object_bg_item.value(),
+                                    object_cells,
+                                    player_spawn.spawn_pos);
+
+                // Free up the default player object that came with the new room,
+                // and replace with the player object from the previous room
+                delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+                current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(temp_player);
+
+                // Flip this on so that the Open Gate is set as the new spawn point.
+                cam_is_scrolling = true;
                 
                 return;
 
@@ -2395,6 +2458,35 @@ void Level::transitionRoom()
 
                 // Create the neighbor room
                 current_room = Room(ROOM_LEVEL_1_7, 
+                                    camera.value(),
+                                    object_bg_ptr.value(),
+                                    object_bg_item.value(),
+                                    object_cells,
+                                    player_spawn.spawn_pos);
+
+                // Free up the default player object that came with the new room,
+                // and replace with the player object from the previous room
+                delete current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX);
+                current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX) = new Player(temp_player);
+                
+                return;
+
+            break;
+
+            case ROOM_LEVEL_1_SA_2:
+
+                // Fade back in
+                global_fade_in = true;
+
+                // Manually reveal player sprite
+                temp_player.revealSprites();
+
+                // Move the player into the new room
+                temp_player.setPos(ROOM_LEVEL_1_12_POS_X, ROOM_LEVEL_1_12_POS_Y);
+                temp_player.setState(NONE);
+
+                // Create the neighbor room
+                current_room = Room(ROOM_LEVEL_1_12, 
                                     camera.value(),
                                     object_bg_ptr.value(),
                                     object_bg_item.value(),

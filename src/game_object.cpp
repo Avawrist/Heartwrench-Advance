@@ -1408,7 +1408,7 @@ void GameObject::resolveSpikeCollision(const Collider& other_collider)
     {
         invulnerability_frames = 0;
         applyHit(SPIKE_DAMAGE, 0, 0);
-        rigidbody.removeXForces();
+        rigidbody.removeForces();
     }
 
     if(collider.isCollision(other_collider))

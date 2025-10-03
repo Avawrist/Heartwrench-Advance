@@ -1007,10 +1007,12 @@ void Player::applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_di
     global_screenshake_severity = GENERIC_HIT_SCREENSHAKE_SEVERITY;
 
     // Object physics:
-    //rigidbody.removeForces();
+    rigidbody.removeForces();
+	/*
     rigidbody.addForce(Force(bn::fixed_point_t<12>(GENERIC_HIT_X_KNOCKBACK * knockback_x_dir, 
                                                    GENERIC_HIT_Y_KNOCKBACK * knockback_y_dir), 
                                                    GENERIC_HIT_KNOCKBACK_DECAY));
+	*/
 
     // Object damage:
     applyDamage(_damage);

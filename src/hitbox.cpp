@@ -483,12 +483,16 @@ void Hitbox::resolveAutoBounceBellCollision(GameObject& object)
 
 void Hitbox::resolvePushBlockCollision(GameObject& object)
 {
+    if(object.state == OBJECT_HITSTUN) {return;}
+
     if(collider.isCollision(object.collider))
     {applyHBHit(object);}
 }
 
 void Hitbox::resolvePushBlockMiniCollision(GameObject& object)
 {
+    if(object.state == OBJECT_HITSTUN) {return;}
+
     if(collider.isCollision(object.collider))
     {applyHBHit(object);}
 }

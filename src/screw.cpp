@@ -221,9 +221,6 @@ void Screw::setState(ObjectState new_state)
             // Get anim frame
             anim_frame = SCREW_FRAME_OFFSET + (collider_offset_y * 0.5);
 
-            if((anim_frame - SCREW_FRAME_OFFSET) % 3 == 0)
-            {object_request = ObjectRequest(GEAR_DROP, bn::fixed_point(x(), y()));}
-
             // Update sprite
             animate_action_ptr = bn::create_sprite_animate_action_once(sprite_ptr.value(),
                                                                        0,
@@ -237,6 +234,8 @@ void Screw::setState(ObjectState new_state)
         break;
 
         case OBJECT_DEATH:
+
+            object_request = ObjectRequest(SKULL_DROP, bn::fixed_point(x(), y()));
 
             global_hitstop_frames = SCREW_HITSTOP_FRAMES;
             bn::sound_items::screw_click.play();

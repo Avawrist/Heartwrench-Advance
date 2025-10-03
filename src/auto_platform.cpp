@@ -229,7 +229,7 @@ void AutoPlatform::resolveGroundGhoulCollision(GameObject& object)
 // Special Objects
 void AutoPlatform::resolvePlayerCollision(GameObject& object)
 {
-    Collider roof_test_collider = Collider(collider.x(),
+    Collider roof_test_collider = Collider(collider.x() - rigidbody.final_dir.x(),
                                            collider.y() + AUTO_PLATFORM_ROOF_OFFSET,
                                            collider.width,
                                            AUTO_PLATFORM_ROOF_COLLIDER_HEIGHT);

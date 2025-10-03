@@ -30,8 +30,8 @@
 
 #define PUSH_BLOCK_30_FPS false
 
-#define PUSH_BLOCK_ROOF_OFFSET          ((PUSH_BLOCK_COLLIDER_HEIGHT / 2) * -1)
-#define PUSH_BLOCK_ROOF_COLLIDER_HEIGHT 64
+#define PUSH_BLOCK_ROOF_OFFSET          (PUSH_BLOCK_COLLIDER_HEIGHT * -1)
+#define PUSH_BLOCK_ROOF_COLLIDER_HEIGHT 32
 
 #define PUSH_BLOCK_HIT_H_WALL_FRAMES 5
 #define PUSH_BLOCK_HIT_V_WALL_FRAMES 5
@@ -87,10 +87,12 @@ struct PushBlock : GameObject {
                             const bn::regular_bg_item&                     bg_item,
                             const bn::camera_ptr&                          camera) override;
 
+    /*
     void updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
                      const bn::regular_bg_ptr&                      bg_ptr, 
                      const bn::span<const bn::regular_bg_map_cell>& cells,
                      const bn::regular_bg_item&                     bg_item) override;
+    */
 
     void setState(ObjectState new_state) override;
 
@@ -119,14 +121,6 @@ struct PushBlock : GameObject {
     void resolveTileCollision(const bn::regular_bg_ptr&                      bg_ptr, 
                               const bn::span<const bn::regular_bg_map_cell>& cells,
                               const bn::regular_bg_item&                     bg_item) override;
-
-    void resolveHGearLeftCollision(const Collider& other_collider)  override;
-	void resolveHGearMidCollision(const Collider& other_collider)   override;
-	void resolveHGearRightCollision(const Collider& other_collider) override;
-
-    void resolveVGearTopCollision(const Collider& other_collider)    override;
-	void resolveVGearMidCollision(const Collider& other_collider)    override;
-	void resolveVGearBottomCollision(const Collider& other_collider) override;    
 
     void resolveXAxisCollision(const Collider& other_collider) override;
     void resolveYAxisCollision(const Collider& other_collider) override;

@@ -153,7 +153,7 @@ void PushBlock::setHitFlash(int32 frames)
 // State Function Overrides //
 //////////////////////////////
 
-void PushBlock::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
+void PushBlock::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&      game_objects,
                                     const bn::regular_bg_ptr&                      bg_ptr, 
                                     const bn::span<const bn::regular_bg_map_cell>& cells,
                                     const bn::regular_bg_item&                     bg_item,
@@ -169,6 +169,7 @@ void PushBlock::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   
 
         break;
 
+		/*
 		case PUSH_BLOCK_ROLLING:
 
 			// Gravity
@@ -176,6 +177,7 @@ void PushBlock::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   
             {rigidbody.addForce(GAME_OBJECT_GRAVITY_FORCE);}
 
 		break;
+		*/
 
         case OBJECT_HITSTUN:
 
@@ -188,6 +190,7 @@ void PushBlock::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&   
     }
 }
 
+/*
 void PushBlock::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_objects,
 							const bn::regular_bg_ptr&                      bg_ptr, 
 							const bn::span<const bn::regular_bg_map_cell>& cells,
@@ -207,6 +210,7 @@ void PushBlock::updateState(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     game_
 
 	if(new_state != state) {setState(new_state);}
 }
+*/
 
 void PushBlock::setState(ObjectState new_state)
 {
@@ -223,6 +227,7 @@ void PushBlock::setState(ObjectState new_state)
 
 		break;
 
+		/*
 		case PUSH_BLOCK_ROLLING:
 
 			animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
@@ -231,9 +236,12 @@ void PushBlock::setState(ObjectState new_state)
 																		  0, 0, 0, 1, 1, 1);
 
 		break;
+		*/
 
 		case OBJECT_HITSTUN:
 	
+			setHitStretch();
+
 			// SFX
 			bn::sound_items::generic_hit.play();
 
@@ -372,19 +380,24 @@ void PushBlock::resolveGroundGhoulCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
-	// Now test for roof riding and resolve the PushBlock + Object.
-	int32 pixels_moved_x = (frame_start_pos.x().integer() - pos().x().integer()) * -1;
-	int32 pixels_moved_y = (frame_start_pos.y().integer() - pos().y().integer()) * -1;
-
-	Collider roof_test_collider = Collider(collider.x() - pixels_moved_x,
-										   collider.y() - pixels_moved_y + PUSH_BLOCK_ROOF_OFFSET,
+	Collider roof_test_collider = Collider(collider.x() - rigidbody.final_dir.x(),
+										   collider.y() - rigidbody.final_dir.y() + PUSH_BLOCK_ROOF_OFFSET,
 										   collider.width,
 										   PUSH_BLOCK_ROOF_COLLIDER_HEIGHT);
 
 	if(roof_test_collider.isCollision(object.collider))
 	{
-		object.rigidbody.addForce(Force(bn::fixed_point_t<12>(pixels_moved_x, 0), 1));
-		object.setY(object.y() + pixels_moved_y);
+		if(rigidbody.final_dir.y() <= 0)
+        {
+            // If ascending or neutral, applying force to the x axis is all that's needed.
+            object.rigidbody.addForce(Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), 0), 1));
+        }
+        else
+        {
+            // If descending, apply force to BOTH axes
+            // so the object hugs the platform tight.
+            object.rigidbody.addForce(Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), rigidbody.final_dir.y()), 1));
+        }
 	}
 }
 
@@ -393,35 +406,24 @@ void PushBlock::resolvePlayerCollision(GameObject& object)
 {
 	if(object.state == OBJECT_DEATH) {return;}
 
-	// Now test for roof riding and resolve the PushBlock + Player.
-	int32 pixels_moved_x = (frame_start_pos.x().integer() - pos().x().integer()) * -1;
-	int32 pixels_moved_y = (frame_start_pos.y().integer() - pos().y().integer()) * -1;
-
-	Collider roof_test_collider = Collider(collider.x() - pixels_moved_x,
-										   collider.y() - pixels_moved_y + PUSH_BLOCK_ROOF_OFFSET,
-										   collider.width,
+	Collider roof_test_collider = Collider(collider.x() - rigidbody.final_dir.x(),
+										   collider.y() - rigidbody.final_dir.y() + PUSH_BLOCK_ROOF_OFFSET,
+										   collider.width + 64,
 										   PUSH_BLOCK_ROOF_COLLIDER_HEIGHT);
 
 	if(roof_test_collider.isCollision(object.collider))
 	{
-		object.rigidbody.addForce(Force(bn::fixed_point_t<12>(pixels_moved_x, 0), 1));
-		object.setY(object.y() + pixels_moved_y);
-
-		if(hit_h_wall && (object.state == PLAYER_SPIN_ATTACK || object.state == PLAYER_AIR_NEUTRAL))
-		{object.rigidbody.addForce(PUSH_BLOCK_MOMENTUM_TRANSFER_H_FORCE); hit_h_wall = 0;}
-
-		if(hit_v_wall && object.state == PLAYER_AIR_NEUTRAL)
-		{object.rigidbody.addForce(PUSH_BLOCK_MOMENTUM_TRANSFER_V_FORCE); hit_v_wall = 0;}
-	}
-
-	// Backwards collision resolution, let the player correct itself.
-	// Expensive, but necessary.
-	if(object.collider.isCollision(collider))
-	{
-		object.resolveXAxisCollision(collider);
-		object.resolveYAxisCollision(collider);
-		object.resolveCornerCollision(collider);
-		object.updateTestColliders();
+		if(rigidbody.final_dir.y() <= 0)
+        {
+            // If ascending or neutral, applying force to the x axis is all that's needed.
+            object.rigidbody.addForce(Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), 0), 1));
+        }
+        else
+        {
+            // If descending, apply force to BOTH axes
+            // so the object hugs the platform tight.
+            object.rigidbody.addForce(Force(bn::fixed_point_t<12>(rigidbody.final_dir.x(), rigidbody.final_dir.y()), 1));
+        }
 	}
 }
 
@@ -665,6 +667,7 @@ void PushBlock::resolveTileCollision(const bn::regular_bg_ptr&                  
 	updateTileGrounded(bg_ptr, cells, bg_item);
 }
 
+/*
 void PushBlock::resolveHGearLeftCollision(const Collider& other_collider)
 {
 	if(collider.isCollision(other_collider) && 
@@ -783,25 +786,26 @@ void PushBlock::resolveVGearBottomCollision(const Collider& other_collider)
 		{setY(other_collider.y() + (TILE_HEIGHT / 2));}
 	}
 }
+*/
 
 void PushBlock::resolveXAxisCollision(const Collider& other_collider)
 {
 	GameObject::resolveXAxisCollision(other_collider);
 
-	if(col_x_offset != 0 && pos().x() != frame_start_pos.x())
-	{
-		hit_h_wall = PUSH_BLOCK_HIT_H_WALL_FRAMES;
-		rigidbody.removeXForces();
-	}
+	//if(col_x_offset != 0 && pos().x() != frame_start_pos.x())
+	//{
+	//	hit_h_wall = PUSH_BLOCK_HIT_H_WALL_FRAMES;
+	//	rigidbody.removeXForces();
+	//}
 }
 
 void PushBlock::resolveYAxisCollision(const Collider& other_collider)
 {
 	GameObject::resolveYAxisCollision(other_collider);
 
-	if(col_y_offset != 0 && pos().y() != frame_start_pos.y()) 
-	{
-		hit_v_wall = PUSH_BLOCK_HIT_V_WALL_FRAMES;
-		rigidbody.removeYForces();
-	}
+	//if(col_y_offset != 0 && pos().y() != frame_start_pos.y()) 
+	//{
+	//	hit_v_wall = PUSH_BLOCK_HIT_V_WALL_FRAMES;
+	//	rigidbody.removeYForces();
+	//}
 }

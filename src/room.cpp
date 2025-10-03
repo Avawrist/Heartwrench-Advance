@@ -1033,10 +1033,10 @@ void Room::load(RoomName                                       _room_name,
             bottom_neighbor = NO_ROOM;
             left_neighbor   = NO_ROOM;
 
-            room_bounds.setTopBoundAC(1984);
+            room_bounds.setTopBoundAC(1616);
             room_bounds.setBottomBoundAC(2384);
-            room_bounds.setLeftBoundAC(3600);
-            room_bounds.setRightBoundAC(4240);
+            room_bounds.setLeftBoundAC(3344);
+            room_bounds.setRightBoundAC(4576);
 
             // Add any special objects //
 
@@ -1050,10 +1050,10 @@ void Room::load(RoomName                                       _room_name,
             bottom_neighbor = NO_ROOM;
             left_neighbor   = NO_ROOM;
 
-            room_bounds.setTopBoundAC(0);
-            room_bounds.setBottomBoundAC(0);
-            room_bounds.setLeftBoundAC(0);
-            room_bounds.setRightBoundAC(0);
+            room_bounds.setTopBoundAC(1168);
+            room_bounds.setBottomBoundAC(1824);
+            room_bounds.setLeftBoundAC(112);
+            room_bounds.setRightBoundAC(1568);
 
             // Add any special objects //
 

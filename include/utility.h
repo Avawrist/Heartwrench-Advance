@@ -22,8 +22,8 @@ typedef int   int32;
 
 #define GLOBAL_TIMER_MAX 600
 
-#define MAX_GAME_OBJECTS     40
-#define MAX_UNLOADED_OBJECTS 40
+#define MAX_GAME_OBJECTS     45
+#define MAX_UNLOADED_OBJECTS 45
 
 #define MAX_SPRITE_TILES 1350
 
@@ -120,11 +120,17 @@ typedef int   int32;
 #define SPIKE_DAMAGE 10
 
 // Gate Positions
-#define ROOM_LEVEL_1_SA_1_POS_X 1296
+#define ROOM_LEVEL_1_SA_1_POS_X 880
 #define ROOM_LEVEL_1_SA_1_POS_Y 1056
+
+#define ROOM_LEVEL_1_SA_2_POS_X -2368
+#define ROOM_LEVEL_1_SA_2_POS_Y 480
 
 #define ROOM_LEVEL_1_7_POS_X 112
 #define ROOM_LEVEL_1_7_POS_Y 928
+
+#define ROOM_LEVEL_1_12_POS_X -768
+#define ROOM_LEVEL_1_12_POS_Y 112
 
 // Enums
 enum XDirection
