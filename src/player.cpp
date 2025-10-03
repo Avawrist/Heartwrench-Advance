@@ -503,6 +503,24 @@ void Player::setJumpAnimation()
 															   2, 2, 2);
 }
 
+void Player::setDriftAnimation()
+{
+	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_drift.create_sprite(sprite_ptr->x().integer(), 
+																				 			   sprite_ptr->y().integer());
+	temp_sprite_ptr->set_camera(sprite_ptr->camera());
+	temp_sprite_ptr->set_z_order(sprite_ptr->z_order());
+	temp_sprite_ptr->set_visible(sprite_ptr->visible());
+
+	sprite_ptr->swap(temp_sprite_ptr.value());
+
+	temp_sprite_ptr.reset();
+
+	animate_action_ptr = bn::create_sprite_animate_action_forever(sprite_ptr.value(),
+															      2,
+															      bn::sprite_items::player_drift.tiles_item(),
+															      0, 0, 1, 1);
+}
+
 void Player::setFallAnimation()
 {
 	bn::optional<bn::sprite_ptr> temp_sprite_ptr = bn::sprite_items::player_jump.create_sprite(sprite_ptr->x().integer(), 
@@ -1176,8 +1194,11 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			// Update Air Frame //
 			//////////////////////
 			
-			if(animate_action_ptr->done() || (animate_action_ptr->update_forever() && rigidbody.normalized_dir.y() > 0))
-			{setFallAnimation();}
+			if(rigidbody.normalized_dir.y() > 0)
+			{
+				if(animate_action_ptr->done() || (animate_action_ptr->update_forever()))
+				{setFallAnimation();}
+			}
 
 			///////////////
 			// Get Input //
@@ -1249,9 +1270,11 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			{remaining_jump_input_frames = 0;}
 
 			// Jump Regrab
-			if(bn::keypad::a_held() && 
-			   rigidbody.normalized_dir.y() > 0)
-			{rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);}
+			if(rigidbody.normalized_dir.y() > 0 && bn::keypad::a_held())
+			{
+				if(global_overjump)  {setState(PLAYER_DRIFT);}
+				else                 {rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);}
+			}
 
 			/////////////////
 			// Add Gravity //
@@ -1260,6 +1283,65 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			rigidbody.addForce(PLAYER_GRAVITY_FORCE);
 			if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
 			{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
+
+		break;
+
+		case PLAYER_DRIFT:
+
+			///////////////
+			// Get Input //
+			///////////////
+
+			// Update drift speed //
+			// Simulate friction/momentum
+			if((bn::keypad::left_held() || bn::keypad::right_held()))
+			{
+				x_speed += X_SPEED_ACC_RATE;
+				x_speed = clamp(PLAYER_MIN_X_SPEED, PLAYER_MAX_X_SPEED, x_speed);
+			}
+
+			// Simulate momentum
+			if(bn::keypad::left_released())        
+			{
+				rigidbody.addForce(PLAYER_X_LEFT_DECAY_FORCE);
+				x_speed = PLAYER_MIN_X_SPEED;
+			}
+			else if (bn::keypad::right_released()) 
+			{
+				rigidbody.addForce(PLAYER_X_RIGHT_DECAY_FORCE);
+				x_speed = PLAYER_MIN_X_SPEED;
+			}
+
+			// Drift
+			if(bn::keypad::left_held())       
+			{rigidbody.addForce(PLAYER_X_LEFT_FORCE); x_dir = LEFT;}
+
+			else if(bn::keypad::right_held())
+			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE); x_dir = RIGHT;}
+
+			// Bell Jump
+			else if(global_bell_struck) {bellJump();}
+
+			// Spin
+			else if(bn::keypad::b_pressed() || b_requested || spin_buffered_frames)
+			{setState(PLAYER_SPIN_ATTACK);}
+
+			/////////////////
+			// Add Gravity //
+			/////////////////
+
+			rigidbody.addForce(PLAYER_GRAVITY_FORCE);
+			if(air_frames_elapsed >= PLAYER_PROLONGED_AIR_FRAMES_REQUIRED)
+			{rigidbody.addForce(PLAYER_PROLONGED_GRAVITY_FORCE);}
+
+			// Always add tertiary jump force in drift state
+			rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);
+
+			////////////////////
+			// Exit Condition //
+			////////////////////
+
+			if(bn::keypad::a_released() || grounded_detected) {setState(NONE);}
 
 		break;
 		
@@ -1953,6 +2035,15 @@ void Player::setState(ObjectState new_state)
 		*/
 
 		case PLAYER_AIR_NEUTRAL:
+		break;
+
+		case PLAYER_DRIFT:
+
+			rigidbody.removeYForces();
+			rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);
+
+			setDriftAnimation();
+
 		break;
 
 		case PLAYER_PHASE_STEP:

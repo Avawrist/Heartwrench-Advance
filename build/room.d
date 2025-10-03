@@ -157,6 +157,7 @@ room.o: G:/game/src/room.cpp G:/game/include/room.h \
  G:/game/include/player.h G:/game/build/bn_sprite_items_player_idle.h \
  G:/game/build/bn_sprite_items_player_walk.h \
  G:/game/build/bn_sprite_items_player_jump.h \
+ G:/game/build/bn_sprite_items_player_drift.h \
  G:/game/build/bn_sprite_items_player_spin_attack.h \
  G:/game/build/bn_sprite_items_player_death.h \
  G:/game/build/bn_sprite_items_player_climb.h \
@@ -352,6 +353,7 @@ G:/game/include/player.h:
 G:/game/build/bn_sprite_items_player_idle.h:
 G:/game/build/bn_sprite_items_player_walk.h:
 G:/game/build/bn_sprite_items_player_jump.h:
+G:/game/build/bn_sprite_items_player_drift.h:
 G:/game/build/bn_sprite_items_player_spin_attack.h:
 G:/game/build/bn_sprite_items_player_death.h:
 G:/game/build/bn_sprite_items_player_climb.h:

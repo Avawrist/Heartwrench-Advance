@@ -16,6 +16,7 @@
 #include "bn_sprite_items_player_idle.h"
 #include "bn_sprite_items_player_walk.h"
 #include "bn_sprite_items_player_jump.h"
+#include "bn_sprite_items_player_drift.h"
 #include "bn_sprite_items_player_spin_attack.h"
 #include "bn_sprite_items_player_death.h"
 #include "bn_sprite_items_player_climb.h"
@@ -79,7 +80,7 @@
 #define PLAYER_SECONDARY_JUMP_DECAY  1
 
 #define PLAYER_OVERJUMP_BONUS_FORCE   2
-#define PLAYER_TERTIARY_JUMP_Y_FORCE (-1 - ((uint32)global_overjump * PLAYER_OVERJUMP_BONUS_FORCE)) // Slows fall if jump held
+#define PLAYER_TERTIARY_JUMP_Y_FORCE (-2 - ((uint32)global_overjump * PLAYER_OVERJUMP_BONUS_FORCE)) // Slows fall if jump held
 #define PLAYER_TERTIARY_JUMP_DECAY    1
 
 //#define PLAYER_WALL_JUMP_X_FORCE           2
@@ -185,7 +186,6 @@
 #define PLAYER_UP_FRAME      45
 
 // Overworld
-
 #define PLAYER_OW_STEP_DISTANCE 16
 #define PLAYER_OW_STEP_DECAY    1
 #define PLAYER_OW_SPEED         1
@@ -317,6 +317,7 @@ struct Player : GameObject {
 	void setIdleAnimation();
 	void setWalkAnimation();
 	void setJumpAnimation();
+	void setDriftAnimation();
 	void setFallAnimation();
 	void setBellJumpAnimation();
 	void setSpinAttackAnimation();
