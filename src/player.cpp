@@ -1194,12 +1194,9 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			// Update Air Frame //
 			//////////////////////
 			
-			if(rigidbody.normalized_dir.y() > 0)
-			{
-				if(animate_action_ptr->done() || (animate_action_ptr->update_forever()))
-				{setFallAnimation();}
-			}
-
+			if(animate_action_ptr->done() || (animate_action_ptr->update_forever()))
+			{setFallAnimation();}
+			
 			///////////////
 			// Get Input //
 			///////////////
@@ -1231,6 +1228,13 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			else if(bn::keypad::right_held())
 			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE); x_dir = RIGHT;}
 	
+			// Jump Regrab
+			if(rigidbody.normalized_dir.y() > 0 && bn::keypad::a_held())
+			{
+				if(global_overjump && !late_jump_grace_frames)  {setState(PLAYER_DRIFT);}
+				else                 							{rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);}
+			}
+
 			// Jumps
 			if(bn::keypad::a_pressed()) 
 			{
@@ -1268,13 +1272,6 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 
 			else if(bn::keypad::a_released()) 
 			{remaining_jump_input_frames = 0;}
-
-			// Jump Regrab
-			if(rigidbody.normalized_dir.y() > 0 && bn::keypad::a_held())
-			{
-				if(global_overjump)  {setState(PLAYER_DRIFT);}
-				else                 {rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);}
-			}
 
 			/////////////////
 			// Add Gravity //
@@ -1320,7 +1317,7 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			{rigidbody.addForce(PLAYER_X_RIGHT_FORCE); x_dir = RIGHT;}
 
 			// Bell Jump
-			else if(global_bell_struck) {bellJump();}
+			if(global_bell_struck) {bellJump();}
 
 			// Spin
 			else if(bn::keypad::b_pressed() || b_requested || spin_buffered_frames)
@@ -1651,10 +1648,6 @@ void Player::updateStateMachine(bn::vector<GameObject*, MAX_GAME_OBJECTS>&     g
 			// HB 1
 			if(animate_action_ptr->current_index() == PLAYER_SPIN_1_CREATE_HB_FRAME)
 			{createSpinAttack1Hitbox(game_objects, camera);}
-
-			// HB 2
-			//if(animate_action_ptr->current_index() == PLAYER_SPIN_2_CREATE_HB_FRAME)
-			//{createSpinAttack2Hitbox(game_objects, camera);}
 
 			// End State
 			if(animate_action_ptr->done())
@@ -2039,7 +2032,7 @@ void Player::setState(ObjectState new_state)
 
 		case PLAYER_DRIFT:
 
-			rigidbody.removeYForces();
+			//rigidbody.removeYForces();
 			rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);
 
 			setDriftAnimation();
