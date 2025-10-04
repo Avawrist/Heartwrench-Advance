@@ -381,6 +381,9 @@ void Hitbox::resolveCheckpointCollision(GameObject& object)
             // Take cost
             global_level_currency -= ((Checkpoint&)(object)).cost;
 
+            // HUD effect
+            global_hud_currency_flash_frames = HUD_FLASH_FRAMES;
+
             // Activate Checkpoint and play overwrite animation
             object.setState(CHECKPOINT_IDLE_ON);
             ((Checkpoint&)(object)).setOverwriteAnimation();
@@ -405,6 +408,9 @@ void Hitbox::resolveWrenchpointCollision(GameObject& object)
             // Take cost
             global_level_currency -= ((Wrenchpoint&)(object)).cost;
 
+            // HUD effect
+            global_hud_currency_flash_frames = HUD_FLASH_FRAMES;
+
             // Activate wrenchpoint
             object.setState(WRENCHPOINT_COLLECTED);
 
@@ -427,6 +433,9 @@ void Hitbox::resolveJumppointCollision(GameObject& object)
             // Take cost
             global_level_currency -= ((Jumppoint&)(object)).cost;
 
+            // HUD effect
+            global_hud_currency_flash_frames = HUD_FLASH_FRAMES;
+
             // Activate jumppoint
             object.setState(JUMPPOINT_COLLECTED);
 
@@ -448,6 +457,9 @@ void Hitbox::resolveHealthpointCollision(GameObject& object)
         {
             // Take cost
             global_level_currency -= ((Healthpoint&)(object)).cost;
+
+            // HUD effect
+            global_hud_currency_flash_frames = HUD_FLASH_FRAMES;
 
             // Activate jumppoint
             object.setState(HEALTHPOINT_COLLECTED);
