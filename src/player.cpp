@@ -2784,7 +2784,8 @@ void Player::resolveSealedGateCollision(GameObject& object)
 		// Enter Gate
 		if(bn::keypad::up_pressed() && 
 		   object.state == SEALED_GATE_OPEN_3 && 
-		   state != PLAYER_DOOR)   
+		   state != PLAYER_DOOR &&
+		   grounded_detected)   
 		{
 			setX(object.collider.x());
 			setState(PLAYER_DOOR);
@@ -2852,7 +2853,8 @@ void Player::resolveSubAreaGateCollision(GameObject& object)
 		// Enter Gate
 		if(bn::keypad::up_pressed() && 
 		   object.state == SUB_AREA_GATE_OPEN_3 && 
-		   state != PLAYER_DOOR)
+		   state != PLAYER_DOOR &&
+		   grounded_detected)
 		{
 			setX(object.collider.x());
 			setState(PLAYER_DOOR);
@@ -2866,7 +2868,8 @@ void Player::resolveOpenGateCollision(GameObject& object)
 	{
 		// Enter Gate
 		if(bn::keypad::up_pressed() &&
-		   state != PLAYER_DOOR)
+		   state != PLAYER_DOOR &&
+		   grounded_detected)
 		{
 			setX(object.collider.x());
 			setState(PLAYER_DOOR);
