@@ -34,7 +34,6 @@ Enemy& Enemy::operator =(const Enemy& other)
 void Enemy::wallSplatCheck()
 {
 	if(col_x_offset != 0 &&
-	   (state == OBJECT_HITSTUN || state == OBJECT_DEATH) &&
 	   abs(rigidbody.final_dir.x().integer()) >= GAME_OBJECT_REQUIRED_SPLAT_SPEED)
 	{
 
@@ -347,6 +346,8 @@ void Enemy::resolveAutoPlatformCollision(GameObject& object)
 
 void Enemy::resolveSmashBlockLargeCollision(GameObject& object)
 {
+	if(object.state == OBJECT_DEATH) {return;}
+
 	if(collider.isCollision(object.collider))
     {
         // Resolve X Axis Collision //
@@ -375,6 +376,8 @@ void Enemy::resolveSmashBlockLargeCollision(GameObject& object)
 
 void Enemy::resolveSmashBlockMiniCollision(GameObject& object)
 {
+	if(object.state == OBJECT_DEATH) {return;}
+
 	if(collider.isCollision(object.collider))
     {
         // Resolve X Axis Collision //
@@ -403,6 +406,8 @@ void Enemy::resolveSmashBlockMiniCollision(GameObject& object)
 
 void Enemy::resolveSmashBlockZigguratLCollision(GameObject& object)
 {
+	if(object.state == OBJECT_DEATH) {return;}
+
 	if(collider.isCollision(object.collider))
     {
         // Resolve X Axis Collision //
@@ -431,6 +436,8 @@ void Enemy::resolveSmashBlockZigguratLCollision(GameObject& object)
 
 void Enemy::resolveSmashBlockZigguratCCollision(GameObject& object)
 {
+	if(object.state == OBJECT_DEATH) {return;}
+
 	if(collider.isCollision(object.collider))
     {
         // Resolve X Axis Collision //
@@ -459,6 +466,8 @@ void Enemy::resolveSmashBlockZigguratCCollision(GameObject& object)
 
 void Enemy::resolveSmashBlockZigguratRCollision(GameObject& object)
 {
+	if(object.state == OBJECT_DEATH) {return;}
+
 	if(collider.isCollision(object.collider))
     {
         // Resolve X Axis Collision //
@@ -511,6 +520,8 @@ void Enemy::resolveSmallVaseCollision(GameObject& object)
 
 void Enemy::resolveHPTotemCollision(GameObject& object)
 {
+	if(object.state == OBJECT_DEATH) {return;}
+
 	if(collider.isCollision(object.collider))
     {
         // Resolve X Axis Collision //
@@ -628,8 +639,10 @@ void Enemy::resolveThornBarCollision(GameObject& object)
 
 void Enemy::resolveGroundGhoulCollision(GameObject& object)
 {	
+	if(object.state == OBJECT_DEATH) {return;}
+
 	if(collider.isCollision(object.collider) &&
-       (object.state == OBJECT_HITSTUN || object.state == OBJECT_DEATH))
+       (object.state == OBJECT_HITSTUN))
 	{
 		applyHit(object.damage, object.rigidbody.normalized_dir.x().integer(), 0);
 	}
@@ -637,7 +650,7 @@ void Enemy::resolveGroundGhoulCollision(GameObject& object)
 
 void Enemy::resolveBellTrollCollision(GameObject& object)
 {
-	if(object.state == OBJECT_HITSTUN || object.state == OBJECT_DEATH) {return;}
+	if(object.state == OBJECT_DEATH) {return;}
 	
 	switch(object.state)
 	{
@@ -685,6 +698,8 @@ void Enemy::resolveBellTrollCollision(GameObject& object)
 
 void Enemy::resolveWingedTrollLCollision(GameObject& object)
 {	
+	if(object.state == OBJECT_DEATH) {return;}
+
 	if(collider.isCollision(object.collider) &&
        (object.state == OBJECT_HITSTUN || object.state == OBJECT_DEATH))
 	{
@@ -694,6 +709,8 @@ void Enemy::resolveWingedTrollLCollision(GameObject& object)
 
 void Enemy::resolveWingedTrollRCollision(GameObject& object)
 {	
+	if(object.state == OBJECT_DEATH) {return;}
+
 	if(collider.isCollision(object.collider) &&
        (object.state == OBJECT_HITSTUN || object.state == OBJECT_DEATH))
 	{
@@ -707,6 +724,6 @@ void Enemy::resolveXAxisCollision(const Collider& other_collider)
 	GameObject::resolveXAxisCollision(other_collider);
 	
 	// Wall splat check
-	if(splat_frames == 0)
+	if(splat_frames == 0 && state == OBJECT_HITSTUN)
 	{wallSplatCheck();}
 }

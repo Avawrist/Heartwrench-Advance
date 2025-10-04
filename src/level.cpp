@@ -2525,9 +2525,10 @@ void Level::togglePauseScreen()
         currency_num_2_sprite_ptr->set_visible(true);
         currency_icon_sprite_ptr->set_visible(true);
         hud_level_name.setVisible(true);
-        hud_upgrade_1_sprite_ptr->set_visible(true);
-        hud_upgrade_2_sprite_ptr->set_visible(true);
-        hud_upgrade_3_sprite_ptr->set_visible(true);
+
+        if(hud_upgrade_1_sprite_ptr.get() != NULL) {hud_upgrade_1_sprite_ptr->set_visible(true);}
+        if(hud_upgrade_2_sprite_ptr.get() != NULL) {hud_upgrade_2_sprite_ptr->set_visible(true);}
+        if(hud_upgrade_3_sprite_ptr.get() != NULL) {hud_upgrade_3_sprite_ptr->set_visible(true);}
 
         // Reveal GameObjects //
         for(int32 i = 0; i < current_room.game_objects.size(); i++)
@@ -2561,9 +2562,10 @@ void Level::togglePauseScreen()
         currency_num_2_sprite_ptr->set_visible(false);
         currency_icon_sprite_ptr->set_visible(false);
         hud_level_name.setVisible(false);
-        hud_upgrade_1_sprite_ptr->set_visible(false);
-        hud_upgrade_2_sprite_ptr->set_visible(false);
-        hud_upgrade_3_sprite_ptr->set_visible(false);
+
+        if(hud_upgrade_1_sprite_ptr.get() != NULL) {hud_upgrade_1_sprite_ptr->set_visible(false);}
+        if(hud_upgrade_2_sprite_ptr.get() != NULL) {hud_upgrade_2_sprite_ptr->set_visible(false);}
+        if(hud_upgrade_3_sprite_ptr.get() != NULL) {hud_upgrade_3_sprite_ptr->set_visible(false);}
 
         // Hide GameObjects //
         for(int32 i = 0; i < current_room.game_objects.size(); i++)

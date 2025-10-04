@@ -1025,12 +1025,9 @@ void Player::applyHit(int32 _damage, int32 knockback_x_dir, int32 knockback_y_di
     global_screenshake_severity = GENERIC_HIT_SCREENSHAKE_SEVERITY;
 
     // Object physics:
-    rigidbody.removeForces();
-	/*
     rigidbody.addForce(Force(bn::fixed_point_t<12>(GENERIC_HIT_X_KNOCKBACK * knockback_x_dir, 
                                                    GENERIC_HIT_Y_KNOCKBACK * knockback_y_dir), 
                                                    GENERIC_HIT_KNOCKBACK_DECAY));
-	*/
 
     // Object damage:
     applyDamage(_damage);
@@ -2032,9 +2029,6 @@ void Player::setState(ObjectState new_state)
 
 		case PLAYER_DRIFT:
 
-			//rigidbody.removeYForces();
-			rigidbody.addForce(PLAYER_TERTIARY_JUMP_FORCE);
-
 			setDriftAnimation();
 
 		break;
@@ -2925,7 +2919,7 @@ void Player::resolveGroundGhoulCollision(GameObject& object)
 		//int32 knockback_x_dir;
 
 		//if(x() > object.x()) {knockback_x_dir = 1;}
-		//else				 {knockback_x_dir = -1;}
+		//else				   {knockback_x_dir = -1;}
 
 		applyHit(object.damage, 0, 0);
 	}

@@ -11,7 +11,7 @@
 #define ENEMY_HP_BAR_X_OFFSET  collider.width
 #define ENEMY_HP_BAR_Y_OFFSET -8
 
-#define ENEMY_SPLAT_CD_FRAMES 20
+#define ENEMY_SPLAT_CD_FRAMES 40
 
 struct Enemy : GameObject
 {

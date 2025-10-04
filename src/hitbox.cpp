@@ -150,7 +150,7 @@ void Hitbox::applyWallHit(GameObject& object)
 
     // Determine splat effect offset
     int32 splat_x_offset = 0;
-    if     (x_dir == LEFT)  {splat_x_offset = (object.collider.width / 2) - SPLAT_SPRITE_X_OFFSET;}
+    if     (x_dir == LEFT)  {splat_x_offset = (object.collider.width / 2)  - SPLAT_SPRITE_X_OFFSET;}
     else if(x_dir == RIGHT) {splat_x_offset = (-object.collider.width / 2) + SPLAT_SPRITE_X_OFFSET;}
 
     // Global juice
@@ -194,7 +194,6 @@ void Hitbox::update(const RoomBounds& 							   room_bounds,
                     const bn::regular_bg_item&                     bg_item,
                     const bn::camera_ptr&                          camera)
 {
-    
     /////////////////////////////////
     // Early out for 30FPS Objects //
     /////////////////////////////////
