@@ -724,6 +724,6 @@ void Enemy::resolveXAxisCollision(const Collider& other_collider)
 	GameObject::resolveXAxisCollision(other_collider);
 	
 	// Wall splat check
-	if(splat_frames == 0 && state == OBJECT_HITSTUN)
+	if(splat_frames == 0 && (state == OBJECT_HITSTUN || state == OBJECT_DEATH))
 	{wallSplatCheck();}
 }
