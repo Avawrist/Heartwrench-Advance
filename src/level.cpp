@@ -1099,7 +1099,7 @@ void Level::updateOverworld()
     // Set HUD Name 
     if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_1_highlighted)
     {hud_level_name.setSpritesFromString(" TURN ON A CHIME", 16);}
-    else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->under_construction_highlighted)
+    else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_2_highlighted)
     {hud_level_name.setSpritesFromString("WORK IN PROGRESS", 16);}
     else
     {hud_level_name.setSpritesFromString("       OVERWORLD", 16);}
@@ -1118,7 +1118,7 @@ void Level::updateOverworld()
 
             bn::sound_items::select.play();
         }
-        else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->under_construction_highlighted)
+        else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_2_highlighted)
         {
             //...
         }

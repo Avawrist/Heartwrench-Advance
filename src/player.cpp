@@ -128,8 +128,8 @@ Player::Player(const Player& other) : GameObject(other)
 	left_wj_eligible                = other.left_wj_eligible;
 	right_wj_eligible               = other.right_wj_eligible;
 	is_dead                         = other.is_dead;
-	level_1_highlighted         = other.level_1_highlighted;
-	under_construction_highlighted  = other.under_construction_highlighted;
+	level_1_highlighted             = other.level_1_highlighted;
+	level_2_highlighted             = other.level_2_highlighted;
 
 	a_requested   = other.a_requested;
 	b_requested   = other.b_requested;
@@ -201,8 +201,8 @@ Player& Player::operator =(const Player& other)
 	left_wj_eligible         		= other.left_wj_eligible;
 	right_wj_eligible        		= other.right_wj_eligible;
 	is_dead                  		= other.is_dead;
-	level_1_highlighted  		= other.level_1_highlighted;
-	under_construction_highlighted  = other.under_construction_highlighted;
+	level_1_highlighted  		    = other.level_1_highlighted;
+	level_2_highlighted             = other.level_2_highlighted;
 	
 
 	a_requested   = other.a_requested;
@@ -3052,13 +3052,13 @@ void Player::resolveOWTileCollision(const bn::regular_bg_ptr&                   
 	else if(tile_index >= OW_UNDER_CONSTRUCTION_MIN_INDEX &&
 	  		tile_index <= OW_UNDER_CONSTRUCTION_MAX_INDEX)
 	{
-		under_construction_highlighted = true;
+		level_2_highlighted = true;
 	}
 	else
 	{
 		// Reset highlight bools
 		level_1_highlighted = false;
-		under_construction_highlighted = false;
+		level_2_highlighted = false;
 	}
 
 	// Record Player's OW position in global variables

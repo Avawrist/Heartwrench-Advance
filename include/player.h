@@ -270,7 +270,7 @@ struct Player : GameObject {
 	bool r_requested;
 
 	bool level_1_highlighted;
-	bool under_construction_highlighted;
+	bool level_2_highlighted;
 
 	Hitbox* hitbox_1_ptr;
 	Hitbox* hitbox_2_ptr;
