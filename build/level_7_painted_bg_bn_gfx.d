@@ -1,0 +1,1 @@
+level_7_painted_bg_bn_gfx.o: level_7_painted_bg_bn_gfx.s

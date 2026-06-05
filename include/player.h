@@ -271,6 +271,14 @@ struct Player : GameObject {
 
 	bool level_1_highlighted;
 	bool level_2_highlighted;
+	bool level_3_highlighted;
+	bool level_4_highlighted;
+	bool level_5_highlighted;
+	bool level_6_highlighted;
+	bool level_7_highlighted;
+	bool level_8_highlighted;
+	bool level_9_highlighted;
+	bool level_10_highlighted;
 
 	Hitbox* hitbox_1_ptr;
 	Hitbox* hitbox_2_ptr;

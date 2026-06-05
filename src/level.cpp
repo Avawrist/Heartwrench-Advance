@@ -446,6 +446,366 @@ void Level::load()
 
         break;
 
+        case LEVEL_LEVEL_2:
+            
+            // Load BGs //
+            main_bg_ptr       = bn::regular_bg_items::level_2_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::level_2_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::level_2_level_bg.map_item(),
+                                                                             0, 0);
+
+            object_bg_ptr  = bn::regular_bg_items::level_2_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::level_2_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::level_2_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               3,
+                                                                               bn::regular_bg_items::level_2_painted_bg.map_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::level_2_bg_flash_palette.create_palette();
+
+            // Update cells
+            cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("         LEVEL B", 16);
+
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
+
+            // Set Painted BG initial position
+            painted_bg_ptr->set_position(LEVEL_LEVEL_2_PAINTED_BG_X, LEVEL_LEVEL_2_PAINTED_BG_Y);
+            
+            // Music
+            //if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
+            //{bn::music_items::turn_on_a_chime.play();}
+
+        break;
+
+        case LEVEL_LEVEL_3:
+            
+            // Load BGs //
+            main_bg_ptr       = bn::regular_bg_items::level_3_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::level_3_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::level_3_level_bg.map_item(),
+                                                                             0, 0);
+
+            object_bg_ptr  = bn::regular_bg_items::level_3_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::level_3_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::level_3_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               3,
+                                                                               bn::regular_bg_items::level_3_painted_bg.map_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::level_3_bg_flash_palette.create_palette();
+
+            // Update cells
+            cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("         LEVEL C", 16);
+
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
+
+            // Set Painted BG initial position
+            painted_bg_ptr->set_position(LEVEL_LEVEL_3_PAINTED_BG_X, LEVEL_LEVEL_3_PAINTED_BG_Y);
+            
+            // Music
+            //if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
+            //{bn::music_items::turn_on_a_chime.play();}
+
+        break;
+
+        case LEVEL_LEVEL_4:
+            
+            // Load BGs //
+            main_bg_ptr       = bn::regular_bg_items::level_4_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::level_4_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::level_4_level_bg.map_item(),
+                                                                             0, 0);
+
+            object_bg_ptr  = bn::regular_bg_items::level_4_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::level_4_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::level_4_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               3,
+                                                                               bn::regular_bg_items::level_4_painted_bg.map_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::level_4_bg_flash_palette.create_palette();
+
+            // Update cells
+            cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("         LEVEL D", 16);
+
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
+
+            // Set Painted BG initial position
+            painted_bg_ptr->set_position(LEVEL_LEVEL_4_PAINTED_BG_X, LEVEL_LEVEL_4_PAINTED_BG_Y);
+            
+            // Music
+            //if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
+            //{bn::music_items::turn_on_a_chime.play();}
+
+        break;
+
+        case LEVEL_LEVEL_5:
+            
+            // Load BGs //
+            main_bg_ptr       = bn::regular_bg_items::level_5_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::level_5_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::level_5_level_bg.map_item(),
+                                                                             0, 0);
+
+            object_bg_ptr  = bn::regular_bg_items::level_5_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::level_5_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::level_5_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               3,
+                                                                               bn::regular_bg_items::level_5_painted_bg.map_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::level_5_bg_flash_palette.create_palette();
+
+            // Update cells
+            cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("         LEVEL E", 16);
+
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
+
+            // Set Painted BG initial position
+            painted_bg_ptr->set_position(LEVEL_LEVEL_5_PAINTED_BG_X, LEVEL_LEVEL_5_PAINTED_BG_Y);
+            
+            // Music
+            //if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
+            //{bn::music_items::turn_on_a_chime.play();}
+
+        break;
+
+        case LEVEL_LEVEL_6:
+            
+            // Load BGs //
+            main_bg_ptr       = bn::regular_bg_items::level_6_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::level_6_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::level_6_level_bg.map_item(),
+                                                                             0, 0);
+
+            object_bg_ptr  = bn::regular_bg_items::level_6_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::level_6_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::level_6_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               3,
+                                                                               bn::regular_bg_items::level_6_painted_bg.map_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::level_6_bg_flash_palette.create_palette();
+
+            // Update cells
+            cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("         LEVEL F", 16);
+
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
+
+            // Set Painted BG initial position
+            painted_bg_ptr->set_position(LEVEL_LEVEL_6_PAINTED_BG_X, LEVEL_LEVEL_6_PAINTED_BG_Y);
+            
+            // Music
+            //if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
+            //{bn::music_items::turn_on_a_chime.play();}
+
+        break;
+
+        case LEVEL_LEVEL_7:
+            
+            // Load BGs //
+            main_bg_ptr       = bn::regular_bg_items::level_7_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::level_7_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::level_7_level_bg.map_item(),
+                                                                             0, 0);
+
+            object_bg_ptr  = bn::regular_bg_items::level_7_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::level_7_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::level_7_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               3,
+                                                                               bn::regular_bg_items::level_7_painted_bg.map_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::level_7_bg_flash_palette.create_palette();
+
+            // Update cells
+            cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("         LEVEL G", 16);
+
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
+
+            // Set Painted BG initial position
+            painted_bg_ptr->set_position(LEVEL_LEVEL_7_PAINTED_BG_X, LEVEL_LEVEL_7_PAINTED_BG_Y);
+            
+            // Music
+            //if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
+            //{bn::music_items::turn_on_a_chime.play();}
+
+        break;
+
+        case LEVEL_LEVEL_8:
+            
+            // Load BGs //
+            main_bg_ptr       = bn::regular_bg_items::level_8_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::level_8_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::level_8_level_bg.map_item(),
+                                                                             0, 0);
+
+            object_bg_ptr  = bn::regular_bg_items::level_8_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::level_8_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::level_8_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               3,
+                                                                               bn::regular_bg_items::level_8_painted_bg.map_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::level_8_bg_flash_palette.create_palette();
+
+            // Update cells
+            cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("         LEVEL H", 16);
+
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
+
+            // Set Painted BG initial position
+            painted_bg_ptr->set_position(LEVEL_LEVEL_8_PAINTED_BG_X, LEVEL_LEVEL_8_PAINTED_BG_Y);
+            
+            // Music
+            //if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
+            //{bn::music_items::turn_on_a_chime.play();}
+
+        break;
+
+        case LEVEL_LEVEL_9:
+            
+            // Load BGs //
+            main_bg_ptr       = bn::regular_bg_items::level_9_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::level_9_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::level_9_level_bg.map_item(),
+                                                                             0, 0);
+
+            object_bg_ptr  = bn::regular_bg_items::level_9_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::level_9_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::level_9_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               3,
+                                                                               bn::regular_bg_items::level_9_painted_bg.map_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::level_9_bg_flash_palette.create_palette();
+
+            // Update cells
+            cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("         LEVEL I", 16);
+
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
+
+            // Set Painted BG initial position
+            painted_bg_ptr->set_position(LEVEL_LEVEL_9_PAINTED_BG_X, LEVEL_LEVEL_9_PAINTED_BG_Y);
+            
+            // Music
+            //if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
+            //{bn::music_items::turn_on_a_chime.play();}
+
+        break;
+
+        case LEVEL_LEVEL_10:
+            
+            // Load BGs //
+            main_bg_ptr       = bn::regular_bg_items::level_10_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::level_10_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::level_10_level_bg.map_item(),
+                                                                             0, 0);
+
+            object_bg_ptr  = bn::regular_bg_items::level_10_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::level_10_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::level_10_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               3,
+                                                                               bn::regular_bg_items::level_10_painted_bg.map_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::level_10_bg_flash_palette.create_palette();
+
+            // Update cells
+            cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("         LEVEL J", 16);
+
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
+
+            // Set Painted BG initial position
+            painted_bg_ptr->set_position(LEVEL_LEVEL_10_PAINTED_BG_X, LEVEL_LEVEL_10_PAINTED_BG_Y);
+            
+            // Music
+            //if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
+            //{bn::music_items::turn_on_a_chime.play();}
+
+        break;
+
         default:
 
             BN_LOG("Level creation failed - Level Name not found.");
@@ -797,6 +1157,402 @@ void Level::load(LevelName level_name)
             
         break;
 
+        case LEVEL_LEVEL_2:
+            
+            // Player Spawn //
+            player_spawn.setSpawnPosAC(192, 2400);
+            player_spawn.spawn_room = ROOM_LEVEL_2_1;
+
+            // Load BGs //
+            main_bg_ptr       = bn::regular_bg_items::level_2_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::level_2_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::level_2_level_bg.map_item(),
+                                                                             0, 0);
+
+            object_bg_ptr  = bn::regular_bg_items::level_2_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::level_2_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::level_2_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               3,
+                                                                               bn::regular_bg_items::level_2_painted_bg.map_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::level_2_bg_flash_palette.create_palette();
+
+            // Update cells
+            cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("         LEVEL B", 16);
+
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
+
+            // Set Painted BG initial position
+            painted_bg_ptr->set_position(LEVEL_LEVEL_2_PAINTED_BG_X, LEVEL_LEVEL_2_PAINTED_BG_Y);
+
+            // Music
+            //if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
+            //{bn::music_items::turn_on_a_chime.play();}
+            
+        break;
+
+        case LEVEL_LEVEL_3:
+            
+            // Player Spawn //
+            player_spawn.setSpawnPosAC(192, 2400);
+            player_spawn.spawn_room = ROOM_LEVEL_3_1;
+
+            // Load BGs //
+            main_bg_ptr       = bn::regular_bg_items::level_3_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::level_3_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::level_3_level_bg.map_item(),
+                                                                             0, 0);
+
+            object_bg_ptr  = bn::regular_bg_items::level_3_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::level_3_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::level_3_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               3,
+                                                                               bn::regular_bg_items::level_3_painted_bg.map_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::level_3_bg_flash_palette.create_palette();
+
+            // Update cells
+            cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("         LEVEL C", 16);
+
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
+
+            // Set Painted BG initial position
+            painted_bg_ptr->set_position(LEVEL_LEVEL_3_PAINTED_BG_X, LEVEL_LEVEL_3_PAINTED_BG_Y);
+
+            // Music
+            //if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
+            //{bn::music_items::turn_on_a_chime.play();}
+            
+        break;
+
+        case LEVEL_LEVEL_4:
+            
+            // Player Spawn //
+            player_spawn.setSpawnPosAC(192, 2400);
+            player_spawn.spawn_room = ROOM_LEVEL_4_1;
+
+            // Load BGs //
+            main_bg_ptr       = bn::regular_bg_items::level_4_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::level_4_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::level_4_level_bg.map_item(),
+                                                                             0, 0);
+
+            object_bg_ptr  = bn::regular_bg_items::level_4_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::level_4_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::level_4_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               3,
+                                                                               bn::regular_bg_items::level_4_painted_bg.map_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::level_4_bg_flash_palette.create_palette();
+
+            // Update cells
+            cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("         LEVEL D", 16);
+
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
+
+            // Set Painted BG initial position
+            painted_bg_ptr->set_position(LEVEL_LEVEL_4_PAINTED_BG_X, LEVEL_LEVEL_4_PAINTED_BG_Y);
+
+            // Music
+            //if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
+            //{bn::music_items::turn_on_a_chime.play();}
+            
+        break;
+
+        case LEVEL_LEVEL_5:
+            
+            // Player Spawn //
+            player_spawn.setSpawnPosAC(192, 2400);
+            player_spawn.spawn_room = ROOM_LEVEL_5_1;
+
+            // Load BGs //
+            main_bg_ptr       = bn::regular_bg_items::level_5_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::level_5_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::level_5_level_bg.map_item(),
+                                                                             0, 0);
+
+            object_bg_ptr  = bn::regular_bg_items::level_5_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::level_5_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::level_5_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               3,
+                                                                               bn::regular_bg_items::level_5_painted_bg.map_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::level_5_bg_flash_palette.create_palette();
+
+            // Update cells
+            cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("         LEVEL E", 16);
+
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
+
+            // Set Painted BG initial position
+            painted_bg_ptr->set_position(LEVEL_LEVEL_5_PAINTED_BG_X, LEVEL_LEVEL_5_PAINTED_BG_Y);
+
+            // Music
+            //if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
+            //{bn::music_items::turn_on_a_chime.play();}
+            
+        break;
+
+        case LEVEL_LEVEL_6:
+            
+            // Player Spawn //
+            player_spawn.setSpawnPosAC(192, 2400);
+            player_spawn.spawn_room = ROOM_LEVEL_6_1;
+
+            // Load BGs //
+            main_bg_ptr       = bn::regular_bg_items::level_6_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::level_6_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::level_6_level_bg.map_item(),
+                                                                             0, 0);
+
+            object_bg_ptr  = bn::regular_bg_items::level_6_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::level_6_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::level_6_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               3,
+                                                                               bn::regular_bg_items::level_6_painted_bg.map_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::level_6_bg_flash_palette.create_palette();
+
+            // Update cells
+            cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("         LEVEL F", 16);
+
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
+
+            // Set Painted BG initial position
+            painted_bg_ptr->set_position(LEVEL_LEVEL_6_PAINTED_BG_X, LEVEL_LEVEL_6_PAINTED_BG_Y);
+
+            // Music
+            //if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
+            //{bn::music_items::turn_on_a_chime.play();}
+            
+        break;
+
+        case LEVEL_LEVEL_7:
+            
+            // Player Spawn //
+            player_spawn.setSpawnPosAC(192, 2400);
+            player_spawn.spawn_room = ROOM_LEVEL_7_1;
+
+            // Load BGs //
+            main_bg_ptr       = bn::regular_bg_items::level_7_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::level_7_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::level_7_level_bg.map_item(),
+                                                                             0, 0);
+
+            object_bg_ptr  = bn::regular_bg_items::level_7_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::level_7_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::level_7_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               3,
+                                                                               bn::regular_bg_items::level_7_painted_bg.map_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::level_7_bg_flash_palette.create_palette();
+
+            // Update cells
+            cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("         LEVEL G", 16);
+
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
+
+            // Set Painted BG initial position
+            painted_bg_ptr->set_position(LEVEL_LEVEL_7_PAINTED_BG_X, LEVEL_LEVEL_7_PAINTED_BG_Y);
+
+            // Music
+            //if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
+            //{bn::music_items::turn_on_a_chime.play();}
+            
+        break;
+
+        case LEVEL_LEVEL_8:
+            
+            // Player Spawn //
+            player_spawn.setSpawnPosAC(192, 2400);
+            player_spawn.spawn_room = ROOM_LEVEL_8_1;
+
+            // Load BGs //
+            main_bg_ptr       = bn::regular_bg_items::level_8_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::level_8_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::level_8_level_bg.map_item(),
+                                                                             0, 0);
+
+            object_bg_ptr  = bn::regular_bg_items::level_8_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::level_8_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::level_8_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               3,
+                                                                               bn::regular_bg_items::level_8_painted_bg.map_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::level_8_bg_flash_palette.create_palette();
+
+            // Update cells
+            cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("         LEVEL H", 16);
+
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
+
+            // Set Painted BG initial position
+            painted_bg_ptr->set_position(LEVEL_LEVEL_8_PAINTED_BG_X, LEVEL_LEVEL_8_PAINTED_BG_Y);
+
+            // Music
+            //if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
+            //{bn::music_items::turn_on_a_chime.play();}
+            
+        break;
+
+        case LEVEL_LEVEL_9:
+            
+            // Player Spawn //
+            player_spawn.setSpawnPosAC(192, 2400);
+            player_spawn.spawn_room = ROOM_LEVEL_9_1;
+
+            // Load BGs //
+            main_bg_ptr       = bn::regular_bg_items::level_9_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::level_9_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::level_9_level_bg.map_item(),
+                                                                             0, 0);
+
+            object_bg_ptr  = bn::regular_bg_items::level_9_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::level_9_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::level_9_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               3,
+                                                                               bn::regular_bg_items::level_9_painted_bg.map_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::level_9_bg_flash_palette.create_palette();
+
+            // Update cells
+            cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("         LEVEL I", 16);
+
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
+
+            // Set Painted BG initial position
+            painted_bg_ptr->set_position(LEVEL_LEVEL_9_PAINTED_BG_X, LEVEL_LEVEL_9_PAINTED_BG_Y);
+
+            // Music
+            //if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
+            //{bn::music_items::turn_on_a_chime.play();}
+            
+        break;
+
+        case LEVEL_LEVEL_10:
+            
+            // Player Spawn //
+            player_spawn.setSpawnPosAC(192, 2400);
+            player_spawn.spawn_room = ROOM_LEVEL_10_1;
+
+            // Load BGs //
+            main_bg_ptr       = bn::regular_bg_items::level_10_level_bg.create_bg(0, 0);
+            bg_item           = bn::regular_bg_items::level_10_level_bg;
+            level_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(main_bg_ptr.value(),
+                                                                             0,
+                                                                             bn::regular_bg_items::level_10_level_bg.map_item(),
+                                                                             0, 0);
+
+            object_bg_ptr  = bn::regular_bg_items::level_10_object_bg.create_bg(0, 0);
+            object_bg_item = bn::regular_bg_items::level_10_object_bg;
+
+            painted_bg_ptr      = bn::regular_bg_items::level_10_painted_bg.create_bg(0, 0);
+            painted_bg_anim_ptr = bn::create_regular_bg_animate_action_forever(painted_bg_ptr.value(),
+                                                                               3,
+                                                                               bn::regular_bg_items::level_10_painted_bg.map_item(),
+                                                                               0, 0, 0, 1, 1, 1, 2, 2, 2);
+
+            // Update flash palette
+            default_flash_palette_ptr = bn::bg_palette_items::level_10_bg_flash_palette.create_palette();
+
+            // Update cells
+            cells = main_bg_ptr->map().cells_ref().value();
+
+            // Update HUD level name text box
+            hud_level_name.setSpritesFromString("         LEVEL J", 16);
+
+            // Next level
+            next_level = LEVEL_TITLE_SCREEN;
+
+            // Set Painted BG initial position
+            painted_bg_ptr->set_position(LEVEL_LEVEL_10_PAINTED_BG_X, LEVEL_LEVEL_10_PAINTED_BG_Y);
+
+            // Music
+            //if(bn::music::playing_item() != bn::music_items::turn_on_a_chime)
+            //{bn::music_items::turn_on_a_chime.play();}
+            
+        break;
+
         default:
 
             BN_LOG("Level creation failed - Level Name not found.");
@@ -1100,7 +1856,23 @@ void Level::updateOverworld()
     if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_1_highlighted)
     {hud_level_name.setSpritesFromString(" TURN ON A CHIME", 16);}
     else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_2_highlighted)
-    {hud_level_name.setSpritesFromString("WORK IN PROGRESS", 16);}
+    {hud_level_name.setSpritesFromString("         LEVEL B", 16);}
+    else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_3_highlighted)
+    {hud_level_name.setSpritesFromString("         LEVEL C", 16);}
+    else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_4_highlighted)
+    {hud_level_name.setSpritesFromString("         LEVEL D", 16);}
+    else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_5_highlighted)
+    {hud_level_name.setSpritesFromString("         LEVEL E", 16);}
+    else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_6_highlighted)
+    {hud_level_name.setSpritesFromString("         LEVEL F", 16);}
+    else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_7_highlighted)
+    {hud_level_name.setSpritesFromString("         LEVEL G", 16);}
+    else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_8_highlighted)
+    {hud_level_name.setSpritesFromString("         LEVEL H", 16);}
+    else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_9_highlighted)
+    {hud_level_name.setSpritesFromString("         LEVEL I", 16);}
+    else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_10_highlighted)
+    {hud_level_name.setSpritesFromString("         LEVEL J", 16);}
     else
     {hud_level_name.setSpritesFromString("       OVERWORLD", 16);}
 
@@ -1120,7 +1892,102 @@ void Level::updateOverworld()
         }
         else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_2_highlighted)
         {
-            //...
+            // Start Fade and Level Transition
+            next_level        = LEVEL_LEVEL_2;
+            global_fade_out   = true;
+            transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+
+            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->setState(PLAYER_OW_FROZEN);
+
+            bn::sound_items::select.play();
+        }
+        else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_3_highlighted)
+        {
+            // Start Fade and Level Transition
+            next_level        = LEVEL_LEVEL_3;
+            global_fade_out   = true;
+            transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+
+            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->setState(PLAYER_OW_FROZEN);
+
+            bn::sound_items::select.play();
+        }
+        else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_4_highlighted)
+        {
+            // Start Fade and Level Transition
+            next_level        = LEVEL_LEVEL_4;
+            global_fade_out   = true;
+            transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+
+            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->setState(PLAYER_OW_FROZEN);
+
+            bn::sound_items::select.play();
+        }
+        else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_5_highlighted)
+        {
+            // Start Fade and Level Transition
+            next_level        = LEVEL_LEVEL_5;
+            global_fade_out   = true;
+            transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+
+            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->setState(PLAYER_OW_FROZEN);
+
+            bn::sound_items::select.play();
+        }
+        else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_6_highlighted)
+        {
+            // Start Fade and Level Transition
+            next_level        = LEVEL_LEVEL_6;
+            global_fade_out   = true;
+            transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+
+            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->setState(PLAYER_OW_FROZEN);
+
+            bn::sound_items::select.play();
+        }
+        else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_7_highlighted)
+        {
+            // Start Fade and Level Transition
+            next_level        = LEVEL_LEVEL_7;
+            global_fade_out   = true;
+            transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+
+            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->setState(PLAYER_OW_FROZEN);
+
+            bn::sound_items::select.play();
+        }
+        else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_8_highlighted)
+        {
+            // Start Fade and Level Transition
+            next_level        = LEVEL_LEVEL_8;
+            global_fade_out   = true;
+            transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+
+            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->setState(PLAYER_OW_FROZEN);
+
+            bn::sound_items::select.play();
+        }
+        else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_9_highlighted)
+        {
+            // Start Fade and Level Transition
+            next_level        = LEVEL_LEVEL_9;
+            global_fade_out   = true;
+            transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+
+            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->setState(PLAYER_OW_FROZEN);
+
+            bn::sound_items::select.play();
+        }
+        else if(((Player*)(current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)))->level_10_highlighted)
+        {
+            // Start Fade and Level Transition
+            next_level        = LEVEL_LEVEL_10;
+            global_fade_out   = true;
+            transition_frames = LEVEL_TITLE_SCREEN_TRANSITION_FRAMES;
+
+            current_room.game_objects.at(PLAYER_OBJECT_LIST_INDEX)->setState(PLAYER_OW_FROZEN);
+
+            bn::sound_items::select.play();
         }
     }
 
@@ -1978,7 +2845,7 @@ void Level::updatePauseScreen()
 
 void Level::updateLevelTransition(LevelName level_index)
 {
-    if(level_index < LEVEL_NAME_CARD || level_index > LEVEL_LEVEL_1) {return;}
+    if(level_index < LEVEL_NAME_CARD || level_index >= LEVEL_LEVEL_COUNT) {return;}
 
     // Transition Level //
     if(transition_frames > 0)

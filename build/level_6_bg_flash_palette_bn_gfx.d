@@ -1,0 +1,1 @@
+level_6_bg_flash_palette_bn_gfx.o: level_6_bg_flash_palette_bn_gfx.s

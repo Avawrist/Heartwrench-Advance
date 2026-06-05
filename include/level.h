@@ -25,6 +25,15 @@
 
 // Flash Palettes
 #include "bn_bg_palette_items_level_1_bg_flash_palette.h"
+#include "bn_bg_palette_items_level_2_bg_flash_palette.h"
+#include "bn_bg_palette_items_level_3_bg_flash_palette.h"
+#include "bn_bg_palette_items_level_4_bg_flash_palette.h"
+#include "bn_bg_palette_items_level_5_bg_flash_palette.h"
+#include "bn_bg_palette_items_level_6_bg_flash_palette.h"
+#include "bn_bg_palette_items_level_7_bg_flash_palette.h"
+#include "bn_bg_palette_items_level_8_bg_flash_palette.h"
+#include "bn_bg_palette_items_level_9_bg_flash_palette.h"
+#include "bn_bg_palette_items_level_10_bg_flash_palette.h"
 
 // BGs
 #include "bn_regular_bg_items_name_card_level_bg.h"
@@ -42,6 +51,42 @@
 #include "bn_regular_bg_items_level_1_level_bg.h"
 #include "bn_regular_bg_items_level_1_object_bg.h"
 #include "bn_regular_bg_items_level_1_painted_bg.h"
+
+#include "bn_regular_bg_items_level_2_level_bg.h"
+#include "bn_regular_bg_items_level_2_object_bg.h"
+#include "bn_regular_bg_items_level_2_painted_bg.h"
+
+#include "bn_regular_bg_items_level_3_level_bg.h"
+#include "bn_regular_bg_items_level_3_object_bg.h"
+#include "bn_regular_bg_items_level_3_painted_bg.h"
+
+#include "bn_regular_bg_items_level_4_level_bg.h"
+#include "bn_regular_bg_items_level_4_object_bg.h"
+#include "bn_regular_bg_items_level_4_painted_bg.h"
+
+#include "bn_regular_bg_items_level_5_level_bg.h"
+#include "bn_regular_bg_items_level_5_object_bg.h"
+#include "bn_regular_bg_items_level_5_painted_bg.h"
+
+#include "bn_regular_bg_items_level_6_level_bg.h"
+#include "bn_regular_bg_items_level_6_object_bg.h"
+#include "bn_regular_bg_items_level_6_painted_bg.h"
+
+#include "bn_regular_bg_items_level_7_level_bg.h"
+#include "bn_regular_bg_items_level_7_object_bg.h"
+#include "bn_regular_bg_items_level_7_painted_bg.h"
+
+#include "bn_regular_bg_items_level_8_level_bg.h"
+#include "bn_regular_bg_items_level_8_object_bg.h"
+#include "bn_regular_bg_items_level_8_painted_bg.h"
+
+#include "bn_regular_bg_items_level_9_level_bg.h"
+#include "bn_regular_bg_items_level_9_object_bg.h"
+#include "bn_regular_bg_items_level_9_painted_bg.h"
+
+#include "bn_regular_bg_items_level_10_level_bg.h"
+#include "bn_regular_bg_items_level_10_object_bg.h"
+#include "bn_regular_bg_items_level_10_painted_bg.h"
 
 // Title player sprite
 #include "bn_sprite_items_player_title.h"
@@ -71,7 +116,7 @@
 #include "sealed_gate.h"
 
 #define LEVEL_SFX_MASTER_VOLUME   0.6
-#define LEVEL_MUSIC_MAX_VOLUME    1.0
+#define LEVEL_MUSIC_MAX_VOLUME    0.6
 #define LEVEL_VOLUME_STEP         0.1
 
 /////////////////////
@@ -176,9 +221,45 @@ struct SaveData
 
 #define TITLE_SCROLL_SPEED 1
 
-// Troll Tolls
+// Level 1
 #define LEVEL_LEVEL_1_PAINTED_BG_X 192
 #define LEVEL_LEVEL_1_PAINTED_BG_Y 1600
+
+// Level 2
+#define LEVEL_LEVEL_2_PAINTED_BG_X 192
+#define LEVEL_LEVEL_2_PAINTED_BG_Y 1600
+
+// Level 3
+#define LEVEL_LEVEL_3_PAINTED_BG_X 192
+#define LEVEL_LEVEL_3_PAINTED_BG_Y 1600
+
+// Level 4
+#define LEVEL_LEVEL_4_PAINTED_BG_X 192
+#define LEVEL_LEVEL_4_PAINTED_BG_Y 1600
+
+// Level 5
+#define LEVEL_LEVEL_5_PAINTED_BG_X 192
+#define LEVEL_LEVEL_5_PAINTED_BG_Y 1600
+
+// Level 6
+#define LEVEL_LEVEL_6_PAINTED_BG_X 192
+#define LEVEL_LEVEL_6_PAINTED_BG_Y 1600
+
+// Level 7
+#define LEVEL_LEVEL_7_PAINTED_BG_X 192
+#define LEVEL_LEVEL_7_PAINTED_BG_Y 1600
+
+// Level 8
+#define LEVEL_LEVEL_8_PAINTED_BG_X 192
+#define LEVEL_LEVEL_8_PAINTED_BG_Y 1600
+
+// Level 9
+#define LEVEL_LEVEL_9_PAINTED_BG_X 192
+#define LEVEL_LEVEL_9_PAINTED_BG_Y 1600
+
+// Level 10
+#define LEVEL_LEVEL_10_PAINTED_BG_X 192
+#define LEVEL_LEVEL_10_PAINTED_BG_Y 1600
 
 // Transitions
 #define LEVEL_TITLE_SCREEN_TRANSITION_FRAMES 60
@@ -190,7 +271,17 @@ enum LevelName
     LEVEL_NAME_CARD,
     LEVEL_TITLE_SCREEN,
     LEVEL_OVERWORLD,
-    LEVEL_LEVEL_1
+    LEVEL_LEVEL_1,
+    LEVEL_LEVEL_2,
+    LEVEL_LEVEL_3,
+    LEVEL_LEVEL_4,
+    LEVEL_LEVEL_5,
+    LEVEL_LEVEL_6,
+    LEVEL_LEVEL_7,
+    LEVEL_LEVEL_8,
+    LEVEL_LEVEL_9,
+    LEVEL_LEVEL_10,
+    LEVEL_LEVEL_COUNT,
 };
 
 //////////////////

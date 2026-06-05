@@ -702,6 +702,9 @@ void Room::load(RoomName                                       _room_name,
     // Initialize Room bounds
     switch(room_name)
     {
+
+        // Misc
+
         case ROOM_NAME_CARD:
 
             // Init Variables //
@@ -736,6 +739,8 @@ void Room::load(RoomName                                       _room_name,
             
         break;
 
+        // Overworld
+
         case ROOM_OVERWORLD:
 
             // Init Variables //
@@ -752,6 +757,8 @@ void Room::load(RoomName                                       _room_name,
             // Add any special objects //
 
         break;
+
+        // Level 1
 
         case ROOM_LEVEL_1_1:
 
@@ -1071,6 +1078,177 @@ void Room::load(RoomName                                       _room_name,
             room_bounds.setBottomBoundAC(0);
             room_bounds.setLeftBoundAC(0);
             room_bounds.setRightBoundAC(0);
+
+            // Add any special objects //
+
+        break;
+
+        // Level 2
+
+        case ROOM_LEVEL_2_1:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.setTopBoundAC(2224);
+            room_bounds.setBottomBoundAC(2544);
+            room_bounds.setLeftBoundAC(160);
+            room_bounds.setRightBoundAC(752);
+
+            // Add any special objects //
+
+        break;
+
+        // Level 3
+
+        case ROOM_LEVEL_3_1:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.setTopBoundAC(2224);
+            room_bounds.setBottomBoundAC(2544);
+            room_bounds.setLeftBoundAC(160);
+            room_bounds.setRightBoundAC(752);
+
+            // Add any special objects //
+
+        break;
+
+        // Level 4
+
+        case ROOM_LEVEL_4_1:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.setTopBoundAC(2224);
+            room_bounds.setBottomBoundAC(2544);
+            room_bounds.setLeftBoundAC(160);
+            room_bounds.setRightBoundAC(752);
+
+            // Add any special objects //
+
+        break;
+
+        // Level 5
+
+        case ROOM_LEVEL_5_1:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.setTopBoundAC(2224);
+            room_bounds.setBottomBoundAC(2544);
+            room_bounds.setLeftBoundAC(160);
+            room_bounds.setRightBoundAC(752);
+
+            // Add any special objects //
+
+        break;
+
+        // Level 6
+
+        case ROOM_LEVEL_6_1:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.setTopBoundAC(2224);
+            room_bounds.setBottomBoundAC(2544);
+            room_bounds.setLeftBoundAC(160);
+            room_bounds.setRightBoundAC(752);
+
+            // Add any special objects //
+
+        break;
+
+        // Level 7
+
+        case ROOM_LEVEL_7_1:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.setTopBoundAC(2224);
+            room_bounds.setBottomBoundAC(2544);
+            room_bounds.setLeftBoundAC(160);
+            room_bounds.setRightBoundAC(752);
+
+            // Add any special objects //
+
+        break;
+
+        // Level 8
+
+        case ROOM_LEVEL_8_1:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.setTopBoundAC(2224);
+            room_bounds.setBottomBoundAC(2544);
+            room_bounds.setLeftBoundAC(160);
+            room_bounds.setRightBoundAC(752);
+
+            // Add any special objects //
+
+        break;
+
+        // Level 9
+
+        case ROOM_LEVEL_9_1:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.setTopBoundAC(2224);
+            room_bounds.setBottomBoundAC(2544);
+            room_bounds.setLeftBoundAC(160);
+            room_bounds.setRightBoundAC(752);
+
+            // Add any special objects //
+
+        break;
+
+        // Level 10
+
+        case ROOM_LEVEL_10_1:
+
+            // Init Variables //
+            top_neighbor    = NO_ROOM;
+            right_neighbor  = NO_ROOM;
+            bottom_neighbor = NO_ROOM;
+            left_neighbor   = NO_ROOM;
+
+            room_bounds.setTopBoundAC(2224);
+            room_bounds.setBottomBoundAC(2544);
+            room_bounds.setLeftBoundAC(160);
+            room_bounds.setRightBoundAC(752);
 
             // Add any special objects //
 

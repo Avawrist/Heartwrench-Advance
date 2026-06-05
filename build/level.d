@@ -72,6 +72,15 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/butano-master/butano/include/bn_sound_item.h \
  G:/game/build/bn_bg_palette_items_level_1_bg_flash_palette.h \
  G:/butano-master/butano/include/bn_bg_palette_item.h \
+ G:/game/build/bn_bg_palette_items_level_2_bg_flash_palette.h \
+ G:/game/build/bn_bg_palette_items_level_3_bg_flash_palette.h \
+ G:/game/build/bn_bg_palette_items_level_4_bg_flash_palette.h \
+ G:/game/build/bn_bg_palette_items_level_5_bg_flash_palette.h \
+ G:/game/build/bn_bg_palette_items_level_6_bg_flash_palette.h \
+ G:/game/build/bn_bg_palette_items_level_7_bg_flash_palette.h \
+ G:/game/build/bn_bg_palette_items_level_8_bg_flash_palette.h \
+ G:/game/build/bn_bg_palette_items_level_9_bg_flash_palette.h \
+ G:/game/build/bn_bg_palette_items_level_10_bg_flash_palette.h \
  G:/game/build/bn_regular_bg_items_name_card_level_bg.h \
  G:/game/build/bn_regular_bg_items_name_card_object_bg.h \
  G:/game/build/bn_regular_bg_items_name_card_painted_bg.h \
@@ -84,6 +93,33 @@ level.o: G:/game/src/level.cpp G:/game/include/level.h \
  G:/game/build/bn_regular_bg_items_level_1_level_bg.h \
  G:/game/build/bn_regular_bg_items_level_1_object_bg.h \
  G:/game/build/bn_regular_bg_items_level_1_painted_bg.h \
+ G:/game/build/bn_regular_bg_items_level_2_level_bg.h \
+ G:/game/build/bn_regular_bg_items_level_2_object_bg.h \
+ G:/game/build/bn_regular_bg_items_level_2_painted_bg.h \
+ G:/game/build/bn_regular_bg_items_level_3_level_bg.h \
+ G:/game/build/bn_regular_bg_items_level_3_object_bg.h \
+ G:/game/build/bn_regular_bg_items_level_3_painted_bg.h \
+ G:/game/build/bn_regular_bg_items_level_4_level_bg.h \
+ G:/game/build/bn_regular_bg_items_level_4_object_bg.h \
+ G:/game/build/bn_regular_bg_items_level_4_painted_bg.h \
+ G:/game/build/bn_regular_bg_items_level_5_level_bg.h \
+ G:/game/build/bn_regular_bg_items_level_5_object_bg.h \
+ G:/game/build/bn_regular_bg_items_level_5_painted_bg.h \
+ G:/game/build/bn_regular_bg_items_level_6_level_bg.h \
+ G:/game/build/bn_regular_bg_items_level_6_object_bg.h \
+ G:/game/build/bn_regular_bg_items_level_6_painted_bg.h \
+ G:/game/build/bn_regular_bg_items_level_7_level_bg.h \
+ G:/game/build/bn_regular_bg_items_level_7_object_bg.h \
+ G:/game/build/bn_regular_bg_items_level_7_painted_bg.h \
+ G:/game/build/bn_regular_bg_items_level_8_level_bg.h \
+ G:/game/build/bn_regular_bg_items_level_8_object_bg.h \
+ G:/game/build/bn_regular_bg_items_level_8_painted_bg.h \
+ G:/game/build/bn_regular_bg_items_level_9_level_bg.h \
+ G:/game/build/bn_regular_bg_items_level_9_object_bg.h \
+ G:/game/build/bn_regular_bg_items_level_9_painted_bg.h \
+ G:/game/build/bn_regular_bg_items_level_10_level_bg.h \
+ G:/game/build/bn_regular_bg_items_level_10_object_bg.h \
+ G:/game/build/bn_regular_bg_items_level_10_painted_bg.h \
  G:/game/build/bn_sprite_items_player_title.h \
  G:/butano-master/butano/include/bn_sprite_item.h \
  G:/butano-master/butano/include/bn_sprite_shape_size.h \
@@ -279,6 +315,15 @@ G:/game/build/bn_sound_items.h:
 G:/butano-master/butano/include/bn_sound_item.h:
 G:/game/build/bn_bg_palette_items_level_1_bg_flash_palette.h:
 G:/butano-master/butano/include/bn_bg_palette_item.h:
+G:/game/build/bn_bg_palette_items_level_2_bg_flash_palette.h:
+G:/game/build/bn_bg_palette_items_level_3_bg_flash_palette.h:
+G:/game/build/bn_bg_palette_items_level_4_bg_flash_palette.h:
+G:/game/build/bn_bg_palette_items_level_5_bg_flash_palette.h:
+G:/game/build/bn_bg_palette_items_level_6_bg_flash_palette.h:
+G:/game/build/bn_bg_palette_items_level_7_bg_flash_palette.h:
+G:/game/build/bn_bg_palette_items_level_8_bg_flash_palette.h:
+G:/game/build/bn_bg_palette_items_level_9_bg_flash_palette.h:
+G:/game/build/bn_bg_palette_items_level_10_bg_flash_palette.h:
 G:/game/build/bn_regular_bg_items_name_card_level_bg.h:
 G:/game/build/bn_regular_bg_items_name_card_object_bg.h:
 G:/game/build/bn_regular_bg_items_name_card_painted_bg.h:
@@ -291,6 +336,33 @@ G:/game/build/bn_regular_bg_items_overworld_painted_bg.h:
 G:/game/build/bn_regular_bg_items_level_1_level_bg.h:
 G:/game/build/bn_regular_bg_items_level_1_object_bg.h:
 G:/game/build/bn_regular_bg_items_level_1_painted_bg.h:
+G:/game/build/bn_regular_bg_items_level_2_level_bg.h:
+G:/game/build/bn_regular_bg_items_level_2_object_bg.h:
+G:/game/build/bn_regular_bg_items_level_2_painted_bg.h:
+G:/game/build/bn_regular_bg_items_level_3_level_bg.h:
+G:/game/build/bn_regular_bg_items_level_3_object_bg.h:
+G:/game/build/bn_regular_bg_items_level_3_painted_bg.h:
+G:/game/build/bn_regular_bg_items_level_4_level_bg.h:
+G:/game/build/bn_regular_bg_items_level_4_object_bg.h:
+G:/game/build/bn_regular_bg_items_level_4_painted_bg.h:
+G:/game/build/bn_regular_bg_items_level_5_level_bg.h:
+G:/game/build/bn_regular_bg_items_level_5_object_bg.h:
+G:/game/build/bn_regular_bg_items_level_5_painted_bg.h:
+G:/game/build/bn_regular_bg_items_level_6_level_bg.h:
+G:/game/build/bn_regular_bg_items_level_6_object_bg.h:
+G:/game/build/bn_regular_bg_items_level_6_painted_bg.h:
+G:/game/build/bn_regular_bg_items_level_7_level_bg.h:
+G:/game/build/bn_regular_bg_items_level_7_object_bg.h:
+G:/game/build/bn_regular_bg_items_level_7_painted_bg.h:
+G:/game/build/bn_regular_bg_items_level_8_level_bg.h:
+G:/game/build/bn_regular_bg_items_level_8_object_bg.h:
+G:/game/build/bn_regular_bg_items_level_8_painted_bg.h:
+G:/game/build/bn_regular_bg_items_level_9_level_bg.h:
+G:/game/build/bn_regular_bg_items_level_9_object_bg.h:
+G:/game/build/bn_regular_bg_items_level_9_painted_bg.h:
+G:/game/build/bn_regular_bg_items_level_10_level_bg.h:
+G:/game/build/bn_regular_bg_items_level_10_object_bg.h:
+G:/game/build/bn_regular_bg_items_level_10_painted_bg.h:
 G:/game/build/bn_sprite_items_player_title.h:
 G:/butano-master/butano/include/bn_sprite_item.h:
 G:/butano-master/butano/include/bn_sprite_shape_size.h:

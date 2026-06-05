@@ -1,0 +1,1 @@
+level_2_object_bg_bn_gfx.o: level_2_object_bg_bn_gfx.s

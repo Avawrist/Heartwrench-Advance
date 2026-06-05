@@ -60,7 +60,16 @@ Player::Player()
 	left_wj_eligible         = false;
 	right_wj_eligible        = false;
 	is_dead                  = false;
-	level_1_highlighted  = false;
+	level_1_highlighted      = false;
+	level_2_highlighted      = false;
+	level_3_highlighted      = false;
+	level_4_highlighted      = false;
+	level_5_highlighted      = false;
+	level_6_highlighted      = false;
+	level_7_highlighted      = false;
+	level_8_highlighted      = false;
+	level_9_highlighted      = false;
+	level_10_highlighted     = false;
 
 	a_requested   = false;
 	b_requested   = false;
@@ -130,6 +139,14 @@ Player::Player(const Player& other) : GameObject(other)
 	is_dead                         = other.is_dead;
 	level_1_highlighted             = other.level_1_highlighted;
 	level_2_highlighted             = other.level_2_highlighted;
+	level_3_highlighted             = other.level_3_highlighted;
+	level_4_highlighted             = other.level_4_highlighted;
+	level_5_highlighted             = other.level_5_highlighted;
+	level_6_highlighted             = other.level_6_highlighted;
+	level_7_highlighted             = other.level_7_highlighted;
+	level_8_highlighted             = other.level_8_highlighted;
+	level_9_highlighted             = other.level_9_highlighted;
+	level_10_highlighted            = other.level_10_highlighted;
 
 	a_requested   = other.a_requested;
 	b_requested   = other.b_requested;
@@ -201,8 +218,16 @@ Player& Player::operator =(const Player& other)
 	left_wj_eligible         		= other.left_wj_eligible;
 	right_wj_eligible        		= other.right_wj_eligible;
 	is_dead                  		= other.is_dead;
-	level_1_highlighted  		    = other.level_1_highlighted;
+	level_1_highlighted             = other.level_1_highlighted;
 	level_2_highlighted             = other.level_2_highlighted;
+	level_3_highlighted             = other.level_3_highlighted;
+	level_4_highlighted             = other.level_4_highlighted;
+	level_5_highlighted             = other.level_5_highlighted;
+	level_6_highlighted             = other.level_6_highlighted;
+	level_7_highlighted             = other.level_7_highlighted;
+	level_8_highlighted             = other.level_8_highlighted;
+	level_9_highlighted             = other.level_9_highlighted;
+	level_10_highlighted            = other.level_10_highlighted;
 	
 
 	a_requested   = other.a_requested;
@@ -3049,16 +3074,64 @@ void Player::resolveOWTileCollision(const bn::regular_bg_ptr&                   
 	{
 		level_1_highlighted = true;
 	}
-	else if(tile_index >= OW_UNDER_CONSTRUCTION_MIN_INDEX &&
-	  		tile_index <= OW_UNDER_CONSTRUCTION_MAX_INDEX)
+	else if(tile_index >= OW_LEVEL_2_MIN_INDEX &&
+	  		tile_index <= OW_LEVEL_2_MAX_INDEX)
 	{
 		level_2_highlighted = true;
+	}
+	else if(tile_index >= OW_LEVEL_3_MIN_INDEX &&
+	  		tile_index <= OW_LEVEL_3_MAX_INDEX)
+	{
+		level_3_highlighted = true;
+	}
+	else if(tile_index >= OW_LEVEL_4_MIN_INDEX &&
+	  		tile_index <= OW_LEVEL_4_MAX_INDEX)
+	{
+		level_4_highlighted = true;
+	}
+	else if(tile_index >= OW_LEVEL_5_MIN_INDEX &&
+	  		tile_index <= OW_LEVEL_5_MAX_INDEX)
+	{
+		level_5_highlighted = true;
+	}
+	else if(tile_index >= OW_LEVEL_6_MIN_INDEX &&
+	  		tile_index <= OW_LEVEL_6_MAX_INDEX)
+	{
+		level_6_highlighted = true;
+	}
+	else if(tile_index >= OW_LEVEL_7_MIN_INDEX &&
+	  		tile_index <= OW_LEVEL_7_MAX_INDEX)
+	{
+		level_7_highlighted = true;
+	}
+	else if(tile_index >= OW_LEVEL_8_MIN_INDEX &&
+	  		tile_index <= OW_LEVEL_8_MAX_INDEX)
+	{
+		level_8_highlighted = true;
+	}
+	else if(tile_index >= OW_LEVEL_9_MIN_INDEX &&
+	  		tile_index <= OW_LEVEL_9_MAX_INDEX)
+	{
+		level_9_highlighted = true;
+	}
+	else if(tile_index >= OW_LEVEL_10_MIN_INDEX &&
+	  		tile_index <= OW_LEVEL_10_MAX_INDEX)
+	{
+		level_10_highlighted = true;
 	}
 	else
 	{
 		// Reset highlight bools
-		level_1_highlighted = false;
-		level_2_highlighted = false;
+		level_1_highlighted  = false;
+		level_2_highlighted  = false;
+		level_3_highlighted  = false;
+		level_4_highlighted  = false;
+		level_5_highlighted  = false;
+		level_6_highlighted  = false;
+		level_7_highlighted  = false;
+		level_8_highlighted  = false;
+		level_9_highlighted  = false;
+		level_10_highlighted = false;
 	}
 
 	// Record Player's OW position in global variables
